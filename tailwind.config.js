@@ -15,6 +15,18 @@ module.exports = {
           "800": "#682712",
           "900": "#341309"
         }
+      },
+      fontFamily: {
+        sans: [
+          "Open Sans",
+          "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif"
+        ],
+        mono: ["Fira Code", "Fira Mono", "Menlo", "Monoco", "monospace"]
       }
     }
   },
