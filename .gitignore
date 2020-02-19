@@ -5,4 +5,4 @@ publish/*
 !publish/images
 !publish/favicon.*
 yarn-error.log
-code/html/projects/*.html
+code/html/_nav.html
