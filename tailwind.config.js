@@ -6,7 +6,7 @@ module.exports = {
       colors: {
         red: {
           "100": "#FDF8F6",
-          "200": "#F8E0D8",
+          "200": "#FAEAE5",
           "300": "#F3C7BA",
           "400": "#EBA48E",
           "500": "#E38163",
