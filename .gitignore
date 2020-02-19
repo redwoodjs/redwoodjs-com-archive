@@ -6,3 +6,4 @@ publish/*
 !publish/favicon.*
 yarn-error.log
 code/html/_nav.html
+code/html/tutorial/*.html
