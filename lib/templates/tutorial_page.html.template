@@ -5,7 +5,7 @@
     @@include("nav.html")
 
     <div class="flex w-4/5">
-      <main class="w-full max-w-3xl xl:w-3/4 my-8 px-8 mr-auto markdown">
+      <main class="w-full max-w-3xl xl:w-3/4 my-12 px-8 mr-auto markdown">
         ${content}
       </main>
       <aside class="hidden xl:block w-1/4 h-auto overflow-y-visible">
