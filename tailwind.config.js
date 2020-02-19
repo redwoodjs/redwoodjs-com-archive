@@ -27,6 +27,9 @@ module.exports = {
           "sans-serif"
         ],
         mono: ["Fira Code", "Fira Mono", "Menlo", "Monoco", "monospace"]
+      },
+      spacing: {
+        half: "0.125rem"
       }
     }
   },
