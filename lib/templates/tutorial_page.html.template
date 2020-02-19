@@ -1,0 +1,27 @@
+@@layout("application")
+
+<section id="main" class="max-w-screen-xl mx-auto px-8">
+  <div class="flex">
+    @@include("nav.html")
+
+    <div class="flex w-4/5">
+      <main class="w-full max-w-3xl xl:w-3/4 my-8 px-8 mr-auto markdown">
+        ${content}
+      </main>
+      <aside class="hidden xl:block w-1/4 h-auto overflow-y-visible">
+        <div class="overflow-y-auto sticky top-0 pl-6">
+          <nav class="text-sm font-semibold text-gray-600 py-12 overflow-y-auto h-screen">
+            <h4 class="text-xs uppercase text-gray-500">On this page</h4>
+            <ul class="mt-4">
+              <% links.forEach(link => { %>
+              <li class="my-1 py-1">
+                <a href="${link.href}">${link.title}</a>
+              </li>
+              <% }) %>
+            </ul>
+          </nav>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

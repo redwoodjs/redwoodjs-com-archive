@@ -4,9 +4,9 @@
       <ul class="-mt-1">
         <% links.forEach(link => { %>
         <li>
-          <a href="${href}" class="block my-1 px-2 py-1 transition duration-100 text-gray-600 hover:text-gray-800 rounded" data-target="link">${text}</a>
+          <a href="${link.href}" class="block my-1 px-2 py-1 transition duration-100 text-gray-600 hover:text-gray-800 rounded" data-target="link">${link.title}</a>
         </li>
-        <% } %>
+        <% }) %>
       </ul>
     </nav>
   </div>

@@ -2,6 +2,10 @@
 /* Feel free to delete me once you start changing that page.            */
 
 .markdown {
+  h2 {
+    @apply text-xl font-semibold
+  }
+
   p {
     @apply my-4;
   }
@@ -15,10 +19,14 @@
   }
 
   p code, ul code {
-    @apply bg-gray-200 text-gray-900 text-sm px-1 rounded
+    @apply bg-red-200 text-gray-900 text-sm px-1 py-half rounded
   }
 
   blockquote {
     @apply border border-red-300 bg-red-100 py-1 px-6 my-8 rounded-lg
+  }
+
+  img {
+    @apply border border-gray-300
   }
 }
