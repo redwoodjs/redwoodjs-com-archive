@@ -29,7 +29,8 @@ module.exports = {
         mono: ["Fira Code", "Fira Mono", "Menlo", "Monoco", "monospace"]
       },
       spacing: {
-        half: "0.125rem"
+        half: "0.125rem",
+        "22": "5.5rem"
       }
     }
   },
