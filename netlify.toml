@@ -28,6 +28,9 @@
 
 # See https://www.netlify.com/docs/netlify-toml-reference/#redirects
 [[redirects]]
+  from = "/tutorial/index.html"
+  to = "/tutorial/welcome-to-redwood.html"
+  status = 301
 
 # See https://www.netlify.com/docs/netlify-toml-reference/#headers
 [[headers]]
