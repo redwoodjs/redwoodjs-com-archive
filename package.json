@@ -19,7 +19,7 @@
     "@fullhuman/postcss-purgecss": "^2.0.6",
     "@octokit/rest": "^16.43.1",
     "autoprefixer": "^9.7.4",
-    "cameronjs-html-webpack-plugin": "^0.4.2",
+    "cameronjs-html-webpack-plugin": "^0.5.0",
     "highlight.js": "^9.18.1",
     "lodash.template": "^4.5.0",
     "marked": "^0.8.0",

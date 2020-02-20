@@ -1,18 +1,7 @@
-<aside class="hidden absolute inset-0 mt-22 lg:mt-0 lg:mb-8 w-full lg:w-1/5 lg:static lg:block bg-white z-10 overflow-y-visible lg:px-0" data-target="application.nav">
-  <div class="lg:hidden mt-4 mx-4">
-    @@include("search.html")
-  </div>
-  <div class="overflow-y-auto lg:sticky top-0 px-8 lg:px-0">
-    <nav class="text-sm font-semibold pt-8 pb-40 lg:py-12 pr-6 overflow-y-auto h-screen">
-      @@include("top_level_nav.html")
-
-      <ul class="my-8">
-        <% links.forEach(link => { %>
-        <li>
-          <a href="${link.href}" class="block my-1 px-2 py-1 transition duration-100 text-gray-600 hover:text-gray-800 rounded" data-target="nav.link">${link.title}</a>
-        </li>
-        <% }) %>
-      </ul>
-    </nav>
-  </div>
-</aside>
+<ul class="my-8">
+  <% links.forEach(link => { %>
+  <li>
+    <a href="${link.href}" class="block my-1 px-2 py-1 transition duration-100 text-gray-600 hover:text-gray-800 rounded" data-target="nav.link">${link.title}</a>
+  </li>
+  <% }) %>
+</ul>
