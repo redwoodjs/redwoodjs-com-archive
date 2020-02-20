@@ -1,14 +1,14 @@
 @@layout("application")
 
 <div class="bg-red-100 pt-8">
-  <div class="flex max-w-screen-xl mx-auto px-8 pt-8 pb-12">
-    <div class="w-1/2 pr-4">
-      <h2 class="text-4xl font-semibold tracking-tight">
+  <div class="lg:flex max-w-screen-xl mx-auto px-8 pt-4 lg:pt-8 pb-12">
+    <div class="w-full lg:w-1/2 pr-4">
+      <h2 class="text-3xl md:text-4xl text-center lg:text-left font-semibold tracking-tight">
         Bringing <span class="text-red-700">full-stack</span> to the
         <span class="text-red-700">JAMstack</span>
       </h2>
-      <p class="text-lg mt-4">Not every site needs a CMS. Some need a real database. Redwood finally gets SQL on the JAMstack. Built on React, Redwood works with the components and development workflow you love, but with simple conventions and helpers to make your experience even better.</h3>
-      <ul class="flex mt-12">
+      <p class="max-w-2xl mx-auto text-center lg:text-left md:text-lg mt-4">Not every site needs a CMS. Some need a real database. Redwood finally gets SQL on the JAMstack. Built on React, Redwood works with the components and development workflow you love, but with simple conventions and helpers to make your experience even better.</h3>
+      <ul class="flex mt-12 justify-center lg:justify-start">
         <li>
           <a href="/tutorial/index.html" class="bg-red-700 text-white px-4 py-3 font-semibold rounded-lg mr-4">Get Started</a>
         </li>
@@ -17,7 +17,7 @@
         </li>
       </ul>
     </div>
-    <div class="w-1/2 pl-4">
+    <div class="hidden lg:block lg:w-1/2 pl-4">
       <img src="/images/structure.png" alt="Structure of a Redwood app" />
     </div>
   </div>
@@ -25,16 +25,19 @@
 
 <section id="main" class="max-w-screen-xl mx-auto px-8">
   <div class="flex">
-    <aside class="h-auto overflow-y-visible w-1/5">
-      <div class="overflow-y-auto sticky top-0">
-        <nav class="text-sm font-semibold py-12 pr-6 overflow-y-auto h-screen">
+    <aside class="hidden absolute top-24 -mt-2 left-0 right-0 w-full lg:w-1/5 lg:static lg:block bg-white z-10 h-auto overflow-y-visible lg:px-0" data-target="application.nav">
+      <div class="mt-8 mx-4">
+        @@include("search.html")
+      </div>
+      <div class="overflow-y-auto sticky top-0 px-8">
+        <nav class="text-sm font-semibold py-8 lg:py-12 pr-6 overflow-y-auto h-screen">
           @@include("top_level_nav.html")
         </nav>
       </div>
     </aside>
 
-    <div class="flex w-4/5">
-      <main class="w-full max-w-3xl xl:w-3/4 my-8 px-8 mr-auto">
+    <div class="flex w-full lg:w-4/5">
+      <main class="w-full max-w-3xl xl:w-3/4 my-8 lg:px-8 mr-auto">
         <blockquote class="text-sm border border-red-300 bg-red-100 p-6 mt-4 mb-8 rounded-lg">
           Redwood is under active development. We strive to make sure that each official
           release is as stable as possible, but until we are at v1.0.0 things may break from time

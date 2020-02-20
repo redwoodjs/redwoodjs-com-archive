@@ -15,19 +15,27 @@
   <body class="bg-white text-gray-900 font-sans antialiased h-full flex flex-col" data-controller="application">
     <div class="flex-grow flex-shrink-0 flex-auto">
       <section class="bg-red-100 text-red-900">
-        <div class="max-w-screen-xl mx-auto px-8">
+        <div class="max-w-screen-xl mx-auto px-4 lg:px-8">
           <header class="flex items-center justify-between border-b-2 border-white py-6">
-            <h1 class="flex items-center text-2xl text-black font-bold ml-2 tracking-tight">
+            <h1 class="flex items-center text-2xl text-black font-bold tracking-tight">
               <img src="/images/logo.svg" />
               <a class="ml-2" href="/">RedwoodJS</a>
             </h1>
-            <div class="w-7/12">
+            <div class="hidden lg:block lg:w-7/12">
               @@include("search.html")
             </div>
-            <div class="text-red-700 font-mono font-semibold">
-              v0.1.0
+            <div class="flex items-center">
+              <div class="text-red-700 font-mono font-semibold">
+                v0.1.0
+              </div>
+              <div class="ml-8 lg:hidden w-10 p-2" data-action="click->application#toggleNav">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-current text-gray-700">
+                  <path d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                </svg>
+              </div>
             </div>
-            <ul class="flex">
+            <ul class="hidden lg:flex">
               <li class="mr-3">
                 <a class="block w-6" href="https://github.com/redwoodjs/redwood" title="Go to Redwood's GitHub repo">
                   <svg viewBox="0 0 32 32" class="transition duration-200 fill-current text-red-400 hover:text-red-700" xmlns="http://www.w3.org/2000/svg">
@@ -62,7 +70,7 @@
           <h4 class="text-red-800">&copy;<span data-target="application.year"></span> <a href="https://tom.preston-werner.com/" class="hover:underline">Tom Preston-Werner</a>
           <h4 class="text-red-700 font-semibold">Redwood is released under the <a href="https://github.com/redwoodjs/redwood/blob/master/LICENSE" class="hover:underline">MIT License</a></h4>
         </div>
-        <ul class="flex text-sm font-semibold text-red-700 -mr-4">
+        <ul class="hidden lg:flex text-sm font-semibold text-red-700 -mr-4">
           <li class="mx-4">
             <a class="hover:underline" href="https://github.com/redwoodjs/redwood/blob/master/CONTRIBUTING.md" title="Go to Redwood's GitHub repo">
               Contributing
