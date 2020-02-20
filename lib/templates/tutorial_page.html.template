@@ -7,6 +7,11 @@
     <div class="flex w-4/5">
       <main class="w-full max-w-3xl xl:w-3/4 my-12 px-8 mr-auto markdown">
         ${content}
+        <% if (nextPage) { %>
+          <div class="mt-12 text-right">
+            <a class="text-sm font-semibold bg-red-700 text-white px-4 py-2 rounded" href=${nextPage.href}>Next &raquo;</a>
+          </div>
+        <% } %>
       </main>
       <aside class="hidden xl:block w-1/4 h-auto overflow-y-visible">
         <div class="overflow-y-auto sticky top-0 pl-6">
