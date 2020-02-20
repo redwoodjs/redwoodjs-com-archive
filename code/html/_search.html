@@ -1,0 +1,17 @@
+<form class="relative" data-controller="search">
+  <input
+    type="text"
+    name="search"
+    autocomplete="off"
+    placeholder='Search the docs (press "/" to focus)'
+    class="transition duration-200 border border-red-200 focus:border-red-400 text-red-800 outline-none rounded w-full px-4 py-2"
+    data-action="keydown->search#search"
+  />
+  <div
+    class="hidden absolute top-0 left-0 right-0 bg-white p-4 mt-12 rounded border border-red-200"
+    data-target="search.results"
+  >
+    We're still working on the official docs!
+    <a href="https://discord.gg/qrGcK9" class="text-red-700" target="_blank">Want to help?</a>
+  </div>
+</form>
