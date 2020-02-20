@@ -2,16 +2,22 @@
 
 <section id="main" class="max-w-screen-xl mx-auto px-8">
   <div class="flex">
-    <aside class="h-auto overflow-y-visible w-1/5">
-      <div class="overflow-y-auto sticky top-0">
-        <nav class="text-sm font-semibold py-12 pr-6 overflow-y-auto h-screen">
+    <aside
+      class="hidden absolute inset-0 mt-22 lg:mt-0 lg:mb-8 w-full lg:w-1/5 lg:static lg:block bg-white z-10 overflow-y-visible lg:px-0"
+      data-target="application.nav"
+    >
+      <div class="lg:hidden mt-4 mx-4">
+        @@include("search.html")
+      </div>
+      <div class="overflow-y-auto lg:sticky top-0 px-8 lg:px-0">
+        <nav class="text-sm font-semibold pt-8 pb-40 lg:py-12 pr-6 overflow-y-auto h-screen">
           @@include("top_level_nav.html")
         </nav>
       </div>
     </aside>
 
-    <div class="flex w-4/5">
-      <main class="w-full max-w-3xl xl:w-3/4 my-8 px-8 mr-auto">
+    <div class="flex w-full lg:w-4/5">
+      <main class="w-full max-w-3xl xl:w-3/4 my-8 lg:px-8 mr-auto">
         <blockquote class="text-sm border border-red-300 bg-red-100 p-6 mt-4 mb-8 rounded-lg">
           Redwood is under active development. We'll have a cookbook posted soon. Want to help us?
           <a class="text-red-700" href="https://discord.gg/qrGcK9">Get in touch!</a>
