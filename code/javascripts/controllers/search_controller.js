@@ -25,9 +25,9 @@ export default class extends Controller {
 
     this.searchResultTemplate = template(`
       <a href="\${href}" class="p-2 block hover:bg-red-100 rounded searchresult">
-        <div class="flex items-center">
-          <h3 class="w-1/3 text-sm text-red-700 leading-5">\${chapter}</h3>
-          <div class="w-2/3 ml-2">
+        <div class="md:flex items-center">
+          <h3 class="md:w-1/3 text-sm text-red-700 leading-5">\${chapter}</h3>
+          <div class="md:w-2/3 md:ml-2">
             <h4 class="text-sm text-red-500">\${section}</h3>
             <p class="text-xs text-gray-500 \${
               type == "code" ? "font-mono bg-red-200 text-red-500 p-1 rounded" : ""
@@ -89,7 +89,7 @@ export default class extends Controller {
 
     let output = "";
     for (let item in items) {
-      output += `<h2 class="border-b">${item}</h2>`;
+      output += `<h2 class="mt-2 mb-1 pb-1 pl-2 border-b text-gray-500 font-semibold">${item}</h2>`;
       output += items[item].join("");
     }
 
