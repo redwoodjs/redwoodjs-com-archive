@@ -11,6 +11,7 @@ module.exports = {
         whitelist: [
           "tab-active",
           "searchresult",
+          "md:flex",
           "md:w-1/3",
           "md:w-2/3",
           "border-b",
