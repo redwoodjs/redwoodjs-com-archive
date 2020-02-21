@@ -35,6 +35,7 @@
     "postcss-nested": "^4.2.1",
     "stimulus": "^1.1.1",
     "tailwindcss": "^1.2.0",
+    "title-case": "^3.0.2",
     "turbolinks": "^5.2.0",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
