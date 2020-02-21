@@ -1,7 +1,0 @@
-<ul class="my-8" data-controller="nav" data-nav-active="bg-red-200 text-red-700 hover:text-red-700">
-  <% links.forEach(link => { %>
-  <li>
-    <a href="${link.href}" class="block my-1 px-2 py-1 transition duration-100 text-gray-600 hover:text-gray-800 rounded" data-target="nav.link">${link.title}</a>
-  </li>
-  <% }) %>
-</ul>
