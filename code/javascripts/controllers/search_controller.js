@@ -16,26 +16,22 @@ export default class extends Controller {
     this.index = this.client.initIndex("redwoodjs");
     this.searchOptions = {
       hitsPerPage: 3,
-      page: 0,
-      analytics: false,
       attributesToRetrieve: "*",
-      attributesToSnippet: "*:20",
-      getRankingInfo: true,
+      attributesToSnippet: "text:20,section:20",
+      attributesToHighlight: null,
       snippetEllipsisText: "…",
-      responseFields: "*",
-      enableABTest: false,
-      facets: "*,"
+      analytics: true
     };
 
     this.searchResultTemplate = template(`
-      <a href="\${href.value.replace(/\<.*?\>/g, '')}" class="p-2 block hover:bg-red-100 rounded searchresult">
+      <a href="\${href}" class="p-2 block hover:bg-red-100 rounded searchresult">
         <div class="flex items-center">
-          <h3 class="w-1/3 text-sm text-red-700 leading-5">\${chapter.value}</h3>
+          <h3 class="w-1/3 text-sm text-red-700 leading-5">\${chapter}</h3>
           <div class="w-2/3 ml-2">
-            <h4 class="text-sm text-red-500">\${section.value}</h3>
+            <h4 class="text-sm text-red-500">\${section}</h3>
             <p class="text-xs text-gray-500 \${
-              type.value == "code" ? "font-mono bg-red-200 text-red-500 p-1 rounded" : ""
-            }">\${text.value}</p>
+              type == "code" ? "font-mono bg-red-200 text-red-500 p-1 rounded" : ""
+            }">\${text}</p>
           </div>
         </div>
       </a>`);
@@ -51,7 +47,8 @@ export default class extends Controller {
       return;
     } else {
       this.index.search(event.currentTarget.value, this.searchOptions).then(data => {
-        this._show(data);
+        console.info(data);
+        this._parseResults(data);
       });
     }
   }
@@ -61,7 +58,13 @@ export default class extends Controller {
     document.removeEventListener("click", this.documentClickHandler);
   }
 
-  _show(data) {
+  _parseResults(data) {
+    if (data.hits.length === 0) {
+      return this._show(
+        `<p class="text-sm font-semibold">No docs found for <span class="text-red-700">${data.query}</span></p>`
+      );
+    }
+
     const sections = [];
     data.hits.map(hit => {
       if (sections.indexOf(hit.book) === -1) {
@@ -71,10 +74,16 @@ export default class extends Controller {
 
     const items = {};
     data.hits.forEach(hit => {
+      let attributes = Object.assign(hit, {
+        text: hit._snippetResult.text.value,
+        section: hit._snippetResult.section.value
+      });
+      let html = this.searchResultTemplate(attributes);
+
       if (items[hit.book]) {
-        items[hit.book].push(this.searchResultTemplate(hit._snippetResult));
+        items[hit.book].push(html);
       } else {
-        items[hit.book] = [this.searchResultTemplate(hit._snippetResult)];
+        items[hit.book] = [html];
       }
     });
 
@@ -84,8 +93,12 @@ export default class extends Controller {
       output += items[item].join("");
     }
 
+    this._show(output);
+  }
+
+  _show(html) {
     this.resultsTarget.classList.remove("hidden");
-    this.resultsTarget.innerHTML = output;
+    this.resultsTarget.innerHTML = html;
     document.addEventListener("click", this.documentClickHandler);
   }
 }
