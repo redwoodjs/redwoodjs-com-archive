@@ -13,7 +13,7 @@ export default class extends Controller {
     };
 
     this.client = algoliasearch("FK1BZ27LVA", "7529991044069660797050dc19e7bebd");
-    this.index = this.client.initIndex("redwoodjs");
+    this.index = this.client.initIndex("docs");
     this.searchOptions = {
       hitsPerPage: 3,
       attributesToRetrieve: "*",
