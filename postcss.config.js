@@ -8,7 +8,7 @@ module.exports = {
       require("@fullhuman/postcss-purgecss")({
         content: ["./publish/**/*.html"],
         defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
-        whitelist: ["tab-active", "searchresult", "w-1/3", "w-2/3"]
+        whitelist: ["tab-active", "searchresult", "w-1/3", "w-2/3", "hover:bg-red-100"]
       })
   ]
 };
