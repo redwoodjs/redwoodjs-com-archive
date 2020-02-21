@@ -9,6 +9,13 @@ export default class extends Controller {
     this._highlightNav();
   }
 
+  // opens/closes a nav section
+  toggle(event) {
+    event.preventDefault();
+    console.info(event.currentTarget.nextSibling);
+    event.currentTarget.nextSibling.nextSibling.classList.toggle("hidden");
+  }
+
   // Highlight nav items if the URL matches the `href` on the link, or if the link has a
   // `data-match` attribute and location.href matches that value
   _highlightNav() {
@@ -22,6 +29,8 @@ export default class extends Controller {
         if (this.data.get("remove")) {
           link.classList.remove(...this.data.get("remove").split(" "));
         }
+        // make sure whole parent list is visible
+        link.closest("ul").classList.remove("hidden");
       } else {
         link.classList.remove(...this.data.get("active").split(" "));
       }
