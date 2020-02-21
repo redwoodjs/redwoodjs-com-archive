@@ -12,7 +12,6 @@ export default class extends Controller {
   // opens/closes a nav section
   toggle(event) {
     event.preventDefault();
-    console.info(event.currentTarget.nextSibling);
     event.currentTarget.nextSibling.nextSibling.classList.toggle("hidden");
   }
 
