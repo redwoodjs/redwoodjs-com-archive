@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "build": "node lib/build.js && webpack && postcss --verbose code/stylesheets/application.pcss -o publish/stylesheets/application.css",
-    "clean": "del 'code/html/(cookbook|docs|tutorial)/*.html' 'publish/!(images|favicon.*)' && git checkout code/html/_nav.html",
+    "clean": "del 'code/html/(cookbook|docs|tutorial)/*.html' 'publish/!(images|favicon.*)'",
     "dev": "$npm_execpath serve & $npm_execpath watch",
     "netlify": "$npm_execpath watch & netlify dev",
     "rebuild": "$npm_execpath clean && $npm_execpath build",
