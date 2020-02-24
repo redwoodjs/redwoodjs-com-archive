@@ -3,7 +3,7 @@ import template from "lodash.template";
 
 export default class extends Controller {
   static get targets() {
-    return ["results"];
+    return ["input", "results"];
   }
 
   initialize() {
@@ -42,20 +42,32 @@ export default class extends Controller {
   // Highlight nav items if the URL matches the `href` on the link, or if the link has a
   // `data-match` attribute and location.href matches that value
   search(event) {
-    if (event.key === "Escape") {
-      this.close();
-      return;
+    event.stopPropagation();
+
+    if (event.currentTarget.value.trim() !== "") {
+      if (event.key === "Escape") {
+        this.close();
+        return;
+      } else {
+        this.index.search(event.currentTarget.value, this.searchOptions).then(data => {
+          console.info(data);
+          this._parseResults(data);
+        });
+      }
     } else {
-      this.index.search(event.currentTarget.value, this.searchOptions).then(data => {
-        console.info(data);
-        this._parseResults(data);
-      });
+      this._clear();
     }
   }
 
   close() {
+    console.info("close");
     this.resultsTarget.classList.add("hidden");
     document.removeEventListener("click", this.documentClickHandler);
+  }
+
+  _clear() {
+    this.resultsTarget.innerHTML = "";
+    this.close();
   }
 
   _parseResults(data) {
