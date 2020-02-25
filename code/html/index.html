@@ -25,118 +25,69 @@
   </div>
 )
 
-<blockquote class="text-sm border border-red-300 bg-red-100 p-6 mt-4 mb-8 rounded-lg">
-  Redwood is under active development. We strive to make sure that each official
-  release is as stable as possible, but until we are at v1.0.0 things may break from time
-  to time. Want to help us? <a class="text-red-700" href="https://discord.gg/jjSYEQd">Get in touch!</a>
-</blockquote>
-<p class="my-4 text-lg">
-  Redwood is an opinionated, full-stack, serverless web application framework that will
-  allow you to build and deploy JAMstack applications with ease.
-</p>
-<p class="my-4">
-  Imagine a React frontend, statically delivered by CDN, that talks via GraphQL to your
-  backend running on AWS Lambdas around the world, all deployable with just a git
-  push—that's Redwood. By making a lot of decisions for you, Redwood lets you get to work
-  on what makes your application special, instead of wasting cycles choosing and re-choosing
-  various technologies and configurations. Plus, because Redwood is a proper framework, you
-  benefit from continued performance and feature upgrades over time and with minimum effort.
-</p>
+<div class="lg:absolute left-0 right-0 lg:inset-auto max-w-screen-lg -ml-4 mr-4">
 
-<h2 class="text-lg font-semibold mt-8 mb-4">Technologies</h2>
-<p class="my-4">
-  We are obsessed with developer experience and eliminating as much boilerplate as possible.
-  Where existing libraries elegantly solve our problems, we use them; where they don't, we
-  write our own solutions. The end result is a JavaScript development experience you can
-  fall in love with!
-</p>
-<p class="my-4">
-  Here's a quick taste of the technologies a standard Redwood application will use:
-</p>
+  <section class="lg:flex justify-between items-start">
+    <div class="flex flex-row lg:flex-col justify-between lg:w-1/3 text-center px-4 lg:pr-2">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-32 lg:w-16 mx-auto">
+        <path d="M0 0h24v24H0V0z" fill="none"/>
+        <path d="M9 15h6.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-.87l-.17-.86C14.29 9.92 13.23 9 12 9c-.96 0-1.84.57-2.26 1.45l-.27.57h-.73C7.74 11.15 7 11.99 7 13c0 1.1.9 2 2 2z" class="fill-current text-red-400" />
+        <path d="M9 17h6.5c1.93 0 3.5-1.57 3.5-3.5 0-1.66-1.16-3.05-2.74-3.41C15.66 8.28 13.95 7 12 7c-1.53 0-2.96.8-3.78 2.08C6.36 9.44 5 11.07 5 13c0 2.21 1.79 4 4 4zm-.26-5.98h.74l.27-.57C10.16 9.57 11.04 9 12 9c1.23 0 2.29.92 2.46 2.14l.17.86h.87c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5H9c-1.1 0-2-.9-2-2 0-1.01.74-1.85 1.74-1.98zM21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.99h18v14.02z" class="fill-current text-red-800"/>
+      </svg>
+      <div class="ml-8 lg:ml-0 text-left lg:text-center">
+        <h2 class="text-lg font-semibold text-red-800 mt-2">The Edge Framework<span class="text-gray-600">*</span></h2>
+        <p class="lg:mt-4 text-sm">Redwood is the first JS framework that's meant to be deployed completely to the Edge—CDNs and serverless functions distributed everywhere.<span class="block text-gray-600">* Databases coming soon!</span><p>
+      </div>
+    </div>
 
-<ul class="my-4 ml-8 list-disc">
-  <li>React</li>
-  <li>GraphQL (Apollo)</li>
-  <li>Prisma</li>
-  <li>Storybook</li>
-  <li>Babel</li>
-  <li>Webpack</li>
-</ul>
+    <div class="flex flex-row lg:flex-col justify-between lg:w-1/3 text-center px-4 mt-4 lg:mt-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-32 lg:w-16 mx-auto">
+        <path d="M0 0h24v24H0V0z" fill="none"/>
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM5 10h3.13c.21.78.67 1.47 1.27 2H5v-2zm14 2h-4.4c.6-.53 1.06-1.22 1.27-2H19v2zm0-4h-5v1c0 1.07-.93 2-2 2s-2-.93-2-2V8H5V5h14v3zm-5 7v1c0 .47-.19.9-.48 1.25-.37.45-.92.75-1.52.75s-1.15-.3-1.52-.75c-.29-.35-.48-.78-.48-1.25v-1H3v4c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-4h-7zm-9 2h3.13c.02.09.06.17.09.25.24.68.65 1.28 1.18 1.75H5v-2zm14 2h-4.4c.54-.47.95-1.07 1.18-1.75.03-.08.07-.16.09-.25H19v2z" class="fill-current text-red-800"/>
+        <path d="M8.13 10H5v2h4.4c-.6-.53-1.06-1.22-1.27-2zm6.47 2H19v-2h-3.13c-.21.78-.67 1.47-1.27 2zm-6.38 5.25c-.03-.08-.06-.16-.09-.25H5v2h4.4c-.53-.47-.94-1.07-1.18-1.75zm7.65-.25c-.02.09-.06.17-.09.25-.23.68-.64 1.28-1.18 1.75H19v-2h-3.13z" class="fill-current text-red-400" />
+      </svg>
+      <div class="ml-8 lg:ml-0 text-left lg:text-center">
+        <h2 class="text-lg font-semibold text-red-800 mt-2">Code Organization</h2>
+        <p class="lg:mt-4 text-sm">Redwood has a pre-defined place for all your code—front-end and back-end. Components, layouts, pages, GraphQL, and services: they all have a home.</p>
+      </div>
+    </div>
 
-<h2 class="text-lg font-semibold mt-8 mb-4">The Redwood philosophy</h2>
-<p class="my-4">
-  Redwood believes that JAMstack is a huge leap forward in how we can write web applications
-  that are easy to write, deploy, scale, and maintain.
-</p>
-<p class="my-4">
-  Redwood believes that there is power in standards, and makes decisions for you about what
-  technologies to use, how to organize your code into files, and how to name things. With a
-  shared understanding of the Redwood conventions, a developer should be able to jump into
-  any Redwood application and get up to speed very quickly.
-</p>
-<p class="my-4">
-  Redwood believes that traditional, relational databases like PostgresQL and MySQL are
-  still workhorses of today's web applications and should be first-class citizens. However,
-  that does not mean that Redwood doesn't shine with NoSQL or other types of "web scale"
-  databases.
-</p>
-<p class="my-4">
-  Redwood believes that, as much as possible, you should be able to operate in a serverless
-  mindset and deploy to a generic computational grid. This helps unlock the next point...
-</p>
-<p class="my-4">
-  Redwood believes that deployment and scaling should be super easy. To deploy your
-  application, you should only need to commit and push to your Git repository. To scale
-  from zero to thousands of users should not require your intervention. The principles of
-  JAMstack make this possible.
-</p>
-<p class="my-4">
-  Redwood believes that it should be equally useful for writing both simple, toy
-  applications, and complex, mission critical applications. In addition, it should require
-  very little operational work to grow your app from the former to the latter.
-</p>
-<p class="my-4">
-  Redwood believes that you can use JavaScript as your primary language on both the
-  frontend and backend. Only needing a single language simplifies everything from code
-  reuse to hiring developers.
-</p>
+    <div class="flex flex-row lg:flex-col justify-between lg:w-1/3 text-center px-4 lg:pl-2 lg:pr-4 mt-4 lg:mt-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-32 lg:w-16 mx-auto">
+        <path d="M0 0h24v24H0V0z" fill="none"/>
+        <path d="M6 13c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V5H6v8z" class="fill-current text-red-400" />
+        <path d="M4 19h16v2H4zM20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.9 2-2V5c0-1.11-.89-2-2-2zm-4 10c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2V5h10v8zm4-5h-2V5h2v3z"  class="fill-current text-red-800"/>
+      </svg>
+      <div class="ml-8 lg:ml-0 text-left lg:text-center">
+        <h2 class="text-lg font-semibold text-red-800 mt-2">Developer Experience</h2>
+        <p class="lg:mt-4 text-sm">Redwood apps are as declarative as possible, we skip `import` statements when we can, zero-config code splitting...everything Just Works&trade;.</p>
+      </div>
+    </div>
+  </section>
 
-<h2 class="text-lg font-semibold mt-8 mb-4">How it works</h2>
-<p class="my-4">
-  A Redwood application is split into two parts: a frontend and a backend. This is
-  represented as two node projects within a single monorepo. We use Yarn to make it easy to
-  operate across both projects, while still keeping them in a single Git repository.
-</p>
-<p class="my-4">
-  The frontend project is called web and the backend project is called api. For clarity, we
-  will refer to these in prose as "sides", i.e. the "web side" and the "api side". They are
-  separate projects because code on the web side will end up running in the user's browser
-  while code on the api side will run on a server somewhere. It is important that you keep
-  this distinction clear in your mind as you develop your application. The two separate
-  projects are intended to make this obvious. In addition, separate projects allow for
-  different dependencies and build processes for each project.
-</p>
-<p class="my-4">
-  The api side is an implementation of a GraphQL API. Your business logic is organized into
-  "services" that represent their own internal API and can be called both from external
-  GraphQL requests and other internal services. Redwood can automatically connect your
-  internal services with Apollo, reducing the amount of boilerplate you have to write.
-  Your services can interact with a database via Prisma's ORM, and Prisma's migration
-  tooling provides first-class migrations that take the pain out of evolving your database
-  schema.
-</p>
-<p class="my-4">
-  The web side is built with React. Redwood's router makes it simple to map URL paths to
-  React "Page" components (and automatically code-split your app on each route). Pages may
-  contain a "Layout" component to wrap content. They also contain "Cells" and regular React
-  components. Cells allow you to declaratively manage the lifecycle of a component that
-  fetches and displays data. Other Redwood utility components make it trivial to implement
-  smart forms and various common needs. An ideal development flow starts with Storybook
-  entries and Jest tests, so Redwood closely integrates both, making it easy to do the
-  right thing.
-</p>
-<p class="my-4">
-  You'll notice that the web side is called "web" and not "frontend". This is because
-  Redwood conceives of a world where you may have other sides like "mobile", "desktop",
-  "cli", etc, all consuming the same GraphQL API and living in the same monorepo.
-</p>
+  <section class="flex mt-12 pt-12 border-t border-red-200">
+    <div class="w-2/5 pr-4">
+      <h3 class="text-lg font-semibold">Routing</h3>
+      <p class="mt-2 text-sm">
+        Redwood features its own router that brings some awesome innovation to this often overlooked (but important) part of your app. <strong>Named routes</strong> let you reference a route by a name you define, <strong>route param types</strong> take care of coercing values based on data type or custom functions, and more.
+      </p>
+    </div>
+    <div class="w-3/5 pl-4">
+      <pre><code class="javascript" data-target="application.code">// web/src/Routes.js
+import { Router, Route } from '@redwoodjs/router'
+const Routes = () => {
+  return (
+    &lt;Router&gt;
+      &lt;Route path="/user/{id:Int}" page={UserPage} name="user" /&gt;
+    &lt;/Router&gt;
+  )
+}
+
+// web/src/components/Home/Home.js
+import { Link, routes } from '@redwoodjs/router'
+const Post = ({ id }) => {
+  return &lt;Link to={routes.user({id: 123})}>View User #123&lt;/a&gt;
+}</code></pre>
+    </div>
+  </section>
+</div>
