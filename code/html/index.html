@@ -146,12 +146,15 @@ export const Success = ({ users }) {
       </p>
     </div>
     <div class="md:w-3/5 md:pl-4 mt-4 md:mt-0">
-      <pre><code class="javascript" data-target="application.code">// api/src/graphql/users.js
+      <pre><code class="javascript" data-target="application.code">// api/src/graphql/users.sdl.js
 export const schema = gql`
-type User {
-  id: Int!
-  name: String!
-}
+  type User {
+    id: Int!
+    name: String!
+  }
+  type Query {
+    users: [User]
+  }
 `
 
 // api/src/services/users/users.js
@@ -159,7 +162,7 @@ export const users = () => {
   return db.user.findMany()
 }
 
-// web/src/cells/Users/Users.js
+// web/src/components/Users/Users.js
 export const QUERY = gql`
   query USERS {
     users {
