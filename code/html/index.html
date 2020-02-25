@@ -218,14 +218,14 @@ $ yarn rw generate scaffold User</code></pre>
     </div>
     <div class="md:w-3/5 md:pl-4 mt-4 md:mt-0">
       <pre><code class="bash" data-target="application.code">// web/src/components/Comment/Comment.js
-import { RedwoodForm, Label, TextAreaField, FieldError, Submit } from "@redwoodjs/web"
+import { Form, Label, TextAreaField, FieldError, Submit } from "@redwoodjs/web"
 
 export const Comment = () => {
   const onSubmit = (data) {
     console.info(`Submitted: ${data}`)
   }
   return (
-    &lt;RedwoodForm onSubmit={onSubmit}&gt;
+    &lt;Form onSubmit={onSubmit}&gt;
       &lt;Label name="comment" errorStyle={{ color: "red" }} /&gt;
       &lt;TextAreaField
         name="comment"
@@ -234,7 +234,7 @@ export const Comment = () => {
       /&gt;
       &lt;FieldError name="comment" errorStyle={{ color: "red" }} /&gt;
       &lt;Submit&gt;Send&lt;/Submit&gt;
-    &lt;/RedwoodForm&gt;
+    &lt;/Form&gt;
   )
 }
       </code></pre>
