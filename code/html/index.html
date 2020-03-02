@@ -1,14 +1,17 @@
 @@layout("application", { "title": "RedwoodJS - Bringing Full-stack to the JAMstack" })
 
 @@contentFor("hero",
-  <div class="bg-red-100 pt-8">
-    <div class="lg:flex max-w-screen-xl mx-auto px-8 pt-4 lg:pt-8 pb-12">
-      <div class="w-full lg:w-1/2 lg:pr-4">
-        <h2 class="text-3xl md:text-4xl text-center lg:text-left font-semibold tracking-tight">
+  <div class="bg-red-100">
+    <div class="lg:flex lg:items-center max-w-screen-xl mx-auto px-8 py-16">
+      <div class="hidden lg:block lg:w-1/3 pl-4">
+        <img src="/images/logo.svg" alt="Redwood Logo" class="w-1/2 mx-auto" />
+      </div>
+      <div class="w-full lg:w-2/3 lg:pr-4">
+        <h2 class="text-3xl md:text-4xl text-center lg:text-left font-semibold tracking-tight leading-10">
           Bringing <span class="text-red-700">full-stack</span> to the
           <span class="text-red-700">JAMstack</span>
         </h2>
-        <p class="max-w-2xl mx-auto text-center lg:text-left md:text-lg mt-4">Not every site needs a CMS. Some need a real database. Redwood finally gets SQL on the JAMstack. Built on React, Redwood works with the components and development workflow you love, but with simple conventions and helpers to make your experience even better.</h3>
+        <p class="max-w-2xl mx-auto lg:mx-0 text-center lg:text-left md:text-lg mt-4">Redwood finally brings SQL to the JAMstack. Built on React, Redwood works with the components you know and love but combines code and config conventions with helpers to make your dev experience even better than ever.</h3>
         <ul class="flex flex-wrap mt-8 justify-center lg:justify-start lg:-ml-2">
           <li class="px-2 whitespace-no-wrap">
             <a href="/tutorial/welcome-to-redwood.html" class="block mt-2 bg-red-700 text-white px-4 py-3 font-semibold rounded-lg">Start the Tutorial</a>
@@ -17,9 +20,6 @@
             <a href="/docs/introduction.html" class="block mt-2 bg-white text-red-700 border border-red-300 px-4 py-3 font-semibold rounded-lg">Read the Docs</a>
           </li>
         </ul>
-      </div>
-      <div class="hidden lg:block lg:w-1/2 pl-4">
-        <img src="/images/structure.png" alt="Structure of a Redwood app" />
       </div>
     </div>
   </div>
@@ -62,6 +62,24 @@
         <h2 class="text-lg font-semibold text-red-800 mt-2">Developer Experience</h2>
         <p class="lg:mt-4 text-sm">Redwood apps are as declarative as possible, we skip `import` statements when we can, zero-config code splitting...everything Just Works&trade;.</p>
       </div>
+    </div>
+  </section>
+
+  <section class="md:flex mt-12 pt-12 border-t border-red-200">
+    <div class="md:w-2/5 pr-4">
+      <h3 class="text-lg font-semibold">How it's Organized</h3>
+      <p class="my-2 text-sm">
+        Redwood places both the frontend and backend code in a single monorepo.
+      </p>
+      <p class="my-2 text-sm">
+        <code class="text-red-700 bg-red-200 py-half px-1 rounded text-xs">/web</code> contains the frontend and is served as static files through a CDN (and automatically code-split for you).
+      </p>
+      <p class="my-2 text-sm">
+        <code class="text-red-700 bg-red-200 py-half px-1 rounded text-xs">/api</code> contains the backend serverless functions (a GraphQL API by default) that your frontend will call when it needs some dynamic data.
+      </p>
+    </div>
+    <div class="md:w-3/5 md:pl-4 mt-4 md:mt-0">
+      <img src="/images/structure.png" alt="Structure of a Redwood app" />
     </div>
   </section>
 
