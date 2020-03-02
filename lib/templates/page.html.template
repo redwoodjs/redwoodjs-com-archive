@@ -1,4 +1,4 @@
-@@layout("application")
+@@layout("application", { "title": "${pageTitle} : RedwoodJS Docs" })
 
 @@contentFor("aside",
   <h4 class="text-xs uppercase text-gray-500">On this page</h4>
