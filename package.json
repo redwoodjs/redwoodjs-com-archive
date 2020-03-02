@@ -1,0 +1,46 @@
+{
+  "name": "redwoodjs.com",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "node lib/build.js && webpack && postcss --verbose code/stylesheets/application.pcss -o publish/stylesheets/application.css",
+    "clean": "del 'code/html/(cookbook|docs|tutorial)/*.html' 'publish/!(images|favicon.*)'",
+    "dev": "$npm_execpath serve & $npm_execpath watch",
+    "netlify": "$npm_execpath watch & netlify dev",
+    "rebuild": "$npm_execpath clean && $npm_execpath build",
+    "serve": "live-server --watch=./publish --mount=/:./publish --entry-file='publish/404.html'",
+    "watch": "webpack --watch & postcss --verbose code/stylesheets/application.pcss -o publish/stylesheets/application.css --watch"
+  },
+  "private": true,
+  "devDependencies": {
+    "del-cli": "^3.0.0",
+    "live-server": "^1.2.1"
+  },
+  "dependencies": {
+    "@fullhuman/postcss-purgecss": "^2.0.6",
+    "@octokit/rest": "^16.43.1",
+    "algoliasearch": "^4.0.3",
+    "autoprefixer": "^9.7.4",
+    "blueimp-md5": "^2.12.0",
+    "cameronjs-html-webpack-plugin": "^0.5.0",
+    "dotenv": "^8.2.0",
+    "highlight.js": "^9.18.1",
+    "install": "^0.13.0",
+    "lodash.template": "^4.5.0",
+    "marked": "^0.8.0",
+    "node-fetch": "^2.6.0",
+    "npm": "^6.13.7",
+    "param-case": "^3.0.3",
+    "postcss-cli": "^7.1.0",
+    "postcss-import": "^12.0.1",
+    "postcss-nested": "^4.2.1",
+    "stimulus": "^1.1.1",
+    "tailwindcss": "^1.2.0",
+    "title-case": "^3.0.2",
+    "turbolinks": "^5.2.0",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  },
+  "peerDependencies": {
+    "cameronjs": "^0.5.5"
+  }
+}

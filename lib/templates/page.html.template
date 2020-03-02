@@ -1,0 +1,21 @@
+@@layout("application")
+
+@@contentFor("aside",
+  <h4 class="text-xs uppercase text-gray-500">On this page</h4>
+  <ul class="mt-4">
+    <% links.forEach(link => { %>
+    <li class="my-1 py-1">
+      <a href="${link.href}">${link.title}</a>
+    </li>
+    <% }) %>
+  </ul>
+)
+
+<div class="markdown">
+  ${content}
+  <% if (nextPage) { %>
+    <div class="mt-12 text-right">
+      <a class="text-sm font-semibold bg-red-700 text-white px-4 py-2 rounded" href=${nextPage.href}>Next &raquo;</a>
+    </div>
+  <% } %>
+</div>
