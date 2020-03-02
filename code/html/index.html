@@ -36,7 +36,7 @@
       </svg>
       <div class="ml-0 md:ml-8 lg:ml-0 text-center md:text-left lg:text-center w-full">
         <h2 class="text-lg font-semibold text-red-800 mt-2">Edge-ready</h2>
-        <p class="lg:mt-4 text-sm">Redwood is meant to be deployed completely to the <span class="whitespace-no-wrap">Edge—</span>CDNs and serverless functions distributed everywhere. (Databases coming soon!)<p>
+        <p class="lg:mt-4 text-sm">Redwood is designed to be deployable completely to the <span class="whitespace-no-wrap">Edge—</span>CDNs and serverless functions distributed everywhere. (Databases coming soon!)<p>
       </div>
     </div>
 
@@ -60,7 +60,7 @@
       </svg>
       <div class="ml-0 md:ml-8 lg:ml-0 text-center md:text-left lg:text-center w-full">
         <h2 class="text-lg font-semibold text-red-800 mt-2">Developer Experience</h2>
-        <p class="lg:mt-4 text-sm">Redwood apps are as declarative as possible, we skip `import` statements when we can, zero-config code splitting...everything Just Works&trade;.</p>
+        <p class="lg:mt-4 text-sm">Redwood apps are as declarative as possible; we eliminate most boilerplate; zero-config code splitting...everything Just Works&trade;.</p>
       </div>
     </div>
   </section>
@@ -118,14 +118,13 @@ const Admin = () => {
       <h3 class="text-lg font-semibold">Cells</h3>
       <p class="my-2 text-sm">
         The sequence of retrieving data from an API, showing a loading placeholder, and then
-        displaying the result is so common—how come no one has codified that into a reusable code
-        pattern? No one until Redwood, that is!
+        displaying the result is so common that Redwood codifies it into a declarative code
+        pattern, resulting in simple and readable code!
       </p>
       <p class="my-2 text-sm">
         We call them <strong>cells</strong> and they contain the GraphQL query, loading, empty,
-        error and success states, each one rendering itself automatically depending on what state
+        error, and success states, each one rendering itself automatically depending on what state
         your cell is in.
-      </p>
       </p>
     </div>
     <div class="md:w-3/5 md:pl-4 mt-4 md:mt-0">
@@ -157,7 +156,7 @@ export const Success = ({ users }) {
     <div class="md:w-2/5 pr-4">
       <h3 class="text-lg font-semibold">Services</h3>
       <p class="my-2 text-sm">
-        Redwood puts all your business logic in one place—<strong>Services</strong>. These can be used by your GraphQL API or any other place in your code. Redwood does all of the annoying stuff for you.<p>
+        Redwood puts all your business logic in one place—<strong>Services</strong>. These can be used by your GraphQL API or any other place in your backend code. Redwood does all of the annoying stuff for you.<p>
       </p>
       <p class="my-2 text-sm">
         Check out how easy it is to create and consume a GraphQL endpoint (we didn't even omit any <code class="bg-red-200 text-red-600 font-mono text-sm px-1 py-half rounded">import</code> statements or cheat to get the code smaller, honest!):
@@ -199,10 +198,10 @@ export const Success = ({ users }) {
     <div class="md:w-2/5 pr-4">
       <h3 class="text-lg font-semibold">Generators</h3>
       <p class="my-2 text-sm">
-        Some pages will contain the same boilerplate code over and over again. Why should you have to type that (or create snippets) for each one. Let a computer do that for you!
+        Even with a relentless elimination of boilerplate, Redwood files still need a bit of code to get you started, and need to be created in the right directories. No problem, let a computer do that for you!
       </p>
       <p class="my-2 text-sm">
-        Redwood contains several <strong>generators</strong> which create the shell of cells, pages, layouts, services, and more. We even have a <strong>scaffold</strong> generator which will create all the pages necessary to CRUD records in a single database table.
+        Redwood contains several <strong>generators</strong> which create the shell of cells, pages, layouts, services, and more. We even have a <strong>scaffold</strong> generator which will create all the pages necessary to run end-to-end CRUD operations on a database table.
       </p>
       </p>
     </div>
