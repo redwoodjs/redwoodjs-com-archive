@@ -50,7 +50,6 @@ export default class extends Controller {
         return;
       } else {
         this.index.search(event.currentTarget.value, this.searchOptions).then(data => {
-          console.info(data);
           this._parseResults(data);
         });
       }
@@ -60,7 +59,6 @@ export default class extends Controller {
   }
 
   close() {
-    console.info("close");
     this.resultsTarget.classList.add("hidden");
     document.removeEventListener("click", this.documentClickHandler);
   }

@@ -19,7 +19,6 @@ export default class extends Controller {
   // `data-match` attribute and location.href matches that value
   _highlightNav() {
     this.linkTargets.forEach(link => {
-      console.info(link.href, location.href);
       if (
         location.href.indexOf(link.href) !== -1 ||
         (link.dataset.match && location.href.match(link.dataset.match))
