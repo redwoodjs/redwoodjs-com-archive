@@ -39,7 +39,13 @@
   }
 
   pre {
-    @apply mt-4 bg-gray-900 p-4 text-sm text-white overflow-x-scroll rounded-lg;
+    @apply mt-4 bg-gray-900 p-4 pb-8 text-sm text-white overflow-x-scroll rounded-lg;
+  }
+
+  @media (min-width: 1024px) {
+    pre {
+      @apply pb-4;
+    }
   }
 
   p code,
