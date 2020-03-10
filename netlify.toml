@@ -26,11 +26,16 @@
 [context.branch-deploy]
   environment = { NODE_ENV = "production" }
 
-# See https://www.netlify.com/docs/netlify-toml-reference/#redirects
 [[redirects]]
-  from = "/tutorial/index.html"
+  from = "/tutorial"
   to = "/tutorial/welcome-to-redwood.html"
   status = 301
+
+[[redirects]]
+  from = "/docs"
+  to = "/docs/introduction.html"
+  status = 301
+
 
 # See https://www.netlify.com/docs/netlify-toml-reference/#headers
 [[headers]]
