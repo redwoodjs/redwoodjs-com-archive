@@ -150,7 +150,7 @@ export const QUERY = gql`
 export const Loading = () => &lt;div&gt;Loading users...&lt;/div&gt;
 export const Empty = () => &lt;div&gt;No users yet!&lt;/div&gt;
 export const Failure = ({ message }) => &lt;div&gt;Error: {message}&lt;/div&gt;
-export const Success = ({ users }) {
+export const Success = ({ users }) => {
   return (
     &lt;ul&gt;
       { users.map(user => (
