@@ -34,17 +34,17 @@ Please do upgrade accordingly. Then proceed to the RedwoodJS installation when y
 
 > There are many ways to install and manage both Node.js and Yarn. If you're installing for the first time, we recommend the following:
 >
-> #### Yarn
+> **Yarn**
 >
-> - For **Mac** users, we recommend following the [Homebrew instructions via Yanrpkg.com](https://classic.yarnpkg.com/en/docs/install/#mac-stable).
+> - For **Mac** users, we recommend following the [Homebrew instructions via Yarnpkg.com](https://classic.yarnpkg.com/en/docs/install/#mac-stable).
 > - **Windows** users should also visit [Yarnpkg.com](https://classic.yarnpkg.com/en/docs/install/#windows-stable) for installation options.
 >
-> #### Node.js
->
-> _Note: If you're confused about which of the two current Node versions to use, we recommend using the most recent "even" LTS, which is currently v12._
+> **Node.js**
 >
 > - For **Mac** users, NVM is a great tool for managing multiple versions of Node on one system. And if you already have Homebrew installed, you can use it to [install NVM](https://formulae.brew.sh/formula/nvm) as well. It takes a bit more effort to set up and learn, however, in which case getting the latest [installation from Nodejs.org](https://nodejs.org/en/) works just fine.
 > - We recommend **Windows** users visit [Nodejs.org](https://nodejs.org/en/) for installation.
+>
+> If you're confused about which of the two current Node versions to use, we recommend using the most recent "even" LTS, which is currently v12.
 
 ## Installation & Starting Development
 
