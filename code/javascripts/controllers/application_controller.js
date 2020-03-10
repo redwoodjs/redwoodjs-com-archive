@@ -27,6 +27,7 @@ export default class extends Controller {
   focusSearch(event) {
     if (event.key === "/") {
       this.searchTarget.focus();
+      event.preventDefault();
     }
   }
 
