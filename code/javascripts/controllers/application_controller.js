@@ -66,13 +66,26 @@ export default class extends Controller {
         block.parentElement.appendChild(button);
 
         new ClipboardJS(".copy-button", {
-          target: function(trigger) {
-            return trigger.previousElementSibling;
+          text: trigger => {
+            return this._stripComments(trigger.previousElementSibling.textContent);
           }
         });
       }
     }
-    // new ClipboardJS("code");
+  }
+
+  // strips any leading comments out of a chunk of text
+  _stripComments(content) {
+    let lines = content.split("\n");
+
+    if (lines[0].match(/^\/\//)) {
+      lines.shift();
+      if (lines[0].trim() === "") {
+        lines.shift();
+      }
+    }
+
+    return lines.join("\n");
   }
 
   get isHomePage() {
