@@ -2177,14 +2177,14 @@ We'd like to say you can click **Click here to trigger a new build**, but we can
 
 ### A Temporary Fix
 
-There's one change we need to make in our code. This is a temporary fix as Prisma works on a feature on their side. We need to change the DB provider in our codebase from "sqlite" to "postgresql" and commit that change. That will let the site build propery on Netlify, but now local dev will be broken (we're not using Postgres locally). Once Prisma fixes this issue we can remove this section of the tutorial, but for now we need it.
+There's one change we need to make in our code. This is a temporary fix as Prisma works on a feature on their side. We need to change the DB provider in our codebase from "sqlite" to "postgresql" and commit that change. That will let the site build properly on Netlify, but now local dev will be broken (we're not using Postgres locally). Once Prisma fixes this issue we can remove this section of the tutorial, but for now we need it.
 
 What does this mean for local development? You have two options:
 
 1. Use Postgres locally. Get your local connection string and add it to `.env` and now you'll be using Postgres in development and production.
 2. Change the provider back to `sqlite` when developing locally, but make sure not to commit that change or production will break.
 
-We know this isn't an idea solution but it's only temporary, promise!
+We know this isn't an ideal solution but it's only temporary, promise!
 
 Open up `api/prisma/schema.prisma` and change the provider:
 
