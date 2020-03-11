@@ -163,7 +163,7 @@ http://localhost:8910/about should show our new page. But no one's going to find
 ```javascript
 // web/src/pages/HomePage/HomePage.js
 
-import { Link, routes } from "@redwoodjs/router";
+import { Link, routes } from '@redwoodjs/router'
 
 const HomePage = () => {
   return (
@@ -180,10 +180,10 @@ const HomePage = () => {
       </header>
       <main>Home</main>
     </>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage
 ```
 
 Let's point out a few things here:
@@ -202,7 +202,7 @@ Once we get to the About page we don't have any way to get back so let's add a l
 ```javascript
 // web/src/pages/AboutPage/AboutPage.js
 
-import { Link, routes } from "@redwoodjs/router";
+import { Link, routes } from '@redwoodjs/router'
 
 const AboutPage = () => {
   return (
@@ -219,16 +219,16 @@ const AboutPage = () => {
       </header>
       <main>
         <p>
-          This site was created to demonstrate my mastery of Redwood: Look on my works, ye mighty,
-          and despair!
+          This site was created to demonstrate my mastery of Redwood: Look on my
+          works, ye mighty, and despair!
         </p>
         <Link to={routes.home()}>Return home</Link>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default AboutPage;
+export default AboutPage
 ```
 
 Great! Try that out in the browser and verify you can get back and forth.
@@ -256,9 +256,9 @@ Cut the `<header>` from both `HomePage` and `AboutPage` and paste it in the layo
 ```javascript
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from "@redwoodjs/router";
+import { Link, routes } from '@redwoodjs/router'
 
-const BlogLayout = props => {
+const BlogLayout = (props) => {
   return (
     <>
       <header>
@@ -273,10 +273,10 @@ const BlogLayout = props => {
       </header>
       <main>{props.children}</main>
     </>
-  );
-};
+  )
+}
 
-export default BlogLayout;
+export default BlogLayout
 ```
 
 `props.children` is where the magic will happen. Any page content given to the layout will be rendered here. Back to `HomePage` and `AboutPage`, we add a `<BlogLayout>` wrapper and now they're back to focusing on the content they care about (we can remove the import for `Link` and `routes` from `HomePage` since those are in the Layout instead):
@@ -284,34 +284,34 @@ export default BlogLayout;
 ```javascript
 // web/src/pages/HomePage/HomePage.js
 
-import BlogLayout from "src/layouts/BlogLayout";
+import BlogLayout from 'src/layouts/BlogLayout'
 
 const HomePage = () => {
-  return <BlogLayout>Home</BlogLayout>;
-};
+  return <BlogLayout>Home</BlogLayout>
+}
 
-export default HomePage;
+export default HomePage
 ```
 
 ```javascript
 // web/src/pages/AboutPage/AboutPage.js
 
-import { Link, routes } from "@redwoodjs/router";
-import BlogLayout from "src/layouts/BlogLayout";
+import { Link, routes } from '@redwoodjs/router'
+import BlogLayout from 'src/layouts/BlogLayout'
 
 const AboutPage = () => {
   return (
     <BlogLayout>
       <p>
-        This site was created to demonstrate my mastery of Redwood: Look on my works, ye mighty, and
-        despair!
+        This site was created to demonstrate my mastery of Redwood: Look on my
+        works, ye mighty, and despair!
       </p>
       <Link to={routes.home()}>Return home</Link>
     </BlogLayout>
-  );
-};
+  )
+}
 
-export default AboutPage;
+export default AboutPage
 ```
 
 Back to the browser and you should see...nothing different. But that's good, it means our layout is working.
@@ -333,9 +333,9 @@ One more `<Link>`, let's have the title/logo link back to the homepage as per us
 ```javascript
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from "@redwoodjs/router";
+import { Link, routes } from '@redwoodjs/router'
 
-const BlogLayout = props => {
+const BlogLayout = (props) => {
   return (
     <>
       <header>
@@ -352,10 +352,10 @@ const BlogLayout = props => {
       </header>
       <main>{props.children}</main>
     </>
-  );
-};
+  )
+}
 
-export default BlogLayout;
+export default BlogLayout
 ```
 
 And then we can remove the extra "Return to Home" link (and Link/routes import) that we had on the About page:
@@ -363,20 +363,20 @@ And then we can remove the extra "Return to Home" link (and Link/routes import) 
 ```javascript
 // web/src/pages/AboutPage/AboutPage.js
 
-import BlogLayout from "src/layouts/BlogLayout";
+import BlogLayout from 'src/layouts/BlogLayout'
 
 const AboutPage = () => {
   return (
     <BlogLayout>
       <p>
-        This site was created to demonstrate my mastery of Redwood: Look on my works, ye mighty, and
-        despair!
+        This site was created to demonstrate my mastery of Redwood: Look on my
+        works, ye mighty, and despair!
       </p>
     </BlogLayout>
-  );
-};
+  )
+}
 
-export default AboutPage;
+export default AboutPage
 ```
 
 ## Getting Dynamic
@@ -548,22 +548,24 @@ export const QUERY = gql`
       createdAt
     }
   }
-`;
+`
 
-export const Loading = () => <div>Loading...</div>;
+export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => <div>No posts yet!</div>;
+export const Empty = () => <div>No posts yet!</div>
 
-export const Failure = ({ error }) => <div>Error loading posts: {error.message}</div>;
+export const Failure = ({ error }) => (
+  <div>Error loading posts: {error.message}</div>
+)
 
 export const Success = ({ posts }) => {
-  return posts.map(post => (
+  return posts.map((post) => (
     <article>
       <h2>{post.title}</h2>
       <div>{post.body}</div>
     </article>
-  ));
-};
+  ))
+}
 ```
 
 When React renders this component Redwood will:
@@ -597,17 +599,17 @@ export const QUERY = gql`
       id
     }
   }
-`;
+`
 
-export const Loading = () => <div>Loading...</div>;
+export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => <div>Empty</div>;
+export const Empty = () => <div>Empty</div>
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>;
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
 export const Success = ({ blogPosts }) => {
-  return JSON.stringify(blogPosts);
-};
+  return JSON.stringify(blogPosts)
+}
 ```
 
 > When generating you can use any case you'd like and Redwood will do the right thing when it comes to naming. These will all create the same filename:
@@ -630,17 +632,17 @@ export const QUERY = gql`
       id
     }
   }
-`;
+`
 
-export const Loading = () => <div>Loading...</div>;
+export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => <div>Empty</div>;
+export const Empty = () => <div>Empty</div>
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>;
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
 export const Success = ({ posts }) => {
-  return JSON.stringify(posts);
-};
+  return JSON.stringify(posts)
+}
 ```
 
 Let's plug this cell into our `HomePage` and see what happens:
@@ -648,18 +650,18 @@ Let's plug this cell into our `HomePage` and see what happens:
 ```javascript
 // web/src/pages/HomePage/HomePage.js
 
-import BlogLayout from "src/layouts/BlogLayout";
-import BlogPostsCell from "src/components/BlogPostsCell";
+import BlogLayout from 'src/layouts/BlogLayout'
+import BlogPostsCell from 'src/components/BlogPostsCell'
 
 const HomePage = () => {
   return (
     <BlogLayout>
       <BlogPostsCell />
     </BlogLayout>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage
 ```
 
 The browser should actually show an array with a number or two (assuming you created a blog post with our [scaffolding](/tutorial/getting-dynamic#creating-a-post-editor) from earlier). Neat!
@@ -677,7 +679,7 @@ The browser should actually show an array with a number or two (assuming you cre
 >       id
 >     }
 >   }
-> `;
+> `
 > ```
 >
 > Now `postIds` will be available in `Success` instead of `posts`
@@ -696,7 +698,7 @@ export const QUERY = gql`
       createdAt
     }
   }
-`;
+`
 ```
 
 The page should now show a dump of all the data you created for any blog posts you scaffolded:
@@ -709,7 +711,7 @@ Now we're in the realm of good ol' React components, so just build out the `Succ
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const Success = ({ posts }) => {
-  return posts.map(post => (
+  return posts.map((post) => (
     <article key={post.id}>
       <header>
         <h2>{post.title}</h2>
@@ -717,8 +719,8 @@ export const Success = ({ posts }) => {
       <p>{post.body}</p>
       <div>Posted at: {post.createdAt}</div>
     </article>
-  ));
-};
+  ))
+}
 ```
 
 And just like that we have a blog! It may be the most basic, ugly blog that ever graced the internet, but it's something! (Don't worry, we've got more features to add.)
@@ -786,33 +788,33 @@ To implement these, simply export them from the services file. They will usually
 // api/src/services/posts/posts.js
 
 export const posts = () => {
-  return db.post.findMany();
-};
+  return db.post.findMany()
+}
 
 export const post = ({ id }) => {
   return db.post.findOne({
-    where: { id: id }
-  });
-};
+    where: { id: id },
+  })
+}
 
 export const createPost = ({ input }) => {
   return db.post.create({
-    data: input
-  });
-};
+    data: input,
+  })
+}
 
 export const updatePost = ({ id, input }) => {
   return db.post.update({
     data: input,
-    where: { id: id }
-  });
-};
+    where: { id: id },
+  })
+}
 
 export const deletePost = ({ id }) => {
   return db.post.delete({
-    where: { id: id }
-  });
-};
+    where: { id: id },
+  })
+}
 ```
 
 > Apollo assumes these functions return promises, which `db` (an instance of `PrismaClient`) does. Apollo waits for them to resolve before responding with your query results, so you don't need to worry about `async`/`await` or mess with callbacks yourself.
@@ -844,12 +846,12 @@ Now let's link the title of the post on the homepage to the detail page (and inc
 ```javascript
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
-import { Link, routes } from "@redwoodjs/router";
+import { Link, routes } from '@redwoodjs/router'
 
 // QUERY, Loading, Empty and Failure definitions...
 
 export const Success = ({ posts }) => {
-  return posts.map(post => (
+  return posts.map((post) => (
     <article key={post.id}>
       <header>
         <h2>
@@ -859,8 +861,8 @@ export const Success = ({ posts }) => {
       <p>{post.body}</p>
       <div>Posted at: {post.createdAt}</div>
     </article>
-  ));
-};
+  ))
+}
 ```
 
 If you click the link on the title of the blog post you should see the boilerplate text on `BlogPostPage`. But what we really need is to specify _which_ post we want to view on this page. It would be nice to be able to specify the ID of the post in the URL with something like `/blog-post/1`. Let's tell the `<Route>` to expect another part of the URL, and when it does, give that part a name that we can reference later:
@@ -894,18 +896,18 @@ And then we'll use that cell in `BlogPostPage` (and while we're at it let's surr
 ```javascript
 // web/src/pages/BlogPostPage/BlogPostPage.js
 
-import BlogLayout from "src/layouts/BlogLayout";
-import BlogPostCell from "src/components/BlogPostCell";
+import BlogLayout from 'src/layouts/BlogLayout'
+import BlogPostCell from 'src/components/BlogPostCell'
 
 const BlogPostPage = () => {
   return (
     <BlogLayout>
       <BlogPostCell />
     </BlogLayout>
-  );
-};
+  )
+}
 
-export default BlogPostPage;
+export default BlogPostPage
 ```
 
 Now over to the cell, we need access to that `{id}` route param so we can look up the ID of the post in the database. Let's update the query to accept a variable (and again change the query name from `blogPost` to just `post`)
@@ -922,17 +924,17 @@ export const QUERY = gql`
       createdAt
     }
   }
-`;
+`
 
-export const Loading = () => <div>Loading...</div>;
+export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => <div>Empty</div>;
+export const Empty = () => <div>Empty</div>
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>;
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
 export const Success = ({ post }) => {
-  return JSON.stringify(post);
-};
+  return JSON.stringify(post)
+}
 ```
 
 Okay, we're getting closer. Still, where will that `$id` come from? Redwood has another trick up its sleeve. Whenever you put a route param in a route, that param is automatically made available to the page that route renders. Which means we can update `BlogPostPage` to look like this:
@@ -945,8 +947,8 @@ const BlogPostPage = ({ id }) => {
     <BlogLayout>
       <BlogPostCell id={id} />
     </BlogLayout>
-  );
-};
+  )
+}
 ```
 
 `id` already exists since we named our route param `{id}`. Thanks Redwood! But how does that `id` end up as the `$id` GraphQL parameter? If you've learned anything about Redwood by now, you should know it's going to take care of that for you! By default, any props you give to a cell will automatically be turned into variables and given to the query. "Say what!" you're saying. It's true!
@@ -988,7 +990,7 @@ Voilá! Not only will this convert the `id` param to a number before passing it 
 > ```javascript
 > export const Success = ({ post, id, rand }) => {
 >   //...
-> };
+> }
 > ```
 >
 > Thanks again, Redwood!
@@ -1007,13 +1009,13 @@ Which creates `web/src/components/BlogPost/BlogPost.js` (and test!) as a super s
 const BlogPost = () => {
   return (
     <div>
-      <h2>{"BlogPost"}</h2>
-      <p>{"Find me in ./web/src/components/BlogPost/BlogPost.js"}</p>
+      <h2>{'BlogPost'}</h2>
+      <p>{'Find me in ./web/src/components/BlogPost/BlogPost.js'}</p>
     </div>
-  );
-};
+  )
+}
 
-export default BlogPost;
+export default BlogPost
 ```
 
 > You may notice we don't have any explict `import` statements for `React` itself. We (the Redwood dev team) got tired of constantly importing it over and over again in every file so we automatically import it for you!
@@ -1022,7 +1024,7 @@ Let's take the post display code out of `BlogPostsCell` and put it here instead,
 
 ```javascript
 // web/src/components/BlogPost/BlogPost.js
-import { Link, routes } from "@redwoodjs/router";
+import { Link, routes } from '@redwoodjs/router'
 
 const BlogPost = ({ post }) => {
   return (
@@ -1034,10 +1036,10 @@ const BlogPost = ({ post }) => {
       </header>
       <div>{post.body}</div>
     </article>
-  );
-};
+  )
+}
 
-export default BlogPost;
+export default BlogPost
 ```
 
 And update `BlogPostsCell` and `BlogPostCell` to use this new component instead (don't forget the `import BlogPost from 'src/components/BlogPost'` at the top of each):
@@ -1045,25 +1047,25 @@ And update `BlogPostsCell` and `BlogPostCell` to use this new component instead 
 ```javascript
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
-import BlogPost from "src/components/BlogPost";
+import BlogPost from 'src/components/BlogPost'
 
 // Loading, Empty, Failure...
 
 export const Success = ({ posts }) => {
-  return posts.map(post => <BlogPost key={post.id} post={post} />);
-};
+  return posts.map((post) => <BlogPost key={post.id} post={post} />)
+}
 ```
 
 ```javascript
 // web/src/components/BlogPostCell/BlogPostCell.js
 
-import BlogPost from "src/components/BlogPost";
+import BlogPost from 'src/components/BlogPost'
 
 // Loading, Empty, Failure...
 
 export const Success = ({ post }) => {
-  return <BlogPost post={post} />;
-};
+  return <BlogPost post={post} />
+}
 ```
 
 And there we go! We should be able to move back and forth between the homepage and the detail page.
@@ -1097,9 +1099,9 @@ We can put a link to Contact in our layout's header:
 ```javascript
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from "@redwoodjs/router";
+import { Link, routes } from '@redwoodjs/router'
 
-const BlogLayout = props => {
+const BlogLayout = (props) => {
   return (
     <>
       <header>
@@ -1119,10 +1121,10 @@ const BlogLayout = props => {
       </header>
       <main>{props.children}</main>
     </>
-  );
-};
+  )
+}
 
-export default BlogLayout;
+export default BlogLayout
 ```
 
 And then use the `BlogLayout` in the `ContactPage`:
@@ -1130,13 +1132,13 @@ And then use the `BlogLayout` in the `ContactPage`:
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-import BlogLayout from "src/layouts/BlogLayout";
+import BlogLayout from 'src/layouts/BlogLayout'
 
-const ContactPage = props => {
-  return <BlogLayout></BlogLayout>;
-};
+const ContactPage = (props) => {
+  return <BlogLayout></BlogLayout>
+}
 
-export default ContactPage;
+export default ContactPage
 ```
 
 Double check that everything looks good and then let's get to the good stuff.
@@ -1152,18 +1154,18 @@ For now we won't be talking to the database in our Contact form so we won't crea
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form } from "@redwoodjs/web";
-import BlogLayout from "src/layouts/BlogLayout";
+import { Form } from '@redwoodjs/web'
+import BlogLayout from 'src/layouts/BlogLayout'
 
-const ContactPage = props => {
+const ContactPage = (props) => {
   return (
     <BlogLayout>
       <Form></Form>
     </BlogLayout>
-  );
-};
+  )
+}
 
-export default ContactPage;
+export default ContactPage
 ```
 
 Well that was anticlimactic. You can't even see it in the browser. Let's add a form field so we can at least see something. Redwood ships with several inputs and a plain text input box is `<TextField>`. We'll also give the field a `name` attribute so that once there are multiple inputs on this page we'll know which contains which data:
@@ -1171,20 +1173,20 @@ Well that was anticlimactic. You can't even see it in the browser. Let's add a f
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField } from "@redwoodjs/web";
-import BlogLayout from "src/layouts/BlogLayout";
+import { Form, TextField } from '@redwoodjs/web'
+import BlogLayout from 'src/layouts/BlogLayout'
 
-const ContactPage = props => {
+const ContactPage = (props) => {
   return (
     <BlogLayout>
       <Form>
         <TextField name="input" />
       </Form>
     </BlogLayout>
-  );
-};
+  )
+}
 
-export default ContactPage;
+export default ContactPage
 ```
 
 <img src="https://user-images.githubusercontent.com/300/73305498-108e0500-41cf-11ea-86a2-1075a3abaff0.png" />
@@ -1194,10 +1196,10 @@ Something is showing! Still, pretty boring. How about adding a submit button?
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField, Submit } from "@redwoodjs/web";
-import BlogLayout from "src/layouts/BlogLayout";
+import { Form, TextField, Submit } from '@redwoodjs/web'
+import BlogLayout from 'src/layouts/BlogLayout'
 
-const ContactPage = props => {
+const ContactPage = (props) => {
   return (
     <BlogLayout>
       <Form>
@@ -1205,10 +1207,10 @@ const ContactPage = props => {
         <Submit>Save</Submit>
       </Form>
     </BlogLayout>
-  );
-};
+  )
+}
 
-export default ContactPage;
+export default ContactPage
 ```
 
 <img src="https://user-images.githubusercontent.com/300/73305544-269bc580-41cf-11ea-821f-84f08bb9a5fb.png" />
@@ -1222,10 +1224,10 @@ Similar to a plain HTML form we'll give `<Form>` an `onSubmit` handler. That han
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-const ContactPage = props => {
-  const onSubmit = data => {
-    console.log(data);
-  };
+const ContactPage = (props) => {
+  const onSubmit = (data) => {
+    console.log(data)
+  }
 
   return (
     <BlogLayout>
@@ -1234,8 +1236,8 @@ const ContactPage = props => {
         <Submit>Save</Submit>
       </Form>
     </BlogLayout>
-  );
-};
+  )
+}
 ```
 
 Now try filling in some data and submitting:
@@ -1247,13 +1249,13 @@ Great! Let's turn this into a more useful form by adding a couple fields. We'll 
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField, TextAreaField, Submit } from "@redwoodjs/web";
-import BlogLayout from "src/layouts/BlogLayout";
+import { Form, TextField, TextAreaField, Submit } from '@redwoodjs/web'
+import BlogLayout from 'src/layouts/BlogLayout'
 
-const ContactPage = props => {
-  const onSubmit = data => {
-    console.log(data);
-  };
+const ContactPage = (props) => {
+  const onSubmit = (data) => {
+    console.log(data)
+  }
 
   return (
     <BlogLayout>
@@ -1264,10 +1266,10 @@ const ContactPage = props => {
         <Submit>Save</Submit>
       </Form>
     </BlogLayout>
-  );
-};
+  )
+}
 
-export default ContactPage;
+export default ContactPage
 ```
 
 See the new `<TextAreaField>` component here which generates an HTML `<textarea>` but that contains Redwood's form goodness. If we reload now our fields are there but there's no indication of which is which and everything is kind of jumbled together:
@@ -1282,25 +1284,25 @@ Let's add some labels and just a tiny bit of styling to at least separate the fi
 return (
   <BlogLayout>
     <Form onSubmit={onSubmit}>
-      <label for="name" style={{ display: "block" }}>
+      <label for="name" style={{ display: 'block' }}>
         Name
       </label>
-      <TextField name="name" style={{ display: "block" }} />
+      <TextField name="name" style={{ display: 'block' }} />
 
-      <label for="email" style={{ display: "block" }}>
+      <label for="email" style={{ display: 'block' }}>
         Email
       </label>
-      <TextField name="email" style={{ display: "block" }} />
+      <TextField name="email" style={{ display: 'block' }} />
 
-      <label for="message" style={{ display: "block" }}>
+      <label for="message" style={{ display: 'block' }}>
         Message
       </label>
-      <TextAreaField name="message" style={{ display: "block" }} />
+      <TextAreaField name="message" style={{ display: 'block' }} />
 
-      <Submit style={{ display: "block" }}>Save</Submit>
+      <Submit style={{ display: 'block' }}>Save</Submit>
     </Form>
   </BlogLayout>
-);
+)
 ```
 
 <img src="https://user-images.githubusercontent.com/300/73305679-77abb980-41cf-11ea-95f7-8ea0e4bf2350.png" />
@@ -1319,25 +1321,25 @@ All three of these fields should be required in order for someone to send a mess
 return (
   <BlogLayout>
     <Form onSubmit={onSubmit}>
-      <label for="name" style={{ display: "block" }}>
+      <label for="name" style={{ display: 'block' }}>
         Name
       </label>
-      <TextField name="name" style={{ display: "block" }} required />
+      <TextField name="name" style={{ display: 'block' }} required />
 
-      <label for="email" style={{ display: "block" }}>
+      <label for="email" style={{ display: 'block' }}>
         Email
       </label>
-      <TextField name="email" style={{ display: "block" }} required />
+      <TextField name="email" style={{ display: 'block' }} required />
 
-      <label for="message" style={{ display: "block" }}>
+      <label for="message" style={{ display: 'block' }}>
         Message
       </label>
-      <TextAreaField name="message" style={{ display: "block" }} required />
+      <TextAreaField name="message" style={{ display: 'block' }} required />
 
-      <Submit style={{ display: "block" }}>Save</Submit>
+      <Submit style={{ display: 'block' }}>Save</Submit>
     </Form>
   </BlogLayout>
-);
+)
 ```
 
 <img src="https://user-images.githubusercontent.com/300/73305807-bf324580-41cf-11ea-94a8-f45a0506375d.png" />
@@ -1352,25 +1354,37 @@ Yes! Let's update that `required` call to instead be an object we pass to a cust
 return (
   <BlogLayout>
     <Form onSubmit={onSubmit}>
-      <label for="name" style={{ display: "block" }}>
+      <label for="name" style={{ display: 'block' }}>
         Name
       </label>
-      <TextField name="name" style={{ display: "block" }} validation={{ required: true }} />
+      <TextField
+        name="name"
+        style={{ display: 'block' }}
+        validation={{ required: true }}
+      />
 
-      <label for="email" style={{ display: "block" }}>
+      <label for="email" style={{ display: 'block' }}>
         Email
       </label>
-      <TextField name="email" style={{ display: "block" }} validation={{ required: true }} />
+      <TextField
+        name="email"
+        style={{ display: 'block' }}
+        validation={{ required: true }}
+      />
 
-      <label for="message" style={{ display: "block" }}>
+      <label for="message" style={{ display: 'block' }}>
         Message
       </label>
-      <TextAreaField name="message" style={{ display: "block" }} validation={{ required: true }} />
+      <TextAreaField
+        name="message"
+        style={{ display: 'block' }}
+        validation={{ required: true }}
+      />
 
-      <Submit style={{ display: "block" }}>Save</Submit>
+      <Submit style={{ display: 'block' }}>Save</Submit>
     </Form>
   </BlogLayout>
-);
+)
 ```
 
 And now when we submit the form with blank fields...the Name field gets focus. Boring. But this is just a stepping stone to our amazing reveal! We have one more form helper component to add—the one that displays errors on a field. Oh it just so happens that it's plain HTML so we can style it however we want!
@@ -1382,46 +1396,60 @@ Introducing `<FieldError>` (don't forget to include it in the `import` statement
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField, TextAreaField, Submit, FieldError } from "@redwoodjs/web";
-import BlogLayout from "src/layouts/BlogLayout";
+import {
+  Form,
+  TextField,
+  TextAreaField,
+  Submit,
+  FieldError,
+} from '@redwoodjs/web'
+import BlogLayout from 'src/layouts/BlogLayout'
 
-const ContactPage = props => {
-  const onSubmit = data => {
-    console.log(data);
-  };
+const ContactPage = (props) => {
+  const onSubmit = (data) => {
+    console.log(data)
+  }
 
   return (
     <BlogLayout>
       <Form onSubmit={onSubmit}>
-        <label htmlFor="name" style={{ display: "block" }}>
+        <label htmlFor="name" style={{ display: 'block' }}>
           Name
         </label>
-        <TextField name="name" style={{ display: "block" }} validation={{ required: true }} />
+        <TextField
+          name="name"
+          style={{ display: 'block' }}
+          validation={{ required: true }}
+        />
         <FieldError name="name" />
 
-        <label htmlFor="email" style={{ display: "block" }}>
+        <label htmlFor="email" style={{ display: 'block' }}>
           Email
         </label>
-        <TextField name="email" style={{ display: "block " }} validation={{ required: true }} />
+        <TextField
+          name="email"
+          style={{ display: 'block ' }}
+          validation={{ required: true }}
+        />
         <FieldError name="email" />
 
-        <label htmlFor="message" style={{ display: "block" }}>
+        <label htmlFor="message" style={{ display: 'block' }}>
           Message
         </label>
         <TextAreaField
           name="message"
-          style={{ display: "block" }}
+          style={{ display: 'block' }}
           validation={{ required: true }}
         />
         <FieldError name="message" />
 
-        <Submit style={{ display: "block" }}>Save</Submit>
+        <Submit style={{ display: 'block' }}>Save</Submit>
       </Form>
     </BlogLayout>
-  );
-};
+  )
+}
 
-export default ContactPage;
+export default ContactPage
 ```
 
 Note that the `name` attribute matches the `name` of the input field above it. That's so it knows which field to display errors for. Try submitting that form now.
@@ -1436,28 +1464,40 @@ But this is just the beginning. Let's make sure folks realize this is an error m
 return (
   <BlogLayout>
     <Form onSubmit={onSubmit}>
-      <label for="name" style={{ display: "block" }}>
+      <label for="name" style={{ display: 'block' }}>
         Name
       </label>
-      <TextField name="name" style={{ display: "block" }} validation={{ required: true }} />
-      <FieldError name="name" style={{ color: "red" }} />
+      <TextField
+        name="name"
+        style={{ display: 'block' }}
+        validation={{ required: true }}
+      />
+      <FieldError name="name" style={{ color: 'red' }} />
 
-      <label for="email" style={{ display: "block" }}>
+      <label for="email" style={{ display: 'block' }}>
         Email
       </label>
-      <TextField name="email" style={{ display: "block" }} validation={{ required: true }} />
-      <FieldError name="email" style={{ color: "red" }} />
+      <TextField
+        name="email"
+        style={{ display: 'block' }}
+        validation={{ required: true }}
+      />
+      <FieldError name="email" style={{ color: 'red' }} />
 
-      <label for="message" style={{ display: "block" }}>
+      <label for="message" style={{ display: 'block' }}>
         Message
       </label>
-      <TextAreaField name="message" style={{ display: "block" }} validation={{ required: true }} />
-      <FieldError name="message" style={{ color: "red" }} />
+      <TextAreaField
+        name="message"
+        style={{ display: 'block' }}
+        validation={{ required: true }}
+      />
+      <FieldError name="message" style={{ color: 'red' }} />
 
-      <Submit style={{ display: "block" }}>Save</Submit>
+      <Submit style={{ display: 'block' }}>Save</Submit>
     </Form>
   </BlogLayout>
-);
+)
 ```
 
 <img src="https://user-images.githubusercontent.com/300/73306040-3cf65100-41d0-11ea-99a9-9468bba82da7.png" />
@@ -1470,43 +1510,43 @@ You know what would be nice, if the input itself somehow displayed the fact that
 return (
   <BlogLayout>
     <Form onSubmit={onSubmit}>
-      <label for="name" style={{ display: "block" }}>
+      <label for="name" style={{ display: 'block' }}>
         Name
       </label>
       <TextField
         name="name"
-        style={{ display: "block" }}
-        errorStyle={{ display: "block", borderColor: "red" }}
+        style={{ display: 'block' }}
+        errorStyle={{ display: 'block', borderColor: 'red' }}
         validation={{ required: true }}
       />
-      <FieldError name="name" style={{ color: "red" }} />
+      <FieldError name="name" style={{ color: 'red' }} />
 
-      <label for="email" style={{ display: "block" }}>
+      <label for="email" style={{ display: 'block' }}>
         Email
       </label>
       <TextField
         name="email"
-        style={{ display: "block" }}
-        errorStyle={{ display: "block", borderColor: "red" }}
+        style={{ display: 'block' }}
+        errorStyle={{ display: 'block', borderColor: 'red' }}
         validation={{ required: true }}
       />
-      <FieldError name="email" style={{ color: "red" }} />
+      <FieldError name="email" style={{ color: 'red' }} />
 
-      <label for="message" style={{ display: "block" }}>
+      <label for="message" style={{ display: 'block' }}>
         Message
       </label>
       <TextAreaField
         name="message"
-        style={{ display: "block" }}
-        errorStyle={{ display: "block", borderColor: "red" }}
+        style={{ display: 'block' }}
+        errorStyle={{ display: 'block', borderColor: 'red' }}
         validation={{ required: true }}
       />
-      <FieldError name="message" style={{ color: "red" }} />
+      <FieldError name="message" style={{ color: 'red' }} />
 
-      <Submit style={{ display: "block" }}>Save</Submit>
+      <Submit style={{ display: 'block' }}>Save</Submit>
     </Form>
   </BlogLayout>
-);
+)
 ```
 
 <img src="https://user-images.githubusercontent.com/300/73306358-eb01fb00-41d0-11ea-8615-08e396c24cef.png" />
@@ -1516,66 +1556,76 @@ Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField, TextAreaField, Submit, FieldError, Label } from "@redwoodjs/web";
-import BlogLayout from "src/layouts/BlogLayout";
+import {
+  Form,
+  TextField,
+  TextAreaField,
+  Submit,
+  FieldError,
+  Label,
+} from '@redwoodjs/web'
+import BlogLayout from 'src/layouts/BlogLayout'
 
-const ContactPage = props => {
-  const onSubmit = data => {
-    console.log(data);
-  };
+const ContactPage = (props) => {
+  const onSubmit = (data) => {
+    console.log(data)
+  }
 
   return (
     <BlogLayout>
       <Form onSubmit={onSubmit}>
         <Label
           name="name"
-          style={{ display: "block" }}
-          errorStyle={{ display: "block", color: "red" }}>
+          style={{ display: 'block' }}
+          errorStyle={{ display: 'block', color: 'red' }}
+        >
           Name
         </Label>
         <TextField
           name="name"
-          style={{ display: "block" }}
-          errorStyle={{ display: "block", borderColor: "red" }}
+          style={{ display: 'block' }}
+          errorStyle={{ display: 'block', borderColor: 'red' }}
           validation={{ required: true }}
         />
-        <FieldError name="name" style={{ color: "red" }} />
+        <FieldError name="name" style={{ color: 'red' }} />
 
         <Label
           name="email"
-          style={{ display: "block" }}
-          errorStyle={{ display: "block", color: "red" }}>
+          style={{ display: 'block' }}
+          errorStyle={{ display: 'block', color: 'red' }}
+        >
           Email
         </Label>
         <TextField
           name="email"
-          style={{ display: "block" }}
-          errorStyle={{ display: "block", borderColor: "red" }}
+          style={{ display: 'block' }}
+          errorStyle={{ display: 'block', borderColor: 'red' }}
           validation={{ required: true }}
         />
-        <FieldError name="email" style={{ color: "red" }} />
+        <FieldError name="email" style={{ color: 'red' }} />
 
         <Label
           name="message"
-          style={{ display: "block" }}
-          errorStyle={{ display: "block", color: "red" }}>
+          style={{ display: 'block' }}
+          errorStyle={{ display: 'block', color: 'red' }}
+        >
           Message
         </Label>
         <TextAreaField
           name="message"
-          style={{ display: "block" }}
-          errorStyle={{ display: "block", borderColor: "red" }}
+          style={{ display: 'block' }}
+          errorStyle={{ display: 'block', borderColor: 'red' }}
           validation={{ required: true }}
         />
-        <FieldError name="message" style={{ color: "red" }} />
+        <FieldError name="message" style={{ color: 'red' }} />
 
-        <Submit style={{ display: "block" }}>Save</Submit>
+        <Submit style={{ display: 'block' }}>Save</Submit>
       </Form>
     </BlogLayout>
-  );
-};
+  )
+}
 
-export default ContactPage;
+export default ContactPage
 ```
 
 <img src="https://user-images.githubusercontent.com/300/73306562-53e97300-41d1-11ea-8bdd-e149f6b439db.png" />
@@ -1591,13 +1641,13 @@ We should make sure the email field actually contains an email:
 
 <TextField
   name="email"
-  style={{ display: "block" }}
-  errorStyle={{ display: "block", borderColor: "red" }}
+  style={{ display: 'block' }}
+  errorStyle={{ display: 'block', borderColor: 'red' }}
   validation={{
     required: true,
     pattern: {
-      value: /[^@]+@[^\.]+\..+/
-    }
+      value: /[^@]+@[^\.]+\..+/,
+    },
   }}
 />
 ```
@@ -1609,14 +1659,14 @@ That is definitely not the end-all-be-all for email address validation, but pret
 
 <TextField
   name="email"
-  style={{ display: "block" }}
-  errorStyle={{ display: "block", borderColor: "red" }}
+  style={{ display: 'block' }}
+  errorStyle={{ display: 'block', borderColor: 'red' }}
   validation={{
     required: true,
     pattern: {
       value: /[^@]+@[^\.]+\..+/,
-      message: "Please enter a valid email address"
-    }
+      message: 'Please enter a valid email address',
+    },
   }}
 />
 ```
@@ -1701,7 +1751,7 @@ export const schema = gql`
     email: String
     message: String
   }
-`;
+`
 ```
 
 What's `ContactInput`? Redwood follows the GraphQL recommendation of using [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) in mutations rather than listing out each and every field that can be set.
@@ -1732,12 +1782,12 @@ That's it for the SDL file, let's define the service that will actually save the
 // api/src/services/contacts/contacts.js
 
 export const contacts = () => {
-  return db.contact.findMany();
-};
+  return db.contact.findMany()
+}
 
 export const createContact = ({ input }) => {
-  return db.contact.create({ data: input });
-};
+  return db.contact.create({ data: input })
+}
 ```
 
 Thanks to Photon it takes very little code to actually save something to the database! This is an asynchronous call but we didn't have to worry about resolving Promises or dealing with `async/await`. Apollo will do that for us!
@@ -1775,7 +1825,7 @@ const CREATE_CONTACT = gql`
       id
     }
   }
-`;
+`
 ```
 
 We reference the `createContact` mutation we defined in the Contacts SDL passing it an `input` object which will contain the actual name, email and message fields.
@@ -1813,12 +1863,12 @@ const ContactPage = (props) => {
 create({
   variables: {
     input: {
-      name: "Rob",
-      email: "rob@redwoodjs.com",
-      message: "I love Redwood!"
-    }
-  }
-});
+      name: 'Rob',
+      email: 'rob@redwoodjs.com',
+      message: 'I love Redwood!',
+    },
+  },
+})
 ```
 
 If you'll recall `<Form>` gives us all of the fields in a nice object where the key is the name of the field, which means the `data` object we're receiving in `onSubmit` is already in the proper format that we need for the `input`!
@@ -1878,11 +1928,11 @@ Now we know if the database call is still in progress by looking at `loading`. A
 
 return (
   // ...
-  <Submit style={{ display: "block" }} disabled={loading}>
+  <Submit style={{ display: 'block' }} disabled={loading}>
     Save
   </Submit>
   // ...
-);
+)
 ```
 
 It may be hard to see a difference in development because the submit is so fast, but you could enable network throttling via the Network tab Chrome's Web Inspector to simulate a slow connection:
@@ -1898,9 +1948,9 @@ Next let's let the user know their submission was successful. `useMutation` can 
 
 const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
   onCompleted: () => {
-    alert("Thank you for your submission!");
-  }
-});
+    alert('Thank you for your submission!')
+  },
+})
 ```
 
 ### Displaying Server Errors
@@ -1918,26 +1968,26 @@ We talked about business logic belonging in our services files and this is a per
 ```javascript
 // api/src/services/contacts/contacts.js
 
-import { UserInputError } from "@redwoodjs/api";
+import { UserInputError } from '@redwoodjs/api'
 
-const validate = input => {
+const validate = (input) => {
   if (input.email && !input.email.match(/[^@]+@[^\.]+\..+/)) {
     throw new UserInputError("Can't create new contact", {
       messages: {
-        email: ["is not formatted like an email address"]
-      }
-    });
+        email: ['is not formatted like an email address'],
+      },
+    })
   }
-};
+}
 
 export const contacts = () => {
-  return db.contact.findMany();
-};
+  return db.contact.findMany()
+}
 
 export const createContact = ({ input }) => {
-  validate(input);
-  return db.contact.create({ data: input });
-};
+  validate(input)
+  return db.contact.create({ data: input })
+}
 ```
 
 So when `createContact` is called it will first validate the inputs and only if no errors are thrown will it continue to actually create the record in the database.
@@ -1964,10 +2014,10 @@ To get a server error to fire, let's remove the email format validatation so tha
 
 <TextField
   name="email"
-  style={{ display: "block" }}
-  errorStyle={{ display: "block", borderColor: "red" }}
+  style={{ display: 'block' }}
+  errorStyle={{ display: 'block', borderColor: 'red' }}
   validation={{
-    required: true
+    required: true,
   }}
 />
 ```
@@ -2031,7 +2081,7 @@ First we'll import `useForm`:
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form'
 ```
 
 And now call it inside of our component:
