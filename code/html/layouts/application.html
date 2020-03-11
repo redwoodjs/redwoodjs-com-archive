@@ -94,16 +94,10 @@
           </aside>
 
           <div class="flex w-full lg:w-4/5">
-            <main class="w-full max-w-3xl xl:w-3/4 mx-auto my-8 lg:px-8 lg:mr-auto">
+            <main class="w-full max-w-3xl xl:w-3/4 my-8 lg:px-8 lg:mr-auto">
               @@content
             </main>
-            <aside class="hidden xl:block w-1/4 h-auto overflow-y-visible">
-              <div class="overflow-y-auto sticky top-0 pl-6">
-                <nav class="text-sm font-semibold text-gray-600 pt-8 pb-40 lg:py-12 overflow-y-auto h-screen">
-                  @@content("aside")
-                </nav>
-              </div>
-            </aside>
+            @@content("aside")
           </div>
         </div>
       </section>
