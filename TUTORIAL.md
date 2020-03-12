@@ -2007,7 +2007,7 @@ We already capture any existing error in the `error` constant that we got from `
   // ...
 ```
 
-To get a server error to fire, let's remove the email format validatation so that the client-side error is shown:
+To get a server error to fire, let's remove the email format validation so that the client-side error is shown:
 
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
