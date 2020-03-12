@@ -398,12 +398,12 @@ We use [Prisma Client JS](https://photonjs.prisma.io/) to talk to the database. 
 
 First let's define the data structure for a post in the database. Open up `api/prisma/schema.prisma` and add the definition of our Post table (remove any "sample" models that are present in the file). Once you're done the entire schema file should look like:
 
-```javascript
+```prisma
 // api/prisma/schema.prisma
 
 datasource DS {
   provider = "sqlite"
-  url = env("DB_HOST")
+  url = env("DATABASE_URL")
 }
 
 generator photonjs {
@@ -2203,7 +2203,7 @@ Now just authorize Netlify to connect to your git hosting provider and find your
 
 Netlify will start building your app (click the **Deploying your site** link to watch the logs) and it will say "Site is live", but nothing will work. Why? We haven't told it where to find our database yet.
 
-Go back to the main site page and then to **Settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DB_HOST"):
+Go back to the main site page and then to **Settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DATABASE_URL"):
 
 <img src="https://user-images.githubusercontent.com/300/73705038-9e735f80-46a9-11ea-9f38-17c15c2afe9a.png" />
 
@@ -2238,10 +2238,12 @@ We know this isn't an ideal solution but it's only temporary, promise!
 
 Open up `api/prisma/schema.prisma` and change the provider:
 
-```javascript
+```prisma
+// api/prisma/schema.prisma
+
 datasource DS {
   provider = "postgresql"
-  url = env("DB_HOST")
+  url = env("DATABASE_URL")
 }
 ```
 

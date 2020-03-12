@@ -41,10 +41,12 @@ Now copy and paste the API endpoint protocol and domain from the URL that's disp
 
 For the remainder of the tutorial we're going to run the site in dev mode using Netlify's CLI instead of Redwood's. This gives us the identity functionality we need. But before you do that, make sure the `provider` in `api/prisma/schema.prisma` is set back to `sqlite`:
 
-```javascript
+```prisma
+// api/prisma/schema.prisma
+
 datasource DS {
   provider = "sqlite"
-  url = env("DB_HOST")
+  url = env("DATABASE_URL")
 }
 ```
 
