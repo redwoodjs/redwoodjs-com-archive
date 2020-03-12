@@ -878,7 +878,7 @@ Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever va
 Cool, cool, cool. Now we need to construct a link that has the ID of a post in it:
 
 ```javascript
-// web/src/pages/BlogPostsCell/BlogPostsCell.js
+// web/src/components/BlogPostsCell/BlogPostsCell.js
 
 <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
 ```
@@ -1728,7 +1728,7 @@ Just like the `scaffold` command, this will create two new files under the `api`
 1. `api/src/graphql/contacts.sdl.js`: defines the GraphQL schema in GraphQL's schema definition language
 2. `api/src/services/contacts/contacts.js`: contains your app's business logic.
 
-Open up `api/src/graphql/contact.sdl.js` and you'll see the `Contact` and `ContactInput` types were already defined for us—the `generate sdl` command introspected the schema and created a `Contact` type containing each database field in the table, as well as a `Query` type with a single query `contacts` which returns an array of `Contact` types:
+Open up `api/src/graphql/contacts.sdl.js` and you'll see the `Contact` and `ContactInput` types were already defined for us—the `generate sdl` command introspected the schema and created a `Contact` type containing each database field in the table, as well as a `Query` type with a single query `contacts` which returns an array of `Contact` types:
 
 ```javascript
 // api/src/graphql/contacts.sdl.js
