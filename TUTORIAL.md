@@ -1912,8 +1912,8 @@ The `useMutation` hook returns a couple more elements along with the function to
 const ContactPage = (props) => {
   const [create, { loading, error }] = useMutation(CREATE_CONTACT)
 
-  const onSubmit = (data) {
-    create({ variables: { input: data }})
+  const onSubmit = (data) => {
+    create({ variables: { input: data } })
     console.log(data)
   }
 
