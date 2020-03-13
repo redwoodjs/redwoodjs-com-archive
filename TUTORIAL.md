@@ -398,12 +398,12 @@ We use [Prisma Client JS](https://photonjs.prisma.io/) to talk to the database. 
 
 First let's define the data structure for a post in the database. Open up `api/prisma/schema.prisma` and add the definition of our Post table (remove any "sample" models that are present in the file). Once you're done the entire schema file should look like:
 
-```javascript
+```prisma
 // api/prisma/schema.prisma
 
 datasource DS {
   provider = "sqlite"
-  url = env("DB_HOST")
+  url = env("DATABASE_URL")
 }
 
 generator photonjs {
@@ -782,7 +782,7 @@ In this example, Redwood will look in `api/src/services/posts/posts.js` for the 
 - `updatePost({id, input})`
 - `deletePost({id})`
 
-To implement these, simply export them from the services file. They will usually get your data from a database, but they can do anything you want, as long as they return the proper types that Apollo expects based on what you defined in `posts.js.sdl`:
+To implement these, simply export them from the services file. They will usually get your data from a database, but they can do anything you want, as long as they return the proper types that Apollo expects based on what you defined in `posts.sdl.js`:
 
 ```javascript
 // api/src/services/posts/posts.js
@@ -2007,7 +2007,7 @@ We already capture any existing error in the `error` constant that we got from `
   // ...
 ```
 
-To get a server error to fire, let's remove the email format validatation so that the client-side error is shown:
+To get a server error to fire, let's remove the email format validation so that the client-side error is shown:
 
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
@@ -2203,7 +2203,7 @@ Now just authorize Netlify to connect to your git hosting provider and find your
 
 Netlify will start building your app (click the **Deploying your site** link to watch the logs) and it will say "Site is live", but nothing will work. Why? We haven't told it where to find our database yet.
 
-Go back to the main site page and then to **Settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DB_HOST"):
+Go back to the main site page and then to **Settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DATABASE_URL"):
 
 <img src="https://user-images.githubusercontent.com/300/73705038-9e735f80-46a9-11ea-9f38-17c15c2afe9a.png" />
 
@@ -2238,10 +2238,12 @@ We know this isn't an ideal solution but it's only temporary, promise!
 
 Open up `api/prisma/schema.prisma` and change the provider:
 
-```javascript
+```prisma
+// api/prisma/schema.prisma
+
 datasource DS {
   provider = "postgresql"
-  url = env("DB_HOST")
+  url = env("DATABASE_URL")
 }
 ```
 
