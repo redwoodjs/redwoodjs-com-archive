@@ -1882,7 +1882,7 @@ const ContactPage = (props) => {
   const [create] = useMutation(CREATE_CONTACT)
 
   const onSubmit = (data) => {
-    create({ variables: { input: data }})
+    create({ variables: { input: ...data }})
     console.log(data)
   }
 
