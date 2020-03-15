@@ -1284,17 +1284,17 @@ Let's add some labels and just a tiny bit of styling to at least separate the fi
 return (
   <BlogLayout>
     <Form onSubmit={onSubmit}>
-      <label for="name" style={{ display: 'block' }}>
+      <label htmlFor="name" style={{ display: 'block' }}>
         Name
       </label>
       <TextField name="name" style={{ display: 'block' }} />
 
-      <label for="email" style={{ display: 'block' }}>
+      <label htmlFor="email" style={{ display: 'block' }}>
         Email
       </label>
       <TextField name="email" style={{ display: 'block' }} />
 
-      <label for="message" style={{ display: 'block' }}>
+      <label htmlFor="message" style={{ display: 'block' }}>
         Message
       </label>
       <TextAreaField name="message" style={{ display: 'block' }} />
@@ -1321,17 +1321,17 @@ All three of these fields should be required in order for someone to send a mess
 return (
   <BlogLayout>
     <Form onSubmit={onSubmit}>
-      <label for="name" style={{ display: 'block' }}>
+      <label htmlFor="name" style={{ display: 'block' }}>
         Name
       </label>
       <TextField name="name" style={{ display: 'block' }} required />
 
-      <label for="email" style={{ display: 'block' }}>
+      <label htmlFor="email" style={{ display: 'block' }}>
         Email
       </label>
       <TextField name="email" style={{ display: 'block' }} required />
 
-      <label for="message" style={{ display: 'block' }}>
+      <label htmlFor="message" style={{ display: 'block' }}>
         Message
       </label>
       <TextAreaField name="message" style={{ display: 'block' }} required />
@@ -1354,7 +1354,7 @@ Yes! Let's update that `required` call to instead be an object we pass to a cust
 return (
   <BlogLayout>
     <Form onSubmit={onSubmit}>
-      <label for="name" style={{ display: 'block' }}>
+      <label htmlFor="name" style={{ display: 'block' }}>
         Name
       </label>
       <TextField
@@ -1363,7 +1363,7 @@ return (
         validation={{ required: true }}
       />
 
-      <label for="email" style={{ display: 'block' }}>
+      <label htmlFor="email" style={{ display: 'block' }}>
         Email
       </label>
       <TextField
@@ -1372,7 +1372,7 @@ return (
         validation={{ required: true }}
       />
 
-      <label for="message" style={{ display: 'block' }}>
+      <label htmlFor="message" style={{ display: 'block' }}>
         Message
       </label>
       <TextAreaField
@@ -1464,7 +1464,7 @@ But this is just the beginning. Let's make sure folks realize this is an error m
 return (
   <BlogLayout>
     <Form onSubmit={onSubmit}>
-      <label for="name" style={{ display: 'block' }}>
+      <label htmlFor="name" style={{ display: 'block' }}>
         Name
       </label>
       <TextField
@@ -1474,7 +1474,7 @@ return (
       />
       <FieldError name="name" style={{ color: 'red' }} />
 
-      <label for="email" style={{ display: 'block' }}>
+      <label htmlFor="email" style={{ display: 'block' }}>
         Email
       </label>
       <TextField
@@ -1484,7 +1484,7 @@ return (
       />
       <FieldError name="email" style={{ color: 'red' }} />
 
-      <label for="message" style={{ display: 'block' }}>
+      <label htmlFor="message" style={{ display: 'block' }}>
         Message
       </label>
       <TextAreaField
@@ -1510,7 +1510,7 @@ You know what would be nice, if the input itself somehow displayed the fact that
 return (
   <BlogLayout>
     <Form onSubmit={onSubmit}>
-      <label for="name" style={{ display: 'block' }}>
+      <label htmlFor="name" style={{ display: 'block' }}>
         Name
       </label>
       <TextField
@@ -1521,7 +1521,7 @@ return (
       />
       <FieldError name="name" style={{ color: 'red' }} />
 
-      <label for="email" style={{ display: 'block' }}>
+      <label htmlFor="email" style={{ display: 'block' }}>
         Email
       </label>
       <TextField
@@ -1532,7 +1532,7 @@ return (
       />
       <FieldError name="email" style={{ color: 'red' }} />
 
-      <label for="message" style={{ display: 'block' }}>
+      <label htmlFor="message" style={{ display: 'block' }}>
         Message
       </label>
       <TextAreaField
