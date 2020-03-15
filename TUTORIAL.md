@@ -258,7 +258,7 @@ Cut the `<header>` from both `HomePage` and `AboutPage` and paste it in the layo
 
 import { Link, routes } from '@redwoodjs/router'
 
-const BlogLayout = (props) => {
+const BlogLayout = ({ children }) => {
   return (
     <>
       <header>
@@ -271,7 +271,7 @@ const BlogLayout = (props) => {
           </ul>
         </nav>
       </header>
-      <main>{props.children}</main>
+      <main>{children}</main>
     </>
   )
 }
@@ -335,7 +335,7 @@ One more `<Link>`, let's have the title/logo link back to the homepage as per us
 
 import { Link, routes } from '@redwoodjs/router'
 
-const BlogLayout = (props) => {
+const BlogLayout = ({ children }) => {
   return (
     <>
       <header>
@@ -350,7 +350,7 @@ const BlogLayout = (props) => {
           </ul>
         </nav>
       </header>
-      <main>{props.children}</main>
+      <main>{children}</main>
     </>
   )
 }
@@ -1101,7 +1101,7 @@ We can put a link to Contact in our layout's header:
 
 import { Link, routes } from '@redwoodjs/router'
 
-const BlogLayout = (props) => {
+const BlogLayout = ({ children }) => {
   return (
     <>
       <header>
@@ -1119,7 +1119,7 @@ const BlogLayout = (props) => {
           </ul>
         </nav>
       </header>
-      <main>{props.children}</main>
+      <main>{children}</main>
     </>
   )
 }
