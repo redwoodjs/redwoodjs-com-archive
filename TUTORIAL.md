@@ -1735,7 +1735,7 @@ Open up `api/src/graphql/contacts.sdl.js` and you'll see the `Contact` and `Cont
 
 export const schema = gql`
   type Contact {
-    id: String!
+    id: Int!
     name: String!
     email: String!
     message: String!
