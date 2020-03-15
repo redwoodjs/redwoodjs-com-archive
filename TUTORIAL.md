@@ -570,7 +570,7 @@ export const Success = ({ posts }) => {
 
 When React renders this component Redwood will:
 
-- Perform the `QUERY` and display the `Loader` component until a response is received
+- Perform the `QUERY` and display the `Loading` component until a response is received
 - Once the query returns it will display one of three states:
   - If there was an error, the `Failure` component
   - If the data return is empty (`null` or empty array), the `Empty` component
