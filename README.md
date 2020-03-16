@@ -4,7 +4,7 @@ This is the repo for https://redwoodjs.com
 
 The content for the tutorial is pulled from TUTORIAL.md in this repo.
 
-Other documentation is pulled from various READMEs in the main [redwoodjs/redwood](https://github.com/redwoodjs/redwood) repo.
+Other documentation is pulled from various READMEs in the main [redwoodjs/redwood](https://github.com/redwoodjs/redwood) repo (see `lib/build.js`, the `SECTIONS` constant).
 
 ## Local Development
 
@@ -18,7 +18,7 @@ To develop locally:
 
     yarn dev
 
-If you already already running a `yarn dev` process when you `yarn build` you may need to top and start `yarn dev` to pick up the new pages.
+If you are already already running a `yarn dev` process when you `yarn build` you may need to stop and start `yarn dev` to pick up the new pages properly.
 
 ## Contributing
 
