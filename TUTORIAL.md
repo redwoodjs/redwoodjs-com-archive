@@ -2061,7 +2061,7 @@ Now submit a message without a name:
 
 <img src="https://user-images.githubusercontent.com/300/73317487-1b569300-41eb-11ea-9fae-a9a7ae3c52f1.png" />
 
-We get that error message at the top saying something went wrong in plain english _and_ the actual field is highlighted for us, just like the inline validation! The message at the top may be overkill for such a short form, but it can be key if a form is multiple screens long; the user gets a summary of what went wrong all in one place and they don't have to resort to hunting through a long form looking for red boxes. You don't have to have use that message box at the top, though; just remove `<FormError>` and the field will still be highlighted as expected.
+We get that error message at the top saying something went wrong in plain english _and_ the actual field is highlighted for us, just like the inline validation! The message at the top may be overkill for such a short form, but it can be key if a form is multiple screens long; the user gets a summary of what went wrong all in one place and they don't have to resort to hunting through a long form looking for red boxes. You don't have to use that message box at the top, though; just remove `<FormError>` and the field will still be highlighted as expected.
 
 > `<FormError>` has several styling options which are attached to different parts of the message:
 >
