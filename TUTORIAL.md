@@ -156,7 +156,7 @@ Let's create an "About" page for our blog so everyone knows about the geniuses b
 
 Notice that we didn't specify a route path this time. If you leave it off the `redwood generate page` command, Redwood will create a `Route` and give it a path that is the same as the page name you specified prepended with a slash. In this case it will be `/about`.
 
-> As you add more pages to your app, you may start to worry that more and more code has to be downloaded by the client on any initial page load. Fear not! Redwood will automatically code-split on each Page, which means that initial page loads can be blazingly fast, and you can create as many Pages as you want without having to worry about impacting overall webpack bundle size. If, however, you do want specific Pages to be included in the the main bundle, you can override the default behavior.
+> As you add more pages to your app, you may start to worry that more and more code has to be downloaded by the client on any initial page load. Fear not! Redwood will automatically code-split on each Page, which means that initial page loads can be blazingly fast, and you can create as many Pages as you want without having to worry about impacting overall webpack bundle size. If, however, you do want specific Pages to be included in the main bundle, you can override the default behavior.
 
 http://localhost:8910/about should show our new page. But no one's going to find it by manually changing the URL so let's add a link from our homepage to the About page and vice versa. We'll start creating a simple header and nav bar at the same time on the HomePage:
 
@@ -1959,7 +1959,7 @@ Next we'll inform the user of any server errors. So far we've only notified the 
 
 We have email validation on the client, but any good developer knows [_never trust the client_](https://www.codebyamir.com/blog/never-trust-data-from-the-browser). Let's add the email validation on the API as well to be sure no bad data gets into our database, even if someone somehow bypassed our client-side validation.
 
-> Why don't we need server-side validation for the existence of name, email and message? Because the database is doing that for us. Remember the `String!` in our SDL definition? That adds a constraint in the database the the field cannot be `null`. If a `null` was to get all the way down to the database it would reject the insert/update and GraphQL would throw an error back to us on the client.
+> Why don't we need server-side validation for the existence of name, email and message? Because the database is doing that for us. Remember the `String!` in our SDL definition? That adds a constraint in the database that the field cannot be `null`. If a `null` was to get all the way down to the database it would reject the insert/update and GraphQL would throw an error back to us on the client.
 >
 > There's no `Email!` datatype so we'll need to validate that on our own.
 
