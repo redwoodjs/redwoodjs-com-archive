@@ -314,6 +314,8 @@ const AboutPage = () => {
 export default AboutPage
 ```
 
+> Notice that the import statement uses `src/layouts/BlogLayout` and not `../src/layouts/BlogLayout` or `./src/layouts/BlogLayout`. Being able to use just `src` is a convenience feature provided by Redwood: `src` is an alias to the `src` path in the current workspace. So if you're working in `web` then `src` points to `web/src` and in `api` it points to `api/src`.
+
 Back to the browser and you should see...nothing different. But that's good, it means our layout is working.
 
 > **Why are things named the way they are?**
