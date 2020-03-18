@@ -2163,7 +2163,7 @@ Before we continue, make sure your app is fully committed and pushed to GitHub, 
 
 ### The Database
 
-We'll need a database somewhere on the internet to store our data. Locally we've been using SQLite but that's meant to be a single-user, disc-based store and isn't suited for the kind of connection and concurrency requirements a real, live website will require. For this tutorial we're going to use Postgres. Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting, we just need to get one available to the outside world so it can be accessed by our app.
+We'll need a database somewhere on the internet to store our data. Locally we've been using SQLite but that's meant to be a single-user, disc-based store and isn't suited for the kind of connection and concurrency requirements a real, live website will require. For this tutorial we're going to use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting, we just need to get one available to the outside world so it can be accessed by our app.
 
 > For now, you need to set up your own database, but we are working with various infrastructure providers to make this process simpler and more JAMstacky. Stay tuned for improvements in that regard!
 
