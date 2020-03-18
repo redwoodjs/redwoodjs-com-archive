@@ -2009,7 +2009,7 @@ We already capture any existing error in the `error` constant that we got from `
   // ...
 ```
 
-To get a server error to fire, let's remove the email format validation so that the client-side error is shown:
+To get a server error to fire, let's remove the email format validation so that the client-side error isn't shown:
 
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
@@ -2059,7 +2059,7 @@ return (
     //...
 ```
 
-Now submit a message without a name:
+Now submit a message with an invalid email address:
 
 <img src="https://user-images.githubusercontent.com/300/73317487-1b569300-41eb-11ea-9fae-a9a7ae3c52f1.png" />
 
