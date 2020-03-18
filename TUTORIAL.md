@@ -2213,11 +2213,15 @@ Netlify will start building your app (click the **Deploying your site** link to 
 
 Go back to the main site page and then to **Settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DATABASE_URL"):
 
-<img src="https://user-images.githubusercontent.com/300/73705038-9e735f80-46a9-11ea-9f38-17c15c2afe9a.png" />
+![image](https://user-images.githubusercontent.com/300/76902309-f41a5a80-6858-11ea-974f-cbc00863e5a9.png)
 
 Click **Save** and you should see the new variable listed:
 
-<img src="https://user-images.githubusercontent.com/300/73704961-77b52900-46a9-11ea-98f9-7150a7ddf572.png" />
+![image](https://user-images.githubusercontent.com/300/76902340-06949400-6859-11ea-98c1-38f80e7a486e.png)
+
+Add one more environment variable, `BINARY_TARGET` set to the value `rhel-openssl-1.0.x` This is for Prisma to know which client libraries it needs, in this case so that it can run on AWS Lambda:
+
+![image](https://user-images.githubusercontent.com/300/76902210-b9182700-6858-11ea-86f4-8f8f728bddd0.png)
 
 Go to **Build & Deploy** > **Continuous Deployment** and scroll down to **Build image selection**. Make sure that Ubuntu Xenial is selected. If not click **Edit settings** and change it.
 
