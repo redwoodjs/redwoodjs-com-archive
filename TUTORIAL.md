@@ -2059,7 +2059,7 @@ return (
     //...
 ```
 
-Now submit a message without a name:
+Now submit a message with an invalid email address:
 
 <img src="https://user-images.githubusercontent.com/300/73317487-1b569300-41eb-11ea-9fae-a9a7ae3c52f1.png" />
 
