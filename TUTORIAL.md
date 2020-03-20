@@ -489,7 +489,7 @@ So, Redwood just created all the pages, components and services necessary to per
 Here's what happened when we ran that `yarn rw g scaffold post` command:
 
 - Added an _SDL_ file to define several GraphQL queries and mutations in `api/src/graphql/posts.sdl.js`
-- Added a _services_ file in `api/src/services/posts/posts.js` that makes the Photon calls to get data in and out of the database
+- Added a _services_ file in `api/src/services/posts/posts.js` that makes the Prisma Client JS calls to get data in and out of the database
 - Created several _pages_ in `web/src/pages`:
   - `EditPostPage` for editing a post
   - `NewPostPage` for creating a new post
@@ -1792,7 +1792,7 @@ export const createContact = ({ input }) => {
 }
 ```
 
-Thanks to Photon it takes very little code to actually save something to the database! This is an asynchronous call but we didn't have to worry about resolving Promises or dealing with `async/await`. Apollo will do that for us!
+Thanks to Prisma Client JS it takes very little code to actually save something to the database! This is an asynchronous call but we didn't have to worry about resolving Promises or dealing with `async/await`. Apollo will do that for us!
 
 Before we plug this into the UI, let's take a look at a nifty GUI you get just by running `yarn redwood dev`.
 
