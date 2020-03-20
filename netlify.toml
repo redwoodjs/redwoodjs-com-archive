@@ -36,6 +36,10 @@
   to = "/docs/introduction.html"
   status = 301
 
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 301
 
 # See https://www.netlify.com/docs/netlify-toml-reference/#headers
 [[headers]]
