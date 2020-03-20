@@ -1,4 +1,4 @@
-@@layout("application", { "title": "${pageTitle} : RedwoodJS Docs" })
+@@layout("application", { "title": "${pageTitle} : RedwoodJS Docs", "version": "${version}" })
 
 @@contentFor("aside",
   <aside class="hidden xl:block w-1/4 h-auto overflow-y-visible pointer-events-none">
@@ -14,7 +14,7 @@
         </ul>
       </nav>
     </div>
-  </aside> 
+  </aside>
 )
 
 <div class="markdown">
