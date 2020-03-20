@@ -408,7 +408,7 @@ datasource DS {
   url = env("DATABASE_URL")
 }
 
-generator photonjs {
+generator client {
   provider = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
