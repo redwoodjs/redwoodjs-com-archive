@@ -100,11 +100,12 @@ That's it for the backend.
 
 ### The /web Directory
 
-- `components` contain your traditional React components as well as Redwood _Cells_ (more about those soon).
-- `layouts` contain HTML/components that wrap your content and are shared across _Pages_.
-- `pages` contain components and are optionally wrapped inside _Layouts_ and are the "landing page" for a given URL (a URL like `/articles/hello-world` will map to one page and `/contact-us` will map to another). There are two pages included in a new app:
-  - `NotFoundPage.js` will be served when no other route is found (see `Routes.js` below).
-  - `FatalErrorPage.js` will be rendered when there is an uncaught error that can't be recovered from and would otherwise cause our application to really blow up (normally rendering a blank page).
+- `src` contains several subdirectories:
+  - `components` contain your traditional React components as well as Redwood _Cells_ (more about those soon).
+  - `layouts` contain HTML/components that wrap your content and are shared across _Pages_.
+  - `pages` contain components and are optionally wrapped inside _Layouts_ and are the "landing page" for a given URL (a URL like `/articles/hello-world` will map to one page and `/contact-us` will map to another). There are two pages included in a new app:
+    - `NotFoundPage.js` will be served when no other route is found (see `Routes.js` below).
+    - `FatalErrorPage.js` will be rendered when there is an uncaught error that can't be recovered from and would otherwise cause our application to really blow up (normally rendering a blank page).
 - `public` contains assets not used by React components (they will be copied over unmodified to the final app's root directory):
   - `favicon.png` is the icon that goes in a browser tab when your page is open (apps start with the RedwoodJS logo).
   - `robots.txt` can be used to control what web indexers are [allowed to do](https://www.robotstxt.org/robotstxt.html).
