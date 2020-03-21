@@ -443,7 +443,7 @@ That was simple. Now we'll want to snapshot this as a migration:
 
 A prompt will ask you if you'd like to create a new SQLite database (yes you would). Next it asks what you want to name this migration. This is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference for future developers. Something like "create posts" is perfect.
 
-After the command completes you'll see a new subdirectory created under `api/prisma/migrations` that has a timestamp and the name you gave the migration. It will contain a couple files inside (a snapshot of what the schema looked like at that point in time in `schema.prisma` and the directives that Prisma Migrate will use make the change to the database in `steps.json`).
+After the command completes you'll see a new subdirectory created under `api/prisma/migrations` that has a timestamp and the name you gave the migration. It will contain a couple files inside (a snapshot of what the schema looked like at that point in time in `schema.prisma` and the directives that Prisma Migrate will use to make the change to the database in `steps.json`).
 
 We apply the migration with another command:
 
