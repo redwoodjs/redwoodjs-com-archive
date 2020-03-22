@@ -1431,7 +1431,7 @@ const ContactPage = (props) => {
         </label>
         <TextField
           name="email"
-          style={{ display: 'block ' }}
+          style={{ display: 'block' }}
           validation={{ required: true }}
         />
         <FieldError name="email" />
