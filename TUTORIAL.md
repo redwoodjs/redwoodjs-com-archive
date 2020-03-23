@@ -1763,7 +1763,7 @@ export const schema = gql`
     contacts: [Contact]
   }
 
-  type ContactInput {
+  input ContactInput {
     name: String
     email: String
     message: String
