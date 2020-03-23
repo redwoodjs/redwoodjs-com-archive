@@ -760,21 +760,35 @@ Normally you would write a [resolver map](https://www.apollographql.com/docs/tut
 
 Redwood has a better way! Remember the `api/src/services` directory? Redwood will automatically import and map resolvers from the corresponding **services** file onto your SDL. At the same time, it allows you to write those resolvers in a way that makes them easy to call as regular functions from other resolvers or services. That's a lot of awesomeness to contemplate, so let's show an example.
 
-Consider the following SDL snippet:
+Consider the following SDL javascript snippet:
 
 ```
 // api/src/graphql/posts.sdl.js
 
-type Query {
-  posts: [Post]
-  post(id: Int!): Post
-}
+export const schema = gql`
+  type Post {
+    id: Int!
+    title: String!
+    body: String!
+    createdAt: DateTime!
+  }
 
-type Mutation {
-  createPost(input: PostInput!): Post
-  updatePost(id: Int!, input: PostInput!): Post
-  deletePost(id: Int!): Post
-}
+  type Query {
+    posts: [Post]
+    post(id: Int!): Post
+  }
+
+  input PostInput {
+    title: String
+    body: String
+  }
+
+  type Mutation {
+    createPost(input: PostInput!): Post
+    updatePost(id: Int!, input: PostInput!): Post
+    deletePost(id: Int!): Post
+  }
+`
 ```
 
 In this example, Redwood will look in `api/src/services/posts/posts.js` for the following five resolvers:
