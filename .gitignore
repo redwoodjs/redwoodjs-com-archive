@@ -2,6 +2,7 @@
 .env
 node_modules
 publish/*
+!publish/downloads
 !publish/images
 !publish/favicon.*
 yarn-error.log
