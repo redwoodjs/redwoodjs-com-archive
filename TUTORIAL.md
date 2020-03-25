@@ -1663,7 +1663,7 @@ We should make sure the email field actually contains an email:
   validation={{
     required: true,
     pattern: {
-      value: /[^@]+@[^\.]+\..+/,
+      value: /[^@]+@[^.]+\..+/,
     },
   }}
 />
@@ -1681,7 +1681,7 @@ That is definitely not the end-all-be-all for email address validation, but pret
   validation={{
     required: true,
     pattern: {
-      value: /[^@]+@[^\.]+\..+/,
+      value: /[^@]+@[^.]+\..+/,
       message: 'Please enter a valid email address',
     },
   }}
@@ -1988,7 +1988,7 @@ We talked about business logic belonging in our services files and this is a per
 import { UserInputError } from '@redwoodjs/api'
 
 const validate = (input) => {
-  if (input.email && !input.email.match(/[^@]+@[^\.]+\..+/)) {
+  if (input.email && !input.email.match(/[^@]+@[^.]+\..+/)) {
     throw new UserInputError("Can't create new contact", {
       messages: {
         email: ['is not formatted like an email address'],
