@@ -1,5 +1,4 @@
 import { Controller } from "stimulus";
-import hljs from "highlight.js";
 
 export default class extends Controller {
   static get targets() {
@@ -11,9 +10,13 @@ export default class extends Controller {
     this.yearTarget.textContent = new Date().getFullYear();
 
     // code highlighting
-    this.codeTargets.forEach(target => {
-      hljs.highlightBlock(target);
-    });
+    if (document.querySelector('code')) {
+      import('highlight.js').then(hljs => {
+        this.codeTargets.forEach(target => {
+          hljs.highlightBlock(target);
+        });
+      });
+    }
 
     // show the header logo unless we're on the homepage
     if (!this.isHomePage) {
