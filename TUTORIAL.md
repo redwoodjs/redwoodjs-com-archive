@@ -7,7 +7,7 @@ In this tutorial we're going to build a blog engine. In reality a blog is probab
 Want to watch this tutorial instead? Start here:
 
 <div class="relative pb-9/16">
-  <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/a2H1LuN1sRM?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
+  <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/trxyRZ2a_a0?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
 </div>
 
 ## Prerequisites
