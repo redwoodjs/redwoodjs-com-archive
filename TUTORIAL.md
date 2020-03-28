@@ -803,6 +803,7 @@ To implement these, simply export them from the services file. They will usually
 
 ```javascript
 // api/src/services/posts/posts.js
+import { db } from 'src/lib/db'
 
 export const posts = () => {
   return db.post.findMany()
@@ -1797,6 +1798,7 @@ That's it for the SDL file, let's define the service that will actually save the
 
 ```javascript
 // api/src/services/contacts/contacts.js
+import { db } from 'src/lib/db'
 
 export const contacts = () => {
   return db.contact.findMany()
@@ -1984,7 +1986,7 @@ We talked about business logic belonging in our services files and this is a per
 
 ```javascript
 // api/src/services/contacts/contacts.js
-
+import { db } from 'src/lib/db'
 import { UserInputError } from '@redwoodjs/api'
 
 const validate = (input) => {
