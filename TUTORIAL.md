@@ -1874,7 +1874,7 @@ import BlogLayout from 'src/layouts/BlogLayout'
 const ContactPage = (props) => {
   const [create] = useMutation(CREATE_CONTACT)
 
-  const onSubmit = (data) {
+  const onSubmit = (data) => {
     console.log(data)
   }
 
