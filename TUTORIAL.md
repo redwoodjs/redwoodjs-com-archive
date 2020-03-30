@@ -73,7 +73,7 @@ Now that we have the skeleton of our Redwood app in place, it's a good idea to s
 
     git init
     git add .
-    git commit -am 'First commit'
+    git commit -m 'First commit'
 
 ## Redwood File Structure
 
@@ -1874,7 +1874,7 @@ import BlogLayout from 'src/layouts/BlogLayout'
 const ContactPage = (props) => {
   const [create] = useMutation(CREATE_CONTACT)
 
-  const onSubmit = (data) {
+  const onSubmit = (data) => {
     console.log(data)
   }
 
@@ -2140,13 +2140,12 @@ Now we can call `reset()` on `formMethods` after the alert box is shown:
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-return (
-  const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
-    onCompleted: () => {
-      alert('Thank you for your submission!')
-      formMethods.reset()
-    },
-  })
+const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
+  onCompleted: () => {
+    alert('Thank you for your submission!')
+    formMethods.reset()
+  },
+})
 ```
 
 > You can put the email validation back into the `<TextField>` now, but you should leave the server validation in place, just in case.
