@@ -56,9 +56,13 @@ We'll use yarn ([yarn](https://yarnpkg.com/en/docs/install) is a requirement) to
 
     yarn create redwood-app ./redwoodblog
 
-You'll have a new directory `redwoodblog` containing several directories and files. Change to that directory and let's create the database, and then start the development server:
+You'll have a new directory `redwoodblog` containing several directories and files. Change to that directory and install the dependencies:
 
     cd redwoodblog
+    yarn install
+    
+Now, let's create the database, and then start the development server:
+
     yarn redwood dev
 
 A browser should automatically open to http://localhost:8910 and you will see the Redwood welcome page:
