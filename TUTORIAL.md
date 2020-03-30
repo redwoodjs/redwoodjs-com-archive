@@ -2140,13 +2140,12 @@ Now we can call `reset()` on `formMethods` after the alert box is shown:
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-return (
-  const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
-    onCompleted: () => {
-      alert('Thank you for your submission!')
-      formMethods.reset()
-    },
-  })
+const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
+  onCompleted: () => {
+    alert('Thank you for your submission!')
+    formMethods.reset()
+  },
+})
 ```
 
 > You can put the email validation back into the `<TextField>` now, but you should leave the server validation in place, just in case.
