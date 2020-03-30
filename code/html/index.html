@@ -327,7 +327,7 @@ $ yarn rw generate scaffold User</code></pre>
 import { Form, Label, TextAreaField, FieldError, Submit } from "@redwoodjs/web"
 
 export const Comment = () => {
-  const onSubmit = (data) {
+  const onSubmit = (data) => {
     console.info(`Submitted: ${data}`)
   }
   return (
