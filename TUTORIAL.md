@@ -2245,43 +2245,15 @@ Add one more environment variable, `BINARY_TARGET` set to the value `rhel-openss
 
 ![image](https://user-images.githubusercontent.com/300/76902210-b9182700-6858-11ea-86f4-8f8f728bddd0.png)
 
-Go to **Build & Deploy** > **Continuous Deployment** and scroll down to **Build image selection**. Make sure that Ubuntu Xenial is selected. If not click **Edit settings** and change it.
+The last thing we need to do on Netlify is to enable the beta build process. Eventually this new build process will be the default for new sites but for now we need to manually enable it. Head to https://app.netlify.com/enable-beta find your new site:
 
-![image](https://user-images.githubusercontent.com/300/75920758-d68ad100-5e14-11ea-94cd-606d8e7ca38f.png)
+![image](https://user-images.githubusercontent.com/300/78308369-25ec1c00-74fd-11ea-9d65-db079a61bf5d.png)
 
-The last thing we need to do on Netlify is to enable the beta build process. Eventually this new build process will be the default for new sites but for now we need to manually enable it. Head to http://build-beta.netlify.com and login with your Netlify credentials, then find your site:
+Click the **Enable** button, then **Done**. Now to go to **Sites** in the top nav and click on your site again. Now to **Deploys** in the top nav and open the **Trigger deploy** dropdown on the right, then finally choose **Deploy site**:
 
-![image](https://user-images.githubusercontent.com/300/76029473-68fca480-5ee9-11ea-9a64-badb57b665e7.png)
+![image](https://user-images.githubusercontent.com/300/78308517-8a0ee000-74fd-11ea-84a3-ae38a64b6b32.png)
 
-Click the **Enable Beta Build for this site** button and you should get a popup window saying it's been added:
-
-![image](https://user-images.githubusercontent.com/300/76029602-a95c2280-5ee9-11ea-9bb7-c86b48611e4c.png)
-
-We'd like to say you can click **Click here to trigger a new build**, but we can't. We need to do one more thing.
-
-### A Temporary Fix
-
-There's one change we need to make in our code. This is a temporary fix as Prisma works on a feature on their side. We need to change the DB provider in our codebase from "sqlite" to "postgresql" and commit that change. That will let the site build properly on Netlify, but now local dev will be broken (we're not using Postgres locally). Once Prisma fixes this issue we can remove this section of the tutorial, but for now we need it.
-
-What does this mean for local development? You have two options:
-
-1. Use Postgres locally. Get your local connection string and add it to `.env` and now you'll be using Postgres in development and production.
-2. Change the provider back to `sqlite` when developing locally, but make sure not to commit that change or production will break.
-
-We know this isn't an ideal solution but it's only temporary, promise!
-
-Open up `api/prisma/schema.prisma` and change the provider:
-
-```prisma
-// api/prisma/schema.prisma
-
-datasource DS {
-  provider = "postgresql"
-  url = env("DATABASE_URL")
-}
-```
-
-Save that change and commit it. When you push `master` to your origin it will trigger a deploy automatically. With a little luck (and SCIENCE) it will complete successfully! You can click the **Preview** button at the top of the deploy log page, or go back and click the URL of your Netlify site towards the top:
+With a little luck (and SCIENCE) it will complete successfully! You can click the **Preview** button at the top of the deploy log page, or go back and click the URL of your Netlify site towards the top:
 
 ![Netlify URL](https://user-images.githubusercontent.com/300/73705247-32ddc200-46aa-11ea-833e-3d2b35dc136f.png)
 
