@@ -439,7 +439,7 @@ This says that we want a table called `Post` and it should have:
 >
 > `id String @id @default(cuid())`
 >
-> Integers also make for nicer URLs like https://redwoodblog.com/posts/123 instead of https://redwoodblog.com/posts/eebb026c-b661-42fe-93bf-f1a373421a13 Take a look at the [official Prisma documentation](https://github.com/prisma/prisma2/blob/master/docs/data-modeling.md#ids) for more on ID fields.
+> Integers also make for nicer URLs like https://redwoodblog.com/posts/123 instead of https://redwoodblog.com/posts/eebb026c-b661-42fe-93bf-f1a373421a13 Take a look at the [official Prisma documentation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/data-model#ids) for more on ID fields.
 
 ### Migrations
 
