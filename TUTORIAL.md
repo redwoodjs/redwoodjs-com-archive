@@ -817,7 +817,7 @@ export const posts = () => {
 
 export const post = ({ id }) => {
   return db.post.findOne({
-    where: { id: id },
+    where: { id },
   })
 }
 
@@ -830,13 +830,13 @@ export const createPost = ({ input }) => {
 export const updatePost = ({ id, input }) => {
   return db.post.update({
     data: input,
-    where: { id: id },
+    where: { id },
   })
 }
 
 export const deletePost = ({ id }) => {
   return db.post.delete({
-    where: { id: id },
+    where: { id },
   })
 }
 ```
