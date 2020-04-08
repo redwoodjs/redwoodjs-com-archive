@@ -999,7 +999,7 @@ What if you could request the conversion right in the route's path? Well, guess 
 <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
 ```
 
-Voilá! Not only will this convert the `id` param to a number before passing it to your Page, it will prevent the route from matching unless the `id` path segment consists entirely of digits. If any non-digits are found, the router will keep trying other routes, eventually showing the `NotFoundPage` if no routes match.
+Voilà! Not only will this convert the `id` param to a number before passing it to your Page, it will prevent the route from matching unless the `id` path segment consists entirely of digits. If any non-digits are found, the router will keep trying other routes, eventually showing the `NotFoundPage` if no routes match.
 
 > **What if I want to pass some other prop to the cell that I don't need in the query, but do need in the Success/Loader/etc. components?**
 >
