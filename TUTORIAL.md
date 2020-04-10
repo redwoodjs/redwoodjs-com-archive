@@ -390,6 +390,12 @@ export default AboutPage
 
 ## Getting Dynamic
 
+Part 2 of the video tutorial picks up here:
+
+<div class="relative pb-9/16">
+  <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/SP5vbsWf5Yg?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
+</div>
+
 These two pages are great and all but where are the actual blog posts in this blog? Let's work on those next.
 
 For the purposes of our tutorial we're going to get our blog posts from a database. Because relational databases are still the workhorses of many complex (and not-so-complex) web applications, we've made SQL access a first-class citizen. For Redwood apps, it all starts with the schema.
