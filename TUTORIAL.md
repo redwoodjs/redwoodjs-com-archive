@@ -2216,15 +2216,6 @@ datasource DS {
 Add a `DATABASE_URL` to your `.env` file with the URL of the database you'd like to use locally. We've chosen `redwoodblog_dev` and have `postgres` as a superuser of our local database for ease of use.
 
 ```env
-# THIS FILE SHOULD NOT BE CHECKED INTO YOUR VERSION CONTROL SYSTEM
-#
-# Environment variables set here will override those in .env.defaults.
-# Any environment variables you need in production you will need to setup with
-# your hosting provider. For example in Netlify you can add environment
-# variables in Settings > Build & Deploy > environment
-#
-# DATABASE_URL=postgres://user:pass@postgreshost.com:5432/database_name
-# BINARY_TARGET=rhel-openssl-1.0.x
 DATABASE_URL="postgresql://postgres@localhost/redwoodblog_dev?connection_limit=1"
 ```
 
@@ -2252,16 +2243,6 @@ datasource DS {
 ```
 
 ```env
-# .env
-# THIS FILE SHOULD NOT BE CHECKED INTO YOUR VERSION CONTROL SYSTEM
-#
-# Environment variables set here will override those in .env.defaults.
-# Any environment variables you need in production you will need to setup with
-# your hosting provider. For example in Netlify you can add environment
-# variables in Settings > Build & Deploy > environment
-#
-# DATABASE_URL=postgres://user:pass@postgreshost.com:5432/database_name
-# BINARY_TARGET=rhel-openssl-1.0.x
 DATABASE_PROVIDER="postgres"
 ```
 
