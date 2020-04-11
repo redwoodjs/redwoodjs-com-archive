@@ -2334,11 +2334,6 @@ Another neat feature of Netlify is _Branch Deploys_. When you create a branch an
 
 ### A Note About DB Connections
 
-In this tutorial, your lambda functions will be connecting directly to the Postgres database. 
-
-Because Postgres has a limited number of concurrent connections it will accept (100 by default), this does not scale very well and the limits will be exhausted quickly. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. 
-
-**A note on connection pooling and production**
 Postgres has a concurrent connection limit of 100 by default. In a traditional server environment, you would need a large amount of traffic to exhaust these connections, since each web server instance typically leverages a single connection.
 
 In a Serverless environment, each function connects directly to the database. Because of this, Postgres limits can be exhausted quickly. To prevent this, you should add a connection pooling service in front of Postgres. We're not going to worry about connection pooling for this tutorial, but when setting up a production enviroment, you'll want to setup connection pooling. For Heroku, see [Postgres Connection Pooling](https://devcenter.heroku.com/articles/postgres-connection-pooling).
