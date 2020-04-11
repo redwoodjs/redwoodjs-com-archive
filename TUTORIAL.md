@@ -2195,7 +2195,77 @@ Before we continue, make sure your app is fully committed and pushed to GitHub, 
 
 ### The Database
 
-We'll need a database somewhere on the internet to store our data. Locally we've been using SQLite but that's meant to be a single-user, disc-based store and isn't suited for the kind of connection and concurrency requirements a real, live website will require. For this tutorial we're going to use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting, we just need to get one available to the outside world so it can be accessed by our app.
+We'll need a database somewhere on the internet to store our data. We've been using SQLite locally, but that's a file-based store meant for single-user. SQLite isn't really suited for the kind of connection and concurrency requirements a production website will require. For this part of this tutorial, we will use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting. We just need to get a database available to the outside world so it can be accessed by our app.
+
+#### Update our app to use Postgres
+To use Postgres, we need to update `schema.prisma` to use the `postgres` provider. At this point there are two choices. You can continue to run SQLite locally and switch to Postgres for production, or you can run Postgres in development. While SQLite makes for an easier tutorial, we recommend running the same database as you do in production.
+
+**Running Postgres locally (recommended)**
+
+Ensure you have Postgres installed on your machine. If you're using a Mac, you'll likely use Homebrew: `brew install postgres`. Follow the instructions provided.
+
+Update `prisma.schema` to use the `postgres` provider:
+
+```prisma
+datasource DS {
+  provider = "postgres"
+  url = env("DATABASE_URL")
+}
+```
+
+Add a `DATABASE_URL` to your `.env` file with the URL of the database you'd like to use locally. We've chosen `redwoodblog_dev` and have `postgres` as a superuser of our local database for ease of use.
+
+```env
+# THIS FILE SHOULD NOT BE CHECKED INTO YOUR VERSION CONTROL SYSTEM
+#
+# Environment variables set here will override those in .env.defaults.
+# Any environment variables you need in production you will need to setup with
+# your hosting provider. For example in Netlify you can add environment
+# variables in Settings > Build & Deploy > environment
+#
+# DATABASE_URL=postgres://user:pass@postgreshost.com:5432/database_name
+# BINARY_TARGET=rhel-openssl-1.0.x
+DATABASE_URL="postgresql://postgres@localhost/redwoodblog_dev?connection_limit=1"
+```
+
+Note the `connection_limit` parameter. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context. You should also append this parameter when setting up your production database below.
+
+Next, tell Redwood to create and migrate the new database.
+
+```bash
+yarn rw db up
+```
+
+You should now have a brand new Postgres database, with the same table structure you used previously!
+
+
+**Changing the provider with an environment variable:**
+
+If you'd rather stick with SQLite locally for now, make the following changes to `prisma.schema` and `.env`:
+
+```prisma
+// schema.prisma
+datasource DS {
+  provider = env("DATABASE_PROVIDER")
+  url = env("DATABASE_URL")
+}
+```
+
+```env
+# .env
+# THIS FILE SHOULD NOT BE CHECKED INTO YOUR VERSION CONTROL SYSTEM
+#
+# Environment variables set here will override those in .env.defaults.
+# Any environment variables you need in production you will need to setup with
+# your hosting provider. For example in Netlify you can add environment
+# variables in Settings > Build & Deploy > environment
+#
+# DATABASE_URL=postgres://user:pass@postgreshost.com:5432/database_name
+# BINARY_TARGET=rhel-openssl-1.0.x
+DATABASE_PROVIDER="postgres"
+```
+
+#### Creating the production database
 
 > For now, you need to set up your own database, but we are working with various infrastructure providers to make this process simpler and more JAMstacky. Stay tuned for improvements in that regard!
 
@@ -2243,7 +2313,7 @@ Now just authorize Netlify to connect to your git hosting provider and find your
 
 Netlify will start building your app (click the **Deploying your site** link to watch the logs) and it will say "Site is live", but nothing will work. Why? We haven't told it where to find our database yet.
 
-Go back to the main site page and then to **Settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DATABASE_URL"):
+Go back to the main site page and then to **Settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DATABASE_URL" and don't forget to add the `?connection_limit=1` parameter to the end):
 
 ![image](https://user-images.githubusercontent.com/300/76902309-f41a5a80-6858-11ea-974f-cbc00863e5a9.png)
 
@@ -2283,7 +2353,16 @@ Another neat feature of Netlify is _Branch Deploys_. When you create a branch an
 
 ### A Note About DB Connections
 
-In this tutorial, your lambda functions will be connecting directly to the Postgres database. Because Postgres has a limited number of concurrent connections it will accept, this does not scale very well. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. We are working on making this process much easier, but keep it in mind before you deploy a Redwood app to production and announce it to the world.
+In this tutorial, your lambda functions will be connecting directly to the Postgres database. 
+
+Because Postgres has a limited number of concurrent connections it will accept (100 by default), this does not scale very well and the limits will be exhausted quickly. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. 
+
+**A note on connection pooling and production**
+Postgres has a concurrent connection limit of 100 by default. In a traditional server environment, you would need a large amount of traffic to exhaust these connections, since each web server instance typically leverages a single connection.
+
+In a Serverless environment, each function connects directly to the database. Because of this, Postgres limits can be exhausted quickly. To prevent this, you should add a connection pooling service in front of Postgres. We're not going to worry about connection pooling for this tutorial, but when setting up a production enviroment, you'll want to setup connection pooling. For Heroku, see [Postgres Connection Pooling](https://devcenter.heroku.com/articles/postgres-connection-pooling).
+
+We are working on making this process much easier, but keep it in mind before you deploy a Redwood app to production and announce it to the world.
 
 ## Wrapping Up
 
