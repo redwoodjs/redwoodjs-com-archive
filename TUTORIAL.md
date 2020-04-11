@@ -2198,46 +2198,8 @@ Before we continue, make sure your app is fully committed and pushed to GitHub, 
 
 We'll need a database somewhere on the internet to store our data. We've been using SQLite locally, but that's a file-based store meant for single-user. SQLite isn't really suited for the kind of connection and concurrency requirements a production website will require. For this part of this tutorial, we will use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting. We just need to get a database available to the outside world so it can be accessed by our app.
 
-#### Update our app to use Postgres
-To use Postgres, we need to update `schema.prisma` to use the `postgres` provider. At this point there are two choices. You can continue to run SQLite locally and switch to Postgres for production, or you can run Postgres in development. While SQLite makes for an easier tutorial, we recommend running the same database as you do in production.
-
-**Running Postgres locally (recommended)**
-
-Ensure you have Postgres installed on your machine. If you're using a Mac, you'll likely use Homebrew: `brew install postgres`. Follow the instructions provided.
-
-Update `prisma.schema` to use the `postgres` provider:
-
-```prisma
-datasource DS {
-  provider = "postgres"
-  url = env("DATABASE_URL")
-}
-```
-
-Add a `DATABASE_URL` to your `.env` file with the URL of the database you'd like to use locally. We've chosen `redwoodblog_dev` and have `postgres` as a superuser of our local database for ease of use.
-
-```env
-DATABASE_URL="postgresql://postgres@localhost/redwoodblog_dev?connection_limit=1"
-```
-
-Note the `connection_limit` parameter. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context. You should also append this parameter when setting up your production database below.
-
-Next, tell Redwood to create and migrate the new database.
-
-```bash
-yarn rw db up
-```
-
-You should now have a brand new Postgres database, with the same table structure you used previously!
-
-
-**Changing the provider at build time:**
-
-If you'd rather stick with SQLite locally for now, you'll have to switch out the provider at build time. If you're using Netlify, there is a [plugin](https://github.com/redwoodjs/netlify-plugin-prisma-provider) that attempts to handle this for you. 
-
-Unfortunately, providers can't be set by environment variables yet. There is an [open issue](https://github.com/prisma/prisma/issues/1487) that will allow providers to be fully dynamic.
-
-#### Creating the production database
+If you'd like to develop locally with Postgres, see the 
+[Local Postgres Setup](https://github.com/redwoodjs/redwood/blob/ed0eb079ff9f7a67ae7f2ff49d4aef0649a1510e/docs/localPostgresSetup.md) guide.
 
 > For now, you need to set up your own database, but we are working with various infrastructure providers to make this process simpler and more JAMstacky. Stay tuned for improvements in that regard!
 
@@ -2285,9 +2247,11 @@ Now just authorize Netlify to connect to your git hosting provider and find your
 
 Netlify will start building your app (click the **Deploying your site** link to watch the logs) and it will say "Site is live", but nothing will work. Why? We haven't told it where to find our database yet.
 
-Go back to the main site page and then to **Settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DATABASE_URL" and don't forget to add the `?connection_limit=1` parameter to the end):
+Go back to the main site page and then to **Settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DATABASE_URL"):
 
 ![image](https://user-images.githubusercontent.com/300/76902309-f41a5a80-6858-11ea-974f-cbc00863e5a9.png)
+
+> When configuring a production database, you'll want to append `?connection_limit=1 to the URI. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context. 
 
 Click **Save** and you should see the new variable listed:
 
@@ -2325,9 +2289,7 @@ Another neat feature of Netlify is _Branch Deploys_. When you create a branch an
 
 ### A Note About DB Connections
 
-Postgres has a concurrent connection limit of 100 by default. In a traditional server environment, you would need a large amount of traffic to exhaust these connections, since each web server instance typically leverages a single connection.
-
-In a Serverless environment, each function connects directly to the database. Because of this, Postgres limits can be exhausted quickly. To prevent connection errors, you should add a connection pooling service in front of Postgres. We're not going to worry about connection pooling for this tutorial, but when setting up a production enviroment, you'll want to setup connection pooling. For Heroku, see [Postgres Connection Pooling](https://devcenter.heroku.com/articles/postgres-connection-pooling).
+In this tutorial, your lambda functions will be connecting directly to the Postgres database. Because Postgres has a limited number of concurrent connections it will accept, this does not scale very well. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. To learn how to do that, see [Connection Pooling](https://github.com/redwoodjs/redwood/blob/ed0eb079ff9f7a67ae7f2ff49d4aef0649a1510e/docs/connectionPooling.md).
 
 We are working on making this process much easier, but keep it in mind before you deploy a Redwood app to production and announce it to the world.
 
