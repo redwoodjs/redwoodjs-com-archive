@@ -421,7 +421,8 @@ First let's define the data structure for a post in the database. Open up `api/p
 // api/prisma/schema.prisma
 
 datasource DS {
-  provider = "sqlite"
+  
+  = "sqlite"
   url = env("DATABASE_URL")
 }
 
@@ -2230,21 +2231,11 @@ yarn rw db up
 You should now have a brand new Postgres database, with the same table structure you used previously!
 
 
-**Changing the provider with an environment variable:**
+**Changing the provider at build time:**
 
-If you'd rather stick with SQLite locally for now, make the following changes to `prisma.schema` and `.env`:
+If you'd rather stick with SQLite locally for now, you'll have to switch out the provider at build time. If you're using Netlify, there is a [plugin](https://github.com/redwoodjs/netlify-plugin-prisma-provider) that attempts to handle this for you. 
 
-```prisma
-// schema.prisma
-datasource DS {
-  provider = env("DATABASE_PROVIDER")
-  url = env("DATABASE_URL")
-}
-```
-
-```env
-DATABASE_PROVIDER="postgres"
-```
+Unfortunately, providers can't be set by environment variables yet. There is an [open issue](https://github.com/prisma/prisma/issues/1487) that will allow providers to be fully dynamic.
 
 #### Creating the production database
 
