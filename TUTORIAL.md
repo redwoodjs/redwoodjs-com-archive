@@ -421,8 +421,7 @@ First let's define the data structure for a post in the database. Open up `api/p
 // api/prisma/schema.prisma
 
 datasource DS {
-  
-  = "sqlite"
+  provider = "sqlite"
   url = env("DATABASE_URL")
 }
 
