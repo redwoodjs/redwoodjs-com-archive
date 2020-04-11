@@ -2002,8 +2002,9 @@ We talked about business logic belonging in our services files and this is a per
 
 ```javascript
 // api/src/services/contacts/contacts.js
-import { db } from 'src/lib/db'
 import { UserInputError } from '@redwoodjs/api'
+
+import { db } from 'src/lib/db'
 
 const validate = (input) => {
   if (input.email && !input.email.match(/[^@]+@[^.]+\..+/)) {
