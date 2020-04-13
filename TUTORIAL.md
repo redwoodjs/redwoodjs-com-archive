@@ -422,7 +422,7 @@ First let's define the data structure for a post in the database. Open up `api/p
 
 datasource DS {
   provider = "sqlite"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -431,7 +431,7 @@ generator client {
 }
 
 model Post {
-  id        Int @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   title     String
   body      String
   createdAt DateTime @default(now())
