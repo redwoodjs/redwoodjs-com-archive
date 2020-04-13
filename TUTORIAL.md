@@ -923,7 +923,7 @@ For routes with route parameters, the named route function expects an object whe
 
 Ok, so the ID is in the URL. What do we need next in order to display a specific post? It sounds like we'll be doing some data retrieval from the database, which means we want a cell:
 
-    yarn rw g cell blog_post
+    yarn rw g cell BlogPost
 
 And then we'll use that cell in `BlogPostPage` (and while we're at it let's surround the page with the `BlogLayout`):
 
