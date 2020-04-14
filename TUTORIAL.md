@@ -790,19 +790,24 @@ export const schema = gql`
   }
 
   type Query {
-    posts: [Post]
-    post(id: Int!): Post
+    posts: [Post!]!
+    post(id: Int!): Post!
   }
 
-  input PostInput {
+  input CreatePostInput {
+    title: String!
+    body: String!
+  }
+
+  input UpdatePostInput {
     title: String
     body: String
   }
 
   type Mutation {
-    createPost(input: PostInput!): Post
-    updatePost(id: Int!, input: PostInput!): Post
-    deletePost(id: Int!): Post
+    createPost(input: CreatePostInput!): Post!
+    updatePost(id: Int!, input: UpdatePostInput!): Post!
+    deletePost(id: Int!): Post!
   }
 `
 ```
@@ -811,7 +816,7 @@ In this example, Redwood will look in `api/src/services/posts/posts.js` for the 
 
 - `posts()`
 - `post({id})`
-- `createPost({input)}`
+- `createPost({input})`
 - `updatePost({id, input})`
 - `deletePost({id})`
 
@@ -1762,7 +1767,7 @@ Just like the `scaffold` command, this will create two new files under the `api`
 1. `api/src/graphql/contacts.sdl.js`: defines the GraphQL schema in GraphQL's schema definition language
 2. `api/src/services/contacts/contacts.js`: contains your app's business logic.
 
-Open up `api/src/graphql/contacts.sdl.js` and you'll see the `Contact` and `ContactInput` types were already defined for us—the `generate sdl` command introspected the schema and created a `Contact` type containing each database field in the table, as well as a `Query` type with a single query `contacts` which returns an array of `Contact` types:
+Open up `api/src/graphql/contacts.sdl.js` and you'll see the `Contact`, `CreateContactInput` and `UpdateContactInput` types were already defined for us—the `generate sdl` command introspected the schema and created a `Contact` type containing each database field in the table, as well as a `Query` type with a single query `contacts` which returns an array of `Contact` types:
 
 ```javascript
 // api/src/graphql/contacts.sdl.js
@@ -1780,7 +1785,13 @@ export const schema = gql`
     contacts: [Contact]
   }
 
-  input ContactInput {
+  input CreateContactInput {
+    name: String!
+    email: String!
+    message: String!
+  }
+
+  input UpdateContactInput {
     name: String
     email: String
     message: String
@@ -1788,9 +1799,9 @@ export const schema = gql`
 `
 ```
 
-What's `ContactInput`? Redwood follows the GraphQL recommendation of using [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) in mutations rather than listing out each and every field that can be set.
+What's `CreateContactInput` and `UpdateContactInput`? Redwood follows the GraphQL recommendation of using [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) in mutations rather than listing out each and every field that can be set. Any fields required in `schema.prisma` are also required in `CreateContactInput` (you can't create a valid record without them) but nothing is explictly required in `UpdateContactInput`. This is because you could want to update only a single field, or two fields, or all fields. The alternative would be to create separate Input types for every permutation of fields you would want to update. We felt that only having one update input, while maybe not pedantically the absolute **correct** way to create a GraphQL API, we felt it was a good compromise for an optimal developer experience.
 
-> Redwood assumes your code won't try to set a value on any field named `id` or `createdAt` so it left those out of the `ContactInput` type, but if your database allowed either of those to be set manually you can update `ContactInput` and add them.
+> Redwood assumes your code won't try to set a value on any field named `id` or `createdAt` so it left those out of the Input types, but if your database allowed either of those to be set manually you can update `CreateContactInput` or `UpdateContactInput` and add them.
 
 Since all of the DB columns were required in the `schema.prisma` file they are marked as required here (the `!` suffix on the datatype).
 
@@ -1804,11 +1815,11 @@ In this case we're creating a single `Mutation` that we'll call `createContact`.
 // api/src/graphql/contacts.sdl.js
 
 type Mutation {
-  createContact(input: ContactInput!): Contact
+  createContact(input: CreateContactInput!): Contact
 }
 ```
 
-The `createContact` mutation will accept a single variable, `input`, that is an object that conforms to what we expect for a `ContactInput`, namely `{ name, email, message }`.
+The `createContact` mutation will accept a single variable, `input`, that is an object that conforms to what we expect for a `CreateContactInput`, namely `{ name, email, message }`.
 
 That's it for the SDL file, let's define the service that will actually save the data to the database. The service includes a default `contacts` function for getting all contacts from the database. Let's add our mutation to create a new contact:
 
@@ -1855,7 +1866,7 @@ Our GraphQL mutation is ready to go on the backend so all that's left is to invo
 // web/src/pages/ContactPage/ContactPage.js
 
 const CREATE_CONTACT = gql`
-  mutation CreateContactMutation($input: ContactInput!) {
+  mutation CreateContactMutation($input: CreateContactInput!) {
     createContact(input: $input) {
       id
     }
