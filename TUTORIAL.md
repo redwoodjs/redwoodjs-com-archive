@@ -1782,7 +1782,7 @@ export const schema = gql`
   }
 
   type Query {
-    contacts: [Contact]
+    contacts: [Contact!]!
   }
 
   input CreateContactInput {
