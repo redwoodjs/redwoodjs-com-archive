@@ -37,6 +37,11 @@
   status = 301
 
 [[redirects]]
+  from = "/cookbook"
+  to = "/cookbook/using-a-third-party-api.html"
+  status = 301
+
+[[redirects]]
   from = "/home"
   to = "/"
   status = 301
