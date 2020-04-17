@@ -6,9 +6,11 @@ We're going to build a simple weather app that will display the current weather 
 
 ![image](https://user-images.githubusercontent.com/300/79395970-af551280-7f2f-11ea-9b8c-870fc2bfdd36.png)
 
+> If you just want to skip to the code, you can get the repo for both the client and server implementation here: https://github.com/redwoodjs/cookbook-third-party-apis You will still need a valid API key from OpenWeather, so don't skip the **Setup** steps below!
+
 ## Setup
 
-You'll need to [create a free account](https://home.openweathermap.org/users/sign_up) to get an API key. You'll be able to make 1,000 calls per day, which is more than enough for our sample app (with enough left over that you can release this as a private weather station for your family and friends).
+You'll need to [create a free account](https://home.openweathermap.org/users/sign_up) on OpenWeather to get an API key. You'll be able to make 1,000 calls per day, which is more than enough for our sample app (with enough left over that you can release this as a private weather station for your family and friends).
 
 Once you've created your account and verified your email address, go to the API keys tab and copy your default key:
 
@@ -162,7 +164,7 @@ const onSubmit = (data) => {
 
 ![image](https://user-images.githubusercontent.com/300/79379271-858df280-7f13-11ea-97f0-5020f875170d.png)
 
-> If it turns out your API key still isn't ready, just replace the URL in the fetch with the sample response endpoint instead: https://samples.openweathermap.org/data/2.5/weather?zip=94040,us&appid=439d4b804bc8187953eb36d2a8c26a02
+> If it turns out your API key still isn't ready, you'd think you could just replace the URL in the fetch with the sample response endpoint instead, but this causes a CORS error. At this point you'll just need to wait for your API key to start working!
 
 Well that was easy! We have the zip code hardcoded into that URL so let's replace that with the actual value from our text box:
 
@@ -280,6 +282,8 @@ export default HomePage
 
 It's not pretty, but it works! We'll leave the styling to you!
 
+> You can see the final code, with styling, here: https://github.com/redwoodjs/cookbook-third-party-apis/blob/master/web/src/pages/ClientPage/ClientPage.js
+
 ## Server-side API Integration
 
 If you weighed the pros and cons presented earlier and found too many cons on the client-side implementation, then it looks like we're making our call on the server. To do that we'll need to do two things
@@ -305,7 +309,7 @@ export const schema = gql`
     zip: String!
     city: String!
     conditions: String!
-    temp: String!
+    temp: Int!
     icon: String!
   }
 
@@ -315,13 +319,13 @@ export const schema = gql`
 `
 ```
 
-This data structure returns just the data we care about, and we can even pre-format it on the server (convert kelvin to fahrenheit and get the icon URL). We have a Query type `getWeather` that accepts the zip code (note that it's a `String` because it could start with a `0`) and returns our `Weather` type define above.
-
-That's it for our client-to-server API interface! Now let's define the GraphQL resolver that will actually get the data from OpenWeather. Let's take it one step at a time and first make sure we can access our new GraphQL endpoint. We'll define the `getWeather` function to just return some dummy data in the format we require:
+This data structure returns just the data we care about, and we can even pre-format it on the server (convert kelvin to fahrenheit and get the icon URL). We have a Query type `getWeather` that accepts the zip code (note that it's a `String` because it could start with a `0`) and returns our `Weather` type defined above.
 
 ### The Service
 
-In Redwood query types are automatically mapped to functions exported from a service with the same name, so we'll create a `weather.js` service and name the function `getWeather`:
+That's it for our client-to-server API interface! Now let's define the GraphQL resolver that will actually get the data from OpenWeather. We'll take it one step at a time and first make sure we can access our new GraphQL endpoint. We'll define the `getWeather` function to just return some dummy data in the format we require.
+
+In Redwood GraphQL Query types are automatically mapped to functions exported from a service with the same name, so we'll create a `weather.js` service and name the function `getWeather`:
 
 ```javascript
 // api/src/services/weather/weather.js
@@ -351,7 +355,7 @@ Okay lets pull the real data from OpenWeather now. We'll use a package `node-fet
 yarn workspace api add node-fetch
 ```
 
-And import that into the service and make fetch. Note that fetch returns a Promise so we're going to convert our service to `async`/`await` to simplify things:
+And import that into the service and make the fetch. Note that `fetch` returns a Promise so we're going to convert our service to `async`/`await` to simplify things:
 
 ```javascript
 // api/src/services/weather/weather.js
@@ -376,7 +380,7 @@ export const getWeather = async ({ zip }) => {
 
 If you click "Play" in the GraphQL playground we should see the real data from the API:
 
-![image](https://user-images.githubusercontent.com/300/79394958-7b78ed80-7f2d-11ea-9774-281e93687aec.png)
+![image](https://user-images.githubusercontent.com/300/79607107-8ce60500-80a7-11ea-8b1d-fe1cd3e1d3dd.png)
 
 ### Displaying the weather
 
@@ -467,7 +471,7 @@ If your copy/paste-fu is strong you should get a dump of the JSON from the Graph
 
 ![image](https://user-images.githubusercontent.com/300/79393218-bb3dd600-7f29-11ea-9b3a-3f2bbd854ed8.png)
 
-Now all that's left is to format everything a little nicer! How about a little something like this in `WeatherCell`:
+Now all that's left is to format everything a little nicer. How about a little something like this in `WeatherCell`:
 
 ```javascript
 // web/src/components/WeatherCell/WeatherCell.js
@@ -495,7 +499,7 @@ What if the user inputs an invalid zip code, like **11111**?
 
 ![image](https://user-images.githubusercontent.com/300/79393581-7f574080-7f2a-11ea-8ccc-2a404e4c6874.png)
 
-Gross. This happens when our service tries to parse the response from OpenWeather and can't find one of the data points we're looking for. We should put together a nicer error message than that. Let's look at the response from OpenWeather when you enter a zip code that doesn't exist: https://api.openweathermap.org/data/2.5/weather?zip=11111,us&appid=YOUR_API_KEY
+Gross. This happens when our service tries to parse the response from OpenWeather and can't find one of the data points we're looking for (the array under the `weather` key). We should put together a nicer error message than that. Let's look at the response from OpenWeather when you enter a zip code that doesn't exist: https://api.openweathermap.org/data/2.5/weather?zip=11111,us&appid=YOUR_API_KEY
 
 ```json
 {
@@ -511,7 +515,7 @@ import fetch from 'node-fetch'
 
 export const getWeather = async ({ zip }) => {
   const response = await fetch(
-    `http://api.openweathermap.org/data/2.5/weather?zip=${zip},US&appid=aecd3f7bfdb15d9af3646fc41242c915`
+    `http://api.openweathermap.org/data/2.5/weather?zip=${zip},US&appid=YOUR_API_KEY`
   )
   const json = await response.json()
 
@@ -560,6 +564,6 @@ Much better!
 
 We hope this has given you enough confidence to go out and capture data from some of the amazing APIs of the Information Superhighway and get it (them?) into your Redwood app!
 
-Picking up any new framework from scratch is a daunting task and even those of us that wrote this one had little idea of what we were doing when we started. If you think we can improve on this recipe, or any other, open an [issue](https://github.com/redwoodjs/redwoodjs.com/issues) or a [pull request](https://github.com/redwoodjs/redwoodjs.com/pulls).
+Picking up any new framework from scratch is a daunting task and even those of us that wrote this one made more than a few trips to Google! If you think we can improve on this recipe, or any other, open an [issue](https://github.com/redwoodjs/redwoodjs.com/issues) or a [pull request](https://github.com/redwoodjs/redwoodjs.com/pulls).
 
 > "If you enjoy feeling like both the dumbest person in history and the smartest person on earth, all within 24 hours, programming may be the career for you!" —Anonymous
