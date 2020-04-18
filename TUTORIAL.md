@@ -2207,7 +2207,10 @@ Before we continue, make sure your app is fully committed and pushed to GitHub, 
 
 ### The Database
 
-We'll need a database somewhere on the internet to store our data. Locally we've been using SQLite but that's meant to be a single-user, disc-based store and isn't suited for the kind of connection and concurrency requirements a real, live website will require. For this tutorial we're going to use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting, we just need to get one available to the outside world so it can be accessed by our app.
+We'll need a database somewhere on the internet to store our data. We've been using SQLite locally, but that's a file-based store meant for single-user. SQLite isn't really suited for the kind of connection and concurrency requirements a production website will require. For this part of this tutorial, we will use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting. We just need to get a database available to the outside world so it can be accessed by our app.
+
+If you'd like to develop locally with Postgres, see the 
+[Local Postgres Setup](https://redwoodjs.com/docs/local-postgres-setup) guide.
 
 > For now, you need to set up your own database, but we are working with various infrastructure providers to make this process simpler and more JAMstacky. Stay tuned for improvements in that regard!
 
@@ -2255,9 +2258,11 @@ Now just authorize Netlify to connect to your git hosting provider and find your
 
 Netlify will start building your app (click the **Deploying your site** link to watch the logs) and it will say "Site is live", but nothing will work. Why? We haven't told it where to find our database yet.
 
-Go back to the main site page and then to **Settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DATABASE_URL"):
+Go back to the main site page and then to **Settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DATABASE_URL"). After pasting the value, append `?connection_limit=1` to the end. The URI will have the following format: `postgres://<user>:<pass>@<url>/<db>?connection_limit=1`.
 
 ![image](https://user-images.githubusercontent.com/300/76902309-f41a5a80-6858-11ea-974f-cbc00863e5a9.png)
+
+> When configuring a database, you'll want to append `?connection_limit=1` to the URI. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context. 
 
 Click **Save** and you should see the new variable listed:
 
@@ -2295,7 +2300,9 @@ Another neat feature of Netlify is _Branch Deploys_. When you create a branch an
 
 ### A Note About DB Connections
 
-In this tutorial, your lambda functions will be connecting directly to the Postgres database. Because Postgres has a limited number of concurrent connections it will accept, this does not scale very well. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. We are working on making this process much easier, but keep it in mind before you deploy a Redwood app to production and announce it to the world.
+In this tutorial, your lambda functions will be connecting directly to the Postgres database. Because Postgres has a limited number of concurrent connections it will accept, this does not scale very well. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. To learn how to do that, see [Connection Pooling](https://redwoodjs.com/docs/connection-pooling).
+
+We are working on making this process much easier, but keep it in mind before you deploy a Redwood app to production and announce it to the world.
 
 ## Wrapping Up
 
