@@ -2250,7 +2250,7 @@ Go back to the main site page and then to **Settings** at the top, and then **Bu
 
 ![image](https://user-images.githubusercontent.com/300/76902309-f41a5a80-6858-11ea-974f-cbc00863e5a9.png)
 
-> When configuring a production database, you'll want to append `?connection_limit=1 to the URI. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context. 
+> When configuring a database, you'll want to append `?connection_limit=1 to the URI. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context. 
 
 Click **Save** and you should see the new variable listed:
 
