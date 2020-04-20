@@ -1889,8 +1889,8 @@ import {
   Submit,
   FieldError,
   Label,
+  useMutation
 } from '@redwoodjs/web'
-import { useMutation } from '@redwoodjs/web'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = (props) => {
@@ -2090,6 +2090,7 @@ import {
   Submit,
   FieldError,
   Label,
+  useMutation,
   FormError,
 } from '@redwoodjs/web'
 
