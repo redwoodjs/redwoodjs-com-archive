@@ -20,7 +20,7 @@ This tutorial assumes you are already familiar with a few core concepts:
 
 - [React](https://reactjs.org/)
 - [GraphQL](https://graphql.org/)
-- [The JAMstack](https://jamstack.org/)
+- [The Jamstack](https://jamstack.org/)
 
 You could work through this tutorial without knowing anything about these technologies but you may find yourself getting lost in terminology that we don't stop and take the time to explain. It also helps knowing where the line is between what is built into React and what additional features Redwood brings to the table.
 
@@ -50,7 +50,7 @@ Please do upgrade accordingly. Then proceed to the RedwoodJS installation when y
 >
 > - For **Linux** and **Mac** users, `nvm` is a great tool for managing multiple versions of Node on one system. It takes a bit more effort to set up and learn, however, in which case getting the latest [installation from Nodejs.org](https://nodejs.org/en/) works just fine.
 >   - For **Mac** users, if you already have Homebrew installed, you can use it to [install `nvm`](https://formulae.brew.sh/formula/nvm) as well. Otherwise, follow the [installation instructions from `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating).
->   - For **Linux** users, you can follow the [installation instructions from `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating). 
+>   - For **Linux** users, you can follow the [installation instructions from `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating).
 > - We recommend **Windows** users visit [Nodejs.org](https://nodejs.org/en/) for installation.
 >
 > If you're confused about which of the two current Node versions to use, we recommend using the most recent "even" LTS, which is currently v12.
@@ -2203,18 +2203,18 @@ How about getting this thing out into the real world?
 
 ## Deployment
 
-The whole reason we started building Redwood was to make full-stack web apps easier to build and deploy on the JAMstack. You've seen what building a Redwood app is like, how about we try deploying one?
+The whole reason we started building Redwood was to make full-stack web apps easier to build and deploy on the Jamstack. You've seen what building a Redwood app is like, how about we try deploying one?
 
-Before we continue, make sure your app is fully committed and pushed to GitHub, GitLab, or Bitbucket. We're going to link Netlify directly to our git repo so that a simple push to `master` will re-deploy our site. If you haven't worked on the JAMstack yet you're in for a pleasant surprise!
+Before we continue, make sure your app is fully committed and pushed to GitHub, GitLab, or Bitbucket. We're going to link Netlify directly to our git repo so that a simple push to `master` will re-deploy our site. If you haven't worked on the Jamstack yet you're in for a pleasant surprise!
 
 ### The Database
 
 We'll need a database somewhere on the internet to store our data. We've been using SQLite locally, but that's a file-based store meant for single-user. SQLite isn't really suited for the kind of connection and concurrency requirements a production website will require. For this part of this tutorial, we will use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting. We just need to get a database available to the outside world so it can be accessed by our app.
 
-If you'd like to develop locally with Postgres, see the 
+If you'd like to develop locally with Postgres, see the
 [Local Postgres Setup](https://redwoodjs.com/docs/local-postgres-setup) guide.
 
-> For now, you need to set up your own database, but we are working with various infrastructure providers to make this process simpler and more JAMstacky. Stay tuned for improvements in that regard!
+> For now, you need to set up your own database, but we are working with various infrastructure providers to make this process simpler and more Jamstacky. Stay tuned for improvements in that regard!
 
 There are several hosting providers where you can quickly start up a Postgres instance:
 
@@ -2264,7 +2264,7 @@ Go back to the main site page and then to **Settings** at the top, and then **Bu
 
 ![image](https://user-images.githubusercontent.com/300/76902309-f41a5a80-6858-11ea-974f-cbc00863e5a9.png)
 
-> When configuring a database, you'll want to append `?connection_limit=1` to the URI. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context. 
+> When configuring a database, you'll want to append `?connection_limit=1` to the URI. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context.
 
 Click **Save** and you should see the new variable listed:
 

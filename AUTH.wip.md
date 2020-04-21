@@ -9,7 +9,7 @@ But you know Redwood has your back! It will soon ship with integrations to sever
 
 We're going to demo a Netlify Identity integration in this tutorial, although Redwood's auth helpers aren't quite ready yet as of v0.1. For now we're going to do the "hard" way, although thanks to the work Netlify has put into Netlify Identity it will actually be much easier than you're probably expecting.
 
-In order to do that we need to get our site deployed to [Netlify](https://netlify.com). Netlify is a one-stop shop for getting on the JAMstack—continuous deployment, serverless functions, a globally distributed CDN serving all of your assets, and a lot more.
+In order to do that we need to get our site deployed to [Netlify](https://netlify.com). Netlify is a one-stop shop for getting on the Jamstack—continuous deployment, serverless functions, a globally distributed CDN serving all of your assets, and a lot more.
 
 Create an account at Netlify and verify your email. Then we'll return to the command line.
 
