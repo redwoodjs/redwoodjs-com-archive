@@ -27,18 +27,23 @@
   environment = { NODE_ENV = "production" }
 
 [[redirects]]
+  from = "/guides"
+  to = "/guides/introduction.html"
+  status = 301
+
+[[redirects]]
   from = "/tutorial"
   to = "/tutorial/welcome-to-redwood.html"
   status = 301
 
 [[redirects]]
-  from = "/docs"
-  to = "/docs/introduction.html"
+  from = "/cookbook"
+  to = "/cookbook/using-a-third-party-api.html"
   status = 301
 
 [[redirects]]
-  from = "/cookbook"
-  to = "/cookbook/using-a-third-party-api.html"
+  from = "/reference"
+  to = "/reference/redwood-form.html"
   status = 301
 
 [[redirects]]
