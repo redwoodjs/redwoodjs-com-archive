@@ -8,10 +8,13 @@ publish/*
 yarn-error.log
 code/html/cookbook/*.html
 !code/html/cookbook/index.html
-code/html/docs/*.html
-!code/html/docs/index.html
+code/html/guides/*.html
+!code/html/guides/index.html
 code/html/tutorial/*.html
 !code/html/tutorial/index.html
-code/html/_docs_nav.html
+code/html/reference/*.html
+!code/html/reference/index.html
+code/html/_guides_nav.html
 code/html/_tutorial_nav.html
 code/html/_cookbook_nav.html
+code/html/_reference_nav.html
