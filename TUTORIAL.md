@@ -1439,7 +1439,7 @@ return (
 
 And now when we submit the form with blank fields...the Name field gets focus. Boring. But this is just a stepping stone to our amazing reveal! We have one more form helper component to add—the one that displays errors on a field. Oh it just so happens that it's plain HTML so we can style it however we want!
 
-### &lt;FieldError&gt;
+### `<FieldError>`
 
 Introducing `<FieldError>` (don't forget to include it in the `import` statement at the top):
 

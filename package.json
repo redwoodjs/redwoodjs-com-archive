@@ -25,6 +25,8 @@
     "dotenv": "^8.2.0",
     "highlight.js": "^9.18.1",
     "install": "^0.13.0",
+    "lodash.clone": "^4.5.0",
+    "lodash.escape": "^4.0.1",
     "lodash.template": "^4.5.0",
     "marked": "^0.8.0",
     "node-fetch": "^2.6.0",

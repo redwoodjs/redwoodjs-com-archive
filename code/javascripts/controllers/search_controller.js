@@ -1,27 +1,29 @@
-import { Controller } from "stimulus";
-import template from "lodash.template";
+import { Controller } from 'stimulus'
+import template from 'lodash.template'
+import escape from 'lodash.escape'
+import clone from 'lodash.clone'
 
 export default class extends Controller {
   static get targets() {
-    return ["input", "results"];
+    return ['input', 'results']
   }
 
   initialize() {
     // create a handler bound to `this` that we can add and remove
     this.documentClickHandler = () => {
-      this.close();
-    };
+      this.close()
+    }
 
-    this.client = algoliasearch("FK1BZ27LVA", "7529991044069660797050dc19e7bebd");
-    this.index = this.client.initIndex("docs");
+    this.client = algoliasearch('FK1BZ27LVA', '7529991044069660797050dc19e7bebd')
+    this.index = this.client.initIndex('docs')
     this.searchOptions = {
       hitsPerPage: 3,
-      attributesToRetrieve: "*",
-      attributesToSnippet: "text:20,section:20",
+      attributesToRetrieve: '*',
+      attributesToSnippet: 'text:20,section:20',
       attributesToHighlight: null,
-      snippetEllipsisText: "…",
-      analytics: true
-    };
+      snippetEllipsisText: '…',
+      analytics: true,
+    }
 
     this.searchResultTemplate = template(`
       <a href="\${href}" class="p-2 block hover:bg-red-100 rounded searchresult">
@@ -34,7 +36,7 @@ export default class extends Controller {
             }">\${text}</p>
           </div>
         </div>
-      </a>`);
+      </a>`)
   }
 
   connect() {}
@@ -42,73 +44,92 @@ export default class extends Controller {
   // Highlight nav items if the URL matches the `href` on the link, or if the link has a
   // `data-match` attribute and location.href matches that value
   search(event) {
-    event.stopPropagation();
+    event.stopPropagation()
 
-    if (event.currentTarget.value.trim() !== "") {
-      if (event.key === "Escape") {
-        this.close();
-        return;
+    if (event.currentTarget.value.trim() !== '') {
+      if (event.key === 'Escape') {
+        this.close()
+        return
       } else {
-        this.index.search(event.currentTarget.value, this.searchOptions).then(data => {
-          this._parseResults(data);
-        });
+        this.index.search(event.currentTarget.value, this.searchOptions).then((data) => {
+          this._parseResults(data)
+        })
       }
     } else {
-      this._clear();
+      this._clear()
     }
   }
 
   close() {
-    this.resultsTarget.classList.add("hidden");
-    document.removeEventListener("click", this.documentClickHandler);
+    this.resultsTarget.classList.add('hidden')
+    document.removeEventListener('click', this.documentClickHandler)
   }
 
   _clear() {
-    this.resultsTarget.innerHTML = "";
-    this.close();
+    this.resultsTarget.innerHTML = ''
+    this.close()
+  }
+
+  _formatSection(text) {
+    // return escape(text.replace(/`/g, ''))
+
+    let output = text.replace(/`/g, '')
+
+    // no idea why, but sometimes opening and closing HTML tags in results from Algolia
+    // are already escaped properly, and if we don't do this check here then they'll
+    // get double-escaped and show &lt; and &gt;
+    if (!output.match(/&lt;/)) {
+      output = escape(output)
+    }
+    return output
+  }
+
+  _formatText(text) {
+    return escape(text.replace(/`/g, ''))
   }
 
   _parseResults(data) {
+    console.info(data)
     if (data.hits.length === 0) {
       return this._show(
         `<p class="text-sm font-semibold">No docs found for <span class="text-red-700">${data.query}</span></p>`
-      );
+      )
     }
 
-    const sections = [];
-    data.hits.map(hit => {
+    const sections = []
+    data.hits.map((hit) => {
       if (sections.indexOf(hit.book) === -1) {
-        sections.push(hit.book);
+        sections.push(hit.book)
       }
-    });
+    })
 
-    const items = {};
-    data.hits.forEach(hit => {
-      let attributes = Object.assign(hit, {
-        text: hit._snippetResult.text.value,
-        section: hit._snippetResult.section.value
-      });
-      let html = this.searchResultTemplate(attributes);
+    const items = {}
+    data.hits.forEach((hit) => {
+      let attributes = Object.assign(clone(hit), {
+        text: this._formatText(hit.text),
+        section: this._formatSection(hit.section),
+      })
+      let html = this.searchResultTemplate(attributes)
 
       if (items[hit.book]) {
-        items[hit.book].push(html);
+        items[hit.book].push(html)
       } else {
-        items[hit.book] = [html];
+        items[hit.book] = [html]
       }
-    });
+    })
 
-    let output = "";
+    let output = ''
     for (let item in items) {
-      output += `<h2 class="mt-2 mb-1 pb-1 pl-2 border-b text-gray-500 font-semibold">${item}</h2>`;
-      output += items[item].join("");
+      output += `<h2 class="mt-2 mb-1 pb-1 pl-2 border-b text-gray-500 font-semibold">${item}</h2>`
+      output += items[item].join('')
     }
 
-    this._show(output);
+    this._show(output)
   }
 
   _show(html) {
-    this.resultsTarget.classList.remove("hidden");
-    this.resultsTarget.innerHTML = html;
-    document.addEventListener("click", this.documentClickHandler);
+    this.resultsTarget.classList.remove('hidden')
+    this.resultsTarget.innerHTML = html
+    document.addEventListener('click', this.documentClickHandler)
   }
 }
