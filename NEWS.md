@@ -34,6 +34,18 @@
 
 ---
 
+![Better Programming logo](https://user-images.githubusercontent.com/300/80136159-302a9480-8556-11ea-9c14-6c15d1d3802c.png)
+
+# [A Look at RedwoodJS](https://medium.com/better-programming/a-look-at-redwoodjs-cf0e1d117f5)
+
+## 25 March 2020
+
+### I recently completed the RedwoodJS tutorial, which involves building a simple blog application. In this article, I will share some initial thoughts on my experience working with Redwood.
+
+#### Article
+
+---
+
 ![video screenshot](https://user-images.githubusercontent.com/300/80044956-e6d93700-84ba-11ea-94de-d14d355d34f7.png)
 
 # [Redwood Talk and Demo by its Co-Author Peter Pistorius](https://www.youtube.com/watch?v=rAb0H-MD-Fs)
