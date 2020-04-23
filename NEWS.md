@@ -1,24 +1,12 @@
-![Full Stack Radio Logo](https://user-images.githubusercontent.com/300/80044322-fe172500-84b8-11ea-9c1c-390aad30b445.png)
+![swyx logo](https://user-images.githubusercontent.com/300/80043647-2867e300-84b7-11ea-93dd-1b9aa906f3d2.png)
 
-# [Tom Preston-Werner - Building Full-Stack JS Apps with Redwood.js](http://www.fullstackradio.com/138)
+# [React Single File Components Are Here](https://www.swyx.io/writing/react-sfcs-here)
 
-## 22 April 2020
+## 10 March 2020
 
-### In this episode, Adam is talks to Tom Preston-Werner about Redwood.js, a new full-stack JavaScript framework for building edge-ready web applications.
+### The launch of RedwoodJS today marks a first: it is the first time React components are being expressed in a single file format with explicit conventions.
 
-#### Podcast
-
----
-
-![Changelog Logo](https://user-images.githubusercontent.com/300/80044669-18053780-84ba-11ea-9bd1-fcafbf2d1ba2.png)
-
-# [Redwood brings full-stack to the JAMstack](https://changelog.com/jsparty/119)
-
-## 12 March 2020
-
-### Tom Preston-Werner (co-founder of GitHub, board member at Netlify) joins the party and brings his new, opinionated, full-stack, serverless web app framework with him.
-
-#### Podcast
+#### Article
 
 ---
 
@@ -34,15 +22,15 @@
 
 ---
 
-![swyx logo](https://user-images.githubusercontent.com/300/80043647-2867e300-84b7-11ea-93dd-1b9aa906f3d2.png)
+![Changelog Logo](https://user-images.githubusercontent.com/300/80044669-18053780-84ba-11ea-9bd1-fcafbf2d1ba2.png)
 
-# [React Single File Components Are Here](https://www.swyx.io/writing/react-sfcs-here)
+# [Redwood brings full-stack to the JAMstack](https://changelog.com/jsparty/119)
 
-## 10 March 2020
+## 12 March 2020
 
-### The launch of RedwoodJS today marks a first: it is the first time React components are being expressed in a single file format with explicit conventions.
+### Tom Preston-Werner (co-founder of GitHub, board member at Netlify) joins the party and brings his new, opinionated, full-stack, serverless web app framework with him.
 
-#### Article
+#### Podcast
 
 ---
 
@@ -55,3 +43,15 @@
 ### Peter is going to talk about a few of the nice ideas in RedwoodJS. He will explain what it is at first, why they built it, and then he'll go into detail about of a few of the headlining features.
 
 #### Video
+
+---
+
+![Full Stack Radio Logo](https://user-images.githubusercontent.com/300/80044322-fe172500-84b8-11ea-9c1c-390aad30b445.png)
+
+# [Tom Preston-Werner - Building Full-Stack JS Apps with Redwood.js](http://www.fullstackradio.com/138)
+
+## 22 April 2020
+
+### In this episode, Adam is talks to Tom Preston-Werner about Redwood.js, a new full-stack JavaScript framework for building edge-ready web applications.
+
+#### Podcast
