@@ -34,7 +34,7 @@
 
 ---
 
-![Better Programming logo](https://user-images.githubusercontent.com/300/80136159-302a9480-8556-11ea-9c14-6c15d1d3802c.png)
+![Better Programming logo](https://user-images.githubusercontent.com/300/80136396-7e3f9800-8556-11ea-81fc-87f19579d667.png)
 
 # [A Look at RedwoodJS](https://medium.com/better-programming/a-look-at-redwoodjs-cf0e1d117f5)
 
