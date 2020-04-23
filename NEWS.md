@@ -10,6 +10,18 @@
 
 ---
 
+![Hacker News logo](https://user-images.githubusercontent.com/300/80136870-2bb2ab80-8557-11ea-9629-36f56cb85493.png)
+
+# [Redwood: An integrated, full-stack, JavaScript web framework for the JAMstack](https://news.ycombinator.com/item?id=22537944)
+
+## 11 March 2020
+
+### Hacker News thread about the launch of RedwoodJS
+
+#### Message Thread
+
+---
+
 ![Netlify logo](https://user-images.githubusercontent.com/300/80044041-26eaea80-84b8-11ea-9ea4-27123b151f9e.png)
 
 # [RedwoodJS - the Full-stack JAMstack Framework](https://www.netlify.com/blog/2020/03/11/redwoodjs-the-full-stack-jamstack-framework/)
