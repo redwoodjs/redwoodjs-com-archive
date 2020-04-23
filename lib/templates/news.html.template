@@ -1,6 +1,10 @@
 @@layout("application", { "title": "RedwoodJS - News, Articles, Podcasts", "version": "" })
 
 <div class="xl:-mr-56">
+  <header>
+    <h2 class="text-3xl font-semibold tracking-tight">News, Articles and Podcasts</h2>
+    <p class="mt-1">All the news that's fit to print about RedwoodJS. If you've got news we should feature <a class="hover:underline text-red-700" href="https://github.com/redwoodjs/redwoodjs.com/blob/master/NEWS.md">open a PR</a>.
+  </header>
   <section class="flex flex-wrap -mx-4 mt-4">
     ${articles}
   </section>
