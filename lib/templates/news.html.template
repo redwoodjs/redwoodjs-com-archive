@@ -1,0 +1,7 @@
+@@layout("application", { "title": "RedwoodJS - News, Articles, Podcasts", "version": "" })
+
+<div class="xl:-mr-56">
+  <section class="flex flex-wrap -mx-4 mt-4">
+    ${articles}
+  </section>
+</div>
