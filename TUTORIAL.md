@@ -1619,7 +1619,7 @@ export default ContactPage
 
 We should make sure the email field actually contains an email:
 
-```javascript
+```html
 // web/src/pages/ContactPage/ContactPage.js
 
 <TextField
@@ -1636,7 +1636,7 @@ We should make sure the email field actually contains an email:
 
 That is definitely not the end-all-be-all for email address validation, but pretend it's bulletproof. Let's also change the message on the email validation to be a little more friendly:
 
-```javascript
+```html
 // web/src/pages/ContactPage/ContactPage.js
 
 <TextField
@@ -1660,7 +1660,7 @@ You may have noticed that trying to submit a form with validation errors outputs
 
 Finally, you know what would _really_ be nice: if the fields were validated as soon as the user leaves each one so they don't fill out the whole thing and submit just to see multiple errors appear. Let's do that:
 
-```javascript
+```html
 // web/src/pages/ContactPage/ContactPage.js
 
 <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
@@ -1981,7 +1981,7 @@ So when `createContact` is called it will first validate the inputs and only if 
 
 We already capture any existing error in the `error` constant that we got from `useMutation`, so we _could_ manually display an error box on the page somewhere containing those errors, maybe at the top of the form:
 
-```javascript
+```html
 // web/src/pages/ContactPage/ContactPage.js
 
 <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
@@ -1996,7 +1996,7 @@ We already capture any existing error in the `error` constant that we got from `
 
 To get a server error to fire, let's remove the email format validation so that the client-side error isn't shown:
 
-```javascript
+```html
 // web/src/pages/ContactPage/ContactPage.js
 
 <TextField
