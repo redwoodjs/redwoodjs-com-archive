@@ -154,11 +154,15 @@ It's not pretty, but it's a start! Open the page in your editor, change some tex
 
 Open up `web/src/Routes.js` and take a look at the route that was created:
 
-    <Route path="/" page={HomePage} name="home" />
+```html
+<Route path="/" page={HomePage} name="home" />
+```
 
 Try changing the route to something like:
 
-    <Route path="/hello" page={HomePage} name="home" />
+```html
+<Route path="/hello" page={HomePage} name="home" />
+```
 
 Now you'll see the `NotFoundPage` page. As soon as you add your first route, you'll never see the Redwood splash screen again. From now on, when no route can be found that matches the requested URL, Redwood will render the `NotFoundPage`. Change your URL to http://localhost:8910/hello and you should see the homepage again.
 
@@ -176,7 +180,7 @@ Notice that we didn't specify a route path this time. If you leave it off the `r
 
 http://localhost:8910/about should show our new page. But no one's going to find it by manually changing the URL so let's add a link from our homepage to the About page and vice versa. We'll start creating a simple header and nav bar at the same time on the HomePage:
 
-```javascript
+```javascript{3,7-19}
 // web/src/pages/HomePage/HomePage.js
 
 import { Link, routes } from '@redwoodjs/router'
@@ -215,7 +219,7 @@ Let's point out a few things here:
 
 Once we get to the About page we don't have any way to get back so let's add a link there as well:
 
-```javascript
+```javascript{3,7-25}
 // web/src/pages/AboutPage/AboutPage.js
 
 import { Link, routes } from '@redwoodjs/router'
@@ -269,7 +273,7 @@ That created `web/src/layouts/BlogLayout/BlogLayout.js` and an associated test f
 
 Cut the `<header>` from both `HomePage` and `AboutPage` and paste it in the layout instead. Let's take out the duplicated `<main>` tag as well:
 
-```javascript
+```javascript{3,7-19}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
 import { Link, routes } from '@redwoodjs/router'
@@ -297,7 +301,7 @@ export default BlogLayout
 
 `children` is where the magic will happen. Any page content given to the layout will be rendered here. Back to `HomePage` and `AboutPage`, we add a `<BlogLayout>` wrapper and now they're back to focusing on the content they care about (we can remove the import for `Link` and `routes` from `HomePage` since those are in the Layout instead):
 
-```javascript
+```javascript{3,6}
 // web/src/pages/HomePage/HomePage.js
 
 import BlogLayout from 'src/layouts/BlogLayout'
@@ -309,7 +313,7 @@ const HomePage = () => {
 export default HomePage
 ```
 
-```javascript
+```javascript{4,8-14}
 // web/src/pages/AboutPage/AboutPage.js
 
 import { Link, routes } from '@redwoodjs/router'
@@ -348,7 +352,7 @@ Back to the browser and you should see...nothing different. But that's good, it 
 
 One more `<Link>`, let's have the title/logo link back to the homepage as per usual:
 
-```javascript
+```javascript{9-11}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
 import { Link, routes } from '@redwoodjs/router'
@@ -422,7 +426,7 @@ We use [Prisma Client JS](https://photonjs.prisma.io/) to talk to the database. 
 
 First let's define the data structure for a post in the database. Open up `api/prisma/schema.prisma` and add the definition of our Post table (remove any "sample" models that are present in the file). Once you're done the entire schema file should look like:
 
-```prisma
+```plaintext{13-18}
 // api/prisma/schema.prisma
 
 datasource DS {
@@ -647,7 +651,7 @@ export const Success = ({ blogPosts }) => {
 
 To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case it called the query `blogPosts` which is not a valid query name for our existing Posts SDL and Service. We'll have to rename that to just `posts` in both the query name and prop named in `Success`:
 
-```javascript
+```javascript{5,17,18}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
@@ -671,7 +675,7 @@ export const Success = ({ posts }) => {
 
 Let's plug this cell into our `HomePage` and see what happens:
 
-```javascript
+```javascript{4,9}
 // web/src/pages/HomePage/HomePage.js
 
 import BlogLayout from 'src/layouts/BlogLayout'
@@ -710,7 +714,7 @@ The browser should actually show an array with a number or two (assuming you cre
 
 In addition to the `id` that was added to the `query` by the generator, let's get the title, body, and createdAt too:
 
-```javascript
+```javascript{7-9}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
@@ -731,7 +735,7 @@ The page should now show a dump of all the data you created for any blog posts y
 
 Now we're in the realm of good ol' React components, so just build out the `Success` component to display the blog post in a nicer format:
 
-```javascript
+```javascript{4-12}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const Success = ({ posts }) => {
@@ -887,7 +891,7 @@ Now that we have our homepage listing all the posts, let's build the "detail" pa
 
 Now let's link the title of the post on the homepage to the detail page (and include the `import` for `Link` and `routes`):
 
-```javascript
+```javascript{3,12}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 import { Link, routes } from '@redwoodjs/router'
@@ -937,7 +941,7 @@ Ok, so the ID is in the URL. What do we need next in order to display a specific
 
 And then we'll use that cell in `BlogPostPage` (and while we're at it let's surround the page with the `BlogLayout`):
 
-```javascript
+```javascript{4,9}
 // web/src/pages/BlogPostPage/BlogPostPage.js
 
 import BlogLayout from 'src/layouts/BlogLayout'
@@ -956,7 +960,7 @@ export default BlogPostPage
 
 Now over to the cell, we need access to that `{id}` route param so we can look up the ID of the post in the database. Let's update the query to accept a variable (and again change the query name from `blogPost` to just `post`)
 
-```javascript
+```javascript{4,5,20,21}
 // web/src/components/BlogPostCell/BlogPostCell.js
 
 export const QUERY = gql`
@@ -983,7 +987,7 @@ export const Success = ({ post }) => {
 
 Okay, we're getting closer. Still, where will that `$id` come from? Redwood has another trick up its sleeve. Whenever you put a route param in a route, that param is automatically made available to the page that route renders. Which means we can update `BlogPostPage` to look like this:
 
-```javascript
+```javascript{3,6}
 // web/src/pages/BlogPostPage/BlogPostPage.js
 
 const BlogPostPage = ({ id }) => {
@@ -1005,7 +1009,9 @@ We can prove it! Try going to the detail page for a post in the browser and—uh
 
 If you take a look in the web inspector console you can see the actual error coming from GraphQL:
 
-    [GraphQL error]: Message: Variable "$id" got invalid value "1"; Expected type Int. Int cannot represent non-integer value: "1", Location: [object Object], Path: undefined
+    [GraphQL error]: Message: Variable "$id" got invalid value "1";
+      Expected type Int. Int cannot represent non-integer value: "1",
+      Location: [object Object], Path: undefined
 
 It turns out that route params are extracted as strings from the URL, but GraphQL wants an integer for the ID. We could use `parseInt()` to convert it to a number before passing it into `BlogPostCell`, but honestly, we can do better than that!
 
@@ -1066,8 +1072,9 @@ export default BlogPost
 
 Let's take the post display code out of `BlogPostsCell` and put it here instead, taking the `post` in as a prop:
 
-```javascript
+```javascript{3,7-14}
 // web/src/components/BlogPost/BlogPost.js
+
 import { Link, routes } from '@redwoodjs/router'
 
 const BlogPost = ({ post }) => {
@@ -1086,9 +1093,9 @@ const BlogPost = ({ post }) => {
 export default BlogPost
 ```
 
-And update `BlogPostsCell` and `BlogPostCell` to use this new component instead (don't forget the `import BlogPost from 'src/components/BlogPost'` at the top of each):
+And update `BlogPostsCell` and `BlogPostCell` to use this new component instead:
 
-```javascript
+```javascript{3,8}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 import BlogPost from 'src/components/BlogPost'
@@ -1100,7 +1107,7 @@ export const Success = ({ posts }) => {
 }
 ```
 
-```javascript
+```javascript{3,8}
 // web/src/components/BlogPostCell/BlogPostCell.js
 
 import BlogPost from 'src/components/BlogPost'
