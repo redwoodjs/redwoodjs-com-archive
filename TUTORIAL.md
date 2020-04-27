@@ -915,7 +915,7 @@ export const Success = ({ posts }) => {
 
 If you click the link on the title of the blog post you should see the boilerplate text on `BlogPostPage`. But what we really need is to specify _which_ post we want to view on this page. It would be nice to be able to specify the ID of the post in the URL with something like `/blog-post/1`. Let's tell the `<Route>` to expect another part of the URL, and when it does, give that part a name that we can reference later:
 
-```javascript
+```html
 // web/src/Routes.js
 
 <Route path="/blog-post/{id}" page={BlogPostPage} name="blogPost" />
@@ -1019,7 +1019,7 @@ It turns out that route params are extracted as strings from the URL, but GraphQ
 
 What if you could request the conversion right in the route's path? Well, guess what: you can! Introducing **route param types**. It's as easy as adding `:Int` to our existing route param:
 
-```javascript
+```html
 // web/src/Routes.js
 
 <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
@@ -1153,7 +1153,7 @@ Let's build the simplest form that still makes sense for our blog, a "contact us
 
 We can put a link to Contact in our layout's header:
 
-```javascript
+```javascript{17-19}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
 import { Link, routes } from '@redwoodjs/router'
@@ -1186,7 +1186,7 @@ export default BlogLayout
 
 And then use the `BlogLayout` in the `ContactPage`:
 
-```javascript
+```javascript{3,6}
 // web/src/pages/ContactPage/ContactPage.js
 
 import BlogLayout from 'src/layouts/BlogLayout'
@@ -1231,7 +1231,7 @@ input.error, textarea.error {
 
 For now we won't be talking to the database in our Contact form so we won't create a cell. Let's create the form right on the page. Redwood forms start with the...wait for it...`<Form>` tag:
 
-```javascript
+```javascript{3,9}
 // web/src/pages/ContactPage/ContactPage.js
 
 import { Form } from '@redwoodjs/web'
@@ -1250,7 +1250,7 @@ export default ContactPage
 
 Well that was anticlimactic. You can't even see it in the browser. Let's add a form field so we can at least see something. Redwood ships with several inputs and a plain text input box is `<TextField>`. We'll also give the field a `name` attribute so that once there are multiple inputs on this page we'll know which contains which data:
 
-```javascript
+```javascript{3,10}
 // web/src/pages/ContactPage/ContactPage.js
 
 import { Form, TextField } from '@redwoodjs/web'
@@ -1273,7 +1273,7 @@ export default ContactPage
 
 Something is showing! Still, pretty boring. How about adding a submit button?
 
-```javascript
+```javascript{3,11}
 // web/src/pages/ContactPage/ContactPage.js
 
 import { Form, TextField, Submit } from '@redwoodjs/web'
@@ -1301,7 +1301,7 @@ We have what might actually be considered a real, bonafide form here. Try typing
 
 Similar to a plain HTML form we'll give `<Form>` an `onSubmit` handler. That handler will be called with a single argument—an object containing all of the submitted form fields:
 
-```javascript
+```javascript{4-6,10}
 // web/src/pages/ContactPage/ContactPage.js
 
 const ContactPage = () => {
@@ -1326,7 +1326,7 @@ Now try filling in some data and submitting:
 
 Great! Let's turn this into a more useful form by adding a couple fields. We'll rename the existing one to "name" and add "email" and "message":
 
-```javascript
+```javascript{3,15,16}
 // web/src/pages/ContactPage/ContactPage.js
 
 import { Form, TextField, TextAreaField, Submit } from '@redwoodjs/web'
@@ -1358,7 +1358,7 @@ See the new `<TextAreaField>` component here which generates an HTML `<textarea>
 
 Let's add some labels:
 
-```javascript
+```javascript{6,9,12}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
@@ -1389,25 +1389,25 @@ Try filling out the form and submitting and you should get a console message wit
 
 All three of these fields should be required in order for someone to send a message to us. Let's enforce that with the standard HTML `required` attribute:
 
-```javascript
+```javascript{7,10,13}
 // web/src/pages/ContactPage/ContactPage.js
 
-  return (
-    <BlogLayout>
-      <Form onSubmit={onSubmit}>
-        <label htmlFor="name">Name</label>
-        <TextField name="name" required />
+return (
+  <BlogLayout>
+    <Form onSubmit={onSubmit}>
+      <label htmlFor="name">Name</label>
+      <TextField name="name" required />
 
-        <label htmlFor="email">Email</label>
-        <TextField name="email" required />
+      <label htmlFor="email">Email</label>
+      <TextField name="email" required />
 
-        <label htmlFor="message">Message</label>
-        <TextAreaField name="message" required />
+      <label htmlFor="message">Message</label>
+      <TextAreaField name="message" required />
 
-        <Submit>Save</Submit>
-      </Form>
-    </BlogLayout>
-  )
+      <Submit>Save</Submit>
+    </Form>
+  </BlogLayout>
+)
 ```
 
 <img src="https://user-images.githubusercontent.com/300/80258542-5163b180-8638-11ea-8450-8a727de177ad.png" />
@@ -1416,25 +1416,25 @@ Now when trying to submit there'll be message from the browser noting that a fie
 
 Yes! Let's update that `required` call to instead be an object we pass to a custom attribute on Redwood form helpers called `validation`:
 
-```javascript
+```javascript{7,10,13}
 // web/src/pages/ContactPage/ContactPage.js
 
-  return (
-    <BlogLayout>
-      <Form onSubmit={onSubmit}>
-        <label htmlFor="name">Name</label>
-        <TextField name="name" validation={{ required: true }} />
+return (
+  <BlogLayout>
+    <Form onSubmit={onSubmit}>
+      <label htmlFor="name">Name</label>
+      <TextField name="name" validation={{ required: true }} />
 
-        <label htmlFor="email">Email</label>
-        <TextField name="email" validation={{ required: true }} />
+      <label htmlFor="email">Email</label>
+      <TextField name="email" validation={{ required: true }} />
 
-        <label htmlFor="message">Message</label>
-        <TextAreaField name="message" validation={{ required: true }} />
+      <label htmlFor="message">Message</label>
+      <TextAreaField name="message" validation={{ required: true }} />
 
-        <Submit>Save</Submit>
-      </Form>
-    </BlogLayout>
-  )
+      <Submit>Save</Submit>
+    </Form>
+  </BlogLayout>
+)
 ```
 
 And now when we submit the form with blank fields...the Name field gets focus. Boring. But this is just a stepping stone to our amazing reveal! We have one more form helper component to add—the one that displays errors on a field. Oh it just so happens that it's plain HTML so we can style it however we want!
@@ -1443,7 +1443,7 @@ And now when we submit the form with blank fields...the Name field gets focus. B
 
 Introducing `<FieldError>` (don't forget to include it in the `import` statement at the top):
 
-```javascript
+```javascript{8,22,26,30}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -1490,7 +1490,7 @@ Note that the `name` attribute matches the `name` of the input field above it. T
 
 But this is just the beginning. Let's make sure folks realize this is an error message. Remember the `.error` class we defined in `index.css`? Check out the `className` attribute on `<FieldError>`:
 
-```javascript
+```javascript{8,12,16}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
@@ -1518,7 +1518,7 @@ return (
 
 You know what would be nice, if the input itself somehow displayed the fact that there was an error. Check out the `errorClassName` attributes on the inputs:
 
-```javascript
+```javascript{10,18,26}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
@@ -1558,7 +1558,7 @@ return (
 
 Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's custom `<Label>` component for that (note that `for` becomes `name` just like the other components). Don't forget the import:
 
-```javascript
+```javascript{9,21-23,31-33,41-43}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -1626,7 +1626,7 @@ export default ContactPage
 
 We should make sure the email field actually contains an email:
 
-```html
+```html{7-9}
 // web/src/pages/ContactPage/ContactPage.js
 
 <TextField
@@ -1643,7 +1643,7 @@ We should make sure the email field actually contains an email:
 
 That is definitely not the end-all-be-all for email address validation, but pretend it's bulletproof. Let's also change the message on the email validation to be a little more friendly:
 
-```html
+```html{9}
 // web/src/pages/ContactPage/ContactPage.js
 
 <TextField
@@ -1772,8 +1772,9 @@ The `createContact` mutation will accept a single variable, `input`, that is an 
 
 That's it for the SDL file, let's define the service that will actually save the data to the database. The service includes a default `contacts` function for getting all contacts from the database. Let's add our mutation to create a new contact:
 
-```javascript
+```javascript{9-11}
 // api/src/services/contacts/contacts.js
+
 import { db } from 'src/lib/db'
 
 export const contacts = () => {
@@ -1827,7 +1828,7 @@ We reference the `createContact` mutation we defined in the Contacts SDL passing
 
 Next we'll call the `useMutation` hook provided by Apollo which will allow us to execute the mutation when we're ready (don't forget the `import` statement):
 
-```javascript
+```javascript{10,15}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -1870,7 +1871,7 @@ If you'll recall `<Form>` gives us all of the fields in a nice object where the 
 
 Now we can update the `onSubmit` function to invoke the mutation with the data it receives:
 
-```javascript
+```javascript{7}
 // web/src/pages/ContactPage/ContactPage.js
 
 const ContactPage = () => {
@@ -1901,7 +1902,7 @@ Let's address these issues.
 
 The `useMutation` hook returns a couple more elements along with the function to invoke it. We can destructure these as the second element in the array that's returned. The two we care about are `loading` and `error`:
 
-```javascript
+```javascript{4}
 // web/src/pages/ContactPage/ContactPage.js
 
 const ContactPage = () => {
@@ -1918,7 +1919,7 @@ const ContactPage = () => {
 
 Now we know if the database call is still in progress by looking at `loading`. An easy fix for our multiple submit issue would be to disable the submit button if the response is still in progress. We can set the `disabled` attribute on the "Save" button to the value of `loading`:
 
-```javascript
+```javascript{5}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
@@ -1958,8 +1959,9 @@ We have email validation on the client, but any good developer knows [_never tru
 
 We talked about business logic belonging in our services files and this is a perfect example. Let's add a `validate` function to our `contacts` service:
 
-```javascript
+```javascript{3,7-15,22}
 // api/src/services/contacts/contacts.js
+
 import { UserInputError } from '@redwoodjs/api'
 
 import { db } from 'src/lib/db'
@@ -1988,7 +1990,7 @@ So when `createContact` is called it will first validate the inputs and only if 
 
 We already capture any existing error in the `error` constant that we got from `useMutation`, so we _could_ manually display an error box on the page somewhere containing those errors, maybe at the top of the form:
 
-```html
+```html{4-9}
 // web/src/pages/ContactPage/ContactPage.js
 
 <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
@@ -2025,7 +2027,7 @@ Remember when we said that `<Form>` had one more trick up its sleeve? Here it co
 
 Remove the inline error display we just added (`{ error && ...}`) and replace it with `<FormError>`, passing the `error` constant we got from `useMutation` and a little bit of styling to `wrapperStyle` (don't forget the `import`). We'll also pass `error` to `<Form>` so it can setup a context:
 
-```javascript
+```javascript{11,19-22}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -2048,7 +2050,9 @@ return (
         error={error}
         wrapperStyle={{ color: 'red', backgroundColor: 'lavenderblush' }}
       />
-    //...
+
+      //...
+)
 ```
 
 Now submit a message with an invalid email address:
@@ -2080,7 +2084,7 @@ import { useForm } from 'react-hook-form'
 
 And now call it inside of our component:
 
-```javascript
+```javascript{4}
 // web/src/pages/ContactPage/ContactPage.js
 
 const ContactPage = () => {
@@ -2090,7 +2094,7 @@ const ContactPage = () => {
 
 Finally we'll tell `<Form>` to use the `formMethods` we just instantiated instead of doing it itself:
 
-```javascript
+```javascript{9}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
@@ -2121,6 +2125,98 @@ const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
 
 > You can put the email validation back into the `<TextField>` now, but you should leave the server validation in place, just in case.
 
+Here's the final `ContactForm.js` page:
+
+```javascript
+import {
+  Form,
+  TextField,
+  TextAreaField,
+  Submit,
+  FieldError,
+  Label,
+  FormError,
+  useMutation,
+} from '@redwoodjs/web'
+import { useForm } from 'react-hook-form'
+import BlogLayout from 'src/layouts/BlogLayout'
+
+const CREATE_CONTACT = gql`
+  mutation CreateContactMutation($input: CreateContactInput!) {
+    createContact(input: $input) {
+      id
+    }
+  }
+`
+
+const ContactPage = () => {
+  const formMethods = useForm()
+
+  const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
+    onCompleted: () => {
+      alert('Thank you for your submission!')
+      formMethods.reset()
+    },
+  })
+
+  const onSubmit = (data) => {
+    create({ variables: { input: data } })
+    console.log(data)
+  }
+
+  return (
+    <BlogLayout>
+      <Form
+        onSubmit={onSubmit}
+        validation={{ mode: 'onBlur' }}
+        error={error}
+        formMethods={formMethods}
+      >
+        <FormError
+          error={error}
+          wrapperStyle={{ color: 'red', backgroundColor: 'lavenderblush' }}
+        />
+        <Label name="name" errorClassName="error">
+          Name
+        </Label>
+        <TextField
+          name="name"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
+        <FieldError name="name" className="error" />
+
+        <Label name="name" errorClassName="error">
+          Email
+        </Label>
+        <TextField
+          name="email"
+          validation={{
+            required: true,
+          }}
+          errorClassName="error"
+        />
+        <FieldError name="email" className="error" />
+
+        <Label name="name" errorClassName="error">
+          Message
+        </Label>
+        <TextAreaField
+          name="message"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
+        <FieldError name="message" className="error" />
+
+        <Submit>Save</Submit>
+      </Form>
+    </BlogLayout>
+  )
+}
+
+export default ContactPage
+```
+
 That's it! [React Hook Form](https://react-hook-form.com/) provides a bunch of [functionality](https://react-hook-form.com/api) that `<Form>` doesn't expose. When you want to get to that functionality you can: just call `useForm()` yourself but make sure to pass the returned object (we called it `formMethods`) as a prop to `<Form>` so that the validation and other functionality keeps working.
 
 > You may have noticed that the onBlur form validation stopped working once you started calling `useForm()` yourself. That's because Redwood calls `useForm()` behind the scenes and automaticaly passes it the `validation` prop that you gave to `<Form>`. Redwood is no longer calling `useForm()` for you so if you need some options passed you need to do it manually:
@@ -2135,7 +2231,7 @@ The public site is looking pretty good. How about the administrative features th
 
 Having the admin screens at `/admin` is a reasonable thing to do. Let's update the routes to make that happen by updating the four routes starting with `/posts` to start with `/admin/posts` instead:
 
-```javascript
+```html
 // web/src/Routes.js
 
 <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
