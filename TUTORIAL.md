@@ -1114,7 +1114,7 @@ export const Success = ({ post }) => {
 
 And there we go! We should be able to move back and forth between the homepage and the detail page.
 
-> If you like what you've been seeing from the router, you can dive deeper into the [Redwood Router Docs](/docs/redwood-router).
+> If you like what you've been seeing from the router, you can dive deeper into the [Redwood Router](https://redwoodjs.com/guides/redwood-router) guide.
 
 ### Summary
 
@@ -2152,7 +2152,7 @@ Before we continue, make sure your app is fully committed and pushed to GitHub, 
 We'll need a database somewhere on the internet to store our data. We've been using SQLite locally, but that's a file-based store meant for single-user. SQLite isn't really suited for the kind of connection and concurrency requirements a production website will require. For this part of this tutorial, we will use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting. We just need to get a database available to the outside world so it can be accessed by our app.
 
 If you'd like to develop locally with Postgres, see the
-[Local Postgres Setup](https://redwoodjs.com/docs/local-postgres-setup) guide.
+[Local Postgres Setup](https://redwoodjs.com/guides/local-postgres-setup) guide.
 
 > For now, you need to set up your own database, but we are working with various infrastructure providers to make this process simpler and more Jamstacky. Stay tuned for improvements in that regard!
 
@@ -2242,7 +2242,7 @@ Another neat feature of Netlify is _Branch Deploys_. When you create a branch an
 
 ### A Note About DB Connections
 
-In this tutorial, your lambda functions will be connecting directly to the Postgres database. Because Postgres has a limited number of concurrent connections it will accept, this does not scale very well. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. To learn how to do that, see [Connection Pooling](https://redwoodjs.com/docs/connection-pooling).
+In this tutorial, your lambda functions will be connecting directly to the Postgres database. Because Postgres has a limited number of concurrent connections it will accept, this does not scale very well. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. To learn how to do that, see the [Connection Pooling](https://redwoodjs.com/guides/connection-pooling) guide.
 
 We are working on making this process much easier, but keep it in mind before you deploy a Redwood app to production and announce it to the world.
 
@@ -2266,7 +2266,7 @@ What did you think of Redwood? Is it the Next Step for JS frameworks? What can i
 Want to help us build those features, and a lot more?
 
 - [Open a PR](https://github.com/redwoodjs/redwood/pulls)
-- [Write some docs](https://redwoodjs.com/docs/introduction)
+- [Write some docs](https://redwoodjs.com/guides/introduction)
 - [Join the community](https://community.redwoodjs.com)
 
 Thanks for following along. Now go out and build something amazing!
