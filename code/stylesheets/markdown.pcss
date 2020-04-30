@@ -21,6 +21,10 @@
     @apply font-semibold;
   }
 
+  h1, h2, h3, h4, h5, h6 {
+        margin-left: -1.1rem;
+  }
+
   p {
     @apply my-4;
   }
@@ -79,5 +83,17 @@
   li a:hover,
   blockquote a:hover {
     @apply underline;
+  }
+
+  .markdownIt-Anchor {
+    visibility: hidden;
+  }
+  h1:hover .markdownIt-Anchor,
+  h2:hover .markdownIt-Anchor,
+  h3:hover .markdownIt-Anchor,
+  h4:hover .markdownIt-Anchor,
+  h5:hover .markdownIt-Anchor,
+  h6:hover .markdownIt-Anchor {
+    visibility: visible;
   }
 }
