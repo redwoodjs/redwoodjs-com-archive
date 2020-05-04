@@ -30,6 +30,7 @@
   from = "/guides"
   to = "/guides/introduction.html"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/tutorial"
