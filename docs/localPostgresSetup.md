@@ -24,7 +24,7 @@ Tell Prisma to use a Postgres database instead of SQLite by updating the `provid
 ```prisma
 // prisma/schema.prisma
 datasource DS {
-  provider = "postgres"
+  provider = "postgresql"
   url = env("DATABASE_URL")
 }
 ```
