@@ -41,8 +41,7 @@ export default class extends Controller {
 
   connect() {}
 
-  // Highlight nav items if the URL matches the `href` on the link, or if the link has a
-  // `data-match` attribute and location.href matches that value
+  // Run search on keystrokes
   search(event) {
     event.stopPropagation()
 

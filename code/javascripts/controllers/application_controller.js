@@ -25,7 +25,7 @@ export default class extends Controller {
   }
 
   focusSearch(event) {
-    if (event.key === '/') {
+    if (event.key === '/' && !this.someInputHasFocus) {
       this.searchTarget.focus()
       event.preventDefault()
     }
@@ -93,5 +93,9 @@ export default class extends Controller {
 
   get isHomePage() {
     return location.pathname === '/'
+  }
+
+  get someInputHasFocus() {
+    return ['INPUT', 'TEXTAREA'].indexOf(document.activeElement.tagName) !== -1
   }
 }
