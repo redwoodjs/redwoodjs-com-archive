@@ -79,3 +79,15 @@
 ### In this episode, Adam is talks to Tom Preston-Werner about Redwood.js, a new full-stack JavaScript framework for building edge-ready web applications.
 
 #### Podcast
+
+---
+
+![Periscope Logo](https://user-images.githubusercontent.com/300/81002266-cb94f280-8dfd-11ea-89a2-b7e916ac808d.png)
+
+# [Redwood with @appfactory](https://www.pscp.tv/w/1MnxnQQjLMEJO)
+
+## 30 April 2020
+
+### In this Periscope livestream, Peter Pistorius talks to Max Stoiber about Redwood and demonstrates some upcoming features, including authentication.
+
+#### Video
