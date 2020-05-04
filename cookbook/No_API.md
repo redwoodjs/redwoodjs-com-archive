@@ -1,6 +1,6 @@
-# App Without a Database
+# Disable API/Database
 
-Did you know you could deploy your Redwood app without a database? Maybe you have a simple static site that doesn't need any external data, or you only need to digest a simple JSON data structure that changes infrequently. So infrequently that changing the data can mean just editing a plain text file and deploying your site again.
+Did you know you could deploy your Redwood app without an API layer or database? Maybe you have a simple static site that doesn't need any external data, or you only need to digest a simple JSON data structure that changes infrequently. So infrequently that changing the data can mean just editing a plain text file and deploying your site again.
 
 Let's take a look at these scenarios and how you can get them working with Redwood.
 
