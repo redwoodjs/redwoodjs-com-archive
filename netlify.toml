@@ -28,29 +28,33 @@
 
 [[redirects]]
   from = "/guides"
-  to = "/guides/introduction.html"
+  to = "/guides/introduction"
   status = 301
   force = true
 
 [[redirects]]
   from = "/tutorial"
-  to = "/tutorial/welcome-to-redwood.html"
+  to = "/tutorial/welcome-to-redwood"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/cookbook"
-  to = "/cookbook/using-a-third-party-api.html"
+  to = "/cookbook/using-a-third-party-api"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/reference"
-  to = "/reference/redwood-form.html"
+  to = "/reference/redwood-form"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/home"
   to = "/"
   status = 301
+  force = true
 
 # See https://www.netlify.com/docs/netlify-toml-reference/#headers
 [[headers]]
