@@ -452,7 +452,7 @@ We need to decide what data we'll need for a blog post. We'll expand on this at 
 - `body` the actual content of the blog post
 - `createdAt` a timestamp of when this record was created
 
-We use [Prisma Client JS](https://photonjs.prisma.io/) to talk to the database. Prisma has another library called [Migrate](https://lift.prisma.io/) that lets us update the database's schema in a predictable way and snapshot each of those changes. Each change is called a _migration_ and Migrate will create one when we make changes to our schema.
+We use [Prisma Client JS](https://github.com/prisma/prisma-client-js) to talk to the database. Prisma has another library called [Migrate](https://github.com/prisma/migrate) that lets us update the database's schema in a predictable way and snapshot each of those changes. Each change is called a _migration_ and Migrate will create one when we make changes to our schema.
 
 First let's define the data structure for a post in the database. Open up `api/prisma/schema.prisma` and add the definition of our Post table (remove any "sample" models that are present in the file). Once you're done the entire schema file should look like:
 
