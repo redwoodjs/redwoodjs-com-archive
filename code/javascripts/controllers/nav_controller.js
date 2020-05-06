@@ -1,37 +1,75 @@
-import { Controller } from "stimulus";
+import { Controller } from 'stimulus'
 
 export default class extends Controller {
   static get targets() {
-    return ["link"];
+    return ['link']
   }
 
   connect() {
-    this._highlightNav();
+    this._highlightNav()
   }
 
   // opens/closes a nav section
   toggle(event) {
-    event.preventDefault();
-    event.currentTarget.nextSibling.nextSibling.classList.toggle("hidden");
+    event.preventDefault()
+    event.currentTarget.nextSibling.nextSibling.classList.toggle('hidden')
   }
 
-  // Highlight nav items if the URL matches the `href` on the link, or if the link has a
-  // `data-match` attribute and location.href matches that value
+  // Highlight nav items if the URL matches the `href` on the link.
+  //
+  // If no links matched, look at the data-match attribute on the first link in
+  // a list and if one of those matches, highlight it
   _highlightNav() {
-    this.linkTargets.forEach(link => {
-      if (
-        location.href.indexOf(link.href) !== -1 ||
-        (link.dataset.match && location.href.match(link.dataset.match))
-      ) {
-        link.classList.add(...this.data.get("active").split(" "));
-        if (this.data.get("remove")) {
-          link.classList.remove(...this.data.get("remove").split(" "));
-        }
-        // make sure whole parent list is visible
-        link.closest("ul").classList.remove("hidden");
+    let linkFound = false
+
+    this.linkTargets.every((link) => {
+      if (this._linkDoesMatch(link)) {
+        this._activateLink(link)
+        linkFound = true
       } else {
-        link.classList.remove(...this.data.get("active").split(" "));
+        this._deactivateLink(link)
       }
-    });
+      return !linkFound
+    })
+
+    if (!linkFound) {
+      this._fallbackLink()
+    }
+  }
+
+  _linkDoesMatch(link) {
+    return location.href.indexOf(link.href) !== -1
+  }
+
+  _fallbackLink() {
+    this.linkTargets.every((link) => {
+      if (link.dataset.match && location.href.indexOf(link.dataset.match) !== -1) {
+        this._activateLink(link)
+        return false
+      } else {
+        return true
+      }
+    })
+  }
+
+  _activateLink(link) {
+    link.classList.add(...this.activeClasses)
+    if (this.removeClasses.length) {
+      link.classList.remove(...this.removeClassesClasses)
+    }
+    // make sure whole parent list is visible
+    link.closest('ul').classList.remove('hidden')
+  }
+
+  _deactivateLink(link) {
+    link.classList.remove(...this.activeClasses)
+  }
+
+  get removeClasses() {
+    return this.data.get('remove') ? this.data.get('remove').split(' ') : []
+  }
+
+  get activeClasses() {
+    return this.data.get('active').split(' ')
   }
 }
