@@ -1,4 +1,4 @@
-# App Configuration
+# App Configuration: redwood.toml
 
 Development environment settings can be adjusted using `redwood.toml`.
 
