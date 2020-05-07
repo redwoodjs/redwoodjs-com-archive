@@ -14,9 +14,11 @@ Step one is to actually create the custom Function. Naturally, we have a generat
 yarn rw g function serverTime
 ```
 
-That will create a shell for you that you can test out right away. Make sure your dev server is running with `yarn rw dev` and point your browser to `http://localhost:8911/serverTime`
+That will create a shell for you that you can test out right away. Make sure your dev server is running with `yarn rw dev` and point your browser to `http://localhost:8910/.netlify/functions/serverTime`
 
 ![serverTime Function output](https://user-images.githubusercontent.com/300/81349715-69462700-9075-11ea-87c0-a8a1c564a1b6.png)
+
+> Since Redwood currently plays nicely with Netlify we use the same proxy path that Netlify does for functions, `/.netlify/functions`. If you are deploying somewhere else you can change this in  `redwood.toml` in the root of your app.
 
 ## Getting the Time
 
@@ -52,18 +54,6 @@ export const handler = async (event, context) => {
 ```
 
 ![JSON time output screenshot](https://user-images.githubusercontent.com/300/81352131-9fd27080-907a-11ea-8db0-6308a4c48b5f.png)
-
-### Deployment
-
-If you deploy to Netlify then this function will be available on a different URL. Netlify Functions are made available at `/.netlify/functions/[name]` which in our case would be: http://mydomain.com/.netlify/functions/serverTime
-
-If you are accessing your Function from the client using something like `fetch()` then you can put the endpoint URL into an ENV var and use that like:
-
-```javascript
-fetch(`${ENV['FUNCTION_ENDPOINT']}/serverTime`)
-```
-
-so that it works in both dev and production environments.
 
 ### Bonus: Filtering by Request Method
 
