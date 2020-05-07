@@ -2381,22 +2381,36 @@ We are working on making this process much easier, but keep it in mind before yo
 
 ## Wrapping Up
 
-What did you think of Redwood? Is it the Next Step for JS frameworks? What can it do better? We've got a lot more planned. Some of the features on our TODO list:
+You made it! If you really went through the whole tutorial: congratulations! If you just skipped ahead to this page to try and get free a free congratulations: tsk, tsk!
 
-- Storybook integration
-- Refine Jest integration
-- Helpers for Authentication with [Auth0](https://auth0.com/) and [Netlify Identity](https://docs.netlify.com/visitor-access/identity/)
-- Pre-render and CDN-deliver specific routes
-- Support for NoSQL solutions like MongoDB
-- First class TypeScript support
-- Data fetching optimization for waterfall problem with GraphQL
-- GraphQL query cache helpers
-- Accessibility features for Redwood Router
-- Switcher widget providing quick access to the site and GraphQL playground while in dev mode
-- Cookbook of recipes for integrating 3rd party APIs
-- A way to inspect logs from AWS Lambda
+That was potentially a lot of new concepts to absorb all at once so don't feed bad if all of it didn't fully sink in. React, GraphQL, Prisma, serverless functions...so many things! Even those of us working on the framework are heading over to Google multiple times per day to figure out how to get these things to work together.
 
-Want to help us build those features, and a lot more?
+### What's Next?
+
+Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/guides/local-postgres-setup)? We've also got lots of [guides](/guides/introduction) for more info on Redwood's internals.
+
+### Roadmap
+
+In the coming weeks and months we've got some exciting stuff planned:
+
+1. [Authentication](https://github.com/redwoodjs/redwood/issues/214)
+2. [TypeScript support](https://github.com/redwoodjs/redwood/issues/234)
+3. [Testing](https://github.com/redwoodjs/redwood/issues/502)
+4. [Storybook integration](https://github.com/redwoodjs/redwood/issues/231)
+
+And even more stuff we're thinking about, but haven't put on the calendar yet:
+
+1. Accessibility features for Redwood Router
+2. Dev widget on rendered pages for jumping to the [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/testing/graphql-playground/) and new [Prisma Studio](https://github.com/prisma/studio)
+3. More cookbook recipies
+4. Easy access to AWS Lambda logs
+5. Data fetching optimization for the [waterfall problem](https://www.apollographql.com/blog/optimizing-your-graphql-request-waterfalls-7c3f3360b051)
+6. Support for NoSQL solutions like MongoDB
+7. GraphQL query cache helpers
+
+### Help Us!
+
+What did you think of Redwood? Is it the Next Step for JS frameworks? What can it do better? We've got a lot more planned. Want to help us build these upcoming features?
 
 - [Open a PR](https://github.com/redwoodjs/redwood/pulls)
 - [Write some docs](/guides/introduction)
