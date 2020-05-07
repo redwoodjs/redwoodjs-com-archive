@@ -2385,6 +2385,8 @@ You made it! If you really went through the whole tutorial: congratulations! If 
 
 That was potentially a lot of new concepts to absorb all at once so don't feed bad if all of it didn't fully sink in. React, GraphQL, Prisma, serverless functions...so many things! Even those of us working on the framework are heading over to Google multiple times per day to figure out how to get these things to work together.
 
+As an anonymous Twitter user once mused: "If you enjoy feeling like both the dumbest person in history and the smartest person on earth, all within 24 hours, programming may be the career for you!"
+
 ### What's Next?
 
 Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/guides/local-postgres-setup)? We've also got lots of [guides](/guides/introduction) for more info on Redwood's internals.

@@ -565,5 +565,3 @@ Much better!
 We hope this has given you enough confidence to go out and capture data from some of the amazing APIs of the Information Superhighway and get it (them?) into your Redwood app!
 
 Picking up any new framework from scratch is a daunting task and even those of us that wrote this one made more than a few trips to Google! If you think we can improve on this recipe, or any other, open an [issue](https://github.com/redwoodjs/redwoodjs.com/issues) or a [pull request](https://github.com/redwoodjs/redwoodjs.com/pulls).
-
-> "If you enjoy feeling like both the dumbest person in history and the smartest person on earth, all within 24 hours, programming may be the career for you!" —Anonymous
