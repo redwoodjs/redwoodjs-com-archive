@@ -55,6 +55,8 @@ export const handler = async (event, context) => {
 
 ![JSON time output screenshot](https://user-images.githubusercontent.com/300/81352131-9fd27080-907a-11ea-8db0-6308a4c48b5f.png)
 
+> Note that Node.js does not yet have ES module support, but we use Babel to transpile during the build phase so you can still use `import` syntax for external packages in your Functions.
+
 ### Bonus: Filtering by Request Method
 
 Since you are most definitely an elite hacker you probably noticed that our new endpoint is available via all HTTP methods: **GET**, **POST**, **PATCH**, etc. In the spirit of [REST](https://www.codecademy.com/articles/what-is-rest) this endpoint should really only be accessible via a **GET**.
@@ -176,15 +178,5 @@ The callback syntax may not be *too* bad for this simple example. But, if you fi
 Trust us, it's probably best to just stick with async/await instead of tampering with spacetime.
 
 ### Conclusion
-
-Note that Node.js does not yet have ES module support, so if you need an external library you'll need to `require` it, rather than `import` it:
-
-```javascript
-const moment = require('moment')
-
-export const handler = async (event, context) => {
-  // ...
-}
-```
 
 We hope this gave you enough info to get started with custom functions, and learned a little something about the futility of trying to change the past. Now go out and build something awesome!
