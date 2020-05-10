@@ -31,7 +31,11 @@
   to = "/guides/introduction"
   status = 301
   force = true
-  headers = {Turbolinks-Redirect = "/guides/introduction"}
+
+[[headers]]
+  for = "/guides"
+  [headers.values]
+    Turbolinks-Redirect = "/guides/introduction"
 
 [[redirects]]
   from = "/tutorial"
