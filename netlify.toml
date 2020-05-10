@@ -33,7 +33,7 @@
   force = true
 
 [[headers]]
-  for = "/guides"
+  for = "/guides/introduction"
   [headers.values]
     Turbolinks-Location = "/guides/introduction"
 
@@ -44,7 +44,7 @@
   force = true
 
 [[headers]]
-  for = "/tutorial"
+  for = "/tutorial/welcome-to-redwood"
   [headers.values]
     Turbolinks-Location = "/tutorial/welcome-to-redwood"
 
@@ -55,7 +55,7 @@
   force = true
 
 [[headers]]
-  for = "/cookbook"
+  for = "/cookbook/disable-api-database"
   [headers.values]
     Turbolinks-Location = "/cookbook/disable-api-database"
 
@@ -66,7 +66,7 @@
   force = true
 
 [[headers]]
-  for = "/reference"
+  for = "/reference/redwood-form"
   [headers.values]
     Turbolinks-Location = "/reference/redwood-form"
 
@@ -77,6 +77,6 @@
   force = true
 
 [[headers]]
-  for = "/home"
+  for = "/"
   [headers.values]
     Turbolinks-Location = "/"
