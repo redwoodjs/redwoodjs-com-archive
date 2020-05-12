@@ -1,4 +1,4 @@
-<article class="mt-8 w-full">
+<article class="mt-8 w-full hover:shadow-lg transform transition-all duration-200 hover:scale-105">
   <a href="${link}">
     <% if (image !== '') { %>
       <img
