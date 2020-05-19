@@ -16,6 +16,7 @@ brew install postgres
 Follow the instructions provided. If you're using another platform, See
 [prisma.io/docs/guides/database-workflows/setting-up-a-database/postgresql](https://www.prisma.io/docs/guides/database-workflows/setting-up-a-database/postgresql).
 
+
 ## Create Postgresql User
 
 A default PostgresSQL installation always includes the `postgres` superuser. Initially, you must connect to PostgreSQL as the postgres user until you create other users (which are also referred to as roles).
@@ -47,6 +48,8 @@ DATABASE_URL="postgresql://postgres@localhost/redwoodblog_dev?connection_limit=1
 Note the `connection_limit` parameter. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with
 relational databases in a Serverless context. You should also append this parameter to your production
 `DATABASE_URL` when configuring your deployments.
+
+> Note: local postgres server will need manual start/stop -- this is not handled automatically by RW CLI in a manner similar to sqlite
 
 ### Base URL and path
 
