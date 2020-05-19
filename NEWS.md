@@ -91,3 +91,15 @@
 ### In this Periscope livestream, Peter Pistorius talks to Max Stoiber about Redwood and demonstrates some upcoming features, including authentication.
 
 #### Video
+
+---
+
+![Shoptalk Show Logo](https://user-images.githubusercontent.com/300/81625997-5605c500-93af-11ea-9894-6480834c66ee.png)
+
+# [Shoptalk Show 412](https://shoptalkshow.com/412/)
+
+## 11 May 2020
+
+### Tom Preston-Werner joins the show to talk about his latest project, RedwoodJS, and the decisions made about how it works, public APIs, how tied to Netlify RedwoodJS is, and why they're using Prisma.
+
+#### Podcast
