@@ -2379,6 +2379,298 @@ In this tutorial, your lambda functions will be connecting directly to the Postg
 
 We are working on making this process much easier, but keep it in mind before you deploy a Redwood app to production and announce it to the world.
 
+## Authentication
+
+"Authentication" is a blanket term for all of the stuff that goes into making sure that a user, often identified with an email address and password, is allowed to access something. Authentication can be [famously fickle](https://www.rdegges.com/2017/authentication-still-sucks/) to do right both from a technical standpoint and developer happiness standpoint.
+
+But you know Redwood has your back! Login isn't something you have to write from scratch—it's a solved problem and is one less thing we should have to worry about. Today Redwood includes integrations to:
+
+- [Auth0](https://auth0.com/)
+- [Netlify Identity](https://docs.netlify.com/visitor-access/identity/)
+
+We're going to demo a Netlify Identity integration in this tutorial since we're already deployed there and it's very easy to add to a Netlify site.
+
+### Netlify Identity Setup
+
+Assuming you've been following along, you already have a Netlify account and a site set up. If you'd be so kind, head to the **Identity** tab and click the **Enable Identity** button:
+
+![Netlify Identity screenshot](https://user-images.githubusercontent.com/300/82271191-f5850380-992b-11ea-8061-cb5f601fa50f.png)
+
+When the screen refreshes click the **Invite users** button and enter a real email address (they're going to send a confirmation to it):
+
+![Netlify invite user screenshot](https://user-images.githubusercontent.com/300/82271302-439a0700-992c-11ea-9d6d-004adef3a385.png)
+
+We'll need to get a link from that email soon, but for now let's setup our app for authentication.
+
+### Authentication Generation
+
+There are a couple of places we need to add some code for authentication and lucky for us Redwood can do it for us with a generator:
+
+```terminal
+yarn rw g auth netlify
+```
+
+The generator adds one file and modifies a couple others. Take a look at the newly created `api/src/lib/auth.js` (usage comments omitted):
+
+```javascript
+// api/src/lib/auth.js
+
+import { AuthenticationError } from '@redwoodjs/api'
+
+export const getCurrentUser = async (jwt) => {
+  return jwt
+}
+
+export const requireAuth = () => {
+  if (!context.currentUser) {
+    throw new AuthenticationError()
+  }
+}
+```
+
+By default the authentication system will return only the data that the system itself knows about (that's what inside the `jwt` object above). For Netlify Identity that's an email address, an optional name and optional array of roles. Usually you'll have your own concept of a user in your local database. You can modify `getCurrentUser` to return that user, rather than the details that the auth system stores. The comments at the top of the file give one example for you could look up a user based on their email address. We also provide a simple implementation to requiring that a user be authenticated when trying to access a service, `requireAuth()`. It will throw an error that GraphQL knows what to do with if non-authenticated person tries to access something they shouldn't.
+
+The files that were modified by the generator are:
+
+* `web/src/index.js`—wraps the router in `<AuthProvider>` which makes the routes themselves authentication aware, and gives us access to a `useAuth()` hook that returns several functions for logging users in and out, checking their current logged-inness, and more
+* `api/src/functions/graphql.js`—makes `currentUser` available to the api side so that you can check whether a user is allowed to do something on the backend. If you add an implementation to `getCurrentUser()` in `api/src/lib/auth.js` then that is what will be returned by `currentUser`, otherwise it will return just the details the auth system has for the user. If they're not logged in at all then `currentUser` will be `null`.
+
+We'll hook up both the web and api sides below to make sure a user is only doing things they're allowed to do.
+
+### API Authentication
+
+First let's lock down the API so be sure that only authorized users can create, update and delete Posts. Open up the Post service and let's add a check:
+
+```javascript{4,17,24,32}
+// api/src/services/posts/posts.js
+
+import { db } from 'src/lib/db'
+import { requireAuth } from 'src/lib/auth'
+
+export const posts = () => {
+  return db.post.findMany()
+}
+
+export const post = ({ id }) => {
+  return db.post.findOne({
+    where: { id },
+  })
+}
+
+export const createPost = ({ input }, { context: { currentUser } }) => {
+  requireAuth()
+  return db.post.create({
+    data: input,
+  })
+}
+
+export const updatePost = ({ id, input }, { context: { currentUser } }) => {
+  requireAuth()
+  return db.post.update({
+    data: input,
+    where: { id },
+  })
+}
+
+export const deletePost = ({ id }, { context: { currentUser } }) => {
+  requireAuth()
+  return db.post.delete({
+    where: { id },
+  })
+}
+
+export const Post = {
+  user: (_obj, { root }) => db.post.findOne({ where: { id: root.id } }).user(),
+}
+```
+
+Now try creating, editing or deleting a post from our admin pages. Nothing happens! Should we show some kind of error message? In this case, probably not—we're going to lockdown the admin pages altogether so they won't be accessible by a browser. The only way someone would be able to trigger these errors in the API is if they tried to access the GraphQL endpoint directly, without going through our UI. The API is already returning an error message (open the Web Inspector in your browser and try that create/edit/delete again) so we are covered.
+
+> Note that we're putting the authentication checks in the service and not checking in the GraphQL interface (in the SDL files).
+>
+> Redwood created the concept of **services** as containers for your business logic which can be used by other parts of your application besides the GraphQL API. By putting authentication checks here you can be sure that any other code that tries to create/update/delete a post will fall under the same authentication checks. In fact, Apollo (the GraphQL library Redwood uses) [agrees with us](https://www.apollographql.com/docs/apollo-server/security/authentication/#authorization-in-data-models)!
+
+### Web Authentication
+
+Now we'll restrict access to the admin pages completely unless you're logged in. The first step will be to denote which routes will require that you be logged in. Enter the `<Private>` tag:
+
+```javascript{3,11,16}
+// web/src/Routes.js
+
+import { Router, Route, Private } from '@redwoodjs/router'
+
+const Routes = () => {
+  return (
+    <Router>
+      <Route path="/contact" page={ContactPage} name="contact" />
+      <Route path="/about" page={AboutPage} name="about" />
+      <Route path="/" page={HomePage} name="home" />
+      <Private unauthenticated="home">
+        <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
+        <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
+        <Route path="/admin/posts/{id:Int}" page={PostPage} name="post" />
+        <Route path="/admin/posts" page={PostsPage} name="posts" />
+      </Private>
+      <Route notfound page={NotFoundPage} />
+    </Router>
+  )
+}
+
+export default Routes
+```
+
+Surround the routes you want to be behind authentication and optionally add the `unauthenticated` attribute that lists the name of another route to redirect to if the user is not logged in, in this case we'll go back to the homepage.
+
+Try that in your browser. If you hit http://localhost:8910/admin/posts you should immediately go back to the homepage.
+
+Now all that's left to do is let the user actually log in! If you've built authentication before then you know this part is usually a drag, but Redwood makes it a walk in the park. Most of the plumbing was handled by the auth generator, so we get to focus on the parts the user actually sees. First, let's add a **Login** link that will trigger a modal from the Netlify Identity widget. Let's assume we want this on all of the public pages, so we'll put it in the `BlogLayout`:
+
+```javascript{4,7,22-26}
+// web/src/layouts/BlogLayout/BlogLayout.js
+
+import { Link, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
+
+const BlogLayout = ({ children }) => {
+  const { logIn } = useAuth()
+
+  return (
+    <div>
+      <h1>
+        <Link to={routes.home()}>Redwood Blog</Link>
+      </h1>
+      <nav>
+        <ul>
+          <li>
+            <Link to={routes.about()}>About</Link>
+          </li>
+          <li>
+            <Link to={routes.contact()}>Contact</Link>
+          </li>
+          <li>
+            <a href="#" onClick={logIn}>
+              Log In
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <main>{children}</main>
+    </div>
+  )
+}
+
+export default BlogLayout
+```
+
+Try clicking the login link:
+
+![Netlify Identity Widget modal](https://user-images.githubusercontent.com/300/82387730-aa7ef500-99ec-11ea-9a40-b52b383f99f0.png)
+
+Now we need to let the widget know the URL of our site. Back over to Netlify, you can get that from the Identity tab:
+
+![Netlify site URL](https://user-images.githubusercontent.com/300/82387937-28430080-99ed-11ea-91b7-a4e10f14aa83.png)
+
+You need the protocol and domain, not the rest of the path. Paste that into the modal and click that **Set site's URL** button. The modal should reload and now show a real login box:
+
+![Netlify identity widget login](https://user-images.githubusercontent.com/300/82388116-97205980-99ed-11ea-8fb4-13436ee8e746.png)
+
+Before we can log in, remember that confirmation email from Netlify? Go find that and click the **Accept the invite** link. That will bring you to your site live in production, where nothing will happen. But if you look at the URL it will end in `#invite_token=6gFSXh_ugtHCXO5Whlc5V`. Copy that (including the `#`) and appened it to your localhost URL: http://localhost:8910/#invite_token=6gFSXh_ugtHCXO5Whlc5Vg Hit Enter, then go back into the URL and hit Enter again to get it to actually reload the page. Now the modal will show **Complete your signup** and give you the ability to set your password:
+
+![Netlify identity set password](https://user-images.githubusercontent.com/300/82388369-54ab4c80-99ee-11ea-920e-9df10ee0cac2.png)
+
+Once you do that the modal should update and say that you're logged in! It worked! Click the X in the upper right to close the modal.
+
+> The Netlify Identity Widget also takes care of the Forgot Password flow.
+
+We've got no indication on our actual site that we're logged in, however. How about changing the **Log In** button to be **Log Out** when you're authenticated:
+
+```javascript{7,23-24}
+// web/src/layouts/BlogLayout/BlogLayout.js
+
+import { Link, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
+
+const BlogLayout = ({ children }) => {
+  const { logIn, logOut, isAuthenticated } = useAuth()
+
+  return (
+    <div>
+      <h1>
+        <Link to={routes.home()}>Redwood Blog</Link>
+      </h1>
+      <nav>
+        <ul>
+          <li>
+            <Link to={routes.about()}>About</Link>
+          </li>
+          <li>
+            <Link to={routes.contact()}>Contact</Link>
+          </li>
+          <li>
+            <a href="#" onClick={isAuthenticated ? logOut : logIn}>
+              { isAuthenticated ? 'Log Out' : 'Log In' }
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <main>{children}</main>
+    </div>
+  )
+}
+
+export default BlogLayout
+```
+
+`useAuth()` provides a couple more helpers for us, in this case `isAuthenticated` which will return `true` or `false` based on your login status, and `logOut()` which will log the user out. Now clicking **Log Out** should log you out and change the link to **Log In** which you can click to open the modal and log back in again.
+
+When you *are* logged in, you should be able to access the admin pages again: http://localhost:8910/admin/posts
+
+> If you start working on another Redwood app that uses Netlify Identity you'll need to manually clear out your Local Storage which is where the site URL is stored that you entered the first time you saw the modal. Local Storage is tied to your domain and port, which by default will be the same for any Redwood app when developing locally. You can clear your Local Storage in Chrome by going to the Web Inspector, the **Application** tab, and then on the left open up **Local Storage** and click on http://localhost:8910. You'll see the keys stored on the right and can delete them all.
+
+One more touch: let's show the email address of the user that's logged in. We can get the `currentUser` from `useAuth()` and it will contain the data that our third party authentication library is storing about the currently logged in user:
+
+```javascript{7,27}
+// web/src/layouts/BlogLayout/BlogLayout.js
+
+import { Link, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
+
+const BlogLayout = ({ children }) => {
+  const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
+
+  return (
+    <div>
+      <h1>
+        <Link to={routes.home()}>Redwood Blog</Link>
+      </h1>
+      <nav>
+        <ul>
+          <li>
+            <Link to={routes.about()}>About</Link>
+          </li>
+          <li>
+            <Link to={routes.contact()}>Contact</Link>
+          </li>
+          <li>
+            <a href="#" onClick={isAuthenticated ? logOut : logIn}>
+              { isAuthenticated ? 'Log Out' : 'Log In' }
+            </a>
+          </li>
+          { isAuthenticated && <li>{currentUser.email}</li> }
+        </ul>
+      </nav>
+      <main>{children}</main>
+    </div>
+  )
+}
+
+export default BlogLayout
+```
+
+![Logged in email](https://user-images.githubusercontent.com/300/82389433-05b2e680-99f1-11ea-9d01-456cad508c80.png)
+
+> Check out the settings for Identity over at Netlify for more options, including allowing users to create accounts rather than having to be invited, add third party login buttons for Bitbucket, GitHub, GitLab and Google, receive webhooks when someone logs in, and more!
+
 ## Wrapping Up
 
 You made it! If you really went through the whole tutorial: congratulations! If you just skipped ahead to this page to try and get free a free congratulations: tsk, tsk!
@@ -2395,10 +2687,9 @@ Want to add some more features to your app? Check out some of our Cookbook recip
 
 In the coming weeks and months we've got some exciting stuff planned:
 
-1. [Authentication](https://github.com/redwoodjs/redwood/issues/214)
-2. [TypeScript support](https://github.com/redwoodjs/redwood/issues/234)
-3. [Testing](https://github.com/redwoodjs/redwood/issues/502)
-4. [Storybook integration](https://github.com/redwoodjs/redwood/issues/231)
+1. [TypeScript support](https://github.com/redwoodjs/redwood/issues/234)
+2. [Testing](https://github.com/redwoodjs/redwood/issues/502)
+3. [Storybook integration](https://github.com/redwoodjs/redwood/issues/231)
 
 And even more stuff we're thinking about, but haven't put on the calendar yet:
 
