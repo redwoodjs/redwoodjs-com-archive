@@ -55,6 +55,8 @@ export default class extends Controller {
       'focus:outline-none',
       'transition',
       'duration-100',
+      'focus:outline-none',
+      'focus:shadow-outline',
     ]
     const codeBlocks = document.getElementsByTagName('code')
     for (let block of codeBlocks) {
@@ -70,11 +72,20 @@ export default class extends Controller {
 
         new ClipboardJS('.copy-button', {
           text: (trigger) => {
+            this._copiedMessage(trigger)
             return this._stripComments(trigger.previousElementSibling.textContent)
           },
         })
       }
     }
+  }
+
+  _copiedMessage(trigger) {
+    trigger.focus()
+    trigger.textContent = 'Copied'
+    setTimeout(() => {
+      trigger.textContent = 'Copy'
+    }, 750)
   }
 
   // strips any leading comments out of a chunk of text
