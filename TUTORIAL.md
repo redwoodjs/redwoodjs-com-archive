@@ -2396,15 +2396,15 @@ Assuming you've been following along, you already have a Netlify account and a s
 
 ![Netlify Identity screenshot](https://user-images.githubusercontent.com/300/82271191-f5850380-992b-11ea-8061-cb5f601fa50f.png)
 
-When the screen refreshes click the **Invite users** button and enter a real email address (they're going to send a confirmation to it):
+When the screen refreshes click the **Invite users** button and enter a real email address (they're going to send a confirmation link to it):
 
 ![Netlify invite user screenshot](https://user-images.githubusercontent.com/300/82271302-439a0700-992c-11ea-9d6d-004adef3a385.png)
 
-We'll need to get a link from that email soon, but for now let's setup our app for authentication.
+We'll need to get that email confirmation link soon, but for now let's set up our app for authentication.
 
 ### Authentication Generation
 
-There are a couple of places we need to add some code for authentication and lucky for us Redwood can do it for us with a generator:
+There are a couple of places we need to add some code for authentication and lucky for us Redwood can do it automatically with a generator:
 
 ```terminal
 yarn rw g auth netlify
@@ -2428,18 +2428,18 @@ export const requireAuth = () => {
 }
 ```
 
-By default the authentication system will return only the data that the system itself knows about (that's what inside the `jwt` object above). For Netlify Identity that's an email address, an optional name and optional array of roles. Usually you'll have your own concept of a user in your local database. You can modify `getCurrentUser` to return that user, rather than the details that the auth system stores. The comments at the top of the file give one example of how you could look up a user based on their email address. We also provide a simple implementation for requiring that a user be authenticated when trying to access a service: `requireAuth()`. It will throw an error that GraphQL knows what to do with if non-authenticated person tries to get to something they shouldn't.
+By default the authentication system will return only the data that the third-party auth handler knows about (that's what's inside the `jwt` object above). For Netlify Identity that's an email address, an optional name and optional array of roles. Usually you'll have your own concept of a user in your local database. You can modify `getCurrentUser` to return that user, rather than the details that the auth system stores. The comments at the top of the file give one example of how you could look up a user based on their email address. We also provide a simple implementation for requiring that a user be authenticated when trying to access a service: `requireAuth()`. It will throw an error that GraphQL knows what to do with if a non-authenticated person tries to get to something they shouldn't.
 
 The files that were modified by the generator are:
 
-* `web/src/index.js`—wraps the router in `<AuthProvider>` which makes the routes themselves authentication aware, and gives us access to a `useAuth()` hook that returns several functions for logging users in and out, checking their current logged-inness, and more
+* `web/src/index.js`—wraps the router in `<AuthProvider>` which makes the routes themselves authentication aware, and gives us access to a `useAuth()` hook that returns several functions for logging users in and out, checking their current logged-inness, and more.
 * `api/src/functions/graphql.js`—makes `currentUser` available to the api side so that you can check whether a user is allowed to do something on the backend. If you add an implementation to `getCurrentUser()` in `api/src/lib/auth.js` then that is what will be returned by `currentUser`, otherwise it will return just the details the auth system has for the user. If they're not logged in at all then `currentUser` will be `null`.
 
 We'll hook up both the web and api sides below to make sure a user is only doing things they're allowed to do.
 
 ### API Authentication
 
-First let's lock down the API so we can be sure that only authorized users can create, update and delete Posts. Open up the Post service and let's add a check:
+First let's lock down the API so we can be sure that only authorized users can create, update and delete a Post. Open up the Post service and let's add a check:
 
 ```javascript{4,17,24,32}
 // api/src/services/posts/posts.js
@@ -2580,7 +2580,7 @@ Before we can log in, remember that confirmation email from Netlify? Go find tha
 
 Once you do that the modal should update and say that you're logged in! It worked! Click the X in the upper right to close the modal.
 
-> The Netlify Identity Widget also takes care of the Forgot Password flow.
+> We know that invite acceptance flow is less than idea. The good news is that once you deploy your site again with authentication, future invites will work automatically—the link will go to production which will now have the code needed to launch the modal and let you accept the invite.
 
 We've got no indication on our actual site that we're logged in, however. How about changing the **Log In** button to be **Log Out** when you're authenticated:
 
@@ -2608,7 +2608,7 @@ const BlogLayout = ({ children }) => {
           </li>
           <li>
             <a href="#" onClick={isAuthenticated ? logOut : logIn}>
-              { isAuthenticated ? 'Log Out' : 'Log In' }
+              {isAuthenticated ? 'Log Out' : 'Log In'}
             </a>
           </li>
         </ul>
@@ -2675,11 +2675,11 @@ Believe it or not, that's it! Authentication with Redwood is a breeze and we're 
 
 ## Wrapping Up
 
-You made it! If you really went through the whole tutorial: congratulations! If you just skipped ahead to this page to try and get free a free congratulations: tsk, tsk!
+You made it! If you really went through the whole tutorial: congratulations! If you just skipped ahead to this page to try and get a free congratulations: tsk, tsk!
 
 That was potentially a lot of new concepts to absorb all at once so don't feed bad if all of it didn't fully sink in. React, GraphQL, Prisma, serverless functions...so many things! Even those of us working on the framework are heading over to Google multiple times per day to figure out how to get these things to work together.
 
-As an anonymous Twitter user once mused: "If you enjoy feeling like both the dumbest person in history and the smartest person on earth, all within 24 hours, programming may be the career for you!"
+As an anonymous Twitter user once mused: "If you enjoy feeling like both the smartest person on earth and the dumbest person in history within a span of 24 hours, programming may be the career for you!"
 
 ### What's Next?
 
