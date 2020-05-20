@@ -2428,7 +2428,7 @@ export const requireAuth = () => {
 }
 ```
 
-By default the authentication system will return only the data that the system itself knows about (that's what inside the `jwt` object above). For Netlify Identity that's an email address, an optional name and optional array of roles. Usually you'll have your own concept of a user in your local database. You can modify `getCurrentUser` to return that user, rather than the details that the auth system stores. The comments at the top of the file give one example for you could look up a user based on their email address. We also provide a simple implementation to requiring that a user be authenticated when trying to access a service, `requireAuth()`. It will throw an error that GraphQL knows what to do with if non-authenticated person tries to access something they shouldn't.
+By default the authentication system will return only the data that the system itself knows about (that's what inside the `jwt` object above). For Netlify Identity that's an email address, an optional name and optional array of roles. Usually you'll have your own concept of a user in your local database. You can modify `getCurrentUser` to return that user, rather than the details that the auth system stores. The comments at the top of the file give one example of how you could look up a user based on their email address. We also provide a simple implementation for requiring that a user be authenticated when trying to access a service: `requireAuth()`. It will throw an error that GraphQL knows what to do with if non-authenticated person tries to get to something they shouldn't.
 
 The files that were modified by the generator are:
 
@@ -2439,7 +2439,7 @@ We'll hook up both the web and api sides below to make sure a user is only doing
 
 ### API Authentication
 
-First let's lock down the API so be sure that only authorized users can create, update and delete Posts. Open up the Post service and let's add a check:
+First let's lock down the API so we can be sure that only authorized users can create, update and delete Posts. Open up the Post service and let's add a check:
 
 ```javascript{4,17,24,32}
 // api/src/services/posts/posts.js
@@ -2484,7 +2484,7 @@ export const Post = {
 }
 ```
 
-Now try creating, editing or deleting a post from our admin pages. Nothing happens! Should we show some kind of error message? In this case, probably not—we're going to lockdown the admin pages altogether so they won't be accessible by a browser. The only way someone would be able to trigger these errors in the API is if they tried to access the GraphQL endpoint directly, without going through our UI. The API is already returning an error message (open the Web Inspector in your browser and try that create/edit/delete again) so we are covered.
+Now try creating, editing or deleting a post from our admin pages. Nothing happens! Should we show some kind of friendly error message? In this case, probably not—we're going to lockdown the admin pages altogether so they won't be accessible by a browser. The only way someone would be able to trigger these errors in the API is if they tried to access the GraphQL endpoint directly, without going through our UI. The API is already returning an error message (open the Web Inspector in your browser and try that create/edit/delete again) so we are covered.
 
 > Note that we're putting the authentication checks in the service and not checking in the GraphQL interface (in the SDL files).
 >
@@ -2519,11 +2519,11 @@ const Routes = () => {
 export default Routes
 ```
 
-Surround the routes you want to be behind authentication and optionally add the `unauthenticated` attribute that lists the name of another route to redirect to if the user is not logged in, in this case we'll go back to the homepage.
+Surround the routes you want to be behind authentication and optionally add the `unauthenticated` attribute that lists the name of another route to redirect to if the user is not logged in. In this case we'll go back to the homepage.
 
 Try that in your browser. If you hit http://localhost:8910/admin/posts you should immediately go back to the homepage.
 
-Now all that's left to do is let the user actually log in! If you've built authentication before then you know this part is usually a drag, but Redwood makes it a walk in the park. Most of the plumbing was handled by the auth generator, so we get to focus on the parts the user actually sees. First, let's add a **Login** link that will trigger a modal from the Netlify Identity widget. Let's assume we want this on all of the public pages, so we'll put it in the `BlogLayout`:
+Now all that's left to do is let the user actually log in! If you've built authentication before then you know this part is usually a drag, but Redwood makes it a walk in the park. Most of the plumbing was handled by the auth generator, so we get to focus on the parts the user actually sees. First, let's add a **Login** link that will trigger a modal from the [Netlify Identity widget](https://github.com/netlify/netlify-identity-widget). Let's assume we want this on all of the public pages, so we'll put it in the `BlogLayout`:
 
 ```javascript{4,7,22-26}
 // web/src/layouts/BlogLayout/BlogLayout.js
@@ -2566,7 +2566,7 @@ Try clicking the login link:
 
 ![Netlify Identity Widget modal](https://user-images.githubusercontent.com/300/82387730-aa7ef500-99ec-11ea-9a40-b52b383f99f0.png)
 
-Now we need to let the widget know the URL of our site. Back over to Netlify, you can get that from the Identity tab:
+We need to let the widget know the URL of our site so it knows where to go to get user data and confirm they're able to log in. Back over to Netlify, you can get that from the Identity tab:
 
 ![Netlify site URL](https://user-images.githubusercontent.com/300/82387937-28430080-99ed-11ea-91b7-a4e10f14aa83.png)
 
@@ -2574,7 +2574,7 @@ You need the protocol and domain, not the rest of the path. Paste that into the 
 
 ![Netlify identity widget login](https://user-images.githubusercontent.com/300/82388116-97205980-99ed-11ea-8fb4-13436ee8e746.png)
 
-Before we can log in, remember that confirmation email from Netlify? Go find that and click the **Accept the invite** link. That will bring you to your site live in production, where nothing will happen. But if you look at the URL it will end in `#invite_token=6gFSXh_ugtHCXO5Whlc5V`. Copy that (including the `#`) and appened it to your localhost URL: http://localhost:8910/#invite_token=6gFSXh_ugtHCXO5Whlc5Vg Hit Enter, then go back into the URL and hit Enter again to get it to actually reload the page. Now the modal will show **Complete your signup** and give you the ability to set your password:
+Before we can log in, remember that confirmation email from Netlify? Go find that and click the **Accept the invite** link. That will bring you to your site live in production, where nothing will happen. But if you look at the URL it will end in something like `#invite_token=6gFSXhugtHCXO5Whlc5V`. Copy that (including the `#`) and appened it to your localhost URL: http://localhost:8910/#invite_token=6gFSXhugtHCXO5Whlc5Vg Hit Enter, then go back into the URL and hit Enter again to get it to actually reload the page. Now the modal will show **Complete your signup** and give you the ability to set your password:
 
 ![Netlify identity set password](https://user-images.githubusercontent.com/300/82388369-54ab4c80-99ee-11ea-920e-9df10ee0cac2.png)
 
@@ -2670,6 +2670,8 @@ export default BlogLayout
 ![Logged in email](https://user-images.githubusercontent.com/300/82389433-05b2e680-99f1-11ea-9d01-456cad508c80.png)
 
 > Check out the settings for Identity over at Netlify for more options, including allowing users to create accounts rather than having to be invited, add third party login buttons for Bitbucket, GitHub, GitLab and Google, receive webhooks when someone logs in, and more!
+
+Believe it or not, that's it! Authentication with Redwood is a breeze and we're just getting started. Expect more magic soon!
 
 ## Wrapping Up
 
