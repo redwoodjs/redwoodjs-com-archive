@@ -8,7 +8,19 @@ Let's take a look at these scenarios and how you can get them working with Redwo
 
 We assume you're deploying to Netlify in this recipe. Your mileage may vary for other providers or a custom build process.
 
+## Remove the /api directory
+
+Just delete the `/api` directory altogether and your app will still work in dev mode:
+
+```terminal
+rm -rf api
+```
+
+You can also run `yarn install` to cleanup those packages that aren't used any more.
+
 ## Turn off the API build process
+
+When it comes time to deploy we need to let Netlify know not to worry about building the API side.
 
 Open up `netlify.toml`. We're going to change one line and comment out another:
 
