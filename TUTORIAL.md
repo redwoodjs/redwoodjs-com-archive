@@ -2580,7 +2580,7 @@ Before we can log in, remember that confirmation email from Netlify? Go find tha
 
 Once you do that the modal should update and say that you're logged in! It worked! Click the X in the upper right to close the modal.
 
-> We know that invite acceptance flow is less than idea. The good news is that once you deploy your site again with authentication, future invites will work automatically—the link will go to production which will now have the code needed to launch the modal and let you accept the invite.
+> We know that invite acceptance flow is less than ideal. The good news is that once you deploy your site again with authentication, future invites will work automatically—the link will go to production which will now have the code needed to launch the modal and let you accept the invite.
 
 We've got no indication on our actual site that we're logged in, however. How about changing the **Log In** button to be **Log Out** when you're authenticated:
 
