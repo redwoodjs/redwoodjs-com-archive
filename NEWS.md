@@ -103,3 +103,27 @@
 ### Tom Preston-Werner joins the show to talk about his latest project, RedwoodJS, and the decisions made about how it works, public APIs, how tied to Netlify RedwoodJS is, and why they're using Prisma.
 
 #### Podcast
+
+---
+
+![Software Engineering Daily](https://user-images.githubusercontent.com/300/82687852-b812c580-9c0c-11ea-99aa-40f70ed945a7.png)
+
+# [Software Engineering Daily Podcast](https://softwareengineeringdaily.com/2020/05/22/redwoodjs-with-tom-preston-werner/)
+
+## 22 May 2020
+
+### Tom Preston-Werner joins the show to talk about the future of JAMStack development, and his goals for RedwoodJS.
+
+#### Podcast
+
+---
+
+![WAPI Radio](https://user-images.githubusercontent.com/300/82688098-22c40100-9c0d-11ea-8027-eb9f53247bee.png)
+
+# [WAPI Radio](https://wapi.fm/)
+
+## 26 March 2020
+
+### Tom Preston-Werner and David Price joined WAPI Radio for their ephemeral 24-hour live radio broadcast. They've saved some of their favorite hours, including this one about RedwoodJS.
+
+#### Podcast
