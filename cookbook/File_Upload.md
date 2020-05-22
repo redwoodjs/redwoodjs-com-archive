@@ -14,7 +14,7 @@ Head over to https://dev.filestack.com/signup/free/ and sign up. Be sure to use 
 
 Copy that or at least keep the browser tab open because we're going to need it in a minute. (I already changed that key so don't bother trying to steal it!)
 
-That's it on the Filestack side, let's create a sample app and integrate Filestack's uploader.
+That's it on the Filestack side, on to the application.
 
 ## The App
 
@@ -55,7 +55,7 @@ model Image {
 }
 ```
 
-`url` will contain the public URL that Filestack creates after an upload and `title` will be a user-supplied name for this asset.
+`title` will be a user-supplied name for this asset and `url` will contain the public URL that Filestack creates after an upload.
 
 Create a migration and update the database:
 
@@ -181,6 +181,8 @@ Great! You can even try uploading an image to make sure it works:
 
 ![Upload](https://user-images.githubusercontent.com/300/82618035-bb636e00-9b86-11ea-9401-61b8c989f43c.png)
 
+> Make sure you click the **Upload** button that appears after picking your file.
+
 If you go over to the Filstack dashboard you can see we've uploaded an image:
 
 ![Filestack dashboard](https://user-images.githubusercontent.com/300/82618057-ccac7a80-9b86-11ea-9cd8-7a9e80a5a20f.png)
@@ -221,7 +223,7 @@ Well lookie here:
 
 `filesUploaded[0].url` seems to be exactly what we need—the public URL to the image that was just uploaded. Excellent! How about we use a little state to track that for us so it's available when we submit our form:
 
-```javascript{11-12,25,32}
+```javascript{12,25,32}
 // web/src/components/ImageForm/ImageForm.js
 
 import {
@@ -278,9 +280,9 @@ Now try uploading a file and then saving the form:
 
 ![Upload done](https://user-images.githubusercontent.com/300/82702493-f5844c80-9c26-11ea-8fc4-0273b92034e4.png)
 
-It worked! Now let's update the display here to actually show the image as a thumbnail and make it clickable to see the full version:
+It worked! Next let's update the display here to actually show the image as a thumbnail and make it clickable to see the full version:
 
-```javascript{60-62}
+```javascript{61-63}
 // web/src/components/Images/Images.js
 
 import { useMutation } from '@redwoodjs/web'
@@ -394,9 +396,9 @@ export default ImagesList
 
 ## The Transform
 
-Remember when we mentioned that Filestack can save you bandwidth by transforming images on the fly? This page is a perfect example—the image is never bigger than 50px, why pull down the full resolution just for that tiny display? Here's how we can tell Filestack that whenever we grab this instance of the image, it only needs to be 100px. Why 100px? Most phones and many laptops and desktop displays are now 4k or larger. Images are actually displayed at double resolution on these displays, so even though it's "50px" it's really 100px when shown on these displays. So you'll usually want to bring down all images at twice their actual resolution.
+Remember when we mentioned that Filestack can save you bandwidth by transforming images on the fly? This page is a perfect example—the image is never bigger than 50px, why pull down the full resolution just for that tiny display? Here's how we can tell Filestack that whenever we grab this instance of the image, it only needs to be 100px. Why 100px? Most phones and many laptops and desktop displays are now 4k or larger. Images are actually displayed at at least double resolution on these displays, so even though it's "50px" it's really 100px when shown on these displays. So you'll usually want to bring down all images at twice their intended display resolution.
 
-You need to add a directive to the URL itself so let's add a function that does that for a given image URL (this can go either inside or outside of the component definition):
+We need to add a special indicator to the URL itself to trigger the transform so let's add a function that does that for a given image URL (this can go either inside or outside of the component definition):
 
 ```javascript
 // web/src/components/Images/Images.js
@@ -408,7 +410,9 @@ const thumbnail = (url) => {
 }
 ```
 
-And then use the result of that function in the `<img>` tag:
+What this does is turn a URL like `https://cdn.filestackcontent.com/81m7qIrURxSp7WHcft9a` into `https://cdn.filestackcontent.com/resize=width:100/81m7qIrURxSp7WHcft9a`.
+
+Now we'll use the result of that function in the `<img>` tag:
 
 ```javascript
 // web/src/components/Images/Images.js
@@ -426,7 +430,7 @@ It would be nice if, after uploading, you could see the image you uploaded. Like
 
 We're already storing any attached image in state, so let's use the existence of that state to show the attached image. In fact, let's also hide the uploader and assume you're done (you'll be able to show it again if needed):
 
-```javascript{9-16}
+```javascript{14,18}
 // web/src/components/ImageForm/ImageForm.js
 
 <ReactFilestack
@@ -443,6 +447,7 @@ We're already storing any attached image in state, so let's use the existence of
     display: url ? 'none' : 'block',
   }}
 ></div>
+
 {url && <img src={url} style={{ marginTop: '2rem' }} />}
 ```
 
@@ -452,15 +457,30 @@ Now if you create a new image you'll see the picker, and as soon as the upload i
 
 Now let's just add the ability to bring back the uploader if you decide you want to change the image. We can do that by clearing the image that's in state:
 
-```javascript
+```javascript{18-29}
+// web/src/components/ImageForm/ImageForm.js
+
+<ReactFilestack
+  apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
+  onSuccess={onFileUpload}
+  componentDisplayMode={{ type: 'immediate' }}
+  actionOptions={{ displayMode: 'inline', container: 'picker' }}
+/>
+<div
+  id="picker"
+  style={{
+    marginTop: '2rem',
+    height: '20rem',
+    display: url ? 'none' : 'block',
+  }}
+></div>
+
 {url && (
   <div>
     <img src={url} style={{ display: 'block', margin: '2rem 0' }} />
     <a
       href="#"
-      onClick={() => {
-        setUrl(null)
-      }}
+      onClick={() => setUrl(null)}
       className="bg-blue-600 text-white hover:bg-blue-700 text-xs rounded px-4 py-2 uppercase font-semibold tracking-wide"
     >
       Replace Image
@@ -473,4 +493,6 @@ We're borrowing the styles from the submit button and made sure the image has bo
 
 ## The Wrapup
 
-Files uploaded! There's plenty of ways to integrate a file picker and this is just one, but we think it's simple, yet flexible. We use the same technique on the [example-blog](https://github.com/redwoodjs/example-blog). Have fun and get uploading!
+Files uploaded! There's plenty of ways to integrate a file picker and this is just one, but we think it's simple, yet flexible. We use the same technique on the [example-blog](https://github.com/redwoodjs/example-blog).
+
+Have fun and get uploading!
