@@ -6,7 +6,7 @@ The Redwood CLI has two entry-point commands:
 1. **redwood** (alias rw), which is for developing an application, and
 2. **redwood-tools** (alias rwt), which is for contributing to the framework.
 
-This CLI document covers the `redwood` command options. For `redwood-tools` options, see the [Redwood Contributing guide's Reference section](https://github.com/redwoodjs/redwood/blob/master/CONTRIBUTING.md#Reference).
+This CLI document covers the `redwood` command options. For `redwood-tools` options, see the [Redwood Contributing guide's Reference section](https://github.com/redwoodjs/redwood/blob/master/CONTRIBUTING.md#cli-reference-redwood-tools).
 
 **A Note on Syntax**
 
