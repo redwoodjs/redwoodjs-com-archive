@@ -26,10 +26,10 @@ cd uploader
 The first thing we can do is to create a ENV variable to hold our Filestack API key. This is a best practice so that the key isn't living in your repository for prying eyes to see. Add the key to the `.env` file in the root of our app:
 
 ```terminal
-# .env
-
-FILESTACK_API_KEY=AM18i8xV4QpoiGwetoTWd
+REDWOOD_ENV_FILESTACK_API_KEY=AM18i8xV4QpoiGwetoTWd
 ```
+
+> We're prefixing with `REDWOOD_ENV_` here as an indicator to webpack that we want it to replace these variables with the actual values as it is processing pages and statically generating them. Otherwise our generated pages would still contain something like `process.env.FILESTACK_API_KEY`, which would not exist when the pages are static and being served from a CDN.
 
 Now we can start our development server:
 
@@ -136,7 +136,7 @@ const ImageForm = (props) => {
         />
         <FieldError name="title" className={CSS.errorMessage} />
 
-        <ReactFilestack apikey={process.env.FILESTACK_API_KEY} />
+        <ReactFilestack apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY} />
 
         <div className="mt-8 text-center">
           <Submit
@@ -168,7 +168,7 @@ There's no reason to make the user click that button, let's just show the picker
 // web/src/components/ImageForm/ImageForm.js
 
 <ReactFilestack
-  apikey={process.env.FILESTACK_API_KEY}
+  apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
   componentDisplayMode={{ type: 'immediate' }}
   actionOptions={{ displayMode: 'inline', container: 'picker' }}
 />
@@ -206,7 +206,7 @@ const ImageForm = (props) => {
   // form stuff...
 
   <ReactFilestack
-    apikey={process.env.FILESTACK_API_KEY}
+    apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
     onSuccess={onFileUpload}
     componentDisplayMode={{ type: 'immediate' }}
     actionOptions={{ displayMode: 'inline', container: 'picker' }}
@@ -428,7 +428,7 @@ We're already storing any attached image in state, so let's use the existence of
 // web/src/components/ImageForm/ImageForm.js
 
 <ReactFilestack
-  apikey={process.env.FILESTACK_API_KEY}
+  apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
   onSuccess={onFileUpload}
   componentDisplayMode={{ type: 'immediate' }}
   actionOptions={{ displayMode: 'inline', container: 'picker' }}
