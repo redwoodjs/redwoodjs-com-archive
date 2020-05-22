@@ -1102,7 +1102,7 @@ export default BlogPost
 
 Let's take the post display code out of `BlogPostsCell` and put it here instead, taking the `post` in as a prop:
 
-```javascript{3,7-14}
+```javascript{3,5,7-14}
 // web/src/components/BlogPost/BlogPost.js
 
 import { Link, routes } from '@redwoodjs/router'
