@@ -261,22 +261,22 @@ const ImageForm = (props) => {
 
 ```
 
-So we'll use `setState` to store the URL for the image. We default it to the existing `url` value, if it exists—remember that scaffolds use this same form for editing of existing records, where we'll already have a value for `url`. If we didn't store that file value somewhere then it would be overridden with `null` if we started editing an existing record!
+So we'll use `setState` to store the URL for the image. We default it to the existing `url` value, if it exists—remember that scaffolds use this same form for editing of existing records, where we'll already have a value for `url`. If we didn't store that url value somewhere then it would be overridden with `null` if we started editing an existing record!
 
-The last thing we need to do is set the value of `file` in the `data` object before it gets sent on to the `onSave` handler:
+The last thing we need to do is set the value of `url` in the `data` object before it gets sent on to the `onSave` handler:
 
 ```javascript{4,5}
 // web/src/components/ImageForm/ImageForm.js
 
 const onSubmit = (data) => {
-  const dataWithFile = Object.assign(data, { file: image })
+  const dataWithFile = Object.assign(data, { url })
   props.onSave(dataWithFile, props?.image?.id)
 }
 ```
 
 Now try uploading a file and then saving the form:
 
-![Upload done](https://user-images.githubusercontent.com/300/82618656-8b1ccf00-9b88-11ea-9469-6cf37cffdf0c.png)
+![Upload done](https://user-images.githubusercontent.com/300/82702493-f5844c80-9c26-11ea-8fc4-0273b92034e4.png)
 
 It worked! Now let's update the display here to actually show the image as a thumbnail and make it clickable to see the full version:
 
@@ -341,8 +341,8 @@ const ImagesList = ({ images }) => {
               <td className="p-3">{truncate(image.id)}</td>
               <td className="p-3">{truncate(image.title)}</td>
               <td className="p-3">
-                <a href={image.file} target="_blank">
-                  <img src={image.file} style={{ maxWidth: '50px' }} />
+                <a href={image.url} target="_blank">
+                  <img src={image.url} style={{ maxWidth: '50px' }} />
                 </a>
               </td>
               <td className="p-3 pr-4 text-right whitespace-no-wrap">
@@ -390,11 +390,13 @@ const ImagesList = ({ images }) => {
 export default ImagesList
 ```
 
-![Image](https://user-images.githubusercontent.com/300/82618982-72f97f80-9b89-11ea-8bd7-117b72314e2d.png)
+![Image](https://user-images.githubusercontent.com/300/82702575-1fd60a00-9c27-11ea-8d2f-047bcf4e9cae.png)
 
 ## The Transform
 
-Remember how we said it's a waste of bandwidth to send the full image when you're only ever viewing it small? Here's how we can tell Filestack that whenever we grab this instance of the image, it only needs to be 100px (it's displayed at 50px, but you have to multiply that by at least 2x for Retina displays). You need to add a directive to the URL itself so let's add a function that does that for a given image URL:
+Remember when we mentioned that Filestack can save you bandwidth by transforming images on the fly? This page is a perfect example—the image is never bigger than 50px, why pull down the full resolution just for that tiny display? Here's how we can tell Filestack that whenever we grab this instance of the image, it only needs to be 100px. Why 100px? Most phones and many laptops and desktop displays are now 4k or larger. Images are actually displayed at double resolution on these displays, so even though it's "50px" it's really 100px when shown on these displays. So you'll usually want to bring down all images at twice their actual resolution.
+
+You need to add a directive to the URL itself so let's add a function that does that for a given image URL (this can go either inside or outside of the component definition):
 
 ```javascript
 // web/src/components/Images/Images.js
@@ -408,21 +410,19 @@ const thumbnail = (url) => {
 
 And then use the result of that function in the `<img>` tag:
 
-
 ```javascript
 // web/src/components/Images/Images.js
 
-<img src={thumbnail(image.file)} style={{ maxWidth: '50px' }} />
-}
+<img src={thumbnail(image.url)} style={{ maxWidth: '50px' }} />
 ```
 
-Starting with an uploaded image of 157kB the thumbnail clocks in at only 6.5kB! Optimizing images is almost always worth the extra effort!
+Starting with an uploaded image of 157kB the 100px thumbnail clocks in at only 6.5kB! Optimizing image delivery is almost always worth the extra effort!
 
 You can read more about the available transforms over at [Filestack's API reference](https://www.filestack.com/docs/api/processing/).
 
 ## The Improvements
 
-It would be nice if, after uploading, you could see the image you uploaded. Likewise, when editing an image, it would be nice to see what's already attached. Let's make those improvements now.
+It would be nice if, after uploading, you could see the image you uploaded. Likewise, when editing an image, it would be helpful to see what's already attached. Let's make those improvements now.
 
 We're already storing any attached image in state, so let's use the existence of that state to show the attached image. In fact, let's also hide the uploader and assume you're done (you'll be able to show it again if needed):
 
@@ -440,10 +440,10 @@ We're already storing any attached image in state, so let's use the existence of
   style={{
     marginTop: '2rem',
     height: '20rem',
-    display: image ? 'none' : 'block',
+    display: url ? 'none' : 'block',
   }}
 ></div>
-{image && <img src={image} style={{ marginTop: '2rem' }} />}
+{url && <img src={url} style={{ marginTop: '2rem' }} />}
 ```
 
 Now if you create a new image you'll see the picker, and as soon as the upload is complete the uploaded image will pop into place. If you go to edit an image you'll see the file that's already attached.
@@ -453,13 +453,13 @@ Now if you create a new image you'll see the picker, and as soon as the upload i
 Now let's just add the ability to bring back the uploader if you decide you want to change the image. We can do that by clearing the image that's in state:
 
 ```javascript
-{image && (
+{url && (
   <div>
-    <img src={image} style={{ display: 'block', margin: '2rem 0' }} />
+    <img src={url} style={{ display: 'block', margin: '2rem 0' }} />
     <a
       href="#"
       onClick={() => {
-        setImage(null)
+        setUrl(null)
       }}
       className="bg-blue-600 text-white hover:bg-blue-700 text-xs rounded px-4 py-2 uppercase font-semibold tracking-wide"
     >
@@ -469,7 +469,7 @@ Now let's just add the ability to bring back the uploader if you decide you want
 )}
 ```
 
-We borrowed the styles from the submit button and made sure the image has both a top and bottom margin so it didn't crash into the new button.
+We're borrowing the styles from the submit button and made sure the image has both a top and bottom margin so it doesn't crash into the new button.
 
 ## The Wrapup
 
