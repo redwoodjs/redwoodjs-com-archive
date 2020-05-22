@@ -1,6 +1,6 @@
 # File Uploads
 
-As you're probably heard, Redwood thinks the future is serverless. This concept introduces some interesing problems you may not have had to worry about in the past. For example: where do files go when you upload them—there's no server! Like maybe tasks you may have done [yourself](https://redwoodjs.com/tutorial/authentication), this is one job that we can farm out to a third party service.
+As you're probably heard, Redwood thinks the future is serverless. This concept introduces some interesing problems you may not have had to worry about in the past. For example: where do files go when you upload them—there's no server! Like many tasks you may have done [yourself](https://redwoodjs.com/tutorial/authentication) in the past, this is one job that we can farm out to a third party service.
 
 ## The Service
 
@@ -12,9 +12,13 @@ Head over to https://dev.filestack.com/signup/free/ and sign up. Be sure to use 
 
 ![New image scaffold](https://user-images.githubusercontent.com/300/82616735-ec41a400-9b82-11ea-9566-f96089e35e52.png)
 
-I already changed that key so don't bother trying to steal it! That's it on the Filestack side, let's create a sample app and integrate their uploader.
+Copy that or at least keep the browser tab open because we're going to need it in a minute. (I already changed that key so don't bother trying to steal it!)
+
+That's it on the Filestack side, let's create a sample app and integrate Filestack's uploader.
 
 ## The App
+
+Let's create a very simple DAM (Digital Asset Manager) that lets users upload and catalog images. They will be able to click the thumbnail to open a full-size version.
 
 Create a new Redwood app:
 
@@ -23,7 +27,7 @@ yarn create redwood-app uploader
 cd uploader
 ```
 
-The first thing we can do is to create a ENV variable to hold our Filestack API key. This is a best practice so that the key isn't living in your repository for prying eyes to see. Add the key to the `.env` file in the root of our app:
+The first thing we'll do is create an environment variable to hold our Filestack API key. This is a best practice so that the key isn't living in your repository for prying eyes to see. Add the key to the `.env` file in the root of our app:
 
 ```terminal
 REDWOOD_ENV_FILESTACK_API_KEY=AM18i8xV4QpoiGwetoTWd
@@ -37,8 +41,6 @@ Now we can start our development server:
 yarn rw dev
 ```
 
-Let's create a very simple DAM (Digital Asset Manager) by letting people upload images and then viewing them. The can click on a thumbnail to open a fullsize version.
-
 ### The Database
 
 We'll create a single model to store our image data:
@@ -49,11 +51,11 @@ We'll create a single model to store our image data:
 model Image {
   id    Int    @default(autoincrement()) @id
   title String
-  file  String
+  url   String
 }
 ```
 
-`file` will contain the unique file identifier that Filestack creates after an upload and `title` will be a user-supplied name for this asset.
+`url` will contain the public URL that Filestack creates after an upload and `title` will be a user-supplied name for this asset.
 
 Create a migration and update the database:
 
@@ -70,7 +72,7 @@ yarn rw g scaffold image
 
 Now head to http://localhost:8910/images/new and let's figure out what we need to do to add an image uploader:
 
-![New image scaffold](https://user-images.githubusercontent.com/300/82616646-a97fcc00-9b82-11ea-8a93-2878dab6b7a1.png)
+![New image scaffold](https://user-images.githubusercontent.com/300/82694608-653f0b00-9c18-11ea-8003-4dc4aeac7b86.png)
 
 ## The Uploader
 
@@ -80,9 +82,9 @@ Filestack has a [React component](https://github.com/filestack/filestack-react) 
 yarn workspace web add filestack-react
 ```
 
-We know we'll want the uploader on our scaffolded form so let's import it and try replacing the **File** input with it, giving it the API key:
+We know we'll want the uploader on our scaffolded form so let's import it and try replacing the **Url** input with it, giving it the API key:
 
-```javascript{11,53}
+```javascript{11,54}
 // web/src/components/ImageForm/ImageForm.js
 
 import {
@@ -162,7 +164,7 @@ Clicking that actually launches the picker with all kinds of options, like picki
 
 ![Filestack picker](https://user-images.githubusercontent.com/300/82617240-51e26000-9b84-11ea-8aec-210b7a751e8c.png)
 
-There's no reason to make the user click that button, let's just show the picker on the page when it loads. We'll need to create a container for it to live in, so we'll add a `<div>` and give it an `id` attribute that we'll tell `<ReactFilestack>` about. We'll also give the `<div>` a couple of styles so that the picker doesn't collapse to 0px tall:
+There's no reason to make the user click that button, let's just show the picker on the page when it loads by adding a couple of [options](https://github.com/filestack/filestack-react#props). We'll need to create a container for it to live in, so we'll add a `<div>` and give it an `id` attribute that we'll tell `<ReactFilestack>` about. We'll also give the `<div>` a couple of styles so that the picker doesn't collapse to 0px tall:
 
 ```javascript
 // web/src/components/ImageForm/ImageForm.js
@@ -183,7 +185,7 @@ If you go over to the Filstack dashboard you can see we've uploaded an image:
 
 ![Filestack dashboard](https://user-images.githubusercontent.com/300/82618057-ccac7a80-9b86-11ea-9cd8-7a9e80a5a20f.png)
 
-But that doesn't help us attach anything to our database record. Hmm.
+But that doesn't help us attach anything to our database record. Let's do that.
 
 ## The Data
 
@@ -217,9 +219,9 @@ Well lookie here:
 
 ![Uploader response](https://user-images.githubusercontent.com/300/82618071-ddf58700-9b86-11ea-9626-e093b4c8d853.png)
 
-`filesUploaded[0].url` seems to be exactly what we need—the public URL to the image that was just uploaded, excellent! How about we use a little state to track that for us so it's available when we submit our form:
+`filesUploaded[0].url` seems to be exactly what we need—the public URL to the image that was just uploaded. Excellent! How about we use a little state to track that for us so it's available when we submit our form:
 
-```javascript{10-12,18}
+```javascript{11-12,25,32}
 // web/src/components/ImageForm/ImageForm.js
 
 import {
@@ -244,14 +246,14 @@ const CSS = {
 }
 
 const ImageForm = (props) => {
-  const [image, setImage] = useState(props?.image?.file)
+  const [url, setUrl] = useState(props?.image?.url)
 
   const onSubmit = (data) => {
     props.onSave(data, props?.image?.id)
   }
 
   const onFileUpload = (response) => {
-    setImage(response.filesUploaded[0].url)
+    setUrl(response.filesUploaded[0].url)
   }
 
   return (
@@ -259,7 +261,7 @@ const ImageForm = (props) => {
 
 ```
 
-So we'll use `setState` to store the URL for the image. We default it to the existing `file` value, if it exists—remember that scaffolds use this same form for editing of existing records, where we'll already have a value for `file`. If we didn't store that file value somewhere then it would be overridden with `null` if we started editing an existing record!
+So we'll use `setState` to store the URL for the image. We default it to the existing `url` value, if it exists—remember that scaffolds use this same form for editing of existing records, where we'll already have a value for `url`. If we didn't store that file value somewhere then it would be overridden with `null` if we started editing an existing record!
 
 The last thing we need to do is set the value of `file` in the `data` object before it gets sent on to the `onSave` handler:
 
