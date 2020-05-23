@@ -1,6 +1,6 @@
 # File Uploads
 
-As you're probably heard, Redwood thinks the future is serverless. This concept introduces some interesing problems you may not have had to worry about in the past. For example: where do files go when you upload them—there's no server! Like many tasks you may have done [yourself](https://redwoodjs.com/tutorial/authentication) in the past, this is one job that we can farm out to a third party service.
+As you've probably heard, Redwood thinks the future is serverless. This concept introduces some interesting problems you may not have had to worry about in the past. For example: where do files go when you upload them—there's no server! Like many tasks you may have done [yourself](https://redwoodjs.com/tutorial/authentication) in the past, this is another job that we can farm out to a third party service.
 
 ## The Service
 
