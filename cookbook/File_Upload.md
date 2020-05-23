@@ -428,7 +428,7 @@ You can read more about the available transforms over at [Filestack's API refere
 
 It would be nice if, after uploading, you could see the image you uploaded. Likewise, when editing an image, it would be helpful to see what's already attached. Let's make those improvements now.
 
-We're already storing any attached image in state, so let's use the existence of that state to show the attached image. In fact, let's also hide the uploader and assume you're done (you'll be able to show it again if needed):
+We're already storing the attached image URL in state, so let's use the existence of that state to show the attached image. In fact, let's also hide the uploader and assume you're done (you'll be able to show it again if needed):
 
 ```javascript{14,18}
 // web/src/components/ImageForm/ImageForm.js
