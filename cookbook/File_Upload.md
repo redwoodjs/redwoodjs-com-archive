@@ -271,8 +271,8 @@ The last thing we need to do is set the value of `url` in the `data` object befo
 // web/src/components/ImageForm/ImageForm.js
 
 const onSubmit = (data) => {
-  const dataWithFile = Object.assign(data, { url })
-  props.onSave(dataWithFile, props?.image?.id)
+  const dataWithUrl = Object.assign(data, { url })
+  props.onSave(dataWithUrl, props?.image?.id)
 }
 ```
 
