@@ -183,7 +183,7 @@ Great! You can even try uploading an image to make sure it works:
 
 > Make sure you click the **Upload** button that appears after picking your file.
 
-If you go over to the Filstack dashboard you can see we've uploaded an image:
+If you go over to the Filestack dashboard you can see we've uploaded an image:
 
 ![Filestack dashboard](https://user-images.githubusercontent.com/300/82618057-ccac7a80-9b86-11ea-9cd8-7a9e80a5a20f.png)
 
