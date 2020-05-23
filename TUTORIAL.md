@@ -2057,7 +2057,7 @@ Remember when we said that `<Form>` had one more trick up its sleeve? Here it co
 
 Remove the inline error display we just added (`{ error && ...}`) and replace it with `<FormError>`, passing the `error` constant we got from `useMutation` and a little bit of styling to `wrapperStyle` (don't forget the `import`). We'll also pass `error` to `<Form>` so it can setup a context:
 
-```javascript{11,19-22}
+```javascript{11,18,19-22}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
