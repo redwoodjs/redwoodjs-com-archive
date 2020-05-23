@@ -489,6 +489,8 @@ Now let's just add the ability to bring back the uploader if you decide you want
 )}
 ```
 
+![Replace image button](https://user-images.githubusercontent.com/300/82719274-e7055780-9c5d-11ea-9a8a-8c1c72185983.png)
+
 We're borrowing the styles from the submit button and made sure the image has both a top and bottom margin so it doesn't crash into the new button.
 
 ## The Wrapup
