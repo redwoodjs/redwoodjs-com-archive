@@ -14,8 +14,11 @@ code/html/tutorial/*.html
 !code/html/tutorial/index.html
 code/html/reference/*.html
 !code/html/reference/index.html
+code/html/newsletter/*.html
+!code/html/newsletter/index.html
 code/html/_guides_nav.html
 code/html/_tutorial_nav.html
 code/html/_cookbook_nav.html
 code/html/_reference_nav.html
+code/html/_newsletter_nav.html
 code/html/news.html

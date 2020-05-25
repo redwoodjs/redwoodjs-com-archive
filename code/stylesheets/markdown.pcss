@@ -10,6 +10,23 @@
   @apply text-red-700
 }
 
+#tag {
+  @apply bg-red-200 text-gray-900 px-1 py-half rounded text-sm font-semibold text-red-700;
+}
+
+#poi {
+  @apply font-semibold text-sm text-red-700;
+}
+
+#section {
+  @apply text-xl font-semibold mt-8 mb-4 text-red-700;
+  padding-left: 1.125rem;
+}
+
+#section:hover .markdownIt-Anchor {
+    visibility: visible;
+}
+
 .markdown {
   h1,
   h2 {
@@ -92,6 +109,10 @@
   li a:hover,
   blockquote a:hover {
     @apply underline;
+  }
+
+  h3 a:hover {
+    @apply text-red-700 underline;
   }
 
   .markdownIt-Anchor {
