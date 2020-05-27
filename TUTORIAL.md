@@ -2387,12 +2387,24 @@ We are working on making this process much easier, but keep it in mind before yo
 
 "Authentication" is a blanket term for all of the stuff that goes into making sure that a user, often identified with an email address and password, is allowed to access something. Authentication can be [famously fickle](https://www.rdegges.com/2017/authentication-still-sucks/) to do right both from a technical standpoint and developer happiness standpoint.
 
-But you know Redwood has your back! Login isn't something you have to write from scratch—it's a solved problem and is one less thing we should have to worry about. Today Redwood includes integrations to:
+But you know Redwood has your back! Login isn't something we have to write from scratch—it's a solved problem and is one less thing we should have to worry about. Today Redwood includes integrations to:
 
 - [Auth0](https://auth0.com/)
 - [Netlify Identity](https://docs.netlify.com/visitor-access/identity/)
 
 We're going to demo a Netlify Identity integration in this tutorial since we're already deployed there and it's very easy to add to a Netlify site.
+
+> There are two terms which contain a lot of letters, starting with an "A" and ending in "ation" (which means you could rhyme them if you wanted to) that become involved in most discussions about login:
+>
+> * Authentication
+> * Authorization
+>
+> Here is how Redwood uses these terms:
+>
+> * **Authentication** deals with determining whether someone is who they say they are, generally by "logging in" with an email and password, or a third party OAuth provider like Google.
+> * **Authorization** is whether a user (who has usually already been authenticated) is allowed to do something they want to do. This generally involves some combination of roles and permission checking before allowing access to a URL or feature of your site.
+>
+> This section of the tutorial focuses on **Authentication** only. We're currently working on integrating a simple and flexible role-based authorization system and once we release it we'll update the tutorial to include a walkthrough!
 
 ### Netlify Identity Setup
 
@@ -2685,6 +2697,8 @@ export default BlogLayout
 > Check out the settings for Identity over at Netlify for more options, including allowing users to create accounts rather than having to be invited, add third party login buttons for Bitbucket, GitHub, GitLab and Google, receive webhooks when someone logs in, and more!
 
 Believe it or not, that's it! Authentication with Redwood is a breeze and we're just getting started. Expect more magic soon!
+
+> If you inspect the contents of `currentUser` you'll see it contains an array called `roles`. On the Netlify Identity dashboard you can give your user a collection of roles, which are just strings like "admin" or "guest". Using this array of roles you *could* create a very rudimentary role-based authentication system. Unless you are in dire need of this simple role checking, we recommend waiting for the Redwood solution, coming soon!
 
 ## Wrapping Up
 
