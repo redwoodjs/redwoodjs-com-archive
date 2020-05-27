@@ -27,15 +27,15 @@
   environment = { NODE_ENV = "production" }
 
 [[redirects]]
-  from = "/guides"
-  to = "/guides/introduction"
+  from = "/docs"
+  to = "/docs/introduction"
   status = 301
   force = true
 
 [[headers]]
-  for = "/guides/introduction"
+  for = "/docs/introduction"
   [headers.values]
-    Turbolinks-Location = "/guides/introduction"
+    Turbolinks-Location = "/docs/introduction"
 
 [[redirects]]
   from = "/tutorial"
@@ -58,17 +58,6 @@
   for = "/cookbook/disable-api-database"
   [headers.values]
     Turbolinks-Location = "/cookbook/disable-api-database"
-
-[[redirects]]
-  from = "/reference"
-  to = "/reference/redwood-form"
-  status = 301
-  force = true
-
-[[headers]]
-  for = "/reference/redwood-form"
-  [headers.values]
-    Turbolinks-Location = "/reference/redwood-form"
 
 [[redirects]]
   from = "/home"
