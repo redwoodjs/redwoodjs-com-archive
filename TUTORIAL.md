@@ -2347,7 +2347,7 @@ Add one more environment variable, `BINARY_TARGET` set to the value `rhel-openss
 
 ![Adding second ENV var](https://user-images.githubusercontent.com/300/83188126-14ca2080-a0e4-11ea-9781-47ec34e24e5f.png)
 
-Make sure to click the **Save** button. Now go over to the **Deploys** in the top nav and open the **Trigger deploy** dropdown on the right, then finally choose **Deploy site**:
+Make sure to click the **Save** button. Now go over to the **Deploys** tab in the top nav and open the **Trigger deploy** dropdown on the right, then finally choose **Deploy site**:
 
 ![Trigger deploy](https://user-images.githubusercontent.com/300/83187760-835aae80-a0e3-11ea-9733-ff54969bba1f.png)
 
