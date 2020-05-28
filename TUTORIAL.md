@@ -2339,29 +2339,21 @@ Netlify will start building your app (click the **Deploying your site** link to 
 
 Go back to the main site page and then to **Settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DATABASE_URL"). After pasting the value, append `?connection_limit=1` to the end. The URI will have the following format: `postgres://<user>:<pass>@<url>/<db>?connection_limit=1`.
 
-![image](https://user-images.githubusercontent.com/300/76902309-f41a5a80-6858-11ea-974f-cbc00863e5a9.png)
+![Adding ENV var](https://user-images.githubusercontent.com/300/83188236-3e834780-a0e4-11ea-8cfa-790c2e335a92.png)
 
 > When configuring a database, you'll want to append `?connection_limit=1` to the URI. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context.
 
-Click **Save** and you should see the new variable listed:
-
-![image](https://user-images.githubusercontent.com/300/76902340-06949400-6859-11ea-98c1-38f80e7a486e.png)
-
 Add one more environment variable, `BINARY_TARGET` set to the value `rhel-openssl-1.0.x` This is for Prisma to know which client libraries it needs, in this case so that it can run on AWS Lambda:
 
-![image](https://user-images.githubusercontent.com/300/76902210-b9182700-6858-11ea-86f4-8f8f728bddd0.png)
+![Adding second ENV var](https://user-images.githubusercontent.com/300/83188126-14ca2080-a0e4-11ea-9781-47ec34e24e5f.png)
 
-The last thing we need to do on Netlify is to enable the beta build process. Eventually this new build process will be the default for new sites but for now we need to manually enable it. Head to https://app.netlify.com/enable-beta find your new site:
+Make sure to click the **Save** button. Now go over to the **Deploys** in the top nav and open the **Trigger deploy** dropdown on the right, then finally choose **Deploy site**:
 
-![image](https://user-images.githubusercontent.com/300/78308369-25ec1c00-74fd-11ea-9d65-db079a61bf5d.png)
-
-Click the **Enable** button, then **Done**. Now to go to **Sites** in the top nav and click on your site again. Now to **Deploys** in the top nav and open the **Trigger deploy** dropdown on the right, then finally choose **Deploy site**:
-
-![image](https://user-images.githubusercontent.com/300/78308517-8a0ee000-74fd-11ea-84a3-ae38a64b6b32.png)
+![Trigger deploy](https://user-images.githubusercontent.com/300/83187760-835aae80-a0e3-11ea-9733-ff54969bba1f.png)
 
 With a little luck (and SCIENCE) it will complete successfully! You can click the **Preview** button at the top of the deploy log page, or go back and click the URL of your Netlify site towards the top:
 
-![Netlify URL](https://user-images.githubusercontent.com/300/73705247-32ddc200-46aa-11ea-833e-3d2b35dc136f.png)
+![Netlify URL](https://user-images.githubusercontent.com/300/83187909-bef57880-a0e3-11ea-97dc-e557248acd3a.png)
 
 Did it work? If you see "Empty" under the About and Contact links then it did! Yay! You're seeing "Empty" because you don't have any posts in your brand new production database so head to `/admin/posts` and create a couple, then go back to the homepage to see them.
 
