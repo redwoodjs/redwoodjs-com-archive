@@ -89,7 +89,7 @@ We use Babel to transpile the api side into `./api/dist` and Webpack to package 
 
 **Usage**
 
-See the [Builds](https://redwoodjs.com/guides/builds) guide.
+See the [Builds](https://redwoodjs.com/docs/builds) guide.
 
 **Example**
 
@@ -125,7 +125,7 @@ Run development servers for db, api, and web.
 yarn redwood dev [side..]
 ```
 
-`yarn rw dev api` starts the Redwood dev server (see [The Development Server](https://redwoodjs.com/guides/the-development-server.html#the-development-server)) and `yarn rw dev web` starts the Webpack dev server with Redwood's config.
+`yarn rw dev api` starts the Redwood dev server (see [The Development Server](https://redwoodjs.com/docs/the-development-server.html#the-development-server)) and `yarn rw dev web` starts the Webpack dev server with Redwood's config.
 
 Technically db isn't a "side" and doesn't start a "dev server". It's equivalent to running `yarn prisma generate --watch` in `./api`. 
 
@@ -483,7 +483,7 @@ You can get authentication out-of-the-box with generators. Right now we only sup
 
 **Usage**
 
-See the [Authentication](https://redwoodjs.com/guides/authentication) guide.
+See the [Authentication](https://redwoodjs.com/docs/authentication) guide.
 
 ## generate cell
 
