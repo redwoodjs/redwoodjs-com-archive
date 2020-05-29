@@ -132,7 +132,7 @@
 
 ![Jamstack Conf](https://user-images.githubusercontent.com/300/83288869-f2460f00-a198-11ea-9179-5003aaebe746.png)
 
-# Jamstack Conf Lightning Launches
+# [Jamstack Conf Lightning Launches](https://www.youtube.com/watch?v=NWCECB-GlWI)
 
 ## May 27 2020
 
