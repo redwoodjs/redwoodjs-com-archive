@@ -85,7 +85,7 @@ to = "/"
 [[redirects]]
   from = "/guides/assets-and-files"
   to = "/docs/assets-and-files"
-  
+
 [[redirects]]
   from = "/guides/builds"
   to = "/docs/builds"
@@ -100,7 +100,7 @@ to = "/docs/command-line-interface"
 
 [[redirects]]
 from = "/guides/connection-pooling"
-to = "docs/connection-pooling"  
+to = "/docs/connection-pooling"  
 
 [[redirects]]
 from = "/guides/contributing"
