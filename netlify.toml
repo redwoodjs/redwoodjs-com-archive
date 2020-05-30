@@ -69,3 +69,67 @@
   for = "/"
   [headers.values]
     Turbolinks-Location = "/"
+
+[[redirects]]
+  from = "/guides/introduction"
+  to = "/docs/introduction"
+
+[[redirects]]
+from = "/guides/authentication"
+to = "/docs/authentication"
+
+[[redirects]]
+from = "/home"
+to = "/"
+
+[[redirects]]
+  from = "/guides/assets-and-files"
+  to = "/docs/assets-and-files"
+  
+[[redirects]]
+  from = "/guides/builds"
+  to = "/docs/builds"
+
+[[redirects]]
+  from = "/guides/command-line-interface"
+  to = "/docs/command-line-interface"    
+
+[[redirects]]
+from = "/reference/command-line-interface"
+to = "/docs/command-line-interface"  
+
+[[redirects]]
+from = "/guides/connection-pooling"
+to = "docs/connection-pooling"  
+
+[[redirects]]
+from = "/guides/contributing"
+to = "/docs/contributing"  
+
+[[redirects]]
+from = "/guides/redwood-s-http-server-for-serverless-functions"
+to = "/docs/redwood-s-http-server-for-serverless-functions"  
+
+[[redirects]]
+from = "/guides/environment-variables"
+to = "/docs/environment-variables"    
+
+[[redirects]]
+from = "/guides/local-postgres-setup"
+to = "/docs/local-postgres-setup" 
+
+[[redirects]]
+from = "/guides/redwood-router"
+to = "/docs/redwood-router"  
+
+[[redirects]]
+from = "/guides/webpack-config"
+to = "/docs/webpack-config"  
+
+[[redirects]]
+from = "/reference/app-configuration-redwood-toml"
+to = "/docs/app-configuration-redwood-toml"  
+
+[[redirects]]
+from = "/reference/redwood-form"
+to = "/docs/redwood-form"  
