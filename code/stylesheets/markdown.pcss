@@ -1,11 +1,6 @@
 /* I'm used on the built-in CameronJS welcome page code/html/index.html */
 /* Feel free to delete me once you start changing that page.            */
 
-#code {
-  @apply bg-red-200 text-gray-900 text-sm px-1 py-half rounded;
-	font-family: Fira Code, Fira Mono, Menlo, Monoco, monospace;
-}
-
 #link {
   @apply text-red-700
 }
@@ -105,4 +100,52 @@
   h6:hover .markdownIt-Anchor {
     visibility: visible;
   }
+
+  table {
+    @apply w-full text-left bg-red-100 rounded-t-lg;
+  }
+
+  th {
+    @apply p-2 bg-red-200;
+  }
+
+  th:first-child {
+    @apply rounded-tl-lg;
+  }
+
+  th:last-child {
+    @apply rounded-tr-lg;
+  }
+
+  td {
+    @apply p-2;
+  }
+
+  td code {
+    @apply bg-red-200 text-red-700 text-sm px-1 py-half rounded whitespace-no-wrap;
+  }
+}
+
+#code {
+  @apply bg-red-200 text-gray-900 text-sm px-1 py-half rounded font-mono inline-flex;
+}
+
+#code2 {
+  @apply font-mono text-red-700 text-sm;
+}
+
+#code3 {
+  @apply bg-red-200 text-red-700 text-sm px-1 py-half rounded font-mono inline-flex;
+}
+
+#code-xs {
+  @apply bg-red-200 text-gray-900 text-xs px-1 py-half rounded font-mono inline-flex;
+}
+
+#code2-xs {
+  @apply font-mono text-red-700 text-xs;
+}
+
+#code3-xs {
+  @apply bg-red-200 text-red-700 text-xs px-1 py-half rounded font-mono inline-flex;
 }
