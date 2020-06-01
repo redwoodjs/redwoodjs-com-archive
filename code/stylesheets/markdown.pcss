@@ -105,4 +105,28 @@
   h6:hover .markdownIt-Anchor {
     visibility: visible;
   }
+
+  table {
+    @apply w-full text-left bg-red-100 rounded-t-lg;
+  }
+
+  th {
+    @apply p-2 bg-red-200;
+  }
+
+  th:first-child {
+    @apply rounded-tl-lg;
+  }
+
+  th:last-child {
+    @apply rounded-tr-lg;
+  }
+
+  td {
+    @apply p-2;
+  }
+
+  td code {
+    @apply bg-red-200 text-red-700 text-sm px-1 py-half rounded whitespace-no-wrap;
+  }
 }
