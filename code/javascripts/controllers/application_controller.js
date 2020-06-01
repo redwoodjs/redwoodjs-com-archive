@@ -3,7 +3,7 @@ import hljs from 'highlight.js'
 
 export default class extends Controller {
   static get targets() {
-    return ['logo', 'search', 'nav', 'body', 'code', 'year']
+    return ['header', 'logo', 'search', 'nav', 'innerNav', 'body', 'code', 'year']
   }
 
   connect() {
@@ -36,6 +36,22 @@ export default class extends Controller {
     this.bodyTarget.classList.toggle('hidden')
     document.body.classList.toggle('fixed')
     document.body.classList.toggle('relative')
+  }
+
+  saveScrollPosition() {
+    window.navScrollPosition = this.innerNavTarget.scrollTop
+    if (window.scrollY > this.headerTarget.offsetHeight) {
+      window.windowScrollPosition = this.headerTarget.offsetHeight
+    } else {
+      window.windowScrollPosition = window.scrollY
+    }
+  }
+
+  restoreScrollPosition() {
+    if (window.navScrollPosition !== 0 || window.windowScrollPosition !== 0) {
+      this.innerNavTarget.scrollTop = window.navScrollPosition || 0
+      window.scrollTo(null, window.windowScrollPosition || 0)
+    }
   }
 
   _enableCopy() {

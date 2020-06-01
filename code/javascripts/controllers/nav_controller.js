@@ -7,6 +7,7 @@ export default class extends Controller {
 
   connect() {
     this._highlightNav()
+    document.dispatchEvent(new Event('navigated'))
   }
 
   // opens/closes a nav section
@@ -22,7 +23,7 @@ export default class extends Controller {
   _highlightNav() {
     let linkFound = false
 
-    this.linkTargets.every((link) => {
+    this.linkTargets.forEach((link) => {
       if (this._linkDoesMatch(link)) {
         this._activateLink(link)
         linkFound = true
