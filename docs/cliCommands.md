@@ -1,4 +1,4 @@
-# Command Line Interface 
+# Command Line Interface
 
 The following is a comprehensive reference of the Redwood CLI. You can get a list of all the commands and/or find the one(s) you're interested in by scrolling the aside to the right.
 

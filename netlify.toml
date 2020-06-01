@@ -92,11 +92,11 @@ to = "/"
 
 [[redirects]]
   from = "/guides/command-line-interface"
-  to = "/docs/command-line-interface"    
+  to = "/docs/cli-commands"    
 
 [[redirects]]
 from = "/reference/command-line-interface"
-to = "/docs/command-line-interface"  
+to = "/docs/cli-commands"  
 
 [[redirects]]
 from = "/guides/connection-pooling"
@@ -108,7 +108,7 @@ to = "/docs/contributing"
 
 [[redirects]]
 from = "/guides/redwood-s-http-server-for-serverless-functions"
-to = "/docs/redwood-s-http-server-for-serverless-functions"  
+to = "/docs/serverless-functions"  
 
 [[redirects]]
 from = "/guides/environment-variables"
@@ -124,7 +124,7 @@ to = "/docs/redwood-router"
 
 [[redirects]]
 from = "/guides/webpack-config"
-to = "/docs/webpack-config"  
+to = "/docs/webpack-configuration"  
 
 [[redirects]]
 from = "/reference/app-configuration-redwood-toml"
@@ -132,4 +132,4 @@ to = "/docs/app-configuration-redwood-toml"
 
 [[redirects]]
 from = "/reference/redwood-form"
-to = "/docs/redwood-form"  
+to = "/docs/form"  

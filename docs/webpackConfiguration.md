@@ -1,4 +1,4 @@
-# Webpack config
+# Webpack Configuration
 
 RedwoodJS uses webpack to bundle and build it's assets.
 
