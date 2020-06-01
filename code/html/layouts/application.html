@@ -26,7 +26,7 @@
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
   </head>
 
-  <body class="relative bg-white text-gray-900 font-sans antialiased h-full flex flex-col" data-controller="application" data-action="keydown@window->application#focusSearch">
+  <body class="relative bg-white text-gray-900 font-sans antialiased h-full flex flex-col" data-controller="application" data-action="turbolinks:before-cache@document->application#saveScrollPosition keydown@window->application#focusSearch">
     <div class="flex-grow flex-shrink-0 flex-auto">
       <section class="bg-red-100 text-red-900">
         <div class="max-w-screen-xl mx-auto px-4 lg:px-8">
@@ -98,12 +98,12 @@
 
       <section id="main" class="max-w-screen-xl mx-auto px-8">
         <div class="flex">
-          <aside class="hidden absolute inset-0 mt-22 lg:mt-0 lg:mb-8 w-full lg:w-1/5 lg:static lg:block bg-white overflow-y-visible lg:px-0 z-10" data-target="application.nav">
+          <aside id="aside" class="hidden absolute inset-0 mt-22 lg:mt-0 lg:mb-8 w-full lg:w-1/5 lg:static lg:block bg-white overflow-y-visible lg:px-0 z-10" data-target="application.nav" data-turbolinks-permanent>
             <div class="lg:hidden mt-4 mx-4">
               @@include("search")
             </div>
             <div class="overflow-y-auto lg:sticky top-0 px-8 lg:px-0">
-              <nav class="text-sm font-semibold pt-8 pb-40 lg:py-12 pr-6 overflow-y-auto h-screen">
+              <nav class="text-sm font-semibold pt-8 pb-40 lg:py-12 pr-6 overflow-y-auto h-screen" data-action="navigated@document->application#restoreScrollPosition" data-target="application.innerNav">
                 @@include("nav")
               </nav>
             </div>
