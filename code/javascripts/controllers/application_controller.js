@@ -73,7 +73,7 @@ export default class extends Controller {
         new ClipboardJS('.copy-button', {
           text: (trigger) => {
             this._copiedMessage(trigger)
-            return this._stripComments(trigger.previousElementSibling.textContent)
+            return this._stripComments(trigger.previousElementSibling.innerText)
           },
         })
       }
@@ -92,9 +92,10 @@ export default class extends Controller {
   _stripComments(content) {
     let lines = content.split('\n')
 
-    if (lines[0].match(/^\/\//)) {
+    if (lines[0].match(/^\/\/|\*/)) {
       lines.shift()
-      if (lines[0].trim() === '') {
+      // remove empty lines after comments
+      while (lines[0].trim() === '') {
         lines.shift()
       }
     }
