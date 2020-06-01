@@ -1,7 +1,7 @@
 @@layout("application", { "title": "${pageTitle} : RedwoodJS Docs", "version": "${version}" })
 
 @@contentFor("aside",
-  <aside class="hidden xl:block w-1/4 h-auto overflow-y-visible">
+  <aside class="hidden lg:block w-1/4 h-auto overflow-y-visible">
     <div class="overflow-y-auto sticky top-0 pl-6">
       <nav class="text-sm font-semibold text-gray-600 pt-8 pb-40 lg:py-12 overflow-y-auto h-screen" data-controller="aside" data-action="scroll->aside#saveScroll">
         <h4 class="text-xs uppercase text-gray-500">On this page</h4>
