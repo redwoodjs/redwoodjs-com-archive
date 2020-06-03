@@ -18,6 +18,10 @@ Want to watch this tutorial instead? Start here:
   <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/eT7iIy0F8Tk?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
 </div>
 
+<div class="relative pb-9/16 mt-4">
+  <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/UpD3HyuZkvY?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
+</div>
+
 ## Prerequisites
 
 This tutorial assumes you are already familiar with a few core concepts:
@@ -2279,6 +2283,12 @@ Head to http://localhost:8910/admin/posts and our generated scaffold page should
 How about getting this thing out into the real world?
 
 ## Deployment
+
+Part 4 of the video tutorial picks up here:
+
+<div class="relative pb-9/16">
+  <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/UpD3HyuZkvY?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
+</div>
 
 The whole reason we started building Redwood was to make full-stack web apps easier to build and deploy on the Jamstack. You've seen what building a Redwood app is like, how about we try deploying one?
 
