@@ -2599,6 +2599,8 @@ We need to let the widget know the URL of our site so it knows where to go to ge
 
 You need the protocol and domain, not the rest of the path. Paste that into the modal and click that **Set site's URL** button. The modal should reload and now show a real login box:
 
+> There have been some reports of an error at this step. The modal displays "Failed to load settings from ...". And in the browser console is an error containing `... ‘http://localhost:8910’ has been blocked by CORS policy ...`. If this happens to you, a workaround is to manually trigger a site deploy on Netlify, and then retry setting the site URL. Please also let us know this happened to you by adding a comment to [this thread on our community Forum](https://community.redwoodjs.com/t/redwood-tutorial-cors-error-following-along-in-authentication-section/655).
+
 ![Netlify identity widget login](https://user-images.githubusercontent.com/300/82388116-97205980-99ed-11ea-8fb4-13436ee8e746.png)
 
 Before we can log in, remember that confirmation email from Netlify? Go find that and click the **Accept the invite** link. That will bring you to your site live in production, where nothing will happen. But if you look at the URL it will end in something like `#invite_token=6gFSXhugtHCXO5Whlc5V`. Copy that (including the `#`) and appened it to your localhost URL: http://localhost:8910/#invite_token=6gFSXhugtHCXO5Whlc5Vg Hit Enter, then go back into the URL and hit Enter again to get it to actually reload the page. Now the modal will show **Complete your signup** and give you the ability to set your password:
