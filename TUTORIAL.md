@@ -2450,7 +2450,7 @@ export const getCurrentUser = async (jwt) => {
 
 export const requireAuth = () => {
   if (!context.currentUser) {
-    throw new AuthenticationError()
+    throw new AuthenticationError("You don't have permission to do that.")
   }
 }
 ```
