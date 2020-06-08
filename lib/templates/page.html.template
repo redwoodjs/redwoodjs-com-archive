@@ -10,7 +10,7 @@
         <ul class="mt-4 pointer-events-auto">
           <% links.forEach(link => { %>
           <li class="my-1 py-1" style="margin-left: ${link.ml}rem;">
-            <a href="${link.href}">${link.title}</a>
+            <a href="${link.href}" data-turbolinks="false">${link.title}</a>
           </li>
           <% }) %>
         </ul>
