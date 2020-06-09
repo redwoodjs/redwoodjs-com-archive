@@ -76,7 +76,7 @@ module.exports = (config) => {
 
 ### Enabling sass
 
-We already have
+Support for sass is already configured, you'll just have to install the development dependencies.
 
 ```terminal
 cd web
