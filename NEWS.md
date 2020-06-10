@@ -139,3 +139,15 @@
 ### For the first virtual Jamstack Conf London, Tom gives a 10 minute runthrough of adding a feature to a Todo app in Redwood.
 
 #### Video
+
+---
+
+![FrontEnd First](https://user-images.githubusercontent.com/300/84321953-0559c700-ab29-11ea-9b1b-6c20edcff94b.png)
+
+# [Architecture Decisions in Redwood JS](https://frontendfirst.fm/episodes/tom-preston-werner-on-architecture-decisions-in-redwood-js)
+
+## June 10 2020
+
+### Tom Preston-Werner joins Sam and Ryan to talk about some of the architecture decisions behind Redwood JS, a recently released full-stack JS framework he's been working on for more than a year.
+
+#### Podcast
