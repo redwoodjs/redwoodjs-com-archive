@@ -38,6 +38,13 @@ export default class extends Controller {
     document.body.classList.toggle('relative')
   }
 
+  closeNav() {
+    this.navTarget.classList.add('hidden')
+    this.bodyTarget.classList.remove('hidden')
+    document.body.classList.remove('fixed')
+    document.body.classList.add('relative')
+  }
+
   saveScrollPosition() {
     window.navScrollPosition = this.innerNavTarget.scrollTop
     if (window.scrollY > this.headerTarget.offsetHeight) {
