@@ -30,8 +30,11 @@
     @apply font-semibold;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-        margin-left: -1.1rem;
+  /* Move headings over because the anchor link will be hidden */
+  @screen lg {
+    h1, h2, h3, h4, h5, h6 {
+      margin-left: -1.1rem;
+    }
   }
 
   p {
@@ -59,7 +62,7 @@
     @apply block -mx-4 px-4 bg-gray-800 block
   }
 
-  @media (min-width: 1024px) {
+  @screen lg {
     pre {
       @apply pb-4;
     }
@@ -95,7 +98,7 @@
   }
 
   .markdownIt-Anchor {
-    visibility: hidden;
+    visibility: visible;
   }
   h1:hover .markdownIt-Anchor,
   h2:hover .markdownIt-Anchor,
@@ -104,6 +107,13 @@
   h5:hover .markdownIt-Anchor,
   h6:hover .markdownIt-Anchor {
     visibility: visible;
+  }
+
+  /* Hide anchor links when the screen is big enough (and probably not a touch-only device) */
+  @screen lg {
+    .markdownIt-Anchor {
+      visibility: hidden;
+    }
   }
 
   table {
