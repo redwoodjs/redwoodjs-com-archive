@@ -15,8 +15,8 @@ export default class extends Controller {
       this.close()
     }
 
-    this.client = algoliasearch('FK1BZ27LVA', '7529991044069660797050dc19e7bebd')
-    this.index = this.client.initIndex('docs')
+    this.client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_API_KEY)
+    this.index = this.client.initIndex(process.env.ALGOLIA_INDEX_NAME)
     this.searchOptions = {
       hitsPerPage: 3,
       attributesToRetrieve: '*',
