@@ -21,7 +21,7 @@ module.exports = {
       'process.env.ALGOLIA_APP_ID': JSON.stringify(process.env['ALGOLIA_APP_ID']),
       'process.env.ALGOLIA_API_KEY': JSON.stringify(process.env['ALGOLIA_API_KEY']),
       'process.env.ALGOLIA_INDEX_NAME': JSON.stringify(
-        ((process.env['CONTEXT'] && process.env['CONTEXT'] !== 'production')
+        process.env['CONTEXT'] && process.env['CONTEXT'] !== 'production'
           ? process.env['ALGOLIA_BRANCH_INDEX_NAME']
           : process.env['ALGOLIA_INDEX_NAME']
       ),
