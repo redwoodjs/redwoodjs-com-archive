@@ -2,6 +2,7 @@ import { Controller } from 'stimulus'
 import template from 'lodash.template'
 import escape from 'lodash.escape'
 import clone from 'lodash.clone'
+import algoliasearch from 'algoliasearch'
 
 export default class extends Controller {
   static get targets() {
@@ -88,7 +89,6 @@ export default class extends Controller {
   }
 
   _parseResults(data) {
-    console.info(data)
     if (data.hits.length === 0) {
       return this._show(
         `<p class="text-sm font-semibold">No docs found for <span class="text-red-700">${data.query}</span></p>`
