@@ -2,6 +2,7 @@ import { Controller } from 'stimulus'
 import template from 'lodash.template'
 import escape from 'lodash.escape'
 import clone from 'lodash.clone'
+import algoliasearch from 'algoliasearch'
 
 export default class extends Controller {
   static get targets() {
@@ -14,8 +15,8 @@ export default class extends Controller {
       this.close()
     }
 
-    this.client = algoliasearch('FK1BZ27LVA', '7529991044069660797050dc19e7bebd')
-    this.index = this.client.initIndex('docs')
+    this.client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_API_KEY)
+    this.index = this.client.initIndex(process.env.ALGOLIA_INDEX_NAME)
     this.searchOptions = {
       hitsPerPage: 3,
       attributesToRetrieve: '*',
@@ -88,7 +89,6 @@ export default class extends Controller {
   }
 
   _parseResults(data) {
-    console.info(data)
     if (data.hits.length === 0) {
       return this._show(
         `<p class="text-sm font-semibold">No docs found for <span class="text-red-700">${data.query}</span></p>`
