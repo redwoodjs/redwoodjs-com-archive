@@ -12,6 +12,7 @@
   },
   "private": true,
   "devDependencies": {
+    "cypress": "^4.8.0",
     "del-cli": "^3.0.0",
     "live-server": "^1.2.1"
   },
