@@ -10,17 +10,31 @@ import Step4_1_DbSchema from '../fixtures/codemods/Step4_1_DbSchema'
 import Step5_1_ComponentsCellBlogPost from '../fixtures/codemods/Step5_1_ComponentsCellBlogPost'
 import Step5_2_PagesHome from '../fixtures/codemods/Step5_2_PagesHome'
 
-const BASE_DIR = path.resolve(__dirname, '../fixtures/new-redwood-project')
+
+
+
+const BASE_DIR = path.join(Cypress.config('fixturesFolder'), 'new-redwood-project')
+
 
 describe('The Redwood Tutorial - Golden path edition', () => {
-  test('1. Our First Page', () => {
-    // https://redwoodjs.com/tutorial/our-first-page
+
+
+  // TODO: Should we test the "Welcome to RedwoodJS" page?
+  // TODO: https://redwoodjs.com/tutorial/routing-params
+  // TODO: https://redwoodjs.com/tutorial/everyone-s-favorite-thing-to-build-forms
+  // TODO: https://redwoodjs.com/tutorial/saving-data
+  // TODO: https://redwoodjs.com/tutorial/administration
+  // TODO: https://redwoodjs.com/tutorial/authentication
+
+  it('1. Our First Page', () => {
+
+    https://redwoodjs.com/tutorial/our-first-page
     cy.visit('http://localhost:8910')
     cy.exec(`cd ${BASE_DIR}; yarn redwood generate page home / --force`)
     cy.get('h1').should('contain', 'HomePage')
   })
 
-  test('2. A Second Page and a Link', () => {
+  it('2. A Second Page and a Link', () => {
     // https://redwoodjs.com/tutorial/a-second-page-and-a-link
     cy.exec(`cd ${BASE_DIR}; yarn redwood generate page about --force`)
     cy.writeFile(
@@ -61,12 +75,12 @@ describe('The Redwood Tutorial - Golden path edition', () => {
     )
   })
 
-  test('4. Getting Dynamic', () => {
+  it('4. Getting Dynamic', () => {
     // https://redwoodjs.com/tutorial/getting-dynamic
     cy.writeFile(path.join(BASE_DIR, 'api/prisma/schema.prisma'), Step4_1_DbSchema)
 
     // TODO: Change to our own command, we need to support `--create-db`
-    cy.exec(`rm ${BASE_DIR}/api/prisma/dev.db`)
+    cy.exec(`rm ${BASE_DIR}/api/prisma/dev.db`, { failOnNonZeroExit: false })
     cy.exec(
       `cd ${BASE_DIR}/api; yarn prisma migrate save --create-db --experimental --name ""`,
       {
@@ -108,7 +122,7 @@ describe('The Redwood Tutorial - Golden path edition', () => {
     cy.get('button').contains('Save').click()
   })
 
-  test('5. Cells', () => {
+  it('5. Cells', () => {
     // https://redwoodjs.com/tutorial/cells
     cy.visit('http://localhost:8910/')
 
@@ -126,10 +140,4 @@ describe('The Redwood Tutorial - Golden path edition', () => {
       '[{"title":"Second post","body":"Hello world!","__typename":"Post"}]'
     )
   })
-
-  // TODO: https://redwoodjs.com/tutorial/routing-params
-  // TODO: https://redwoodjs.com/tutorial/everyone-s-favorite-thing-to-build-forms
-  // TODO: https://redwoodjs.com/tutorial/saving-data
-  // TODO: https://redwoodjs.com/tutorial/administration
-  // TODO: https://redwoodjs.com/tutorial/authentication
 })
