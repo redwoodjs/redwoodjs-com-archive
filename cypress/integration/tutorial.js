@@ -1,222 +1,58 @@
 /// <reference types="cypress" />
+import path from 'path'
 
-const STEP_2_PAGE_HOME = `
-import { Link, routes } from '@redwoodjs/router'
+import Step2_1_PagesHome from '../fixtures/codemods/Step2_1_PagesHome'
+import Step2_2_PagesAbout from '../fixtures/codemods/Step2_2_PagesAbout'
+import Step3_1_LayoutsBlog from '../fixtures/codemods/Step3_1_LayoutsBlog'
+import Step3_2_PagesHome from '../fixtures/codemods/Step3_2_PagesHome'
+import Step3_3_PagesAbout from '../fixtures/codemods/Step3_3_PagesAbout'
+import Step4_1_DbSchema from '../fixtures/codemods/Step4_1_DbSchema'
+import Step5_1_ComponentsCellBlogPost from '../fixtures/codemods/Step5_1_ComponentsCellBlogPost'
+import Step5_2_PagesHome from '../fixtures/codemods/Step5_2_PagesHome'
 
-const HomePage = () => {
-  return (
+const BASE_DIR = path.resolve(__dirname, '../fixtures/new-redwood-project')
 
-    <>
-      <header>
-        <h1>Redwood Blog</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link to={routes.about()}>About</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main>Home</main>
-    </>
-  )
-}
-
-export default HomePage`
-
-const STEP_2_PAGE_ABOUT = `
-import { Link, routes } from '@redwoodjs/router'
-
-const AboutPage = () => {
-  return (
-
-    <>
-      <header>
-        <h1>Redwood Blog</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link to={routes.about()}>About</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main>
-        <p>
-          This site was created to demonstrate my mastery of Redwood: Look on my
-          works, ye mighty, and despair!
-        </p>
-        <Link to={routes.home()}>Return home</Link>
-      </main>
-    </>
-  )
-}
-
-export default AboutPage
-`
-
-const STEP_3_LAYOUT_BLOG = `
-// web/src/layouts/BlogLayout/BlogLayout.js
-
-import { Link, routes } from '@redwoodjs/router'
-
-const BlogLayout = ({ children }) => {
-  return (
-    <>
-      <header>
-        <h1>
-          <Link to={routes.home()}>Redwood Blog</Link>
-        </h1>
-        <nav>
-          <ul>
-            <li>
-              <Link to={routes.about()}>About</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main>{children}</main>
-    </>
-  )
-}
-
-export default BlogLayout
-`
-
-const STEP_3_PAGE_HOME = `
-// web/src/pages/HomePage/HomePage.js
-
-import BlogLayout from 'src/layouts/BlogLayout'
-
-const HomePage = () => {
-
-  return <BlogLayout>Home</BlogLayout>
-}
-
-export default HomePage
-`
-
-const STEP_3_PAGE_ABOUT = `
-// web/src/pages/AboutPage/AboutPage.js
-
-import BlogLayout from 'src/layouts/BlogLayout'
-
-const AboutPage = () => {
-  return (
-    <BlogLayout>
-      <p>
-        This site was created to demonstrate my mastery of Redwood: Look on my
-        works, ye mighty, and despair!
-      </p>
-    </BlogLayout>
-  )
-}
-
-export default AboutPage
-`
-
-const STEP_4_DB_SCHEMA = `
-// api/prisma/schema.prisma
-
-datasource DS {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = env("BINARY_TARGET")
-}
-
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  body      String
-  createdAt DateTime @default(now())
-}
-`
-
-const STEP_5_CELL_BLOG_POST = `
-// web/src/components/BlogPostsCell/BlogPostsCell.js
-
-export const QUERY = gql\`
-query {
-  posts {
-    title
-    body
-  }
-}
-\`
-
-export const Loading = () => <div>Loading...</div>
-
-export const Empty = () => <div>Empty</div>
-
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
-
-export const Success = ({ posts }) => {
-  return JSON.stringify(posts)
-}
-`
-
-const STEP_5_PAGE_HOME = `
-// web/src/pages/HomePage/HomePage.js
-
-import BlogLayout from 'src/layouts/BlogLayout'
-import BlogPostsCell from 'src/components/BlogPostsCell'
-
-const HomePage = () => {
-  return (
-    <BlogLayout>
-      <BlogPostsCell />
-    </BlogLayout>
-  )
-}
-
-export default HomePage
-`
-
-describe('Redwood Tutorial', () => {
-  it('1. Our First Page', () => {
-    cy.visit('http://localhost:8910')
+describe('The Redwood Tutorial - Golden path edition', () => {
+  test('1. Our First Page', () => {
     // https://redwoodjs.com/tutorial/our-first-page
-    cy.exec('cd /tmp/test; yarn redwood generate page home / --force')
+    cy.visit('http://localhost:8910')
+    cy.exec(`cd ${BASE_DIR}; yarn redwood generate page home / --force`)
     cy.get('h1').should('contain', 'HomePage')
   })
 
-  it('2. A Second Page and a Link', () => {
+  test('2. A Second Page and a Link', () => {
     // https://redwoodjs.com/tutorial/a-second-page-and-a-link
-    cy.exec('cd /tmp/test; yarn redwood generate page about --force')
+    cy.exec(`cd ${BASE_DIR}; yarn redwood generate page about --force`)
     cy.writeFile(
-      '/tmp/test/web/src/pages/HomePage/HomePage.js',
-      STEP_2_PAGE_HOME
+      path.join(BASE_DIR, 'web/src/pages/HomePage/HomePage.js'),
+      Step2_1_PagesHome
     )
     cy.get('a').contains('About').click()
     cy.get('h1').should('contain', 'AboutPage')
     cy.writeFile(
-      '/tmp/test/web/src/pages/AboutPage/AboutPage.js',
-      STEP_2_PAGE_ABOUT
+      path.join(BASE_DIR, 'web/src/pages/AboutPage/AboutPage.js'),
+      Step2_2_PagesAbout
     )
     cy.get('h1').should('contain', 'AboutPage')
     cy.get('a').contains('Return home').click()
   })
 
   it('3. Layouts', () => {
-    cy.exec('cd /tmp/test; yarn redwood generate layout blog --force')
+    cy.exec(`cd ${BASE_DIR}; yarn redwood generate layout blog --force`)
     cy.writeFile(
-      '/tmp/test/web/src/layouts/BlogLayout/BlogLayout.js',
-      STEP_3_LAYOUT_BLOG
+      path.join(BASE_DIR, 'web/src/layouts/BlogLayout/BlogLayout.js'),
+      Step3_1_LayoutsBlog
     )
     cy.writeFile(
-      '/tmp/test/web/src/pages/HomePage/HomePage.js',
-      STEP_3_PAGE_HOME
+      path.join(BASE_DIR, 'web/src/pages/HomePage/HomePage.js'),
+      Step3_2_PagesHome
     )
     cy.get('h1 a').contains('Redwood Blog').click()
     cy.get('main').should('contain', 'Home')
 
     cy.writeFile(
-      '/tmp/test/web/src/pages/AboutPage/AboutPage.js',
-      STEP_3_PAGE_ABOUT
+      path.join(BASE_DIR, 'web/src/pages/AboutPage/AboutPage.js'),
+      Step3_3_PagesAbout
     )
     cy.get('a').contains('About').click()
     cy.get('p').should(
@@ -225,13 +61,14 @@ describe('Redwood Tutorial', () => {
     )
   })
 
-  it('4. Getting Dynamic', () => {
-    cy.writeFile('/tmp/test/api/prisma/schema.prisma', STEP_4_DB_SCHEMA)
+  test('4. Getting Dynamic', () => {
+    // https://redwoodjs.com/tutorial/getting-dynamic
+    cy.writeFile(path.join(BASE_DIR, 'api/prisma/schema.prisma'), Step4_1_DbSchema)
 
     // TODO: Change to our own command, we need to support `--create-db`
-    cy.exec('rm /tmp/test/api/prisma/dev.db')
+    cy.exec(`rm ${BASE_DIR}/api/prisma/dev.db`)
     cy.exec(
-      'cd /tmp/test/api; yarn prisma migrate save --create-db --experimental --name ""',
+      `cd ${BASE_DIR}/api; yarn prisma migrate save --create-db --experimental --name ""`,
       {
         env: {
           DATABASE_URL: 'file:./dev.db',
@@ -240,8 +77,8 @@ describe('Redwood Tutorial', () => {
       }
     )
 
-    cy.exec('cd /tmp/test; yarn rw db up')
-    cy.exec('cd /tmp/test; yarn rw g scaffold post')
+    cy.exec(`cd ${BASE_DIR}; yarn rw db up`)
+    cy.exec(`cd ${BASE_DIR}; yarn rw g scaffold post`)
 
     cy.visit('http://localhost:8910/posts')
 
@@ -271,21 +108,28 @@ describe('Redwood Tutorial', () => {
     cy.get('button').contains('Save').click()
   })
 
-  it('5. Cells', () => {
+  test('5. Cells', () => {
+    // https://redwoodjs.com/tutorial/cells
     cy.visit('http://localhost:8910/')
 
-    cy.exec('cd /tmp/test; yarn rw g cell BlogPosts --force')
+    cy.exec(`cd ${BASE_DIR}; yarn rw g cell BlogPosts --force`)
     cy.writeFile(
-      '/tmp/test/web/src/components/BlogPostsCell/BlogPostsCell.js',
-      STEP_5_CELL_BLOG_POST
+      path.join(BASE_DIR, 'web/src/components/BlogPostsCell/BlogPostsCell.js'),
+      Step5_1_ComponentsCellBlogPost
     )
     cy.writeFile(
-      '/tmp/test/web/src/pages/HomePage/HomePage.js',
-      STEP_5_PAGE_HOME
+      path.join(BASE_DIR, 'web/src/pages/HomePage/HomePage.js'),
+      Step5_2_PagesHome
     )
     cy.get('main').should(
       'contain',
       '[{"title":"Second post","body":"Hello world!","__typename":"Post"}]'
     )
   })
+
+  // TODO: https://redwoodjs.com/tutorial/routing-params
+  // TODO: https://redwoodjs.com/tutorial/everyone-s-favorite-thing-to-build-forms
+  // TODO: https://redwoodjs.com/tutorial/saving-data
+  // TODO: https://redwoodjs.com/tutorial/administration
+  // TODO: https://redwoodjs.com/tutorial/authentication
 })
