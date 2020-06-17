@@ -19,6 +19,18 @@ const BASE_DIR = path.join(Cypress.config('fixturesFolder'), 'new-redwood-projec
 describe('The Redwood Tutorial - Golden path edition', () => {
 
 
+  before(() => {
+    cy.exec(`cd ${BASE_DIR}; yarn install`)
+  })
+
+  after(() => {
+    // Remove untrack files and directories
+    // We leave ignored files, since we don't want to remove `node_module`
+    cy.exec(`cd ${BASE_DIR}; git clean -f -d`)
+    cy.exec(`cd ${BASE_DIR}; git checkout .`)
+  })
+
+
   // TODO: Should we test the "Welcome to RedwoodJS" page?
   // TODO: https://redwoodjs.com/tutorial/routing-params
   // TODO: https://redwoodjs.com/tutorial/everyone-s-favorite-thing-to-build-forms
