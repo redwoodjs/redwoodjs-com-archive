@@ -30,16 +30,19 @@ describe('The Redwood Tutorial - Golden path edition', () => {
     cy.exec(`cd ${BASE_DIR}; git checkout .`)
   })
 
-
-  // TODO: Should we test the "Welcome to RedwoodJS" page?
   // TODO: https://redwoodjs.com/tutorial/routing-params
   // TODO: https://redwoodjs.com/tutorial/everyone-s-favorite-thing-to-build-forms
   // TODO: https://redwoodjs.com/tutorial/saving-data
   // TODO: https://redwoodjs.com/tutorial/administration
   // TODO: https://redwoodjs.com/tutorial/authentication
 
-  it('1. Our First Page', () => {
+  it('0. Installation & Starting Development', () => {
+    // https://redwoodjs.com/tutorial/installation-starting-development
+    cy.visit('http://localhost:8910')
+    cy.get('h1 > span').contains('Welcome to RedwoodJS!')
+  })
 
+  it('1. Our First Page', () => {
     https://redwoodjs.com/tutorial/our-first-page
     cy.visit('http://localhost:8910')
     cy.exec(`cd ${BASE_DIR}; yarn redwood generate page home / --force`)
