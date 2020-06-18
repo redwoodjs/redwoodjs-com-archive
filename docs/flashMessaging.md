@@ -1,4 +1,4 @@
-# Flash
+# Flash: Messaging Bus
 
 Pass temporary [`message`](#messages) objects between components.
 
