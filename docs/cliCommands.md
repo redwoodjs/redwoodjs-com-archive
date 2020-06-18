@@ -458,7 +458,7 @@ You can get authentication out-of-the-box with generators. Right now we only sup
   <tbody>
     <tr>
       <td><span id="code">provider</span></td>
-      <td>Name of auth provider to configure. Choices are <span id="code">netlify</span> and <span id="code">auth0</span>.</td>
+      <td>Name of auth provider to configure. Choices are <span id="code">auth0</span>, <span id="code">firebase</span>, <span id="code">magicLink</span>, and <span id="code">netlify</span>.</td>
     </tr>
   </tbody>
 </table>
