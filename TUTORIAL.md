@@ -170,7 +170,11 @@ Let's give our users something to look at besides the Redwood welcome page. We'l
 
     yarn redwood generate page home /
 
-This does three things:
+> ⚠️ **Windows Users:** You have to run `yarn redwood generate page home //` instead of the command above (notice the double slashes at the end). This is a known problem with Git for Windows.
+>
+> We are tracking this issue [here](https://github.com/redwoodjs/redwood/issues/574). Apologies for the inconvenience!
+
+The command above does three things:
 
 - Creates `web/src/pages/HomePage/HomePage.js`. Redwood takes the name you specified as the first argument, capitalizes it, and appends "Page" to construct your new page component.
 - Creates a test file to go along with this new page component at `web/src/pages/HomePage/HomePage.test.js` with a single, passing test. You _do_ write tests for your components, _don't you??_
