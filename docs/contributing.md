@@ -46,7 +46,7 @@ Although Developing and Contributing docs are in different places, they most def
 
 ### How Redwood Thinks about Docs
 
-Before we get into the how-to, a little explanation. When thinking about docs, we find [divio's documentation system](https://documentation.divio.com/) really useful. It's not necessary that a doc always have all four of the dimensions listed, but if you find yourself stuck, you can ask yourself quesitons like "Should I be explaining? Am I explaining too much? Too little?" to reorient yourself while writing.
+Before we get into the how-to, a little explanation. When thinking about docs, we find [divio's documentation system](https://documentation.divio.com/) really useful. It's not necessary that a doc always have all four of the dimensions listed, but if you find yourself stuck, you can ask yourself questions like "Should I be explaining? Am I explaining too much? Too little?" to reorient yourself while writing.
 
 ### Docs for Developing Redwood Apps
 
