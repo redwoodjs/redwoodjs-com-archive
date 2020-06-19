@@ -500,14 +500,7 @@ That was simple. Now we'll want to snapshot this as a migration:
 
     yarn redwood db save
 
-A prompt will ask you if you'd like to create a new SQLite database (yes you would). Next it asks what you want to name this migration. This is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference for future developers. Something like "create posts" is perfect.
-
-> ⚠️ **Windows Users:** there is a known Prisma issue causing the `yarn rw db save` process to hang indefinitely. This issue only affects Windows systems. For now, there's a simple workaround:
-> 1. run `yarn redwood db save`, which will hang
-> 2. kill the process with "Ctrl+C"
-> 3. re-run the command
->
-> The command will complete successfully and sequential DB commands will work correctly. You can check the current status of this issue [here](https://github.com/redwoodjs/redwood/issues/575). And, most of all, apologies for the inconvenience — carry on!
+A prompt will ask you what you want to name this migration. This is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference for future developers. Something like "create posts" is perfect.
 
 After the command completes you'll see a new subdirectory created under `api/prisma/migrations` that has a timestamp and the name you gave the migration. It will contain a couple files inside (a snapshot of what the schema looked like at that point in time in `schema.prisma` and the directives that Prisma Migrate will use to make the change to the database in `steps.json`).
 
