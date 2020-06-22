@@ -8,12 +8,10 @@
     "netlify": "yarn watch & netlify dev",
     "rebuild": "yarn clean && yarn build",
     "serve": "live-server --watch=./publish --mount=/:./publish --entry-file='publish/404.html'",
-    "watch": "webpack --watch & postcss --verbose code/stylesheets/application.pcss -o publish/stylesheets/application.css --watch",
-    "test:tutorial": "cd cypress/fixtures/new-redwood-project && yarn rw dev & yarn cypress open"
+    "watch": "webpack --watch & postcss --verbose code/stylesheets/application.pcss -o publish/stylesheets/application.css --watch"
   },
   "private": true,
   "devDependencies": {
-    "cypress": "^4.8.0",
     "del-cli": "^3.0.0",
     "live-server": "^1.2.1"
   },
