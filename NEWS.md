@@ -151,3 +151,15 @@
 ### Tom Preston-Werner joins Sam and Ryan to talk about some of the architecture decisions behind Redwood JS, a recently released full-stack JS framework he's been working on for more than a year.
 
 #### Podcast
+
+---
+
+![Redwood Newsletter](https://user-images.githubusercontent.com/2951/85804346-3c6dd200-b6fe-11ea-8a26-6a989444452c.png)
+
+# [Issue 1](https://mailchi.mp/redwoodjs/issue-1-june-2020)
+
+## June 24 2020
+
+### All the RedwoodJS News that’s Fit to Print: Auth and Testing and Prisma Day 2, oh my! Helping you use RedwoodJS better with highlights, snippets, and upcoming events.
+
+#### Newsletter
