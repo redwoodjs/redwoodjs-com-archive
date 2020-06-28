@@ -112,9 +112,9 @@ Configuration for the api side.
 
 Configuration for the browser target.
 
-| Key    | Description                                  | Default | Context       |
-| :----- | :------------------------------------------- | :------ | :------------ |
-| `open` | Open the browser after the dev server starts | `false` | `development` |
+| Key    | Description                                                       | Default | Context       |
+| :----- | :---------------------------------------------------------------- | :------ | :------------ |
+| `open` | Open the browser to web's `host:port` after the dev server starts | `false` | `development` |
 
 ### open
 
@@ -123,7 +123,7 @@ Configuration for the browser target.
   open = true
 ```
 
-If you want your browser to stop opening when you `yarn rw dev`, set this to false. Or just remove it entirely.
+Setting `open` to `true` like this will open the browser to web's `host:port` (by default, localhost:8910) after the dev server starts. If you want your browser to stop opening when you `yarn rw dev`, set this to false. Or just remove it entirely.
 
 You can also provide the name of a browser to use instead of the system default. E.g., `open = 'Firefox'` will open Firefox regardless of which browser's the default on your system.
 
