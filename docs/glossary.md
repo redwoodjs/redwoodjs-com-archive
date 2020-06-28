@@ -24,13 +24,13 @@ TODO
 
 ## Services
 
-Redwood's opinionated way of organizing business logic code 
+Redwood's opinionated way of organizing your business logic for maintainability.
 
-## side
+## Side
 
 TODO
 
-## target
+## Target
 
 TODO
 
