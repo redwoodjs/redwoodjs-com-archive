@@ -105,7 +105,7 @@ Configuration for the api side.
 | :------- | :---------------------- | :---------------- | :------------ |
 | `host`   | Hostname to listen on   | `'localhost'`     | `development` |
 | `port`   | Port to listen on       | `8911`            | `development` |
-| `path`   | Path to the api side    | `'./web'`         | `both`        |
+| `path`   | Path to the api side    | `'./api'`         | `both`        |
 | `target` | Target for the api side | `TargetEnum.NODE` | `both`        |
 
 ## [browser]
