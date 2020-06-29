@@ -282,7 +282,7 @@ export default HomePage
 
 It's not pretty, but it works! We'll leave the styling to you!
 
-> You can see the final code, with styling, here: https://github.com/redwoodjs/cookbook-third-party-apis/blob/master/web/src/pages/ClientPage/ClientPage.js
+> You can see the final code, with styling, here: https://github.com/redwoodjs/cookbook-third-party-apis/blob/main/web/src/pages/ClientPage/ClientPage.js
 
 ## Server-side API Integration
 
@@ -519,7 +519,7 @@ export const getWeather = async ({ zip }) => {
   )
   const json = await response.json()
 
-  if (json.code === '404') {
+  if (json.cod === '404') {
     return new Error(`${zip} isn't a valid US zip code, please try again`)
   }
 

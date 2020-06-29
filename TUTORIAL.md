@@ -1,6 +1,6 @@
 # Welcome to Redwood
 
-Welcome to Redwood! If you haven't yet, check out the [Redwood README](https://github.com/redwoodjs/redwood/blob/master/README.md) to get a little background on why we created Redwood and the problems it's meant to solve. Redwood brings several existing technologies together for the first time into what we think is the future of database-backed single page applications.
+Welcome to Redwood! If you haven't yet, check out the [Redwood README](https://github.com/redwoodjs/redwood/blob/main/README.md) to get a little background on why we created Redwood and the problems it's meant to solve. Redwood brings several existing technologies together for the first time into what we think is the future of database-backed single page applications.
 
 In this tutorial we're going to build a blog engine. In reality a blog is probably not the ideal candidate for a Redwood app: blog articles can be stored in a CMS and statically generated to HTML files and served as flat files from a CDN. But as most developers are familiar with a blog and it uses all of the features we want to demonstrate, we decided to build one anyway.
 
@@ -158,7 +158,7 @@ That's it for the backend.
 - `public` contains assets not used by React components (they will be copied over unmodified to the final app's root directory):
   - `favicon.png` is the icon that goes in a browser tab when your page is open (apps start with the RedwoodJS logo).
   - `robots.txt` can be used to control what web indexers are [allowed to do](https://www.robotstxt.org/robotstxt.html).
-  - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can read it on Github [here](https://github.com/redwoodjs/create-redwood-app/tree/master/web/public).
+  - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can read it on Github [here](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
 - `index.css` is a generic place to put your CSS, but there are many options.
 - `index.html` is the standard React starting point for our app.
 - `index.js` the bootstraping code to get our Redwood app up and running.
@@ -170,7 +170,11 @@ Let's give our users something to look at besides the Redwood welcome page. We'l
 
     yarn redwood generate page home /
 
-This does three things:
+> ⚠️ **Windows Users:** You have to run `yarn redwood generate page home //` instead of the command above (notice the double slashes at the end). This is a known problem with Git for Windows.
+>
+> We are tracking this issue [here](https://github.com/redwoodjs/redwood/issues/574). Apologies for the inconvenience!
+
+The command above does three things:
 
 - Creates `web/src/pages/HomePage/HomePage.js`. Redwood takes the name you specified as the first argument, capitalizes it, and appends "Page" to construct your new page component.
 - Creates a test file to go along with this new page component at `web/src/pages/HomePage/HomePage.test.js` with a single, passing test. You _do_ write tests for your components, _don't you??_
@@ -500,7 +504,7 @@ That was simple. Now we'll want to snapshot this as a migration:
 
     yarn redwood db save
 
-A prompt will ask you if you'd like to create a new SQLite database (yes you would). Next it asks what you want to name this migration. This is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference for future developers. Something like "create posts" is perfect.
+A prompt will ask you what you want to name this migration. This is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference for future developers. Something like "create posts" is perfect.
 
 After the command completes you'll see a new subdirectory created under `api/prisma/migrations` that has a timestamp and the name you gave the migration. It will contain a couple files inside (a snapshot of what the schema looked like at that point in time in `schema.prisma` and the directives that Prisma Migrate will use to make the change to the database in `steps.json`).
 

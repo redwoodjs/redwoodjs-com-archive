@@ -1,5 +1,6 @@
 import { Controller } from 'stimulus'
 import hljs from 'highlight.js'
+import ClipboardJS from 'clipboard'
 
 export default class extends Controller {
   static get targets() {

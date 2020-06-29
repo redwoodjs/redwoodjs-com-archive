@@ -6,7 +6,7 @@ The Redwood CLI has two entry-point commands:
 1. **redwood** (alias rw), which is for developing an application, and
 2. **redwood-tools** (alias rwt), which is for contributing to the framework.
 
-This CLI document covers the `redwood` command options. For `redwood-tools` options, see the [Redwood Contributing guide's Reference section](https://github.com/redwoodjs/redwood/blob/master/CONTRIBUTING.md#cli-reference-redwood-tools).
+This CLI document covers the `redwood` command options. For `redwood-tools` options, see the [Redwood Contributing guide's Reference section](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#cli-reference-redwood-tools).
 
 **A Note on Syntax**
 
@@ -18,11 +18,11 @@ yarn rw g page <name> [path] --option
 
 </br>
 
-- `rw g page` is the command. 
-- `<name>` and `[path]` are positional arguments. 
+- `rw g page` is the command.
+- `<name>` and `[path]` are positional arguments.
   - `<>` denotes a required argument.
-  - `[]` denotes an optional argument. 
-- `--option` is an option. 
+  - `[]` denotes an optional argument.
+- `--option` is an option.
 
 Every argument and option has a type. Here `<name>` and `[path]` are strings and `--option` is a boolean.
 
@@ -32,7 +32,7 @@ You will also sometimes see arguments with trailing `..` like:
 yarn rw build [side..]
 ```
 
-The `..` operator indicates that the argument accepts an array of values. Also see [Variadic Positional Arguments](https://github.com/yargs/yargs/blob/master/docs/advanced.md#variadic-positional-arguments).
+The `..` operator indicates that the argument accepts an array of values. Also see [Variadic Positional Arguments](https://github.com/yargs/yargs/blob/main/docs/advanced.md#variadic-positional-arguments).
 
 ## build
 Build for production.
@@ -43,7 +43,7 @@ yarn rw build [side..]
 
 We use Babel to transpile the api side into `./api/dist` and Webpack to package the web side  into `./web/dist`.
 
-> You can deploy your Redwood project without an API layer or database&mdash;see 
+> You can deploy your Redwood project without an API layer or database&mdash;see
 [Disable API/Database](https://redwoodjs.com/cookbook/disable-api-database).
 
 
@@ -127,7 +127,7 @@ yarn redwood dev [side..]
 
 `yarn rw dev api` starts the Redwood dev server (see [The Development Server](https://redwoodjs.com/docs/the-development-server.html#the-development-server)) and `yarn rw dev web` starts the Webpack dev server with Redwood's config.
 
-Technically db isn't a "side" and doesn't start a "dev server". It's equivalent to running `yarn prisma generate --watch` in `./api`. 
+Technically db isn't a "side" and doesn't start a "dev server". It's equivalent to running `yarn prisma generate --watch` in `./api`.
 
 <!-- Arguments -->
 <table class="table-fixed w-full">
@@ -156,15 +156,15 @@ $ /redwood-app/node_modules/.bin/rw dev api
 $ /redwood-app/node_modules/.bin/dev-server
 15:04:51 api | Listening on http://localhost:8911
 15:04:51 api | Watching /home/dominic/projects/redwood/redwood-app/api
-15:04:51 api | 
+15:04:51 api |
 15:04:51 api | Now serving
-15:04:51 api | 
+15:04:51 api |
 15:04:51 api | ► http://localhost:8911/graphql/
 ```
 
 ## db
 
-Entry point to database tools. 
+Entry point to database tools.
 
 ```
 yarn rw db <command>
@@ -218,7 +218,7 @@ Migrate your database down. Also see the [Prisma docs on migrate down](https://w
 yarn rw db down [decrement|name|timestamp]
 ```
 
-You can specify the state to migrate down to via one of three ways: 
+You can specify the state to migrate down to via one of three ways:
 
 <!-- Arguments -->
 <table class="table-fixed w-full">
@@ -271,7 +271,7 @@ Generate the Prisma client. Also see the [Prisma docs on generate](https://www.p
 yarn rw db generate
 ```
 
-The Prisma client is auto-generated and tailored to your `schema.prisma`. 
+The Prisma client is auto-generated and tailored to your `schema.prisma`.
 This means that `yarn rw db generate` needs to be run after every change to your `schema.prisma` for your Prisma client to be up to date. But you usually won't have to do this manually as other Redwood commands run this behind the scene (e.g. `build`, `dev`).
 
 ## db introspect
@@ -306,12 +306,12 @@ api/prisma/migrations
 
 <br/>
 
-- `migrations`: A directory to store migrations. 
+- `migrations`: A directory to store migrations.
 - `migrations/<migration>`: A directory for a specific migration. The name (`<migration>`) is composed of a timestamp of when it was created and the name given during `yarn rw db save`.
 - `migrations/<migration>/README.md`: A human-readable description of the migration, including metadata like when the migration was created and by who, a list of the actual migration changes, and a diff of the changes made to `schema.prisma`.
 - `migrations/<migration>/schema.prisma`: The schema that will be created if the migration is applied.
 - `migrations/<migration>/steps.json`: An alternate representation of the migration steps that will be applied.
-- `migrate.lock`: A lock file specifying the current migration. 
+- `migrate.lock`: A lock file specifying the current migration.
 
 ## db seed
 
@@ -321,7 +321,7 @@ Seed your database with test data.
 yarn rw db seed
 ```
 
-Runs `./api/prisma/seed.js` which instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. Also see the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/prisma/seeds.js).
+Runs `./api/prisma/seed.js` which instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. Also see the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/main/api/prisma/seeds.js).
 
 ## db up
 
@@ -458,7 +458,7 @@ You can get authentication out-of-the-box with generators. Right now we only sup
   <tbody>
     <tr>
       <td><span id="code">provider</span></td>
-      <td>Name of auth provider to configure. Choices are <span id="code">netlify</span> and <span id="code">auth0</span>.</td>
+      <td>Name of auth provider to configure. Choices are <span id="code">auth0</span>, <span id="code">firebase</span>, <span id="code">magicLink</span>, and <span id="code">netlify</span>.</td>
     </tr>
   </tbody>
 </table>
@@ -493,7 +493,7 @@ Generate a cell component.
 yarn rw g cell <name>
 ```
 
-Cells are signature to Redwood. We think they provide a simpler and more declarative approach to data fetching. 
+Cells are signature to Redwood. We think they provide a simpler and more declarative approach to data fetching.
 
 <!-- Arguments -->
 <table class="table-fixed w-full">
@@ -579,7 +579,7 @@ Generate a component component.
 yarn rw g component <name>
 ```
 
-Redwood loves function components and makes extensive use of React Hooks which are only enabled in function components. 
+Redwood loves function components and makes extensive use of React Hooks which are only enabled in function components.
 
 <!-- Arguments -->
 <table class="table-fixed w-full">
@@ -648,7 +648,7 @@ export default User
 
 ## generate function
 
-Generate a Function. 
+Generate a Function.
 
 ```
 yarn rw g function <name>
@@ -729,9 +729,9 @@ $ /redwood-app/node_modules/.bin/rw dev api
 $ /redwood-app/node_modules/.bin/dev-server
 17:21:49 api | Listening on http://localhost:8911
 17:21:49 api | Watching /home/dominic/projects/redwood/redwood-app/api
-17:21:49 api | 
+17:21:49 api |
 17:21:49 api | Now serving
-17:21:49 api | 
+17:21:49 api |
 17:21:49 api | ► http://localhost:8911/graphql/
 17:21:49 api | ► http://localhost:8911/user/
 ```
@@ -744,7 +744,7 @@ Generate a layout component.
 yarn rw g layout <name>
 ```
 
-Layouts wrap pages and help you stay DRY. 
+Layouts wrap pages and help you stay DRY.
 
 <!-- Arguments -->
 <table class="table-fixed w-full">
@@ -922,7 +922,7 @@ A scaffold quickly creates a CRUD for a model by generating the following files 
 - cells
 - components
 
-The content of the generated components is different from what you'd get by running them individually. 
+The content of the generated components is different from what you'd get by running them individually.
 
 <!-- Arguments -->
 <table class="table-fixed w-full">
@@ -1016,11 +1016,11 @@ Generate a GraphQL schema and service object.
 yarn rw g sdl <model>
 ```
 
-The sdl will inspect your `schema.prisma` and will do its best with relations. For 
+The sdl will inspect your `schema.prisma` and will do its best with relations. For
 The schema <-> generators isn't one to one yet,
 
-See 
-limited genreator support ofr relations 
+See
+limited genreator support ofr relations
 https://community.redwoodjs.com/t/prisma-beta-2-and-rwjs-limited-generator-support-for-relations-with-workarounds/361
 
 <!-- Arguments -->
@@ -1053,6 +1053,18 @@ https://community.redwoodjs.com/t/prisma-beta-2-and-rwjs-limited-generator-suppo
     <tr>
       <td><span id="code">--force, -f</span></td>
       <td>Overwrite existing files.</td>
+    </tr>
+    <tr>
+      <td><span id="code">--crud</span></td>
+      <td>Generate CRUD for existing files.</td>
+    </tr>
+    <tr>
+      <td><span id="code">--javascript, --js</span></td>
+      <td>Generate JavaScript files.</td>
+    </tr>
+    <tr>
+      <td><span id="code">--typescript, --ts</span></td>
+      <td>Generate TypeScript files.</td>
     </tr>
   </tbody>
 </table>
@@ -1100,7 +1112,7 @@ export const schema = gql`
 `
 ```
 
-The services file fulfills the query: 
+The services file fulfills the query:
 
 ```javascript
 // ./api/src/services/users/users.js
@@ -1167,7 +1179,7 @@ Generate a service component.
 yarn rw g service <name>
 ```
 
-Services are where Redwood puts its business logic. They can be used by your GraphQL API or any other place in your backend code. 
+Services are where Redwood puts its business logic. They can be used by your GraphQL API or any other place in your backend code.
 
 > Generated service filenames are always plural.
 
@@ -1223,7 +1235,7 @@ $ /redwood-app/node_modules/.bin/rw g service user
 Done in 1.02s.
 ```
 
-The generated service component will export a `findMany` query: 
+The generated service component will export a `findMany` query:
 
 ```javascript
 // ./api/src/services/users/users.js
@@ -1260,7 +1272,7 @@ $ /redwood-app/node_modules/.bin/rw info
     Chrome: 78.0.3904.108
     Firefox: 76.0.1
   npmPackages:
-    @redwoodjs/core: ^0.7.0-rc.3 => 0.7.0-rc.3 
+    @redwoodjs/core: ^0.7.0-rc.3 => 0.7.0-rc.3
 
 Done in 1.98s.
 ```
@@ -1273,7 +1285,7 @@ Lint your files.
 yarn rw lint
 ```
 
-[Our ESLint configuration](https://github.com/redwoodjs/redwood/blob/master/packages/eslint-config/index.js) is a mixture between [ESLint's recommended rules](https://eslint.org/docs/rules/), [React's recommended rules](https://www.npmjs.com/package/eslint-plugin-react#list-of-supported-rules), and a bit of our own stylistic flair:
+[Our ESLint configuration](https://github.com/redwoodjs/redwood/blob/main/packages/eslint-config/index.js) is a mixture between [ESLint's recommended rules](https://eslint.org/docs/rules/), [React's recommended rules](https://www.npmjs.com/package/eslint-plugin-react#list-of-supported-rules), and a bit of our own stylistic flair:
 
 - no semicolons
 - comma dangle when multiline
@@ -1308,7 +1320,7 @@ yarn rw open
 
 ## redwood-tools (alias rwt)
 
-Redwood's companion CLI development tool. You'll be using this if you're contributing to the Redwood Framework. For information about using this command and available options, see the [Redwood Contributing guide's Reference section](https://github.com/redwoodjs/redwood/blob/master/CONTRIBUTING.md#Reference).
+Redwood's companion CLI development tool. You'll be using this if you're contributing to the Redwood Framework. For information about using this command and available options, see the [Redwood Contributing guide's Reference section](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#Reference).
 
 ## test
 
@@ -1320,7 +1332,7 @@ Run Jest tests for api and web
 yarn rw test [side..]
 ```
 
-<!-- You can find the config files in [@redwoodjs/core](https://github.com/redwoodjs/redwood/tree/master/packages/core). -->
+<!-- You can find the config files in [@redwoodjs/core](https://github.com/redwoodjs/redwood/tree/main/packages/core). -->
 
 <br/>
 
@@ -1348,7 +1360,7 @@ Upgrade all `@redwoodjs` packages via an interactive CLI.
 yarn rw upgrade
 ```
 
-A canary release is published to npm every time a branch is merged to master.
+A canary release is published to npm every time a branch is merged to `main`.
 
 <table class="table-fixed w-full">
   <thead class="text-left">
