@@ -163,3 +163,15 @@
 ### All the RedwoodJS News that’s Fit to Print: Auth and Testing and Prisma Day 2, oh my! Helping you use RedwoodJS better with highlights, snippets, and upcoming events.
 
 #### Newsletter
+
+---
+
+![Prisma 2 Day](https://user-images.githubusercontent.com/300/86036879-63c0e980-b9f3-11ea-9b5c-d01d3b75f2e2.png)
+
+# [Prisma Day 2 and RedwoodJS](https://www.youtube.com/watch?v=BqztLbj_cN4&feature=youtu.be&t=17252)
+
+## June 26 2020
+
+### Tom gives a tour of Redwood for Prisma Day by adding a feature to a Todo app.
+
+#### Video
