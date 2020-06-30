@@ -669,7 +669,7 @@ The content of the generated components is different from what you'd get by runn
 
 **Usage**
 
-See the [Creating a Post Editor](http://127.0.0.1:8080/tutorial/getting-dynamic.html#creating-a-post-editor) section of the tutorial.
+See [Creating a Post Editor](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor).
 
 You can namespace your scaffolds by providing `<path/model>`. The layout, pages, cells, and components will be nested in newly created dir(s). For example, given a model user, running `yarn rw g scaffold admin/user` will nest the layouts, pages, and components in a newly created `admin` directory:
 
