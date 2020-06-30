@@ -322,12 +322,12 @@ Generate an auth configuration.
 yarn rw g auth <provider>
 ```
 
-You can get authentication out-of-the-box with generators. Right now we support Auth0, Go True, Firebase, Magic, and Netlify.
+You can get authentication out-of-the-box with generators. Right now we support Auth0, Firebase, GoTrue, Magic, and Netlify.
 
-| Arguments & Options | Description                                                                             |
-| :------------------ | :-------------------------------------------------------------------------------------- |
-| `provider`          | Auth provider to configure. Choices are  `auth0`, `firebase`, `magicLink` and `netlify` |
-| `--force, -f`       | Overwrite existing files                                                                |
+| Arguments & Options | Description                                                                                       |
+| :------------------ | :------------------------------------------------------------------------------------------------ |
+| `provider`          | Auth provider to configure. Choices are  `auth0`, `firebase`, `goTrue`, `magicLink` and `netlify` |
+| `--force, -f`       | Overwrite existing files                                                                          |
 
 **Usage**
 
