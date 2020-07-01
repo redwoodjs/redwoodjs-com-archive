@@ -10,7 +10,7 @@ On the API side with NodeJS as your target, you can access the environment varia
 
 ### Production
 
-Your deployment system will need some way to make environment variables available to the serverless environment where your functions will run. For example on Netlify you can set them in the [Build environement variables](https://docs.netlify.com/configure-builds/environment-variables/) section of your Settings.
+Your deployment system will need some way to make environment variables available to the serverless environment where your functions will run. For example on Netlify you can set them in the [Build environment variables](https://docs.netlify.com/configure-builds/environment-variables/) section of your Settings.
 
 ## Web
 
