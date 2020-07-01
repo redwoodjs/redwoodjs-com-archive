@@ -48,11 +48,11 @@ By specifying `goTrue` as the provider, Redwood automatically added the necessar
 ```javascript {4,7,13-16,20,24}
 // web/src/index.js
 
-import ReactDOM from 'react-dom'
 import { AuthProvider } from '@redwoodjs/auth'
+import GoTrue from 'gotrue-js'
+import ReactDOM from 'react-dom'
 import { RedwoodProvider, FatalErrorBoundary } from '@redwoodjs/web'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
-import GoTrue from 'gotrue-js'
 
 import Routes from 'src/Routes'
 
@@ -709,7 +709,6 @@ Now we have navigation that renders the correct links and buttons based on our a
 ## Wrapping Up
 
 We've configured GoTrue with Redwood Auth, created a Sign Up page, a Sign In page, a Sign Out button, and added auth links to our layout. Nicely done!
-
 
 Thanks for tuning in!
 
