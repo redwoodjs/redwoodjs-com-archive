@@ -1,7 +1,7 @@
 # GoTrue Auth
 
 If you've completed the [Authentication section](/tutorial/authentication) of The Tutorial, you've seen how you can add the [Netlify Identity Widget](https://github.com/netlify/netlify-identity-widget) to your Redwood app in a matter of minutes.
-But what do you do if you want to use Netlify Identity, but ditch the widget? There's many cases where we want much more control over our authentication interface and functionality, while still maintaining some _ease-of-use_ when it comes to development.
+But what do you do if you want to use Netlify Identity, but ditch the widget? There are many cases where we want much more control over our authentication interface and functionality, while still maintaining some _ease-of-use_ when it comes to development.
 
 Enter [GoTrue-JS](https://github.com/netlify/gotrue-js), a client library for interfacing with Netlify Identity's GoTrue API.
 
