@@ -17,7 +17,7 @@ But first, some housekeeping...
 
 ## Prerequisites
 
-Before getting started, there's a few steps you should have completed:
+Before getting started, there are a few steps you should have completed:
 
 - [Create a Redwood app](https://redwoodjs.com/tutorial/installation-starting-development)
 - [Create a Netlify account](https://www.netlify.com/)
