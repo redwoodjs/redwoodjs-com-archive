@@ -7,11 +7,11 @@ Enter [GoTrue-JS](https://github.com/netlify/gotrue-js), a client library for in
 
 In this recipe, we'll:
 
-- [configure Redwood Auth with GoTrue-JS](#generate-auth-configuration) (easy),
-- [create a Sign Up form](#sign-up) (easy),
-- [create a Sign In form](#sign-in) (easy),
-- [create a Sign Out button](#sign-out) (easy),
-- [add auth links](#auth-links) that display the correct buttons based on our auth state (easy)
+- [configure Redwood Auth with GoTrue-JS](#generate-auth-configuration),
+- [create a Sign Up form](#sign-up),
+- [create a Sign In form](#sign-in),
+- [create a Sign Out button](#sign-out),
+- [add auth links](#auth-links) that display the correct buttons based on our auth state
 
 But first, some housekeeping...
 
@@ -123,11 +123,14 @@ import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
 
 const SignupPage = () => {
   return (
-    <Form onSubmit={onSubmit}>
-      <TextField name="email" placeholder="email" />
-      <PasswordField name="password" placeholder="password" />
-      <Submit>Sign Up</Submit>
-    </Form>
+    <>
+      <h1>Sign Up</h1>
+      <Form>
+        <TextField name="email" placeholder="email" />
+        <PasswordField name="password" placeholder="password" />
+        <Submit>Sign Up</Submit>
+      </Form>
+    </>
   )
 }
 
@@ -138,7 +141,7 @@ Did I mention it was basic? If you want to add some polish, you might find both 
 
 Now that we have a form interface, we're going to want to do something when the user submits it. Let's add an `onSubmit` function to our component and pass it as a prop to our Form component:
 
-```js {6,7,8,11}
+```js{6-8,13}
 // web/src/pages/SignupPage/SignupPage.js
 
 // imports...
@@ -149,11 +152,14 @@ const SignupPage = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      <TextField name="email" placeholder="email" />
-      <PasswordField name="password" placeholder="password" />
-      <Submit>Sign Up</Submit>
-    </Form>
+    <>
+      <h1>Sign Up</h1>
+      <Form onSubmit={onSubmit}>
+        <TextField name="email" placeholder="email" />
+        <PasswordField name="password" placeholder="password" />
+        <Submit>Sign Up</Submit>
+      </Form>
+    </>
   )
 }
 //...
@@ -177,11 +183,14 @@ const SignupPage = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      <TextField name="email" placeholder="email" />
-      <PasswordField name="password" placeholder="password" />
-      <Submit>Sign Up</Submit>
-    </Form>
+    <>
+      <h1>Sign Up</h1>
+      <Form onSubmit={onSubmit}>
+        <TextField name="email" placeholder="email" />
+        <PasswordField name="password" placeholder="password" />
+        <Submit>Sign Up</Submit>
+      </Form>
+    </>
   )
 }
 
@@ -207,11 +216,14 @@ const SignupPage = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      <TextField name="email" placeholder="email" />
-      <PasswordField name="password" placeholder="password" />
-      <Submit>Sign Up</Submit>
-    </Form>
+    <>
+      <h1>Sign Up</h1>
+      <Form onSubmit={onSubmit}>
+        <TextField name="email" placeholder="email" />
+        <PasswordField name="password" placeholder="password" />
+        <Submit>Sign Up</Submit>
+      </Form>
+    </>
   )
 }
 
@@ -222,7 +234,7 @@ Presently, our sign up will work as is, but simply console-logging the response 
 
 Let's display errors to the user if there is one. To do this, we'll set up `React.useState()` to manage our error state and conditionally render the error message if there is one. We'll also want to reset the error state at the beginning of every submission with `setError(null)`:
 
-```js {8,11,15,19}
+```js {8,11,15,22}
 // web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
@@ -241,12 +253,15 @@ const SignupPage = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      {error && <p>{error}</p>}
-      <TextField name="email" placeholder="email" />
-      <PasswordField name="password" placeholder="password" />
-      <Submit>Sign Up</Submit>
-    </Form>
+    <>
+      <h1>Sign Up</h1>
+      <Form onSubmit={onSubmit}>
+        {error && <p>{error}</p>}
+        <TextField name="email" placeholder="email" />
+        <PasswordField name="password" placeholder="password" />
+        <Submit>Sign Up</Submit>
+      </Form>
+    </>
   )
 }
 
@@ -283,12 +298,15 @@ const SignupPage = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      {error && <p>{error}</p>}
-      <TextField name="email" placeholder="email" />
-      <PasswordField name="password" placeholder="password" />
-      <Submit>Sign Up</Submit>
-    </Form>
+    <>
+      <h1>Sign Up</h1>
+      <Form onSubmit={onSubmit}>
+        {error && <p>{error}</p>}
+        <TextField name="email" placeholder="email" />
+        <PasswordField name="password" placeholder="password" />
+        <Submit>Sign Up</Submit>
+      </Form>
+    </>
   )
 }
 
@@ -314,12 +332,15 @@ const SigninPage = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      {error && <p>{error}</p>}
-      <TextField name="email" placeholder="email" />
-      <PasswordField name="password" placeholder="password" />
-      <Submit>Sign In</Submit>
-    </Form>
+    <>
+      <h1>Sign In</h1>
+      <Form onSubmit={onSubmit}>
+        {error && <p>{error}</p>}
+        <TextField name="email" placeholder="email" />
+        <PasswordField name="password" placeholder="password" />
+        <Submit>Sign In</Submit>
+      </Form>
+    </>
   )
 }
 
@@ -344,12 +365,15 @@ const SigninPage = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      {error && <p>{error}</p>}
-      <TextField name="email" placeholder="email" />
-      <PasswordField name="password" placeholder="password" />
-      <Submit>Sign In</Submit>
-    </Form>
+    <>
+      <h1>Sign In</h1>
+      <Form onSubmit={onSubmit}>
+        {error && <p>{error}</p>}
+        <TextField name="email" placeholder="email" />
+        <PasswordField name="password" placeholder="password" />
+        <Submit>Sign In</Submit>
+      </Form>
+    </>
   )
 }
 
@@ -378,12 +402,15 @@ const SigninPage = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      {error && <p>{error}</p>}
-      <TextField name="email" placeholder="email" />
-      <PasswordField name="password" placeholder="password" />
-      <Submit>Sign In</Submit>
-    </Form>
+    <>
+      <h1>Sign In</h1>
+      <Form onSubmit={onSubmit}>
+        {error && <p>{error}</p>}
+        <TextField name="email" placeholder="email" />
+        <PasswordField name="password" placeholder="password" />
+        <Submit>Sign In</Submit>
+      </Form>
+    </>
   )
 }
 
@@ -417,12 +444,15 @@ const SigninPage = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      {error && <p>{error}</p>}
-      <TextField name="email" placeholder="email" />
-      <PasswordField name="password" placeholder="password" />
-      <Submit>Sign In</Submit>
-    </Form>
+    <>
+      <h1>Sign In</h1>
+      <Form onSubmit={onSubmit}>
+        {error && <p>{error}</p>}
+        <TextField name="email" placeholder="email" />
+        <PasswordField name="password" placeholder="password" />
+        <Submit>Sign In</Submit>
+      </Form>
+    </>
   )
 }
 
@@ -557,7 +587,7 @@ Because Redwood Auth uses [React's Context API](https://reactjs.org/docs/context
 
 So, now let's import our sign out button and add it, as well as sign in and sign up links, to the appropriate blocks in the conditional:
 
-```js {5,11-18}
+```javascript {5,11-18}
 // web/src/components/Navigation/Navigation.js
 
 import { Link, routes } from '@redwoodjs/router'
@@ -614,7 +644,7 @@ Finally, we'll import and wrap each of our generated pages in this GlobalLayout 
 
 **Home**
 
-```js {3,7,10}
+```js
 // web/src/pages/HomePage/Homepage.js
 
 import GlobalLayout from 'src/layouts/GlobalLayout/GlobalLayout'
@@ -622,8 +652,8 @@ import GlobalLayout from 'src/layouts/GlobalLayout/GlobalLayout'
 const HomePage = () => {
   return (
     <GlobalLayout>
-      <h1>HomePage</h1>
-      <p>Here lies a Redwood recipe.</p>
+      <h1>Home</h1>
+      <p>My Gotrue Redwood Auth</p>
     </GlobalLayout>
   )
 }
@@ -633,7 +663,7 @@ export default HomePage
 
 **Sign Up**
 
-```js {7,22,29}
+```js
 // web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
@@ -656,6 +686,7 @@ const SignupPage = () => {
 
   return (
     <GlobalLayout>
+      <h1>Sign Up</h1>
       <Form onSubmit={onSubmit}>
         {error && <p>{error}</p>}
         <TextField name="email" placeholder="email" />
@@ -671,7 +702,7 @@ export default SignupPage
 
 **Sign In**
 
-```js {7,21,28}
+```js
 // web/src/pages/SigninPage/SigninPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
@@ -693,6 +724,7 @@ const SigninPage = () => {
 
   return (
     <GlobalLayout>
+      <h1>Sign In</h1>
       <Form onSubmit={onSubmit}>
         {error && <p>{error}</p>}
         <TextField name="email" placeholder="email" />
