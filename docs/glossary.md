@@ -4,7 +4,7 @@ Redwood and Jamstack terms defined. Apart from being a great reference, glossari
 
 ## Cell
 
-Redwood's simpler and more decalarative approach to data fetching.
+Redwood's simpler and more declarative approach to data fetching.
 
 ## Jamstack
 
