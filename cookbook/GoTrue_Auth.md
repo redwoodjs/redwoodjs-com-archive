@@ -1,6 +1,5 @@
 # GoTrue Auth
 
-
 If you've completed the [Authentication section](/tutorial/authentication) of The Tutorial, you've seen how you can add the [Netlify Identity Widget](https://github.com/netlify/netlify-identity-widget) to your Redwood app in a matter of minutes.
 But what do you do if you want to use Netlify Identity, but ditch the widget? There's many cases where we want much more control over our authentication interface and functionality, while still maintaining some _ease-of-use_ when it comes to development.
 
@@ -139,7 +138,7 @@ Did I mention it was basic? If you want to add some polish, you might find both 
 
 Now that we have a form interface, we're going to want to do something when the user submits it. Let's add an `onSubmit` function to our component and pass it as a prop to our Form component:
 
-```javascript {6-8,11}
+```javascript {6,7,8,11}
 // web/src/pages/SignupPage/SignupPage.js
 
 // imports...
@@ -434,7 +433,7 @@ Well done! We've created a sign in page and form and we successfully handle sign
 
 ## Sign Out
 
-Sign out is by far the easiest auth functionality to implement: all we need to do is fire off useAuth's `logOut` method. 
+Sign out is by far the easiest auth functionality to implement: all we need to do is fire off useAuth's `logOut` method.
 
 Let's start by [generating a component](/docs/cli-commands#generate-component) to house our Sign Out Button:
 
