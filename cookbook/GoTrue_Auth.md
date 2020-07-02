@@ -295,7 +295,7 @@ const SignupPage = () => {
 export default SignupPage
 ```
 
-Hoorah! We've just added added a sign up page and created a sign up form. We created a function to sign up users and we redirect users to the sign up page upon successful submission. Let's move on to Sign In.
+Hoorah! We've just added a sign up page and created a sign up form. We created a function to sign up users and we redirect users to the sign up page upon successful submission. Let's move on to Sign In.
 
 ## Sign In
 
