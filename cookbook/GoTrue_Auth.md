@@ -1,9 +1,8 @@
 # GoTrue Auth
 
-Redwood makes it easy to add authentication to your Redwood App with an instant, just-add-water [auth generator](/docs/cli-commands#generate-auth) and a growing library of support for popular SPA authentication clients.
 
-If you've completed the [authentication section](/tutorial/authentication) of The Tutorial, you've seen how you can add the [Netlify Identity Widget](https://github.com/netlify/netlify-identity-widget) to your Redwood app in a matter of minutes.
-But in many cases, we want much more control over our authentication interface and functionality while still maintaining some _ease-of-use_ when it comes to development.
+If you've completed the [Authentication section](/tutorial/authentication) of The Tutorial, you've seen how you can add the [Netlify Identity Widget](https://github.com/netlify/netlify-identity-widget) to your Redwood app in a matter of minutes.
+But what do you do if you want to use Netlify Identity, but ditch the widget? There's many cases where we want much more control over our authentication interface and functionality, while still maintaining some _ease-of-use_ when it comes to development.
 
 Enter [GoTrue-JS](https://github.com/netlify/gotrue-js), a client library for interfacing with Netlify Identity's GoTrue API.
 
@@ -21,7 +20,7 @@ But first, some housekeeping...
 
 Before getting started, there's a few steps you should have completed:
 
-- [Create a Redwood App](https://redwoodjs.com/tutorial/installation-starting-development)
+- [Create a Redwood app](https://redwoodjs.com/tutorial/installation-starting-development)
 - [Create a Netlify account](https://www.netlify.com/)
 - [Deploy your Netlify site](https://redwoodjs.com/tutorial/deployment)
 - [Enable Netlify Identity](#enable-netlify-identity)
@@ -29,7 +28,7 @@ Before getting started, there's a few steps you should have completed:
 
 ### Enable Netlify Identity
 
-Unless you've skipped the [requirements](#prerequisites) section (for shame!), you should already have a [Netlify](https://www.netlify.com/) account and a site set up. If you'd be so kind, navigate to your site's **Dashboard**, head to the **Identity** tab, and click **Enable Identity**:
+Unless you've skipped the [requirements](#prerequisites) section (for shame!), you should already have a Netlify account and a site set up. If you'd be so kind, navigate to your site's **Dashboard**, head to the **Identity** tab, and click **Enable Identity**:
 
 ![Netlify Identity screenshot](https://user-images.githubusercontent.com/300/82271191-f5850380-992b-11ea-8061-cb5f601fa50f.png)
 
@@ -37,7 +36,7 @@ Now you should see an Identity API endpoint, e.g. `https://my-bodacious-app.netl
 
 ## Generate Auth Configuration
 
-Let's install the required packages and generate boilerplate code and files for Redwood Auth with this simple [CLI command](/docs/cli-commands#generate-auth):
+Let's start by installing the required packages and generating boilerplate code and files for Redwood Auth, all with this simple [CLI command](/docs/cli-commands#generate-auth):
 
 ```bash
 yarn redwood generate auth goTrue
@@ -45,7 +44,7 @@ yarn redwood generate auth goTrue
 
 By specifying `goTrue` as the provider, Redwood automatically added the necessary GoTrue-JS config to our index.js. Let's open up `web/src/index.js` and inspect. You should see:
 
-```javascript {4,7,13-16,20,24}
+```javascript {3-4,13-16,20,24}
 // web/src/index.js
 
 import { AuthProvider } from '@redwoodjs/auth'
@@ -75,12 +74,12 @@ ReactDOM.render(
 )
 ```
 
-Now we'll use that API endpoint we copied from the Netlify Identity page. Replace the value of `APIUrl` with your API endpoint. For example:
+Time to use that API endpoint we copied from the Netlify Identity page. Replace the value of `APIUrl` with your API endpoint. For example:
 
 ```javascript {6}
 // web/src/index.js
 
-import GoTrue from 'gotrue-js'
+// imports...
 
 const goTrueClient = new GoTrue({
   APIUrl: 'https://gotrue-recipe.netlify.app/.netlify/identity',
@@ -94,9 +93,9 @@ That's all for configuration. Easy!
 
 Since our users can't sign in until they've signed up, Sign Up feels like an appropriate place to start building our interface.
 
-Note that our first iteration of sign up won't include features like Email Confirmation or Password Recovery. Those, among other features, will be covered in an Advanced Concepts section of this recipe (coming soon).
+Our first iteration won't include features like Email Confirmation or Password Recovery. Those, among other features, will be covered in the Advanced Concepts section of this recipe (coming soon).
 
-Let's forego email confirmation for now. Head back over to your site's **Netlify Dashboard**, open the **Identity tab**, and click **Settings and usage**.
+To forego email confirmation, head back over to your site's **Netlify Dashboard**, open the **Identity** tab, and click **Settings and usage**.
 
 ![Netlify Identity Settings screenshot](https://user-images.githubusercontent.com/458233/86220685-ed86c900-bb51-11ea-9d74-f1ee4ab0a91b.png)
 
@@ -104,7 +103,7 @@ In **Emails > Confirmation template**, click **Edit settings**, check **Allow us
 
 ![Netlify Identity Confirmation template](https://user-images.githubusercontent.com/458233/86221090-7140b580-bb52-11ea-8530-b1a7be937c56.png)
 
-Nicely done. Now let's head back to our app.
+Nicely done. Now, back to our app.
 
 **The Sign Up Page**
 
@@ -140,9 +139,11 @@ Did I mention it was basic? If you want to add some polish, you might find both 
 
 Now that we have a form interface, we're going to want to do something when the user submits it. Let's add an `onSubmit` function to our component and pass it as a prop to our Form component:
 
-```javascript {4-6,9}
+```javascript {6-8,11}
 // web/src/pages/SignupPage/SignupPage.js
-//...
+
+// imports...
+
 const SignupPage = () => {
   const onSubmit = (data) => {
     // do something here
@@ -159,12 +160,12 @@ const SignupPage = () => {
 //...
 ```
 
-The _something_ we need to do is—surprise!—sign up. To accomplish this we'll need a way to communicate with `<AuthProvider />` and the GoTrue-JS client we passed to it. Look no further than the [`useAuth` hook](https://redwoodjs.com/docs/authentication#api), which let's us subscribe to our auth state and its properties. In our case, we'll be glad to now have access to `client` and, thusly, our GoTrue-JS instance and [all of its functions](https://github.com/netlify/gotrue-js/blob/master/README.md#authentication-examples).
+The _something_ we need to do is—surprise!—sign up. To do this, we'll need a way to communicate with `<AuthProvider />` and the GoTrue-JS client we passed to it. Look no further than the [`useAuth` hook](https://redwoodjs.com/docs/authentication#api), which let's us subscribe to our auth state and its properties. In our case, we'll be glad to now have access to `client` and, thusly, our GoTrue-JS instance and [all of its functions](https://github.com/netlify/gotrue-js/blob/master/README.md#authentication-examples).
 
-Let's import `useAuth` and destructure `client` in our component:
+Let's import `useAuth` and destructure `client` from it in our component:
 
 ```javascript {4,7}
-// src/pages/SignupPage/SignupPage.js
+// web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
 import { useAuth } from '@redwoodjs/auth'
@@ -191,7 +192,7 @@ export default SignupPage
 And now we'll attempt to create a new user in the `onSubmit` function with [`client.signup()`](https://github.com/netlify/gotrue-js/blob/master/README.md#create-a-new-user) by passing in the `email` and `password` values that we've captured from our form:
 
 ```javascript {10-13}
-// src/pages/SignupPage/SignupPage.js
+// web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
 import { useAuth } from '@redwoodjs/auth'
@@ -222,7 +223,7 @@ Presently, our sign up will work as is, but simply console-logging the response 
 
 Let's display errors to the user if there is one. To do this, we'll set up `React.useState()` to manage our error state and conditionally render the error message if there is one. We'll also want to reset the error state at the beginning of every submission with `setError(null)`:
 
-```javascript {7,10,14,19}
+```javascript {8,11,15,19}
 // src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
@@ -264,7 +265,7 @@ yarn redwood generate page Signin
 Back in our `SignupPage`, let's import `routes` and `navigate` from [Redwood Router](/docs/redwood-router#navigate) and use them to redirect on successful sign up:
 
 ```javascript {5,15}
-// src/pages/SignupPage/SignupPage.js
+// web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
 import { useAuth } from '@redwoodjs/auth'
@@ -299,7 +300,7 @@ Hoorah! We've just added added a sign up page and created a sign up form. We cre
 
 ## Sign In
 
-Let's get right to it. In the `web/src/pages/SigninPage/SigninPage.js` we generated in the last section, let's add a basic form with `email` and `password` fields, some error reporting setup, and a hollow `onSubmit` function:
+Let's get right to it. In the SigninPage we generated in the last section, let's add a basic form with `email` and `password` fields, some error reporting setup, and a hollow `onSubmit` function:
 
 ```javascript
 // web/src/pages/SigninPage/SigninPage.js
@@ -329,7 +330,7 @@ export default SigninPage
 Then we'll need to import `useAuth` from `@redwoodjs/auth` and destructure `logIn` so that we can use it in our `onSubmit` function:
 
 ```javascript {4,7}
-// src/pages/SigninPage/SigninPage.js
+// web/src/pages/SigninPage/SigninPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
 import { useAuth } from '@redwoodjs/auth'
@@ -359,7 +360,7 @@ export default SigninPage
 Now we'll add `logIn` to our `onSubmit` function. This time we'll be passing an object to our function as we're using Redwood Auth's logIn function directly (as opposed to `client`). This object takes an email, password, and a remember boolean. We'll also chain on `then` and `catch` to handle the response:
 
 ```javascript {12-16}
-// src/pages/SigninPage/SigninPage.js
+// web/src/pages/SigninPage/SigninPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
 import { useAuth } from '@redwoodjs/auth'
@@ -399,7 +400,7 @@ yarn redwood generate page Home /
 In our `SigninPage`, import `navigate` and `routes` from [`@redwoodjs/router`](/docs/redwood-router) and add them to the `then` function:
 
 ```javascript {5,14}
-// src/pages/SigninPage/SigninPage.js
+// web/src/pages/SigninPage/SigninPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
 import { useAuth } from '@redwoodjs/auth'
@@ -433,7 +434,9 @@ Well done! We've created a sign in page and form and we successfully handle sign
 
 ## Sign Out
 
-Sign out is by far the easiest auth functionality to implement; we just fire off useAuth's `logOut` method. Let's start by [generating a component](/docs/cli-commands#generate-component) that will house our Sign Out Button:
+Sign out is by far the easiest auth functionality to implement: all we need to do is fire off useAuth's `logOut` method. 
+
+Let's start by [generating a component](/docs/cli-commands#generate-component) to house our Sign Out Button:
 
 ```bash
 yarn redwood generate component SignoutBtn
@@ -454,7 +457,7 @@ const SignoutBtn = () => {
 export default SignoutBtn
 ```
 
-No we can import [`useAuth` from `@redwoodjs/auth`](/docs/authentication#api). We'll destructure its `logOut` method and make use of it in the `onClick` function:
+Now we can import [`useAuth` from `@redwoodjs/auth`](/docs/authentication#api). We'll destructure its `logOut` method and invoke it in the `onClick` function:
 
 ```javascript {3,6,9}
 // web/src/components/SignoutBtn/SignoutBtn.js
@@ -474,7 +477,7 @@ const SignoutBtn = () => {
 export default SignoutBtn
 ```
 
-This will work as is but, because the user may be in a private area of your app when the Sign Out button is clicked, we should make sure we also navigate the user away from this page:
+This works as is, but, because the user may be in a private area of your app when the Sign Out button is clicked, we should make sure we also navigate the user away from this page:
 
 ```javascript {4,10}
 // web/src/components/SignoutBtn/SignoutBtn.js
@@ -499,7 +502,7 @@ And that's it for Sign Out! Err, of course, we're not rendering it anywhere in o
 
 ## Auth Links
 
-Here we'll implement some auth related navigation that conditionally renders the correct links and buttons based on the users authentication state.
+Here we'll implement some auth-related navigation that conditionally renders the correct links and buttons based on the user's authentication state.
 
 - When the user is not logged in, we should see **Sign Up** and **Sign In**.
 - When the user is logged in, we should see **Log Out**.
@@ -510,7 +513,7 @@ Let's start by [generating a navigation component](/docs/cli-commands#generate-c
 yarn redwood generate component Navigation
 ```
 
-This creates `web/src/components/Navigation/Navigation.js`. In that file lets import [the `Link` component and `routes`](/docs/redwood-router#link-and-named-route-functions) from `@redwoodjs/router`.
+This creates `web/src/components/Navigation/Navigation.js`. In that file, let's import [the `Link` component and the `routes` object](/docs/redwood-router#link-and-named-route-functions) from `@redwoodjs/router`.
 
 We'll also import [`useAuth`](/docs/authentication#api) since we'll need to subscribe to the auth state in order for our components to decide what to render:
 
@@ -551,7 +554,7 @@ const Navigation = () => {
 export default Navigation
 ```
 
-Because Redwood Auth makes use of [React's Context API](https://reactjs.org/docs/context.html) to manage and broadcast the auth state, we can be confident that we'll always have an up to date value for isAuthenticated—even when it changes from within another component in the tree (so long as its a child of `<AuthProvider />`). In our case, when `isAuthenticated` changes, React will auto-magically take care of rendering the appropriate components.
+Because Redwood Auth uses [React's Context API](https://reactjs.org/docs/context.html) to manage and broadcast the auth state, we can be confident that `isAuthenticated` will always be up-to-date, even if it changes from within another component in the tree (so long as it's a child of `<AuthProvider />`). In our case, when `isAuthenticated` changes, React will auto-magically take care of rendering the appropriate components.
 
 So, now let's import our sign out button and add it, as well as sign in and sign up links, to the appropriate blocks in the conditional:
 
@@ -581,7 +584,7 @@ const Navigation = () => {
 export default Navigation
 ```
 
-We have a working navigation component but we still need to render it somewhere. Let's [generate a layout](/docs/cli-commands#generate-layout) called GlobalLayout:
+We have a working navigation component, but we still need to render it somewhere. Let's [generate a layout](/docs/cli-commands#generate-layout) called GlobalLayout:
 
 ```bash
 yarn redwood generate layout Global
@@ -632,7 +635,7 @@ export default HomePage
 **Sign Up**
 
 ```javascript {7,22,29}
-// src/pages/SignupPage/SignupPage.js
+// web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
 import { useAuth } from '@redwoodjs/auth'
@@ -670,7 +673,7 @@ export default SignupPage
 **Sign In**
 
 ```javascript {7,21,28}
-// src/pages/SigninPage/SigninPage.js
+// web/src/pages/SigninPage/SigninPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
 import { useAuth } from '@redwoodjs/auth'
@@ -712,4 +715,4 @@ We've configured GoTrue with Redwood Auth, created a Sign Up page, a Sign In pag
 
 Thanks for tuning in!
 
-_If you spot an error or have trouble completing any part of this recipe, please feel free to open an issue on [Github](https://github.com/redwoodjs/redwood) or create a topic on our [community forum](https://community.redwoodjs.com/)._
+> If you spot an error or have trouble completing any part of this recipe, please feel free to open an issue on [Github](https://github.com/redwoodjs/redwood) or create a topic on our [community forum](https://community.redwoodjs.com/).
