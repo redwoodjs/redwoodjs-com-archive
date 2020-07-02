@@ -43,7 +43,7 @@ yarn redwood generate auth goTrue
 
 By specifying `goTrue` as the provider, Redwood automatically added the necessary GoTrue-JS config to our index.js. Let's open up `web/src/index.js` and inspect. You should see:
 
-```javascript {3-4,13-16,20,24}
+```js {3-4,13-16,20,24}
 // web/src/index.js
 
 import { AuthProvider } from '@redwoodjs/auth'
@@ -75,7 +75,7 @@ ReactDOM.render(
 
 Time to use that API endpoint we copied from the Netlify Identity page. Replace the value of `APIUrl` with your API endpoint. For example:
 
-```javascript {6}
+```js {6}
 // web/src/index.js
 
 // imports...
@@ -116,14 +116,14 @@ This adds a Signup [route](/docs/redwood-router#router-and-route) to our routes 
 
 In the just-generated SignupPage component (`web/src/pages/SignupPage/SignupPage.js`), let's import some [Redwood Form components](https://redwoodjs.com/docs/form) and add a very basic form to our render component:
 
-```javascript
+```js
 // web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
 
 const SignupPage = () => {
   return (
-    <Form>
+    <Form onSubmit={onSubmit}>
       <TextField name="email" placeholder="email" />
       <PasswordField name="password" placeholder="password" />
       <Submit>Sign Up</Submit>
@@ -138,7 +138,7 @@ Did I mention it was basic? If you want to add some polish, you might find both 
 
 Now that we have a form interface, we're going to want to do something when the user submits it. Let's add an `onSubmit` function to our component and pass it as a prop to our Form component:
 
-```javascript {6,7,8,11}
+```js {6,7,8,11}
 // web/src/pages/SignupPage/SignupPage.js
 
 // imports...
@@ -163,7 +163,7 @@ The _something_ we need to do is—surprise!—sign up. To do this, we'll need a
 
 Let's import `useAuth` and destructure `client` from it in our component:
 
-```javascript {4,7}
+```js {4,7}
 // web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
@@ -190,7 +190,7 @@ export default SignupPage
 
 And now we'll attempt to create a new user in the `onSubmit` function with [`client.signup()`](https://github.com/netlify/gotrue-js/blob/master/README.md#create-a-new-user) by passing in the `email` and `password` values that we've captured from our form:
 
-```javascript {10-13}
+```js {10-13}
 // web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
@@ -222,7 +222,7 @@ Presently, our sign up will work as is, but simply console-logging the response 
 
 Let's display errors to the user if there is one. To do this, we'll set up `React.useState()` to manage our error state and conditionally render the error message if there is one. We'll also want to reset the error state at the beginning of every submission with `setError(null)`:
 
-```javascript {8,11,15,19}
+```js {8,11,15,19}
 // web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
@@ -263,7 +263,7 @@ yarn redwood generate page Signin
 
 Back in our `SignupPage`, let's import `routes` and `navigate` from [Redwood Router](/docs/redwood-router#navigate) and use them to redirect on successful sign up:
 
-```javascript {5,15}
+```js {5,15}
 // web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
@@ -301,7 +301,7 @@ Hoorah! We've just added a sign up page and created a sign up form. We created a
 
 Let's get right to it. In the SigninPage we generated in the last section, let's add a basic form with `email` and `password` fields, some error reporting setup, and a hollow `onSubmit` function:
 
-```javascript
+```js
 // web/src/pages/SigninPage/SigninPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
@@ -328,7 +328,7 @@ export default SigninPage
 
 Then we'll need to import `useAuth` from `@redwoodjs/auth` and destructure `logIn` so that we can use it in our `onSubmit` function:
 
-```javascript {4,7}
+```js {4,7}
 // web/src/pages/SigninPage/SigninPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
@@ -358,7 +358,7 @@ export default SigninPage
 
 Now we'll add `logIn` to our `onSubmit` function. This time we'll be passing an object to our function as we're using Redwood Auth's logIn function directly (as opposed to `client`). This object takes an email, password, and a remember boolean. We'll also chain on `then` and `catch` to handle the response:
 
-```javascript {12-16}
+```js {12-16}
 // web/src/pages/SigninPage/SigninPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
@@ -398,7 +398,7 @@ yarn redwood generate page Home /
 
 In our `SigninPage`, import `navigate` and `routes` from [`@redwoodjs/router`](/docs/redwood-router) and add them to the `then` function:
 
-```javascript {5,14}
+```js {5,14}
 // web/src/pages/SigninPage/SigninPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
@@ -443,7 +443,7 @@ yarn redwood generate component SignoutBtn
 
 In the `web/src/components/SignoutBtn/SignoutBtn.js` file we just generated, let's render a button and add a click handler:
 
-```javascript
+```js
 // web/src/components/SignoutBtn/SignoutBtn.js
 
 const SignoutBtn = () => {
@@ -458,7 +458,7 @@ export default SignoutBtn
 
 Now we can import [`useAuth` from `@redwoodjs/auth`](/docs/authentication#api). We'll destructure its `logOut` method and invoke it in the `onClick` function:
 
-```javascript {3,6,9}
+```js {3,6,9}
 // web/src/components/SignoutBtn/SignoutBtn.js
 
 import { useAuth } from '@redwoodjs/auth'
@@ -478,7 +478,7 @@ export default SignoutBtn
 
 This works as is, but, because the user may be in a private area of your app when the Sign Out button is clicked, we should make sure we also navigate the user away from this page:
 
-```javascript {4,10}
+```js {4,10}
 // web/src/components/SignoutBtn/SignoutBtn.js
 
 import { useAuth } from '@redwoodjs/auth'
@@ -516,7 +516,7 @@ This creates `web/src/components/Navigation/Navigation.js`. In that file, let's 
 
 We'll also import [`useAuth`](/docs/authentication#api) since we'll need to subscribe to the auth state in order for our components to decide what to render:
 
-```javascript
+```js
 // web/src/components/Navigation/Navigation.js
 
 import { Link, routes } from '@redwoodjs/router'
@@ -531,7 +531,7 @@ export default Navigation
 
 Let's destructure [`isAuthenticated` from the `useAuth`](/docs/authentication#api) API and apply it to some conditionals in the render method:
 
-```javascript {7,10-14}
+```js {7,10-14}
 // web/src/components/Navigation/Navigation.js
 
 import { Link, routes } from '@redwoodjs/router'
@@ -557,7 +557,7 @@ Because Redwood Auth uses [React's Context API](https://reactjs.org/docs/context
 
 So, now let's import our sign out button and add it, as well as sign in and sign up links, to the appropriate blocks in the conditional:
 
-```javascript {5,11-18}
+```js {5,11-18}
 // web/src/components/Navigation/Navigation.js
 
 import { Link, routes } from '@redwoodjs/router'
@@ -591,7 +591,7 @@ yarn redwood generate layout Global
 
 Then import and render the navigation component in the newly generated `web/src/layouts/GlobalLayout/GlobalLayout`:
 
-```javascript
+```js
 // web/src/layouts/GlobalLayout/GlobalLayout
 
 import Navigation from 'src/components/Navigation/Navigation'
@@ -614,7 +614,7 @@ Finally, we'll import and wrap each of our generated pages in this GlobalLayout 
 
 **Home**
 
-```javascript {3,7,10}
+```js {3,7,10}
 // web/src/pages/HomePage/Homepage.js
 
 import GlobalLayout from 'src/layouts/GlobalLayout/GlobalLayout'
@@ -633,7 +633,7 @@ export default HomePage
 
 **Sign Up**
 
-```javascript {7,22,29}
+```js {7,22,29}
 // web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
@@ -671,7 +671,7 @@ export default SignupPage
 
 **Sign In**
 
-```javascript {7,21,28}
+```js {7,21,28}
 // web/src/pages/SigninPage/SigninPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
