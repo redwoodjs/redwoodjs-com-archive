@@ -91,7 +91,7 @@ That's all for configuration. Easy!
 
 ## Sign Up
 
-Since our users can't sign in until they've signed up, Sign Up feels like an appropriate place to start building our interface.
+Sign Up feels like an appropriate place to start building our interface.
 
 Our first iteration won't include features like Email Confirmation or Password Recovery. Those, among other features, will be covered in the Advanced Concepts section of this recipe (coming soon).
 
