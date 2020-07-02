@@ -223,7 +223,7 @@ Presently, our sign up will work as is, but simply console-logging the response 
 Let's display errors to the user if there is one. To do this, we'll set up `React.useState()` to manage our error state and conditionally render the error message if there is one. We'll also want to reset the error state at the beginning of every submission with `setError(null)`:
 
 ```javascript {8,11,15,19}
-// src/pages/SignupPage/SignupPage.js
+// web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
 import { useAuth } from '@redwoodjs/auth'
