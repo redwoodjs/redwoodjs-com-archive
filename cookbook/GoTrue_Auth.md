@@ -137,7 +137,7 @@ const SignupPage = () => {
 export default SignupPage
 ```
 
-Did I mention it was basic? If you want to add some polish, you might find both the [Redwood Form docs](https://5efa4336f1e71f00081df803--redwoodjs.netlify.app/docs/form) and the [tutorial section on forms](https://5efa4336f1e71f00081df803--redwoodjs.netlify.app/tutorial/everyone-s-favorite-thing-to-build-forms) quite useful. For our purposes, let's just focus the functionality.
+Did I mention it was basic? If you want to add some polish, you might find both the [Redwood Form docs](https://5efa4336f1e71f00081df803--redwoodjs.netlify.app/docs/form) and the [tutorial section on forms](https://5efa4336f1e71f00081df803--redwoodjs.netlify.app/tutorial/everyone-s-favorite-thing-to-build-forms) quite useful. For our purposes, let's just focus on the functionality.
 
 Now that we have a form interface, we're going to want to do something when the user submits it. Let's add an `onSubmit` function to our component and pass it as a prop to our Form component:
 
