@@ -24,13 +24,15 @@ Want to watch this tutorial instead? Start here:
 
 ## Prerequisites
 
-This tutorial assumes you are already familiar with a few core concepts:
+This tutorial assumes you are already familiar with a few core concepts and technologies:
 
 - [React](https://reactjs.org/)
 - [GraphQL](https://graphql.org/)
+- [Apollo](https://www.apollographql.com/docs/tutorial/introduction/)
+- [Prisma](https://www.prisma.io/)
 - [The Jamstack](https://jamstack.org/)
 
-You could work through this tutorial without knowing anything about these technologies but you may find yourself getting lost in terminology that we don't stop and take the time to explain. It also helps knowing where the line is between what is built into React and what additional features Redwood brings to the table.
+You could work through this tutorial without knowing anything about these concepts and technologies but you may find yourself getting lost in terminology that we don't stop and take the time to explain. It also helps knowing where the line is between what is built into React and what additional features Redwood brings to the table.
 
 ### Node.js and Yarn Versions
 
@@ -2716,7 +2718,17 @@ As an anonymous Twitter user once mused: "If you enjoy feeling like both the sma
 
 ### What's Next?
 
-Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/docs/local-postgres-setup)? We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
+Want to add some more features to your app? Check out some of our Cookbook recipes like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/docs/local-postgres-setup)? We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
+
+Depending on how familiar you are with Redwood's core concepts and technologies, you may find it difficult to just go off and start building an app yourself. Even though we just said it, we think it's already worth repeating: this stuff is hard! Each one of these concepts and technologies is its own universe. But we think that, by unifying them end-to-end in a context that just works, Redwood makes each one of them (and what they can do together) more approachable than ever.
+
+So if you're not familiar with the core concepts and technologies mentioned in [Prerequisites](https://redwoodjs.com/tutorial/prerequisites), now is a good time to check them out (reprinted here for convenience):
+
+- [React](https://reactjs.org/)
+- [GraphQL](https://graphql.org/)
+- [Apollo](https://www.apollographql.com/docs/tutorial/introduction/)
+- [Prisma](https://www.prisma.io/)
+- [The Jamstack](https://jamstack.org/)
 
 ### Roadmap
 
