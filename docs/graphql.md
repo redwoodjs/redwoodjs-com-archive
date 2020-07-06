@@ -114,29 +114,54 @@ import { context } from '@redwoodjs/api
 
 [todo]
 
-```javascript
-const users = ...
+To create a resolver for a field on a type, in your service, export an object with the same name as your type that has a property with the same name as your field:
 
-const User = ...
+```javascript
+// api/src/services/person/person.js
+
+export const Person = {
+    age: (_args, { root }) {
+      return new Date().getFullYear() - root.birthDate.getFullYear();
+    },
+}
 ```
 
-https://community.redwoodjs.com/t/how-to-create-field-resolver/195/7
+Source: https://community.redwoodjs.com/t/how-to-create-field-resolver/195/7
 
 <!-- TODO -->
 <!-- If services use any of the resolver args, then they can't be used inside other services? -->
 <!-- But then again, the way they're called w/ resolver args, it's "what a service would expect"... -->
 
-## Redwood's Base Schema
+## Redwood's Root Schema
 
 [todo]
 
-Did you know you `redwood` is a valid query?
+[Redwood's root schema](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/makeMergedSchema/rootSchema.ts#L14-L29).
+
+Did you know you `redwood` is a valid query? Try it in GraphiQL (`yarn rw dev api` and make your way to localhost:8911/graphql)
+
+```javascript
+query {
+  redwood {
+    version
+    currentUser
+  }
+}
+```
+
+The root schema is where currentUser is defined. Here is [how it's resolved](https://github.com/redwoodjs/redwood/blob/34a6444432b409774d54be17789a7109add9709a/packages/api/src/makeMergedSchema/rootSchema.ts#L40-L42):
+
+```javascript
+currentUser: (_args: any, context: Context) => {
+  return context?.currentUser
+}
+```
 
 ## Why Doesn't Redwood Use Something Like Nexus?
 
 [todo]
 
-We think its important for you to own your schema.
+[Tom's response in the forum](https://community.redwoodjs.com/t/anyone-playing-around-with-nexus-js/360/5): We started with Nexus, but ended up pulling it out because we felt like it was too much of an abstraction over the SDL. It’s so nice being able to just read the raw SDL to see what the GraphQL API is.
 
 <!-- TODO -->
 <!-- This https://community.redwoodjs.com/t/how-to-add-resolvetype-resolver-for-interfaces/432/7 -->
