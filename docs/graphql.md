@@ -1,4 +1,4 @@
-# GraphQL According to Redwood.
+# GraphQL According to Redwood
 
 [todo]
 
