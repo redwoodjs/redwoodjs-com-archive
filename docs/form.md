@@ -9,6 +9,7 @@ Redwood currently provides the following form components:
 * `<Form>` surrounds all form elements and provides contexts for errors and form submission
 * `<FormError>` displays an error message, typically at the top of your form, containing error messages from the server
 * `<Label>` is used in place of the HTML `<label>` tag and can respond to errors with different styling
+* `<SelectField>` is used in place of the HTML `<select>` tag and responds to errors with different styling
 * `<TextAreaField>` is used in place of the HTML `<textarea>` tag and can accept validation options and be styled differently in the presence of an error
  The default validation for `required` is `false` for this field, To make it required, please pass the prop `validation={{ required: true }}` for all the `<RadioField>`.
 * `<FieldError>` will display error messages from form validation and server errors
