@@ -154,10 +154,40 @@ To effectively test the web side, you should be familiar with [Jest](https://jes
 
 ### Mocking API Calls with Mock Service Worker
 
+<!-- This mostly for testing cells (right?) -->
+
 [todo]
 
-We abstract away the call to server... 
-<!-- Source: https://github.com/redwoodjs/redwood/pull/687#issuecomment-643205375 -->
+We use [Mock Service Worker](https://mswjs.io/) (MSW) to mock api calls. Mock Service Worker is unique in that it intercepts requests on the network level instead of on the application level.
+
+> This is also how storybook works too...
+
+<!-- TODO -->
+<!-- Do we have any guidelines on storing mocks in a... -->
+
+One abstraction Redwood provides when using MSW is, to add a [runtime request handler](https://mswjs.io/docs/api/setup-server/use) (a handler added after server setup), you don't have to call `server.use`&mdash;Redwood's `rest` and `graphql` functions are already wrapped in it:
+
+<!-- Server use https://mswjs.io/docs/api/setup-server/use -->
+
+<!-- Unless you set the handlers up front, which you most likely won't be doing/isn't the intended user-flow, you'll be adding "runtime" handlers. -->
+
+```javascript
+// https://github.com/redwoodjs/redwood/blob/main/packages/testing/src/index.ts#L17-L20
+
+export const graphql: GraphQLMock = {
+  query: (...args) => server.use(originalGraphql.query(...args)),
+  mutation: (...args) => server.use(originalGraphql.mutation(...args)),
+}
+
+export const rest: RestMock = {
+  get: (...args) => server.use(originalRest.get(...args)),
+  post: (...args) => server.use(originalRest.post(...args)),
+  delete: (...args) => server.use(originalRest.delete(...args)),
+  put: (...args) => server.use(originalRest.put(...args)),
+  patch: (...args) => server.use(originalRest.patch(...args)),
+  options: (...args) => server.use(originalRest.options(...args)),
+}
+```
 
 <!-- TODO -->
 <!-- ## Customizing Jest -->
