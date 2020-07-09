@@ -963,7 +963,7 @@ Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever va
 
 Cool, cool, cool. Now we need to construct a link that has the ID of a post in it:
 
-```javascript
+```html
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
