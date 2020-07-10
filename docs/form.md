@@ -1,6 +1,6 @@
 # Form
 
-Redwood provides several helpers to make your life easier when working with forms. It is a simple wrapper around [react-hook-form](https://react-hook-form.com/) that makes it even easier to use in many cases. If Redwood's form helpers aren't flexible enough for you, you can always use `react-hook-form` directly, or use any other [form builder](https://github.com/jaredpalmer/formik) that works with React.
+Redwood provides several helpers to make your life easier when working with forms. All of Redwood's form helpers are simple wrappers around [react-hook-form](https://react-hook-form.com/) that makes it even easier to use in many cases. If Redwood's form helpers aren't flexible enough for you, you can always use `react-hook-form` directly, or use any other [form builder](https://github.com/jaredpalmer/formik) that works with React.
 
 > WARNING: This software is in alpha and should not be considered suitable for production use. In the "make it work; make it right; make it fast" paradigm, RF is in the later stages of the "make it work" phase.
 
@@ -38,13 +38,15 @@ Redwood currently provides the following form components:
     * `<UrlField>`
     * `<WeekField>`
 
-Some fields share options:
+Some fields also share options:
 
 `<Label>`, `<TextAreaField>` and all InputFields take similar options for styling in the presence of an error.
 
 The `<TextAreaField>` and all InputFields accept the same options for validation.
 
 `<FieldError>` only takes styling for errors and is only rendered if there is an error on the associated field.
+
+Certain `<TypeField>`s have type coercion built-in, like `<NumberField>`, but you can always override the coercion or, if it's not built-in, set it manually via the `dataType` attribute. See [dataType](#datatype).
 
 A typical React component using these helpers would look something like this Contact Us page form:
 
@@ -264,6 +266,7 @@ The `style` and `className` that should be passed to the HTML `<label>` tag that
 ## InputFields
 
 Inputs are the backbone of most forms. `<TextField>` renders an HTML `<input type="text">` field, but is registered with `react-hook-form` to provide some validation and error handling.
+Note that certain InputFields handle type coercion automatically, but you can always override the coercion or, if it's not built-in, set it manually via the `dataType` attribute (see [dataType](#datatype)).
 
 ```html
 <TextField name="name" className="input" />
@@ -304,6 +307,12 @@ Options that define how this field should be validated. The options are passed t
   }}
 />
 ```
+
+### dataType
+
+If the type to coerce the input to can’t be inferred automatically, like making a `Float` from a `<TextField>` for example, you can explicitly set the InputField's `dataType` attribute to `Boolean`, `Float`, `Int`, or `Json`. 
+
+In the future, we'll let you pass a function to this attribute so you can do the coercion however you want.
 
 ## `<TextAreaField>`
 
