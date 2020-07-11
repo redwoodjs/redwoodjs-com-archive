@@ -2532,6 +2532,7 @@ const Routes = () => {
       <Route path="/contact" page={ContactPage} name="contact" />
       <Route path="/about" page={AboutPage} name="about" />
       <Route path="/" page={HomePage} name="home" />
+      <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
       <Private unauthenticated="home">
         <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
         <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
