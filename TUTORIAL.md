@@ -174,7 +174,7 @@ The command above does three things:
 
 - Creates `web/src/pages/HomePage/HomePage.js`. Redwood takes the name you specified as the first argument, capitalizes it, and appends "Page" to construct your new page component.
 - Creates a test file to go along with this new page component at `web/src/pages/HomePage/HomePage.test.js` with a single, passing test. You _do_ write tests for your components, _don't you??_
-- Creates a Storybook file for this component at `web/src/pages/HomePage/HomePage.stories.js`. Storybook is a wonderful tool for efficiently developing and organizing UI components. If you'd like to learn more, see this [Redwood Forum topic](https://community.redwoodjs.com/t/how-to-use-the-new-storybook-integration-in-v0-13-0/873) to start using it on your development process.
+- Creates a Storybook file for this component at `web/src/pages/HomePage/HomePage.stories.js`. Storybook is a wonderful tool for efficiently developing and organizing UI components. If you'd like to learn more, see this [Redwood Forum topic](https://community.redwoodjs.com/t/how-to-use-the-new-storybook-integration-in-v0-13-0/873) to start using it in your development process.
 - Adds a `<Route>` in `web/src/Routes.js` that maps the path `/` to the new _HomePage_ page.
 
 > If you look in Routes you'll notice that we're referencing a component, `HomePage`, that isn't imported anywhere. Redwood automatically imports all pages in the Routes file since we're going to need to reference them all anyway. It saves a potentially huge `import` declaration from cluttering up the routes file.
