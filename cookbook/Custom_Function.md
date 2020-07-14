@@ -48,7 +48,7 @@ export const handler = async (event, context) => {
   return {
     statusCode: 200,
     headers: { 'Content-Type': 'application/json ' },
-    body: { time: new Date() },
+    body: JSON.stringify({ time: new Date() }),
   }
 }
 ```
@@ -73,7 +73,7 @@ export const handler = async (event, context) => {
   return {
     statusCode: 200,
     headers: { 'Content-Type': 'application/json ' },
-    body: { time: new Date() },
+    body: JSON.stringify({ time: new Date() }),
   }
 }
 ```
@@ -118,7 +118,7 @@ export const handler = async (event, context) => {
   return {
     statusCode: 200,
     headers: { 'Content-Type': 'application/json ' },
-    body: { time: new Date() },
+    body: JSON.stringify({ time: new Date() }),
   }
 }
 ```
@@ -166,7 +166,7 @@ export const handler = (event, context, callback) => {
   callback(null, {
     statusCode: 200,
     headers: { 'Content-Type': 'application/json ' },
-    body: { time: new Date() },
+    body: JSON.stringify({ time: new Date() }),
   })
 }
 ```
