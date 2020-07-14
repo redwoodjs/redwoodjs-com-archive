@@ -170,10 +170,6 @@ Let's give our users something to look at besides the Redwood welcome page. We'l
 
     yarn redwood generate page home /
 
-> ⚠️ **Windows Users:** You have to run `yarn redwood generate page home //` instead of the command above (notice the double slashes at the end). This is a known problem with Git for Windows.
->
-> We are tracking this issue [here](https://github.com/redwoodjs/redwood/issues/574). Apologies for the inconvenience!
-
 The command above does three things:
 
 - Creates `web/src/pages/HomePage/HomePage.js`. Redwood takes the name you specified as the first argument, capitalizes it, and appends "Page" to construct your new page component.
@@ -963,7 +959,7 @@ Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever va
 
 Cool, cool, cool. Now we need to construct a link that has the ID of a post in it:
 
-```javascript
+```html
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
@@ -2536,6 +2532,7 @@ const Routes = () => {
       <Route path="/contact" page={ContactPage} name="contact" />
       <Route path="/about" page={AboutPage} name="about" />
       <Route path="/" page={HomePage} name="home" />
+      <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
       <Private unauthenticated="home">
         <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
         <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
