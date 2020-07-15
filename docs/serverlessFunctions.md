@@ -16,6 +16,6 @@ supplied callback function to return a response:
 
 ```js
 export const handler = (event, context, callback) => {
-  return callback(null, { status: 200, body: 'Hello, world' })
+  return callback(null, { statusCode: 200, body: 'Hello, world' })
 }
 ```
