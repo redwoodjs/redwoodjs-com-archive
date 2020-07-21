@@ -5,10 +5,10 @@
 1. Storybook should be running, start it by running `yarn rw storybook`
 2. Have a Cell, Query, or Mutation that you would like to mock
 
-## Where to put mocked requests
+## Where to put mock-requests
 
-1. Mocked requests placed in a file ending with `.mock.js|ts` are automatically imported and become globally scoped, which means that they will be available in all of your stories.
-2. Mocked requests in a story will be locally scoped and will overwrite globally scoped mocks.
+1. Mock-requests placed in a file ending with `.mock.js|ts` are automatically imported and become globally scoped, which means that they will be available in all of your stories.
+2. Mock-requests in a story will be locally scoped and will overwrite globally scoped mocks.
 
 ## Mocking a Cell's Query
 
@@ -56,7 +56,7 @@ export const standard = {
 
 ### GraphQL request variables
 
-If you want to dynamically modify mocked data based on a queries variables the `standard` export can also be a function, and the first parameter will be an object containing the variables:
+If you want to dynamically modify mock-data based on a queries variables the `standard` export can also be a function, and the first parameter will be an object containing the variables:
 ```js{2,7}
 // UserProfileCell/UserProfileCell.mock.js
 export const standard = (variables) => {
@@ -107,7 +107,7 @@ mockGraphQLMutation('UpdateUserName', ({ name }) => {
 })
 ```
 
-## Mock requests that intentionally produce errors
+## Mock-requests that intentionally produce errors
 
 `mockGraphQLQuery` and `mockGraphQLMutation` have access to `ctx` which allows you to modify the mock-response:
 
