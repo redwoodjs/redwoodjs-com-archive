@@ -216,7 +216,6 @@ This one has the same sentiment as [CI/CD (Framework-side)](#cicd-framework-side
 ## TypeScript
 
 <span id="status-3" class="font-mono">Making it happen</span>
-<span id="status-3" class="font-mono">There's a plan</span>
 
 We want TypeScript to be what Redwood apps default to. There's a lot to do, both on the Framework-side and the app-side, but its happening:
 
