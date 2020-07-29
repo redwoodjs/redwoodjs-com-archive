@@ -98,7 +98,7 @@ This loops through each existing `User` and then creates a new `Preference` reco
 > 1. Create the new table (db migration) and then move the data over (data migration)
 > 2. Remove the unneeded columns from `User`
 >
-> When going to production you would need to run this as two separate deploys to ensure no data is lost.
+> When going to production, you would need to run this as two separate deploys to ensure no data is lost.
 >
 > The reason is that all DB migrations are run and *then* all data migrations. So if you had two DB migrations (one to create `Preference` and one to drop the uneeded columns from `User`) they would both run before the Data Migration, so the columns containing the preferences are gone before the data migration gets a chance to copy them over!
 >
