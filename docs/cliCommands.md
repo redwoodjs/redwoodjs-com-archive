@@ -108,7 +108,7 @@ yarn rw dataMigrate install
 
 Executes outstanding data migrations against the database. Compares the list of files in `api/prisma/dataMigrations` to the records in the `DataMigration` table in the database and executes any files not present.
 
-If an error occurs during script execution any remaining scripts and skipped and console output will let you know the error and how many subsequent scripts were skipped.
+If an error occurs during script execution, any remaining scripts are skipped and console output will let you know the error and how many subsequent scripts were skipped.
 
 ```terminal
 yarn rw dataMigrate up
