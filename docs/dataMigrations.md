@@ -7,7 +7,7 @@ There are two kinds of changes you can make to your database:
 
 In Redwood, [Primsa Migrate](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-migrate) takes care of codifying changes to your database *structure*—creating a snapshot of changes to your database that can be reliably repeated in the future to end up in some known state.
 
-To track changes to the *content* of the database, Redwood includes a feature we call **Data Migration**. As your app evolves and you move data around you need a way to consistently declare how that data should move.
+To track changes to the *content* of the database, Redwood includes a feature we call **Data Migration**. As your app evolves and you move data around, you need a way to consistently declare how that data should move.
 
 Imagine a `User` model that contains several columns for user preferences. Over time you may end up with more and more preferences to the point that you have more preference-related columns in the table that you do data unique to the user! You decide that the app should have a new model, `Preference`, to keep track of them all. You'll use Prisma Migrate will create the new `Preference` model, but how do you copy the preference data to the new table? Data migrations to the rescue!
 
