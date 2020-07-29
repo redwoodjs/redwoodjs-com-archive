@@ -9,7 +9,7 @@ In Redwood, [Primsa Migrate](https://www.prisma.io/docs/reference/tools-and-inte
 
 To track changes to your database *content*, Redwood includes a feature we call **Data Migration**. As your app evolves and you move data around, you need a way to consistently declare how that data should move.
 
-Imagine a `User` model that contains several columns for user preferences. Over time, you may end up with more and more preferences to the point that you have more preference-related columns in the table than you do data unique to the user! You decide that the app should have a new model, `Preference`, to keep track of them all. You'll use Prisma Migrate to create the new `Preference` model, but how do you copy the preference data to the new table? Data migrations to the rescue!
+Imagine a `User` model that contains several columns for user preferences. Over time, you may end up with more and more preferences to the point that you have more preference-related columns in the table than you do data unique to the user! This is a common occurrence as applications grow. You decide that the app should have a new model, `Preference`, to keep track of them all (and `Preference` will have a foreign key `userId` to reference it back to its `User`). You'll use Prisma Migrate to create the new `Preference` model, but how do you copy the preference data to the new table? Data migrations to the rescue!
 
 ## Installing
 
