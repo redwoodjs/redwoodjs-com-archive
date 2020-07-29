@@ -246,9 +246,10 @@ yarn redwood dev [side..]
 
 `yarn rw dev api` starts the Redwood dev server and `yarn rw dev web` starts the Webpack dev server with Redwood's config.
 
-| Argument | Description                                                                             |
-| :------- | :-------------------------------------------------------------------------------------- |
-| `side`   | Which dev server(s) to start. Choices are  `api` and `web`. Defaults to `api` and `web` |
+| Argument  | Description                                                                             |
+| :-------- | :-------------------------------------------------------------------------------------- |
+| `side`    | Which dev server(s) to start. Choices are  `api` and `web`. Defaults to `api` and `web` |
+| `--forward, --fwd` | String of one or more [Webpack DevServer](https://webpack.js.org/configuration/dev-server/) config options. See example usage below. |
 
 **Usage**
 
@@ -265,6 +266,12 @@ $ /redwood-app/node_modules/.bin/dev-server
 15:04:51 api | Now serving
 15:04:51 api | 
 15:04:51 api | ► http://localhost:8911/graphql/
+```
+
+Using `--forward` (alias `--fwd`), you can pass one or more Webpack DevServer config options. The following will run the dev server, set the port to `1234`, and disable automatic browser opening.
+
+```plaintext{10}
+~/redwood-app$ yarn rw dev --fwd="--port=1234 --open=false"
 ```
 
 ## destroy (alias d)
