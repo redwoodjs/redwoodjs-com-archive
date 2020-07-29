@@ -62,7 +62,7 @@ export default async ({ db }) => {
 
 > **Why such a long name?**
 >
-> So that if mutliple developers are creating data migrations the chances of them creating one with the exact same filename is essentially zero, and they will all run in a predictable order—oldest to newest.
+> So that if mutliple developers are creating data migrations, the chances of them creating one with the exact same filename is essentially zero, and they will all run in a predictable order—oldest to newest.
 
 Now it's up to you to define your data migration. In our user/preference example it may look something like:
 
