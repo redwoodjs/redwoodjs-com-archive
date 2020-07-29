@@ -16,7 +16,7 @@ In Redwood, Jest tests are first-class citizens, built into the CLI, templates w
 
 ## Generators
 
-If you use generators, you're kind of testing your app already. Most of generators create test files:
+If you use generators, you're kind of testing your app already. Most generators create test files:
 
 ```plaintext{6}
 ~/redwood-app$ yarn rw g page home /
@@ -35,15 +35,28 @@ On the web side, the tests that come with the [component](https://github.com/red
 and [layout](https://github.com/redwoodjs/redwood/blob/main/packages/cli/src/commands/generate/layout/templates/test.js.template) generators just check to see that they render successfully.
 The test that comes with the [cell](https://github.com/redwoodjs/redwood/blob/main/packages/cli/src/commands/generate/cell/templates/test.js.template) generator is a little more complicated since a Cell is really four components in one.
 
-> **NOTE:** The test file that the cell generator creates currently doesn't pass. We're thinking about what this file should look like. If you have ideas, [tell us](https://github.com/redwoodjs/redwood/issues/629)!
-
-On the api side, the test that comes with the [service](https://github.com/redwoodjs/redwood/blob/main/packages/cli/src/commands/generate/service/templates/test.ts.template) generator checks to see that `true` equals to `true`. As you can imagine, this one is very much a work in progress. But unlike the test that comes with the cell generator, it passes.
-
 As with all generators, the idea here remains the same&mdash;they're to get you going. The hard implementation details are up to you. But redwood makes it easy for you to get started and keep going.
 
-## Running tests
+## Running Tests
 
-You can run all of a Redwood app's tests with `yarn rw test`. To only run the tests for a specific side, just specify the side (e.g. `yarn rw test web`). See also [CLI commands](https://redwoodjs.com/reference/command-line-interface#test).
+You can run all of a Redwood app's tests with `yarn rw test`. To only run the tests for a specific side, just specify the side: 
+
+```
+yarn rw test web
+```
+
+<!-- options -->
+Running this command (with or without the side) puts you into watch mode, a sort of test REPL (or at least interactive prompt) that makes it easy to rerun tests:
+
+![watchMode](https://user-images.githubusercontent.com/32992335/88853616-d533b980-d1a4-11ea-824d-547f23c3bc39.png)
+
+The list under "Watch Usage" enumerates all your options. For example, pressing "Enter" runs all your tests again.
+
+> In CI, `yarn rw test` runs your tests only once, so you don't have to worry about watch-mode hangups or anything.
+
+<!-- @todo what to do w/ coverage? outputs a directory at the base. this shouldn't be checked in right? Then we have to update our .gitignore -->
+
+For full coverage of all the options, see [CLI commands](https://redwoodjs.com/reference/command-line-interface#test).
 
 ## api
 
@@ -152,24 +165,55 @@ To effectively test the web side, you should be familiar with [Jest](https://jes
 <!-- TODO -->
 <!-- More "tables of imports..." -->
 
-### Mocking API Calls with Mock Service Worker
+<!-- TODO -->
+<!-- ## Customizing Jest -->
+<!-- Source: https://github.com/redwoodjs/redwood/issues/564 -->
 
-<!-- This mostly for testing cells (right?) -->
+<!-- You can customize Jest by importing Redwood's config from '@redwoodjs/core' and merging it with your own. See [Configuring Jest](https://jestjs.io/docs/en/configuration.html). -->
 
-[todo]
+<!-- TODO -->
+<!-- e2e test were attempted -->
+<!-- Source: https://github.com/redwoodjs/redwood/pull/731 -->
+
+<!-- TODO -->
+<!-- Mocking media/assets -->
+
+<!-- Source: https://github.com/redwoodjs/redwood/issues/265#issuecomment-633942902 -->
+<!-- Source: https://github.com/redwoodjs/redwood/pull/521 -->
+
+## Configuring Jest
+
+You can configure Jest per side using a `jest.config.js` file. Put this file in the base directory of the side you're configuring (e.g. `web/jest.config.js` for web, `api/jest.config.js` for api). 
+Redwood apps should come with two `jest.config.js` files&mdash;one for web and one for api&mdash;by default.
+
+> If you're missing them, make sure you've upgraded to the latest version. If that doesn't work, copy them from the create-redwood-app repo; here are links to [web](https://github.com/redwoodjs/create-redwood-app/blob/main/web/jest.config.js) and [api](https://github.com/redwoodjs/create-redwood-app/blob/main/api/jest.config.js).
+
+The files come with an example of configuring Jest by setting the [display name](https://jestjs.io/docs/en/configuration.html#displayname-string-object): 
+
+```js{4}
+const { getConfig } = require('@redwoodjs/core')
+
+const config = getConfig({ type: 'jest', target: 'browser' })
+config.displayName.name = 'web'
+
+module.exports = config
+```
+
+Which you'll see next to the status when you run the tests:
+
+![displayName](https://user-images.githubusercontent.com/32992335/88849379-a1559580-d19e-11ea-8bcc-64758806059d.png)
+
+Besides display name, you can set any of the other Jest config options here as well. See the [Jest's docs](https://jestjs.io/docs/en/configuration.html) for all your options.
+
+The Redwood config imported at the top already sets many of them. You can see the config in full [here](https://github.com/redwoodjs/redwood/blob/main/packages/core/src/configs/browser/jest.createConfig.ts). Note that Redwood requires you import this config&mdash;it won't work if you don't.
+
+<!-- ### Mocking API Calls with Mock Service Worker
 
 We use [Mock Service Worker](https://mswjs.io/) (MSW) to mock api calls. Mock Service Worker is unique in that it intercepts requests on the network level instead of on the application level.
 
 > This is also how storybook works too...
 
-<!-- TODO -->
-<!-- Do we have any guidelines on storing mocks in a... -->
-
 One abstraction Redwood provides when using MSW is, to add a [runtime request handler](https://mswjs.io/docs/api/setup-server/use) (a handler added after server setup), you don't have to call `server.use`&mdash;Redwood's `rest` and `graphql` functions are already wrapped in it:
-
-<!-- Server use https://mswjs.io/docs/api/setup-server/use -->
-
-<!-- Unless you set the handlers up front, which you most likely won't be doing/isn't the intended user-flow, you'll be adding "runtime" handlers. -->
 
 ```javascript
 // https://github.com/redwoodjs/redwood/blob/main/packages/testing/src/index.ts#L17-L20
@@ -222,20 +266,4 @@ describe('BlogPostPage', () => {
 })
 ```
 
-`graphql` exposes `query` and `mutation`; both take the name of your opertaion and then the resolver is basically defined... 
-
-<!-- TODO -->
-<!-- ## Customizing Jest -->
-<!-- Source: https://github.com/redwoodjs/redwood/issues/564 -->
-
-<!-- You can customize Jest by importing Redwood's config from '@redwoodjs/core' and merging it with your own. See [Configuring Jest](https://jestjs.io/docs/en/configuration.html). -->
-
-<!-- TODO -->
-<!-- e2e test were attempted -->
-<!-- Source: https://github.com/redwoodjs/redwood/pull/731 -->
-
-<!-- TODO -->
-<!-- Mocking media/assets -->
-
-<!-- Source: https://github.com/redwoodjs/redwood/issues/265#issuecomment-633942902 -->
-<!-- Source: https://github.com/redwoodjs/redwood/pull/521 -->
+`graphql` exposes `query` and `mutation`; both take the name of your opertaion and then the resolver is basically defined...  -->
