@@ -1,5 +1,7 @@
 # Data Migrations
 
+> Data Migrations are available as of RedwoodJS v0.15
+
 There are two kinds of changes you can make to your database:
 
 * Changes to structure
