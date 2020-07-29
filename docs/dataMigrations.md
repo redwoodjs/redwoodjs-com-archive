@@ -112,7 +112,7 @@ When you're ready, you can execute your data migration with the `up` command:
 
 This goes through each file in `api/prisma/dataMigrations`, compares it against the list of migrations that have already run according to the `DataMigration` table in the database, and executes any that aren't present in that table, sorted oldest to newest based on the timestamp in the filename.
 
-Any logging statements like `console.info()` you include in your data migration script will be output to the console as the script is running.
+Any logging statements (like `console.info()`) you include in your data migration script will be output to the console as the script is running.
 
 If the script encounters an error the process will abort, skipping any following data migrations.
 
