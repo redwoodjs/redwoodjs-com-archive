@@ -114,7 +114,7 @@ This goes through each file in `api/prisma/dataMigrations`, compares it against 
 
 Any logging statements (like `console.info()`) you include in your data migration script will be output to the console as the script is running.
 
-If the script encounters an error the process will abort, skipping any following data migrations.
+If the script encounters an error, the process will abort, skipping any following data migrations.
 
 > The example data migration above didn't include this for brevity, but you should always run your data migration [inside of a transaction](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/transactions#bulk-operations-experimental) so that if any errors occur during execution the database will not be left in an inconsistent state where only *some* of your changes were performed.
 
