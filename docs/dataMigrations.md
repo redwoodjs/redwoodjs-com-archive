@@ -106,7 +106,7 @@ This loops through each existing `User` and creates a new `Preference` record co
 
 ## Running a Data Migration
 
-When you're ready, you can execute your data migration with the `up` command:
+When you're ready, you can execute your data migration with `dataMigrate`'s `up` command:
 
     yarn rw dataMigrate up
 
