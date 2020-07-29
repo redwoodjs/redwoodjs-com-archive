@@ -64,7 +64,7 @@ export default async ({ db }) => {
 >
 > So that if mutliple developers are creating data migrations, the chances of them creating one with the exact same filename is essentially zero, and they will all run in a predictable order—oldest to newest.
 
-Now it's up to you to define your data migration. In our user/preference example it may look something like:
+Now it's up to you to define your data migration. In our user/preference example, it may look something like:
 
 ```javascript
 // api/prisma/dataMigrations/20200721123456-copy-preferences.js
