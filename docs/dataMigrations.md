@@ -38,7 +38,7 @@ The install script also ran `yarn rw db save` automatically so you have a DB mig
 
     yarn rw db up
 
-## Creating a new data migration
+## Creating a New Data Migration
 
 Data migrations are just plain Typescript or Javascript files which export a single anonymous function that is given a single argument—an instance of `PrismaClient` called `db` that you can use to access your database. The files have a simple naming convention:
 
