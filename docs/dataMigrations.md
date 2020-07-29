@@ -91,7 +91,7 @@ export default async ({ db }) => {
 }
 ```
 
-This loops through each existing `User` and then creates a new `Preference` record containing each of the preference-related fields from `User`.
+This loops through each existing `User` and creates a new `Preference` record containing each of the preference-related fields from `User`.
 
 > Note that in a case like this where you're copying data to a new table, you would probably delete the columns from `User` afterwards. This needs to be a two step process!
 >
