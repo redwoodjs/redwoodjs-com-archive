@@ -118,7 +118,7 @@ If the script encounters an error, the process will abort, skipping any followin
 
 > The example data migration above didn't include this for brevity, but you should always run your data migration [inside a transaction](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/transactions#bulk-operations-experimental) so that if any errors occur during execution the database will not be left in an inconsistent state where only *some* of your changes were performed.
 
-## Long Term Maintainability
+## Long-term Maintainability
 
 Ideally you can run all database migrations and data migrations from scratch (like when a new developer joins the team) and have them execute correctly. Unfortunately you don't get that ideal scenario by default.
 
