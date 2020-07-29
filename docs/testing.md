@@ -158,6 +158,10 @@ test('HomePage renders successfully', () => {
 
 To effectively test the web side, you should be familiar with [Jest](https://jestjs.io/docs/en/getting-started), [React Testing Library](https://testing-library.com/docs/react-testing-library/intro), and [jest-dom](https://testing-library.com/docs/ecosystem-jest-dom). Kent C. Dodd's [blog](https://kentcdodds.com/blog/?q=testing) is also an excellent resource.
 
+### Mocking GraphQL Requests
+
+To test things like Cells, you'll need to mock GraphQL requests. Redwood uses Mock Serice Worker to provide an elegant mocking solution not only for testing, but also for storybook. See Mocking GraphQL Requests.
+
 <!-- TODO -->
 <!-- Handled later in routes? -->
 <!-- Why do we have a custom render? -->
