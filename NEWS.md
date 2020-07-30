@@ -175,3 +175,15 @@
 ### Tom gives a tour of Redwood for Prisma Day by adding a feature to a Todo app.
 
 #### Video
+
+---
+
+![Redwood Newsletter](https://user-images.githubusercontent.com/2951/85804346-3c6dd200-b6fe-11ea-8a26-6a989444452c.png)
+
+# [Issue 2](https://mailchi.mp/redwoodjs/all-the-redwoodjs-news-fit-to-print-issue-2)
+
+## July 29 2020
+
+### All the RedwoodJS News that’s Fit to Print: Storybook Integration, CLI Diagnostics, Apps built with Redwood, and even more new tools and snippets.
+
+#### Newsletter
