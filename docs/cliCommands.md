@@ -80,9 +80,45 @@ Files are output to each side's `dist` directory:
     └── src
 ```
 
+## dataMigrate
+
+Data migration tools.
+
+```
+yarn rw dataMigrate <command>
+```
+
+<br/>
+
+| Command            | Description                                                                                               |
+| :----------------- | :-------------------------------------------------------------------------------------------------------- |
+| `install` | Appends `DataMigration` model to `schema.prisma`, creates `api/prisma/dataMigrations` directory
+| `up`      | Executes oustanding data migrations
+
+### install
+
+* Appends a `DataMigration` model to `schema.prisma` for tracking which data migrations have already run.
+* Creates a DB migration using `yarn rw db save 'create data migrations`.
+* Creates `api/prisma/dataMigrations` directory to contain data migration scripts
+
+```terminal
+yarn rw dataMigrate install
+```
+
+### up
+
+Executes outstanding data migrations against the database. Compares the list of files in `api/prisma/dataMigrations` to the records in the `DataMigration` table in the database and executes any files not present.
+
+If an error occurs during script execution, any remaining scripts are skipped and console output will let you know the error and how many subsequent scripts were skipped.
+
+```terminal
+yarn rw dataMigrate up
+```
+
+
 ## db
 
-Database tools. 
+Database tools.
 
 ```
 yarn rw db <command>
@@ -101,7 +137,7 @@ yarn rw db <command>
 
 ### down
 
-Migrate your database down. 
+Migrate your database down.
 
 > **WARNING:** Prisma's migration functionality is currently experimental.
 
@@ -135,7 +171,7 @@ we could get to `20200518160457-create-users` by running:
 
 ### generate
 
-Generate the Prisma client. 
+Generate the Prisma client.
 
 ```terminal
 yarn rw db generate
@@ -146,7 +182,7 @@ This means that `yarn rw db generate` needs to be run after every change to your
 
 ### introspect
 
-Introspect your database and generate models in `./api/prisma/schema.prisma`, overwriting existing models. 
+Introspect your database and generate models in `./api/prisma/schema.prisma`, overwriting existing models.
 
 
 ```terminal
@@ -155,7 +191,7 @@ yarn rw db introspect
 
 ### save
 
-Create a new migration. 
+Create a new migration.
 
 > **WARNING:** Prisma's migration functionality is currently experimental.
 
@@ -163,7 +199,7 @@ Create a new migration.
 yarn rw db save [name..]
 ```
 
-A migration defines the steps necessary to update your current schema. 
+A migration defines the steps necessary to update your current schema.
 
 | Argument | Description           |
 | :------- | :-------------------- |
@@ -201,7 +237,7 @@ Runs `seed.js` in `./api/prisma`. `seed.js` instantiates the Prisma client and p
 
 ### up
 
-Generate the Prisma client and apply migrations. 
+Generate the Prisma client and apply migrations.
 
 > **WARNING:** Prisma's migration functionality is currently experimental.
 
@@ -261,9 +297,9 @@ $ /redwood-app/node_modules/.bin/rw dev api
 $ /redwood-app/node_modules/.bin/dev-server
 15:04:51 api | Listening on http://localhost:8911
 15:04:51 api | Watching /home/dominic/projects/redwood/redwood-app/api
-15:04:51 api | 
+15:04:51 api |
 15:04:51 api | Now serving
-15:04:51 api | 
+15:04:51 api |
 15:04:51 api | ► http://localhost:8911/graphql/
 ```
 
@@ -300,19 +336,20 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 
 | Command              | Description                                                                                           |
 | :------------------- | :---------------------------------------------------------------------------------------------------- |
-| `auth <provider>`    | Generate an auth configuration                                                                        |
-| `cell <name>`        | Generate a cell component                                                                             |
-| `component <name>`   | Generate a component component                                                                        |
-| `function <name>`    | Generate a Function                                                                                   |
-| `layout <name>`      | Generate a layout component                                                                           |
-| `page <name> [path]` | Generate a page component                                                                             |
-| `scaffold <model>`   | Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts `<path/model>` |
-| `sdl <model>`        | Generate a GraphQL schema and service object                                                          |
-| `service <name>`     | Generate a service component                                                                          |
+| `auth <provider>`      | Generate an auth configuration                                                                        |
+| `cell <name>`          | Generate a cell component                                                                             |
+| `component <name>`     | Generate a component component                                                                        |
+| `dataMigration <name>` | Generate a data migration component                                                                        |
+| `function <name>`      | Generate a Function                                                                                   |
+| `layout <name>`        | Generate a layout component                                                                           |
+| `page <name> [path]`   | Generate a page component                                                                             |
+| `scaffold <model>`     | Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts `<path/model>`   |
+| `sdl <model>`          | Generate a GraphQL schema and service object                                                          |
+| `service <name>`       | Generate a service component                                                                          |
 
 **Undoing a Generator with a Destroyer**
 
-Most generate commands (i.e., everything but `yarn rw g auth`) can be undone by their corresponding destroy command. For example, `yarn rw g cell` can be undone with `yarn rw d cell`.
+Most generate commands (i.e., everything but `yarn rw g auth` and `yarn rw g dataMigration`) can be undone by their corresponding destroy command. For example, `yarn rw g cell` can be undone with `yarn rw d cell`.
 
 ### auth
 
@@ -451,6 +488,24 @@ const User = () => {
 
 export default User
 ```
+
+### dataMigration
+
+Generate a data migration script.
+
+```
+yarn rw g dataMigration <name>
+```
+
+Creates a data migration script in `api/prisma/dataMigrations`.
+
+| Arguments & Options | Description              |
+| :------------------ | :----------------------- |
+| `name`              | Name of the data migration, prefixed with a timestamp at generation time    |
+
+**Usage**
+
+See the [Data Migration](/docs/data-migrations) docs.
 
 ### function
 
@@ -733,7 +788,7 @@ yarn rw g sdl <model>
 
 The sdl will inspect your `schema.prisma` and will do its best with relations. Schema to generators isn't one-to-one yet (and might never be).
 
-<!-- See limited genreator support for relations 
+<!-- See limited genreator support for relations
 https://community.redwoodjs.com/t/prisma-beta-2-and-rwjs-limited-generator-support-for-relations-with-workarounds/361 -->
 
 | Arguments & Options  | Description                   |
