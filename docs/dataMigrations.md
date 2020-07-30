@@ -7,7 +7,7 @@ There are two kinds of changes you can make to your database:
 * Changes to structure
 * Changes to content
 
-In Redwood, [Primsa Migrate](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-migrate) takes care of codifying changes to your database *structure* in code by creating a snapshot of changes to your database that can be reliably repeated to end up in some known state.
+In Redwood, [Prisma Migrate](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-migrate) takes care of codifying changes to your database *structure* in code by creating a snapshot of changes to your database that can be reliably repeated to end up in some known state.
 
 To track changes to your database *content*, Redwood includes a feature we call **Data Migration**. As your app evolves and you move data around, you need a way to consistently declare how that data should move.
 
