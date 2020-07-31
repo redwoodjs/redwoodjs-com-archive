@@ -2310,6 +2310,12 @@ Before we continue, make sure your app is fully committed and pushed to GitHub, 
 
 We'll need a database somewhere on the internet to store our data. We've been using SQLite locally, but that's a file-based store meant for single-user. SQLite isn't really suited for the kind of connection and concurrency requirements a production website will require. For this part of this tutorial, we will use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting. We just need to get a database available to the outside world so it can be accessed by our app.
 
+First we'll let Prisma know that we intend to use Postgres in addition to SQLite so it will build client libraries for both. Update the `provider` entry in `schema.prisma`:
+
+```javascript
+provider = ["sqlite", "postgresql"]
+```
+
 If you'd like to develop locally with Postgres, see the
 [Local Postgres Setup](/docs/local-postgres-setup) guide.
 
