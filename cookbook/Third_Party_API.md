@@ -97,7 +97,7 @@ The browser should have refreshed with a message about where to find our new hom
 ```javascript
 // web/src/pages/HomePage/HomePage.js
 
-import { Form, TextField, Submit } from '@redwoodjs/web'
+import { Form, TextField, Submit } from '@redwoodjs/forms'
 
 const HomePage = () => {
   const onSubmit = (data) => {
@@ -186,7 +186,7 @@ We're getting our data just fine but now we need to update the page with the wea
 // web/src/pages/HomePage/HomePage.js
 
 import { useState } from 'react'
-import { Form, TextField, Submit } from '@redwoodjs/web'
+import { Form, TextField, Submit } from '@redwoodjs/forms'
 
 const HomePage = () => {
   const [weather, setWeather] = useState()
@@ -228,7 +228,7 @@ Finally, let's output the actual weather data along with a couple of helper func
 // web/src/pages/HomePage/HomePage.js
 
 import { useState } from 'react'
-import { Form, TextField, Submit } from '@redwoodjs/web'
+import { Form, TextField, Submit } from '@redwoodjs/forms'
 
 const HomePage = () => {
   const [weather, setWeather] = useState()
@@ -437,7 +437,7 @@ Let's leave the display as-is for now to make sure this is working. We'll use th
 ```javascript
 // web/src/pages/HomePage/HomePage.js
 
-import { Form, TextField, Submit } from '@redwoodjs/web'
+import { Form, TextField, Submit } from '@redwoodjs/forms'
 import { useState } from 'react'
 import WeatherCell from 'src/components/WeatherCell'
 

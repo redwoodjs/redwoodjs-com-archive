@@ -1275,7 +1275,7 @@ For now we won't be talking to the database in our Contact form so we won't crea
 ```javascript{3,9}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form } from '@redwoodjs/web'
+import { Form } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1294,7 +1294,7 @@ Well that was anticlimactic. You can't even see it in the browser. Let's add a f
 ```javascript{3,10}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField } from '@redwoodjs/web'
+import { Form, TextField } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1317,7 +1317,7 @@ Something is showing! Still, pretty boring. How about adding a submit button?
 ```javascript{3,11}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField, Submit } from '@redwoodjs/web'
+import { Form, TextField, Submit } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1370,7 +1370,7 @@ Great! Let's turn this into a more useful form by adding a couple fields. We'll 
 ```javascript{3,15,16}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField, TextAreaField, Submit } from '@redwoodjs/web'
+import { Form, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1492,8 +1492,8 @@ import {
   TextField,
   TextAreaField,
   Submit,
-  FieldError,
-} from '@redwoodjs/web'
+  FieldError
+} from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1608,8 +1608,8 @@ import {
   TextAreaField,
   Submit,
   FieldError,
-  Label,
-} from '@redwoodjs/web'
+  Label
+} from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1878,9 +1878,9 @@ import {
   TextAreaField,
   Submit,
   FieldError,
-  Label,
-  useMutation
-} from '@redwoodjs/web'
+  Label
+} from '@redwoodjs/forms'
+import useMutation from '@redwoodjs/web'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -2078,10 +2078,9 @@ import {
   Submit,
   FieldError,
   Label,
-  useMutation,
-  FormError,
-} from '@redwoodjs/web'
-
+  FormError
+} from '@redwoodjs/forms'
+import useMutation from '@redwoodjs/web'
 // ...
 
 return (
@@ -2176,9 +2175,9 @@ import {
   Submit,
   FieldError,
   Label,
-  FormError,
-  useMutation,
-} from '@redwoodjs/web'
+  FormError
+} from '@redwoodjs/forms'
+import useMutation from '@redwoodjs/web'
 import { useForm } from 'react-hook-form'
 import BlogLayout from 'src/layouts/BlogLayout'
 

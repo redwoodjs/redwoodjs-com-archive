@@ -55,7 +55,7 @@ import {
   TextAreaField,
   FieldError,
   Submit,
-} from '@redwoodjs/web'
+} from '@redwoodjs/forms'
 
 const ContactPage = () => {
   const onSubmit = (data) => {

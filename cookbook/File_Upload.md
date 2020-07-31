@@ -94,7 +94,7 @@ import {
   Label,
   TextField,
   Submit,
-} from '@redwoodjs/web'
+} from '@redwoodjs/forms'
 import ReactFilestack from 'filestack-react'
 
 const CSS = {
@@ -233,7 +233,7 @@ import {
   Label,
   TextField,
   Submit,
-} from '@redwoodjs/web'
+} from '@redwoodjs/forms'
 import ReactFilestack from 'filestack-react'
 import { useState } from 'react'
 
