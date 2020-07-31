@@ -190,13 +190,13 @@ It's not pretty, but it's a start! Open the page in your editor, change some tex
 Open up `web/src/Routes.js` and take a look at the route that was created:
 
 ```html
-<Route path="/" page={HomePage} name="home" />
+<Route path="/" page="{HomePage}" name="home" />
 ```
 
 Try changing the route to something like:
 
 ```html
-<Route path="/hello" page={HomePage} name="home" />
+<Route path="/hello" page="{HomePage}" name="home" />
 ```
 
 Now you'll see the `NotFoundPage` page. As soon as you add your first route, you'll never see the Redwood splash screen again. From now on, when no route can be found that matches the requested URL, Redwood will render the `NotFoundPage`. Change your URL to http://localhost:8910/hello and you should see the homepage again.
@@ -273,10 +273,7 @@ const AboutPage = () => {
         </nav>
       </header>
       <main>
-        <p>
-          This site was created to demonstrate my mastery of Redwood: Look on my
-          works, ye mighty, and despair!
-        </p>
+        <p>This site was created to demonstrate my mastery of Redwood: Look on my works, ye mighty, and despair!</p>
         <Link to={routes.home()}>Return home</Link>
       </main>
     </>
@@ -357,10 +354,7 @@ import BlogLayout from 'src/layouts/BlogLayout'
 const AboutPage = () => {
   return (
     <BlogLayout>
-      <p>
-        This site was created to demonstrate my mastery of Redwood: Look on my
-        works, ye mighty, and despair!
-      </p>
+      <p>This site was created to demonstrate my mastery of Redwood: Look on my works, ye mighty, and despair!</p>
       <Link to={routes.home()}>Return home</Link>
     </BlogLayout>
   )
@@ -425,10 +419,7 @@ import BlogLayout from 'src/layouts/BlogLayout'
 const AboutPage = () => {
   return (
     <BlogLayout>
-      <p>
-        This site was created to demonstrate my mastery of Redwood: Look on my
-        works, ye mighty, and despair!
-      </p>
+      <p>This site was created to demonstrate my mastery of Redwood: Look on my works, ye mighty, and despair!</p>
     </BlogLayout>
   )
 }
@@ -617,9 +608,7 @@ export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => <div>No posts yet!</div>
 
-export const Failure = ({ error }) => (
-  <div>Error loading posts: {error.message}</div>
-)
+export const Failure = ({ error }) => <div>Error loading posts: {error.message}</div>
 
 export const Success = ({ posts }) => {
   return posts.map((post) => (
@@ -953,7 +942,7 @@ If you click the link on the title of the blog post you should see the boilerpla
 ```html
 // web/src/Routes.js
 
-<Route path="/blog-post/{id}" page={BlogPostPage} name="blogPost" />
+<Route path="/blog-post/{id}" page="{BlogPostPage}" name="blogPost" />
 ```
 
 Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever value is in this position in the path, let me reference it by the name inside the curly braces."
@@ -1057,7 +1046,7 @@ What if you could request the conversion right in the route's path? Well, guess 
 ```html
 // web/src/Routes.js
 
-<Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
+<Route path="/blog-post/{id:Int}" page="{BlogPostPage}" name="blogPost" />
 ```
 
 Voilà! Not only will this convert the `id` param to a number before passing it to your Page, it will prevent the route from matching unless the `id` path segment consists entirely of digits. If any non-digits are found, the router will keep trying other routes, eventually showing the `NotFoundPage` if no routes match.
@@ -1246,7 +1235,10 @@ Before we start, let's add a couple of CSS classes to make the default form layo
 ```css
 /* web/src/index.css */
 
-button, input, label, textarea {
+button,
+input,
+label,
+textarea {
   display: block;
   outline: none;
 }
@@ -1259,7 +1251,8 @@ label {
   color: red;
 }
 
-input.error, textarea.error {
+input.error,
+textarea.error {
   border: 1px solid red;
 }
 ```
@@ -1269,7 +1262,7 @@ For now we won't be talking to the database in our Contact form so we won't crea
 ```javascript{3,9}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form } from '@redwoodjs/web'
+import { Form } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1288,7 +1281,7 @@ Well that was anticlimactic. You can't even see it in the browser. Let's add a f
 ```javascript{3,10}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField } from '@redwoodjs/web'
+import { Form, TextField } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1311,7 +1304,7 @@ Something is showing! Still, pretty boring. How about adding a submit button?
 ```javascript{3,11}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField, Submit } from '@redwoodjs/web'
+import { Form, TextField, Submit } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1364,7 +1357,7 @@ Great! Let's turn this into a more useful form by adding a couple fields. We'll 
 ```javascript{3,15,16}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField, TextAreaField, Submit } from '@redwoodjs/web'
+import { Form, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1481,13 +1474,7 @@ Introducing `<FieldError>` (don't forget to include it in the `import` statement
 ```javascript{8,22,26,30}
 // web/src/pages/ContactPage/ContactPage.js
 
-import {
-  Form,
-  TextField,
-  TextAreaField,
-  Submit,
-  FieldError,
-} from '@redwoodjs/web'
+import { Form, TextField, TextAreaField, Submit, FieldError } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1560,27 +1547,15 @@ return (
   <BlogLayout>
     <Form onSubmit={onSubmit}>
       <label htmlFor="name">Name</label>
-      <TextField
-        name="name"
-        validation={{ required: true }}
-        errorClassName="error"
-      />
+      <TextField name="name" validation={{ required: true }} errorClassName="error" />
       <FieldError name="name" className="error" />
 
       <label htmlFor="email">Email</label>
-      <TextField
-        name="email"
-        validation={{ required: true }}
-        errorClassName="error"
-      />
+      <TextField name="email" validation={{ required: true }} errorClassName="error" />
       <FieldError name="email" className="error" />
 
       <label htmlFor="message">Message</label>
-      <TextAreaField
-        name="message"
-        validation={{ required: true }}
-        errorClassName="error"
-      />
+      <TextAreaField name="message" validation={{ required: true }} errorClassName="error" />
       <FieldError name="message" className="error" />
 
       <Submit>Save</Submit>
@@ -1596,14 +1571,7 @@ Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's
 ```javascript{9,21-23,31-33,41-43}
 // web/src/pages/ContactPage/ContactPage.js
 
-import {
-  Form,
-  TextField,
-  TextAreaField,
-  Submit,
-  FieldError,
-  Label,
-} from '@redwoodjs/web'
+import { Form, TextField, TextAreaField, Submit, FieldError, Label } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1617,31 +1585,19 @@ const ContactPage = () => {
         <Label name="name" errorClassName="error">
           Name
         </Label>
-        <TextField
-          name="name"
-          validation={{ required: true }}
-          errorClassName="error"
-        />
+        <TextField name="name" validation={{ required: true }} errorClassName="error" />
         <FieldError name="name" className="error" />
 
         <Label name="email" errorClassName="error">
           Email
         </Label>
-        <TextField
-          name="email"
-          validation={{ required: true }}
-          errorClassName="error"
-        />
+        <TextField name="email" validation={{ required: true }} errorClassName="error" />
         <FieldError name="email" className="error" />
 
         <Label name="message" errorClassName="error">
           Message
         </Label>
-        <TextAreaField
-          name="message"
-          validation={{ required: true }}
-          errorClassName="error"
-        />
+        <TextAreaField name="message" validation={{ required: true }} errorClassName="error" />
         <FieldError name="message" className="error" />
 
         <Submit>Save</Submit>
@@ -1662,36 +1618,15 @@ export default ContactPage
 We should make sure the email field actually contains an email:
 
 ```html{7-9}
-// web/src/pages/ContactPage/ContactPage.js
-
-<TextField
-  name="email"
-  validation={{
-    required: true,
-    pattern: {
-      value: /[^@]+@[^.]+\..+/,
-    },
-  }}
-  errorClassName="error"
-/>
+// web/src/pages/ContactPage/ContactPage.js <TextField name="email" validation={{ required: true, pattern: { value:
+/[^@]+@[^.]+\..+/, }, }} errorClassName="error" />
 ```
 
 That is definitely not the end-all-be-all for email address validation, but pretend it's bulletproof. Let's also change the message on the email validation to be a little more friendly:
 
 ```html{9}
-// web/src/pages/ContactPage/ContactPage.js
-
-<TextField
-  name="email"
-  validation={{
-    required: true,
-    pattern: {
-      value: /[^@]+@[^.]+\..+/,
-      message: 'Please enter a valid email address',
-    },
-  }}
-  errorClassName="error"
-/>
+// web/src/pages/ContactPage/ContactPage.js <TextField name="email" validation={{ required: true, pattern: { value:
+/[^@]+@[^.]+\..+/, message: 'Please enter a valid email address', }, }} errorClassName="error" />
 ```
 
 <img src="https://user-images.githubusercontent.com/300/80259139-bd92e500-8639-11ea-99d5-be278dc67afc.png" />
@@ -1703,9 +1638,7 @@ You may have noticed that trying to submit a form with validation errors outputs
 Finally, you know what would _really_ be nice: if the fields were validated as soon as the user leaves each one so they don't fill out the whole thing and submit just to see multiple errors appear. Let's do that:
 
 ```html
-// web/src/pages/ContactPage/ContactPage.js
-
-<Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
+// web/src/pages/ContactPage/ContactPage.js <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
 ```
 
 Well, what do you think? Was it worth the hype? A couple of new components and you've got forms that handle validation and wrap up submitted values in a nice data object, all for free.
@@ -2041,15 +1974,8 @@ We already capture any existing error in the `error` constant that we got from `
 To get a server error to fire, let's remove the email format validation so that the client-side error isn't shown:
 
 ```html
-// web/src/pages/ContactPage/ContactPage.js
-
-<TextField
-  name="email"
-  validation={{
-    required: true,
-  }}
-  errorClassName="error"
-/>
+// web/src/pages/ContactPage/ContactPage.js <TextField name="email" validation={{ required: true, }}
+errorClassName="error" />
 ```
 
 Now try filling out the form with an invalid email address:
@@ -2163,16 +2089,7 @@ const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
 Here's the final `ContactForm.js` page:
 
 ```javascript
-import {
-  Form,
-  TextField,
-  TextAreaField,
-  Submit,
-  FieldError,
-  Label,
-  FormError,
-  useMutation,
-} from '@redwoodjs/web'
+import { Form, TextField, TextAreaField, Submit, FieldError, Label, FormError, useMutation } from '@redwoodjs/web'
 import { useForm } from 'react-hook-form'
 import BlogLayout from 'src/layouts/BlogLayout'
 
@@ -2201,24 +2118,12 @@ const ContactPage = () => {
 
   return (
     <BlogLayout>
-      <Form
-        onSubmit={onSubmit}
-        validation={{ mode: 'onBlur' }}
-        error={error}
-        formMethods={formMethods}
-      >
-        <FormError
-          error={error}
-          wrapperStyle={{ color: 'red', backgroundColor: 'lavenderblush' }}
-        />
+      <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }} error={error} formMethods={formMethods}>
+        <FormError error={error} wrapperStyle={{ color: 'red', backgroundColor: 'lavenderblush' }} />
         <Label name="name" errorClassName="error">
           Name
         </Label>
-        <TextField
-          name="name"
-          validation={{ required: true }}
-          errorClassName="error"
-        />
+        <TextField name="name" validation={{ required: true }} errorClassName="error" />
         <FieldError name="name" className="error" />
 
         <Label name="name" errorClassName="error">
@@ -2236,11 +2141,7 @@ const ContactPage = () => {
         <Label name="name" errorClassName="error">
           Message
         </Label>
-        <TextAreaField
-          name="message"
-          validation={{ required: true }}
-          errorClassName="error"
-        />
+        <TextAreaField name="message" validation={{ required: true }} errorClassName="error" />
         <FieldError name="message" className="error" />
 
         <Submit>Save</Submit>
@@ -2269,10 +2170,10 @@ Having the admin screens at `/admin` is a reasonable thing to do. Let's update t
 ```html
 // web/src/Routes.js
 
-<Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
-<Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
-<Route path="/admin/posts/{id:Int}" page={PostPage} name="post" />
-<Route path="/admin/posts" page={PostsPage} name="posts" />
+<Route path="/admin/posts/new" page="{NewPostPage}" name="newPost" />
+<Route path="/admin/posts/{id:Int}/edit" page="{EditPostPage}" name="editPost" />
+<Route path="/admin/posts/{id:Int}" page="{PostPage}" name="post" />
+<Route path="/admin/posts" page="{PostsPage}" name="posts" />
 ```
 
 Head to http://localhost:8910/admin/posts and our generated scaffold page should come up. Thanks to named routes we don't have to update any of the `<Link>`s that were generated by the scaffolds since the `name`s of the pages didn't change!
@@ -2410,13 +2311,13 @@ We're going to demo a Netlify Identity integration in this tutorial since we're 
 
 > There are two terms which contain a lot of letters, starting with an "A" and ending in "ation" (which means you could rhyme them if you wanted to) that become involved in most discussions about login:
 >
-> * Authentication
-> * Authorization
+> - Authentication
+> - Authorization
 >
 > Here is how Redwood uses these terms:
 >
-> * **Authentication** deals with determining whether someone is who they say they are, generally by "logging in" with an email and password, or a third party OAuth provider like Google.
-> * **Authorization** is whether a user (who has usually already been authenticated) is allowed to do something they want to do. This generally involves some combination of roles and permission checking before allowing access to a URL or feature of your site.
+> - **Authentication** deals with determining whether someone is who they say they are, generally by "logging in" with an email and password, or a third party OAuth provider like Google.
+> - **Authorization** is whether a user (who has usually already been authenticated) is allowed to do something they want to do. This generally involves some combination of roles and permission checking before allowing access to a URL or feature of your site.
 >
 > This section of the tutorial focuses on **Authentication** only. We're currently working on integrating a simple and flexible role-based authorization system and once we release it we'll update the tutorial to include a walkthrough!
 
@@ -2471,8 +2372,8 @@ By default the authentication system will return only the data that the third-pa
 
 The files that were modified by the generator are:
 
-* `web/src/index.js`—wraps the router in `<AuthProvider>` which makes the routes themselves authentication aware, and gives us access to a `useAuth()` hook that returns several functions for logging users in and out, checking their current logged-inness, and more.
-* `api/src/functions/graphql.js`—makes `currentUser` available to the api side so that you can check whether a user is allowed to do something on the backend. If you add an implementation to `getCurrentUser()` in `api/src/lib/auth.js` then that is what will be returned by `currentUser`, otherwise it will return just the details the auth system has for the user. If they're not logged in at all then `currentUser` will be `null`.
+- `web/src/index.js`—wraps the router in `<AuthProvider>` which makes the routes themselves authentication aware, and gives us access to a `useAuth()` hook that returns several functions for logging users in and out, checking their current logged-inness, and more.
+- `api/src/functions/graphql.js`—makes `currentUser` available to the api side so that you can check whether a user is allowed to do something on the backend. If you add an implementation to `getCurrentUser()` in `api/src/lib/auth.js` then that is what will be returned by `currentUser`, otherwise it will return just the details the auth system has for the user. If they're not logged in at all then `currentUser` will be `null`.
 
 We'll hook up both the web and api sides below to make sure a user is only doing things they're allowed to do.
 
@@ -2663,7 +2564,7 @@ export default BlogLayout
 
 `useAuth()` provides a couple more helpers for us, in this case `isAuthenticated` which will return `true` or `false` based on your login status, and `logOut()` which will log the user out. Now clicking **Log Out** should log you out and change the link to **Log In** which you can click to open the modal and log back in again.
 
-When you *are* logged in, you should be able to access the admin pages again: http://localhost:8910/admin/posts
+When you _are_ logged in, you should be able to access the admin pages again: http://localhost:8910/admin/posts
 
 > If you start working on another Redwood app that uses Netlify Identity you'll need to manually clear out your Local Storage which is where the site URL is stored that you entered the first time you saw the modal. Local Storage is tied to your domain and port, which by default will be the same for any Redwood app when developing locally. You can clear your Local Storage in Chrome by going to the Web Inspector, the **Application** tab, and then on the left open up **Local Storage** and click on http://localhost:8910. You'll see the keys stored on the right and can delete them all.
 
@@ -2693,10 +2594,10 @@ const BlogLayout = ({ children }) => {
           </li>
           <li>
             <a href="#" onClick={isAuthenticated ? logOut : logIn}>
-              { isAuthenticated ? 'Log Out' : 'Log In' }
+              {isAuthenticated ? 'Log Out' : 'Log In'}
             </a>
           </li>
-          { isAuthenticated && <li>{currentUser.email}</li> }
+          {isAuthenticated && <li>{currentUser.email}</li>}
         </ul>
       </nav>
       <main>{children}</main>
@@ -2713,7 +2614,7 @@ export default BlogLayout
 
 Believe it or not, that's it! Authentication with Redwood is a breeze and we're just getting started. Expect more magic soon!
 
-> If you inspect the contents of `currentUser` you'll see it contains an array called `roles`. On the Netlify Identity dashboard you can give your user a collection of roles, which are just strings like "admin" or "guest". Using this array of roles you *could* create a very rudimentary role-based authentication system. Unless you are in dire need of this simple role checking, we recommend waiting for the Redwood solution, coming soon!
+> If you inspect the contents of `currentUser` you'll see it contains an array called `roles`. On the Netlify Identity dashboard you can give your user a collection of roles, which are just strings like "admin" or "guest". Using this array of roles you _could_ create a very rudimentary role-based authentication system. Unless you are in dire need of this simple role checking, we recommend waiting for the Redwood solution, coming soon!
 
 ## Wrapping Up
 
