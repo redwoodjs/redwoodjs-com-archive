@@ -133,6 +133,7 @@ yarn rw db <command>
 | `introspect`       | Introspect your database and generate models in `./api/prisma/schema.prisma`, overwriting existing models |
 | `save [name..]`    | Create a new migration                                                                                    |
 | `seed`             | Seed your database with test data                                                                         |
+| `studio`           | Start Prisma Studio                                                                                       |
 | `up [increment]`   | Generate the Prisma client and apply migrations                                                           |
 
 ### down
@@ -234,6 +235,16 @@ yarn rw db seed
 ```
 
 Runs `seed.js` in `./api/prisma`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/prisma/seeds.js).
+
+### studio
+
+Start <a href="https://github.com/prisma/studio">Prisma Studio</a>, a visual editor for your database.
+
+> **WARNING:** Prisma Studio is currently experimental.
+
+```terminal
+yarn rw db studio
+```
 
 ### up
 
