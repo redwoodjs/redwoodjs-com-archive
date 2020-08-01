@@ -1062,7 +1062,7 @@ yarn rw upgrade
 
 This command does all the heavy-lifting of upgrading to a new release for you.
 
-Besides upgrading to a new release, you can use this command to upgrade to either of our unstable releases: `canary` and `rc`. A canary release is published to npm every time a branch is merged to master, and when we're getitng close to a new release, we publish release candidates.
+Besides upgrading to a new release, you can use this command to upgrade to either of our unstable releases: `canary` and `rc`. A canary release is published to npm every time a branch is merged to master, and when we're getting close to a new release, we publish release candidates.
 
 | Option          | Description                                                                                                                         |
 | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
