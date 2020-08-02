@@ -133,6 +133,7 @@ yarn rw db <command>
 | `introspect`       | Introspect your database and generate models in `./api/prisma/schema.prisma`, overwriting existing models |
 | `save [name..]`    | Create a new migration                                                                                    |
 | `seed`             | Seed your database with test data                                                                         |
+| `studio`           | Start Prisma Studio                                                                                       |
 | `up [increment]`   | Generate the Prisma client and apply migrations                                                           |
 
 ### down
@@ -234,6 +235,16 @@ yarn rw db seed
 ```
 
 Runs `seed.js` in `./api/prisma`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/prisma/seeds.js).
+
+### studio
+
+Start <a href="https://github.com/prisma/studio">Prisma Studio</a>, a visual editor for your database.
+
+> **WARNING:** Prisma Studio is currently experimental.
+
+```terminal
+yarn rw db studio
+```
 
 ### up
 
@@ -1051,7 +1062,7 @@ yarn rw upgrade
 
 This command does all the heavy-lifting of upgrading to a new release for you.
 
-Besides upgrading to a new release, you can use this command to upgrade to either of our unstable releases: `canary` and `rc`. A canary release is published to npm every time a branch is merged to master, and when we're getitng close to a new release, we publish release candidates.
+Besides upgrading to a new release, you can use this command to upgrade to either of our unstable releases: `canary` and `rc`. A canary release is published to npm every time a branch is merged to master, and when we're getting close to a new release, we publish release candidates.
 
 | Option          | Description                                                                                                                         |
 | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
