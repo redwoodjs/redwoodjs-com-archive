@@ -20,13 +20,13 @@ You can also run `yarn install` to cleanup those packages that aren't used any m
 
 ## Turn off the API build process
 
-When it comes time to deploy we need to let Netlify know not to worry about building the API side.
+When it comes time to deploy, we need to let Netlify know that it shouldn't bother trying to look for any code to turn into AWS Lambda functions.
 
-Open up `netlify.toml`. We're going to change one line and comment out another:
+Open up `netlify.toml`. We're going to comment out one line:
 
-```toml{2,4}
+```toml{4}
 [build]
-  command = "yarn rw build web"
+  command = "yarn rw build && yarn rw db up --no-db-client --auto-approve && yarn rw dataMigrate up"
   publish = "web/dist"
   # functions = "api/dist/functions"
 
@@ -43,8 +43,6 @@ package = 'netlify-plugin-prisma-provider'
   [plugins.inputs]
   path = 'api/prisma/schema.prisma'
 ```
-
-The first change tells Netlify to only build the web side of your app. The second makes sure that Netlify doesn't bother trying to look for any code to turn into AWS Lambda functions.
 
 If you just have a static site that doesn't need any data access at all (even our simple JSON file discussed above) then you're done! Keep reading to see how you can access a local data store that we'll deploy along with the web side of our app.
 
