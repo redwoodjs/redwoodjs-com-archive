@@ -3,6 +3,7 @@
 The following is a comprehensive reference of the Redwood CLI. You can get a glimpse of all the commands by scrolling the aside to the right.
 
 The Redwood CLI has two entry-point commands:
+
 1. **redwood** (alias `rw`), which is for developing an application, and
 2. **redwood-tools** (alias `rwt`), which is for contributing to the framework.
 
@@ -35,13 +36,14 @@ yarn rw build [side..]
 The `..` operator indicates that the argument accepts an array of values. See [Variadic Positional Arguments](https://github.com/yargs/yargs/blob/main/docs/advanced.md#variadic-positional-arguments).
 
 ## build
+
 Build for production.
 
 ```terminal
 yarn rw build [side..]
 ```
 
-We use Babel to transpile the api side into `./api/dist` and Webpack to package the web side  into `./web/dist`.
+We use Babel to transpile the api side into `./api/dist` and Webpack to package the web side into `./web/dist`.
 
 | Arguments & Options | Description                                                                                                                                                                 |
 | :------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -90,16 +92,16 @@ yarn rw dataMigrate <command>
 
 <br/>
 
-| Command            | Description                                                                                               |
-| :----------------- | :-------------------------------------------------------------------------------------------------------- |
-| `install` | Appends `DataMigration` model to `schema.prisma`, creates `api/prisma/dataMigrations` directory
-| `up`      | Executes oustanding data migrations
+| Command   | Description                                                                                     |
+| :-------- | :---------------------------------------------------------------------------------------------- |
+| `install` | Appends `DataMigration` model to `schema.prisma`, creates `api/prisma/dataMigrations` directory |
+| `up`      | Executes oustanding data migrations                                                             |
 
 ### install
 
-* Appends a `DataMigration` model to `schema.prisma` for tracking which data migrations have already run.
-* Creates a DB migration using `yarn rw db save 'create data migrations`.
-* Creates `api/prisma/dataMigrations` directory to contain data migration scripts
+- Appends a `DataMigration` model to `schema.prisma` for tracking which data migrations have already run.
+- Creates a DB migration using `yarn rw db save 'create data migrations`.
+- Creates `api/prisma/dataMigrations` directory to contain data migration scripts
 
 ```terminal
 yarn rw dataMigrate install
@@ -114,7 +116,6 @@ If an error occurs during script execution, any remaining scripts are skipped an
 ```terminal
 yarn rw dataMigrate up
 ```
-
 
 ## db
 
@@ -183,7 +184,6 @@ This means that `yarn rw db generate` needs to be run after every change to your
 ### introspect
 
 Introspect your database and generate models in `./api/prisma/schema.prisma`, overwriting existing models.
-
 
 ```terminal
 yarn rw db introspect
@@ -254,7 +254,6 @@ yarn rw db up [increment]
 | `--dbClient`        | Generate the Prisma client                                    |
 | `--verbose`         | Print more                                                    |
 
-
 **Example**
 
 Given the following migrations
@@ -274,6 +273,7 @@ we could get to `20200518160811-add-posts` by running:
 ```
 
 ## dev
+
 Start development servers for api and web.
 
 ```terminal
@@ -282,9 +282,9 @@ yarn redwood dev [side..]
 
 `yarn rw dev api` starts the Redwood dev server and `yarn rw dev web` starts the Webpack dev server with Redwood's config.
 
-| Argument  | Description                                                                             |
-| :-------- | :-------------------------------------------------------------------------------------- |
-| `side`    | Which dev server(s) to start. Choices are  `api` and `web`. Defaults to `api` and `web` |
+| Argument           | Description                                                                                                                          |
+| :----------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
+| `side`             | Which dev server(s) to start. Choices are `api` and `web`. Defaults to `api` and `web`                                               |
 | `--forward, --fwd` | String of one or more [Webpack DevServer](https://webpack.js.org/configuration/dev-server/) config options. See example usage below. |
 
 **Usage**
@@ -341,16 +341,16 @@ yarn rw g <type>
 
 Some generators require that their argument be a model in your `schema.prisma`. When they do, their argument is named `<model>`.
 
-| Command              | Description                                                                                           |
-| :------------------- | :---------------------------------------------------------------------------------------------------- |
+| Command                | Description                                                                                           |
+| :--------------------- | :---------------------------------------------------------------------------------------------------- |
 | `auth <provider>`      | Generate an auth configuration                                                                        |
 | `cell <name>`          | Generate a cell component                                                                             |
 | `component <name>`     | Generate a component component                                                                        |
-| `dataMigration <name>` | Generate a data migration component                                                                        |
+| `dataMigration <name>` | Generate a data migration component                                                                   |
 | `function <name>`      | Generate a Function                                                                                   |
 | `layout <name>`        | Generate a layout component                                                                           |
 | `page <name> [path]`   | Generate a page component                                                                             |
-| `scaffold <model>`     | Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts `<path/model>`   |
+| `scaffold <model>`     | Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts `<path/model>` |
 | `sdl <model>`          | Generate a GraphQL schema and service object                                                          |
 | `service <name>`       | Generate a service component                                                                          |
 
@@ -368,10 +368,10 @@ yarn rw g auth <provider>
 
 You can get authentication out-of-the-box with generators. Right now we support Auth0, Firebase, GoTrue, Magic, and Netlify.
 
-| Arguments & Options | Description                                                                                       |
-| :------------------ | :------------------------------------------------------------------------------------------------ |
-| `provider`          | Auth provider to configure. Choices are  `auth0`, `firebase`, `goTrue`, `magicLink` and `netlify` |
-| `--force, -f`       | Overwrite existing files                                                                          |
+| Arguments & Options | Description                                                                                      |
+| :------------------ | :----------------------------------------------------------------------------------------------- |
+| `provider`          | Auth provider to configure. Choices are `auth0`, `firebase`, `goTrue`, `magicLink` and `netlify` |
+| `--force, -f`       | Overwrite existing files                                                                         |
 
 **Usage**
 
@@ -506,9 +506,9 @@ yarn rw g dataMigration <name>
 
 Creates a data migration script in `api/prisma/dataMigrations`.
 
-| Arguments & Options | Description              |
-| :------------------ | :----------------------- |
-| `name`              | Name of the data migration, prefixed with a timestamp at generation time    |
+| Arguments & Options | Description                                                              |
+| :------------------ | :----------------------------------------------------------------------- |
+| `name`              | Name of the data migration, prefixed with a timestamp at generation time |
 
 **Usage**
 
@@ -827,7 +827,7 @@ $ /redwood-app/node_modules/.bin/rw g sdl user
 Done in 1.04s.
 ```
 
-The generated sdl defines a corresponding type, query, and create/update inputs, without defining any mutations. To also get mutations, add the `--crud`  option.
+The generated sdl defines a corresponding type, query, and create/update inputs, without defining any mutations. To also get mutations, add the `--crud` option.
 
 ```javascript
 // ./api/src/graphql/users.sdl.js
@@ -855,7 +855,7 @@ export const schema = gql`
 `
 ```
 
-The services file fulfills the query. If the `--crud`  option is added, this file will be much more complex.
+The services file fulfills the query. If the `--crud` option is added, this file will be much more complex.
 
 ```javascript
 // ./api/src/services/users/users.js
