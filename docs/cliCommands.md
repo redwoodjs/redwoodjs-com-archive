@@ -1,14 +1,15 @@
 # Command Line Interface
 
-The following is a comprehensive reference of the Redwood CLI. You can get a list of all the commands and/or find the one(s) you're interested in by scrolling the aside to the right.
+The following is a comprehensive reference of the Redwood CLI. You can get a glimpse of all the commands by scrolling the aside to the right.
 
 The Redwood CLI has two entry-point commands:
-1. **redwood** (alias rw), which is for developing an application, and
-2. **redwood-tools** (alias rwt), which is for contributing to the framework.
 
-This CLI document covers the `redwood` command options. For `redwood-tools` options, see the [Redwood Contributing guide's Reference section](https://github.com/redwoodjs/redwood/blob/master/CONTRIBUTING.md#cli-reference-redwood-tools).
+1. **redwood** (alias `rw`), which is for developing an application, and
+2. **redwood-tools** (alias `rwt`), which is for contributing to the framework.
 
-**A Note on Syntax**
+This document covers the `redwood` command . For `redwood-tools`, see [Contributing](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#cli-reference-redwood-tools) in the Redwood repo.
+
+**A Quick Note on Syntax**
 
 We use [yargs](http://yargs.js.org/) and borrow its syntax here:
 
@@ -18,78 +19,41 @@ yarn rw g page <name> [path] --option
 
 </br>
 
-- `rw g page` is the command. 
-- `<name>` and `[path]` are positional arguments. 
+- `rw g page` is the command.
+- `<name>` and `[path]` are positional arguments.
   - `<>` denotes a required argument.
-  - `[]` denotes an optional argument. 
-- `--option` is an option. 
+  - `[]` denotes an optional argument.
+- `--option` is an option.
 
 Every argument and option has a type. Here `<name>` and `[path]` are strings and `--option` is a boolean.
 
-You will also sometimes see arguments with trailing `..` like:
+You'll also sometimes see arguments with trailing `..` like:
 
 ```
 yarn rw build [side..]
 ```
 
-The `..` operator indicates that the argument accepts an array of values. Also see [Variadic Positional Arguments](https://github.com/yargs/yargs/blob/master/docs/advanced.md#variadic-positional-arguments).
+The `..` operator indicates that the argument accepts an array of values. See [Variadic Positional Arguments](https://github.com/yargs/yargs/blob/main/docs/advanced.md#variadic-positional-arguments).
 
 ## build
+
 Build for production.
 
 ```terminal
 yarn rw build [side..]
 ```
 
-We use Babel to transpile the api side into `./api/dist` and Webpack to package the web side  into `./web/dist`.
+We use Babel to transpile the api side into `./api/dist` and Webpack to package the web side into `./web/dist`.
 
-> You can deploy your Redwood project without an API layer or database&mdash;see 
-[Disable API/Database](https://redwoodjs.com/cookbook/disable-api-database).
-
-
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">side</span></td>
-      <td>Which side(s) to build. Choices are <span id="code">api</span> and <span id="code">web</span>. Default is <span id="code">api</span> and <span id="code">web</span>.</td>
-    </tr>
-  </tbody>
-</table>
-
-<br/>
-
-<!-- Options -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Option</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">--verbose, -v</span></td>
-      <td>Print more information while building.</td>
-    </tr>
-    <tr>
-      <td><span id="code">--stats</span></td>
-      <td>
-        Use <a href="https://github.com/webpack-contrib/webpack-bundle-analyzer" id="link">Webpack Bundle Analyzer </a> to visualize the size of Webpack output files via an interactive zoomable treemap.
-      </td>
-    </tr>
-  </tbody>
-</table>
+| Arguments & Options | Description                                                                                                                                                                 |
+| :------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `side`              | Which side(s) to build. Choices are `api` and `web`. Defaults to `api` and `web`                                                                                            |
+| `--stats`           | Use [Webpack Bundle Analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer) to visualize the size of Webpack output files via an interactive zoomable treemap |
+| `--verbose, -v`     | Print more information while building                                                                                                                                       |
 
 **Usage**
 
-See the [Builds](https://redwoodjs.com/docs/builds) guide.
+See [Builds](https://redwoodjs.com/docs/builds).
 
 **Example**
 
@@ -118,130 +82,76 @@ Files are output to each side's `dist` directory:
     └── src
 ```
 
-## dev
-Run development servers for db, api, and web.
+## dataMigrate
 
-```terminal
-yarn redwood dev [side..]
+Data migration tools.
+
+```
+yarn rw dataMigrate <command>
 ```
 
-`yarn rw dev api` starts the Redwood dev server (see [The Development Server](https://redwoodjs.com/docs/the-development-server.html#the-development-server)) and `yarn rw dev web` starts the Webpack dev server with Redwood's config.
+<br/>
 
-Technically db isn't a "side" and doesn't start a "dev server". It's equivalent to running `yarn prisma generate --watch` in `./api`. 
+| Command   | Description                                                                                     |
+| :-------- | :---------------------------------------------------------------------------------------------- |
+| `install` | Appends `DataMigration` model to `schema.prisma`, creates `api/prisma/dataMigrations` directory |
+| `up`      | Executes oustanding data migrations                                                             |
 
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">side</span></td>
-      <td>Which dev server(s) to start. Choices are <span id="code">db</span>, <span id="code">api</span>, and <span id="code">web</span>. Default is <span id="code">db</span>, <span id="code">api</span>, and <span id="code">web</span>.</td>
-    </tr>
-  </tbody>
-</table>
+### install
 
-**Usage**
+- Appends a `DataMigration` model to `schema.prisma` for tracking which data migrations have already run.
+- Creates a DB migration using `yarn rw db save 'create data migrations`.
+- Creates `api/prisma/dataMigrations` directory to contain data migration scripts
 
-If you're only working on your sdl and services, you can run just the api server to get GraphiQL on port 8911:
+```terminal
+yarn rw dataMigrate install
+```
 
-```plaintext{10}
-~/redwood-app$ yarn rw dev api
-yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw dev api
-$ /redwood-app/node_modules/.bin/dev-server
-15:04:51 api | Listening on http://localhost:8911
-15:04:51 api | Watching /home/dominic/projects/redwood/redwood-app/api
-15:04:51 api | 
-15:04:51 api | Now serving
-15:04:51 api | 
-15:04:51 api | ► http://localhost:8911/graphql/
+### up
+
+Executes outstanding data migrations against the database. Compares the list of files in `api/prisma/dataMigrations` to the records in the `DataMigration` table in the database and executes any files not present.
+
+If an error occurs during script execution, any remaining scripts are skipped and console output will let you know the error and how many subsequent scripts were skipped.
+
+```terminal
+yarn rw dataMigrate up
 ```
 
 ## db
 
-Entry point to database tools. 
+Database tools.
 
 ```
 yarn rw db <command>
 ```
 
-Most of the following are Prisma commands:
+<br/>
 
-<!-- Commands -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Command</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">down</span></td>
-      <td>Migrate your database down.</td>
-    </tr>
-    <tr>
-      <td><span id="code">generate</span></td>
-      <td>Generate the Prisma client.</td>
-    </tr>
-    <tr>
-      <td><span id="code">introspect</span></td>
-      <td>Introspect your database and generate models in <span id="code">./api/prisma/schema.prisma</span>, overwriting existing models.</td>
-    </tr>
-    <tr>
-      <td><span id="code">save</span></td>
-      <td>Create a new migration.</td>
-    </tr>
-    <tr>
-      <td><span id="code">seed</span></td>
-      <td>Seed your database with test data.</td>
-    </tr>
-    <tr>
-      <td><span id="code">up</span></td>
-      <td>Generate the Prisma client and apply migrations.</td>
-    </tr>
-  </tbody>
-</table>
+| Command            | Description                                                                                               |
+| :----------------- | :-------------------------------------------------------------------------------------------------------- |
+| `down [decrement]` | Migrate your database down                                                                                |
+| `generate`         | Generate the Prisma client                                                                                |
+| `introspect`       | Introspect your database and generate models in `./api/prisma/schema.prisma`, overwriting existing models |
+| `save [name..]`    | Create a new migration                                                                                    |
+| `seed`             | Seed your database with test data                                                                         |
+| `studio`           | Start Prisma Studio                                                                                       |
+| `up [increment]`   | Generate the Prisma client and apply migrations                                                           |
 
-## db down
+### down
 
-Migrate your database down. Also see the [Prisma docs on migrate down](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-cli/command-reference#migrate-down).
+Migrate your database down.
 
-> Prisma's migration functionality is currently in an experimental state.
+> **WARNING:** Prisma's migration functionality is currently experimental.
 
 ```terminal
-yarn rw db down [decrement|name|timestamp]
+yarn rw db down [decrement]
 ```
 
-You can specify the state to migrate down to via one of three ways: 
+<br/>
 
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">decrement</span></td>
-      <td>Go down by an amount. Default is <span id="code">1</span>.</td>
-    </tr>
-    <tr>
-      <td><span id="code">name</span></td>
-      <td>Go down to a migration by name.</td>
-    </tr>
-      <td><span id="code">timestamp</span></td>
-      <td>Go down to a migration by timestamp.</td>
-    </tr>
-  </tbody>
-</table>
+| Argument    | Description                                              |
+| :---------- | :------------------------------------------------------- |
+| `decrement` | Number of backwards migrations to apply. Defaults to `1` |
 
 **Example**
 
@@ -255,45 +165,48 @@ api/prisma/migrations/
 └── migrate.lock
 ```
 
-we could get to `20200518160457-create-users` by running any of the following:
+we could get to `20200518160457-create-users` by running:
 
 ```terminal
 ~/redwood-app$ yarn rw db down 2
-~/redwood-app$ yarn rw db down "create-users"
-~/redwood-app$ yarn rw db down 20200518160457
 ```
 
-## db generate
+### generate
 
-Generate the Prisma client. Also see the [Prisma docs on generate](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-cli/command-reference#generate).
+Generate the Prisma client.
 
 ```terminal
 yarn rw db generate
 ```
 
-The Prisma client is auto-generated and tailored to your `schema.prisma`. 
-This means that `yarn rw db generate` needs to be run after every change to your `schema.prisma` for your Prisma client to be up to date. But you usually won't have to do this manually as other Redwood commands run this behind the scene (e.g. `build`, `dev`).
+The Prisma client is auto-generated and tailored to your `schema.prisma`.
+This means that `yarn rw db generate` needs to be run after every change to your `schema.prisma` for your Prisma client to be up to date. But you usually won't have to do this manually as other Redwood commands run this behind the scenes.
 
-## db introspect
+### introspect
 
-Introspect your database and generate models in `./api/prisma/schema.prisma`, overwriting existing models. Also see the [Prisma docs on introspect](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-cli/command-reference#introspect).
-
+Introspect your database and generate models in `./api/prisma/schema.prisma`, overwriting existing models.
 
 ```terminal
 yarn rw db introspect
 ```
 
-## db save
+### save
 
-Create a new migration. Also see the [Prisma docs on migrate save](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-cli/command-reference#migrate-save).
+Create a new migration.
 
-> Prisma's migration functionality is currently in an experimental state.
+> **WARNING:** Prisma's migration functionality is currently experimental.
 
 ```terminal
-yarn rw db save
+yarn rw db save [name..]
 ```
 
-A migration defines the steps necessary to update your current schema. Running `yarn rw db save` generates the following directories and files as necessary:
+A migration defines the steps necessary to update your current schema.
+
+| Argument | Description           |
+| :------- | :-------------------- |
+| `name`   | Name of the migration |
+
+Running `yarn rw db save` generates the following directories and files as necessary:
 
 ```terminal
 api/prisma/migrations
@@ -306,14 +219,14 @@ api/prisma/migrations
 
 <br/>
 
-- `migrations`: A directory to store migrations. 
+- `migrations`: A directory to store migrations.
 - `migrations/<migration>`: A directory for a specific migration. The name (`<migration>`) is composed of a timestamp of when it was created and the name given during `yarn rw db save`.
 - `migrations/<migration>/README.md`: A human-readable description of the migration, including metadata like when the migration was created and by who, a list of the actual migration changes, and a diff of the changes made to `schema.prisma`.
 - `migrations/<migration>/schema.prisma`: The schema that will be created if the migration is applied.
 - `migrations/<migration>/steps.json`: An alternate representation of the migration steps that will be applied.
-- `migrate.lock`: A lock file specifying the current migration. 
+- `migrate.lock`: A lock file specifying the current migration.
 
-## db seed
+### seed
 
 Seed your database with test data.
 
@@ -321,42 +234,36 @@ Seed your database with test data.
 yarn rw db seed
 ```
 
-Runs `./api/prisma/seed.js` which instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. Also see the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/prisma/seeds.js).
+Runs `seed.js` in `./api/prisma`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/prisma/seeds.js).
 
-## db up
+### studio
 
-Generate the Prisma client and apply migrations. Also see the [Prisma docs on migrate up](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-cli/command-reference#migrate-up).
+Start <a href="https://github.com/prisma/studio">Prisma Studio</a>, a visual editor for your database.
 
-> Prisma's migration functionality is currently in an experimental state.
+> **WARNING:** Prisma Studio is currently experimental.
 
 ```terminal
-yarn rw db up [increment|name|timestamp]
+yarn rw db studio
 ```
 
-You can specify the state to migrate up to via one of three ways:
+### up
 
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">increment</span></td>
-      <td>Go up by an amount. Default is <span id="code">1</span>.</td>
-    </tr>
-    <tr>
-      <td><span id="code">name</span></td>
-      <td>Go up to a migration by name.</td>
-    </tr>
-      <td><span id="code">timestamp</span></td>
-      <td>Go up to a migration by timestamp.</td>
-    </tr>
-  </tbody>
-</table>
+Generate the Prisma client and apply migrations.
+
+> **WARNING:** Prisma's migration functionality is currently experimental.
+
+```terminal
+yarn rw db up [increment]
+```
+
+<br/>
+
+| Arguments & Options | Description                                                   |
+| :------------------ | :------------------------------------------------------------ |
+| `increment`         | Number of forward migrations to apply. Defaults to the latest |
+| `--autoApprove`     | Skip interactive approval before migrating                    |
+| `--dbClient`        | Generate the Prisma client                                    |
+| `--verbose`         | Print more                                                    |
 
 **Example**
 
@@ -370,122 +277,118 @@ api/prisma/migrations/
 └── migrate.lock
 ```
 
-we could get to `20200518160811-add-posts` by doing any of the following:
+we could get to `20200518160811-add-posts` by running:
 
 ```terminal
 ~/redwood-app$ yarn rw db up 2
-~/redwood-app$ yarn rw db up "add-posts"
-~/redwood-app$ yarn rw db up 20200518160811
 ```
+
+## dev
+
+Start development servers for api and web.
+
+```terminal
+yarn redwood dev [side..]
+```
+
+`yarn rw dev api` starts the Redwood dev server and `yarn rw dev web` starts the Webpack dev server with Redwood's config.
+
+| Argument           | Description                                                                                                                          |
+| :----------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
+| `side`             | Which dev server(s) to start. Choices are `api` and `web`. Defaults to `api` and `web`                                               |
+| `--forward, --fwd` | String of one or more [Webpack DevServer](https://webpack.js.org/configuration/dev-server/) config options. See example usage below. |
+
+**Usage**
+
+If you're only working on your sdl and services, you can run just the api server to get GraphiQL on port 8911:
+
+```plaintext{10}
+~/redwood-app$ yarn rw dev api
+yarn run v1.22.4
+$ /redwood-app/node_modules/.bin/rw dev api
+$ /redwood-app/node_modules/.bin/dev-server
+15:04:51 api | Listening on http://localhost:8911
+15:04:51 api | Watching /home/dominic/projects/redwood/redwood-app/api
+15:04:51 api |
+15:04:51 api | Now serving
+15:04:51 api |
+15:04:51 api | ► http://localhost:8911/graphql/
+```
+
+Using `--forward` (alias `--fwd`), you can pass one or more Webpack DevServer config options. The following will run the dev server, set the port to `1234`, and disable automatic browser opening.
+
+```plaintext{10}
+~/redwood-app$ yarn rw dev --fwd="--port=1234 --open=false"
+```
+
+## destroy (alias d)
+
+Rollback changes made by the generate command.
+
+```
+yarn rw d <type>
+```
+
+<br/>
+
+| Command              | Description                                                                     |
+| :------------------- | :------------------------------------------------------------------------------ |
+| `cell <name>`        | Destroy a cell component                                                        |
+| `component <name>`   | Destroy a component                                                             |
+| `function <name>`    | Destroy a Function                                                              |
+| `layout <name>`      | Destroy a layout component                                                      |
+| `page <name> [path]` | Destroy a page and route component                                              |
+| `scaffold <model>`   | Destroy pages, SDL, and Services files based on a given DB schema Model         |
+| `sdl <model>`        | Destroy a GraphQL schema and service component based on a given DB schema Model |
+| `service <name>`     | Destroy a service component                                                     |
 
 ## generate (alias g)
 
-Entry point to generators&mdash;save time by generating boilerplate code.
+Save time by generating boilerplate code.
 
 ```
-yarn rw g <command>
+yarn rw g <type>
 ```
 
 Some generators require that their argument be a model in your `schema.prisma`. When they do, their argument is named `<model>`.
 
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/4">Command</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">auth</span></td>
-      <td>Generate auth configuration.</td>
-    </tr>
-    <tr>
-      <td><span id="code">cell &lt;name></span></td>
-      <td>Generate a cell component.</td>
-    </tr>
-    <tr>
-      <td><span id="code">component &lt;name&gt;</span></td>
-      <td>Generate a component component.</td>
-    </tr>
-    <tr>
-      <td><span id="code">function &lt;name&gt;</span></td>
-      <td>Generate a Function.</td>
-    </tr>
-    <tr>
-      <td><span id="code">layout &lt;name&gt;</span></td>
-      <td>Generate a layout component.</td>
-    </tr>
-    <tr>
-      <td><span id="code">page &lt;name&gt; [path]</span></td>
-      <td>Generate a page component.</td>
-    </tr>
-    <tr>
-      <td><span id="code">scaffold &lt;model&gt;</span></td>
-      <td>Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts <span id="code">&lt;path/model&gt;</span>.</td>
-    </tr>
-    <tr>
-      <td><span id="code">sdl &lt;model&gt;</span></td>
-      <td>Generate a GraphQL schema and service object.</td>
-    </tr>
-    <tr>
-      <td><span id="code">service &lt;name&gt;</span></td>
-      <td>Generate a service component.</td>
-    </tr>
-  </tbody>
-</table>
+| Command                | Description                                                                                           |
+| :--------------------- | :---------------------------------------------------------------------------------------------------- |
+| `auth <provider>`      | Generate an auth configuration                                                                        |
+| `cell <name>`          | Generate a cell component                                                                             |
+| `component <name>`     | Generate a component component                                                                        |
+| `dataMigration <name>` | Generate a data migration component                                                                   |
+| `function <name>`      | Generate a Function                                                                                   |
+| `layout <name>`        | Generate a layout component                                                                           |
+| `page <name> [path]`   | Generate a page component                                                                             |
+| `scaffold <model>`     | Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts `<path/model>` |
+| `sdl <model>`          | Generate a GraphQL schema and service object                                                          |
+| `service <name>`       | Generate a service component                                                                          |
 
-## generate auth
+**Undoing a Generator with a Destroyer**
 
-Generate auth configuration.
+Most generate commands (i.e., everything but `yarn rw g auth` and `yarn rw g dataMigration`) can be undone by their corresponding destroy command. For example, `yarn rw g cell` can be undone with `yarn rw d cell`.
+
+### auth
+
+Generate an auth configuration.
 
 ```
 yarn rw g auth <provider>
 ```
 
-You can get authentication out-of-the-box with generators. Right now we only support netlify and auth0, but we have a lot more in store.
+You can get authentication out-of-the-box with generators. Right now we support Auth0, Firebase, GoTrue, Magic, and Netlify.
 
-> "Wait&mdash;generators configure things too?" Sometimes! This is an example of a generator doing a little more than just generating things.
-
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">provider</span></td>
-      <td>Name of auth provider to configure. Choices are <span id="code">auth0</span>, <span id="code">firebase</span>, <span id="code">magicLink</span>, and <span id="code">netlify</span>.</td>
-    </tr>
-  </tbody>
-</table>
-
-</br>
-
-<!-- Option -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Option</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">--force, -f</span></td>
-      <td>Overwrite existing files.</td>
-    </tr>
-  </tbody>
-</table>
+| Arguments & Options | Description                                                                                      |
+| :------------------ | :----------------------------------------------------------------------------------------------- |
+| `provider`          | Auth provider to configure. Choices are `auth0`, `firebase`, `goTrue`, `magicLink` and `netlify` |
+| `--force, -f`       | Overwrite existing files                                                                         |
 
 **Usage**
 
-See the [Authentication](https://redwoodjs.com/docs/authentication) guide.
+See [Authentication](https://redwoodjs.com/docs/authentication).
 
-## generate cell
+### cell
 
 Generate a cell component.
 
@@ -493,45 +396,24 @@ Generate a cell component.
 yarn rw g cell <name>
 ```
 
-Cells are signature to Redwood. We think they provide a simpler and more declarative approach to data fetching. 
+Cells are signature to Redwood. We think they provide a simpler and more declarative approach to data fetching.
 
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">name</span></td>
-      <td>Name of the generated cell.</td>
-    </tr>
-  </tbody>
-</table>
-
-</br>
-
-<!-- Option -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Option</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">--force, -f</span></td>
-      <td>Overwrite existing files.</td>
-    </tr>
-  </tbody>
-</table>
+| Arguments & Options  | Description               |
+| :------------------- | :------------------------ |
+| `name`               | Name of the cell          |
+| `--force, -f`        | Overwrite existing files  |
+| `--javascript, --js` | Generate JavaScript files |
+| `--typescript, --ts` | Generate TypeScript files |
 
 **Usage**
 
-See the [Cells](https://redwoodjs.com/tutorial/cells) section of the tutorial.
+See the [Cells](https://redwoodjs.com/tutorial/cells) section of the Tutorial.
+
+**Destroying**
+
+```
+yarn rw d cell <name>
+```
 
 **Example**
 
@@ -571,49 +453,28 @@ export const Success = ({ user }) => {
 }
 ```
 
-## generate component
+### component
 
-Generate a component component.
+Generate a component.
 
 ```terminal
 yarn rw g component <name>
 ```
 
-Redwood loves function components and makes extensive use of React Hooks which are only enabled in function components. 
+Redwood loves function components and makes extensive use of React Hooks, which are only enabled in function components.
 
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">name</span></td>
-      <td>Name of the generated component.</td>
-    </tr>
-  </tbody>
-</table>
+| Arguments & Options  | Description               |
+| :------------------- | :------------------------ |
+| `name`               | Name of the component     |
+| `--force, -f`        | Overwrite existing files  |
+| `--javascript, --js` | Generate JavaScript files |
+| `--typescript, --ts` | Generate TypeScript files |
 
-</br>
+**Destroying**
 
-<!-- Options -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Option</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">--force, -f</span></td>
-      <td>Overwrite existing files.</td>
-    </tr>
-  </tbody>
-</table>
+```
+yarn rw d component <name>
+```
 
 **Example**
 
@@ -646,9 +507,27 @@ const User = () => {
 export default User
 ```
 
-## generate function
+### dataMigration
 
-Generate a Function. 
+Generate a data migration script.
+
+```
+yarn rw g dataMigration <name>
+```
+
+Creates a data migration script in `api/prisma/dataMigrations`.
+
+| Arguments & Options | Description                                                              |
+| :------------------ | :----------------------------------------------------------------------- |
+| `name`              | Name of the data migration, prefixed with a timestamp at generation time |
+
+**Usage**
+
+See the [Data Migration](/docs/data-migrations) docs.
+
+### function
+
+Generate a Function.
 
 ```
 yarn rw g function <name>
@@ -656,43 +535,20 @@ yarn rw g function <name>
 
 Not to be confused with Javascript functions, Capital-F Functions are meant to be deployed to serverless endpoints like AWS Lambda.
 
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">name</span></td>
-      <td>Name of the generated function.</td>
-    </tr>
-  </tbody>
-</table>
-
-</br>
-
-<!-- Options -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Option</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">--force, -f</span></td>
-      <td>Overwrite existing files.</td>
-    </tr>
-  </tbody>
-</table>
+| Arguments & Options | Description              |
+| :------------------ | :----------------------- |
+| `name`              | Name of the function     |
+| `--force, -f`       | Overwrite existing files |
 
 **Usage**
 
 See the [Custom Function](https://redwoodjs.com/cookbook/custom-function) recipe.
+
+**Destroying**
+
+```
+yarn rw d function <name>
+```
 
 **Example**
 
@@ -729,14 +585,14 @@ $ /redwood-app/node_modules/.bin/rw dev api
 $ /redwood-app/node_modules/.bin/dev-server
 17:21:49 api | Listening on http://localhost:8911
 17:21:49 api | Watching /home/dominic/projects/redwood/redwood-app/api
-17:21:49 api | 
+17:21:49 api |
 17:21:49 api | Now serving
-17:21:49 api | 
+17:21:49 api |
 17:21:49 api | ► http://localhost:8911/graphql/
 17:21:49 api | ► http://localhost:8911/user/
 ```
 
-## generate layout
+### layout
 
 Generate a layout component.
 
@@ -744,45 +600,24 @@ Generate a layout component.
 yarn rw g layout <name>
 ```
 
-Layouts wrap pages and help you stay DRY. 
+Layouts wrap pages and help you stay DRY.
 
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">name</span></td>
-      <td>Name of the generated layout.</td>
-    </tr>
-  </tbody>
-</table>
-
-</br>
-
-<!-- Options -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Option</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">--force, -f</span></td>
-      <td>Overwrite existing files.</td>
-    </tr>
-  </tbody>
-</table>
+| Arguments & Options  | Description               |
+| :------------------- | :------------------------ |
+| `name`               | Name of the layout        |
+| `--force, -f`        | Overwrite existing files  |
+| `--javascript, --js` | Generate JavaScript files |
+| `--typescript, --ts` | Generate TypeScript files |
 
 **Usage**
 
 See the [Layouts](https://redwoodjs.com/tutorial/layouts) section of the tutorial.
+
+**Destroying**
+
+```
+yarn rw d layout <name>
+```
 
 **Example**
 
@@ -810,7 +645,7 @@ const UserLayout = ({ children }) => {
 export default UserLayout
 ```
 
-## generate page
+### page
 
 Generates a page component and updates the routes.
 
@@ -820,43 +655,17 @@ yarn rw g page <name> [path]
 
 If `path` isn't specified, it will be the same as the name. This also updates `Routes.js` in `./web/src`.
 
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">name</span></td>
-      <td>Name of the generated page.</td>
-    </tr>
-    <tr>
-      <td><span id="code">path</span></td>
-      <td>Path to the page. Default is <span id="code">name</span>.</td>
-    </tr>
-  </tbody>
-</table>
+| Arguments & Options | Description                              |
+| :------------------ | :--------------------------------------- |
+| `name`              | Name of the page                         |
+| `path`              | URL path to the page. Defaults to `name` |
+| `--force, -f`       | Overwrite existing files                 |
 
-</br>
+**Destroying**
 
-<!-- Options -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Option</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">--force, -f</span></td>
-      <td>Overwrite existing files.</td>
-    </tr>
-  </tbody>
-</table>
+```
+yarn rw d page <name> [path]
+```
 
 **Example**
 
@@ -905,7 +714,7 @@ const Routes = () => {
 }
 ```
 
-## generate scaffold
+### scaffold
 
 Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts `<path/model>`.
 
@@ -922,45 +731,18 @@ A scaffold quickly creates a CRUD for a model by generating the following files 
 - cells
 - components
 
-The content of the generated components is different from what you'd get by running them individually. 
+The content of the generated components is different from what you'd get by running them individually.
 
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">model</span></td>
-      <td>Model to scaffold. You can also use <span id="code">&lt;path/model&gt;</span> to nest files by type at the given path directory (or directories). For example, <span id="code">rw g scaffold admin/post</span>.</td>
-    </tr>
-  </tbody>
-</table>
-
-</br>
-
-<!-- Options -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Option</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">--force, -f</span></td>
-      <td>Overwrite existing files.</td>
-    </tr>
-  </tbody>
-</table>
+| Arguments & Options  | Description                                                                                                                                                    |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `model`              | Model to scaffold. You can also use `<path/model>` to nest files by type at the given path directory (or directories). For example, `rw g scaffold admin/post` |
+| `--force, -f`        | Overwrite existing files                                                                                                                                       |
+| `--javascript, --js` | Generate JavaScript files                                                                                                                                      |
+| `--typescript, --ts` | Generate TypeScript files                                                                                                                                      |
 
 **Usage**
 
-See the [Creating a Post Editor](http://127.0.0.1:8080/tutorial/getting-dynamic.html#creating-a-post-editor) section of the tutorial.
+See [Creating a Post Editor](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor).
 
 You can namespace your scaffolds by providing `<path/model>`. The layout, pages, cells, and components will be nested in newly created dir(s). For example, given a model user, running `yarn rw g scaffold admin/user` will nest the layouts, pages, and components in a newly created `admin` directory:
 
@@ -1008,7 +790,13 @@ const Routes = () => {
 }
 ```
 
-## generate sdl
+**Destroying**
+
+```
+yarn rw d scaffold <model>
+```
+
+### sdl
 
 Generate a GraphQL schema and service object.
 
@@ -1016,58 +804,24 @@ Generate a GraphQL schema and service object.
 yarn rw g sdl <model>
 ```
 
-The sdl will inspect your `schema.prisma` and will do its best with relations. For 
-The schema <-> generators isn't one to one yet,
+The sdl will inspect your `schema.prisma` and will do its best with relations. Schema to generators isn't one-to-one yet (and might never be).
 
-See 
-limited genreator support ofr relations 
-https://community.redwoodjs.com/t/prisma-beta-2-and-rwjs-limited-generator-support-for-relations-with-workarounds/361
+<!-- See limited genreator support for relations
+https://community.redwoodjs.com/t/prisma-beta-2-and-rwjs-limited-generator-support-for-relations-with-workarounds/361 -->
 
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">model</span></td>
-      <td>Model to generate the sdl for.</td>
-    </tr>
-  </tbody>
-</table>
+| Arguments & Options  | Description                   |
+| :------------------- | :---------------------------- |
+| `model`              | Model to generate the sdl for |
+| `--crud`             | Also generate mutations       |
+| `--force, -f`        | Overwrite existing files      |
+| `--javascript, --js` | Generate JavaScript files     |
+| `--typescript, --ts` | Generate TypeScript files     |
 
-</br>
+**Destroying**
 
-<!-- Options -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Option</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">--force, -f</span></td>
-      <td>Overwrite existing files.</td>
-    </tr>
-    <tr>
-      <td><span id="code">--crud</span></td>
-      <td>Generate CRUD for existing files.</td>
-    </tr>
-    <tr>
-      <td><span id="code">--javascript, --js</span></td>
-      <td>Generate JavaScript files.</td>
-    </tr>
-    <tr>
-      <td><span id="code">--typescript, --ts</span></td>
-      <td>Generate TypeScript files.</td>
-    </tr>
-  </tbody>
-</table>
+```
+yarn rw d sdl <model>
+```
 
 **Example**
 
@@ -1084,7 +838,7 @@ $ /redwood-app/node_modules/.bin/rw g sdl user
 Done in 1.04s.
 ```
 
-The generated sdl defines a corresponding type, query, and create/update inputs, without defining any mutations.
+The generated sdl defines a corresponding type, query, and create/update inputs, without defining any mutations. To also get mutations, add the `--crud` option.
 
 ```javascript
 // ./api/src/graphql/users.sdl.js
@@ -1112,7 +866,7 @@ export const schema = gql`
 `
 ```
 
-The services file fulfills the query: 
+The services file fulfills the query. If the `--crud` option is added, this file will be much more complex.
 
 ```javascript
 // ./api/src/services/users/users.js
@@ -1171,7 +925,7 @@ export const User = {
 }
 ```
 
-## generate service
+### service
 
 Generate a service component.
 
@@ -1179,47 +933,20 @@ Generate a service component.
 yarn rw g service <name>
 ```
 
-Services are where Redwood puts its business logic. They can be used by your GraphQL API or any other place in your backend code. 
+Services are where Redwood puts its business logic. They can be used by your GraphQL API or any other place in your backend code. See [How Redwood Works with Data](https://redwoodjs.com/tutorial/side-quest-how-redwood-works-with-data).
 
-> Generated service filenames are always plural.
+| Arguments & Options  | Description               |
+| :------------------- | :------------------------ |
+| `name`               | Name of the service       |
+| `--force, -f`        | Overwrite existing files  |
+| `--javascript, --js` | Generate JavaScript files |
+| `--typescript, --ts` | Generate TypeScript files |
 
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">name</span></td>
-      <td>Name of the generated service.</td>
-    </tr>
-  </tbody>
-</table>
+**Destroying**
 
-</br>
-
-<!-- Options -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Option</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">--force, -f</span></td>
-      <td>Overwrite existing files.</td>
-    </tr>
-  </tbody>
-</table>
-
-**Usage**
-
-See [How Redwood Works with Data](https://redwoodjs.com/tutorial/side-quest-how-redwood-works-with-data).
+```
+yarn rw d service <name>
+```
 
 **Example**
 
@@ -1235,7 +962,7 @@ $ /redwood-app/node_modules/.bin/rw g service user
 Done in 1.02s.
 ```
 
-The generated service component will export a `findMany` query: 
+The generated service component will export a `findMany` query:
 
 ```javascript
 // ./api/src/services/users/users.js
@@ -1249,7 +976,7 @@ export const users = () => {
 
 ## info
 
-Prints your system environment information.
+Print your system environment information.
 
 ```terminal
 yarn rw info
@@ -1272,7 +999,7 @@ $ /redwood-app/node_modules/.bin/rw info
     Chrome: 78.0.3904.108
     Firefox: 76.0.1
   npmPackages:
-    @redwoodjs/core: ^0.7.0-rc.3 => 0.7.0-rc.3 
+    @redwoodjs/core: ^0.7.0-rc.3 => 0.7.0-rc.3
 
 Done in 1.98s.
 ```
@@ -1285,7 +1012,7 @@ Lint your files.
 yarn rw lint
 ```
 
-[Our ESLint configuration](https://github.com/redwoodjs/redwood/blob/master/packages/eslint-config/index.js) is a mixture between [ESLint's recommended rules](https://eslint.org/docs/rules/), [React's recommended rules](https://www.npmjs.com/package/eslint-plugin-react#list-of-supported-rules), and a bit of our own stylistic flair:
+[Our ESLint configuration](https://github.com/redwoodjs/redwood/blob/master/packages/eslint-config/index.js) is a mix of [ESLint's recommended rules](https://eslint.org/docs/rules/), [React's recommended rules](https://www.npmjs.com/package/eslint-plugin-react#list-of-supported-rules), and a bit of our own stylistic flair:
 
 - no semicolons
 - comma dangle when multiline
@@ -1295,20 +1022,9 @@ yarn rw lint
 
 <br/>
 
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Option</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">--fix</span></td>
-      <td>Apply suggested changes.</td>
-    </tr>
-  </tbody>
-</table>
+| Option  | Description       |
+| :------ | :---------------- |
+| `--fix` | Try to fix errors |
 
 ## open
 
@@ -1320,37 +1036,21 @@ yarn rw open
 
 ## redwood-tools (alias rwt)
 
-Redwood's companion CLI development tool. You'll be using this if you're contributing to the Redwood Framework. For information about using this command and available options, see the [Redwood Contributing guide's Reference section](https://github.com/redwoodjs/redwood/blob/master/CONTRIBUTING.md#Reference).
+Redwood's companion CLI development tool. You'll be using this if you're contributing to Redwood. See [Contributing](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#cli-reference-redwood-tools) in the Redwood repo.
 
 ## test
 
-Run Jest tests for api and web
-
-> This command is a WIP. You can track its progress via issue [#521](https://github.com/redwoodjs/redwood/pull/521)and PR [#502](https://github.com/redwoodjs/redwood/issues/502).
+Run Jest tests for api and web.
 
 ```terminal
 yarn rw test [side..]
 ```
 
-<!-- You can find the config files in [@redwoodjs/core](https://github.com/redwoodjs/redwood/tree/master/packages/core). -->
-
 <br/>
 
-<!-- Arguments -->
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Argument</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">side</span></td>
-      <td>Which side(s) to test. Choices are <span id="code">api</span> and <span id="code">web</span>. Default is <span id="code">api</span> and <span id="code">web</span>.</td>
-    </tr>
-  </tbody>
-</table>
+| Argument | Description                                                           |
+| :------- | :-------------------------------------------------------------------- |
+| `side`   | Which side(s) to test. Choices are `api, web`. Defaults to `api, web` |
 
 ## upgrade
 
@@ -1360,25 +1060,11 @@ Upgrade all `@redwoodjs` packages via an interactive CLI.
 yarn rw upgrade
 ```
 
-A canary release is published to npm every time a branch is merged to master.
+This command does all the heavy-lifting of upgrading to a new release for you.
 
-<table class="table-fixed w-full">
-  <thead class="text-left">
-    <tr>
-      <th class="w-1/5">Option</th>
-      <th class="w-auto">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><span id="code">--dry-run, -d</span></td>
-      <td>Check for outdated packages without upgrading.</td>
-    </tr>
-    <tr>
-      <td><span id="code">--tag</span></td>
-      <td>Which release to upgrade to. Choices are <span id="code">canary</span> and <span id="code">rc</span>.</td>
-    </tr>
-  </tbody>
-</table>
+Besides upgrading to a new release, you can use this command to upgrade to either of our unstable releases: `canary` and `rc`. A canary release is published to npm every time a branch is merged to master, and when we're getting close to a new release, we publish release candidates.
 
-> WARNING: using the `--tag` option will force upgrade you to an unstable release.
+| Option          | Description                                                                                                                         |
+| :-------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
+| `--dry-run, -d` | Check for outdated packages without upgrading                                                                                       |
+| `--tag, -t`     | WARNING: Unstable releases! Force upgrades packages to the most recent version for the given `--tag`. Choices are `canary` and `rc` |

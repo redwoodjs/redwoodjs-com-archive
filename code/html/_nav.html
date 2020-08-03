@@ -94,8 +94,9 @@
   </li>
   <li class="mb-4">
     <a
-      href="/videos.html"
+      href="/videos"
       class="flex items-center my-1 transition duration-100 text-gray-600 hover:text-gray-800 rounded"
+      data-action="click->nav#toggle"
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 text-gray-700 fill-current">
         <path d="M0 0h24v24H0V0z" fill="none" />
@@ -106,11 +107,15 @@
       </svg>
       <span class="ml-2">Videos</span>
     </a>
+    <ul class="hidden ml-6 mt-2 mb-8">
+      @@include('videos_nav')
+    </ul>
   </li>
   <li class="mb-4">
     <a
       href="https://community.redwoodjs.com"
       class="flex items-center my-1 transition duration-100 text-gray-600 hover:text-gray-800 rounded"
+      data-action="click->nav#toggle"
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 text-gray-700 fill-current">
         <path d="M0 0h24v24H0V0z" fill="none" />
@@ -119,5 +124,8 @@
       </svg>
       <span class="ml-2">Community</span>
     </a>
+    <ul class="hidden ml-6 mt-2 mb-8">
+      @@include('community_nav')
+    </ul>
   </li>
 </ul>
