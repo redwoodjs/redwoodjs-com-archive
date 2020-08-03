@@ -1873,8 +1873,8 @@ import {
   Submit,
   FieldError,
   Label,
-  useMutation
 } from '@redwoodjs/forms'
+import { useMutation } from '@redwoodjs/web'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -2072,10 +2072,9 @@ import {
   Submit,
   FieldError,
   Label,
-  useMutation,
   FormError,
 } from '@redwoodjs/forms'
-
+import { useMutation } from '@redwoodjs/web'
 // ...
 
 return (
@@ -2171,8 +2170,8 @@ import {
   FieldError,
   Label,
   FormError,
-  useMutation,
 } from '@redwoodjs/forms'
+import { useMutation } from '@redwoodjs/web'
 import { useForm } from 'react-hook-form'
 import BlogLayout from 'src/layouts/BlogLayout'
 
