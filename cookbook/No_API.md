@@ -26,7 +26,7 @@ Open up `netlify.toml`. We're going to comment out one line:
 
 ```toml{4}
 [build]
-  command = "yarn rw build && yarn rw db up --no-db-client --auto-approve && yarn rw dataMigrate up"
+  command = "yarn rw build"
   publish = "web/dist"
   # functions = "api/dist/functions"
 
@@ -43,6 +43,8 @@ package = 'netlify-plugin-prisma-provider'
   [plugins.inputs]
   path = 'api/prisma/schema.prisma'
 ```
+
+> Redwood is smart and will skip the database migration steps automatically if the /api directory doesn't exist, but we like to keep things neat and tidy!
 
 If you just have a static site that doesn't need any data access at all (even our simple JSON file discussed above) then you're done! Keep reading to see how you can access a local data store that we'll deploy along with the web side of our app.
 
