@@ -2080,7 +2080,7 @@ import {
   Label,
   FormError
 } from '@redwoodjs/forms'
-import useMutation from '@redwoodjs/web'
+import { useMutation } from '@redwoodjs/web'
 // ...
 
 return (
