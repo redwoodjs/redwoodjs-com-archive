@@ -2177,7 +2177,7 @@ import {
   Label,
   FormError
 } from '@redwoodjs/forms'
-import useMutation from '@redwoodjs/web'
+import { useMutation } from '@redwoodjs/web'
 import { useForm } from 'react-hook-form'
 import BlogLayout from 'src/layouts/BlogLayout'
 
