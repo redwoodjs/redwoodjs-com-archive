@@ -35,15 +35,11 @@ export default class extends Controller {
   toggleNav() {
     this.navTarget.classList.toggle('hidden')
     this.bodyTarget.classList.toggle('hidden')
-    document.body.classList.toggle('fixed')
-    document.body.classList.toggle('relative')
   }
 
   closeNav() {
     this.navTarget.classList.add('hidden')
     this.bodyTarget.classList.remove('hidden')
-    document.body.classList.remove('fixed')
-    document.body.classList.add('relative')
   }
 
   saveScrollPosition() {
