@@ -342,6 +342,26 @@ yarn rw d <type>
 | `sdl <model>`        | Destroy a GraphQL schema and service component based on a given DB schema Model |
 | `service <name>`     | Destroy a service component                                                     |
 
+## diagnostics
+
+Get structural diagnostics for a Redwood project (experimental).
+
+```
+yarn rw diagnostics
+```
+
+**Example**
+
+```terminal
+~/redwood-app$ yarn rw diagnostics
+yarn run v1.22.4
+web/src/Routes.js:14:5: error: You must specify a 'notfound' page
+web/src/Routes.js:14:19: error: Duplicate Path
+web/src/Routes.js:15:19: error: Duplicate Path
+web/src/Routes.js:17:40: error: Page component not found
+web/src/Routes.js:17:19: error (INVALID_ROUTE_PATH_SYNTAX): Error: Route path contains duplicate parameter: "/{id}/{id}"
+```
+
 ## generate (alias g)
 
 Save time by generating boilerplate code.
