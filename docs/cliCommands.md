@@ -352,7 +352,7 @@ yarn rw diagnostics
 
 **Example**
 
-```plaintext{10}
+```terminal
 ~/redwood-app$ yarn rw diagnostics
 yarn run v1.22.4
 web/src/Routes.js:14:5: error: You must specify a 'notfound' page
