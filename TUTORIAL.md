@@ -1863,7 +1863,7 @@ We reference the `createContact` mutation we defined in the Contacts SDL passing
 
 Next we'll call the `useMutation` hook provided by Apollo which will allow us to execute the mutation when we're ready (don't forget the `import` statement):
 
-```javascript{10,15}
+```javascript{11,15}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
