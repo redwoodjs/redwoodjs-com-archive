@@ -2455,8 +2455,8 @@ Take a look at the newly created `api/src/lib/auth.js` (usage comments omitted):
 
 import { AuthenticationError } from '@redwoodjs/api'
 
-export const getCurrentUser = async (jwt) => {
-  return jwt
+export const getCurrentUser = async (decoded, { token, type }) => {
+  return decoded
 }
 
 export const requireAuth = () => {
