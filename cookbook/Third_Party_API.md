@@ -511,6 +511,8 @@ Gross. This happens when our service tries to parse the response from OpenWeathe
 Okay, let's look for that `cod` and if it's `404` then we know the zip isn't found and can return a more helpful error from our service. Open up the service and let's add a check:
 
 ```javascript
+// api/src/services/weather/weather.js
+
 import fetch from 'node-fetch'
 
 export const getWeather = async ({ zip }) => {
