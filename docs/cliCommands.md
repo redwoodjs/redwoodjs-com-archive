@@ -1071,12 +1071,12 @@ yarn rw test [side..]
 | Arguments & Options | Description                                                                                                                                    |
 | :------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------- |
 | `side`              | Which side(s) to test. Choices are `api, web`. Defaults to "watch mode"                                                                        |
-| --`help`            | Show help                                                                                                                                      |
-| --`version`         | Show version number                                                                                                                            |
-| --`watch`           | Run tests related to changed files based on hg/git (uncommitted files). Specify the name or path to a file to focus on a specific set of tests |
-| --`watchAll`        | Run all tests                                                                                                                                  |
-| --`collectCoverage` | Show test coverage summary and output info to `coverage` directory in project root. See this directory for an .html coverage report            |
-| --`clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                 |
+| `--help`            | Show help                                                                                                                                      |
+| `--version`         | Show version number                                                                                                                            |
+| `--watch`           | Run tests related to changed files based on hg/git (uncommitted files). Specify the name or path to a file to focus on a specific set of tests |
+| `--watchAll`        | Run all tests                                                                                                                                  |
+| `--collectCoverage` | Show test coverage summary and output info to `coverage` directory in project root. See this directory for an .html coverage report            |
+| `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                 |
 
 ## upgrade
 
