@@ -673,7 +673,13 @@ Generates a page component and updates the routes.
 yarn rw g page <name> [path]
 ```
 
-If `path` isn't specified, it will be the same as the name. This also updates `Routes.js` in `./web/src`.
+`path` can include a route parameter which will be passed to the generated
+page. The syntax for that is `/path/to/page/{routeParam}/more/path`. You can
+also specify the type of the route parameter if needed: `{routeParam:Int}`. If
+`path` isn't specified, or if it's just a route parameter, it will be derived
+from `name` and the route parameter, if specified, will be added to the end.
+
+This also updates `Routes.js` in `./web/src`.
 
 | Arguments & Options | Description                              |
 | :------------------ | :--------------------------------------- |
@@ -687,7 +693,7 @@ If `path` isn't specified, it will be the same as the name. This also updates `R
 yarn rw d page <name> [path]
 ```
 
-**Example**
+**Examples**
 
 Generating a home page:
 
@@ -728,6 +734,59 @@ const Routes = () => {
   return (
     <Router>
       <Route path="/" page={HomePage} name="home" />
+      <Route notfound page={NotFoundPage} />
+    </Router>
+  )
+}
+```
+
+Generating a page to show quotes:
+
+```plaintext
+~/redwood-app$ yarn rw g page quote {id}
+yarn run v1.22.4
+$ /redwood-app/node_modules/.bin/rw g page quote {id}
+  ✔ Generating page files...
+    ✔ Writing `./web/src/pages/QuotePage/QuotePage.stories.js`...
+    ✔ Writing `./web/src/pages/QuotePage/QuotePage.test.js`...
+    ✔ Writing `./web/src/pages/QuotePage/QuotePage.js`...
+  ✔ Updating routes file...
+Done in 1.02s.
+```
+
+The generated page will get the route parameter as a prop:
+
+```javascript{5,12,14}
+// ./web/src/pages/QuotePage/QuotePage.js
+
+import { Link, routes } from '@redwoodjs/router'
+
+const QuotePage = ({ id }) => {
+  return (
+    <>
+      <h1>QuotePage</h1>
+      <p>Find me in "./web/src/pages/QuotePage/QuotePage.js"</p>
+      <p>
+        My default route is named "quote", link to me with `
+        <Link to={routes.quote({ id: 42 })}>Quote 42</Link>`
+      </p>
+      <p>The parameter passed to me is {id}</p>
+    </>
+  )
+}
+
+export default QuotePage
+```
+
+And the route is added to `Routes.js`, with the route parameter added:
+
+```javascript{6}
+// ./web/src/Routes.js
+
+const Routes = () => {
+  return (
+    <Router>
+      <Route path="/quote/{id}" page={QuotePage} name="quote" />
       <Route notfound page={NotFoundPage} />
     </Router>
   )
