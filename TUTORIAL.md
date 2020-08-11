@@ -2201,7 +2201,7 @@ const ContactPage = () => {
     try {
       await create({ variables: { input: data } })
     } catch (error) {
-      debugger
+      console.log(error)
     }
   }
 
