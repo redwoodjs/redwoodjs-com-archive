@@ -2200,6 +2200,7 @@ const ContactPage = () => {
   const onSubmit = async (data) => {
     try {
       await create({ variables: { input: data } })
+      console.log(data)
     } catch (error) {
       console.log(error)
     }
