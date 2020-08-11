@@ -42,7 +42,7 @@ Before you get started, there's an implicit doc-distinction that we should make 
 
 > The exceptions to this split are the packages that are designed to be used outside Redwood, which, right now, are `@redwoodjs/auth` and `@redwoodjs/router`.
 
-Although Developing and Contributing docs are in different places, they most definitely should be linked and referenced as needed. For example, it's appropriate to have a "Contributing" doc on redwoodjs.com that's context-appropriate, but it should link to the Framework's CONTRIBUTING.md (the way this doc does).
+Although Developing and Contributing docs are in different places, they most definitely should be linked and referenced as needed. For example, it's appropriate to have a "Contributing" doc on redwoodjs.com that's context-appropriate, but it should link to the Framework's [CONTRIBUTING.md](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md) (the way this doc does).
 
 ### How Redwood Thinks about Docs
 
