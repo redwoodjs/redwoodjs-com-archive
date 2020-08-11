@@ -1943,9 +1943,13 @@ The `useMutation` hook returns a couple more elements along with the function to
 const ContactPage = () => {
   const [create, { loading, error }] = useMutation(CREATE_CONTACT)
 
-  const onSubmit = (data) => {
-    create({ variables: { input: data } })
-    console.log(data)
+  const onSubmit = async (data) => {
+    try {
+      await create({ variables: { input: data } })
+      console.log(data)
+    catch (error) {
+      console.log(error)
+    }
   }
 
   return (...)
@@ -2193,9 +2197,12 @@ const ContactPage = () => {
     },
   })
 
-  const onSubmit = (data) => {
-    create({ variables: { input: data } })
-    console.log(data)
+  const onSubmit = async (data) => {
+    try {
+      await create({ variables: { input: data } })
+    } catch (error) {
+      debugger
+    }
   }
 
   return (
