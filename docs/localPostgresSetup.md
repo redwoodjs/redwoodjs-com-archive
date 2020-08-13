@@ -79,7 +79,7 @@ If you haven't created migrations yet, use `save`:
 yarn rw db save
 ```
 
-Both commands will create and migrate the Postres database you specified in your `.env`.
+Both commands will create and migrate the Postgres database you specified in your `.env`.
 
 
 Here are our recommendations in case you need a tool to manage your databases:

@@ -151,3 +151,39 @@
 ### Tom Preston-Werner joins Sam and Ryan to talk about some of the architecture decisions behind Redwood JS, a recently released full-stack JS framework he's been working on for more than a year.
 
 #### Podcast
+
+---
+
+![Redwood Newsletter](https://user-images.githubusercontent.com/2951/85804346-3c6dd200-b6fe-11ea-8a26-6a989444452c.png)
+
+# [Issue 1](https://mailchi.mp/redwoodjs/issue-1-june-2020)
+
+## June 24 2020
+
+### All the RedwoodJS News that’s Fit to Print: Auth and Testing and Prisma Day 2, oh my! Helping you use RedwoodJS better with highlights, snippets, and upcoming events.
+
+#### Newsletter
+
+---
+
+![Prisma 2 Day](https://user-images.githubusercontent.com/300/86036879-63c0e980-b9f3-11ea-9b5c-d01d3b75f2e2.png)
+
+# [Prisma Day 2 and RedwoodJS](https://www.youtube.com/watch?v=BqztLbj_cN4&feature=youtu.be&t=17252)
+
+## June 26 2020
+
+### Tom gives a tour of Redwood for Prisma Day by adding a feature to a Todo app.
+
+#### Video
+
+---
+
+![Redwood Newsletter](https://user-images.githubusercontent.com/2951/85804346-3c6dd200-b6fe-11ea-8a26-6a989444452c.png)
+
+# [Issue 2](https://mailchi.mp/redwoodjs/all-the-redwoodjs-news-fit-to-print-issue-2)
+
+## July 29 2020
+
+### All the RedwoodJS News that’s Fit to Print: Storybook Integration, CLI Diagnostics, Apps built with Redwood, and even more new tools and snippets.
+
+#### Newsletter

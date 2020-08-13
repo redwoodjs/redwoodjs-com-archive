@@ -7,4 +7,4 @@ Generally, there's a doc context rule--developing docs go on the website, contri
 So unless we want to face the perils of synchronizing changes across two docs in two places, the package's README kind of needs to have it all.
 
 This is all to say that if you want to edit this doc (and thank you if you do!), use the following link to edit the Auth package README in the `redwoodjs/redwood` repo and submit a PR there:
-https://github.com/redwoodjs/redwood/blob/master/packages/auth/README.md
+https://github.com/redwoodjs/redwood/blob/main/packages/auth/README.md

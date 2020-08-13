@@ -1,6 +1,6 @@
 # Welcome to Redwood
 
-Welcome to Redwood! If you haven't yet, check out the [Redwood README](https://github.com/redwoodjs/redwood/blob/master/README.md) to get a little background on why we created Redwood and the problems it's meant to solve. Redwood brings several existing technologies together for the first time into what we think is the future of database-backed single page applications.
+Welcome to Redwood! If you haven't yet, check out the [Redwood README](https://github.com/redwoodjs/redwood/blob/main/README.md) to get a little background on why we created Redwood and the problems it's meant to solve. Redwood brings several existing technologies together for the first time into what we think is the future of database-backed single page applications.
 
 In this tutorial we're going to build a blog engine. In reality a blog is probably not the ideal candidate for a Redwood app: blog articles can be stored in a CMS and statically generated to HTML files and served as flat files from a CDN. But as most developers are familiar with a blog and it uses all of the features we want to demonstrate, we decided to build one anyway.
 
@@ -158,7 +158,7 @@ That's it for the backend.
 - `public` contains assets not used by React components (they will be copied over unmodified to the final app's root directory):
   - `favicon.png` is the icon that goes in a browser tab when your page is open (apps start with the RedwoodJS logo).
   - `robots.txt` can be used to control what web indexers are [allowed to do](https://www.robotstxt.org/robotstxt.html).
-  - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can read it on Github [here](https://github.com/redwoodjs/create-redwood-app/tree/master/web/public).
+  - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can read it on Github [here](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
 - `index.css` is a generic place to put your CSS, but there are many options.
 - `index.html` is the standard React starting point for our app.
 - `index.js` the bootstraping code to get our Redwood app up and running.
@@ -170,10 +170,11 @@ Let's give our users something to look at besides the Redwood welcome page. We'l
 
     yarn redwood generate page home /
 
-This does three things:
+The command above does three things:
 
 - Creates `web/src/pages/HomePage/HomePage.js`. Redwood takes the name you specified as the first argument, capitalizes it, and appends "Page" to construct your new page component.
 - Creates a test file to go along with this new page component at `web/src/pages/HomePage/HomePage.test.js` with a single, passing test. You _do_ write tests for your components, _don't you??_
+- Creates a Storybook file for this component at `web/src/pages/HomePage/HomePage.stories.js`. Storybook is a wonderful tool for efficiently developing and organizing UI components. If you'd like to learn more, see this [Redwood Forum topic](https://community.redwoodjs.com/t/how-to-use-the-new-storybook-integration-in-v0-13-0/873) to start using it in your development process.
 - Adds a `<Route>` in `web/src/Routes.js` that maps the path `/` to the new _HomePage_ page.
 
 > If you look in Routes you'll notice that we're referencing a component, `HomePage`, that isn't imported anywhere. Redwood automatically imports all pages in the Routes file since we're going to need to reference them all anyway. It saves a potentially huge `import` declaration from cluttering up the routes file.
@@ -500,14 +501,7 @@ That was simple. Now we'll want to snapshot this as a migration:
 
     yarn redwood db save
 
-A prompt will ask you if you'd like to create a new SQLite database (yes you would). Next it asks what you want to name this migration. This is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference for future developers. Something like "create posts" is perfect.
-
-> ⚠️ **Windows Users:** there is a known Prisma issue causing the `yarn rw db save` process to hang indefinitely. This issue only affects Windows systems. For now, there's a simple workaround:
-> 1. run `yarn redwood db save`, which will hang
-> 2. kill the process with "Ctrl+C"
-> 3. re-run the command
->
-> The command will complete successfully and sequential DB commands will work correctly. You can check the current status of this issue [here](https://github.com/redwoodjs/redwood/issues/575). And, most of all, apologies for the inconvenience — carry on!
+A prompt will ask you what you want to name this migration. This is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference for future developers. Something like "create posts" is perfect.
 
 After the command completes you'll see a new subdirectory created under `api/prisma/migrations` that has a timestamp and the name you gave the migration. It will contain a couple files inside (a snapshot of what the schema looked like at that point in time in `schema.prisma` and the directives that Prisma Migrate will use to make the change to the database in `steps.json`).
 
@@ -966,7 +960,7 @@ Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever va
 
 Cool, cool, cool. Now we need to construct a link that has the ID of a post in it:
 
-```javascript
+```html
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
@@ -1275,7 +1269,7 @@ For now we won't be talking to the database in our Contact form so we won't crea
 ```javascript{3,9}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form } from '@redwoodjs/web'
+import { Form } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1294,7 +1288,7 @@ Well that was anticlimactic. You can't even see it in the browser. Let's add a f
 ```javascript{3,10}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField } from '@redwoodjs/web'
+import { Form, TextField } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1317,7 +1311,7 @@ Something is showing! Still, pretty boring. How about adding a submit button?
 ```javascript{3,11}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField, Submit } from '@redwoodjs/web'
+import { Form, TextField, Submit } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1370,7 +1364,7 @@ Great! Let's turn this into a more useful form by adding a couple fields. We'll 
 ```javascript{3,15,16}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField, TextAreaField, Submit } from '@redwoodjs/web'
+import { Form, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1493,7 +1487,7 @@ import {
   TextAreaField,
   Submit,
   FieldError,
-} from '@redwoodjs/web'
+} from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1609,7 +1603,7 @@ import {
   Submit,
   FieldError,
   Label,
-} from '@redwoodjs/web'
+} from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1869,7 +1863,7 @@ We reference the `createContact` mutation we defined in the Contacts SDL passing
 
 Next we'll call the `useMutation` hook provided by Apollo which will allow us to execute the mutation when we're ready (don't forget the `import` statement):
 
-```javascript{10,15}
+```javascript{11,15}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -1879,8 +1873,8 @@ import {
   Submit,
   FieldError,
   Label,
-  useMutation
-} from '@redwoodjs/web'
+} from '@redwoodjs/forms'
+import { useMutation } from '@redwoodjs/web'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -2078,10 +2072,9 @@ import {
   Submit,
   FieldError,
   Label,
-  useMutation,
   FormError,
-} from '@redwoodjs/web'
-
+} from '@redwoodjs/forms'
+import { useMutation } from '@redwoodjs/web'
 // ...
 
 return (
@@ -2177,8 +2170,8 @@ import {
   FieldError,
   Label,
   FormError,
-  useMutation,
-} from '@redwoodjs/web'
+} from '@redwoodjs/forms'
+import { useMutation } from '@redwoodjs/web'
 import { useForm } from 'react-hook-form'
 import BlogLayout from 'src/layouts/BlogLayout'
 
@@ -2299,7 +2292,18 @@ Part 4 of the video tutorial picks up here:
 
 The whole reason we started building Redwood was to make full-stack web apps easier to build and deploy on the Jamstack. You've seen what building a Redwood app is like, how about we try deploying one?
 
-Before we continue, make sure your app is fully committed and pushed to GitHub, GitLab, or Bitbucket. We're going to link Netlify directly to our git repo so that a simple push to `master` will re-deploy our site. If you haven't worked on the Jamstack yet you're in for a pleasant surprise!
+Before we continue, make sure your app is fully committed and pushed to GitHub, GitLab, or Bitbucket. We're going to link Netlify directly to our git repo so that a simple push to `main` will re-deploy our site. If you haven't worked on the Jamstack yet you're in for a pleasant surprise!
+
+> **NOTE:** Git initializes with `master`. Don't know how to rename `master` to `main`? If you're pushing to GitHub, you can follow these steps:
+>
+> ```plaintext{4,6}
+> git init
+> git add .
+> git commit -m 'First commit'
+> git branch -m main
+> git remote add origin ...
+> git push -u origin main
+> ```
 
 ### The Database
 
@@ -2374,17 +2378,17 @@ With a little luck (and SCIENCE) it will complete successfully! You can click th
 
 Did it work? If you see "Empty" under the About and Contact links then it did! Yay! You're seeing "Empty" because you don't have any posts in your brand new production database so head to `/admin/posts` and create a couple, then go back to the homepage to see them.
 
-> If you view a deploy via the **Preview** button notice that the URL contains a hash of the latest commit. Netlify will create one of these for every push to master but will only ever show this exact commit, so if you deploy again and refresh you won't see any changes. The real URL for your site (the one you get from your site's homepage in Netlify) will show the latest deploy. See [branch deploys](#branch-deploys) below for more info.
+> If you view a deploy via the **Preview** button notice that the URL contains a hash of the latest commit. Netlify will create one of these for every push to `main` but will only ever show this exact commit, so if you deploy again and refresh you won't see any changes. The real URL for your site (the one you get from your site's homepage in Netlify) will show the latest deploy. See [branch deploys](#branch-deploys) below for more info.
 
 If the deploy failed, check the log output in Netlify and see if you can make sense of the error. If the deploy was successful but the site doesn't come up, try opening the web inspector and look for errors. Are you sure you pasted the entire Postgres connection string correctly? If you're really, really stuck head over to the [Redwood Community](https://community.redwoodjs.com) and ask for help.
 
 ### Branch Deploys
 
-Another neat feature of Netlify is _Branch Deploys_. When you create a branch and push it up to your repo, Netlify will build that branch at a unique URL so that you can test your changes, leaving the main site alone. Once your branch is merged to `master` then a deploy at your main site will run and your changes will show to the world. To enable Branch Deploys go to **Settings** > **Continuous Deployment** and under the **Deploy contexts** section click **Edit settings** and change **Branch deploys** to "All". You can also enable _Deploy previews_ which will create them for any pull requests against your repo.
+Another neat feature of Netlify is _Branch Deploys_. When you create a branch and push it up to your repo, Netlify will build that branch at a unique URL so that you can test your changes, leaving the main site alone. Once your branch is merged to `main` then a deploy at your main site will run and your changes will show to the world. To enable Branch Deploys go to **Settings** > **Continuous Deployment** and under the **Deploy contexts** section click **Edit settings** and change **Branch deploys** to "All". You can also enable _Deploy previews_ which will create them for any pull requests against your repo.
 
 ![image](https://user-images.githubusercontent.com/300/76029913-369f7700-5eea-11ea-88f5-e6b2b282453f.png)
 
-> You also have the ability to "lock" the `master` branch so that deploys do not automatically occur on every push—you need to manually tell Netlify to deploy the latest, either by going to the site or using the [Netlify CLI](https://cli.netlify.com/).
+> You also have the ability to "lock" the `main` branch so that deploys do not automatically occur on every push—you need to manually tell Netlify to deploy the latest, either by going to the site or using the [Netlify CLI](https://cli.netlify.com/).
 
 ### A Note About DB Connections
 
@@ -2451,8 +2455,8 @@ Take a look at the newly created `api/src/lib/auth.js` (usage comments omitted):
 
 import { AuthenticationError } from '@redwoodjs/api'
 
-export const getCurrentUser = async (jwt) => {
-  return jwt
+export const getCurrentUser = async (decoded, { token, type }) => {
+  return decoded
 }
 
 export const requireAuth = () => {
@@ -2539,6 +2543,7 @@ const Routes = () => {
       <Route path="/contact" page={ContactPage} name="contact" />
       <Route path="/about" page={AboutPage} name="about" />
       <Route path="/" page={HomePage} name="home" />
+      <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
       <Private unauthenticated="home">
         <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
         <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />

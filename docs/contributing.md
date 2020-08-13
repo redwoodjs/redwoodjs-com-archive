@@ -7,13 +7,13 @@ Love Redwood and want to get involved? You’re in the right place! There are se
 - write and edit [docs](#contributing-docs)
 - and of course, write code!
 
-> Before interacting with the Redwood community, please read and understand our [Code of Conduct](https://github.com/redwoodjs/redwood/blob/master/CODE_OF_CONDUCT.md#contributor-covenant-code-of-conduct).
+> Before interacting with the Redwood community, please read and understand our [Code of Conduct](https://github.com/redwoodjs/redwood/blob/main/CODE_OF_CONDUCT.md#contributor-covenant-code-of-conduct).
 
 ## Contributing Code
 
 Redwood's composed of many packages that are designed to work together. Some of these packages are designed to be used outside Redwood too!
 
-Before you start contributing, you'll want to set up your local development environment. The Redwood repo's top-level [contributing guide](https://github.com/redwoodjs/redwood/blob/master/CONTRIBUTING.md#local-development) walks you through this. Make sure to give it an initial read.
+Before you start contributing, you'll want to set up your local development environment. The Redwood repo's top-level [contributing guide](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#local-development) walks you through this. Make sure to give it an initial read.
 
 For details on contributing to a specific package, see the package's README (links provided in the table below). Each README has a section named Roadmap. If you want to get involved but don't quite know how, the Roadmap's a good place to start. See anything that interests you? Go for it! And be sure to let us know&mdash;you don't have to have a finished product before opening an issue or pull request. In fact, we're big fans of [Readme Driven Development](https://tom.preston-werner.com/2010/08/23/readme-driven-development.html).
 
@@ -21,18 +21,18 @@ What you want to do not on the roadmap? Well, still go for it! We love spikes an
 
 |Package|Description|
 |:-|:-|
-|[`@redwoodjs/api`](https://github.com/redwoodjs/redwood/blob/master/packages/api/README.md)|Exposes functions to build the GraphQL API and provides services with `context`|
-|[`@redwoodjs/auth`](https://github.com/redwoodjs/redwood/blob/master/packages/auth/README.md#contributing)|A lightweight wrapper around popular SPA authentication libraries|
-|[`@redwoodjs/cli`](https://github.com/redwoodjs/redwood/blob/master/packages/cli/README.md)|All the commands for Redwood's built-in CLI|
-|[`@redwoodjs/core`](https://github.com/redwoodjs/redwood/blob/master/packages/core/README.md)|Defines babel plugins and config files|
-|[`@redwoodjs/create-redwood-app`](https://github.com/redwoodjs/redwood/blob/master/packages/create-redwood-app/README.md)|Enables `yarn create redwood-app`&mdash;downloads the latest release of Redwood and extracts it into the supplied directory|
-|[`@redwoodjs/dev-server`](https://github.com/redwoodjs/redwood/blob/master/packages/dev-server/README.md)|Configuration for the local development server|
-|[`@redwoodjs/eslint-config`](https://github.com/redwoodjs/redwood/blob/master/packages/eslint-config/README.md)|Defines Redwood's eslint config|
-|[`@redwoodjs/eslint-plugin-redwood`](https://github.com/redwoodjs/redwood/blob/master/packages/eslint-plugin-redwood/README.md)|Defines eslint plugins; currently just prohibits the use of non-existent pages in `Routes.js`|
-|[`@redwoodjs/internal`](https://github.com/redwoodjs/redwood/blob/master/packages/internal/README.md)|Provides tooling to parse Redwood configs and get a project's paths|
-|[`@redwoodjs/router`](https://github.com/redwoodjs/redwood/blob/master/packages/router/README.md)|The built-in router for Redwood|
-|[`@redwoodjs/testing`](https://github.com/redwoodjs/redwood/blob/master/packages/testing/README.md)|Provides helpful defaults when testing a Redwood project's web side|
-|[`@redwoodjs/web`](https://github.com/redwoodjs/redwood/blob/master/packages/web/README.md)|Configures a Redwood's app web side: wraps the Apollo Client in `RedwoodProvider`; provides Form helpers; defines the Cell HOC|
+|[`@redwoodjs/api`](https://github.com/redwoodjs/redwood/blob/main/packages/api/README.md)|Exposes functions to build the GraphQL API and provides services with `context`|
+|[`@redwoodjs/auth`](https://github.com/redwoodjs/redwood/blob/main/packages/auth/README.md#contributing)|A lightweight wrapper around popular SPA authentication libraries|
+|[`@redwoodjs/cli`](https://github.com/redwoodjs/redwood/blob/main/packages/cli/README.md)|All the commands for Redwood's built-in CLI|
+|[`@redwoodjs/core`](https://github.com/redwoodjs/redwood/blob/main/packages/core/README.md)|Defines babel plugins and config files|
+|[`@redwoodjs/create-redwood-app`](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/README.md)|Enables `yarn create redwood-app`&mdash;downloads the latest release of Redwood and extracts it into the supplied directory|
+|[`@redwoodjs/dev-server`](https://github.com/redwoodjs/redwood/blob/main/packages/dev-server/README.md)|Configuration for the local development server|
+|[`@redwoodjs/eslint-config`](https://github.com/redwoodjs/redwood/blob/main/packages/eslint-config/README.md)|Defines Redwood's eslint config|
+|[`@redwoodjs/eslint-plugin-redwood`](https://github.com/redwoodjs/redwood/blob/main/packages/eslint-plugin-redwood/README.md)|Defines eslint plugins; currently just prohibits the use of non-existent pages in `Routes.js`|
+|[`@redwoodjs/internal`](https://github.com/redwoodjs/redwood/blob/main/packages/internal/README.md)|Provides tooling to parse Redwood configs and get a project's paths|
+|[`@redwoodjs/router`](https://github.com/redwoodjs/redwood/blob/main/packages/router/README.md)|The built-in router for Redwood|
+|[`@redwoodjs/testing`](https://github.com/redwoodjs/redwood/blob/main/packages/testing/README.md)|Provides helpful defaults when testing a Redwood project's web side|
+|[`@redwoodjs/web`](https://github.com/redwoodjs/redwood/blob/main/packages/web/README.md)|Configures a Redwood's app web side: wraps the Apollo Client in `RedwoodProvider`; provides Form helpers; defines the Cell HOC|
 
 ## Contributing Docs
 
@@ -42,7 +42,7 @@ Before you get started, there's an implicit doc-distinction that we should make 
 
 > The exceptions to this split are the packages that are designed to be used outside Redwood, which, right now, are `@redwoodjs/auth` and `@redwoodjs/router`.
 
-Although Developing and Contributing docs are in different places, they most definitely should be linked and referenced as needed. For example, it's appropriate to have a "Contributing" doc on redwoodjs.com that's context-appropriate, but it should link to the Framework's CONTRIBUTING.md (the way this doc does).
+Although Developing and Contributing docs are in different places, they most definitely should be linked and referenced as needed. For example, it's appropriate to have a "Contributing" doc on redwoodjs.com that's context-appropriate, but it should link to the Framework's [CONTRIBUTING.md](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md) (the way this doc does).
 
 ### How Redwood Thinks about Docs
 
@@ -51,7 +51,7 @@ Before we get into the how-to, a little explanation. When thinking about docs, w
 ### Docs for Developing Redwood Apps
 
 redwoodjs.com has three kinds of Developing docs: Docs, Cookbook Recipes, and The Tutorial.
-You can find Docs and Cookbook Recipes within their respective directories on the redwood/redwoodjs.com repo: [docs/](https://github.com/redwoodjs/redwoodjs.com/tree/master/docs) and [cookbook/](https://github.com/redwoodjs/redwoodjs.com/tree/master/cookbook). The Tutorial is actually all in [one file](https://github.com/redwoodjs/redwoodjs.com/blob/master/TUTORIAL.md).
+You can find Docs and Cookbook Recipes within their respective directories on the redwood/redwoodjs.com repo: [docs/](https://github.com/redwoodjs/redwoodjs.com/tree/main/docs) and [cookbook/](https://github.com/redwoodjs/redwoodjs.com/tree/main/cookbook). The Tutorial is actually all in [one file](https://github.com/redwoodjs/redwoodjs.com/blob/main/TUTORIAL.md).
 
 The Tutorial is a standalone document that serves a specific purpose as an introduction to Redwood, an aspirational roadmap, and an example of developer experience. As such, it's distinct from the categories mentioned, although it's most similar to Cookbook Recipes.
 
@@ -59,7 +59,7 @@ The Tutorial is a standalone document that serves a specific purpose as an intro
 
 Docs are explanation-driven how-to content. They're more direct and to-the-point than The Tutorial and Cookbook Recipes. The idea is much more about finding something or getting something done than any kind of learning journey.
 
-Before you take on a doc, you should read [Form](https://redwoodjs.com/docs/form) and [Redwood Router](https://redwoodjs.com/docs/redwood-router); they have the kind of content you should be striving for. They're comprehensive yet conversational. 
+Before you take on a doc, you should read [Form](https://redwoodjs.com/docs/form) and [Redwood Router](https://redwoodjs.com/docs/redwood-router); they have the kind of content you should be striving for. They're comprehensive yet conversational.
 
 In general, don't be afraid to go into too much detail. We'd rather you err on the side of too much than too little. One tip for finding good content is searching the forum and repo for "prior art"&mdash;what are people talking about where this comes up?
 
@@ -83,6 +83,6 @@ So, after you've finished writing, reread what you wrote with the intention of m
 
 ### Docs for Contributing to the Redwood Repo
 
-These docs are in the Framework repo, redwoodjs/redwood, and explain how to contribute to Redwood packages. They're the docs linked to in the table above. 
+These docs are in the Framework repo, redwoodjs/redwood, and explain how to contribute to Redwood packages. They're the docs linked to in the table above.
 
 In general, they should consist of more straightforward explanations, are allowed to be technically heavy, and should be written for a more experienced audience. But as a best practice for collaborative projects, they should still provide a Vision + Roadmap and identify the project-point person(s) (or lead(s)).
