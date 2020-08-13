@@ -2038,6 +2038,20 @@ We already capture any existing error in the `error` constant that we got from `
   // ...
 ```
 
+> If you need to handle your errors manually, you can do this:
+>
+> ```javascript{3-8}
+> // web/src/pages/ContactPage/ContactPage.js
+> const onSubmit = async (data) => {
+>   try {
+>     await create({ variables: { input: data } })
+>     console.log(data)
+>   catch (error) {
+>     console.log(error)
+>   }
+> }
+> ```
+
 To get a server error to fire, let's remove the email format validation so that the client-side error isn't shown:
 
 ```html
