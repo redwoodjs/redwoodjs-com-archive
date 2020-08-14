@@ -83,5 +83,5 @@ Both commands will create and migrate the Postgres database you specified in you
 
 
 Here are our recommendations in case you need a tool to manage your databases:
-- [BeeKeeper Studio](https://www.beekeeperstudio.io/) (Linux)
+- [Beekeeper Studio](https://www.beekeeperstudio.io/) (Linux, Mac, Windows - Open Source)
 - [TablePlus](https://tableplus.com/) (Mac, Windows)
