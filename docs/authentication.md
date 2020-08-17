@@ -388,7 +388,7 @@ If you assinger your user the "admin" role in Auth0, you will want you user's ap
 }
 ```
 
-To set this information and make it available to redwoodJS, you can to use [Auth0 Rules](https://auth0.com/docs/rules)..
+To set this information and make it available to RedwoodJS, you can to use [Auth0 Rules](https://auth0.com/docs/rules).
 
 #### Auth0 Rules for App Metadata
 
