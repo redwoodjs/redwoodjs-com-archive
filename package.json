@@ -30,6 +30,7 @@
     "lodash.escape": "^4.0.1",
     "lodash.template": "^4.5.0",
     "markdown-it": "^10.0.0",
+    "markdown-it-collapsible": "^1.0.0",
     "markdown-it-highlight-lines": "^1.0.2",
     "markdown-it-toc-and-anchor": "^4.2.0",
     "marked": "^0.8.0",
