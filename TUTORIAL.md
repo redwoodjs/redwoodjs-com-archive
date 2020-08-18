@@ -2319,6 +2319,16 @@ Before we continue, make sure your app is fully committed and pushed to GitHub, 
 > git push -u origin main
 > ```
 
+### The Codebase
+
+We've only got one change to make to the codebase to get it ready for deployment and we've got a generator to do it for us:
+
+```terminal
+yarn rw g deploy netlify
+```
+
+This creates a file at `/netlify.toml` which contains the commands and file paths that Netlify needs to know about to build a Redwood app.
+
 ### The Database
 
 We'll need a database somewhere on the internet to store our data. We've been using SQLite locally, but that's a file-based store meant for single-user. SQLite isn't really suited for the kind of connection and concurrency requirements a production website will require. For this part of this tutorial, we will use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting. We just need to get a database available to the outside world so it can be accessed by our app.
