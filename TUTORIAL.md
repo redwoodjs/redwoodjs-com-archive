@@ -2306,6 +2306,14 @@ Part 4 of the video tutorial picks up here:
 
 The whole reason we started building Redwood was to make full-stack web apps easier to build and deploy on the Jamstack. You've seen what building a Redwood app is like, how about we try deploying one?
 
+We've only got one change to make to the codebase to get it ready for deployment and we've got a generator to do it for us:
+
+```terminal
+yarn rw g deploy netlify
+```
+
+This creates a file at `/netlify.toml` which contains the commands and file paths that Netlify needs to know about to build a Redwood app.
+
 Before we continue, make sure your app is fully committed and pushed to GitHub, GitLab, or Bitbucket. We're going to link Netlify directly to our git repo so that a simple push to `main` will re-deploy our site. If you haven't worked on the Jamstack yet you're in for a pleasant surprise!
 
 > **NOTE:** Git initializes with `master`. Don't know how to rename `master` to `main`? If you're pushing to GitHub, you can follow these steps:
@@ -2318,16 +2326,6 @@ Before we continue, make sure your app is fully committed and pushed to GitHub, 
 > git remote add origin ...
 > git push -u origin main
 > ```
-
-### The Codebase
-
-We've only got one change to make to the codebase to get it ready for deployment and we've got a generator to do it for us:
-
-```terminal
-yarn rw g deploy netlify
-```
-
-This creates a file at `/netlify.toml` which contains the commands and file paths that Netlify needs to know about to build a Redwood app.
 
 ### The Database
 
