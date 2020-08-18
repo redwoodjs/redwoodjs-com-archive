@@ -191,10 +191,7 @@ const UserAuthTools = () => {
   )
 }
 ```
-#### API Specific Setup
-See the Auth0 information within this doc's [API Specific Integration](#api-specific-integration) section.
 
-#api-specific-integration
 
 ### Magic.Link
 
@@ -234,9 +231,6 @@ ReactDOM.render(
   document.getElementById('redwood-app')
 )
 ```
-
-#### API Specific Setup
-See the Magic.Link information within this doc's [API Specific Integration](#api-specific-integration) section.
 
 
 ### Firebase
@@ -313,8 +307,6 @@ const UserAuthTools = () => {
 }
 ```
 
-#### API Specific Setup
-See the Firebase information within this doc's [API Specific Integration](#api-specific-integration) section.
 
 ### Custom
 
@@ -418,13 +410,13 @@ If you're using Auth0 you must also [create an API](https://auth0.com/docs/quick
 
 +++ All Auth0 API Options (click here)
 
-**Role-based access control (RBAC)**
+##### Role-based access control (RBAC)
 
 [Role-based access control (RBAC)](https://auth0.com/docs/authorization/concepts/rbac) refers to the idea of assigning permissions to users based on their role within an organization. It provides fine-grained control and offers a simple, manageable approach to access management that is less prone to error than assigning permissions to users individually.
 
 Essentially, a role is a collection of permissions that you can apply to users. A role might be "admin", "editor" or "publisher". This differs from permissions an example of which might be "publish:blog".
 
-**App metadata**
+##### App metadata
 
 Auth0 stores information (such as, support plan subscriptions, security roles, or access control groups) in "App metadata". Data stored in `app_metadata` cannot be edited by users.
 
@@ -444,13 +436,13 @@ If you assinger your user the "admin" role in Auth0, you will want you user's ap
 
 To set this information and make it available to RedwoodJS, you can to use [Auth0 Rules](https://auth0.com/docs/rules).
 
-**Auth0 Rules for App Metadata**
+##### Auth0 Rules for App Metadata
 
 RedwoodJS needs the `app_metadata` to 1) contain the role information and 2) be present in the JWT that is decoded.
 
 To accomplish these tasks, you can use [Auth0 Rules](https://auth0.com/docs/rules) to add them as custom claims on your JWT.
 
-**Add Authorization Roles to AppMetadata Rule**
+##### Add Authorization Roles to AppMetadata Rule
 
 Your first rule will `Add Authorization Roles to AppMetadata`.
 
@@ -479,7 +471,7 @@ Auth0 maintains user role assignments `context.authorization`. This rule simply 
 
 But, now you must include the `app_metdata` on the user's JWT that RedwoodJS will decode.
 
-**Add AppMetadata to JWT Rule**
+##### Add AppMetadata to JWT Rule
 
 Therefore, your second rule will `Add AppMetadata to JWT`.
 
@@ -537,7 +529,7 @@ function (user, context, callback) {
 
 Now, your `app_metadata` with `authorization` and `role` information will be on the user's JWT after logging in.
 
-**Add Application hasRole Support**
+##### Add Application hasRole Support
 
 If you intend to support, RBAC then in your `api/src/lib/auth.js` you need to extract `roles` using the `parseJWT` utility and set these roles on `currentUser`.
 
@@ -565,7 +557,7 @@ export const getCurrentUser = async (decoded, { type, token }) => {
 }
 ```
 
-**Role Protection on Functions, Services and Web**
+##### Role Protection on Functions, Services and Web
 
 You can specify an optional role in `requireAuth` to check if the user is both authenticated and is assigned the role:
 
