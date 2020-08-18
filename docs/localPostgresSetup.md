@@ -42,7 +42,7 @@ Add a `DATABASE_URL` to your `.env` file with the URL of the database you'd like
 following example uses `redwoodblog_dev` for the database. It also has `postgres` setup as a
 superuser for ease of use.
 ```env
-DATABASE_URL="postgresql://postgres@localhost/redwoodblog_dev?connection_limit=1"
+DATABASE_URL="postgresql://postgres@localhost:5432/redwoodblog_dev?connection_limit=1"
 ```
 
 Note the `connection_limit` parameter. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with
