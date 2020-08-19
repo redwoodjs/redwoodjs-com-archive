@@ -138,6 +138,3 @@ Go ahead, click that "Visit" button. You’ve earned it 🎉
 From the Vercel Dashboard you can access the full settings and information for your Redwood App. The default settings seem to work just fine for most Redwood projects. Do take a look around, but be sure check out the [docs as well](https://vercel.com/docs).
 
 From now on, each time you push code to your git repo, Vercel will automatically trigger a deploy of the new code. You can also manually redeploy if you select "Deployments", then the specific deployment from the list, and finally the "Redeploy" option from the vertical dots menu next to "Visit".
-
-### Vercel CLI (optional)
-Vercel is also provides a CLI to manage Redwood project deploys. To learn more and install the CLI, [see this documentation](https://vercel.com/docs/cli#getting-started).
