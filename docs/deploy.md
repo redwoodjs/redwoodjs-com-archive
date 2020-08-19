@@ -1,8 +1,14 @@
 # Deploy
 
+<<<<<<< HEAD
 Redwood is designed serverless architecture. This involves a unique, continuous deployment process:
 
 1. code is committed to a repository (GitHub, GitLab, or Bitbucket), triggering the deployment
+=======
+Redwood is designed for serverless architecture deployment, offering a unique continuous deployment process:
+
+1. code is committed to a repository on GitHub, GitLab, or Bitbucket, which triggers the deployment
+>>>>>>> main
 2. the Redwood API Side and Web Side are individually prepared via a build process
 3. during the build process, any database related actions are run (e.g. migrations)
 4. the hosting provider deploys the built Web static assets to a CDN and the API code to a serverless backend (e.g. AWS Lambdas)
@@ -16,19 +22,32 @@ Redwood has a CLI generator that adds the code and configuration required by the
 yarn rw g deploy <provider>
 ```
 
+<<<<<<< HEAD
 Besides these supported providers, there are examples of deploying Redwood to other providers, such as Google Cloud and AWS. You can find more information by searching the [GitHub Issues](https://github.com/redwoodjs/redwood/issues) and the [Forum](https://community.redwoodjs.com).
+=======
+There are examples of deploying Redwood on other providers such as Google Cloud and direct to AWS. You can find more information by searching the [GitHub Issues](https://github.com/redwoodjs/redwood/issues) and [Forums](https://community.redwoodjs.com).
+>>>>>>> main
 
 
 ## General Deployment Setup
 Deploying Redwood requires setup for the following four categories.
 
 ### 1. Host Specific Configuration
+<<<<<<< HEAD
 Each hosting provider has different requirements for how (and where) deployment is configured. You may need to add code to your repository, configure settings in a dashboard, or both &mdash; you'll just have to read the provider's documentation.
 
 But the most important Redwood configuration is to set the `apiProxyPath` environment variable in your `redwood.toml` This sets the API path for your serverless functions specific to your hosting provider. 
 
 ### 2. Build Command
 The build command prepares the Web and API Sides for deployment and runs other necessary actions, such as database migrations. Currently, Redwood's default build command is:
+=======
+Each hosting provider has different requirements for how (and where) the deployment is configured. Sometimes you'll need to add code to your repository, configure settings in a dashboard, or both. You'll need to read the provider specific documentation.
+
+The most important Redwood configuration is to set the `apiProxyPath` in your `redwood.toml` This sets the API path for your serverless functions specific to your hosting provider. 
+
+### 2. Build Command
+The build command is used to prepare the Web and API for deployment. Additionally, other actions can be run during build such as database migrations. This is the current default Redwood build command:
+>>>>>>> main
 ```shell
 yarn rw build && yarn rw db up --no-db-client --auto-approve && yarn rw dataMigrate up
 ```
@@ -65,12 +84,20 @@ Additionally, if your application uses env vars on the Web Side, you must config
 ### Netlify tl;dr Deploy
 If you simply want to experience the Netlify deployment process without a database and/or adding custom code, you can do the following:
 1. create a new redwood project: `yarn create redwood-app ./netlify-deploy`
+<<<<<<< HEAD
 2. after your "netlify-deploy" project installation is complete, `cd` into the directory, initialize a git repository (`git init`), make your first commit (`git commit -am 'first'`), and add it as a new repo to GitHub, BitBucket, or GitLab
+=======
+2. after your "netlify-deploy" project installation is complete, init git, commit, and add it as a new repo to GitHub, BitBucket, or GitLab
+>>>>>>> main
 3. run the command `yarn rw g deploy netlify` and commit and push changes
 4. use the Netlify [Quick Start](https://app.netlify.com/signup) to deploy
 
 ### Netlify Complete Deploy Walkthrough
+<<<<<<< HEAD
 For the complete Netlify deployment process, see the [Tutorial Deployment section](https://redwoodjs.com/tutorial/deployment).
+=======
+For the complete deployment process on Netlify, see the [Tutorial Deployment section](https://redwoodjs.com/tutorial/deployment).
+>>>>>>> main
 
 
 ## Vercel Deploy
@@ -79,7 +106,11 @@ For the complete Netlify deployment process, see the [Tutorial Deployment sectio
 ### Vercel tl;dr Deploy
 If you simply want to experience the Vercel deployment process without a database and/or adding custom code, you can do the following:
 1. create a new redwood project: `yarn create redwood-app ./vercel-deploy`
+<<<<<<< HEAD
 2. after your "vercel-deploy" project installation is complete, `cd` into the directory, initialize a git repository (`git init`), make your first commit (`git commit -am 'first'`), and add it as a new repo to GitHub, BitBucket, or GitLab
+=======
+2. after your "vercel-deploy" project installation is complete, init git, commit, and add it as a new repo to GitHub, BitBucket, or GitLab
+>>>>>>> main
 3. run the command `yarn rw g deploy vercel` and commit and push changes
 4. use the Vercel [Quick Start](https://vercel.com/#get-started) to deploy
 

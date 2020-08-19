@@ -471,7 +471,7 @@ datasource DS {
 
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = env("BINARY_TARGET")
+  binaryTargets = "native"
 }
 
 model Post {
@@ -2377,10 +2377,6 @@ Go back to the main site page and then to **Settings** at the top, and then **Bu
 ![Adding ENV var](https://user-images.githubusercontent.com/300/83188236-3e834780-a0e4-11ea-8cfa-790c2e335a92.png)
 
 > When configuring a database, you'll want to append `?connection_limit=1` to the URI. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context.
-
-Add one more environment variable, `BINARY_TARGET` set to the value `rhel-openssl-1.0.x` This is for Prisma to know which client libraries it needs, in this case so that it can run on AWS Lambda:
-
-![Adding second ENV var](https://user-images.githubusercontent.com/300/83188126-14ca2080-a0e4-11ea-9781-47ec34e24e5f.png)
 
 Make sure to click the **Save** button. Now go over to the **Deploys** tab in the top nav and open the **Trigger deploy** dropdown on the right, then finally choose **Deploy site**:
 
