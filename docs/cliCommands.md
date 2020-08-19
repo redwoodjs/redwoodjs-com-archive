@@ -378,6 +378,7 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 | `cell <name>`          | Generate a cell component                                                                             |
 | `component <name>`     | Generate a component component                                                                        |
 | `dataMigration <name>` | Generate a data migration component                                                                   |
+| `deploy <provider>`    | Generate a deployment configuration                                                                   |
 | `function <name>`      | Generate a Function                                                                                   |
 | `layout <name>`        | Generate a layout component                                                                           |
 | `page <name> [path]`   | Generate a page component                                                                             |
@@ -544,6 +545,25 @@ Creates a data migration script in `api/prisma/dataMigrations`.
 **Usage**
 
 See the [Data Migration](/docs/data-migrations) docs.
+
+### deploy
+
+Generate a deployment configuration.
+
+```
+yarn rw g deploy <provider>
+```
+
+Creates provider-specific code and configuration for deployment
+
+| Arguments & Options | Description                                                              |
+| :------------------ | :----------------------------------------------------------------------- |
+| `provider`          | Deploy provider to configure. Choices are `netlify` or `vercel`          |
+| `--force, -f`       | Overwrite existing configuration                                         |
+
+**Usage**
+
+See the [Deploy](/docs/deploy) docs.
 
 ### function
 
