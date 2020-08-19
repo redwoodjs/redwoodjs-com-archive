@@ -613,7 +613,6 @@ You can also protect routes:
 ```
 
 <Router>
-
   <Private unauthenticated="forbidden" role="admin">
     <Route path="/settings" page={SettingsPage} name="settings" />
     <Route path="/admin" page={AdminPage} name="sites" />
@@ -670,34 +669,44 @@ Routes can require authentication by wrapping them in a `<Private>` component. A
 
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'
-;<Router>
-  <Route path="/" page={HomePage} name="home" />
-  <Route path="/login" page={LoginPage} name="login" />
 
-  <Private unauthenticated="login">
-    <Route path="/admin" page={AdminPage} name="admin" />
-    <Route path="/secret-page" page={SecretPage} name="secret" />
-  </Private>
-</Router>
+const Routes = () => {
+  return (
+    <Router>
+      <Route path="/" page={HomePage} name="home" />
+      <Route path="/login" page={LoginPage} name="login" />
+
+      <Private unauthenticated="login">
+        <Route path="/admin" page={AdminPage} name="admin" />
+        <Route path="/secret-page" page={SecretPage} name="secret" />
+      </Private>
+    </Router>
+  )
+}
 ```
 
 Routes can also be restirected by role by specifying `hasRole(roleName)` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in`unauthenticated`.
 
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'
-;<Router>
-  <Route path="/" page={HomePage} name="home" />
-  <Route path="/login" page={LoginPage} name="login" />
-  <Route path="/forbidden" page={ForbiddenPage} name="login" />
 
-  <Private unauthenticated="login">
-    <Route path="/secret-page" page={SecretPage} name="secret" />
-  </Private>
+const Routes = () => {
+  return (
+    <Router>
+      <Route path="/" page={HomePage} name="home" />
+      <Route path="/login" page={LoginPage} name="login" />
+      <Route path="/forbidden" page={ForbiddenPage} name="login" />
 
-  <Private unauthenticated="forbidden" hasRole="admin">
-    <Route path="/admin" page={AdminPage} name="admin" />
-  </Private>
-</Router>
+      <Private unauthenticated="login">
+        <Route path="/secret-page" page={SecretPage} name="secret" />
+      </Private>
+
+      <Private unauthenticated="forbidden" hasRole="admin">
+        <Route path="/admin" page={AdminPage} name="admin" />
+      </Private>
+    </Router>
+  )
+}
 ```
 
 ## Contributing
