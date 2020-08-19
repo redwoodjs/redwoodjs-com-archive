@@ -16,18 +16,20 @@ Check out the [Auth Playground](https://github.com/redwoodjs/playground-auth).
 
 You will need to instantiate your authentication client and pass it to the `<AuthProvider>`. See instructions below for your specific provider.
 
-
 ### Netlify Identity Widget
 
 +++ View Installation and Setup
+
 #### Installation
+
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
 yarn rw g auth netlify
 ```
 
-_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section. 
+_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
+
 ```bash
 cd web
 yarn add @redwoodjs/auth netlify-identity-widget
@@ -56,19 +58,23 @@ ReactDOM.render(
   document.getElementById('redwood-app')
 )
 ```
+
 +++
 
 ### GoTrue-JS
 
 +++ View Installation and Setup
+
 #### Installation
+
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
 yarn rw g auth goTrue
 ```
 
-_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section. 
+_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
+
 ```bash
 cd web
 yarn add @redwoodjs/auth gotrue-js
@@ -108,19 +114,23 @@ ReactDOM.render(
   document.getElementById('redwood-app')
 )
 ```
+
 +++
 
 ### Auth0
 
 +++ View Installation and Setup
+
 #### Installation
+
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
 yarn rw g auth auth0
 ```
 
-_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section. 
+_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
+
 ```bash
 cd web
 yarn add @redwoodjs/auth @auth0/auth0-spa-js
@@ -140,11 +150,11 @@ import { AuthProvider } from '@redwoodjs/auth'
 import { Auth0Client } from '@auth0/auth0-spa-js'
 
 const auth0 = new Auth0Client({
-    domain: process.env.AUTH0_DOMAIN,
-    client_id: process.env.AUTH0_CLIENT_ID,
-    redirect_uri: 'http://localhost:8910/',
-    cacheLocation: 'localstorage',
-    audience: process.env.AUTH0_AUDIENCE,
+  domain: process.env.AUTH0_DOMAIN,
+  client_id: process.env.AUTH0_CLIENT_ID,
+  redirect_uri: 'http://localhost:8910/',
+  cacheLocation: 'localstorage',
+  audience: process.env.AUTH0_AUDIENCE,
 })
 
 ReactDOM.render(
@@ -163,8 +173,8 @@ ReactDOM.render(
 
 When using the Auth0 client, `login` and `logout` take `options` that can be used to override the client config:
 
-* `returnTo`: a permitted logout url set in Auth0
-* `redirectTo`: a target url after login
+- `returnTo`: a permitted logout url set in Auth0
+- `redirectTo`: a target url after login
 
 The latter is helpful when an unauthenticated user visits a Private route, but then is redirected to the `unauthenticated` route. The Redwood router will place the previous requested path in the pathname as a `redirectTo` parameter which can be extracted and set in the Auth0 `appState`. That way, after successfully logging in, the user will be directed to this `targetUrl` rather than the config's callback.
 
@@ -195,7 +205,9 @@ const UserAuthTools = () => {
   )
 }
 ```
+
 #### API Specific Setup
+
 See the Auth0 information within this doc's [API Specific Integration](#api-specific-integration) section.
 
 #api-specific-integration
@@ -204,14 +216,17 @@ See the Auth0 information within this doc's [API Specific Integration](#api-spec
 ### Magic.Link
 
 +++ View Installation and Setup
+
 #### Installation
+
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
 yarn rw g auth magicLink
 ```
 
-_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section. 
+_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
+
 ```bash
 cd web
 yarn add @redwoodjs/auth magic-sdk
@@ -242,13 +257,16 @@ ReactDOM.render(
 ```
 
 #### API Specific Setup
+
 See the Magic.Link information within this doc's [API Specific Integration](#api-specific-integration) section.
 +++
 
 ### Firebase
 
 +++ View Installation and Setup
+
 #### Installation
+
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
@@ -321,13 +339,16 @@ const UserAuthTools = () => {
 ```
 
 #### API Specific Setup
+
 See the Firebase information within this doc's [API Specific Integration](#api-specific-integration) section.
 +++
 
 ### Custom
 
 +++ View Installation and Setup
+
 #### Installation
+
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
@@ -335,6 +356,7 @@ yarn rw g auth custom
 ```
 
 #### Setup
+
 It is possible to implement a custom provider for Redwood Auth. In which case you might also consider adding the provider to Redwood itself.
 
 If you are trying to implement your own auth, support is very early and limited at this time. Additionally, there are many considerations and responsibilities when it comes to managing custom auth. For most cases we recommend using an existing provider.
@@ -348,15 +370,15 @@ The most complete example (although now a bit outdated) is found in [this forum 
 
 The following values are available from the `useAuth` hook:
 
-* async `logIn()`: Differs based on the client library, with Netlify Identity a pop-up is shown, and with Auth0 the user is redirected
-* async `logOut()`: Log out the current user
-* `currentUser`: an object containing information about the current user, or `null` if the user is not authenticated
-* async `reauthenticate()`: Refetch the authentication data and populate the state.
-* async `getToken()`: returns a jwt
-* `client`: Access the instance of the client which you passed into `AuthProvider`
-* `isAuthenticated`: used to determine if the current user has authenticated
-* `hasRole`: used to determine if the current user is assigned a role
-* `loading`: The auth state is restored asynchronously when the user visits the site for the first time, use this to determine if you have the correct state
+- async `logIn()`: Differs based on the client library, with Netlify Identity a pop-up is shown, and with Auth0 the user is redirected
+- async `logOut()`: Log out the current user
+- `currentUser`: an object containing information about the current user, or `null` if the user is not authenticated
+- async `reauthenticate()`: Refetch the authentication data and populate the state.
+- async `getToken()`: returns a jwt
+- `client`: Access the instance of the client which you passed into `AuthProvider`
+- `isAuthenticated`: used to determine if the current user has authenticated
+- `hasRole`: used to determine if the current user is assigned a role
+- `loading`: The auth state is restored asynchronously when the user visits the site for the first time, use this to determine if you have the correct state
 
 ## Usage in Redwood
 
@@ -371,7 +393,7 @@ GraphQL requests automatically receive an `Authorization` JWT header when a user
 If a user is signed in, the `Authorization` token is verified, decoded and available in `context.currentUser`
 
 ```js
-import { context }  from '@redwoodjs/api'
+import { context } from '@redwoodjs/api'
 
 console.log(context.currentUser)
 // {
@@ -414,14 +436,10 @@ export const requireAuth = ({ role }) => {
     throw new AuthenticationError("You don't have permission to do that.")
   }
 
-  if (
-    typeof role !== 'undefined' &&
-    !context.currentUser.roles?.includes(role)
-  ) {
+  if (typeof role !== 'undefined' && !context.currentUser.roles?.includes(role)) {
     throw new ForbiddenError("You don't have access to do that.")
   }
 }
-
 ```
 
 ### API Specific Integration
@@ -430,7 +448,7 @@ export const requireAuth = ({ role }) => {
 
 If you're using Auth0 you must also [create an API](https://auth0.com/docs/quickstart/spa/react/02-calling-an-api#create-an-api) and set the audience parameter, or you'll receive an opaque token instead of a JWT token, and Redwood expects to receive a JWT token.
 
-+++ View Auth0 API Options  
++++ View Auth0 API Options
 
 #### Role-based access control (RBAC)
 
@@ -446,7 +464,7 @@ Create and manage roles for your application in Auth0's "User & Role" management
 
 However, that info is not immediately available on the user's App metadata or to RedwoodJS when authenticating.
 
-If you assinger your user the "admin" role in Auth0, you will want you user's app_metadata to look like:
+If you assign your user the "admin" role in Auth0, you will want you user's app_metadata to look like:
 
 ```
 {
@@ -503,9 +521,9 @@ Adding to `idToken` will make the make App metadta accessible to RedwoodJS `getu
 
 Adding to `accessToken` will make the make App metadta accessible to RedwoodJS when decoding the JWT via `getToken`.
 
-While adding to `idToken` is optional. you *must* add to `accessToken`.
+While adding to `idToken` is optional. you _must_ add to `accessToken`.
 
-To keep your custom claims from colliding with any reserved claims or claims from other resources, you must give them a [globally unique name using a namespaced format](https://auth0.com/docs/tokens/guides/create-namespaced-custom-claims). Otherwise, Auth0 will *not* add the infomration to the token(s).
+To keep your custom claims from colliding with any reserved claims or claims from other resources, you must give them a [globally unique name using a namespaced format](https://auth0.com/docs/tokens/guides/create-namespaced-custom-claims). Otherwise, Auth0 will _not_ add the infomration to the token(s).
 
 Therefore, with a namespace of "https://example.com", the app_metadata on your token should look like:
 
@@ -593,8 +611,8 @@ export const myThings = () => {
 You can also protect routes:
 
 ```
-<Router>
 
+<Router>
   <Private unauthenticated="forbidden" role="admin">
     <Route path="/settings" page={SettingsPage} name="settings" />
     <Route path="/admin" page={AdminPage} name="sites" />
@@ -616,6 +634,7 @@ const { isAuthenticated, hasRole } = useAuth()
   <Link to={routes.admin()}>Admin</Link>
 )}
 ```
+
 +++
 
 #### Magic.Link
@@ -632,15 +651,12 @@ import { Magic } from '@magic-sdk/admin'
 
 export const getCurrentUser = async (_decoded, { token }) => {
   const mAdmin = new Magic(process.env.MAGICLINK_SECRET)
-  const {
-    email,
-    publicAddress,
-    issuer,
-  } = await mAdmin.users.getMetadataByToken(token)
+  const { email, publicAddress, issuer } = await mAdmin.users.getMetadataByToken(token)
 
   return await db.user.findOne({ where: { issuer } })
 }
 ```
+
 +++
 
 #### Firebase
@@ -652,37 +668,45 @@ You must follow the ["Before you begin"](https://firebase.google.com/docs/auth/w
 Routes can require authentication by wrapping them in a `<Private>` component. An unauthenticated user will be redirected to the page specified in`unauthenticated`.
 
 ```js
-import { Router, Route, Private } from "@redwoodjs/router"
+import { Router, Route, Private } from '@redwoodjs/router'
 
-<Router>
-  <Route path="/" page={HomePage} name="home" />
-  <Route path="/login" page={LoginPage} name="login" />
+const Routes = () => {
+  return (
+    <Router>
+      <Route path="/" page={HomePage} name="home" />
+      <Route path="/login" page={LoginPage} name="login" />
 
-  <Private unauthenticated="login">
-    <Route path="/admin" page={AdminPage} name="admin" />
-    <Route path="/secret-page" page={SecretPage} name="secret" />
-  </Private>
-</Router>
+      <Private unauthenticated="login">
+        <Route path="/admin" page={AdminPage} name="admin" />
+        <Route path="/secret-page" page={SecretPage} name="secret" />
+      </Private>
+    </Router>
+  )
+}
 ```
 
-Routes can also be restirected by role by specifying `hasRole(roleName)` in the `<Private>` component. A  user not assigned the role will be redirected to the page specified in`unauthenticated`.
+Routes can also be restirected by role by specifying `hasRole(roleName)` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in`unauthenticated`.
 
 ```js
-import { Router, Route, Private } from "@redwoodjs/router"
+import { Router, Route, Private } from '@redwoodjs/router'
 
-<Router>
-  <Route path="/" page={HomePage} name="home" />
-  <Route path="/login" page={LoginPage} name="login" />
-  <Route path="/forbidden" page={ForbiddenPage} name="login" />
+const Routes = () => {
+  return (
+    <Router>
+      <Route path="/" page={HomePage} name="home" />
+      <Route path="/login" page={LoginPage} name="login" />
+      <Route path="/forbidden" page={ForbiddenPage} name="login" />
 
-  <Private unauthenticated="login">
-    <Route path="/secret-page" page={SecretPage} name="secret" />
-  </Private>
+      <Private unauthenticated="login">
+        <Route path="/secret-page" page={SecretPage} name="secret" />
+      </Private>
 
-  <Private unauthenticated="forbidd4n" hasRole="admin">
-    <Route path="/admin" page={AdminPage} name="admin" />
-  </Private>
-</Router>
+      <Private unauthenticated="forbidden" hasRole="admin">
+        <Route path="/admin" page={AdminPage} name="admin" />
+      </Private>
+    </Router>
+  )
+}
 ```
 
 ## Contributing
