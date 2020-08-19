@@ -7,61 +7,33 @@
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
-- [Contribute one](#contributing), it's SuperEasy™!
+- Custom _(limited support at this time)_
+- [Contribute one](https://github.com/redwoodjs/redwood/tree/main/packages/auth), it's SuperEasy™!
 
 Check out the [Auth Playground](https://github.com/redwoodjs/playground-auth).
 
-## Installation
+## Installation and Setup
 
-### CLI Auth Generator
+You will need to instantiate your authentication client and pass it to the `<AuthProvider>`. See instructions below for your specific provider.
 
-The following CLI command will install required packages, generate boilerplate code, and files for Redwood Projects:
+
+### Netlify Identity Widget
+
++++ View Installation and Setup
+#### Installation
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw g auth [provider]
+yarn rw g auth netlify
 ```
 
-*`[provider]` can be one of: "auth0", "custom", "firebase", "goTrue", "magicLink", or "netlify".
-
-### Manual Installation
-
-+++ Netlify Identity Widget
-
+_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section. 
 ```bash
 cd web
 yarn add @redwoodjs/auth netlify-identity-widget
 ```
-+++
 
-+++ Auth0
-
-```bash
-cd web
-yarn add @redwoodjs/auth @auth0/auth0-spa-js
-```
-+++
-
-+++ Magic.Link
-
-```bash
-cd web
-yarn add @redwoodjs/auth magic-sdk
-```
-+++
-
-+++ GoTrue-JS
-
-```bash
-cd web
-yarn add @redwoodjs/auth gotrue-js
-```
-+++
-
-## Setup
-
-Instantiate your authentication client, and pass it to the `<AuthProvider>`:
-
-+++ Netlify Identity Widget
+#### Setup
 
 You will need to enable Identity on your Netlify site. See [Netlify Identity Setup](https://redwoodjs.com/tutorial/authentication#netlify-identity-setup).
 
@@ -86,7 +58,23 @@ ReactDOM.render(
 ```
 +++
 
-+++ GoTrue-JS
+### GoTrue-JS
+
++++ View Installation and Setup
+#### Installation
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw g auth goTrue
+```
+
+_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section. 
+```bash
+cd web
+yarn add @redwoodjs/auth gotrue-js
+```
+
+#### Setup
 
 You will need to enable Identity on your Netlify site. See [Netlify Identity Setup](https://redwoodjs.com/tutorial/authentication#netlify-identity-setup).
 
@@ -122,11 +110,29 @@ ReactDOM.render(
 ```
 +++
 
-+++ Auth0
+### Auth0
+
++++ View Installation and Setup
+#### Installation
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw g auth auth0
+```
+
+_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section. 
+```bash
+cd web
+yarn add @redwoodjs/auth @auth0/auth0-spa-js
+```
+
+#### Setup
 
 To get your application keys, only complete the ["Configure Auth0"](https://auth0.com/docs/quickstart/spa/react#get-your-application-keys) section of the SPA Quickstart guide.
 
 **NOTE** If you're using Auth0 with Redwood then you must also [create an API](https://auth0.com/docs/quickstart/spa/react/02-calling-an-api#create-an-api) and set the audience parameter, or you'll receive an opaque token instead of the required JWT token.
+
+> **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
 ```js
 // web/src/index.js
@@ -189,11 +195,33 @@ const UserAuthTools = () => {
   )
 }
 ```
+#### API Specific Setup
+See the Auth0 information within this doc's [API Specific Integration](#api-specific-integration) section.
+
+#api-specific-integration
 +++
 
-+++ Magic.Link
+### Magic.Link
 
-To get your application keys, go to [dashboard.magic.link](https://dashboard.magic.link/) then navigate to the API keys add them to your .env
++++ View Installation and Setup
+#### Installation
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw g auth magicLink
+```
+
+_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section. 
+```bash
+cd web
+yarn add @redwoodjs/auth magic-sdk
+```
+
+#### Setup
+
+To get your application keys, go to [dashboard.magic.link](https://dashboard.magic.link/) then navigate to the API keys add them to your `.env`.
+
+> **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
 ```js
 // web/src/index.js
@@ -212,11 +240,26 @@ ReactDOM.render(
   document.getElementById('redwood-app')
 )
 ```
+
+#### API Specific Setup
+See the Magic.Link information within this doc's [API Specific Integration](#api-specific-integration) section.
 +++
 
-+++ Firebase
+### Firebase
+
++++ View Installation and Setup
+#### Installation
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw g auth firebase
+```
+
+#### Setup
 
 We're using [Firebase Google Sign-In](https://firebase.google.com/docs/auth/web/google-signin), so you'll have to follow the ["Before you begin"](https://firebase.google.com/docs/auth/web/google-signin#before_you_begin) steps in this guide. **Only** follow the "Before you begin" parts.
+
+> **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
 ```js
 // web/src/index.js
@@ -276,6 +319,29 @@ const UserAuthTools = () => {
   )
 }
 ```
+
+#### API Specific Setup
+See the Firebase information within this doc's [API Specific Integration](#api-specific-integration) section.
++++
+
+### Custom
+
++++ View Installation and Setup
+#### Installation
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw g auth custom
+```
+
+#### Setup
+It is possible to implement a custom provider for Redwood Auth. In which case you might also consider adding the provider to Redwood itself.
+
+If you are trying to implement your own auth, support is very early and limited at this time. Additionally, there are many considerations and responsibilities when it comes to managing custom auth. For most cases we recommend using an existing provider.
+
+However, there are examples contributed by developers in the Redwood forums and Discord server.
+
+The most complete example (although now a bit outdated) is found in [this forum thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610).
 +++
 
 ## API
@@ -358,11 +424,13 @@ export const requireAuth = ({ role }) => {
 
 ```
 
-### API Specific Intergration
+### API Specific Integration
 
-+++ Auth0
+#### Auth0
 
 If you're using Auth0 you must also [create an API](https://auth0.com/docs/quickstart/spa/react/02-calling-an-api#create-an-api) and set the audience parameter, or you'll receive an opaque token instead of a JWT token, and Redwood expects to receive a JWT token.
+
++++ View Auth0 API Options  
 
 #### Role-based access control (RBAC)
 
@@ -396,7 +464,7 @@ RedwoodJS needs the `app_metadata` to 1) contain the role information and 2) be 
 
 To accomplish these tasks, you can use [Auth0 Rules](https://auth0.com/docs/rules) to add them as custom claims on your JWT.
 
-##### Add Authorization Roles to AppMetadata Rule
+#### Add Authorization Roles to AppMetadata Rule
 
 Your first rule will `Add Authorization Roles to AppMetadata`.
 
@@ -425,7 +493,7 @@ Auth0 maintains user role assignments `context.authorization`. This rule simply 
 
 But, now you must include the `app_metdata` on the user's JWT that RedwoodJS will decode.
 
-##### Add AppMetadata to JWT Rule
+#### Add AppMetadata to JWT Rule
 
 Therefore, your second rule will `Add AppMetadata to JWT`.
 
@@ -511,7 +579,7 @@ export const getCurrentUser = async (decoded, { type, token }) => {
 }
 ```
 
-##### Role Protection on Fucntions, Services and Web
+#### Role Protection on Functions, Services and Web
 
 You can specify an optional role in `requireAuth` to check if the user is both authenticated and is assigned the role:
 
@@ -550,9 +618,11 @@ const { isAuthenticated, hasRole } = useAuth()
 ```
 +++
 
-+++ Magic.Link
+#### Magic.Link
 
-The redwood API does not include the funcionality to decode the magiclinks authentication tokens so the client is inisiated and decodes the tokens inside of `getCurrentUser`.
+The redwood API does not include the functionality to decode the magiclinks authentication tokens so the client is initiated and decodes the tokens inside of `getCurrentUser`.
+
++++ View Magic.link API Options
 
 Magic.link recommends using the issuer as the userID.
 
@@ -573,10 +643,9 @@ export const getCurrentUser = async (_decoded, { token }) => {
 ```
 +++
 
-+++ Firebase
+#### Firebase
 
 You must follow the ["Before you begin"](https://firebase.google.com/docs/auth/web/google-signin) part of the "Authenticate Using Google Sign-In with JavaScript" guide.
-+++
 
 ### Routes
 
@@ -618,4 +687,4 @@ import { Router, Route, Private } from "@redwoodjs/router"
 
 ## Contributing
 
-See https://github.com/redwoodjs/redwood/blob/main/packages/auth/README.md
+If you are interested in contributing to the Redwood Auth Package, please [start here](https://github.com/redwoodjs/redwood/blob/main/packages/auth/README.md).
