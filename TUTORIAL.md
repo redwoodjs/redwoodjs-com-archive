@@ -2362,6 +2362,9 @@ Click the **Heroku Postgres** link to get to the detail page, then the **Setting
 
 It will be really long and scroll off the right side of the page so make sure you copy the whole thing!
 
+### Vercel (optional path)
+Redwood officially supports multiple deployment providers (with even more on the way). Although this Tutorial continues with a focus on Netlify deployment and authentication with Netlify Identity, you could deploy to [Vercel](https://vercel.com/redwoodjs-core) instead. In that case, you'll need to use this [Vercel deploy walkthrough](https://redwoodjs.com/docs/deploy#redwood-deploy-configuration). **Note**: Netlify Identity, used in the next section "Authentication", won’t work on the Vercel platform.
+
 ### Netlify
 
 Now we're going to [create a Netlify account](https://app.netlify.com/signup) if you don't have one already. Once you've signed up and verified your email done just click the **New site from Git** button at the upper right:
