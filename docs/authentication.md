@@ -16,8 +16,10 @@ Check out the [Auth Playground](https://github.com/redwoodjs/playground-auth).
 
 You will need to instantiate your authentication client and pass it to the `<AuthProvider>`. See instructions below for your specific provider.
 
-###  Netlify Identity Widget
 
+### Netlify Identity Widget
+
++++ View Installation and Setup
 #### Installation
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
@@ -54,10 +56,11 @@ ReactDOM.render(
   document.getElementById('redwood-app')
 )
 ```
-
++++
 
 ### GoTrue-JS
 
++++ View Installation and Setup
 #### Installation
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
@@ -105,10 +108,11 @@ ReactDOM.render(
   document.getElementById('redwood-app')
 )
 ```
-
++++
 
 ### Auth0
 
++++ View Installation and Setup
 #### Installation
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
@@ -195,10 +199,11 @@ const UserAuthTools = () => {
 See the Auth0 information within this doc's [API Specific Integration](#api-specific-integration) section.
 
 #api-specific-integration
-
++++
 
 ### Magic.Link
 
++++ View Installation and Setup
 #### Installation
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
@@ -238,10 +243,11 @@ ReactDOM.render(
 
 #### API Specific Setup
 See the Magic.Link information within this doc's [API Specific Integration](#api-specific-integration) section.
-
++++
 
 ### Firebase
 
++++ View Installation and Setup
 #### Installation
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
@@ -316,9 +322,11 @@ const UserAuthTools = () => {
 
 #### API Specific Setup
 See the Firebase information within this doc's [API Specific Integration](#api-specific-integration) section.
++++
 
 ### Custom
 
++++ View Installation and Setup
 #### Installation
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
@@ -334,6 +342,7 @@ If you are trying to implement your own auth, support is very early and limited 
 However, there are examples contributed by developers in the Redwood forums and Discord server.
 
 The most complete example (although now a bit outdated) is found in [this forum thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610).
++++
 
 ## API
 
@@ -421,15 +430,15 @@ export const requireAuth = ({ role }) => {
 
 If you're using Auth0 you must also [create an API](https://auth0.com/docs/quickstart/spa/react/02-calling-an-api#create-an-api) and set the audience parameter, or you'll receive an opaque token instead of a JWT token, and Redwood expects to receive a JWT token.
 
-+++ All Auth0 API Options (click here)
++++ View Auth0 API Options  
 
-**Role-based access control (RBAC)**
+#### Role-based access control (RBAC)
 
 [Role-based access control (RBAC)](https://auth0.com/docs/authorization/concepts/rbac) refers to the idea of assigning permissions to users based on their role within an organization. It provides fine-grained control and offers a simple, manageable approach to access management that is less prone to error than assigning permissions to users individually.
 
 Essentially, a role is a collection of permissions that you can apply to users. A role might be "admin", "editor" or "publisher". This differs from permissions an example of which might be "publish:blog".
 
-**App metadata**
+#### App metadata
 
 Auth0 stores information (such as, support plan subscriptions, security roles, or access control groups) in "App metadata". Data stored in `app_metadata` cannot be edited by users.
 
@@ -449,13 +458,13 @@ If you assinger your user the "admin" role in Auth0, you will want you user's ap
 
 To set this information and make it available to RedwoodJS, you can to use [Auth0 Rules](https://auth0.com/docs/rules).
 
-**Auth0 Rules for App Metadata**
+#### Auth0 Rules for App Metadata
 
 RedwoodJS needs the `app_metadata` to 1) contain the role information and 2) be present in the JWT that is decoded.
 
 To accomplish these tasks, you can use [Auth0 Rules](https://auth0.com/docs/rules) to add them as custom claims on your JWT.
 
-**Add Authorization Roles to AppMetadata Rule**
+#### Add Authorization Roles to AppMetadata Rule
 
 Your first rule will `Add Authorization Roles to AppMetadata`.
 
@@ -484,7 +493,7 @@ Auth0 maintains user role assignments `context.authorization`. This rule simply 
 
 But, now you must include the `app_metdata` on the user's JWT that RedwoodJS will decode.
 
-**Add AppMetadata to JWT Rule**
+#### Add AppMetadata to JWT Rule
 
 Therefore, your second rule will `Add AppMetadata to JWT`.
 
@@ -542,7 +551,7 @@ function (user, context, callback) {
 
 Now, your `app_metadata` with `authorization` and `role` information will be on the user's JWT after logging in.
 
-**Add Application hasRole Support**
+#### Add Application hasRole Support
 
 If you intend to support, RBAC then in your `api/src/lib/auth.js` you need to extract `roles` using the `parseJWT` utility and set these roles on `currentUser`.
 
@@ -570,7 +579,7 @@ export const getCurrentUser = async (decoded, { type, token }) => {
 }
 ```
 
-**Role Protection on Functions, Services and Web**
+#### Role Protection on Functions, Services and Web
 
 You can specify an optional role in `requireAuth` to check if the user is both authenticated and is assigned the role:
 
@@ -611,11 +620,11 @@ const { isAuthenticated, hasRole } = useAuth()
 
 #### Magic.Link
 
-The redwood API does not include the funcionality to decode the magiclinks authentication tokens so the client is inisiated and decodes the tokens inside of `getCurrentUser`.
+The redwood API does not include the functionality to decode the magiclinks authentication tokens so the client is initiated and decodes the tokens inside of `getCurrentUser`.
+
++++ View Magic.link API Options
 
 Magic.link recommends using the issuer as the userID.
-
-> **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
 ```js
 // redwood/api/src/lib/auth.ts
@@ -632,7 +641,7 @@ export const getCurrentUser = async (_decoded, { token }) => {
   return await db.user.findOne({ where: { issuer } })
 }
 ```
-
++++
 
 #### Firebase
 
