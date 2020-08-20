@@ -59,6 +59,10 @@ ReactDOM.render(
 )
 ```
 
+#### Netlify Identity Auth Provider Specific Setup
+
+See the Netlify Identity information within this doc's [Auth Provider Specific Integration](https://redwoodjs.com/docs/authentication.html#auth-provider-specific-integration) section.
+
 +++
 
 ### GoTrue-JS
@@ -206,11 +210,10 @@ const UserAuthTools = () => {
 }
 ```
 
-#### API Specific Setup
+#### Auth0 Auth Provider Specific Setup
 
-See the Auth0 information within this doc's [API Specific Integration](#api-specific-integration) section.
+See the Auth0 information within this doc's [Auth Provider Specific Integration](https://redwoodjs.com/docs/authentication.html#auth-provider-specific-integration) section.
 
-#api-specific-integration
 +++
 
 ### Magic.Link
@@ -256,9 +259,9 @@ ReactDOM.render(
 )
 ```
 
-#### API Specific Setup
+#### Magic.Link Auth Provider Specific Integration
 
-See the Magic.Link information within this doc's [API Specific Integration](#api-specific-integration) section.
+See the Magic.Link information within this doc's [Auth Provider Specific Integration](https://redwoodjs.com/docs/authentication.html#auth-provider-specific-integration) section.
 +++
 
 ### Firebase
@@ -338,9 +341,9 @@ const UserAuthTools = () => {
 }
 ```
 
-#### API Specific Setup
+#### Firebase Auth Provider Specific Integration
 
-See the Firebase information within this doc's [API Specific Integration](#api-specific-integration) section.
+See the Firebase information within this doc's [Auth Provider Specific Integration](https://redwoodjs.com/docs/authentication.html#auth-provider-specific-integration) section.
 +++
 
 ### Custom
@@ -388,7 +391,7 @@ Redwood provides a zeroconf experience when using our Auth package!
 
 GraphQL requests automatically receive an `Authorization` JWT header when a user is authenticated.
 
-### API
+### Auth Provider API
 
 If a user is signed in, the `Authorization` token is verified, decoded and available in `context.currentUser`
 
@@ -442,13 +445,13 @@ export const requireAuth = ({ role }) => {
 }
 ```
 
-### API Specific Integration
+### Auth Provider Specific Integration
 
 #### Auth0
 
 If you're using Auth0 you must also [create an API](https://auth0.com/docs/quickstart/spa/react/02-calling-an-api#create-an-api) and set the audience parameter, or you'll receive an opaque token instead of a JWT token, and Redwood expects to receive a JWT token.
 
-+++ View Auth0 API Options
++++ View Auth0 Options
 
 #### Role-based access control (RBAC)
 
@@ -597,7 +600,80 @@ export const getCurrentUser = async (decoded, { type, token }) => {
 }
 ```
 
-#### Role Protection on Functions, Services and Web
++++
+
+#### Magic.Link
+
+The redwood API does not include the functionality to decode the magiclinks authentication tokens so the client is initiated and decodes the tokens inside of `getCurrentUser`.
+
++++ View Magic.link Options
+
+Magic.link recommends using the issuer as the userID.
+
+```js
+// redwood/api/src/lib/auth.ts
+import { Magic } from '@magic-sdk/admin'
+
+export const getCurrentUser = async (_decoded, { token }) => {
+  const mAdmin = new Magic(process.env.MAGICLINK_SECRET)
+  const { email, publicAddress, issuer } = await mAdmin.users.getMetadataByToken(token)
+
+  return await db.user.findOne({ where: { issuer } })
+}
+```
+
++++
+
+#### Firebase
+
+You must follow the ["Before you begin"](https://firebase.google.com/docs/auth/web/google-signin) part of the "Authenticate Using Google Sign-In with JavaScript" guide.
+
++++ View Firebase Options
+
+#### Role-based access control (RBAC)
+
+#### App metadata
+
+#### Add Application hasRole Support
+
++++
+
+#### Netlify Identity
+
+[Netlify Identity](https://docs.netlify.com/visitor-access/identity) offers [Role-based access control (RBAC)](https://docs.netlify.com/visitor-access/identity/manage-existing-users/#user-account-metadata).
+
++++ View Netlify Identity Options
+
+#### Role-based access control (RBAC)
+
+Role-based access control (RBAC) refers to the idea of assigning permissions to users based on their role within an organization. It provides fine-grained control and offers a simple, manageable approach to access management that is less prone to error than assigning permissions to users individually.
+
+Essentially, a role is a collection of permissions that you can apply to users. A role might be "admin", "editor" or "publisher". This differs from permissions an example of which might be "publish:blog".
+
+#### App metadata
+
+Netlify Identity stores information (such as, support plan subscriptions, security roles, or access control groups) in "App metadata". Data stored in `app_metadata` cannot be edited by users.
+
+Create and manage roles for your application in Netlify's "Identity" management views. You can then assign these roles to users.
+
+#### Add Application hasRole Support
+
+If you intend to support, RBAC then in your `api/src/lib/auth.js` you need to extract `roles` using the `parseJWT` utility and set these roles on `currentUser`.
+
+Netlify will store the user's roles on the `app_metadata` claim and the `parseJWT` function provides an option to extract the roles so they can be assigned to the `currentUser`.
+
+For example:
+
+```js
+// api/src/lib/auth.js`
+export const getCurrentUser = async (decoded) => {
+  return context.currentUser || { ...decoded, roles: parseJWT({ decoded }).roles }
+}
+```
+
+Now your `currentUser.roles` info will be available to both `requireAuth()` on the api side and `hasRole()` on the web side.
+
+### Role Protection on Functions, Services and Web
 
 You can specify an optional role in `requireAuth` to check if the user is both authenticated and is assigned the role:
 
@@ -636,32 +712,6 @@ const { isAuthenticated, hasRole } = useAuth()
 ```
 
 +++
-
-#### Magic.Link
-
-The redwood API does not include the functionality to decode the magiclinks authentication tokens so the client is initiated and decodes the tokens inside of `getCurrentUser`.
-
-+++ View Magic.link API Options
-
-Magic.link recommends using the issuer as the userID.
-
-```js
-// redwood/api/src/lib/auth.ts
-import { Magic } from '@magic-sdk/admin'
-
-export const getCurrentUser = async (_decoded, { token }) => {
-  const mAdmin = new Magic(process.env.MAGICLINK_SECRET)
-  const { email, publicAddress, issuer } = await mAdmin.users.getMetadataByToken(token)
-
-  return await db.user.findOne({ where: { issuer } })
-}
-```
-
-+++
-
-#### Firebase
-
-You must follow the ["Before you begin"](https://firebase.google.com/docs/auth/web/google-signin) part of the "Authenticate Using Google Sign-In with JavaScript" guide.
 
 ### Routes
 
