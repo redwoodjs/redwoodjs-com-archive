@@ -1,29 +1,190 @@
 # Environment Variables
 
-You can provide environment variables to each side of your Redwood project in different ways, depending on your target.
+You can provide environment variables to each side of your Redwood app in different ways, depending on each Side's target, and whether you're in development or production.
+
+> Right now, Redwood apps have two fixed Sides, API and Web, that have each have a single target, nodejs and browser respectively.
+
+## Generally
+
+Redwood apps use [dotenv](https://github.com/motdotla/dotenv) to load vars from your `.env` file into `process.env`.
+For a reference on dotenv syntax, see the dotenv README's [Rules](https://github.com/motdotla/dotenv#rules) section.
+
+> Technically, we use [dotenv-defaults](https://github.com/mrsteele/dotenv-defaults), which is how we also supply and load `.env.defaults`.
+<!-- also in a Redwood app's base directory. -->
+
+Redwood also configures Webpack with `dotenv-webpack`, so that all references to `process.env` vars on the Web side will be replaced with the variable's actual value at built-time. More on this in [Web](#Web).
+
+
+## Web
+
+### Development
+
+Like the API Side, anything defined in your `.env` and `.env.defaults` files is simply available:
+
+```
+HELLO_ENV=hello world
+```
+
+```javascript{8}
+// web/src/pages/HomePage.js
+
+const HomePage = () => {
+  return (
+    <div>
+      <h1>HomePage</h1>
+      <p>Find me in ./web/src/pages/HomePage/HomePage.js</p>
+      <p>{process.env.HELLO_ENV}</p>
+    </div>
+  )
+}
+
+export default HomePage
+```
+
+![rw-envVars-web](https://user-images.githubusercontent.com/32992335/86520491-c0f4da80-bdf9-11ea-9212-c1d792d2ff5f.png)
+
+But this only goes for development. In production, references like this will either err or fail silently, depending on where you reference your environment variables.
+
+For another example of using environment variables in development, see [File Uploads](https://redwoodjs.com/cookbook/file-uploads).
+
+### Production
+
+> **Heads Up:** for Web to access environment variables in production, you _must_ configure one of the options below. 
+> 
+> Redwood recommends **Option 1: `redwood.toml`** as it is the most robust.
+
+In production, you can get environment variables to the Web Side either by
+
+1. adding to `redwood.toml` via the `includeEnvironmentVariables` array, or 
+2. prefixing with `REDWOOD_ENV_`
+
+Just like for the API Side, you'll also have to set them up with your provider.
+
+#### includeEnvironmentVariables in redwood.toml
+
+For Example:
+```toml
+# redwood.toml
+
+[web]
+  includeEnvironmentVariables = ['SECRET_API_KEY', 'ANOTHER_ONE']
+```
+
+By adding environment variables to this array, they'll be available to Web in production via `process.env.SECRET_API_KEY`. This means that if you have an environment variable like `process.env.SECRET_API_KEY` Redwood removes and replaces it with its *actual* value. 
+
+Note: if someone inspects your site's source, *they could see your `REDWOOD_ENV_SECRET_API_KEY` in plain text.* This is a limitation of delivering static JS and HTML to the browser.
+
+#### Prefixing with REDWOOD_ENV_
+
+In `.env`, if you prefix your environment variables with `REDWOOD_ENV_`, they'll be available via `process.env.REDWOOD_ENV_MY_VAR_NAME`, and will be dynamically replaced at built-time.
+
+Like the option above, these are also removed and replaced with the *actual value* during build in order to be available in production.
+
 
 ## API
 
 ### Development
 
-On the API side with NodeJS as your target, you can access the environment variables defined in your `.env` and `.env.defaults` file and referencing them in your code as `process.env.MY_VAR_NAME`.
+You can access environment variables defined in `.env` and `.env.defaults` as `process.env.VAR_NAME`. For example, if we define the environment variable `HELLO_ENV` in `.env`:
+
+```
+HELLO_ENV=hello world
+```
+
+and make a hello Function (`yarn rw g function hello`) and reference `HELLO_ENV` in the body of our response:
+
+```javascript{6}
+// ./api/src/functions/hello.js
+
+export const handler = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: `${process.env.HELLO_ENV}`,
+  }
+}
+```
+
+Navigating to http://localhost:8911/hello shows that the Function successfully accesses the environment variable:
+
+<!-- @todo -->
+<!-- Get a better-quality pic -->
+![rw-envVars-api](https://user-images.githubusercontent.com/32992335/86520528-47112100-bdfa-11ea-8d7e-1c0d502805b2.png)
 
 ### Production
 
-Your deployment system will need some way to make environment variables available to the serverless environment where your functions will run. For example on Netlify you can set them in the [Build environment variables](https://docs.netlify.com/configure-builds/environment-variables/) section of your Settings.
+<!-- @todo -->
+<!-- Deployment system? platform? -->
+Whichever platform you deploy to, they'll have some specific way of making environment variables available to the serverless environment where your Functions run. For example, if you deploy to Netlify, you set your environment variables in **Settings** > **Build & Deploy** > **Environment**. You'll just have to read your provider's documentation.
 
-## Web
 
-On the Web side, with webpack as your target, you can do one of three things:
+## Keeping Sensitive Information Safe
 
-1. Prefix your env vars with `REDWOOD_ENV_` —they will be available via `process.env.REDWOOD_ENV_MY_VAR_NAME` and will be dynamically replaced during the build phase. This means that `process.env.REDWOOD_ENV_SECRET_API_KEY` will be removed and replaced with the *actual* value of your API key, so that if someone inspected the source of your page they could see it in plain text. This is a limitation of delivering static Javascript and HTML files to the browser.
+Since it usually contains sensitive information, you should [never commit your `.env` file](https://github.com/motdotla/dotenv#should-i-commit-my-env-file). Note that you'd actually have to go out of your way to do this as, by default, a Redwood app's `.gitignore` explicitly ignores `.env`:
 
-2. Whitelist them in your `redwood.toml`. For example:
+```plaintext{2}
+.DS_Store
+.env
+.netlify
+dev.db
+dist
+dist-babel
+node_modules
+yarn-error.log
+```
 
-    ```toml
-    [web]
-      includeEnvironmentVariables = ['API_KEY']
-    ```
-    These will also be substituted in your code as in the first option above.
+## Where Does Redwood Load My Environment Variables?
 
-3. Define them in your `.env` file. This will only work in the development environment and will either cause an error or fail silently in production, depending on where your ENV var is referenced.
+For all the variables in your `.env` and `.env.defaults` files to make their way to `process.env`, there has to be a call to `dotenv`'s `config` function somewhere. So where is it?
+
+It's in [the CLI](https://github.com/redwoodjs/redwood/blob/main/packages/cli/src/index.js#L6-L12)&mdash;every time you run a `yarn rw` command:
+
+```javascript
+// packages/cli/src/index.js
+
+import { config } from 'dotenv-defaults'
+
+
+config({
+  path: path.join(getPaths().base, '.env'),
+  encoding: 'utf8',
+  defaults: path.join(getPaths().base, '.env.defaults'),
+})
+```
+
+## Seeding your Database
+
+<!-- Source: https://github.com/motdotla/dotenv#should-i-have-multiple-env-files -->
+
+You can provide an `.env` file just for seeding your database. A Redwood app's seed file (`api/prisma/seed.js`) is setup to load it into `process.env`:
+
+```javascript{5-7}
+// api/prisma/seed.js
+
+/* eslint-disable no-console */
+const { PrismaClient } = require('@prisma/client')
+const dotenv = require('dotenv')
+
+dotenv.config()
+const db = new PrismaClient()
+
+// ...
+
+```
+
+So `api/prisma` you make an `.env` file in `api/prisma` with environment variables:
+
+```
+SEEDING_MESSAGE=seeding the database...
+...
+```
+
+In your seed file's `main` function (where all your seeding logic goes), you can access those environment variables on `process.env`:
+
+```javascript{5}
+async function main() {
+
+  // seeding logic...
+
+  console.log(process.env.SEEDING_MESSAGE)
+}
+```
