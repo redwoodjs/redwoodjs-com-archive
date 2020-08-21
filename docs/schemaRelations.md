@@ -1,4 +1,4 @@
-# Prisma Relations and Scaffold Generator Support
+# Prisma Relations and Redwood's Scaffold Generator
 
 Redwood utilizes Prisma for handling the database connection, migrations, and queries. The file to configure both the database connection and data structure is `api/prisma/schema.prisma` (For the full Prisma Schema documentation, [click here](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema).)
 
@@ -6,7 +6,7 @@ A typical `schema.prisma` includes many [data models](http://prisma.io/docs/refe
 
 Before reading further, you should spend some time looking through the [Prisma Relations documentation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations).
 
-## Prisma Relations and Redwood's Scaffold Generator
+## Support for DB '@relations'
 
 There are two important things to understand about the, ahem, relationship between Prisma Relations and Redwood Scaffold Generators:
 
@@ -19,7 +19,7 @@ These generators *will* run correctly. However, when you try to use the associ
 
 Admittedly, trips up a lot of people. And we are definitely working on it. But until the generators offer improved support, here's a guide to the manual modifications you'll need to make when using the Scaffold (or SDL or Service) Generator with models containing relations.
 
-## The Problem: What happens to Scaffold code when models contain `@relations`
+## The Problem with Scaffold Code
 
 Redwood supports relationships in SDL files the way you’d expect. For example, you can write queries like this:
 
@@ -40,7 +40,7 @@ And the Redwood SDL generator, which calls to the Service generator, will make t
 
 **But when it comes to relationships between models in `schema.prisma`,** Prisma doesn’t allow you to save the foreign key field on any Scaffolds that you generate. (There's an [open GitHub Issue](https://github.com/prisma/prisma/issues/2152) about this on the Prisma repo. Maybe give it a nudge with an upvote?)
 
-### Example Schema Using `@relation`
+### Example Schema Using '@relation'
 
 Note the `@relation` on `post.user` below:
 
@@ -90,7 +90,7 @@ And the corresponding `posts.sdl.js`:
 
 The issue is with Redwood’s use of `userID`. We are unable to create a new record by using the foreign key of another table. In this case, where `Post` has a `userId` column, we cannot just set the `userId` and save the record.
 
-## Manual Workaround: 'Cause we know you’re still going to use Generators…
+## Manual Workaround to Scaffold Relational Models
 
 If you would still like to use Redwood’s generators for this type of schema, our very own **[@rob](https://community.redwoodjs.com/u/rob)** has devised a workaround, aka a Handy-Dandy-Hack™. You’ll need to use the following to modify your create and update functions in your Redwood generated Services by running `input` through this:
 
