@@ -3,7 +3,7 @@
 Cells are a declarative approach to data fetching and one of Redwood's signature modes of abstraction. In a way, Cells create space: by providing conventions around data fetching, Redwood can get in between the request and the response and perform optimizations, all without you ever having to change your code.
 
 While it might seem like there must be lot of magic involved, a Cell is actually just a [higher-order component](https://reactjs.org/docs/higher-order-components.html) that executes a GraphQL query and manages its lifecycle.
-All the logic's actually in just one file: [withCell.js](https://github.com/redwoodjs/redwood/blob/master/packages/web/src/graphql/withCell.js).
+All the logic's actually in just one file: [withCell.js](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/graphql/withCell.js).
 The idea is that, by exporting named constants that match the parameters of `withCell`, Redwood can assemble this higher-order component out of these constants at build-time using a babel plugin!
 
 All of this without writing a line of imperative code. Just say what is supposed to happen when, and Redwood will take care of the rest.
