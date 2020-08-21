@@ -1,6 +1,6 @@
 # Prisma Relations and Redwood's Scaffold Generator
 
-Redwood utilizes Prisma for handling the database connection, migrations, and queries. The file to configure both the database connection and data structure is `api/prisma/schema.prisma` (For the full Prisma Schema documentation, [click here](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema).)
+Redwood uses Prisma for handling the database connection, migrations, and queries. You can configure both the database connection and data structure in `api/prisma/schema.prisma`. (For the full Prisma Schema documentation, [click here](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema).)
 
 A typical `schema.prisma` includes many [data models](http://prisma.io/docs/reference/tools-and-interfaces/prisma-schema/models), which map to tables in a relational DB (and will map to collections in MongoDB). To create connections between these models, you'll need to use a powerful Prisma feature called *Relations*. The schema syntax for a Relation is `@relation`.
 
