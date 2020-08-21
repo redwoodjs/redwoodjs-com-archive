@@ -32,7 +32,7 @@ Done in 1.07s.
 
 We'll go over each of these files in detail. But know that the file appended with just `.js` (in the example above, `UserCell.js`) contains all your Cell's logic.
 
-Off the bat, this file exports five constants: `QUERY`, `Loading` , `Empty` , `Failure`  and `Success`. The root query in `QUERY` is the same as `<name>` so that, if you're generating a cell based on a model in your `schema.prisma`, you can get something out of the database right away. But there's a good chance you won't generate your Cell this way, so if you need to, make sure to change the root query. See the [Cells](https://deploy-preview-202--redwoodjs.netlify.app/tutorial/cells#our-first-cell) section of the Tutorial for a great example of this.
+Off the bat, this file exports five constants: `QUERY`, `Loading` , `Empty` , `Failure`  and `Success`. The root query in `QUERY` is the same as `<name>` so that, if you're generating a cell based on a model in your `schema.prisma`, you can get something out of the database right away. But there's a good chance you won't generate your Cell this way, so if you need to, make sure to change the root query. See the [Cells](https://redwoodjs.com/tutorial/cells#our-first-cell) section of the Tutorial for a great example of this.
 
 ## Usage
 
