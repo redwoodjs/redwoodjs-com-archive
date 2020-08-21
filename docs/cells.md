@@ -245,7 +245,7 @@ client.query({
 ### Can I Perform a Mutation in a Cell?
 
 Absolutely. We do so in our [example todo app](https://github.com/redwoodjs/example-todo/blob/f29069c9dc89fa3734c6f99816442e14dc73dbf7/web/src/components/TodoListCell/TodoListCell.js#L26-L44).
-We also don't think it's an anti-pattern to do so. Far from it--your cells might end up containing a lot of logic and really serve as the hub of your app in many ways.
+We also don't think it's an anti-pattern to do so. Far from it—your cells might end up containing a lot of logic and really serve as the hub of your app in many ways.
 
 It's also important to remember that, besides exporting certain things with certain names, there aren't many rules around Cells&mdash;everything you can do in a regular component still goes.
 
