@@ -255,7 +255,7 @@ You just have to end a filename in "Cell" right? Well, while that's basically co
 
 Redwood looks for all files ending in "Cell" (so if you want your component to be a Cell, its filename does have to end in "Cell"), but if the file 1) doesn't export a const named `QUERY` and 2) has a default export, then it'll be skipped.
 
-When would you want do this? If you just want a file to end in "Cell" for some reason. Otherwise, don't worry about it!
+When would you want to do this? If you just want a file to end in "Cell" for some reason. Otherwise, don't worry about it!
 
 <!-- Source: https://github.com/redwoodjs/redwood/pull/597 -->
 <!-- Source: https://github.com/redwoodjs/redwood/pull/554 -->
