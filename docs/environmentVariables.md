@@ -14,40 +14,6 @@ For a reference on dotenv syntax, see the dotenv README's [Rules](https://github
 
 Redwood also configures Webpack with `dotenv-webpack`, so that all references to `process.env` vars on the Web side will be replaced with the variable's actual value at built-time. More on this in [Web](#Web).
 
-## API
-
-### Development
-
-You can access environment variables defined in `.env` and `.env.defaults` as `process.env.VAR_NAME`. For example, if we define the environment variable `HELLO_ENV` in `.env`:
-
-```
-HELLO_ENV=hello world
-```
-
-and make a hello Function (`yarn rw g function hello`) and reference `HELLO_ENV` in the body of our response:
-
-```javascript{6}
-// ./api/src/functions/hello.js
-
-export const handler = async (event, context) => {
-  return {
-    statusCode: 200,
-    body: `${process.env.HELLO_ENV}`,
-  }
-}
-```
-
-Navigating to http://localhost:8911/hello shows that the Function successfully accesses the environment variable:
-
-<!-- @todo -->
-<!-- Get a better-quality pic -->
-![rw-envVars-api](https://user-images.githubusercontent.com/32992335/86520528-47112100-bdfa-11ea-8d7e-1c0d502805b2.png)
-
-### Production
-
-<!-- @todo -->
-<!-- Deployment system? platform? -->
-Whichever platform you deploy to, they'll have some specific way of making environment variables available to the serverless environment where your Functions run. For example, if you deploy to Netlify, you set your environment variables in **Settings** > **Build & Deploy** > **Environment**. You'll just have to read your provider's documentation.
 
 ## Web
 
@@ -83,22 +49,73 @@ For another example of using environment variables in development, see [File Upl
 
 ### Production
 
+> **Heads Up:** for Web to access environment variables in production, you _must_ configure one of the options below. 
+> 
+> Redwood recommends **Option 1: `redwood.toml`** as it is the most robust.
+
 In production, you can get environment variables to the Web Side either by
 
-1. prefixing them with `REDWOOD_ENV_`
-2. putting them in the `includeEnvironmentVariables` array in `redwood.toml`
+1. adding to `redwood.toml` via the `includeEnvironmentVariables` array, or 
+2. prefixing with `REDWOOD_ENV_`
 
-Note that, just like for the API Side, you'll also have to set them up with your provider.
+Just like for the API Side, you'll also have to set them up with your provider.
+
+#### includeEnvironmentVariables in redwood.toml
+
+For Example:
+```toml
+# redwood.toml
+
+[web]
+  includeEnvironmentVariables = ['SECRET_API_KEY', 'ANOTHER_ONE']
+```
+
+By adding environment variables to this array, they'll be available to Web in production via `process.env.SECRET_API_KEY`. This means that if you have an environment variable like `process.env.SECRET_API_KEY` Redwood removes and replaces it with its *actual* value. 
+
+Note: if someone inspects your site's source, *they could see your `REDWOOD_ENV_SECRET_API_KEY` in plain text.* This is a limitation of delivering static JS and HTML to the browser.
 
 #### Prefixing with REDWOOD_ENV_
 
 In `.env`, if you prefix your environment variables with `REDWOOD_ENV_`, they'll be available via `process.env.REDWOOD_ENV_MY_VAR_NAME`, and will be dynamically replaced at built-time.
 
-This means that if you have an environment variable like `process.env.REDWOOD_ENV_SECRET_API_KEY` Redwood removes and replaces it with its *actual* value. So if someone inspects your site's source, they could see your `REDWOOD_ENV_SECRET_API_KEY` in plain text. This is a limitation of delivering static JS and HTML to the browser.
+Like the option above, these are also removed and replaced with the *actual value* during build in order to be available in production.
 
-#### includeEnvironmentVariables in redwood.toml
 
-Like the option above, these are also removed and replaced.
+## API
+
+### Development
+
+You can access environment variables defined in `.env` and `.env.defaults` as `process.env.VAR_NAME`. For example, if we define the environment variable `HELLO_ENV` in `.env`:
+
+```
+HELLO_ENV=hello world
+```
+
+and make a hello Function (`yarn rw g function hello`) and reference `HELLO_ENV` in the body of our response:
+
+```javascript{6}
+// ./api/src/functions/hello.js
+
+export const handler = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: `${process.env.HELLO_ENV}`,
+  }
+}
+```
+
+Navigating to http://localhost:8911/hello shows that the Function successfully accesses the environment variable:
+
+<!-- @todo -->
+<!-- Get a better-quality pic -->
+![rw-envVars-api](https://user-images.githubusercontent.com/32992335/86520528-47112100-bdfa-11ea-8d7e-1c0d502805b2.png)
+
+### Production
+
+<!-- @todo -->
+<!-- Deployment system? platform? -->
+Whichever platform you deploy to, they'll have some specific way of making environment variables available to the serverless environment where your Functions run. For example, if you deploy to Netlify, you set your environment variables in **Settings** > **Build & Deploy** > **Environment**. You'll just have to read your provider's documentation.
+
 
 ## Keeping Sensitive Information Safe
 
