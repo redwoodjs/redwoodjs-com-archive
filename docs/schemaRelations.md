@@ -38,7 +38,7 @@ posts {
 
 And the Redwood SDL generator, which calls to the Service generator, will make this work.
 
-**But when it comes to relationships between models in `schema.prisma`,** Prisma doesn’t allow you to save the foreign key field on any Scaffolds that you generate. (There's an [open GitHub Issue](https://github.com/prisma/prisma/issues/2152) about this on the Prisma repo. Maybe give it a nudge with an upvote?)
+But when it comes to relationships between models in `schema.prisma`, **Prisma doesn’t allow you to save the foreign key field on any Scaffolds that you generate**. (There's an [open GitHub Issue](https://github.com/prisma/prisma/issues/2152) about this on the Prisma repo. Maybe give it a nudge with an upvote?)
 
 ### Example Schema Using '@relation'
 
