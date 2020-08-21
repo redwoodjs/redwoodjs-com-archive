@@ -92,7 +92,7 @@ The issue is with Redwood’s use of `userID`. We are unable to create a new re
 
 ## Manual Workaround to Scaffold Relational Models
 
-If you would still like to use Redwood’s generators for this type of schema, our very own **[@rob](https://community.redwoodjs.com/u/rob)** has devised a workaround, aka a Handy-Dandy-Hack™. You’ll need to use the following to modify your create and update functions in your Redwood generated Services by running `input` through this:
+If you would still like to use Redwood’s generators for this type of schema, our very own **[@rob](https://community.redwoodjs.com/u/rob)** has devised a workaround, aka a Handy-Dandy-Hack™. You’ll need to use the following to modify your create and update functions in your Redwood-generated Services by running `input` through this:
 
 ```jsx
 const foreignKeyReplacement = (input) => {
