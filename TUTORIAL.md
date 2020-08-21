@@ -657,7 +657,7 @@ This command will result in a new file at `/web/src/components/BlogPostsCell/Blo
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
-  query {
+  query BlogPostsQuery {
     blogPosts {
       id
     }
@@ -690,7 +690,7 @@ To get you off and running as quickly as possible the generator assumes you've g
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
-  query {
+  query BlogPostsQuery {
     posts {
       id
     }
@@ -737,7 +737,7 @@ The browser should actually show an array with a number or two (assuming you cre
 >
 > ```javascript
 > export const QUERY = gql`
->   query {
+>   query BlogPostsQuery {
 >     postIds: posts {
 >       id
 >     }
@@ -753,7 +753,7 @@ In addition to the `id` that was added to the `query` by the generator, let's ge
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
-  query {
+  query BlogPostsQuery {
     posts {
       id
       title
@@ -999,7 +999,7 @@ Now over to the cell, we need access to that `{id}` route param so we can look u
 // web/src/components/BlogPostCell/BlogPostCell.js
 
 export const QUERY = gql`
-  query($id: Int!) {
+  query BlogPostQuery($id: Int!) {
     post(id: $id) {
       id
       title
