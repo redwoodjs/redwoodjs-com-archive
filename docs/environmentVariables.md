@@ -64,7 +64,7 @@ Just like for the API Side, you'll also have to set them up with your provider.
 
 For Example:
 ```toml
-# redwood.toml
+// redwood.toml
 
 [web]
   includeEnvironmentVariables = ['SECRET_API_KEY', 'ANOTHER_ONE']
