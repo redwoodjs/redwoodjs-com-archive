@@ -88,7 +88,7 @@ And the corresponding `posts.sdl.js`:
 
 ```
 
-The issue is with Redwood’s use of `userID`. We are unable to create a new record by using the foreign key of another table. In this case, where `Post` has a `userId` column, we cannot just set the `userId` and save the record.
+The issue is with Redwood’s use of `userId`. We are unable to create a new record by using the foreign key of another table. In this case, where `Post` has a `userId` column, we cannot just set the `userId` and save the record.
 
 ## Manual Workaround to Scaffold Relational Models
 
