@@ -751,7 +751,7 @@ const Routes = () => {
         <Route path="/secret-page" page={SecretPage} name="secret" />
       </Private>
 
-      <Private unauthenticated="forbidden" hasRole="admin">
+      <Private unauthenticated="forbidden" role="admin">
         <Route path="/admin" page={AdminPage} name="admin" />
       </Private>
     </Router>
