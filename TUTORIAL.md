@@ -499,9 +499,9 @@ This says that we want a table called `Post` and it should have:
 
 That was simple. Now we'll want to snapshot this as a migration:
 
-    yarn redwood db save
+    yarn redwood db save create posts
 
-A prompt will ask you what you want to name this migration. This is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference for future developers. Something like "create posts" is perfect.
+You've named the migration "create posts", and this is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference for future developers.
 
 After the command completes you'll see a new subdirectory created under `api/prisma/migrations` that has a timestamp and the name you gave the migration. It will contain a couple files inside (a snapshot of what the schema looked like at that point in time in `schema.prisma` and the directives that Prisma Migrate will use to make the change to the database in `steps.json`).
 
@@ -1736,9 +1736,9 @@ model Contact {
 
 Next we create a migration file:
 
-    yarn rw db save
+    yarn rw db save create contact
 
-The command will ask for a name again. How about "create contact"? Finally we execute the migration to run the DDL commands to upgrade the database:
+Finally we execute the migration to run the DDL commands to upgrade the database:
 
     yarn rw db up
 
