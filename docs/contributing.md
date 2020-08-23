@@ -1,8 +1,10 @@
 # Contributing
 
-Love Redwood and want to get involved? You’re in the right place! There are several ways you can contribute to Redwood:
+Love Redwood and want to get involved? You’re in the right place and in good company! As of this writing, there are over [100 individuals](https://github.com/redwoodjs/redwood/blob/main/README.md#contributors) who have helped make Redwood awesome by contributing code and documentation. This doesn't include all those who participate in the vibrant, helpful, and encouraging Forums and Discord, which are both great places to get started if you have any questions.
 
-- join the [community forum](https://community.redwoodjs.com/)
+There are several ways you can contribute to Redwood:
+
+- join the [community Forums](https://community.redwoodjs.com/) and [Discord server](https://discord.gg/jjSYEQd)
 - triage [issues on the repo](https://github.com/redwoodjs/redwood/issues)
 - write and edit [docs](#contributing-docs)
 - and of course, write code!
@@ -29,10 +31,12 @@ What you want to do not on the roadmap? Well, still go for it! We love spikes an
 |[`@redwoodjs/dev-server`](https://github.com/redwoodjs/redwood/blob/main/packages/dev-server/README.md)|Configuration for the local development server|
 |[`@redwoodjs/eslint-config`](https://github.com/redwoodjs/redwood/blob/main/packages/eslint-config/README.md)|Defines Redwood's eslint config|
 |[`@redwoodjs/eslint-plugin-redwood`](https://github.com/redwoodjs/redwood/blob/main/packages/eslint-plugin-redwood/README.md)|Defines eslint plugins; currently just prohibits the use of non-existent pages in `Routes.js`|
+|[`@redwoodjs/forms`](https://github.com/redwoodjs/redwood/blob/main/packages/forms/README.md)|Provides Form helpers|
 |[`@redwoodjs/internal`](https://github.com/redwoodjs/redwood/blob/main/packages/internal/README.md)|Provides tooling to parse Redwood configs and get a project's paths|
 |[`@redwoodjs/router`](https://github.com/redwoodjs/redwood/blob/main/packages/router/README.md)|The built-in router for Redwood|
+|[`@redwoodjs/structure`](https://github.com/redwoodjs/redwood/blob/main/packages/structur/README.md)|Provides a way to build, validate and inspect an object graph that represents a complete Redwood project|
 |[`@redwoodjs/testing`](https://github.com/redwoodjs/redwood/blob/main/packages/testing/README.md)|Provides helpful defaults when testing a Redwood project's web side|
-|[`@redwoodjs/web`](https://github.com/redwoodjs/redwood/blob/main/packages/web/README.md)|Configures a Redwood's app web side: wraps the Apollo Client in `RedwoodProvider`; provides Form helpers; defines the Cell HOC|
+|[`@redwoodjs/web`](https://github.com/redwoodjs/redwood/blob/main/packages/web/README.md)|Configures a Redwood's app web side: wraps the Apollo Client in `RedwoodProvider`; defines the Cell HOC|
 
 ## Contributing Docs
 
