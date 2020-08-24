@@ -1,4 +1,6 @@
-# Roadmap to 1.0
+# Roadmap
+
+_Last updated 24 Aug 2020_
 
 The speed we're moving at is pretty remarkable. We want to hit `1.0` by the end of the year. And we think we can do it. But there are a lot of moving parts, each at a different level of maturity.
 
@@ -16,9 +18,7 @@ We're taking inspiration from Basecamp's [Shape Up](https://basecamp.com/shapeup
 >
 > This means that even if we say TypeScript is <span id="status-3" class="font-mono">Making it happen</span>, there are some parts of it that might be <span id="status-0" class="font-mono">Didn't start</span>.
 
-If you want an even higher-level overview, scroll the aside on the right, keeping the color key in mind.
-
-This document is alive. We'll update it as often as we can, and when it's appropriate to do so. And as always, feel free to open a PR!
+This document is alive. We'll update it as often as we can, and when it's appropriate to do so. And as always, feel free to [open a PR](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md)!
 
 ## What goes in 1.0?
 
@@ -26,7 +26,7 @@ Not everything will be in `1.0`. Not everything can go in `1.0`. Even some reall
 
 We need to be very careful about our priorities, both because we want `1.0` to be something special and because if we aren't careful, we'll never get there. The hardest thing in open source is saying no. But as we get closer to `1.0`, it's increasingly what we'll have to do.
 
-Here's a high level overview of the v1.0 roadmap with links to relevant GitHub project boards and forum topics. If you're interested in helping with one of these, just let us know in the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up!
+Here's a high level overview of the `1.0` roadmap with links to relevant GitHub project boards and forum topics. If you're interested in helping with one of these, just let us know in the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up!
 
 ## Accessibility
 
@@ -40,7 +40,7 @@ Accessibility isn't something we're going to compromise on. It has to be first c
 
 <span id="status-3" class="font-mono">Making it happen</span>
 
-Authentication and authorization are baked into Redwood. We plan to have easy-to-install, sophisticated authenticated methods for a variety of popular auth providers. On top of that, we'll also provide RBAC (role-based access control) capabilities if you want them.
+Authentication and authorization are baked into Redwood. We plan to have easy-to-install, sophisticated authentication methods for a variety of popular auth providers. On top of that, we'll also provide RBAC (role-based access control) capabilities if you want them.
 
 [Auth • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/6)
 
@@ -48,7 +48,7 @@ Authentication and authorization are baked into Redwood. We plan to have easy-to
 
 <span id="status-2" class="font-mono">There's a plan</span>
 
-We'd like to support more deployment targets. The ones high-up on our list are: AWS, Google Cloud Run, and Vercel. We think we'll add our second target using a plugin pattern that'll let people contribute or write their own deployment strategies.
+We'd like to support several deployment targets. The ones high-up on our list are: Netlify (done), Vercel (done), AWS, and Google Cloud Run. Deployment strategies should be done in a way that makes it easy for additional targets to be added and for users to create their own custom strategies.
 
 [Deployment • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/9)
 
@@ -56,7 +56,7 @@ We'd like to support more deployment targets. The ones high-up on our list are: 
 
 <span id="status-3" class="font-mono">Making it happen</span>
 
-Part of Redwood's initial success was the quality of its tutorial. The practice of readable and comprehensive documentation is something we plan to continue. The road to `1.0` doesn't mean sacrificing on the quality of docs. On the contrary, the more the framework can do, the better the docs have to be.
+Part of Redwood's initial success was the quality of the tutorial. The practice of readable and comprehensive documentation is something we plan to continue. The road to `1.0` doesn't mean sacrificing on the quality of docs. On the contrary, the more the framework can do, the better the docs have to be.
 
 Docs are tracked on the [redwoodjs.com repo](https://github.com/redwoodjs/redwoodjs.com/projects/1)
 
@@ -103,7 +103,7 @@ This one isn't up to us per se, but for us to be `1.0`, it needs to be `1.0`.
 
 <span id="status-1" class="font-mono">Figuring it out</span>
 
-We've written our own router for Redwood, and we need to make sure it is competitive with existing routers in the React ecosystem (React Router, Reach Router). We've taken a stance on desiring a flat routing scheme (vs a nested one) and this currently comes with some performance downsides that need to be addressed.
+We've written our own router for Redwood, and we need to make sure it is competitive with existing routers in the React ecosystem (e.g. React Router, Reach Router). We've taken a stance on desiring a flat routing scheme (vs a nested one) and this currently comes with some performance downsides that need to be addressed.
 
 [Router • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/11)
 
@@ -119,7 +119,7 @@ Redwood's component-development workflow starts with Storybook. Being able to de
 
 <span id="status-3" class="font-mono">Making it happen</span>
 
-Using Redwood's Structure package, we can use the same logic to power both the IDE (Jamstack IDE) and Redwood itself. Redwood Structure's most common use-case is getting the diagnostics of a complete Redwood project, but being able to programatically talk about a Redwood project like an AST moves many other amazing things we can't anticipate into the adjacent possible.
+Using Redwood's Structure package, we can use the same logic to power both an IDE (e.g. Jamstack IDE) and Redwood itself. Redwood Structure's most common use-case is getting the diagnostics of a complete Redwood project, but being able to programatically talk about a Redwood project like an AST moves many other amazing things we can't anticipate into the adjacent possible.
 
 [Structure • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/12)
 
