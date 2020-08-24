@@ -2327,6 +2327,9 @@ Before we continue, make sure your app is fully committed and pushed to GitHub, 
 > git push -u origin main
 > ```
 
+### Vercel (alternative deploy target)
+Redwood officially supports multiple hosting providers (with even more on the way). Although this Tutorial continues with a focus on Netlify deployment and authentication with Netlify Identity, you can deploy to [Vercel](https://vercel.com/redwoodjs-core) instead. To do this, first complete "The Database" section below, but then use this [Vercel deploy walkthrough](https://redwoodjs.com/docs/deploy#redwood-deploy-configuration) in place of the following "Netlify" instructions. **Note**: Netlify Identity, used in upcoming "Authentication" section, won’t work on the Vercel platform.
+
 ### The Database
 
 We'll need a database somewhere on the internet to store our data. We've been using SQLite locally, but that's a file-based store meant for single-user. SQLite isn't really suited for the kind of connection and concurrency requirements a production website will require. For this part of this tutorial, we will use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting. We just need to get a database available to the outside world so it can be accessed by our app.
@@ -2375,9 +2378,6 @@ Click the **Heroku Postgres** link to get to the detail page, then the **Setting
 <img alt="Screen Shot 2020-02-03 at 3 25 31 PM" src="https://user-images.githubusercontent.com/300/73703956-70405080-46a6-11ea-81f2-bed99ca4c4cc.png">
 
 It will be really long and scroll off the right side of the page so make sure you copy the whole thing!
-
-### Vercel (optional path)
-Redwood officially supports multiple deployment providers (with even more on the way). Although this Tutorial continues with a focus on Netlify deployment and authentication with Netlify Identity, you could deploy to [Vercel](https://vercel.com/redwoodjs-core) instead. In that case, you'll need to use this [Vercel deploy walkthrough](https://redwoodjs.com/docs/deploy#redwood-deploy-configuration). **Note**: Netlify Identity, used in the next section "Authentication", won’t work on the Vercel platform.
 
 ### Netlify
 
