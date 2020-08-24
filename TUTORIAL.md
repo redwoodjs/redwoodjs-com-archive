@@ -2755,21 +2755,9 @@ Want to add some more features to your app? Check out some of our Cookbook recip
 
 ### Roadmap
 
-In the coming weeks and months we've got some exciting stuff planned:
-
-1. [TypeScript support](https://github.com/redwoodjs/redwood/issues/234)
-2. [Testing](https://github.com/redwoodjs/redwood/issues/502)
-3. [Storybook integration](https://github.com/redwoodjs/redwood/issues/231)
-
-And even more stuff we're thinking about, but haven't put on the calendar yet:
-
-1. Accessibility features for Redwood Router
-2. Dev widget on rendered pages for jumping to the [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/testing/graphql-playground/) and new [Prisma Studio](https://github.com/prisma/studio)
-3. More cookbook recipies
-4. Easy access to AWS Lambda logs
-5. Data fetching optimization for the [waterfall problem](https://www.apollographql.com/blog/optimizing-your-graphql-request-waterfalls-7c3f3360b051)
-6. Support for NoSQL solutions like MongoDB
-7. GraphQL query cache helpers
+Check out our [Roadmap](https://redwoodjs.com/roadmap) to see where we're headed and how we're going to get there. 
+If you're interested in helping with anything you see, just let us know over on the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up.
+We want to hit `1.0` by the end of the year. And with your help, we think we can do it!
 
 ### Help Us!
 
