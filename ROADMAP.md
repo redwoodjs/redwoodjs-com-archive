@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last updated 24 Aug 2020_
+_Last updated 25 Aug 2020_
 
 We want to hit `1.0` by the end of the year. And we think we can do it. But there are a lot of moving parts, each at a different level of maturity.
 
@@ -39,6 +39,16 @@ Accessibility isn't something we're going to compromise on. It has to be first c
 Authentication and authorization are baked into Redwood. We plan to have easy-to-install, sophisticated authentication methods for a variety of popular auth providers. On top of that, we'll also provide RBAC (role-based access control) capabilities if you want them.
 
 [Auth • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/6)
+
+## Core
+
+<span id="status-3" class="font-mono">Making it happen</span>
+
+Redwood depends on a few libraries&mdash;namely Apollo and Prisma&mdash;for some of its core functionality. For us to be `1.0`, they have to be too. 
+
+ApolloClient recently hit 3.0. Right now, Redwood uses 2.6, but we plan on upgrading as soon as we can. Prisma Client made it to general availability earlier this year, but Redwood depends on Prisma Migrate too, which is still experimental. You can check its status on Prisma's [public roadmap](https://www.notion.so/Prisma-public-roadmap-50766227b779464ab98899accb98295f).
+
+[Core • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/14)
 
 ## Deployment
 
@@ -88,12 +98,6 @@ Bundle size will be important here, so a good place to start is by building with
 
 - [Prerender proposal](https://community.redwoodjs.com/t/prerender-proposal/849)
 - [Pre-rendering with react-snap & Redwood](https://community.redwoodjs.com/t/pre-rendering-with-react-snap-redwood/863)
-
-## Prisma Migrate
-
-<span id="status-3" class="font-mono">Making it happen</span>
-
-This one isn't up to us per se, but for us to be `1.0`, it needs to be too.
 
 ## Router
 
