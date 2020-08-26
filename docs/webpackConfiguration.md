@@ -165,9 +165,15 @@ Now, back in the browser, you'll see:
 
 ![rw-wp-after](https://user-images.githubusercontent.com/32992335/83955150-bb10d700-a804-11ea-9c63-708bc2fe7139.png)
 
-### Adding TailwindCSS
+### Adding Tailwind CSS
 
-This section is inspired by mdv.io's excellent blog post, [Adding TailwindCSS to RedwoodJS](https://mdv.io/). Note that the `webpack.config.js` file is no longer necessary since Redwood's webpack configuration now comes with postcss-loader by default (see [Supported Extensions and Loaders](#supported-extensions-and-loaders)). Neither is PurgeCSS, since, as of TailwindCSS v1.4, it's [built-in](https://tailwindcss.com/docs/release-notes/#tailwind-css-v1-4).
+This section is inspired by mdv.io's excellent blog post, [Adding Tailwind CSS to RedwoodJS](https://mdv.io/). Note that the `webpack.config.js` file is no longer necessary since Redwood's webpack configuration now comes with postcss-loader by default (see [Supported Extensions and Loaders](#supported-extensions-and-loaders)). Neither is PurgeCSS, since, as of Tailwind CSS v1.4, it's [built-in](https://tailwindcss.com/docs/release-notes/#tailwind-css-v1-4).
+
+> While following this example is a great way to learn about configuration in Redwood, do note that you can skip this section entirely and use the [Tailwind CSS generator](https://redwoodjs.com/docs/cli-commands#tailwind) instead:
+>
+> ```
+> yarn rw g util tailwind
+> ```
 
 First, install the development dependencies:
 
@@ -190,20 +196,21 @@ const path = require('path')
 
 module.exports = {
   plugins: [
-    require('tailwindcss')(path.resolve(__dirname, 'tailwind.config.js')),
+    require('tailwindcss')(path.resolve(__dirname, '../tailwind.config.js')),
     require('autoprefixer')
   ],
 }
 ```
 
-> We've used the word "postcss-loader" three times, and it's because there's actually three different things: 1) the postcss-loader "rule" in webpack, which is there by default, 2) the postcss-loader package, and 3) the configuration for the postcss-loader rule, which is what goes in postcss.config.js. Welcome to the wonderful world of configuration.
+> We've used the word "postcss-loader" three times, and it's because there's actually three different things: 1) the postcss-loader "rule" in webpack, which is there by default, 2) the postcss-loader package, and 3) the configuration for the postcss-loader rule, which is what goes in postcss.config.js. Welcome to the wonderful world of configuration!
 
-Now, initialize tailwind and move the resulting file (`tailwind.config.js`) to `config`, just to keep things organized:
+Now, initialize tailwind:
 
 ```terminal
 yarn tailwindcss init
-mv tailwind.config.js config/tailwind.config.js
 ```
+
+This generates the tailwind config file, `tailwind.config.js`. Note that, ordirinarly, we'd move this file to `web/config`, like we did with `postcss.config.js`. But since the Tailwind CSS IntelliSense won't work unless `tailwind.config.js` is in a base directory like `web`, we're just leaving this one here for now.
 
 Finally, use the tailwind directives in `web/src/index.css`
 
