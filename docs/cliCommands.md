@@ -385,6 +385,7 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 | `scaffold <model>`     | Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts `<path/model>` |
 | `sdl <model>`          | Generate a GraphQL schema and service object                                                          |
 | `service <name>`       | Generate a service component                                                                          |
+| `util <util>`          | Quality of life utilities                                                                             |
 
 **Undoing a Generator with a Destroyer**
 
@@ -556,10 +557,10 @@ yarn rw g deploy <provider>
 
 Creates provider-specific code and configuration for deployment
 
-| Arguments & Options | Description                                                              |
-| :------------------ | :----------------------------------------------------------------------- |
-| `provider`          | Deploy provider to configure. Choices are `netlify` or `vercel`          |
-| `--force, -f`       | Overwrite existing configuration                                         |
+| Arguments & Options | Description                                                     |
+| :------------------ | :-------------------------------------------------------------- |
+| `provider`          | Deploy provider to configure. Choices are `netlify` or `vercel` |
+| `--force, -f`       | Overwrite existing configuration                                |
 
 **Usage**
 
@@ -1072,6 +1073,29 @@ export const users = () => {
   return db.user.findMany()
 }
 ```
+
+### util
+
+Quality of life utilities.
+
+```
+yarn rw g util <util>
+```
+
+<br/>
+
+| Arguments & Options | Description                              |
+| :------------------ | :--------------------------------------- |
+| `util`              | Utility to setup. Choices are `tailwind` |
+| `--force, -f`       | Overwrite existing configuration         |
+
+#### tailwind
+
+Setup [Tailwind CSS](https://tailwindcss.com/).
+
+This command automates all the steps enumerated in the Webpack Configuration doc's [Adding Tailwind CSS](https://redwoodjs.com/docs/webpack-configuration#adding-tailwindcss) section.
+
+Right now, this'll genreate the `tailwind.config.js` file in `web` (instead of in `web/config`) to get the vscode extension working. 
 
 ## info
 
