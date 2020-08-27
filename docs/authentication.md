@@ -381,7 +381,7 @@ The following values are available from the `useAuth` hook:
 - async `getToken()`: Returns a JWT.
 - `client`: Access the instance of the client which you passed into `AuthProvider`.
 - `isAuthenticated`: Determines if the current user has authenticated.
-- `hasRole(role)`: Determines if the current user is assigned a role like `"admin"` or any in a list of roles like `['editor', 'author']`
+- `hasRole(role)`: Determines if the current user is assigned a role like `"admin"` or assigned to any of the roles in a list such as `['editor', 'author']`.
 - `loading`: The auth state is restored asynchronously when the user visits the site for the first time, use this to determine if you have the correct state.
 
 ## Usage in Redwood
@@ -751,7 +751,7 @@ const Routes = () => {
 }
 ```
 
-Routes can also be restirected by role by specifying `hasRole(role)` or `hasRole([role])` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in`unauthenticated`.
+Routes can also be restirected by role by specifying `hasRole="role"` or `hasRole={['role', 'another_role']})` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in `unauthenticated`.
 
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'
