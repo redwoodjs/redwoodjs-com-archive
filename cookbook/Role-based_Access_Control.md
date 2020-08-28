@@ -14,7 +14,7 @@
 
 ### House and Blog Role-access Examples
 
-## RBAC Example: House
+#### RBAC Example: House
 
 Consider a 🏠 while you are away on vacation.
 
@@ -34,7 +34,7 @@ The passcodes inform what access they have because it says if they are a neighbo
 
 If your 🏠 could enforce RBAC, it needs to know the rules.
 
-## Role Matrix for House RBAC
+##### Role Matrix for House RBAC
 
 | Role     | Kitchen | Basement | Office | Bathroom | Laundry | Bedroom |
 | -------- | :-----: | :------: | :----: | :------: | :-----: | :-----: |
@@ -42,7 +42,7 @@ If your 🏠 could enforce RBAC, it needs to know the rules.
 | Plumber  |   ✅    |    ✅    |        |    ✅    |   ✅    |         |
 | Owner    |   ✅    |    ✅    |   ✅   |    ✅    |   ✅    |         |
 
-## RBAC Example: Blog
+#### RBAC Example: Blog
 
 In our Blog example anyone can view Posts (authenticated or not). They are _public_.
 
@@ -51,7 +51,7 @@ In our Blog example anyone can view Posts (authenticated or not). They are _publ
 - Publishers can write, review, edit and delete Posts.
 - And admins can do it all (and more).
 
-## Role Matrix for Blog RBAC
+##### Role Matrix for Blog RBAC
 
 | Role      | View | New | Edit | Delete | Manage Users |
 | --------- | :--: | :-: | :--: | :----: | :----------: |
@@ -60,14 +60,15 @@ In our Blog example anyone can view Posts (authenticated or not). They are _publ
 | Publisher |  ✅  | ✅  |  ✅  |   ✅   |              |
 | Admin     |  ✅  | ✅  |  ✅  |   ✅   |      ✅      |
 
-## RedwoodJS Auth and RBAC Support
+## Auth and RBAC Checklist
 
 - Implement an Identity as a Service/Authentication Provider
 - Define and Assign Roles
 - Set Roles to Current User
 - Enforce Access
 - Secure Web and Api sides
-- Helps to be familiar with [Blog Tutorial](https://redwoodjs.com/tutorial/welcome-to-redwood) as well as pages, cells, services, authentication, and routes.
+
+Helps to be familiar with [Blog Tutorial](https://redwoodjs.com/tutorial/welcome-to-redwood) as well as pages, cells, services, authentication, and routes.
 
 ## Identity as a Service
 
@@ -107,7 +108,7 @@ export const getCurrentUser = async (decoded) => {
 }
 ```
 
-### RedwoodJS Web-side RBAC
+### Web-side RBAC
 
 - Routes
 - NavLinks in a Layout
@@ -201,13 +202,13 @@ const SettingsPage = () => {
 }
 ```
 
-### RedwoodJS Api-side RBAC
+### Api-side RBAC
 
 - Services
 - Functions
 - Default Roles using [Netlify Identity Triggers](https://docs.netlify.com/functions/trigger-on-events/)
 
-### How to Protect a Service
+#### How to Protect a Service
 
 ```js
 import { db } from 'src/lib/db'
