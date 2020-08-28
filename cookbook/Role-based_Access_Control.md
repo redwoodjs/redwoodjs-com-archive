@@ -1,18 +1,18 @@
 # Role-based Access Control (RBAC)
 
-- Authentication vs Authorization
-- House and Blog
-- RBAC Demo
-- Identity as a Service
-- How To's with Code Samples
-- Additional Resources
-- Q&A
+- <a href="#authentication-vs-authorization" data-turbolinks="false">Authentication vs Authorization</a>
+- <a href="#house-and-blog-role-access-examples" data-turbolinks="false">House and Blog Role-access Examples</a>
+- <a href="#identity-as-a-service" data-turbolinks="false">Identity as a Service</a>
+- <a href="#how-to-code-examples" data-turbolinks="false">How To Code Examples</a>
+- <a href="#additional-resources" data-turbolinks="false">Additional Resources</a>
 
 ## Authentication vs Authorization
 
 - **Authentication** is the act of validating that users are who they claim to be.
 - **Authorization** is the process of giving the user permission to access a specific resource or function.
 - In even more simpler terms authentication is the _process_ of verifying oneself, while authorization is the _process_ of verifying what you have access to.
+
+### House and Blog Role-access Examples
 
 ## RBAC Example: House
 
@@ -69,13 +69,15 @@ In our Blog example anyone can view Posts (authenticated or not). They are _publ
 - Secure Web and Api sides
 - Helps to be familiar with [Blog Tutorial](https://redwoodjs.com/tutorial/welcome-to-redwood) as well as pages, cells, services, authentication, and routes.
 
-## Authentication Provider & Identity as a Service
+## Identity as a Service
 
 > "Doing authentication correctly is as hard, error-prone, and risky as rolling your own encryption."
 
 - Identity as a Service such as Netlify Identity, Auth0, Magic.link, etc.
 - Aims to help developers solve the problem of authentication
 - Manages authentication (and roles) and the complexity associated
+
+RedwoodJS generates Authentication Providers for several common Identity Services, including Netlify Identity.
 
 ### Netlify Identity Access Token (JWT) & App Metadata
 
@@ -93,7 +95,9 @@ In our Blog example anyone can view Posts (authenticated or not). They are _publ
 }
 ```
 
-## Set Roles to Current User
+## How To Code Examples
+
+### Set Roles to Current User
 
 ```js
 import { parseJWT } from '@redwoodjs/api'
@@ -103,14 +107,14 @@ export const getCurrentUser = async (decoded) => {
 }
 ```
 
-## RedwoodJS Web-side RBAC
+### RedwoodJS Web-side RBAC
 
 - Routes
 - NavLinks in a Layout
 - Cells/Components
 - Markup in Page
 
-### How to Protect a Route
+#### How to Protect a Route
 
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'
@@ -126,7 +130,7 @@ const Routes = () => {
 }
 ```
 
-### How to Protect a NavLink in a Layout
+#### How to Protect a NavLink in a Layout
 
 ```js
 import { NavLink, Link, routes } from '@redwoodjs/router'
@@ -149,7 +153,7 @@ const SidebarLayout = ({ children }) => {
 }
 ```
 
-### How to Protect a Component
+#### How to Protect a Component
 
 ```js
 import { useAuth } from '@redwoodjs/auth'
@@ -170,7 +174,7 @@ const Post = ({ post }) => {
 }
 ```
 
-### How to Protect Markup in a RedwoodJS Page
+#### How to Protect Markup in a RedwoodJS Page
 
 ```js
 import { useAuth } from "@redwoodjs/auth";
@@ -197,7 +201,7 @@ const SettingsPage = () => {
 }
 ```
 
-## RedwoodJS Api-side RBAC
+### RedwoodJS Api-side RBAC
 
 - Services
 - Functions
@@ -224,7 +228,7 @@ export const createPost = ({ input }) => {
 }
 ```
 
-### How to Protect a Function
+#### How to Protect a Function
 
 ```js
 import { requireAuth } from 'src/lib/auth'
@@ -247,7 +251,7 @@ export const handler = async (event, context) => {
 }
 ```
 
-### How to Default Roles on Signup using Netlify Identity Triggers
+#### How to Default Roles on Signup using Netlify Identity Triggers
 
 ```js
 // api/src/functions/identity-signup,js
