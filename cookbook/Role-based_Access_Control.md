@@ -1,5 +1,11 @@
 # Role-based Access Control (RBAC)
 
+Role-based access control (RBAC) offers a simple, manageable approach to access management by assigning permissions to users based on their role within an organization.
+
+A **role** is a collection of permissions applied to a set of users. Using roles makes it easier to add, remove, and adjust these permissions as your user base increases in scale and functionality increases complexity.
+
+Ths cookbook looks at:
+
 - <a href="#authentication-vs-authorization" data-turbolinks="false">Authentication vs Authorization</a>
 - <a href="#house-and-blog-role-access-examples" data-turbolinks="false">House and Blog Role-access Examples</a>
 - <a href="#identity-as-a-service" data-turbolinks="false">Identity as a Service</a>
@@ -8,11 +14,18 @@
 
 ## Authentication vs Authorization
 
+How is Authorization different from Authentication?
+
 - **Authentication** is the act of validating that users are who they claim to be.
 - **Authorization** is the process of giving the user permission to access a specific resource or function.
-- In even more simpler terms authentication is the _process_ of verifying oneself, while authorization is the _process_ of verifying what you have access to.
+
+In even more simpler terms authentication is the _process_ of verifying oneself, while authorization is the _process_ of verifying what you have access to.
 
 ### House and Blog Role-access Examples
+
+When thinking about security, it helps to think in terms of familiar examples.
+
+Let's consider one from the phyisical world -- access to the various rooms of a 🏠 house -- and compare it to a digital example of a Blog.
 
 #### RBAC Example: House
 
@@ -34,7 +47,7 @@ The passcodes inform what access they have because it says if they are a neighbo
 
 If your 🏠 could enforce RBAC, it needs to know the rules.
 
-##### Role Matrix for House RBAC
+#### Role Matrix for House RBAC
 
 | Role     | Kitchen | Basement | Office | Bathroom | Laundry | Bedroom |
 | -------- | :-----: | :------: | :----: | :------: | :-----: | :-----: |
@@ -51,7 +64,7 @@ In our Blog example anyone can view Posts (authenticated or not). They are _publ
 - Publishers can write, review, edit and delete Posts.
 - And admins can do it all (and more).
 
-##### Role Matrix for Blog RBAC
+#### Role Matrix for Blog RBAC
 
 | Role      | View | New | Edit | Delete | Manage Users |
 | --------- | :--: | :-: | :--: | :----: | :----------: |
@@ -61,6 +74,8 @@ In our Blog example anyone can view Posts (authenticated or not). They are _publ
 | Admin     |  ✅  | ✅  |  ✅  |   ✅   |      ✅      |
 
 ## Auth and RBAC Checklist
+
+In order to integrates RBAC in a RedwoodJS app, you will have to:
 
 - Implement an Identity as a Service/Authentication Provider
 - Define and Assign Roles
@@ -82,6 +97,24 @@ RedwoodJS generates Authentication Providers for several common Identity Service
 
 ### Netlify Identity Access Token (JWT) & App Metadata
 
+The following is a brief example of a **decoded** JSON Web Token (JWT) similar to that issued bny Netlify Identity.
+
+There are the following standard claims:
+
+- `exp`: When the tokejn expires.
+- `sub`: The token's subject, in this case the user identifier.
+
+Other comon clains are `iss` for issuer and `aud` for audience (ie, the recipient for which the JWT is intended).
+
+Please see [Introduction to JSON Web Tokens](https://jwt.io/introduction/) for a complete discussion.
+
+This decoded token also includes:
+
+- `app_metadata`: Stores information (such as, support plan subscriptions, security roles, or access control groups) that can impact a user's core functionality, such as how an application functions or what the user can access. Data stored in app_metadata cannot be edited by users
+- `user_metadata`: Stores user attributes such as preferences that do not impact a user's core functionality. Logged in users can edit their data stored in user_metadata typically by making an api call the the Identity service user profile endpoint with their access_token to identify themselves.
+
+Roles may be stored within `app_metadata` or sometimes within `authorization` under `app_metadata`.
+
 ```js
 {
   "exp": 1598628532,
@@ -100,7 +133,13 @@ RedwoodJS generates Authentication Providers for several common Identity Service
 
 ### Set Roles to Current User
 
+Roles may be stored within `app_metadata` or sometimes within `authorization` under `app_metadata`.
+
+The `parseJWT` helper will consider both locations to extract roles on the decoded JWT.
+
 ```js
+// api/lib/auth.js
+
 import { parseJWT } from '@redwoodjs/api'
 
 export const getCurrentUser = async (decoded) => {
@@ -175,7 +214,7 @@ const Post = ({ post }) => {
 }
 ```
 
-#### How to Protect Markup in a RedwoodJS Page
+#### How to Protect Markup in a Page
 
 ```js
 import { useAuth } from "@redwoodjs/auth";
@@ -254,8 +293,23 @@ export const handler = async (event, context) => {
 
 #### How to Default Roles on Signup using Netlify Identity Triggers
 
+You can trigger serverless function calls when certain Identity events happen, like when a user signs up.
+
+Netlify Identity currently supports the following events:
+
+- `identity-validate`: Triggered when an Identity user tries to sign up via Identity.
+- `identity-signup`: Triggered when an Identity user signs up via Netlify Identity. (Note: this fires for only email+password signups, not for signups via external providers e.g. Google/GitHub)
+- `identity-login`: Triggered when an Identity user logs in via Netlify Identity
+
+To set a serverless function to trigger on one of these events, match the name of the function file to the name of the event. For example, to trigger a serverless function on identity-signup events, name the function file `identity-signup.js`.
+
+If you return a status other than 200 or 204 from one of these event functions, the signup or login will be blocked.
+
+If your serverless function returns a 200, you can also return a JSON object with new user_metadata or app_metadata for the Identity user.
+
 ```js
-// api/src/functions/identity-signup,js
+// api/src/functions/identity-signup.js
+
 export const handler = async (req, _context) => {
   const body = JSON.parse(req.body)
 
