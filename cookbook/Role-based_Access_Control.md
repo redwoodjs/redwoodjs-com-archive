@@ -1,10 +1,10 @@
 # Role-based Access Control (RBAC)
 
-Role-based access control (RBAC) in RedwoodJS aims to be a simple, manageable approach to access management. It builds off the its Authentication system by adding control of who can access Routes, see features, and invoke services or functions.
+Role-based access control (RBAC) in RedwoodJS aims to be a simple, manageable approach to access management. It adds control over who can access routes, see features, or invoke services or functions to the existing `useAuth()` hook on the web side and `requireAuth()` helper on the api side.
 
 A **role** is a collection of permissions applied to a set of users. Using roles makes it easier to add, remove, and adjust these permissions as your user base increases in scale and functionality increases complexity.
 
-This cookbook examines how RBAC is implemented in RedwoodJS and <a href="#how-to-code-examples" data-turbolinks="false">how to protect</a> areas of your app on both api and web sides.
+This cookbook examines how RBAC is implemented in RedwoodJS and <a href="#how-to-code-examples" data-turbolinks="false">how to protect</a> areas of your app's sides -- web, api, or custom.
 
 ### Quick Links
 
