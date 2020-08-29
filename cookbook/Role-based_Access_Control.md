@@ -151,6 +151,9 @@ export const getCurrentUser = async (decoded) => {
 
 ### Web-side RBAC
 
+useAuth() hook
+hasRole also checks if authenticated.
+
 - Routes
 - NavLinks in a Layout
 - Cells/Components
@@ -172,6 +175,20 @@ const Routes = () => {
 }
 ```
 
+TODO: Show new "forbidden" route option with custom Page
+
+```js
+<Router>
+  <Private unauthenticated="forbidden" role="admin">
+    <Route path="/settings" page={SettingsPage} name="settings" />
+    <Route path="/admin" page={AdminPage} name="sites" />
+  </Private>
+
+  <Route notfound page={NotFoundPage} />
+  <Route path="/forbidden" page={ForbiddenPage} name="forbidden" />
+</Router>
+```
+
 #### How to Protect a NavLink in a Layout
 
 ```js
@@ -183,7 +200,7 @@ const SidebarLayout = ({ children }) => {
 
   return (
     ...
-    {isAuthenticated && hasRole('admin') && (
+    {hasRole('admin') && (
       <NavLink
         to={routes.users()} className="text-gray-600" activeClassName="text-gray-900"
       >
@@ -205,8 +222,7 @@ const Post = ({ post }) => {
 
   return (
     <nav className="rw-button-group">
-      {hasRole('admin') ||
-        (hasRole('publisher') && (
+      {(hasRole('admin') || hasRole('publisher')) && (
           <a href="#" className="rw-button rw-button-red" onClick={() => onDeleteClick(post.id)}>
             Delete
           </a>
