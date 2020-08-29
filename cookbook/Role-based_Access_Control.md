@@ -2,7 +2,7 @@
 
 Role-based access control (RBAC) in RedwoodJS aims to be a simple, manageable approach to access management. It adds control over who can access routes, see features, or invoke services or functions to the existing `useAuth()` hook on the web side and `requireAuth()` helper on the api side.
 
-A **role** is a collection of permissions applied to a set of users. Using roles makes it easier to add, remove, and adjust these permissions as your user base increases in scale and functionality increases complexity.
+A **role** is a collection of permissions applied to a set of users. Using roles makes it easier to add, remove, and adjust these permissions as your user base increases in scale and functionality increases in complexity.
 
 This cookbook examines how RBAC is implemented in RedwoodJS and <a href="#how-to-code-examples" data-turbolinks="false">how to protect</a> areas of your app's sides -- web, api, or custom.
 
@@ -99,7 +99,7 @@ RedwoodJS generates Authentication Providers for several common Identity Service
 
 ### Netlify Identity Access Token (JWT) & App Metadata
 
-The following is a brief example of a **decoded** JSON Web Token (JWT) similar to that issued bny Netlify Identity.
+The following is a brief example of a **decoded** JSON Web Token (JWT) similar to that issued by Netlify Identity.
 
 There are the following standard claims:
 
@@ -151,13 +151,13 @@ export const getCurrentUser = async (decoded) => {
 
 ### Web-side RBAC
 
-useAuth() hook
-hasRole also checks if authenticated.
+- useAuth() hook
+- hasRole also checks if authenticated.
 
-- Routes
-- NavLinks in a Layout
-- Cells/Components
-- Markup in Page
+* Routes
+* NavLinks in a Layout
+* Cells/Components
+* Markup in Page
 
 #### How to Protect a Route
 
@@ -178,25 +178,33 @@ const Routes = () => {
 TODO: Show new "forbidden" route option with custom Page
 
 ```js
-<Router>
-  <Private unauthenticated="forbidden" role="admin">
-    <Route path="/settings" page={SettingsPage} name="settings" />
-    <Route path="/admin" page={AdminPage} name="sites" />
-  </Private>
+import { Router, Route, Private } from '@redwoodjs/router'
 
-  <Route notfound page={NotFoundPage} />
-  <Route path="/forbidden" page={ForbiddenPage} name="forbidden" />
-</Router>
+const Routes = () => {
+  return (
+    <Router>
+      <Private unauthenticated="forbidden" role="admin">
+        <Route path="/settings" page={SettingsPage} name="settings" />
+        <Route path="/admin" page={AdminPage} name="sites" />
+      </Private>
+
+      <Route notfound page={NotFoundPage} />
+      <Route path="/forbidden" page={ForbiddenPage} name="forbidden" />
+    </Router>
+  )
+}
 ```
 
 #### How to Protect a NavLink in a Layout
+
+- `hasRole()` also checks if authenticated.
 
 ```js
 import { NavLink, Link, routes } from '@redwoodjs/router'
 import { useAuth } from '@redwoodjs/auth'
 
 const SidebarLayout = ({ children }) => {
-  const { isAuthenticated, hasRole } = useAuth()
+  const { hasRole } = useAuth()
 
   return (
     ...
@@ -213,6 +221,8 @@ const SidebarLayout = ({ children }) => {
 ```
 
 #### How to Protect a Component
+
+- `hasRole()` also checks if authenticated.
 
 ```js
 import { useAuth } from '@redwoodjs/auth'
@@ -288,8 +298,11 @@ export const createPost = ({ input }) => {
 
 #### How to Protect a Function
 
+Since `requireAuth()` raises an exception, catch and return a `HTTP 401 Unauthorized` or `HTTP 403 Forbidden` client error status response code.
+
 ```js
 import { requireAuth } from 'src/lib/auth'
+import { AuthenticationError, ForbiddenError } from '@redwoodjs/api'
 
 export const handler = async (event, context) => {
   try {
@@ -301,9 +314,19 @@ export const handler = async (event, context) => {
         data: 'Permitted',
       }),
     }
-  } catch {
-    return {
-      statusCode: 401,
+  } catch (e) {
+    if (e instanceof AuthenticationError) {
+      return {
+        statusCode: 401,
+      }
+    } else if (e instanceof ForbiddenError) {
+      return {
+        statusCode: 403,
+      }
+    } else {
+      return {
+        statusCode: 400,
+      }
     }
   }
 }
