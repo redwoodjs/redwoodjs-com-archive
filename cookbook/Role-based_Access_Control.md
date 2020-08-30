@@ -2,7 +2,7 @@
 
 Role-based access control (RBAC) in RedwoodJS aims to be a simple, manageable approach to access management. It adds control over who can access routes, see features, or invoke services or functions to the existing `useAuth()` hook on the web side and `requireAuth()` helper on the api side.
 
-A **role** is a collection of permissions applied to a set of users. Using roles makes it easier to add, remove, and adjust these permissions as your user base increases in scale and functionality increases in complexity.
+A **role** is a collection of permissions applied to a set of users based on the part they play in an organization or setting. Using roles makes it easier to add, remove, and adjust these permissions as your user base increases in scale and functionality increases in complexity.
 
 This cookbook examines how RBAC is implemented in RedwoodJS and <a href="#how-to-code-examples" data-turbolinks="false">how to protect</a> areas of your app's sides -- web, api, or custom.
 
@@ -91,11 +91,21 @@ Helps to be familiar with [Blog Tutorial](https://redwoodjs.com/tutorial/welcome
 
 > "Doing authentication correctly is as hard, error-prone, and risky as rolling your own encryption."
 
-- Identity as a Service such as Netlify Identity, Auth0, Magic.link, etc.
-- Aims to help developers solve the problem of authentication
-- Manages authentication (and roles) and the complexity associated
+Developers no longer need to be responsible for developing their own identity service. The identity service manages authentication and the complexity associated.
 
-RedwoodJS generates Authentication Providers for several common Identity Services, including Netlify Identity.
+RedwoodJS generates Authentication Providers for several common Identity Services.
+
+Some offer RBAC support natively together with a UI to manage users and role assignment.
+
+- Netlify Identity
+- Auth0
+
+In other cases, you can still use an Identity Service such as:
+
+- Magic.link
+- Custom
+
+However, in these cases you must provide the `currentUser.roles` information directly, such as from a User to Role database table or otehr source.
 
 ### Netlify Identity Access Token (JWT) & App Metadata
 
@@ -146,6 +156,73 @@ import { parseJWT } from '@redwoodjs/api'
 
 export const getCurrentUser = async (decoded) => {
   return context.currentUser || { ...decoded, roles: parseJWT({ decoded }).roles }
+}
+```
+
+#### Roles from a Database
+
+If your AuthProvider does not set the role information in the token, you can query roles from a database table.
+
+Consider the following schema where a `User` has many `UserRoles`.
+
+```js
+model User {
+  id        Int        @id @default(autoincrement())
+  uuid      String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
+  userRoles UserRole[]
+}
+
+model UserRole {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  name      String
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+
+  @@unique([name, userId])
+}
+```
+
+You can have seeded the `User` and `UserRole` tables with a new User that has a `uuid` from your identity service and also assigned that user a role of `editor`:
+
+```js
+const uuid = '1683d760-5b4d-2ced-a078-23fdfebe2e19'
+
+const newUser = await db.user.create({
+  data: { uuid },
+})
+
+const userRole = await db.userRole.create({
+  data: {
+    name: 'editor',
+    user: {
+      connect: { uuid },
+    },
+  },
+})
+```
+
+Given that your decoded JWT `sub` claim will contain the `uuid`, you can fetch the roles by querying the `UserRoles` table and join in on the `User` via its `uuid`.
+
+Once you have the `UserRole`s, then you can set an array of their `name`s on the `currentUser`.
+
+```js
+// api/lib/auth.js
+
+export const getCurrentUser = async (decoded) => {
+  const userRoles = await db.userRole.findMany({
+    where: { user: { uuid: decoded.sub } },
+    select: { name: true },
+  })
+
+  const roles = userRoles.map((role) => {
+    return role.name
+  })
+
+  return context.currentUser || { roles }
 }
 ```
 
