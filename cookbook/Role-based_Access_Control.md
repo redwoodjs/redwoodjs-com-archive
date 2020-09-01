@@ -238,6 +238,8 @@ export const getCurrentUser = async (decoded) => {
 
 #### How to Protect a Route
 
+To protect a `Private` route for access by a single role:
+
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'
 
@@ -252,7 +254,23 @@ const Routes = () => {
 }
 ```
 
-TODO: Show new "forbidden" route option with custom Page
+To protect a `Private` route for access by a multiple roles:
+
+```js
+import { Router, Route, Private } from '@redwoodjs/router'
+
+const Routes = () => {
+  return (
+    <Router>
+      <Private unauthenticated="home" role={['admin', 'editor', 'publisher']}>
+        <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
+      </Private>
+    </Router>
+  )
+}
+```
+
+If the currentUser is not assigned the role, they will be redirected to the page specified in the `unauthenticated` property. Therefore, you can define a specific page to be seen when attempting to access the protected route and denied access such as a "forbidden" page:
 
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'
@@ -274,7 +292,9 @@ const Routes = () => {
 
 #### How to Protect a NavLink in a Layout
 
-- `hasRole()` also checks if authenticated.
+A `NavLink` is a specialized `Link` used for navigation or menu links that is styled differently when the current route is active.
+
+To protect the `NavLink` for access by a single role:
 
 ```js
 import { NavLink, Link, routes } from '@redwoodjs/router'
@@ -297,9 +317,34 @@ const SidebarLayout = ({ children }) => {
 }
 ```
 
+To protect the `NavLink` for access by multiple roles:
+
+```js
+import { NavLink, Link, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
+
+const SidebarLayout = ({ children }) => {
+  const { hasRole } = useAuth()
+
+  return (
+    ...
+    {hasRole(['admin', 'author', 'editor', 'publisher']) && (
+      <NavLink
+        to={routes.posts()} className="text-gray-600" activeClassName="text-gray-900"
+      >
+      Manage Posts
+    </NavLink>
+    ...
+   )}
+ )
+}
+```
+
+Note that `hasRole()` also checks if the currentUser is authenticated.
+
 #### How to Protect a Component
 
-- `hasRole()` also checks if authenticated.
+To protect content in a `Component` for access by a single role:
 
 ```js
 import { useAuth } from '@redwoodjs/auth'
@@ -309,7 +354,7 @@ const Post = ({ post }) => {
 
   return (
     <nav className="rw-button-group">
-      {(hasRole('admin') || hasRole('publisher')) && (
+      {(hasRole('admin')) && (
           <a href="#" className="rw-button rw-button-red" onClick={() => onDeleteClick(post.id)}>
             Delete
           </a>
@@ -319,7 +364,31 @@ const Post = ({ post }) => {
 }
 ```
 
+To protect content in a `Component` for access by multiple roles:
+
+```js
+import { useAuth } from '@redwoodjs/auth'
+
+const Post = ({ post }) => {
+  const { hasRole } = useAuth()
+
+  return (
+    <nav className="rw-button-group">
+      {(hasRole(['admin', 'publisher'])) && (
+          <a href="#" className="rw-button rw-button-red" onClick={() => onDeleteClick(post.id)}>
+            Delete
+          </a>
+        ))}
+    </nav>
+  )
+}
+```
+
+Note that `hasRole()` also checks if the currentUser is authenticated.
+
 #### How to Protect Markup in a Page
+
+To protect markup in a `Page` for access by a single role:
 
 ```js
 import { useAuth } from "@redwoodjs/auth";
@@ -346,11 +415,98 @@ const SettingsPage = () => {
 }
 ```
 
+To protect markup in a `Page` for access by multiple roles:
+
+```js
+import { useAuth } from "@redwoodjs/auth";
+import SidebarLayout from "src/layouts/SidebarLayout";
+
+const SettingsPage = () => {
+  const { isAuthenticated, userMetadata, hasRole } = useAuth();
+
+  return (
+    {isAuthenticated && (
+      <div className="ml-4 flex-shrink-0">
+        {hasRole(["admin", "userManager"]) && (
+          <a
+            href={`https://app.netlify.com/sites/${process.env.SITE_NAME}/identity/${userMetadata.id}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Edit on Netlify
+          </a>
+        )}
+      </div>
+    )}
+  )}
+}
+```
+
+Note that `hasRole()` also checks if the currentUser is authenticated.
+
 ### Api-side RBAC
 
+- Example `requireAuth()`
 - Services
 - Functions
 - Default Roles using [Netlify Identity Triggers](https://docs.netlify.com/functions/trigger-on-events/)
+
+#### Example `requireAuth()`
+
+Use `requireAuth()` in your services to check that a user is logged in, whether or not they are assigned a role, and optionally raise an error if they're not.
+
+It checks for a single role:
+
+```js
+requireAuth({ role: 'editor' })
+```
+
+or multiple roles:
+
+```js
+requireAuth({ role: ['admin', 'author', 'publisher'] })
+```
+
+This function should be located in `api/src/lib/auth.js` for your RedwoodJS app (ie, where your `getCurrentUser()` is located).
+
+```js
+/**
+ * Use requireAuth in your services to check that a user is logged in,
+ * whether or not they are assigned a role, and optionally raise an
+ * error if they're not.
+ *
+ * @param {string=} roles - An optional role or list of roles
+ * @param {array=} roles - An optional list of roles
+
+ * @example
+ *
+ * // checks if currentUser is authenticated
+ * requireAuth()
+ *
+ * @example
+ *
+ * // checks if currentUser is authenticated and assigned one of thw given roles
+ * requireAuth({ roles: 'admin' })
+ * requireAuth({ roles: 'admin' })
+ */
+export const requireAuth = ({ roles } = {}) => {
+  if (!context.currentUser) {
+    throw new AuthenticationError("You don't have permission to do that.")
+  }
+
+  if (typeof roles !== 'undefined' && typeof roles === 'string' && !context.currentUser.roles?.includes(roles)) {
+    throw new ForbiddenError("You don't have access to do that.")
+  }
+
+  if (
+    typeof roles !== 'undefined' &&
+    Array.isArray(roles) &&
+    !context.currentUser.roles?.some((role) => roles.includes(role))
+  ) {
+    throw new ForbiddenError("You don't have access to do that.")
+  }
+}
+```
 
 #### How to Protect a Service
 
