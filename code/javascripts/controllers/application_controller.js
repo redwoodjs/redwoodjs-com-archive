@@ -23,6 +23,9 @@ export default class extends Controller {
 
     // add copy buttons to code blocks
     this._enableCopy()
+
+    // if there is a hash in the URL, open a collapsed sections that contains that target
+    this._openCollapsedSectionForHash()
   }
 
   focusSearch(event) {
@@ -121,6 +124,22 @@ export default class extends Controller {
     }
 
     return lines.join('\n')
+  }
+
+  _openCollapsedSectionForHash() {
+    let hash = location.hash
+
+    if (hash) {
+      hash = hash.substring(1)
+
+      const element = document.getElementById(hash)
+      const parent = element.parentNode
+
+      if (parent.tagName === 'DETAILS') {
+        parent.open = true
+        window.scrollTo(0, element.offsetTop)
+      }
+    }
   }
 
   get isHomePage() {
