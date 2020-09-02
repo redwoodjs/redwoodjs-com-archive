@@ -10,10 +10,11 @@ Redwood is designed for serverless architecture deployment, offering a unique co
 Currently, there are two officially supported deploy targets:
 - [Netlify](https://www.netlify.com/)
 - [Vercel](https://vercel.com)
+- [AWS-Serverless](https://serverless.com)
 
 Redwood has a CLI generator that adds the code and configuration required by the specified provider (see the [CLI Doc](https://redwoodjs.com/docs/cli-commands#deploy) for more information):
 ```shell
-yarn rw g deploy <provider>
+yarn rw generate deploy <provider>
 ```
 
 There are examples of deploying Redwood on other providers such as Google Cloud and direct to AWS. You can find more information by searching the [GitHub Issues](https://github.com/redwoodjs/redwood/issues) and [Forums](https://community.redwoodjs.com).
@@ -85,6 +86,7 @@ If you simply want to experience the Vercel deployment process without a databas
 
 _If you choose this quick deploy experience, the following steps do not apply._
 
+
 ### Redwood Project Setup
 If you already have a Redwood project, proceed to the next step.
 
@@ -138,3 +140,10 @@ Go ahead, click that "Visit" button. You’ve earned it 🎉
 From the Vercel Dashboard you can access the full settings and information for your Redwood App. The default settings seem to work just fine for most Redwood projects. Do take a look around, but be sure check out the [docs as well](https://vercel.com/docs).
 
 From now on, each time you push code to your git repo, Vercel will automatically trigger a deploy of the new code. You can also manually redeploy if you select "Deployments", then the specific deployment from the list, and finally the "Redeploy" option from the vertical dots menu next to "Visit".
+
+## AWS Serverless Deploy
+>The following instructions assume you have read the [General Deployment Setup](#general-deployment-setup) section above.
+
+Deploying via AWS Serverless assumes that you have setup the [credentials](https://www.serverless.com/framework/docs/providers/aws/guide/credentials/) for the Serverless Framework on your computer. In order to setup your Redwood project to use AWS Serverless run: `yarn rw generate deploy aws_serverless`
+
+Once that's complete you can invoke a deployment via: `yarn rw deploy api aws_serverless`. This command will take care of building, packaging, and shipping your AWS Serverless functions.
