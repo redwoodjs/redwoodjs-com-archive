@@ -33,7 +33,7 @@ You'll also sometimes see arguments with trailing `..` like:
 yarn rw build [side..]
 ```
 
-The `..` operator indicates that the argument accepts an array of values. See [Variadic Positional Arguments](https://github.com/yargs/yargs/blob/main/docs/advanced.md#variadic-positional-arguments).
+The `..` operator indicates that the argument accepts an array of values. See [Variadic Positional Arguments](https://github.com/yargs/yargs/blob/master/docs/advanced.md#variadic-positional-arguments).
 
 ## build
 
@@ -1095,7 +1095,7 @@ Setup [Tailwind CSS](https://tailwindcss.com/).
 
 This command automates all the steps enumerated in the Webpack Configuration doc's [Adding Tailwind CSS](https://redwoodjs.com/docs/webpack-configuration#adding-tailwindcss) section.
 
-Right now, this'll genreate the `tailwind.config.js` file in `web` (instead of in `web/config`) to get the vscode extension working. 
+Right now, this'll generate the `tailwind.config.js` file in `web` (instead of in `web/config`) to get the vscode extension working.
 
 ## info
 
