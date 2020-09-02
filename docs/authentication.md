@@ -373,8 +373,8 @@ The most complete example (although now a bit outdated) is found in [this forum 
 
 The following values are available from the `useAuth` hook:
 
-- async `logIn(options?)`: Differs based on the client library, with Netlify Identity a pop-up is shown, and with Auth0 the user is redirected
-- async `logOut(options?)`: Log out the current user
+- async `logIn(options?)`: Differs based on the client library, with Netlify Identity a pop-up is shown, and with Auth0 the user is redirected. Passes `options` to client login.
+- async `logOut(options?)`: Log out the current user. Passes `options` to client logout. This can be used to redirect to a given location if the client supports it: `logOut({ returnTo: process.env.AUTH0_REDIRECT_URI }`
 - `currentUser`: An object containing information about the current user as set on the `api` side, or `null` if the user is not authenticated
 - `userMetadata`: An object containing the user's metadata (or profile information) fetched directly from an instance of the auth provider client, or `null` if the user is not authenticated
 - async `reauthenticate()`: Refetch the authentication data and populate the state
