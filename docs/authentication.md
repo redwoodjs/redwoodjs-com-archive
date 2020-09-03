@@ -678,6 +678,8 @@ export const getCurrentUser = async (decoded) => {
 
 Now your `currentUser.roles` info will be available to both `requireAuth()` on the api side and `hasRole()` on the web side.
 
++++
+
 ### Role Protection on Functions, Services and Web
 
 You can specify an optional role in `requireAuth` to check if the user is both authenticated and is assigned the role. The `role` can be a single string role of a list of roles.
