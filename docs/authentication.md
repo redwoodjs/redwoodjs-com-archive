@@ -373,16 +373,16 @@ The most complete example (although now a bit outdated) is found in [this forum 
 
 The following values are available from the `useAuth` hook:
 
-- async `logIn()`: Differs based on the client library, with Netlify Identity a pop-up is shown, and with Auth0 the user is redirected
-- async `logOut()`: Log out the current user
-- `currentUser`: an object containing information about the current user as set on the `api` side, or `null` if the user is not authenticated
-- `userMetadata`: an object containing the user's metadata (or profile information) fetched directly from an instance of the auth provider client, or `null` if the user is not authenticated
+- async `logIn(options)`: Differs based on the client library, with Netlify Identity a pop-up is shown, and with Auth0 the user is redirected. Options are passed to the client.
+- async `logOut(options)`: Log out the current user. Options are passed to the client.
+- `currentUser`: An object containing information about the current user as set on the `api` side, or `null` if the user is not authenticated.
+- `userMetadata`: An object containing the user's metadata (or profile information) fetched directly from an instance of the auth provider client, or `null` if the user is not authenticated.
 - async `reauthenticate()`: Refetch the authentication data and populate the state.
-- async `getToken()`: returns a jwt
-- `client`: Access the instance of the client which you passed into `AuthProvider`
-- `isAuthenticated`: used to determine if the current user has authenticated
-- `hasRole`: used to determine if the current user is assigned a role
-- `loading`: The auth state is restored asynchronously when the user visits the site for the first time, use this to determine if you have the correct state
+- async `getToken()`: Returns a JWT.
+- `client`: Access the instance of the client which you passed into `AuthProvider`.
+- `isAuthenticated`: Determines if the current user has authenticated.
+- `hasRole(role)`: Determines if the current user is assigned a role like `"admin"` or assigned to any of the roles in a list such as `['editor', 'author']`.
+- `loading`: The auth state is restored asynchronously when the user visits the site for the first time, use this to determine if you have the correct state.
 
 ## Usage in Redwood
 
@@ -676,21 +676,32 @@ Now your `currentUser.roles` info will be available to both `requireAuth()` on t
 
 ### Role Protection on Functions, Services and Web
 
-You can specify an optional role in `requireAuth` to check if the user is both authenticated and is assigned the role:
+You can specify an optional role in `requireAuth` to check if the user is both authenticated and is assigned the role. The `role` can be a single string role of a list of roles.
 
 ```js
 export const myThings = () => {
-  requireAuth({ role: 'admin'})
+  requireAuth({ role: 'admin' })
 
   return db.user.findOne({ where: { id: context.currentUser.id } }).things()
 }
 
-You can also protect routes:
+export const myBooks = () => {
+  requireAuth({ role: ['author', 'editor'] })
 
+  return db.user.findOne({ where: { id: context.currentUser.id } }).books()
+}
 ```
 
+You can also protect routes:
+
+```js
 <Router>
   <Private unauthenticated="forbidden" role="admin">
+    <Route path="/settings" page={SettingsPage} name="settings" />
+    <Route path="/admin" page={AdminPage} name="sites" />
+  </Private>
+
+  <Private unauthenticated="forbidden" role={['author', 'editor']}>
     <Route path="/settings" page={SettingsPage} name="settings" />
     <Route path="/admin" page={AdminPage} name="sites" />
   </Private>
@@ -702,13 +713,17 @@ You can also protect routes:
 
 And also protect content in pages or components via the `userAuth()` hook:
 
-```
+```js
 const { isAuthenticated, hasRole } = useAuth()
 
 ...
 
 {hasRole('admin') && (
   <Link to={routes.admin()}>Admin</Link>
+)}
+
+{hasRole(['author', 'editor']) && (
+  <Link to={routes.posts()}>Admin</Link>
 )}
 ```
 
@@ -736,7 +751,7 @@ const Routes = () => {
 }
 ```
 
-Routes can also be restirected by role by specifying `hasRole(roleName)` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in`unauthenticated`.
+Routes can also be restirected by role by specifying `hasRole="role"` or `hasRole={['role', 'another_role']})` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in `unauthenticated`.
 
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'
@@ -754,6 +769,10 @@ const Routes = () => {
 
       <Private unauthenticated="forbidden" role="admin">
         <Route path="/admin" page={AdminPage} name="admin" />
+      </Private>
+
+      <Private unauthenticated="forbidden" role={['author', 'editor']}>
+        <Route path="/posts" page={PostsPage} name="posts" />
       </Private>
     </Router>
   )
