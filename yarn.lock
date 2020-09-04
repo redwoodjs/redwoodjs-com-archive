@@ -3847,11 +3847,6 @@ markdown-it-collapsible@^1.0.0:
   resolved "https://registry.yarnpkg.com/markdown-it-collapsible/-/markdown-it-collapsible-1.0.0.tgz#74087dd64470a348520acc2a885090429bd30261"
   integrity sha512-WRkgDH66GNxkdkZGEyW/0VnsEtOzxZuQCAY1e5FjVYACAhMtDNleZs1Y7NZSj5Pn3yksQ6SrgPkEwQW2IFGAQw==
 
-markdown-it-for-inline@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/markdown-it-for-inline/-/markdown-it-for-inline-0.1.1.tgz#435f2316f5b5e68e1450cfa2242f2b8d59adc75f"
-  integrity sha1-Q18jFvW15o4UUM+iJC8rjVmtx18=
-
 markdown-it-highlight-lines@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/markdown-it-highlight-lines/-/markdown-it-highlight-lines-1.0.2.tgz#33ecf51cd9d9e741cd86f583cb95b67de81fc9c7"
