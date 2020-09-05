@@ -187,3 +187,27 @@
 ### All the RedwoodJS News that’s Fit to Print: Storybook Integration, CLI Diagnostics, Apps built with Redwood, and even more new tools and snippets.
 
 #### Newsletter
+
+---
+
+![RedwoodJS Meetup](https://user-images.githubusercontent.com/2951/92313389-31e27b00-ef80-11ea-9903-b7a04aac2d39.png)
+
+# [YouTube Playlist](https://www.youtube.com/playlist?list=PL1HNO86XPhd0Gb_tfA7v7QX08pHjCI_WA)
+
+## July 30 2020
+
+### Recording of the main session: Architecture, Data Migrations, Repeater.dev, Tape.sh demo, Background Jobs, Contributing, and @redwoodjs/structure. And recording of Rob walking through the new Data Migrations feature.
+
+#### Meetup
+
+---
+
+![RedwoodJS Meetup](https://user-images.githubusercontent.com/2951/92313389-31e27b00-ef80-11ea-9903-b7a04aac2d39.png)
+
+# [YouTube Playlist](https://www.youtube.com/playlist?list=PL1HNO86XPhd0NgiN-kDFzIVEkKzxHHqM6)
+
+## August 28 2020
+
+### Recording of the main session: Redwood v1 Roadmap, Auth and RBAC, FaunaDB Integration and Vercel Deployment.
+
+#### Meetup
