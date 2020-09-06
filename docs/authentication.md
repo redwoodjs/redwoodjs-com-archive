@@ -711,7 +711,7 @@ You can also protect routes:
 </Router>
 ```
 
-And also protect content in pages or components via the `userAuth()` hook:
+And also protect content in pages or components via the `useAuth()` hook:
 
 ```js
 const { isAuthenticated, hasRole } = useAuth()
