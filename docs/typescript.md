@@ -3,7 +3,7 @@
 
 > TypeScript support is in development: The ability to use TypeScript is one of our main points of focus, check out our [TypeScript Project Board](https://github.com/redwoodjs/redwood/projects/2) to follow the progress.
 
-Redwood do not use the TypeScript compiler, we use babel which strips out the types before transpiling them.
+Redwood does not use the TypeScript compiler; instead, we use babel, which strips out the types before transpiling them.
 
 ## Manual Setup
 
