@@ -211,3 +211,15 @@
 ### Recording of the main session: Redwood v1 Roadmap, Auth and RBAC, FaunaDB Integration and Vercel Deployment.
 
 #### Meetup
+
+---
+
+![Mintbean.io](https://user-images.githubusercontent.com/2951/92620807-ee398b00-f277-11ea-9919-f7b817548a38.png)
+
+# [Fireside Chat with Mintbean.io](https://www.youtube.com/watch?v=81HHX3e0BX4)
+
+## August 29 2020
+
+### Tom and Rob discuss Redwood, Open Source, and Startup ideas with Monarch from Mintbean.io.
+
+#### Video
