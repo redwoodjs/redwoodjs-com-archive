@@ -347,6 +347,24 @@ const UserAuthTools = () => {
 See the Firebase information within this doc's [Auth Provider Specific Integration](https://redwoodjs.com/docs/authentication.html#auth-provider-specific-integration) section.
 +++
 
+### Supabase
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw generate auth supabase
+```
+
+#### Setup
+
+You will need to add your Supabase URL and key to your .env file. See: https://supabase.io/docs/library/getting-started#reference'
+
++++
+
 ### Custom
 
 +++ View Installation and Setup
