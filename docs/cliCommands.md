@@ -342,18 +342,18 @@ yarn rw d <type>
 | `sdl <model>`        | Destroy a GraphQL schema and service component based on a given DB schema Model |
 | `service <name>`     | Destroy a service component                                                     |
 
-## diagnostics
+## check
 
 Get structural diagnostics for a Redwood project (experimental).
 
 ```
-yarn rw diagnostics
+yarn rw check
 ```
 
 **Example**
 
 ```terminal
-~/redwood-app$ yarn rw diagnostics
+~/redwood-app$ yarn rw check
 yarn run v1.22.4
 web/src/Routes.js:14:5: error: You must specify a 'notfound' page
 web/src/Routes.js:14:19: error: Duplicate Path
