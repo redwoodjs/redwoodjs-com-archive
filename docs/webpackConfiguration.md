@@ -172,7 +172,7 @@ This section is inspired by mdv.io's excellent blog post, [Adding Tailwind CSS t
 > While following this example is a great way to learn about configuration in Redwood, do note that you can skip this section entirely and use the [Tailwind CSS generator](https://redwoodjs.com/docs/cli-commands#tailwind) instead:
 >
 > ```
-> yarn rw g util tailwind
+> yarn rw generate util tailwind
 > ```
 
 First, install the development dependencies:

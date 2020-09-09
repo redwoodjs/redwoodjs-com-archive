@@ -67,7 +67,7 @@ yarn rw db up
 To make our lives easier let's scaffold the screens necessary to create/edit/delete an image and we'll modify those to add the uploader:
 
 ```terminal
-yarn rw g scaffold image
+yarn rw generate scaffold image
 ```
 
 Now head to http://localhost:8910/images/new and let's figure out what we need to do to add an image uploader:
