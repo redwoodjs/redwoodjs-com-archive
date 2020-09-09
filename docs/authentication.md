@@ -361,7 +361,7 @@ yarn rw generate auth supabase
 
 #### Setup
 
-You will need to add your Supabase URL and key to your .env file. See: https://supabase.io/docs/library/getting-started#reference'
+You will need to add your Supabase URL and Client API Key to your .env file (e.g., `SUPABASE_KEY`). See: https://supabase.io/docs/library/getting-started#reference
 
 +++
 
