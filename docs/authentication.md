@@ -7,7 +7,8 @@
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
-- Custom _(limited support at this time)_
+- [Supabase](https://supabase.io/docs/library/getting-started#reference)
+- Custom
 - [Contribute one](https://github.com/redwoodjs/redwood/tree/main/packages/auth), it's SuperEasy™!
 
 Check out the [Auth Playground](https://github.com/redwoodjs/playground-auth).
@@ -346,6 +347,24 @@ const UserAuthTools = () => {
 See the Firebase information within this doc's [Auth Provider Specific Integration](https://redwoodjs.com/docs/authentication.html#auth-provider-specific-integration) section.
 +++
 
+### Supabase
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw generate auth supabase
+```
+
+#### Setup
+
+You will need to add your Supabase URL and Client API Key to your .env file (e.g., `SUPABASE_KEY`). See: https://supabase.io/docs/library/getting-started#reference
+
++++
+
 ### Custom
 
 +++ View Installation and Setup
@@ -369,19 +388,21 @@ However, there are examples contributed by developers in the Redwood forums and 
 The most complete example (although now a bit outdated) is found in [this forum thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610).
 +++
 
+
 ## API
 
 The following values are available from the `useAuth` hook:
 
-- async `logIn(options?)`: Differs based on the client library, with Netlify Identity a pop-up is shown, and with Auth0 the user is redirected. Passes `options` to client login.
-- async `logOut(options?)`: Log out the current user. Passes `options` to client logout. This can be used to redirect to a given location if the client supports it: `logOut({ returnTo: process.env.AUTH0_REDIRECT_URI }`.
+- async `logIn(options?)`: Differs based on the client library, with Netlify Identity a pop-up is shown, and with Auth0 the user is redirected. Options are passed to the client.
+- async `logOut(options?)`: Log out the current user. Options are passed to the client.
+- async `signUp(options?)`: If the provider has a sign up flow we'll show that, otherwise we'll fall back to the logIn flow.
 - `currentUser`: An object containing information about the current user as set on the `api` side, or `null` if the user is not authenticated.
 - `userMetadata`: An object containing the user's metadata (or profile information) fetched directly from an instance of the auth provider client, or `null` if the user is not authenticated.
 - async `reauthenticate()`: Refetch the authentication data and populate the state.
 - async `getToken()`: Returns a JWT.
 - `client`: Access the instance of the client which you passed into `AuthProvider`.
-- `isAuthenticated`: Used to determine if the current user has authenticated
-- `hasRole(role: string | string[])`: Used to determine if the current user is assigned a role or one of a list of roles.
+- `isAuthenticated`: Determines if the current user has authenticated.
+- `hasRole(['admin'])`: Determines if the current user is assigned a role like `"admin"` or assigned to any of the roles in a list such as `['editor', 'author']`.
 - `loading`: The auth state is restored asynchronously when the user visits the site for the first time, use this to determine if you have the correct state.
 
 ## Usage in Redwood
