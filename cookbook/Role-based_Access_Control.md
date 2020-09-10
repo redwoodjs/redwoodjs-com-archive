@@ -33,7 +33,7 @@ Let's consider one from the phyisical world -- access to the various rooms of a 
 
 Consider a 🏠 while you are away on vacation.
 
-You are the **_owner_** and have given out :key: keys to your **neighbor** and a **plumber** that unlock the 🏠 🚪 door.
+You are the **_owner_** and have given out 🔑 keys to your **neighbor** and a **plumber** that unlock the 🏠 🚪 door.
 
 You've assigned them passcodes to turn off the 🚨 alarm that identifies them as either a neighbor or plumber.
 
