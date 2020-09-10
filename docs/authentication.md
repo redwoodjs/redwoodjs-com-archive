@@ -652,7 +652,7 @@ You must follow the ["Before you begin"](https://firebase.google.com/docs/auth/w
 
 +++ View Firebase Options
 
-#### Role-based access control (RBAC) Firebase
+#### Role-based access control (RBAC) in Firebase
 
 Requires a custom implementation.
 
