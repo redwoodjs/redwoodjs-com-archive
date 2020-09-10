@@ -475,13 +475,13 @@ If you're using Auth0 you must also [create an API](https://auth0.com/docs/quick
 
 +++ View Auth0 Options
 
-#### Role-based access control (RBAC)
+#### Role-based access control (RBAC) in Auth0
 
 [Role-based access control (RBAC)](https://auth0.com/docs/authorization/concepts/rbac) refers to the idea of assigning permissions to users based on their role within an organization. It provides fine-grained control and offers a simple, manageable approach to access management that is less prone to error than assigning permissions to users individually.
 
 Essentially, a role is a collection of permissions that you can apply to users. A role might be "admin", "editor" or "publisher". This differs from permissions an example of which might be "publish:blog".
 
-#### App metadata
+#### App metadata in Auth0
 
 Auth0 stores information (such as, support plan subscriptions, security roles, or access control groups) in "App metadata". Data stored in `app_metadata` cannot be edited by users.
 
@@ -536,7 +536,7 @@ Auth0 maintains user role assignments `context.authorization`. This rule simply 
 
 But, now you must include the `app_metdata` on the user's JWT that RedwoodJS will decode.
 
-#### Add AppMetadata to JWT Rule
+#### Add AppMetadata to JWT Rule in Auth0
 
 Therefore, your second rule will `Add AppMetadata to JWT`.
 
@@ -594,7 +594,7 @@ function (user, context, callback) {
 
 Now, your `app_metadata` with `authorization` and `role` information will be on the user's JWT after logging in.
 
-#### Add Application hasRole Support
+#### Add Application hasRole Support in Auth0
 
 If you intend to support, RBAC then in your `api/src/lib/auth.js` you need to extract `roles` using the `parseJWT` utility and set these roles on `currentUser`.
 
@@ -652,11 +652,15 @@ You must follow the ["Before you begin"](https://firebase.google.com/docs/auth/w
 
 +++ View Firebase Options
 
-#### Role-based access control (RBAC)
+#### Role-based access control (RBAC) in Firebase
 
-#### App metadata
+Requires a custom implementation.
 
-#### Add Application hasRole Support
+#### App metadata in Firebase
+
+None.
+
+#### Add Application hasRole Support in Firebase
 
 +++
 
@@ -666,19 +670,19 @@ You must follow the ["Before you begin"](https://firebase.google.com/docs/auth/w
 
 +++ View Netlify Identity Options
 
-#### Role-based access control (RBAC)
+#### Role-based access control (RBAC) in Netlify Identity
 
 Role-based access control (RBAC) refers to the idea of assigning permissions to users based on their role within an organization. It provides fine-grained control and offers a simple, manageable approach to access management that is less prone to error than assigning permissions to users individually.
 
 Essentially, a role is a collection of permissions that you can apply to users. A role might be "admin", "editor" or "publisher". This differs from permissions an example of which might be "publish:blog".
 
-#### App metadata
+#### App metadata in Netlify Identity
 
 Netlify Identity stores information (such as, support plan subscriptions, security roles, or access control groups) in "App metadata". Data stored in `app_metadata` cannot be edited by users.
 
 Create and manage roles for your application in Netlify's "Identity" management views. You can then assign these roles to users.
 
-#### Add Application hasRole Support
+#### Add Application hasRole Support in Netlify Identity
 
 If you intend to support, RBAC then in your `api/src/lib/auth.js` you need to extract `roles` using the `parseJWT` utility and set these roles on `currentUser`.
 
@@ -694,6 +698,8 @@ export const getCurrentUser = async (decoded) => {
 ```
 
 Now your `currentUser.roles` info will be available to both `requireAuth()` on the api side and `hasRole()` on the web side.
+
++++
 
 ### Role Protection on Functions, Services and Web
 
