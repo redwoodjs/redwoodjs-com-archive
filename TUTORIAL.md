@@ -1987,7 +1987,7 @@ const ContactPage = () => {
   const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
     onCompleted: () => {
       addMessage('Thank you for your submission!', {
-        classes: 'rw-flash-success',
+        style: { backgroundColor: 'green', color: 'white', padding: '1rem' }
       })
     },
   })
@@ -2222,7 +2222,7 @@ const ContactPage = () => {
   const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
     onCompleted: () => {
       addMessage('Thank you for your submission!', {
-        classes: 'rw-flash-success',
+        style: { backgroundColor: 'green', color: 'white', padding: '1rem' }
       })
       formMethods.reset()
     },
