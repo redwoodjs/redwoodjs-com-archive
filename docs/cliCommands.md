@@ -342,7 +342,7 @@ yarn rw d <type>
 | `sdl <model>`        | Destroy a GraphQL schema and service component based on a given DB schema Model |
 | `service <name>`     | Destroy a service component                                                     |
 
-## check
+## check (alias diagnostics)
 
 Get structural diagnostics for a Redwood project (experimental).
 
