@@ -272,8 +272,6 @@ export const Success = ({ users }) => {
     </div>
     <div class="md:w-3/5 md:pl-4 mt-4 md:mt-0">
       <pre><code class="javascript" data-target="application.code">// api/src/graphql/users.sdl.js
-import { db } from 'src/lib/db'
-
 export const schema = gql`
   type User {
     id: Int!
@@ -285,6 +283,8 @@ export const schema = gql`
 `
 
 // api/src/services/users/users.js
+import { db } from 'src/lib/db'
+
 export const users = () => {
   return db.user.findMany()
 }
