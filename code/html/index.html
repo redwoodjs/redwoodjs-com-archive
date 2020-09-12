@@ -265,13 +265,15 @@ export const Success = ({ users }) => {
       </p>
       <p></p>
       <p class="my-2 text-sm">
-        Check out how easy it is to create and consume a GraphQL endpoint (we didn't even omit any
+        Check out how easy it is to create and consume a GraphQL endpoint (we didn't even omit any other
         <code class="bg-red-200 text-red-600 font-mono text-sm px-1 py-half rounded">import</code>
         statements or cheat to get the code smaller, honest!):
       </p>
     </div>
     <div class="md:w-3/5 md:pl-4 mt-4 md:mt-0">
       <pre><code class="javascript" data-target="application.code">// api/src/graphql/users.sdl.js
+import { db } from 'src/lib/db'
+
 export const schema = gql`
   type User {
     id: Int!
