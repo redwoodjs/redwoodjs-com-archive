@@ -223,3 +223,15 @@
 ### Tom and Rob discuss Redwood, Open Source, and Startup ideas with Monarch from Mintbean.io.
 
 #### Video
+
+---
+
+![Redwood Newsletter](https://user-images.githubusercontent.com/2951/85804346-3c6dd200-b6fe-11ea-8a26-6a989444452c.png)
+
+# [Issue 3](https://mailchi.mp/redwoodjs/all-the-redwoodjs-news-fit-to-print-issue-2)
+
+## September 17 2020
+
+### All the RedwoodJS News that’s Fit to Print: Roadmap, Supabase, TypeScript, Vercel, YouTube Channel, RedwoodJS Meetups, and more.
+
+#### Newsletter
