@@ -145,7 +145,7 @@ new HtmlWebpackPlugin({
 }),
 ```
 
-To change this, in your `./web/config/webpack.config.js`, search `config`'s `plugins` array for `HtmlWebpackPlugin` and change it's `title` option. Note that, here, we're using the first format for configuring webpack, exporitng a function:
+To change this, in your `./web/config/webpack.config.js`, search `config`'s `plugins` array for `HtmlWebpackPlugin` and change it's `title` option. Note that, here, we're using the first format for configuring webpack, exporting a function:
 
 ```javascript{6}
 // ./web/config/webpack.config.js
