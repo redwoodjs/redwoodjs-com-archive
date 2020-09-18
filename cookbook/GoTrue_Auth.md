@@ -119,7 +119,7 @@ In the just-generated SignupPage component (`web/src/pages/SignupPage/SignupPage
 ```js
 // web/src/pages/SignupPage/SignupPage.js
 
-import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
+import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
 
 const SignupPage = () => {
   return (
@@ -172,7 +172,7 @@ Let's import `useAuth` and destructure `client` from it in our component:
 ```js {4,7}
 // web/src/pages/SignupPage/SignupPage.js
 
-import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
+import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
 import { useAuth } from '@redwoodjs/auth'
 
 const SignupPage = () => {
@@ -202,7 +202,7 @@ And now we'll attempt to create a new user in the `onSubmit` function with [`cli
 ```js {10-13}
 // web/src/pages/SignupPage/SignupPage.js
 
-import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
+import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
 import { useAuth } from '@redwoodjs/auth'
 
 const SignupPage = () => {
@@ -237,7 +237,7 @@ Let's display errors to the user if there is one. To do this, we'll set up `Reac
 ```js {8,11,15,22}
 // web/src/pages/SignupPage/SignupPage.js
 
-import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
+import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
 import { useAuth } from '@redwoodjs/auth'
 
 const SignupPage = () => {
@@ -281,7 +281,7 @@ Back in our `SignupPage`, let's import `routes` and `navigate` from [Redwood Rou
 ```js {5,15}
 // web/src/pages/SignupPage/SignupPage.js
 
-import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
+import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
 import { useAuth } from '@redwoodjs/auth'
 import { routes, navigate } from '@redwoodjs/router'
 
@@ -322,7 +322,7 @@ Let's get right to it. In the SigninPage we generated in the last section, let's
 ```js
 // web/src/pages/SigninPage/SigninPage.js
 
-import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
+import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
 
 const SigninPage = () => {
   const [error, setError] = React.useState(null)
@@ -352,7 +352,7 @@ Then we'll need to import `useAuth` from `@redwoodjs/auth` and destructure `logI
 ```js {4,7}
 // web/src/pages/SigninPage/SigninPage.js
 
-import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
+import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
 import { useAuth } from '@redwoodjs/auth'
 
 const SigninPage = () => {
@@ -385,7 +385,7 @@ Now we'll add `logIn` to our `onSubmit` function. This time we'll be passing an 
 ```js {12-16}
 // web/src/pages/SigninPage/SigninPage.js
 
-import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
+import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
 import { useAuth } from '@redwoodjs/auth'
 
 const SigninPage = () => {
@@ -428,7 +428,7 @@ In our `SigninPage`, import `navigate` and `routes` from [`@redwoodjs/router`](/
 ```js {5,14}
 // web/src/pages/SigninPage/SigninPage.js
 
-import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
+import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
 import { useAuth } from '@redwoodjs/auth'
 import { navigate, routes } from '@redwoodjs/router'
 
@@ -666,7 +666,7 @@ export default HomePage
 ```js
 // web/src/pages/SignupPage/SignupPage.js
 
-import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
+import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
 import { useAuth } from '@redwoodjs/auth'
 import { routes, navigate } from '@redwoodjs/router'
 
@@ -705,7 +705,7 @@ export default SignupPage
 ```js
 // web/src/pages/SigninPage/SigninPage.js
 
-import { Form, TextField, PasswordField, Submit } from '@redwoodjs/web'
+import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
 import { useAuth } from '@redwoodjs/auth'
 import { navigate, routes } from '@redwoodjs/router'
 
