@@ -7,7 +7,7 @@ Redwood is designed for serverless architecture deployment, offering a unique co
 3. during the build process, any database related actions are run (e.g. migrations)
 4. the hosting provider deploys the built Web static assets to a CDN and the API code to a serverless backend (e.g. AWS Lambdas)
 
-Currently, there are two officially supported deploy targets:
+Currently, these are the officially supported deploy targets:
 - [Netlify](https://www.netlify.com/)
 - [Vercel](https://vercel.com)
 - [AWS-Serverless](https://serverless.com)
