@@ -211,3 +211,27 @@
 ### Recording of the main session: Redwood v1 Roadmap, Auth and RBAC, FaunaDB Integration and Vercel Deployment.
 
 #### Meetup
+
+---
+
+![Mintbean.io](https://user-images.githubusercontent.com/2951/92620807-ee398b00-f277-11ea-9919-f7b817548a38.png)
+
+# [Fireside Chat with Mintbean.io](https://www.youtube.com/watch?v=81HHX3e0BX4)
+
+## August 29 2020
+
+### Tom and Rob discuss Redwood, Open Source, and Startup ideas with Monarch from Mintbean.io.
+
+#### Video
+
+---
+
+![Redwood Newsletter](https://user-images.githubusercontent.com/2951/85804346-3c6dd200-b6fe-11ea-8a26-6a989444452c.png)
+
+# [Issue 3](https://mailchi.mp/redwoodjs/all-the-redwoodjs-news-fit-to-print-issue-2)
+
+## September 17 2020
+
+### All the RedwoodJS News that’s Fit to Print: Roadmap, Supabase, TypeScript, Vercel, YouTube Channel, RedwoodJS Meetups, and more.
+
+#### Newsletter

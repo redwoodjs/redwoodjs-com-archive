@@ -118,7 +118,8 @@ Applied to your own `posts.js`, your code would look like this:
 ```jsx
 // api/src/services/posts/posts.jsimport { db } from 'src/lib/db'
 
-// super hacky workaround function by @rob 🚀const foreignKeyReplacement = (input) => {
+// super hacky workaround function by @rob 🚀
+const foreignKeyReplacement = (input) => {
   let output = input
   const foreignKeys = Object.keys(input).filter((k) => k.match(/Id$/))
   foreignKeys.forEach((key) => {
