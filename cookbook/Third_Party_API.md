@@ -87,7 +87,7 @@ yarn rw dev
 That will open a browser to http://localhost:8910. Let's create a landing page:
 
 ```terminal
-yarn rw g page home /
+yarn rw generate page home /
 ```
 
 > If you like typing you can use the full command `yarn redwood generate page home /`
@@ -387,7 +387,7 @@ If you click "Play" in the GraphQL playground we should see the real data from t
 All that's left now is to display it in the client! Since we're getting data from our GraphQL API we can use a Redwood Cell to simplify all the work that goes around writing API access, displaying a loading state, etc. We can use a generator to get the shell of our Cell:
 
 ```terminal
-yarn rw g cell weather
+yarn rw generate cell weather
 ```
 
 This will create `web/src/components/WeatherCell/WeatherCell.js`:
