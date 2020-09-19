@@ -2183,11 +2183,13 @@ Now we can call `reset()` on `formMethods` after the success message is added to
 
 const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
   onCompleted: () => {
-    // ...
+    // addMessage...
     formMethods.reset()
   },
 })
 ```
+
+<img alt="Screenshot of Contact form with Flash success message" src="https://user-images.githubusercontent.com/44448047/93649232-1be9a700-f9d1-11ea-821c-7a69c626f50c.png">
 
 > You can put the email validation back into the `<TextField>` now, but you should leave the server validation in place, just in case.
 
