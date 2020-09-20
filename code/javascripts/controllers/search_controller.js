@@ -40,8 +40,6 @@ export default class extends Controller {
       </a>`)
   }
 
-  connect() {}
-
   // Run search on keystrokes
   search(event) {
     event.stopPropagation()

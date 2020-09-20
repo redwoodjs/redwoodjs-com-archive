@@ -13,13 +13,13 @@ All of this without writing a line of imperative code. Just say what is supposed
 You can generate a Cell with:
 
 ```terminal
-yarn rw g cell <name>
+yarn rw generate cell <name>
 ```
 
 This creates the directory named `<name>Cell` in `web/src/components` with four files:
 
 ```terminal
-~/redwood-app$ yarn rw g cell user
+~/redwood-app$ yarn rw generate cell user
 yarn run v1.22.4
 $ /redwood-app/node_modules/.bin/rw g cell user
   ✔ Generating cell files...

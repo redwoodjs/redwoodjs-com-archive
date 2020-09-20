@@ -7,7 +7,8 @@
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
-- Custom _(limited support at this time)_
+- [Supabase](https://supabase.io/docs/library/getting-started#reference)
+- Custom
 - [Contribute one](https://github.com/redwoodjs/redwood/tree/main/packages/auth), it's SuperEasy™!
 
 Check out the [Auth Playground](https://github.com/redwoodjs/playground-auth).
@@ -25,7 +26,7 @@ You will need to instantiate your authentication client and pass it to the `<Aut
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw g auth netlify
+yarn rw generate auth netlify
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -74,7 +75,7 @@ See the Netlify Identity information within this doc's [Auth Provider Specific I
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw g auth goTrue
+yarn rw generate auth goTrue
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -130,7 +131,7 @@ ReactDOM.render(
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw g auth auth0
+yarn rw generate auth auth0
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -225,7 +226,7 @@ See the Auth0 information within this doc's [Auth Provider Specific Integration]
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw g auth magicLink
+yarn rw generate auth magicLink
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -273,7 +274,7 @@ See the Magic.Link information within this doc's [Auth Provider Specific Integra
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw g auth firebase
+yarn rw generate auth firebase
 ```
 
 #### Setup
@@ -346,6 +347,24 @@ const UserAuthTools = () => {
 See the Firebase information within this doc's [Auth Provider Specific Integration](https://redwoodjs.com/docs/authentication.html#auth-provider-specific-integration) section.
 +++
 
+### Supabase
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw generate auth supabase
+```
+
+#### Setup
+
+You will need to add your Supabase URL and Client API Key to your .env file (e.g., `SUPABASE_KEY`). See: https://supabase.io/docs/library/getting-started#reference
+
++++
+
 ### Custom
 
 +++ View Installation and Setup
@@ -355,7 +374,7 @@ See the Firebase information within this doc's [Auth Provider Specific Integrati
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw g auth custom
+yarn rw generate auth custom
 ```
 
 #### Setup
@@ -369,20 +388,22 @@ However, there are examples contributed by developers in the Redwood forums and 
 The most complete example (although now a bit outdated) is found in [this forum thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610).
 +++
 
+
 ## API
 
 The following values are available from the `useAuth` hook:
 
-- async `logIn()`: Differs based on the client library, with Netlify Identity a pop-up is shown, and with Auth0 the user is redirected
-- async `logOut()`: Log out the current user
-- `currentUser`: an object containing information about the current user as set on the `api` side, or `null` if the user is not authenticated
-- `userMetadata`: an object containing the user's metadata (or profile information) fetched directly from an instance of the auth provider client, or `null` if the user is not authenticated
+- async `logIn(options?)`: Differs based on the client library, with Netlify Identity a pop-up is shown, and with Auth0 the user is redirected. Options are passed to the client.
+- async `logOut(options?)`: Log out the current user. Options are passed to the client.
+- async `signUp(options?)`: If the provider has a sign up flow we'll show that, otherwise we'll fall back to the logIn flow.
+- `currentUser`: An object containing information about the current user as set on the `api` side, or `null` if the user is not authenticated.
+- `userMetadata`: An object containing the user's metadata (or profile information) fetched directly from an instance of the auth provider client, or `null` if the user is not authenticated.
 - async `reauthenticate()`: Refetch the authentication data and populate the state.
-- async `getToken()`: returns a jwt
-- `client`: Access the instance of the client which you passed into `AuthProvider`
-- `isAuthenticated`: used to determine if the current user has authenticated
-- `hasRole`: used to determine if the current user is assigned a role
-- `loading`: The auth state is restored asynchronously when the user visits the site for the first time, use this to determine if you have the correct state
+- async `getToken()`: Returns a JWT.
+- `client`: Access the instance of the client which you passed into `AuthProvider`.
+- `isAuthenticated`: Determines if the current user has authenticated.
+- `hasRole(['admin'])`: Determines if the current user is assigned a role like `"admin"` or assigned to any of the roles in a list such as `['editor', 'author']`.
+- `loading`: The auth state is restored asynchronously when the user visits the site for the first time, use this to determine if you have the correct state.
 
 ## Usage in Redwood
 
@@ -454,13 +475,13 @@ If you're using Auth0 you must also [create an API](https://auth0.com/docs/quick
 
 +++ View Auth0 Options
 
-#### Role-based access control (RBAC)
+#### Role-based access control (RBAC) in Auth0
 
 [Role-based access control (RBAC)](https://auth0.com/docs/authorization/concepts/rbac) refers to the idea of assigning permissions to users based on their role within an organization. It provides fine-grained control and offers a simple, manageable approach to access management that is less prone to error than assigning permissions to users individually.
 
 Essentially, a role is a collection of permissions that you can apply to users. A role might be "admin", "editor" or "publisher". This differs from permissions an example of which might be "publish:blog".
 
-#### App metadata
+#### App metadata in Auth0
 
 Auth0 stores information (such as, support plan subscriptions, security roles, or access control groups) in "App metadata". Data stored in `app_metadata` cannot be edited by users.
 
@@ -515,7 +536,7 @@ Auth0 maintains user role assignments `context.authorization`. This rule simply 
 
 But, now you must include the `app_metdata` on the user's JWT that RedwoodJS will decode.
 
-#### Add AppMetadata to JWT Rule
+#### Add AppMetadata to JWT Rule in Auth0
 
 Therefore, your second rule will `Add AppMetadata to JWT`.
 
@@ -573,7 +594,7 @@ function (user, context, callback) {
 
 Now, your `app_metadata` with `authorization` and `role` information will be on the user's JWT after logging in.
 
-#### Add Application hasRole Support
+#### Add Application hasRole Support in Auth0
 
 If you intend to support, RBAC then in your `api/src/lib/auth.js` you need to extract `roles` using the `parseJWT` utility and set these roles on `currentUser`.
 
@@ -631,11 +652,15 @@ You must follow the ["Before you begin"](https://firebase.google.com/docs/auth/w
 
 +++ View Firebase Options
 
-#### Role-based access control (RBAC)
+#### Role-based access control (RBAC) in Firebase
 
-#### App metadata
+Requires a custom implementation.
 
-#### Add Application hasRole Support
+#### App metadata in Firebase
+
+None.
+
+#### Add Application hasRole Support in Firebase
 
 +++
 
@@ -645,19 +670,19 @@ You must follow the ["Before you begin"](https://firebase.google.com/docs/auth/w
 
 +++ View Netlify Identity Options
 
-#### Role-based access control (RBAC)
+#### Role-based access control (RBAC) in Netlify Identity
 
 Role-based access control (RBAC) refers to the idea of assigning permissions to users based on their role within an organization. It provides fine-grained control and offers a simple, manageable approach to access management that is less prone to error than assigning permissions to users individually.
 
 Essentially, a role is a collection of permissions that you can apply to users. A role might be "admin", "editor" or "publisher". This differs from permissions an example of which might be "publish:blog".
 
-#### App metadata
+#### App metadata in Netlify Identity
 
 Netlify Identity stores information (such as, support plan subscriptions, security roles, or access control groups) in "App metadata". Data stored in `app_metadata` cannot be edited by users.
 
 Create and manage roles for your application in Netlify's "Identity" management views. You can then assign these roles to users.
 
-#### Add Application hasRole Support
+#### Add Application hasRole Support in Netlify Identity
 
 If you intend to support, RBAC then in your `api/src/lib/auth.js` you need to extract `roles` using the `parseJWT` utility and set these roles on `currentUser`.
 
@@ -674,23 +699,36 @@ export const getCurrentUser = async (decoded) => {
 
 Now your `currentUser.roles` info will be available to both `requireAuth()` on the api side and `hasRole()` on the web side.
 
++++
+
 ### Role Protection on Functions, Services and Web
 
-You can specify an optional role in `requireAuth` to check if the user is both authenticated and is assigned the role:
+You can specify an optional role in `requireAuth` to check if the user is both authenticated and is assigned the role. The `role` can be a single string role of a list of roles.
 
 ```js
 export const myThings = () => {
-  requireAuth({ role: 'admin'})
+  requireAuth({ role: 'admin' })
 
   return db.user.findOne({ where: { id: context.currentUser.id } }).things()
 }
 
-You can also protect routes:
+export const myBooks = () => {
+  requireAuth({ role: ['author', 'editor'] })
 
+  return db.user.findOne({ where: { id: context.currentUser.id } }).books()
+}
 ```
 
+You can also protect routes:
+
+```js
 <Router>
   <Private unauthenticated="forbidden" role="admin">
+    <Route path="/settings" page={SettingsPage} name="settings" />
+    <Route path="/admin" page={AdminPage} name="sites" />
+  </Private>
+
+  <Private unauthenticated="forbidden" role={['author', 'editor']}>
     <Route path="/settings" page={SettingsPage} name="settings" />
     <Route path="/admin" page={AdminPage} name="sites" />
   </Private>
@@ -700,15 +738,19 @@ You can also protect routes:
 </Router>
 ```
 
-And also protect content in pages or components via the `userAuth()` hook:
+And also protect content in pages or components via the `useAuth()` hook:
 
-```
+```js
 const { isAuthenticated, hasRole } = useAuth()
 
 ...
 
 {hasRole('admin') && (
   <Link to={routes.admin()}>Admin</Link>
+)}
+
+{hasRole(['author', 'editor']) && (
+  <Link to={routes.posts()}>Admin</Link>
 )}
 ```
 
@@ -736,7 +778,7 @@ const Routes = () => {
 }
 ```
 
-Routes can also be restirected by role by specifying `hasRole(roleName)` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in`unauthenticated`.
+Routes can also be restirected by role by specifying `hasRole="role"` or `hasRole={['role', 'another_role']})` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in `unauthenticated`.
 
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'
@@ -754,6 +796,10 @@ const Routes = () => {
 
       <Private unauthenticated="forbidden" role="admin">
         <Route path="/admin" page={AdminPage} name="admin" />
+      </Private>
+
+      <Private unauthenticated="forbidden" role={['author', 'editor']}>
+        <Route path="/posts" page={PostsPage} name="posts" />
       </Private>
     </Router>
   )

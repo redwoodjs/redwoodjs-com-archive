@@ -37,14 +37,7 @@ Open up `netlify.toml`. We're going to comment out one line:
   from = "/*"
   to = "/index.html"
   status = 200
-
-[[plugins]]
-package = 'netlify-plugin-prisma-provider'
-  [plugins.inputs]
-  path = 'api/prisma/schema.prisma'
 ```
-
-> Redwood is smart and will skip the database migration steps automatically if the /api directory doesn't exist, but we like to keep things neat and tidy!
 
 If you just have a static site that doesn't need any data access at all (even our simple JSON file discussed above) then you're done! Keep reading to see how you can access a local data store that we'll deploy along with the web side of our app.
 
@@ -250,7 +243,7 @@ Any files that you put in `web/public` will be served by Netlify, skipping any b
 Next let's have a React component get that data remotely and then display it on a page. For this example we'll generate a homepage:
 
 ```terminal
-yarn rw g page home /
+yarn rw generate page home /
 ```
 
 Next we'll use the browser's builtin `fetch()` function to get the data and then we'll just dump it to the screen to make sure it works:

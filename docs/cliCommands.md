@@ -14,7 +14,7 @@ This document covers the `redwood` command . For `redwood-tools`, see [Contribut
 We use [yargs](http://yargs.js.org/) and borrow its syntax here:
 
 ```
-yarn rw g page <name> [path] --option
+yarn rw generate page <name> [path] --option
 ```
 
 </br>
@@ -33,7 +33,7 @@ You'll also sometimes see arguments with trailing `..` like:
 yarn rw build [side..]
 ```
 
-The `..` operator indicates that the argument accepts an array of values. See [Variadic Positional Arguments](https://github.com/yargs/yargs/blob/main/docs/advanced.md#variadic-positional-arguments).
+The `..` operator indicates that the argument accepts an array of values. See [Variadic Positional Arguments](https://github.com/yargs/yargs/blob/master/docs/advanced.md#variadic-positional-arguments).
 
 ## build
 
@@ -342,18 +342,18 @@ yarn rw d <type>
 | `sdl <model>`        | Destroy a GraphQL schema and service component based on a given DB schema Model |
 | `service <name>`     | Destroy a service component                                                     |
 
-## diagnostics
+## check (alias diagnostics)
 
 Get structural diagnostics for a Redwood project (experimental).
 
 ```
-yarn rw diagnostics
+yarn rw check
 ```
 
 **Example**
 
 ```terminal
-~/redwood-app$ yarn rw diagnostics
+~/redwood-app$ yarn rw check
 yarn run v1.22.4
 web/src/Routes.js:14:5: error: You must specify a 'notfound' page
 web/src/Routes.js:14:19: error: Duplicate Path
@@ -367,7 +367,7 @@ web/src/Routes.js:17:19: error (INVALID_ROUTE_PATH_SYNTAX): Error: Route path co
 Save time by generating boilerplate code.
 
 ```
-yarn rw g <type>
+yarn rw generate <type>
 ```
 
 Some generators require that their argument be a model in your `schema.prisma`. When they do, their argument is named `<model>`.
@@ -389,14 +389,14 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 
 **Undoing a Generator with a Destroyer**
 
-Most generate commands (i.e., everything but `yarn rw g auth` and `yarn rw g dataMigration`) can be undone by their corresponding destroy command. For example, `yarn rw g cell` can be undone with `yarn rw d cell`.
+Most generate commands (i.e., everything but `yarn rw generate auth` and `yarn rw generate dataMigration`) can be undone by their corresponding destroy command. For example, `yarn rw generate cell` can be undone with `yarn rw d cell`.
 
 ### auth
 
 Generate an auth configuration.
 
 ```
-yarn rw g auth <provider>
+yarn rw generate auth <provider>
 ```
 
 You can get authentication out-of-the-box with generators. Right now we support Auth0, Firebase, GoTrue, Magic, and Netlify.
@@ -415,7 +415,7 @@ See [Authentication](https://redwoodjs.com/docs/authentication).
 Generate a cell component.
 
 ```terminal
-yarn rw g cell <name>
+yarn rw generate cell <name>
 ```
 
 Cells are signature to Redwood. We think they provide a simpler and more declarative approach to data fetching.
@@ -442,7 +442,7 @@ yarn rw d cell <name>
 Generating a user cell:
 
 ```terminal
-~/redwood-app$ yarn rw g cell user
+~/redwood-app$ yarn rw generate cell user
 yarn run v1.22.4
 $ /redwood-app/node_modules/.bin/rw g cell user
   ✔ Generating cell files...
@@ -480,7 +480,7 @@ export const Success = ({ user }) => {
 Generate a component.
 
 ```terminal
-yarn rw g component <name>
+yarn rw generate component <name>
 ```
 
 Redwood loves function components and makes extensive use of React Hooks, which are only enabled in function components.
@@ -503,7 +503,7 @@ yarn rw d component <name>
 Generating a user component:
 
 ```terminal
-~/redwood-app$ yarn rw g component user
+~/redwood-app$ yarn rw generate component user
 yarn run v1.22.4
 $ /redwood-app/node_modules/.bin/rw g component user
   ✔ Generating component files...
@@ -534,7 +534,7 @@ export default User
 Generate a data migration script.
 
 ```
-yarn rw g dataMigration <name>
+yarn rw generate dataMigration <name>
 ```
 
 Creates a data migration script in `api/prisma/dataMigrations`.
@@ -552,7 +552,7 @@ See the [Data Migration](/docs/data-migrations) docs.
 Generate a deployment configuration.
 
 ```
-yarn rw g deploy <provider>
+yarn rw generate deploy <provider>
 ```
 
 Creates provider-specific code and configuration for deployment
@@ -571,7 +571,7 @@ See the [Deploy](/docs/deploy) docs.
 Generate a Function.
 
 ```
-yarn rw g function <name>
+yarn rw generate function <name>
 ```
 
 Not to be confused with Javascript functions, Capital-F Functions are meant to be deployed to serverless endpoints like AWS Lambda.
@@ -596,7 +596,7 @@ yarn rw d function <name>
 Generating a user function:
 
 ```terminal
-~/redwood-app$ yarn rw g function user
+~/redwood-app$ yarn rw generate function user
 yarn run v1.22.4
 $ /redwood-app/node_modules/.bin/rw g function user
   ✔ Generating function files...
@@ -638,7 +638,7 @@ $ /redwood-app/node_modules/.bin/dev-server
 Generate a layout component.
 
 ```terminal
-yarn rw g layout <name>
+yarn rw generate layout <name>
 ```
 
 Layouts wrap pages and help you stay DRY.
@@ -665,7 +665,7 @@ yarn rw d layout <name>
 Generating a user layout:
 
 ```terminal
-~/redwood-app$ yarn rw g layout user
+~/redwood-app$ yarn rw generate layout user
 yarn run v1.22.4
 $ /redwood-app/node_modules/.bin/rw g layout user
   ✔ Generating layout files...
@@ -691,7 +691,7 @@ export default UserLayout
 Generates a page component and updates the routes.
 
 ```terminal
-yarn rw g page <name> [path]
+yarn rw generate page <name> [path]
 ```
 
 `path` can include a route parameter which will be passed to the generated
@@ -719,7 +719,7 @@ yarn rw d page <name> [path]
 Generating a home page:
 
 ```plaintext
-~/redwood-app$ yarn rw g page home /
+~/redwood-app$ yarn rw generate page home /
 yarn run v1.22.4
 $ /redwood-app/node_modules/.bin/rw g page home /
   ✔ Generating page files...
@@ -764,7 +764,7 @@ const Routes = () => {
 Generating a page to show quotes:
 
 ```plaintext
-~/redwood-app$ yarn rw g page quote {id}
+~/redwood-app$ yarn rw generate page quote {id}
 yarn run v1.22.4
 $ /redwood-app/node_modules/.bin/rw g page quote {id}
   ✔ Generating page files...
@@ -819,7 +819,7 @@ const Routes = () => {
 Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts `<path/model>`.
 
 ```terminal
-yarn rw g scaffold <model>
+yarn rw generate scaffold <model>
 ```
 
 A scaffold quickly creates a CRUD for a model by generating the following files and corresponding routes:
@@ -844,10 +844,10 @@ The content of the generated components is different from what you'd get by runn
 
 See [Creating a Post Editor](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor).
 
-You can namespace your scaffolds by providing `<path/model>`. The layout, pages, cells, and components will be nested in newly created dir(s). For example, given a model user, running `yarn rw g scaffold admin/user` will nest the layouts, pages, and components in a newly created `admin` directory:
+You can namespace your scaffolds by providing `<path/model>`. The layout, pages, cells, and components will be nested in newly created dir(s). For example, given a model user, running `yarn rw generate scaffold admin/user` will nest the layouts, pages, and components in a newly created `admin` directory:
 
 ```plaintext{9-20}
-~/redwood-app$ yarn rw g scaffold admin/user
+~/redwood-app$ yarn rw generate scaffold admin/user
 yarn run v1.22.4
 $ /redwood-app/node_modules/.bin/rw g scaffold admin/user
   ✔ Generating scaffold files...
@@ -901,7 +901,7 @@ yarn rw d scaffold <model>
 Generate a GraphQL schema and service object.
 
 ```terminal
-yarn rw g sdl <model>
+yarn rw generate sdl <model>
 ```
 
 The sdl will inspect your `schema.prisma` and will do its best with relations. Schema to generators isn't one-to-one yet (and might never be).
@@ -928,7 +928,7 @@ yarn rw d sdl <model>
 Generating a user sdl:
 
 ```terminal
-~/redwood-app$ yarn rw g sdl user
+~/redwood-app$ yarn rw generate sdl user
 yarn run v1.22.4
 $ /redwood-app/node_modules/.bin/rw g sdl user
   ✔ Generating SDL files...
@@ -1030,7 +1030,7 @@ export const User = {
 Generate a service component.
 
 ```terminal
-yarn rw g service <name>
+yarn rw generate service <name>
 ```
 
 Services are where Redwood puts its business logic. They can be used by your GraphQL API or any other place in your backend code. See [How Redwood Works with Data](https://redwoodjs.com/tutorial/side-quest-how-redwood-works-with-data).
@@ -1053,7 +1053,7 @@ yarn rw d service <name>
 Generating a user service:
 
 ```terminal
-~/redwood-app$ yarn rw g service user
+~/redwood-app$ yarn rw generate service user
 yarn run v1.22.4
 $ /redwood-app/node_modules/.bin/rw g service user
   ✔ Generating service files...
@@ -1079,7 +1079,7 @@ export const users = () => {
 Quality of life utilities.
 
 ```
-yarn rw g util <util>
+yarn rw generate util <util>
 ```
 
 <br/>
@@ -1095,7 +1095,7 @@ Setup [Tailwind CSS](https://tailwindcss.com/).
 
 This command automates all the steps enumerated in the Webpack Configuration doc's [Adding Tailwind CSS](https://redwoodjs.com/docs/webpack-configuration#adding-tailwindcss) section.
 
-Right now, this'll genreate the `tailwind.config.js` file in `web` (instead of in `web/config`) to get the vscode extension working. 
+Right now, this'll generate the `tailwind.config.js` file in `web` (instead of in `web/config`) to get the vscode extension working.
 
 ## info
 

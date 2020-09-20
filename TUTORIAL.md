@@ -1783,7 +1783,7 @@ export const schema = gql`
 `
 ```
 
-What's `CreateContactInput` and `UpdateContactInput`? Redwood follows the GraphQL recommendation of using [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) in mutations rather than listing out each and every field that can be set. Any fields required in `schema.prisma` are also required in `CreateContactInput` (you can't create a valid record without them) but nothing is explictly required in `UpdateContactInput`. This is because you could want to update only a single field, or two fields, or all fields. The alternative would be to create separate Input types for every permutation of fields you would want to update. We felt that only having one update input, while maybe not pedantically the absolute **correct** way to create a GraphQL API, we felt it was a good compromise for an optimal developer experience.
+What's `CreateContactInput` and `UpdateContactInput`? Redwood follows the GraphQL recommendation of using [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) in mutations rather than listing out each and every field that can be set. Any fields required in `schema.prisma` are also required in `CreateContactInput` (you can't create a valid record without them) but nothing is explictly required in `UpdateContactInput`. This is because you could want to update only a single field, or two fields, or all fields. The alternative would be to create separate Input types for every permutation of fields you would want to update. We felt that only having one update input, while maybe not pedantically the absolute **correct** way to create a GraphQL API, was a good compromise for optimal developer experience.
 
 > Redwood assumes your code won't try to set a value on any field named `id` or `createdAt` so it left those out of the Input types, but if your database allowed either of those to be set manually you can update `CreateContactInput` or `UpdateContactInput` and add them.
 
@@ -1970,16 +1970,34 @@ It may be hard to see a difference in development because the submit is so fast,
 
 You'll see that the "Save" button become disabled for a second or two while waiting for the response.
 
-Next let's let the user know their submission was successful. `useMutation` can accept a second argument containing an options object. One of those options is a callback function that will be invoked when the mutation completes called `onCompleted`. We'll use that callback to notify the user via a simple alert box:
+Next, let's use Redwood's `Flash` system to let the user know their submission was successful. `useMutation` accepts an options object as a second argument. One of the options is a callback function, `onCompleted`, that will be invoked when the mutation successfully completes. We'll use that callback to add a message for the `Flash` component to display. Add the `Flash` component to the page and use the `timeout` prop to schedule the message's dismissal. (You can read the full documentation about Redwood's Flash system [here](https://redwoodjs.com/docs/flash-messaging-bus).)
 
-```javascript
+```javascript{4,10,13-17,24}
 // web/src/pages/ContactPage/ContactPage.js
 
-const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
-  onCompleted: () => {
-    alert('Thank you for your submission!')
-  },
-})
+// ...
+import { Flash, useFlash, useMutation } from '@redwoodjs/web'
+import BlogLayout from 'src/layouts/BlogLayout'
+
+// ...
+
+const ContactPage = () => {
+  const { addMessage } = useFlash()
+
+  const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
+    onCompleted: () => {
+      addMessage('Thank you for your submission!', {
+        style: { backgroundColor: 'green', color: 'white', padding: '1rem' }
+      })
+    },
+  })
+
+  // ...
+
+  return (
+    <BlogLayout>
+      <Flash timeout={1000} />
+      // ...
 ```
 
 ### Displaying Server Errors
@@ -2076,7 +2094,7 @@ Remember when we said that `<Form>` had one more trick up its sleeve? Here it co
 
 Remove the inline error display we just added (`{ error && ...}`) and replace it with `<FormError>`, passing the `error` constant we got from `useMutation` and a little bit of styling to `wrapperStyle` (don't forget the `import`). We'll also pass `error` to `<Form>` so it can setup a context:
 
-```javascript{10,17,18-21}
+```javascript{10,18-22}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -2088,11 +2106,12 @@ import {
   Label,
   FormError,
 } from '@redwoodjs/forms'
-import { useMutation } from '@redwoodjs/web'
+import { Flash, useFlash, useMutation } from '@redwoodjs/web'
 // ...
 
 return (
   <BlogLayout>
+    <Flash timeout={1000}>
     <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }} error={error}>
       <FormError
         error={error}
@@ -2142,11 +2161,12 @@ const ContactPage = () => {
 
 Finally we'll tell `<Form>` to use the `formMethods` we just instantiated instead of doing it itself:
 
-```javascript{9}
+```javascript{10}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
   <BlogLayout>
+    <Flash timeout={1000}>
     <Form
       onSubmit={onSubmit}
       validation={{ mode: 'onBlur' }}
@@ -2156,20 +2176,20 @@ return (
     // ...
 ```
 
-Now we can call `reset()` on `formMethods` after the alert box is shown:
+Now we can call `reset()` on `formMethods` after the success message is added to the Flash system:
 
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
 const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
   onCompleted: () => {
-    alert('Thank you for your submission!')
+    // addMessage...
     formMethods.reset()
   },
 })
 ```
 
-<img src="https://user-images.githubusercontent.com/300/80259707-13b45800-863b-11ea-8b4b-36baa04100c9.png">
+<img alt="Screenshot of Contact form with Flash success message" src="https://user-images.githubusercontent.com/44448047/93649232-1be9a700-f9d1-11ea-821c-7a69c626f50c.png">
 
 > You can put the email validation back into the `<TextField>` now, but you should leave the server validation in place, just in case.
 
@@ -2185,7 +2205,7 @@ import {
   Label,
   FormError,
 } from '@redwoodjs/forms'
-import { useMutation } from '@redwoodjs/web'
+import { Flash, useFlash, useMutation } from '@redwoodjs/web'
 import { useForm } from 'react-hook-form'
 import BlogLayout from 'src/layouts/BlogLayout'
 
@@ -2199,10 +2219,13 @@ const CREATE_CONTACT = gql`
 
 const ContactPage = () => {
   const formMethods = useForm()
+  const { addMessage } = useFlash()
 
   const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
     onCompleted: () => {
-      alert('Thank you for your submission!')
+      addMessage('Thank you for your submission!', {
+        style: { backgroundColor: 'green', color: 'white', padding: '1rem' }
+      })
       formMethods.reset()
     },
   })
@@ -2214,6 +2237,7 @@ const ContactPage = () => {
 
   return (
     <BlogLayout>
+      <Flash timeout={1000} />
       <Form
         onSubmit={onSubmit}
         validation={{ mode: 'onBlur' }}

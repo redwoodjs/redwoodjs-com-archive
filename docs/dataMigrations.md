@@ -50,7 +50,7 @@ Where `version` is a timestamp, like `20200721123456` (an ISO8601 datetime witho
 
 To create a data migration we have a generator:
 
-    yarn rw g dataMigration copyPreferences
+    yarn rw generate dataMigration copyPreferences
 
 This will create `api/prisma/dataMigrations/20200721123456-copy-preferences.js`:
 
@@ -156,5 +156,5 @@ Run once:
 
 Run every time you need a new data migration:
 
-    yarn rw g dataMigration migrationName
+    yarn rw generate dataMigration migrationName
     yarn rw dataMigrate up

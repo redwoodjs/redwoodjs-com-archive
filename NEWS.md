@@ -187,3 +187,51 @@
 ### All the RedwoodJS News that’s Fit to Print: Storybook Integration, CLI Diagnostics, Apps built with Redwood, and even more new tools and snippets.
 
 #### Newsletter
+
+---
+
+![RedwoodJS Meetup](https://user-images.githubusercontent.com/2951/92313389-31e27b00-ef80-11ea-9903-b7a04aac2d39.png)
+
+# [YouTube Playlist](https://www.youtube.com/playlist?list=PL1HNO86XPhd0Gb_tfA7v7QX08pHjCI_WA)
+
+## July 30 2020
+
+### Recording of the main session: Architecture, Data Migrations, Repeater.dev, Tape.sh demo, Background Jobs, Contributing, and @redwoodjs/structure. And recording of Rob walking through the new Data Migrations feature.
+
+#### Meetup
+
+---
+
+![RedwoodJS Meetup](https://user-images.githubusercontent.com/2951/92313389-31e27b00-ef80-11ea-9903-b7a04aac2d39.png)
+
+# [YouTube Playlist](https://www.youtube.com/playlist?list=PL1HNO86XPhd0NgiN-kDFzIVEkKzxHHqM6)
+
+## August 28 2020
+
+### Recording of the main session: Redwood v1 Roadmap, Auth and RBAC, FaunaDB Integration and Vercel Deployment.
+
+#### Meetup
+
+---
+
+![Mintbean.io](https://user-images.githubusercontent.com/2951/92620807-ee398b00-f277-11ea-9919-f7b817548a38.png)
+
+# [Fireside Chat with Mintbean.io](https://www.youtube.com/watch?v=81HHX3e0BX4)
+
+## August 29 2020
+
+### Tom and Rob discuss Redwood, Open Source, and Startup ideas with Monarch from Mintbean.io.
+
+#### Video
+
+---
+
+![Redwood Newsletter](https://user-images.githubusercontent.com/2951/85804346-3c6dd200-b6fe-11ea-8a26-6a989444452c.png)
+
+# [Issue 3](https://mailchi.mp/redwoodjs/all-the-redwoodjs-news-fit-to-print-issue-2)
+
+## September 17 2020
+
+### All the RedwoodJS News that’s Fit to Print: Roadmap, Supabase, TypeScript, Vercel, YouTube Channel, RedwoodJS Meetups, and more.
+
+#### Newsletter

@@ -76,7 +76,8 @@ The `options` object has the following structure:
 ```js
 {
   text: "It is your birthday period", // overwrites the text param passed to addMessage()
-  classes: "bold red text", // css classes
+  classes: "bold red text", // css classes - generally recommended approach
+  style: { fontWeight: 'bold', color: 'red' }, // inline style object with camelCased keys
   persist: true, // true will persist the message through each cycle until it is dismissed manually
   viewed: false, // once true, the message will be dismissed on the next cycle
 }
@@ -163,6 +164,7 @@ messages = [
     id: 0, // integer
     text: "Success!", // string
     classes: "green italic", // string
+    style: { color: "green", fontStyle: "italic" } // object with camelCased keys
     persist: false, // boolean
     viewed: false, // boolean
   },
@@ -179,6 +181,7 @@ messages = [
 let text = 'Success!' // string
 let options = {
   classes: 'green italic', // string
+  style: { color: "green", fontStyle: "italic" } // object with camelCased keys
   persist: false, // boolean
   viewed: false,
 }

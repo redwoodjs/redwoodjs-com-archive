@@ -132,4 +132,8 @@ to = "/docs/app-configuration-redwood-toml"
 
 [[redirects]]
 from = "/reference/redwood-form"
-to = "/docs/form"  
+to = "/docs/form"
+
+[[redirects]]
+from = "/docs/typescript"
+to = "/docs/type-script"

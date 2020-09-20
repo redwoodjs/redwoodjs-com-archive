@@ -91,7 +91,7 @@ You can access environment variables defined in `.env` and `.env.defaults` as `p
 HELLO_ENV=hello world
 ```
 
-and make a hello Function (`yarn rw g function hello`) and reference `HELLO_ENV` in the body of our response:
+and make a hello Function (`yarn rw generate function hello`) and reference `HELLO_ENV` in the body of our response:
 
 ```javascript{6}
 // ./api/src/functions/hello.js

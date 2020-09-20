@@ -13,7 +13,7 @@ Before reading further, you should spend some time looking through the [Prisma R
 There are two important things to understand about the, ahem, relationship between Prisma Relations and Redwood Scaffold Generators:
 
 1. As long as you're writing your own API Services and GraphQL SDL code, **you can use all Prisma Relations supported features in Redwood**!
-2. Redwood's Scaffold Generator, for example `yarn rw g scaffold post`, will correctly generate the CRUD files for a data model that includes relations. **However, the generated code for models containing `@relation` will NOT work without manual modifications.**
+2. Redwood's Scaffold Generator, for example `yarn rw generate scaffold post`, will correctly generate the CRUD files for a data model that includes relations. **However, the generated code for models containing `@relation` will NOT work without manual modifications.**
 
 > Note: the Scaffold generator uses both the SDL and Service generator. And the SDL generator uses the Service generator.
 
@@ -64,7 +64,7 @@ model Post {
 
 ```
 
-Using Redwood’s generators to build a CRUD scaffold for Post, you can successfully run `yarn rw g scaffold post`. But when you run `yarn rw dev`, and then try to create a new post and save from the UI, you’ll get an error.
+Using Redwood’s generators to build a CRUD scaffold for Post, you can successfully run `yarn rw generate scaffold post`. But when you run `yarn rw dev`, and then try to create a new post and save from the UI, you’ll get an error.
 
 Looking at the Service file the Redwood generator created, `api/src/service/posts.js`, here’s what the mutation looks like to create a new post:
 
@@ -118,7 +118,8 @@ Applied to your own `posts.js`, your code would look like this:
 ```jsx
 // api/src/services/posts/posts.jsimport { db } from 'src/lib/db'
 
-// super hacky workaround function by @rob 🚀const foreignKeyReplacement = (input) => {
+// super hacky workaround function by @rob 🚀
+const foreignKeyReplacement = (input) => {
   let output = input
   const foreignKeys = Object.keys(input).filter((k) => k.match(/Id$/))
   foreignKeys.forEach((key) => {
