@@ -35,11 +35,11 @@
                 RedwoodJS
               </h1>
             </a>
-            <div class="hidden lg:block lg:w-7/12">
+            <div class="hidden lg:block flex-1 mx-8">
               @@include("search")
             </div>
             <div class="flex items-center">
-              <div class="text-red-700 font-mono font-semibold">
+              <div class="text-red-700 font-mono font-semibold mr-8">
                 @@version
               </div>
               <div class="ml-8 lg:hidden w-10 p-2" data-action="click->application#toggleNav">
@@ -49,7 +49,14 @@
                 </svg>
               </div>
             </div>
-            <ul class="hidden lg:flex">
+            <ul class="hidden lg:flex items-center">
+              <li class="mr-1">
+                <a class="block flex" href="https://github.com/redwoodjs/redwood" title="Go to Redwood's GitHub repo">
+                  <span class="text-xs font-semibold bg-red-300 text-red-600 px-2 rounded-l">stars</span>
+                  <span class="text-xs font-bold bg-red-500 text-red-200 pl-2 pr-1" data-target="application.stars"></span>
+                  <span class="border-red-700 arrow-right" data-target="application.stars"></span>
+                </a>
+              </li>
               <li class="mr-3">
                 <a class="block w-6" href="https://github.com/redwoodjs/redwood" title="Go to Redwood's GitHub repo">
                   <svg viewBox="0 0 32 32" class="transition duration-200 fill-current text-red-400 hover:text-red-700" xmlns="http://www.w3.org/2000/svg">

@@ -4,7 +4,7 @@ import ClipboardJS from 'clipboard'
 
 export default class extends Controller {
   static get targets() {
-    return ['header', 'logo', 'search', 'nav', 'innerNav', 'body', 'code', 'year']
+    return ['header','logo','search','stars','nav','innerNav','body','code','year']
   }
 
   connect() {
@@ -26,6 +26,9 @@ export default class extends Controller {
 
     // if there is a hash in the URL, open a collapsed sections that contains that target
     this._openCollapsedSectionForHash()
+
+    // get the star count
+    this._showStarCount()
   }
 
   focusSearch(event) {
@@ -140,6 +143,17 @@ export default class extends Controller {
         window.scrollTo(0, element.offsetTop)
       }
     }
+  }
+
+  async _showStarCount() {
+    const stars = await this._getStarCount()
+    this.starsTarget.textContent = stars
+  }
+
+  async _getStarCount() {
+    const response = await fetch('https://api.github.com/repos/redwoodjs/redwood')
+    const body = await response.json()
+    return body.stargazers_count
   }
 
   get isHomePage() {
