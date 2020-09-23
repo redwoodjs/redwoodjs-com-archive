@@ -11,7 +11,7 @@ How about a custom function that returns the timestamp from the server?
 Step one is to actually create the custom Function. Naturally, we have a generator for that. Let's call our custom Function "serverTime":
 
 ```terminal
-yarn rw g function serverTime
+yarn rw generate function serverTime
 ```
 
 That will create a shell for you that you can test out right away. Make sure your dev server is running with `yarn rw dev` and point your browser to `http://localhost:8910/.netlify/functions/serverTime`

@@ -137,3 +137,7 @@ to = "/docs/form"
 [[redirects]]
 from = "/docs/typescript"
 to = "/docs/type-script"
+
+[[redirects]]
+from ="/good-first-issue"
+to ="https://github.com/redwoodjs/redwood/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22"

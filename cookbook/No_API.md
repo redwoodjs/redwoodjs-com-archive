@@ -243,7 +243,7 @@ Any files that you put in `web/public` will be served by Netlify, skipping any b
 Next let's have a React component get that data remotely and then display it on a page. For this example we'll generate a homepage:
 
 ```terminal
-yarn rw g page home /
+yarn rw generate page home /
 ```
 
 Next we'll use the browser's builtin `fetch()` function to get the data and then we'll just dump it to the screen to make sure it works:

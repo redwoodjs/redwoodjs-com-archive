@@ -26,7 +26,7 @@ You will need to instantiate your authentication client and pass it to the `<Aut
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw g auth netlify
+yarn rw generate auth netlify
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -75,7 +75,7 @@ See the Netlify Identity information within this doc's [Auth Provider Specific I
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw g auth goTrue
+yarn rw generate auth goTrue
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -131,7 +131,7 @@ ReactDOM.render(
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw g auth auth0
+yarn rw generate auth auth0
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -226,7 +226,7 @@ See the Auth0 information within this doc's [Auth Provider Specific Integration]
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw g auth magicLink
+yarn rw generate auth magicLink
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -274,7 +274,7 @@ See the Magic.Link information within this doc's [Auth Provider Specific Integra
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw g auth firebase
+yarn rw generate auth firebase
 ```
 
 #### Setup
@@ -374,7 +374,7 @@ You will need to add your Supabase URL and Client API Key to your .env file (e.g
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw g auth custom
+yarn rw generate auth custom
 ```
 
 #### Setup

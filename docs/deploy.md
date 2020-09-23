@@ -7,7 +7,7 @@ Redwood is designed for serverless architecture deployment, offering a unique co
 3. during the build process, any database related actions are run (e.g. migrations)
 4. the hosting provider deploys the built Web static assets to a CDN and the API code to a serverless backend (e.g. AWS Lambdas)
 
-Currently, there are two officially supported deploy targets:
+Currently, these are the officially supported deploy targets:
 - [Netlify](https://www.netlify.com/)
 - [Vercel](https://vercel.com)
 - [AWS-Serverless](https://serverless.com)
@@ -67,7 +67,7 @@ Additionally, if your application uses env vars on the Web Side, you must config
 If you simply want to experience the Netlify deployment process without a database and/or adding custom code, you can do the following:
 1. create a new redwood project: `yarn create redwood-app ./netlify-deploy`
 2. after your "netlify-deploy" project installation is complete, init git, commit, and add it as a new repo to GitHub, BitBucket, or GitLab
-3. run the command `yarn rw g deploy netlify` and commit and push changes
+3. run the command `yarn rw generate deploy netlify` and commit and push changes
 4. use the Netlify [Quick Start](https://app.netlify.com/signup) to deploy
 
 ### Netlify Complete Deploy Walkthrough
@@ -81,7 +81,7 @@ For the complete deployment process on Netlify, see the [Tutorial Deployment sec
 If you simply want to experience the Vercel deployment process without a database and/or adding custom code, you can do the following:
 1. create a new redwood project: `yarn create redwood-app ./vercel-deploy`
 2. after your "vercel-deploy" project installation is complete, init git, commit, and add it as a new repo to GitHub, BitBucket, or GitLab
-3. run the command `yarn rw g deploy vercel` and commit and push changes
+3. run the command `yarn rw generate deploy vercel` and commit and push changes
 4. use the Vercel [Quick Start](https://vercel.com/#get-started) to deploy
 
 _If you choose this quick deploy experience, the following steps do not apply._
@@ -99,7 +99,7 @@ Complete the following two steps. Then save, commit, and push your changes.
 #### Step 1. Serverless Functions Path
 Run the following CLI Command:
 ```shell
-yarn rw g deploy vercel
+yarn rw generate deploy vercel
 ```
 
 This updates your `redwood.toml` file, setting `apiProxyPath = "/api"`:
