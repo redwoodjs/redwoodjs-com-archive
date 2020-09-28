@@ -321,6 +321,20 @@ Using `--forward` (alias `--fwd`), you can pass one or more Webpack DevServer co
 ~/redwood-app$ yarn rw dev --fwd="--port=1234 --open=false"
 ```
 
+## deploy
+
+Deploy your redwood project.
+
+```
+yarn rw deploy <command>
+```
+
+<br/>
+
+| Command              | Description                                                                     |
+| :------------------- | :------------------------------------------------------------------------------ |
+| `api <provider>`     | Deploy the API using the selected provider                                      |
+
 ## destroy (alias d)
 
 Rollback changes made by the generate command.
