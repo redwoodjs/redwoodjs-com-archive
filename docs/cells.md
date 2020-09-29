@@ -231,7 +231,7 @@ Note that you can still pass any other props to `Success`. After all, it's still
 A good rule of thumb for when to use a Cell is if your component needs some data from a database or other service that may be delayed in responding. Let Redwood worry about juggling what is displayed when. You just focus on what those things should look like.
 
 <!-- Source: https://github.com/redwoodjs/redwood/pull/413 -->
-For one-off queries, there's always use `useApolloClient`. This hook returns the client, which you can use to make queries:
+For one-off queries, there's always `useApolloClient`. This hook returns the client, which you can use to make queries:
 
 ```javascript
 client = useApolloClient()
