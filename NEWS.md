@@ -226,6 +226,18 @@
 
 ---
 
+![Jamstack Denver](https://secure.meetupstatic.com/photos/event/3/f/6/b/600_492136235.jpeg)
+
+# [Jamstack Denver](https://www.youtube.com/watch?v=0krdC_D42IU)
+
+## September 2 2020
+
+### Anthony outlines the origins and motivations of RedwoodJS along with some of the concepts that it introduces.
+
+#### Video
+
+---
+
 ![Redwood Newsletter](https://user-images.githubusercontent.com/2951/85804346-3c6dd200-b6fe-11ea-8a26-6a989444452c.png)
 
 # [Issue 3](https://mailchi.mp/redwoodjs/all-the-redwoodjs-news-fit-to-print-issue-2)
