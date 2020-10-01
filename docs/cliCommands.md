@@ -561,7 +561,7 @@ Creates a data migration script in `api/prisma/dataMigrations`.
 
 See the [Data Migration](/docs/data-migrations) docs.
 
-### deploy
+### deploy (config)
 
 Generate a deployment configuration.
 
