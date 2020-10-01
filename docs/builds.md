@@ -14,7 +14,7 @@ cd api
 yarn zip-it-and-ship-it dist/functions/ zipballs/
 ```
 
-Each lambda function in `./api/dist/functions` is parsed by zip-it-and-ship-it resulting in a zip file per lambda function that contains all the dependencies required by for that lambda function.
+Each lambda function in `./api/dist/functions` is parsed by zip-it-and-ship-it resulting in a zip file per lambda function that contains all the dependencies required for that lambda function.
 
 ## Web
 
