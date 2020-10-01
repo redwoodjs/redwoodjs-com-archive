@@ -25,6 +25,7 @@
     "clipboard": "^2.0.6",
     "dotenv": "^8.2.0",
     "highlight.js": "^9.18.1",
+    "highlightjs-graphql": "^1.0.2",
     "install": "^0.13.0",
     "lodash.clone": "^4.5.0",
     "lodash.escape": "^4.0.1",

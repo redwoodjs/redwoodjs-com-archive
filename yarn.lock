@@ -2732,6 +2732,11 @@ highlight.js@^9.18.1:
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.1.tgz#ed21aa001fe6252bb10a3d76d47573c6539fe13c"
   integrity sha512-OrVKYz70LHsnCgmbXctv/bfuvntIKDz177h0Co37DQ5jamGZLVmoCVMtjMtNZY3X9DrCcKfklHPNeA0uPZhSJg==
 
+highlightjs-graphql@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/highlightjs-graphql/-/highlightjs-graphql-1.0.2.tgz#841e26831e7da9f0a3d66f93e6ff98a0d1ad6f43"
+  integrity sha512-jShTftpKQDwMXc+7OHOpHXRYSweT08EO2YOIcLbwU00e9yuwJMYXGLF1eiDO0aUPeQU4/5EjAh5HtPt3ly7rvg==
+
 hmac-drbg@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"
