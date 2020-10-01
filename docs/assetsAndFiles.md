@@ -1,10 +1,13 @@
 # Assets and Files
 
-There are two methods for adding assets to a Redwood app: Webpack imports and directly adding to the `/public` folder.
+There are two methods for adding assets to a Redwood app: 
+
+i)  Webpack imports and 
+ii) directly adding to the `/public` folder.
 
 ## Importing Assets
 
-In general, it's best to import files directly into a template, page, or component. This allows Webpack to include that file in the bundle, ensuring correct processing for the distribution folder while providing error checks and correct paths along the way.
+In general, it's best to import files directly into a template, page or component. This allows Webpack to include that file in the bundle, ensuring correct processing for the distribution folder while providing error checks and correct paths along the way.
 
 ### Example Asset Import with Webpack
 

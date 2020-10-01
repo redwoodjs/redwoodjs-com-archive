@@ -4,7 +4,7 @@ Redwood uses webpack. And with webpack, comes configuration.
 
 One of Redwood's tenets is convention over configuration. So it's worth repeating that you don't have to do any of this. Take the golden path, and everything will work just fine.
 
-But another of Redwood's tenets is to make the hard stuff possible. Whether Webpack configuration falls into the hard-stuff category or not is up for debate. But one thing we know for sure is it can be an epic time sink. We hope that documenting it well will make this process fast, easy, and maybe even enjoyable.
+But another of Redwood's tenets is to make the hard stuff possible. Whether Webpack configuration falls into the hard-stuff category or not, is up for debate. But one thing we know for sure is it can be an epic time sink. We hope that documenting it well will make this process fast, easy and maybe even enjoyable.
 
 While configuring webpack, at some point, you may wonder what exactly our configuration is. The following section aims to explain that. But if you just want to configure webpack, jump to [Configuring Webpack](#configuring-webpack).
 
@@ -39,7 +39,7 @@ Here's a table of the plugins we use:
 
 This is the config used when developing locally. `yarn rw dev` starts [webpack-dev-server](https://webpack.js.org/guides/development/#using-webpack-dev-server) with this config.
 
-With webpack dev server, files aren't written to disk, so you won't see anything in `dist`. Nor do we do any optimiztions.
+With webpack dev server, files aren't written to disk, so you won't see anything in `dist`. Nor do we do any optimizations.
 
 The main thing to configure here is [devServer](https://webpack.js.org/configuration/dev-server/#devserveroverlay).
 But you can already configure many of its options via `redwood.toml`&mdash;see [App Configureation: redwood.toml](https://redwoodjs.com/docs/app-configuration-redwood-toml).
@@ -58,7 +58,7 @@ yarn rw build --stats
 
 Note that this'll skip building the api side.
 
-This config uses [Webpack Bundle Analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). When it finishes it'll launch an interactive zoomable treemap in your browser to examine the contents of all your bundles.
+This config uses [Webpack Bundle Analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). When it finishes, it'll launch an interactive zoomable treemap in your browser to examine the contents of all your bundles.
 
 ### Supported Extensions and Loaders
 
@@ -117,7 +117,7 @@ module.exports = {
 ```
 
 There's a couple reasons for using one format over the other.
-You can only configure a speicifc environment (i.e. development, production) using the first format.
+You can only configure a specific environment (i.e. development, production) using the first format.
 And as the [Changing the Title of the Page](#changing-the-title-of-the-page) example shows, you can also only modify existing rules using the first format.
 
 If you're adding extras, the second format should work just fine.
@@ -145,7 +145,7 @@ new HtmlWebpackPlugin({
 }),
 ```
 
-To change this, in your `./web/config/webpack.config.js`, search `config`'s `plugins` array for `HtmlWebpackPlugin` and change it's `title` option. Note that, here, we're using the first format for configuring webpack, exporting a function:
+To change this, in your `./web/config/webpack.config.js`, search `config`'s `plugins` array for `HtmlWebpackPlugin` and change it's `title` option. Note that, here we're using the first format for configuring webpack, exporting a function:
 
 ```javascript{6}
 // ./web/config/webpack.config.js
@@ -202,7 +202,7 @@ module.exports = {
 }
 ```
 
-> We've used the word "postcss-loader" three times, and it's because there's actually three different things: 1) the postcss-loader "rule" in webpack, which is there by default, 2) the postcss-loader package, and 3) the configuration for the postcss-loader rule, which is what goes in postcss.config.js. Welcome to the wonderful world of configuration!
+> We've used the word "postcss-loader" three times, and it's because there's actually three different things: 1) the postcss-loader "rule" in webpack, which is there by default, 2) the postcss-loader package and 3) the configuration for the postcss-loader rule, which is what goes in postcss.config.js. Welcome to the wonderful world of configuration!
 
 Now, initialize tailwind:
 
@@ -210,7 +210,7 @@ Now, initialize tailwind:
 yarn tailwindcss init
 ```
 
-This generates the tailwind config file, `tailwind.config.js`. Note that, ordirinarly, we'd move this file to `web/config`, like we did with `postcss.config.js`. But since the Tailwind CSS IntelliSense won't work unless `tailwind.config.js` is in a base directory like `web`, we're just leaving this one here for now.
+This generates the tailwind config file, `tailwind.config.js`. Note that, ordinarily, we'd move this file to `web/config`, like we did with `postcss.config.js`. But since the Tailwind CSS IntelliSense won't work unless `tailwind.config.js` is in a base directory like `web`, we're just leaving this one here for now.
 
 Finally, use the tailwind directives in `web/src/index.css`
 
