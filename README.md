@@ -20,7 +20,7 @@ And to develop locally:
 
     yarn dev
 
-If you are already already running a `yarn dev` process when you `yarn build` you may need to stop and start `yarn dev` to pick up the new pages properly.
+If you are already running a `yarn dev` process, when you `yarn build`, you may need to stop and start `yarn dev` to pick up the new pages properly.
 
 ## Contributing
 
