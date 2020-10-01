@@ -822,7 +822,7 @@ Redwood has a better way! Remember the `api/src/services` directory? Redwood wil
 
 Consider the following SDL javascript snippet:
 
-```
+```javascript
 // api/src/graphql/posts.sdl.js
 
 export const schema = gql`
