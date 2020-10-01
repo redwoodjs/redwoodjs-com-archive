@@ -10,8 +10,6 @@ Other documentation is pulled from various READMEs in the main [redwoodjs/redwoo
 
 This codebase is built with https://cameronjs.com and relies on plain HTML pages and Javascript with a couple helpers built in to abstract things like partials and layouts. We use https://stimulusjs.org for the few sprinkles of interactivity throughout the site.
 
-Copy `.env.example` to a file named `.env` and get API keys/IDs for all of the service listed. Alternatively, if you don't care about populating search comment out the `require` statement for `search.js` in `lib/build.js`, the `publishSearch()` function call towards the end of the `main()` function, and the `getObjectIDs()` function call at the beginning of the `main()` function. And if you don't care about downloading readme files from GitHub you can comment out the construction of the `Octokit` object, make the `else` branch in the `get()` function return `'# Title\n\n\n\n# Title'` and hardcode `const version = '0.0.0'` in the `main()` function.
-
 Then build the tutorial and doc pages (after you've installed all dependencies with `yarn install`):
 
     yarn build
