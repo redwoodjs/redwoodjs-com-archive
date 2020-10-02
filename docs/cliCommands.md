@@ -557,10 +557,10 @@ yarn rw generate deploy <provider>
 
 Creates provider-specific code and configuration for deployment
 
-| Arguments & Options | Description                                                     |
-| :------------------ | :-------------------------------------------------------------- |
-| `provider`          | Deploy provider to configure. Choices are `netlify` or `vercel` |
-| `--force, -f`       | Overwrite existing configuration                                |
+| Arguments & Options | Description                                                                        |
+| :------------------ | :--------------------------------------------------------------------------------- |
+| `provider`          | Deploy provider to configure. Choices are `netlify`, `vercel`, or `aws_serverless` |
+| `--force, -f`       | Overwrite existing configuration                                                   |
 
 **Usage**
 
