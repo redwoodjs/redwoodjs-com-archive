@@ -42,7 +42,7 @@ This is the config used when developing locally. `yarn rw dev` starts [webpack-d
 With webpack dev server, files aren't written to disk, so you won't see anything in `dist`. Nor do we do any optimizations.
 
 The main thing to configure here is [devServer](https://webpack.js.org/configuration/dev-server/#devserveroverlay).
-But you can already configure many of its options via `redwood.toml`&mdash;see [App Configureation: redwood.toml](https://redwoodjs.com/docs/app-configuration-redwood-toml).
+But you can already configure many of its options via `redwood.toml`&mdash;see [App Configuration: redwood.toml](https://redwoodjs.com/docs/app-configuration-redwood-toml).
 
 ### webpack.production.js
 
