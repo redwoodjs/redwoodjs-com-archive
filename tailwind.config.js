@@ -8,7 +8,7 @@ module.exports = {
           400: '#BC7E97',
           500: '#9F466B',
         },
-        'hacktoberfest-dark': {
+        'hacktoberfest-blue': {
           500: '#072540'
         },
         red: {
