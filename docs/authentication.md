@@ -722,20 +722,24 @@ export const myBooks = () => {
 You can also protect routes:
 
 ```js
-<Router>
-  <Private unauthenticated="forbidden" role="admin">
-    <Route path="/settings" page={SettingsPage} name="settings" />
-    <Route path="/admin" page={AdminPage} name="sites" />
-  </Private>
+const Routes = () => {
+  return (
+    <Router>
+      <Private unauthenticated="forbidden" role="admin">
+        <Route path="/settings" page={SettingsPage} name="settings" />
+        <Route path="/admin" page={AdminPage} name="sites" />
+      </Private>
 
-  <Private unauthenticated="forbidden" role={['author', 'editor']}>
-    <Route path="/settings" page={SettingsPage} name="settings" />
-    <Route path="/admin" page={AdminPage} name="sites" />
-  </Private>
+      <Private unauthenticated="forbidden" role={['author', 'editor']}>
+        <Route path="/settings" page={SettingsPage} name="settings" />
+        <Route path="/admin" page={AdminPage} name="sites" />
+      </Private>
 
-  <Route notfound page={NotFoundPage} />
-  <Route path="/forbidden" page={ForbiddenPage} name="forbidden" />
-</Router>
+      <Route notfound page={NotFoundPage} />
+      <Route path="/forbidden" page={ForbiddenPage} name="forbidden" />
+    </Router>
+  )
+}
 ```
 
 And also protect content in pages or components via the `useAuth()` hook:
