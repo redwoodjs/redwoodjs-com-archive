@@ -499,7 +499,7 @@ If you assign your user the "admin" role in Auth0, you will want you user's app_
 }
 ```
 
-To set this information and make it available to RedwoodJS, you can to use [Auth0 Rules](https://auth0.com/docs/rules).
+To set this information and make it available to RedwoodJS, you can use [Auth0 Rules](https://auth0.com/docs/rules).
 
 #### Auth0 Rules for App Metadata
 
@@ -548,7 +548,7 @@ Adding to `accessToken` will make the make App metadta accessible to RedwoodJS w
 
 While adding to `idToken` is optional. you _must_ add to `accessToken`.
 
-To keep your custom claims from colliding with any reserved claims or claims from other resources, you must give them a [globally unique name using a namespaced format](https://auth0.com/docs/tokens/guides/create-namespaced-custom-claims). Otherwise, Auth0 will _not_ add the infomration to the token(s).
+To keep your custom claims from colliding with any reserved claims or claims from other resources, you must give them a [globally unique name using a namespaced format](https://auth0.com/docs/tokens/guides/create-namespaced-custom-claims). Otherwise, Auth0 will _not_ add the information to the token(s).
 
 Therefore, with a namespace of "https://example.com", the app_metadata on your token should look like:
 
@@ -703,7 +703,7 @@ Now your `currentUser.roles` info will be available to both `requireAuth()` on t
 
 ### Role Protection on Functions, Services and Web
 
-You can specify an optional role in `requireAuth` to check if the user is both authenticated and is assigned the role. The `role` can be a single string role of a list of roles.
+You can specify an optional role in `requireAuth` to check if the user is both authenticated and is assigned the role. The `role` can be a single string role or a list of roles.
 
 ```js
 export const myThings = () => {
@@ -753,8 +753,6 @@ const { isAuthenticated, hasRole } = useAuth()
   <Link to={routes.posts()}>Admin</Link>
 )}
 ```
-
-+++
 
 ### Routes
 
