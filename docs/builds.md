@@ -14,7 +14,8 @@ cd api
 yarn zip-it-and-ship-it dist/functions/ zipballs/
 ```
 
-Each lambda function in `./api/dist/functions` is parsed by zip-it-and-ship-it resulting in a zip file per lambda function that contains all the dependencies required for that lambda function.
+Each lambda function in `./api/dist/functions` is parsed by zip-it-and-ship-it resulting in a zip file per lambda function that contains all the dependencies required for that lambda function.  
+Note: The `zip-it-and-ship-it` package needs to be installed as a dev dependency. For more information on `AWS Serverless Deploy` see the [docs here](https://redwoodjs.com/docs/deploy#aws-serverless-deploy).
 
 ## Web
 
