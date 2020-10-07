@@ -2583,7 +2583,7 @@ Now try creating, editing or deleting a post from our admin pages. Nothing happe
 
 Now we'll restrict access to the admin pages completely unless you're logged in. The first step will be to denote which routes will require that you be logged in. Enter the `<Private>` tag:
 
-```javascript{3,11,16}
+```javascript{3,12,16}
 // web/src/Routes.js
 
 import { Router, Route, Private } from '@redwoodjs/router'
