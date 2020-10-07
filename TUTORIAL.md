@@ -995,7 +995,7 @@ export default BlogPostPage
 
 Now over to the cell, we need access to that `{id}` route param so we can look up the ID of the post in the database. Let's update the query to accept a variable (and again change the query name from `blogPost` to just `post`)
 
-```javascript{4,5,20,21}
+```javascript{4,5,7-9,20,21}
 // web/src/components/BlogPostCell/BlogPostCell.js
 
 export const QUERY = gql`
