@@ -1996,7 +1996,7 @@ const ContactPage = () => {
 
   return (
     <BlogLayout>
-      <Flash timeout={1000} />
+      <Flash timeout={2000} />
       // ...
 ```
 
