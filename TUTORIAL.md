@@ -976,7 +976,7 @@ Ok, so the ID is in the URL. What do we need next in order to display a specific
 
 And then we'll use that cell in `BlogPostPage` (and while we're at it let's surround the page with the `BlogLayout`):
 
-```javascript{4,9}
+```javascript
 // web/src/pages/BlogPostPage/BlogPostPage.js
 
 import BlogLayout from 'src/layouts/BlogLayout'
@@ -2779,7 +2779,7 @@ Want to add some more features to your app? Check out some of our Cookbook recip
 
 ### Roadmap
 
-Check out our [Roadmap](https://redwoodjs.com/roadmap) to see where we're headed and how we're going to get there. 
+Check out our [Roadmap](https://redwoodjs.com/roadmap) to see where we're headed and how we're going to get there.
 If you're interested in helping with anything you see, just let us know over on the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up.
 We want to hit `1.0` by the end of the year. And with your help, we think we can do it!
 
