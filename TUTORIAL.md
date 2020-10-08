@@ -1067,7 +1067,7 @@ Voilà! Not only will this convert the `id` param to a number before passing it 
 > All of the props you give to the cell will be automatically available as props in the render components. Only the ones that match the GraphQL variables list will be given to the query. You get the best of both worlds! In our post display above, if you wanted to display some random number along with the post (for some contrived, tutorial-like reason), just pass that prop:
 >
 > ```javascript
-> <BlogPostCell id={id} rand={Math.random()}>
+> <BlogPostCell id={id} rand={Math.random()} />
 > ```
 >
 > And get it, along with the query result (and even the original `id` if you want) in the component:
