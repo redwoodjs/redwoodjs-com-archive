@@ -135,9 +135,21 @@ from = "/reference/redwood-form"
 to = "/docs/form"
 
 [[redirects]]
-from = "/docs/typescript"
-to = "/docs/type-script"
+from = "/docs/type-script"
+to = "/docs/typescript"
 
 [[redirects]]
 from ="/good-first-issue"
 to ="https://github.com/redwoodjs/redwood/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22"
+
+[[redirects]]
+from = "/docs/mocking-graph-ql-requests"
+to = "/docs/mocking-graphql-requests"
+
+[[redirects]]
+from = "/cookbook/mocking-graph-ql-in-storybook"
+to = "/cookbook/mocking-graphql-in-storybook"
+
+[[redirects]]
+from = "/cookbook/go-true-auth"
+to = "/cookbook/gotrue-auth"
