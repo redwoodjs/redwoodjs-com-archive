@@ -7,13 +7,14 @@
     "dev": "yarn serve & yarn watch",
     "netlify": "yarn watch & netlify dev",
     "rebuild": "yarn clean && yarn build",
-    "serve": "live-server --watch=./publish --mount=/:./publish --entry-file='publish/404.html' --middleware=../../../lib/middleware/use-redirects",
+    "serve": "live-server --watch=./publish --mount=/:./publish --entry-file='publish/404.html' --middleware=../../../lib/middleware/use-extension --middleware=../../../lib/middleware/use-headers --middleware=../../../lib/middleware/use-redirects",
     "watch": "webpack --watch & postcss --verbose code/stylesheets/application.pcss -o publish/stylesheets/application.css --watch"
   },
   "private": true,
   "devDependencies": {
     "del-cli": "^3.0.0",
-    "live-server": "^1.2.1"
+    "live-server": "^1.2.1",
+    "toml": "^3.0.0"
   },
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^2.0.6",
