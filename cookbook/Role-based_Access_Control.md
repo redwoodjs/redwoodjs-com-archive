@@ -77,7 +77,7 @@ In our Blog example anyone can view Posts (authenticated or not). They are _publ
 
 ## Auth and RBAC Checklist
 
-In order to integrates RBAC in a RedwoodJS app, you will have to:
+In order to integrate RBAC in a RedwoodJS app, you will have to:
 
 - Implement an Identity as a Service/Authentication Provider
 - Define and Assign Roles
