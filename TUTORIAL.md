@@ -2064,7 +2064,7 @@ We already capture any existing error in the `error` constant that we got from `
 >   try {
 >     await create({ variables: { input: data } })
 >     console.log(data)
->   catch (error) {
+>   } catch (error) {
 >     console.log(error)
 >   }
 > }
