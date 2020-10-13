@@ -2193,7 +2193,7 @@ const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
 
 > You can put the email validation back into the `<TextField>` now, but you should leave the server validation in place, just in case.
 
-Here's the final `ContactForm.js` page:
+Here's the final `ContactPage.js` page:
 
 ```javascript
 import {
