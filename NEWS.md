@@ -247,3 +247,15 @@
 ### All the RedwoodJS News that’s Fit to Print: Roadmap, Supabase, TypeScript, Vercel, YouTube Channel, RedwoodJS Meetups, and more.
 
 #### Newsletter
+
+---
+
+![Smashing Podcast](https://images.transistor.fm/file/transistor/images/show/5227/full_1572008518-artwork.jpg)
+
+# [What Is RedwoodJS? with Anthony Campolo](https://podcast.smashingmagazine.com/episodes/what-is-redwoodjs-with-anthony-campolo)
+
+## September 22 2020
+
+### We’re talking about RedwoodJS. What exactly does it mean to be a full-stack Jamstack framework? Drew McLellan talks to community champion Anthony Campolo to find out.
+
+#### Podcast
