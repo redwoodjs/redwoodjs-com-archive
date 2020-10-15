@@ -320,7 +320,7 @@ yarn redwood dev [side..]
 
 **Usage**
 
-If you're only working on your sdl and services, you can run just the api server to get GraphiQL on port 8911:
+If you're only working on your sdl and services, you can run just the api server to get GraphQL Playground on port 8911:
 
 ```plaintext{10}
 ~/redwood-app$ yarn rw dev api
