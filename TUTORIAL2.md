@@ -32,8 +32,9 @@ If you haven't been through the first tutorial, or maybe you went through it on 
 older version of Redwood (before 0.19.0) you can clone this repo which contains
 everything built in part 1 and also adds a little styling so it isn't quite so...ugly.
 Don't get us wrong, what we built in part 1 had a great personality! We just gave it
-some hipper clothes and a nice haircut. We used TailwindCSS to style things up and added
-a `<div>` or two to give us some additional hooks to hang some styling.
+some hipper clothes and a nice haircut. We used [TailwindCSS](https://tailwindcss.com)
+to style things up and added a `<div>` or two to give us some additional hooks to hang
+some styling.
 
     git clone https://github.com/redwoodjs/redwood-tutorial
     cd redwood-tutorial
@@ -218,12 +219,342 @@ export const Success = ({ posts }) => {
 
 ![image](https://user-images.githubusercontent.com/300/95525432-f4ab4780-0988-11eb-9e9b-8df6641452ec.png)
 
+And if you head to the real site you'll see the summary there as well:
+
+![image](https://user-images.githubusercontent.com/300/95527363-ef9ac800-0989-11eb-9c53-6dc8ab58799c.png)
+
 Storybook makes it easy to create your components in isolation and actually helps
 enforce a general best practice when building React applications: components should
 be self-contained and reusable by just changing the props that are sent in.
 
-## Building Components with Storybook
+## Building a Component with Storybook
 
 What's our blog missing? Comments. Let's add a simple comment engine so people can leave
 their completely rational, well-reasoned comments on our blog posts. It's the Internet,
 what could go wrong?
+
+There are a couple of ways we could go about building this new feature:
+
+1. Start with the form, then the comment display
+2. Start with the comment display, then add the form
+
+To keep things simple let's start with the display first, then we'll move on to more complex work of a form and service to save data.
+
+Let's create a component for the display of a single comment. First up, the generator:
+
+```terminal
+yarn rw g component Comment
+```
+
+Storybook should refresh and our "Generated" Comment story will be ready to go:
+
+![image](https://user-images.githubusercontent.com/300/95784041-e9596400-0c87-11eb-9b9f-016e0264e0e1.png)
+
+Let's think about what we want to ask users for and then display in a comment. How about just their name and the content of the comment itself? And we'll throw in the date/time it was created. Let's update the Comment component to accept a `comment` object with those two properties:
+
+```javascript{3,6-7}
+// web/src/components/Comment/Comment.js
+
+const Comment = ({ comment }) => {
+  return (
+    <div>
+      <h2>{comment.name}</h2>
+      <time datetime={comment.createdAt}>{comment.createdAt}</time>
+      <p>{comment.body}</p>
+    </div>
+  )
+}
+
+export default Comment
+```
+
+Once you save that file and Storybook reloads you'll see it blow up:
+
+![image](https://user-images.githubusercontent.com/300/95784285-6684d900-0c88-11eb-9380-743079870147.png)
+
+We need to update the story to include that comment object:
+
+```javascript{8-11}
+// web/src/components/Comment/Comment.stories.js
+
+import Comment from './Comment'
+
+export const generated = () => {
+  return (
+    <Comment
+      comment={{
+        name: 'Rob Cameron',
+        body: 'This is the first comment!',
+        createdAt: '2020-01-01T12:34:56Z'
+      }}
+    />
+  )
+}
+
+export default { title: 'Components/Comment' }
+```
+
+> Note that Datetimes will come from GraphQL in ISO8601 format
+
+Storybook will reload and be much happier:
+
+![image](https://user-images.githubusercontent.com/300/95785006-ccbe2b80-0c89-11eb-8d3b-bdf5ad5a6d63.png)
+
+Let's add a little bit of styling and date conversion to get this Comment component looking like a nice, completed design element:
+
+```javascript{3-7,11-18}
+// web/src/components/Comment/Comment.js
+
+const formattedDate = (datetime) => {
+  const parsedDate = new Date(datetime)
+  const month = parsedDate.toLocaleString('default', { month: 'long' })
+  return `${parsedDate.getDate()} ${month} ${parsedDate.getFullYear()}`
+}
+
+const Comment = ({ comment }) => {
+  return (
+    <div className="bg-gray-200 p-8 rounded-lg">
+      <header className="flex justify-between">
+        <h2 className="font-semibold text-gray-700">{comment.name}</h2>
+        <time className="text-xs text-gray-500" dateTime={comment.createdAt}>
+          {formattedDate(comment.createdAt)}
+        </time>
+      </header>
+      <p className="text-sm mt-2">{comment.body}</p>
+    </div>
+  )
+}
+
+export default Comment
+```
+
+![image](https://user-images.githubusercontent.com/300/95786526-9afa9400-0c8c-11eb-9d75-27c996ca018a.png)
+
+It's tough to see our rounded corners, but rather than adding margin or padding to the component itself (which would add them everywhere we use the component) let's add a margin in the story so it only shows in Storybook:
+
+```javascript{7,15}
+// web/src/components/Comment/Comment.stories.js
+
+import Comment from './Comment'
+
+export const generated = () => {
+  return (
+    <div className="m-4">
+      <Comment
+        comment={{
+          name: 'Rob Cameron',
+          body: 'This is the first comment!',
+          createdAt: '2020-01-01T12:34:56Z',
+        }}
+      />
+    </div>
+  )
+}
+
+export default { title: 'Components/Comment' }
+```
+
+> A best practice to keep in mind when designing in HTML and CSS is to keep a visual element responsible for its own display only, and not assume what it will be contained within. In this case a Comment doesn't and shouldn't know where it will be displayed, so it shouldn't add any design influence *outside* of its container (like forcing a margin around itself).
+
+Now we can see our roundedness quite easily in Storybook:
+
+![image](https://user-images.githubusercontent.com/300/95786006-aac5a880-0c8b-11eb-86d5-105a3b929347.png)
+
+Our amazing blog posts will obviously garner a huge and passionate fanbase and we will very rarely have only a single comment. Let's work on displaying a list of comments.
+
+## Multiple Comments
+
+Let's think about where our comments are being displayed. Probably not on the homepage, since that only shows a summary of each post. A user would need to go to the full page to show the comments for that blog post. But that page is only fetching the data for the single blog post itself, nothing else. We'll need to get the comments and since we'll be fetching *and* displaying them, that sounds like a job for a Cell.
+
+> **Couldn't the query for the blog post page also fetch the comments?**
+>
+> Yes, it could! But the idea behind Cells is to make components even more [composable](https://en.wikipedia.org/wiki/Composability) by having them be responsible for their own data fetching *and* display. If we rely on a blog post to fetch the comments then the new Comments component we're about to create now requires something else to fetch the comments and pass them in. If we re-use the Comments component somewhere, now we're fetching comments in two different places.
+>
+> **But what about the Comment component we just made, why doesn't that fetch its own data?**
+>
+> There aren't any instances I (the author) could think of where we would ever want to display only a single comment in isolation—it would always be a list of all comments on a post. If displaying a single Comment was common for your use case then it could definitely be converted to a CommentCell have it responsible for pulling the data for that single comment itself. But keep in mind that if you have 50 comments on a blog post, that's now 50 GraphQL calls that need to go out, one for each comment. There's always a tradeoff!
+>
+> **Then why make a standalone Comment component at all? Why not just do all the display in the CommentsCell?**
+>
+> We're trying to start in small chunks to make the tutorial more digestable for a new audience so we're starting simple and getting more complex as we go. But it also just feels *nice* to build up a UI from these smaller chunks that are easier to reason about and keep separate in my (the author's) head.
+>
+> **But what about—**
+>
+> Look, we gotta end this sidebar and get back to building this thing. You can ask more questions later, promise!
+
+Let's generate a `CommentsCell`:
+
+```terminal
+yarn rw g cell Comments
+```
+
+Storybook updates with a new **CommentsCell** under the **Cells** folder. Let's update the Success story to use the Comment component created earlier:
+
+```javascript{3,20}
+// web/src/components/CommentsCell/CommentsCell.js
+
+import Comment from 'src/components/Comment'
+
+export const QUERY = gql`
+  query CommentsQuery {
+    comments {
+      id
+    }
+  }
+`
+
+export const Loading = () => <div>Loading...</div>
+
+export const Empty = () => <div>Empty</div>
+
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
+
+export const Success = ({ comments }) => {
+  return comments.map((comment, i) => <Comment key={i} comment={comment} />)
+}
+```
+
+Note that we're also passing a `key` prop to make React happy.
+
+If you check Storybook, you'll seen an error. We'll need to update the `mock.js` file that came along for the ride when we generated the Cell so that it returns an array instead of just a simple object with some sample data:
+
+```javascript{4-11}
+// web/src/components/CommentsCell/CommentsCell.mock.js
+
+export const standard = (/* vars, { ctx, req } */) => ({
+  comments: [
+    {
+      name: 'Rob Cameron', body: 'First comment', createdAt: '2020-01-02T12:34:56Z'
+    },
+    {
+      name: 'David Price', body: 'Second comment', createdAt: '2020-02-03T23:00:00Z'
+    },
+  ]
+})
+
+```
+
+Storybook refreshes and we've got comments! We've got the same issue here where it's hard to see our rounded corners and also the two separate comments are are hard to distinguish because they're right next to each other:
+
+![image](https://user-images.githubusercontent.com/300/95799544-dce60300-0ca9-11eb-9520-a1aac4ec46e6.png)
+
+The gap between the two comments *is* a concern for this component, since it's responsible for drawing multiple comments and their layout. So let's fix that in CommentsCell:
+
+```javascript
+export const Success = ({ comments }) => {
+  return (
+    <div className="-mt-8">
+      {comments.map((comment, i) => (
+        <div key={i} className="mt-8">
+          <Comment comment={comment} />
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+We had to move the `key` prop to the surrounding `<div>`. We then gave each comment a top margin and removed an equal top margin from the entire container to set it back to zero.
+
+Let's add a margin around the story itself, similar to what we did in the Comment story:
+
+```javascript
+export const success = () => {
+  return Success ? (
+    <div className="m-8 mt-16">
+      <Success {...standard()} />
+    </div>
+  ) : null
+}
+```
+
+> Why both `m-8` and `mt-16`? One of the fun rules of CSS is that if a parent and child both have margins, but no border or padding between them, their `margin-top` and `margin-bottom` [collapses](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing). So even though the story container will have a margin of 8 (which equals 2rem) remember that the container for CommentsCell has a -8 margin. Those two collapse and essential cancel each other out to 0 top margin. Setting `mt-16` sets a 4rem margin, which leaves us with 2rem, which is what we wanted to start with!
+
+![image](https://user-images.githubusercontent.com/300/95800481-4cf58880-0cac-11eb-9457-ff3f1f0d34b8.png)
+
+Looking good! Let's add our CommentsCell to the actual blog post display page:
+
+```javascript{4,21}
+// web/src/components/BlogPost/BlogPost.js
+
+import { Link, routes } from '@redwoodjs/router'
+import CommentsCell from 'src/components/CommentsCell'
+
+const truncate = (text, length) => {
+  return text.substring(0, length) + '...'
+}
+
+const BlogPost = ({ post, summary = false }) => {
+  return (
+    <article className="mt-10">
+      <header>
+        <h2 className="text-xl text-blue-700 font-semibold">
+          <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
+        </h2>
+      </header>
+      <div className="mt-2 text-gray-900 font-light">
+        {summary ? truncate(post.body, 100) : post.body}
+      </div>
+      {!summary && <CommentsCell />}
+    </article>
+  )
+}
+
+export default BlogPost
+```
+
+If we are *not* showing the summary, then we'll show the comments.
+
+If you check out Components > BlogPost > Summary you'll see nothing has changed. But going to Components > BlogPost > Full and you'll see that Storybook doesn't like something:
+
+![image](https://user-images.githubusercontent.com/300/95800778-18ce9780-0cad-11eb-927d-d308d2d02071.png)
+
+What's happening here is that although the CommentsCell story uses the neighboring `mock.js` file, as soon as we use that component in another story, Storybook is just trying to use it like a regular component—it doesn't know about the `mock.js` file, that's a Redwood convention. Let's tell the `BlogPost` to use the data from `CommentsCell.mock.js`:
+
+```javascript{4,18-20}
+// web/src/components/BlogPost/BlogPost.stories.js
+
+import BlogPost from './BlogPost'
+import { standard as comments } from 'src/components/CommentsCell/CommentsCell.mock'
+
+const POST = {
+  id: 1,
+  title: 'First Post',
+  body: `Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin
+         post-ironic vape cred DIY. Street art next level umami squid. Hammock
+         hexagon glossier 8-bit banjo. Neutra la croix mixtape echo park four
+         loko semiotics kitsch forage chambray. Semiotics salvia selfies jianbing
+         hella shaman. Letterpress helvetica vaporware cronut, shaman butcher
+         YOLO poke fixie hoodie gentrify woke heirloom.`,
+}
+
+export const full = () => {
+  mockGraphQLQuery('CommentsQuery', () => comments())
+
+  return <BlogPost post={POST} />
+}
+
+export const summary = () => {
+  return <BlogPost post={POST} summary={true} />
+}
+
+export default { title: 'Components/BlogPost' }
+```
+
+So, first we import the `standard` mock from `CommentsCell.mock.js` and rename it `comments` for clarity. Note that this is a function, not an object.
+
+Next we use Redwood's built-in `mockGraphQLQuery()` function to return a fake response when a query named `CommentsQuery` is executed (that's the name of the query in `CommentsCell` main `QUERY`):
+
+```javascript{4}
+// web/components/CommentsCell/CommentsCell.js
+
+export const QUERY = gql`
+  query CommentsQuery {
+    comments {
+      id
+    }
+  }
+`
+```
+
+When that query is found, return `comments()` (the mock data function we imported at the top).
