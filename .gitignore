@@ -16,8 +16,8 @@ code/html/tutorial2/*.html
 !code/html/tutorial2/index.html
 code/html/videos/*.html
 !code/html/videos/index.html
-code/html/_docs_nav.html
-code/html/_tutorial_nav.html
-code/html/_cookbook_nav.html
-code/html/_videos_nav.html
+code/html/_*nav.html
+!code/html/_nav.html
+!code/html/_community_nav.html
+!code/html/_top_level_nav.html
 code/html/news.html
