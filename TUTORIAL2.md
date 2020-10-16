@@ -155,7 +155,9 @@ Now in the story, let's create a `summary` story that uses `BlogPost` the same w
 put that in a constant that both stories will use. We'll also rename `generated` to
 `full` to make it clear what's different between the two:
 
-```javascript
+```javascript{5-14,16-18,20-22}
+// web/components/BlogPost/BlogPost.stories.js
+
 import BlogPost from './BlogPost'
 
 const POST = {
