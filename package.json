@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "build": "node lib/build.js && webpack && postcss --verbose code/stylesheets/application.pcss -o publish/stylesheets/application.css",
-    "clean": "del 'code/html/(cookbook|docs|tutorial)/*.html' 'code/html/_(cookbook|docs|tutorial)_nav.html' 'publish/!(downloads|images|favicon.*)'",
+    "clean": "del 'code/html/(cookbook|docs|tutorial|tutorial2)/*.html' 'code/html/_(cookbook|docs|tutorial|tutorial2)_nav.html' 'publish/!(downloads|images|favicon.*)'",
     "dev": "yarn serve & yarn watch",
     "netlify": "yarn watch & netlify dev",
     "rebuild": "yarn clean && yarn build",
