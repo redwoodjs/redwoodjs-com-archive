@@ -76,7 +76,7 @@ possible! From their homepage, Storybook describes itself as:
 *"Storybook is an open source tool for developing UI components in isolation for React, Vue, Angular, and more. It makes building stunning UIs organized and efficient."*
 
 So, the idea here is that you can build out your components/cells/pages in isolation, get them
-looking the way you want, then plug them into your full application.
+looking the way you want and displaying the correct data, then plug them into your full application.
 
 When Storybook opened it should have opened Components > BlogPost > Generated which is the
 generated component we created to display a single blog post. If you open `web/src/components/BlogPost/BlogPost.stories.js` you'll see what it takes to explain this component to Storybook, and it isn't much:
@@ -110,8 +110,12 @@ Components
 ```
 
 This makes it easy to create variants of your component and have them all displayed together.
-For example, let's say that on our homepage we only want to show the first couple of sentences
-in our blog post and you'll have to click through to see the full post.
+
+> Where did that sample blog post data come from? We (the Redwood team) added that to the story in the `redwood-tutorial` repo to show you what a story might look like after you hook up some sample data. The rest of the tutorial will be showing you how to do this yourself with new components as you create them.
+
+## Our First Story
+
+Let's say that on our homepage we only want to show the first couple of sentences in our blog post and you'll have to click through to see the full post.
 
 First let's update the `BlogPost` component to contain that functionality:
 
@@ -360,6 +364,8 @@ Now we can see our roundedness quite easily in Storybook:
 
 ![image](https://user-images.githubusercontent.com/300/95786006-aac5a880-0c8b-11eb-86d5-105a3b929347.png)
 
+> If you haven't used TailwindCSS before just know that the `m` in the className is short for "margin" and the `4` refers to four "units" of margin. By default one unit is 0.25rem. So "m-4" is equivalent to `margin: 1rem`.
+
 Our amazing blog posts will obviously garner a huge and passionate fanbase and we will very rarely have only a single comment. Let's work on displaying a list of comments.
 
 ## Multiple Comments
@@ -372,7 +378,7 @@ Let's think about where our comments are being displayed. Probably not on the ho
 >
 > **But what about the Comment component we just made, why doesn't that fetch its own data?**
 >
-> There aren't any instances I (the author) could think of where we would ever want to display only a single comment in isolation—it would always be a list of all comments on a post. If displaying a single Comment was common for your use case then it could definitely be converted to a CommentCell have it responsible for pulling the data for that single comment itself. But keep in mind that if you have 50 comments on a blog post, that's now 50 GraphQL calls that need to go out, one for each comment. There's always a tradeoff!
+> There aren't any instances I (the author) could think of where we would ever want to display only a single comment in isolation—it would always be a list of all comments on a post. If displaying a single Comment was common for your use case then it could definitely be converted to a CommentCell and have it responsible for pulling the data for that single comment itself. But keep in mind that if you have 50 comments on a blog post, that's now 50 GraphQL calls that need to go out, one for each comment. There's always a tradeoff!
 >
 > **Then why make a standalone Comment component at all? Why not just do all the display in the CommentsCell?**
 >
@@ -433,6 +439,8 @@ export const standard = (/* vars, { ctx, req } */) => ({
 })
 
 ```
+
+> What's this `standard` thing? Think of it as the standard, default mock if you don't do anything else. We would have loved to use the name "default" but that's already a reserved word in Javascript!
 
 Storybook refreshes and we've got comments! We've got the same issue here where it's hard to see our rounded corners and also the two separate comments are are hard to distinguish because they're right next to each other:
 
@@ -504,6 +512,11 @@ export default BlogPost
 ```
 
 If we are *not* showing the summary, then we'll show the comments.
+
+<!--
+  TODO This may not be an issue after Peter gets a chance to look at mocks
+  https://github.com/redwoodjs/redwood/issues/1374
+-->
 
 If you check out Components > BlogPost > Summary you'll see nothing has changed. But going to Components > BlogPost > Full and you'll see that Storybook doesn't like something:
 
