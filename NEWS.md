@@ -259,3 +259,15 @@
 ### We’re talking about RedwoodJS. What exactly does it mean to be a full-stack Jamstack framework? Drew McLellan talks to community champion Anthony Campolo to find out.
 
 #### Podcast
+
+---
+
+![React Vancouver](https://secure.meetupstatic.com/photos/event/4/e/b/8/highres_490040152.jpeg)
+
+# [How I Built a Product in 3 Days Thanks to RedwoodJS](https://youtu.be/cDVqhJuTSBo?t=939)
+
+## September 30 2020
+
+### Anthony Morris gives a high level overview of RedwoodJS and how it empowers developers to focus on what they want to build, not just how they want to build it.
+
+#### Video
