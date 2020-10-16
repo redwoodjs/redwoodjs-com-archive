@@ -6,7 +6,7 @@ ecosystem a delight. But that was just the beginning.
 
 If you read the README [closely](https://github.com/redwoodjs/redwood#technologies)
 you may have seen a few technologies that we didn't
-touch on at all in the first tutorial: Storybook and Jest. In reality, these
+touch on at all in the first tutorial: [Storybook](https://storybook.js.org/) and [Jest](https://jestjs.io/). In reality, these
 have been core to the very idea of Redwood from the beginning—an improvement to the
 entire experience of developing a web application.
 
