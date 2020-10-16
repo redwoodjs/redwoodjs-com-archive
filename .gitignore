@@ -12,6 +12,8 @@ code/html/docs/*.html
 !code/html/docs/index.html
 code/html/tutorial/*.html
 !code/html/tutorial/index.html
+code/html/tutorial2/*.html
+!code/html/tutorial2/index.html
 code/html/videos/*.html
 !code/html/videos/index.html
 code/html/_docs_nav.html
