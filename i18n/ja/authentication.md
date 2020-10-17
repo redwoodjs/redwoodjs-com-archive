@@ -543,7 +543,7 @@ You can also protect routes:
 
 
 
-<route notfound="" page="{NotFoundPage}"></route><route path="/forbidden" page="{ForbiddenPage}" name="forbidden"></route>`` `
+<route data-md-type="raw_html" notfound="" page="{NotFoundPage}"></route><route data-md-type="raw_html" path="/forbidden" page="{ForbiddenPage}" name="forbidden"></route>`` `
 
 また、 `userAuth()`フックを介してページまたはコンポーネントのコンテンツを保護します。
 
