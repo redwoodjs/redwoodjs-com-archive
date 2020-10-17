@@ -150,6 +150,7 @@ config({
   defaults: path.join(getPaths().base, '.env.defaults'),
 })
 ```
+Remember, if `yarn rw dev` is already running, your local app won't reflect any changes you make to your `.env` until you stop and re-run `yarn rw dev`.
 
 ## Seeding your Database
 
