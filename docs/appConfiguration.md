@@ -4,6 +4,7 @@ You can configure your Redwood app's settings in `redwood.toml`. By default, `re
 
 <!-- TODO -->
 <!-- toml syntax coloring not working here -->
+
 ```toml
 [web]
   port = 8910
@@ -48,6 +49,7 @@ The idea is that, in the future, changes here will have cascading, "app-level" e
 You can think of `redwood.toml` as a convenience layer over Redwood's webpack configuration files. That is, for certain settings, instead of having to deal with webpack directly, we give you quick access via `redwood.toml`. Some of these settings are for development, some are for production, and some are for both. You can actually see this reflected in which webpack file each configuraiton option is referenced in&mdash;[webpack.development.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.development.js), [webpack.production.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.production.js), and [webpack.common.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.common.js).
 
 <!-- https://github.com/redwoodjs/redwood/pull/152#issuecomment-593835518 -->
+
 `redwood.toml` also serves a slightly larger purpose: it's used to determine the base directory of a Redwood project. So this file is what really makes a Redwood app a Redwood app. If you remove it and run `yarn rw dev`, you'll get an error:
 
 ```terminal
@@ -81,6 +83,7 @@ The path to the serverless functions. When you're running your app locally, this
 Since Redwood plays nicely with Netlify, we use the [same proxy path](https://docs.netlify.com/functions/build-with-javascript) by default. If you're deploying elsewhere, you'll want to change this.
 
 ### includeEnvironmentVariables
+
 <!-- https://github.com/redwoodjs/redwood/issues/427 -->
 <!-- https://github.com/redwoodjs/redwood/blob/d51ade08118c17459cebcdb496197ea52485364a/packages/core/config/webpack.common.js#L17-L31 -->
 
@@ -141,3 +144,5 @@ To run a Redwood app within a container or VM, you'll want to set both the web a
   host = '0.0.0.0'
   ...
 ```
+
+I am adding a whole new paragraph.... will gitlocalize recognize this???
