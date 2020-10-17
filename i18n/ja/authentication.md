@@ -311,7 +311,7 @@ GraphQLリクエストは、ユーザーが認証されると自動的に`Author
 
 ### API
 
-ユーザーがサインインしている場合、` Authorization {/ code0}トークンが検証、デコードされ、` context.currentUser {/ code1}で利用可能になります``
+If a user is signed in, the `Authorization` token is verified, decoded and available in `context.currentUser`
 
 ```js
 import { context }  from '@redwoodjs/api'
@@ -345,7 +345,7 @@ export const handler = createGraphQLHandler({
 })
 ```
 
-` getCurrentUser {/ code0}によって返される値は、` context.currentUser {/ code1}で利用できます。``
+The value returned by `getCurrentUser` is available in `context.currentUser`
 
 サービスで`requireAuth`を使用して、ユーザーがログインしているかどうか、ロールが割り当てられているかどうかを確認し、そうでない場合はオプションでエラーを発生させます。
 
@@ -543,7 +543,7 @@ You can also protect routes:
 
 
 
-<route notfound="" page="{NotFoundPage}"></route><route path="/forbidden" page="{ForbiddenPage}" name="forbidden"></route>`` `
+<route data-md-type="raw_html" notfound="" page="{NotFoundPage}"></route><route data-md-type="raw_html" path="/forbidden" page="{ForbiddenPage}" name="forbidden"></route>`` `
 
 また、 `userAuth()`フックを介してページまたはコンポーネントのコンテンツを保護します。
 
