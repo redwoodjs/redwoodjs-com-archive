@@ -1,0 +1,536 @@
+@@layout("application", { "title": "Ja-Docs - authentication : RedwoodJS Docs", "version": "v0.19.3" })
+
+@@contentFor("aside",
+  <aside class="hidden xl:block w-1/4 h-auto overflow-y-visible">
+    <div class="overflow-y-auto sticky top-0 pl-6">
+      <nav class="text-sm font-semibold text-gray-600 pt-8 pb-40 lg:py-12 overflow-y-auto h-screen" data-controller="aside" data-action="scroll->aside#saveScroll">
+        
+          <h4 class="text-xs uppercase text-gray-500">On this page</h4>
+        
+        <ul class="mt-4 pointer-events-auto">
+          
+          <li class="my-1 py-1" style="margin-left: 0rem;">
+            <a href="#" data-turbolinks="false">インストール</a>
+          </li>
+          
+          <li class="my-1 py-1" style="margin-left: 0.75rem;">
+            <a href="#cli" data-turbolinks="false">CLI 認証ジェネレーター</a>
+          </li>
+          
+          <li class="my-1 py-1" style="margin-left: 0.75rem;">
+            <a href="#" data-turbolinks="false">手動インストール</a>
+          </li>
+          
+          <li class="my-1 py-1" style="margin-left: 0rem;">
+            <a href="#" data-turbolinks="false">セットアップ</a>
+          </li>
+          
+          <li class="my-1 py-1" style="margin-left: 0rem;">
+            <a href="#api" data-turbolinks="false">API</a>
+          </li>
+          
+          <li class="my-1 py-1" style="margin-left: 0rem;">
+            <a href="#" data-turbolinks="false">レッドウッドでの使用法</a>
+          </li>
+          
+          <li class="my-1 py-1" style="margin-left: 0.75rem;">
+            <a href="#graphql" data-turbolinks="false">GraphQL クエリとミューテーション</a>
+          </li>
+          
+          <li class="my-1 py-1" style="margin-left: 0.75rem;">
+            <a href="#api" data-turbolinks="false">API</a>
+          </li>
+          
+          <li class="my-1 py-1" style="margin-left: 0.75rem;">
+            <a href="#api" data-turbolinks="false">API 固有の統合</a>
+          </li>
+          
+          <li class="my-1 py-1" style="margin-left: 0.75rem;">
+            <a href="#" data-turbolinks="false">ルート</a>
+          </li>
+          
+          <li class="my-1 py-1" style="margin-left: 0rem;">
+            <a href="#" data-turbolinks="false">貢献</a>
+          </li>
+          
+        </ul>
+      </nav>
+    </div>
+  </aside>
+)
+
+<div class="markdown">
+  <h1 id="認証"><a class="markdownIt-Anchor" href="#認証">#</a> 認証</h1>
+<p><code>@redwoodjs/auth</code>は、一般的な SPA 認証ライブラリの軽量ラッパーです。現在、次の認証プロバイダーをサポートしています。</p>
+<ul>
+<li><a href="https://github.com/netlify/netlify-identity-widget">NetlifyID ウィジェット</a></li>
+<li><a href="https://github.com/auth0/auth0-spa-js">Auth0</a></li>
+<li><a href="https://github.com/netlify/gotrue-js">Netlify GoTrue-JS</a></li>
+<li><a href="https://github.com/MagicHQ/magic-js">マジックリンク-Magic.js</a></li>
+<li><a href="https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider">Firebase の GoogleAuthProvider</a></li>
+<li><a href="#contributing">貢献してください</a>、それは SuperEasy™ です！</li>
+</ul>
+<p><a href="https://github.com/redwoodjs/playground-auth">AuthPlayground を</a>チェックしてください。</p>
+<h2 id="インストール"><a class="markdownIt-Anchor" href="#インストール">#</a> インストール</h2>
+<h3 id="cli-認証ジェネレーター"><a class="markdownIt-Anchor" href="#cli-認証ジェネレーター">#</a> CLI 認証ジェネレーター</h3>
+<p>次の CLI コマンドは、Redwood Projects に必要なパッケージをインストールし、定型コードとファイルを生成します。</p>
+<pre><code class="language-terminal">yarn rw g auth [provider]
+</code></pre>
+<ul>
+<li><code>[provider]</code>は、「auth0」、「custom」、「firebase」、「goTrue」、「magicLink」、「netlify」のいずれかになります。</li>
+</ul>
+<h3 id="手動インストール"><a class="markdownIt-Anchor" href="#手動インストール">#</a> 手動インストール</h3>
+<details>
+<summary><span class="details-marker">&nbsp;</span>NetlifyIdentity ウィジェット</summary><pre><code class="language-bash"><span class="hljs-built_in">cd</span> web
+yarn add @redwoodjs/auth netlify-identity-widget
+</code></pre>
+</details>
+<details>
+<summary><span class="details-marker">&nbsp;</span>Auth0</summary><pre><code class="language-bash"><span class="hljs-built_in">cd</span> web
+yarn add @redwoodjs/auth @auth0/auth0-spa-js
+</code></pre>
+</details>
+<details>
+<summary><span class="details-marker">&nbsp;</span>Magic.Link</summary><pre><code class="language-bash"><span class="hljs-built_in">cd</span> web
+yarn add @redwoodjs/auth magic-sdk
+</code></pre>
+</details>
+<details>
+<summary><span class="details-marker">&nbsp;</span>GoTrue-JS</summary><pre><code class="language-bash"><span class="hljs-built_in">cd</span> web
+yarn add @redwoodjs/auth gotrue-js
+</code></pre>
+</details>
+<h2 id="セットアップ"><a class="markdownIt-Anchor" href="#セットアップ">#</a> セットアップ</h2>
+<p>認証クライアントをインスタンス化し、それを<code>&lt;AuthProvider&gt;</code> 。</p>
+<details>
+<summary><span class="details-marker">&nbsp;</span>NetlifyIdentity ウィジェット</summary><p>Netlify サイトで Identity を有効にする必要があります。 <a href="https://redwoodjs.com/tutorial/authentication#netlify-identity-setup">Netlify IdentitySetup を</a>参照してください。</p>
+<pre><code class="language-js"><span class="hljs-comment">// web/src/index.js</span>
+<span class="hljs-keyword">import</span> { AuthProvider } <span class="hljs-keyword">from</span> <span class="hljs-string">'@redwoodjs/auth'</span>
+<span class="hljs-keyword">import</span> netlifyIdentity <span class="hljs-keyword">from</span> <span class="hljs-string">'netlify-identity-widget'</span>
+
+netlifyIdentity.init()
+
+<span class="hljs-comment">// in your JSX component</span>
+ReactDOM.render(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">FatalErrorBoundary</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{FatalErrorPage}</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">AuthProvider</span> <span class="hljs-attr">client</span>=<span class="hljs-string">{netlifyIdentity}</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"netlify"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">RedwoodProvider</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Routes</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">RedwoodProvider</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">AuthProvider</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">FatalErrorBoundary</span>&gt;</span></span>,
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'redwood-app'</span>)
+)
+</code></pre>
+</details>
+<details>
+<summary><span class="details-marker">&nbsp;</span>GoTrue-JS</summary><p>Netlify サイトで Identity を有効にする必要があります。 <a href="https://redwoodjs.com/tutorial/authentication#netlify-identity-setup">Netlify IdentitySetup を</a>参照してください。</p>
+<p>GoTrue-JS パッケージを Web 側に追加します。</p>
+<pre><code class="language-terminal">yarn workspace web add gotrue-js
+</code></pre>
+<p>GoTrue をインスタンス化し、構成を渡します。必ず APIUrl を Netlify サイトの[ID]タブにある API エンドポイントに設定してください。</p>
+<pre><code class="language-js"><span class="hljs-comment">// web/src/index.js</span>
+<span class="hljs-keyword">import</span> { AuthProvider } <span class="hljs-keyword">from</span> <span class="hljs-string">'@redwoodjs/auth'</span>
+<span class="hljs-keyword">import</span> GoTrue <span class="hljs-keyword">from</span> <span class="hljs-string">'gotrue-js'</span>
+
+<span class="hljs-keyword">const</span> goTrue = <span class="hljs-keyword">new</span> GoTrue({
+  <span class="hljs-attr">APIUrl</span>: <span class="hljs-string">'https://MYAPP.netlify.app/.netlify/identity'</span>,
+  <span class="hljs-attr">setCookie</span>: <span class="hljs-literal">true</span>,
+})
+
+<span class="hljs-comment">// in your JSX component</span>
+ReactDOM.render(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">FatalErrorBoundary</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{FatalErrorPage}</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">AuthProvider</span> <span class="hljs-attr">client</span>=<span class="hljs-string">{goTrue}</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"goTrue"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">RedwoodProvider</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Routes</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">RedwoodProvider</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">AuthProvider</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">FatalErrorBoundary</span>&gt;</span></span>,
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'redwood-app'</span>)
+)
+</code></pre>
+</details>
+<details>
+<summary><span class="details-marker">&nbsp;</span>Auth0</summary><p>アプリケーションキーを取得するには、SPA クイックスタートガイドの<a href="https://auth0.com/docs/quickstart/spa/react#get-your-application-keys">「認証の構成」</a>セクションのみを完了してください。</p>
+<p><strong>NOTE</strong> If you're using Auth0 with Redwood then you must also <a href="https://auth0.com/docs/quickstart/spa/react/02-calling-an-api#create-an-api">create an API</a> and set the audience parameter, or you'll receive an opaque token instead of the required JWT token.</p>
+<pre><code class="language-js"><span class="hljs-comment">// web/src/index.js</span>
+<span class="hljs-keyword">import</span> { AuthProvider } <span class="hljs-keyword">from</span> <span class="hljs-string">'@redwoodjs/auth'</span>
+<span class="hljs-keyword">import</span> { Auth0Client } <span class="hljs-keyword">from</span> <span class="hljs-string">'@auth0/auth0-spa-js'</span>
+
+<span class="hljs-keyword">const</span> auth0 = <span class="hljs-keyword">new</span> Auth0Client({
+  <span class="hljs-attr">domain</span>: process.env.AUTH0_DOMAIN,
+  <span class="hljs-attr">client_id</span>: process.env.AUTH0_CLIENT_ID,
+  <span class="hljs-attr">redirect_uri</span>: <span class="hljs-string">'http://localhost:8910/'</span>,
+  <span class="hljs-attr">cacheLocation</span>: <span class="hljs-string">'localstorage'</span>,
+  <span class="hljs-attr">audience</span>: process.env.AUTH0_AUDIENCE,
+})
+
+ReactDOM.render(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">FatalErrorBoundary</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{FatalErrorPage}</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">AuthProvider</span> <span class="hljs-attr">client</span>=<span class="hljs-string">{auth0}</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"auth0"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">RedwoodProvider</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Routes</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">RedwoodProvider</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">AuthProvider</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">FatalErrorBoundary</span>&gt;</span></span>,
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'redwood-app'</span>)
+)
+</code></pre>
+<h4 id="ログインおよびログアウトオプション"><a class="markdownIt-Anchor" href="#ログインおよびログアウトオプション">#</a> ログインおよびログアウトオプション</h4>
+<p>Auth0 クライアントを使用する場合、 <code>login</code>と<code>logout</code>は、クライアント構成を上書きするために使用できる<code>options</code>があります。</p>
+<ul>
+<li><code>returnTo</code>: a permitted logout url set in Auth0</li>
+<li><code>redirectTo</code> ：ログイン後のターゲット URL</li>
+</ul>
+<p>The latter is helpful when an unauthenticated user visits a Private route, but then is redirected to the <code>unauthenticated</code> route. The Redwood router will place the previous requested path in the pathname as a <code>redirectTo</code> parameter which can be extracted and set in the Auth0 <code>appState</code>. That way, after successfully logging in, the user will be directed to this <code>targetUrl</code> rather than the config's callback.</p>
+<pre><code class="language-js"><span class="hljs-keyword">const</span> UserAuthTools = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-keyword">const</span> { loading, isAuthenticated, logIn, logOut } = useAuth()
+
+  <span class="hljs-keyword">if</span> (loading) {
+    <span class="hljs-comment">// auth is rehydrating</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>
+  }
+
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span>
+      <span class="hljs-attr">onClick</span>=<span class="hljs-string">{async</span> () =&gt;</span> {
+        if (isAuthenticated) {
+          await logOut({ returnTo: process.env.AUTH0_REDIRECT_URI })
+        } else {
+          const searchParams = new URLSearchParams(window.location.search)
+          await logIn({
+            appState: { targetUrl: searchParams.get('redirectTo') },
+          })
+        }
+      }}
+    &gt;
+      {isAuthenticated ? 'Log out' : 'Log in'}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>
+  )
+}
+</code></pre>
+</details>
+<details>
+<summary><span class="details-marker">&nbsp;</span>Magic.Link</summary><p>アプリケーションキーを取得するには、 <a href="https://dashboard.magic.link/">dashboard.magic.link</a>に移動し、API キーに移動して.env に追加します</p>
+<pre><code class="language-js"><span class="hljs-comment">// web/src/index.js</span>
+<span class="hljs-keyword">import</span> { Magic } <span class="hljs-keyword">from</span> <span class="hljs-string">'magic-sdk'</span>
+
+<span class="hljs-keyword">const</span> m = <span class="hljs-keyword">new</span> Magic(process.env.MAGICLINK_PUBLIC)
+
+ReactDOM.render(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">FatalErrorBoundary</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{FatalErrorPage}</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">AuthProvider</span> <span class="hljs-attr">client</span>=<span class="hljs-string">{m}</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"magicLink"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">RedwoodProvider</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Routes</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">RedwoodProvider</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">AuthProvider</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">FatalErrorBoundary</span>&gt;</span></span>,
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'redwood-app'</span>)
+)
+</code></pre>
+</details>
+<details>
+<summary><span class="details-marker">&nbsp;</span>Firebase</summary><p><a href="https://firebase.google.com/docs/auth/web/google-signin">Firebase Google サインイン</a>を使用しているため、このガイドの<a href="https://firebase.google.com/docs/auth/web/google-signin#before_you_begin">「始める前に」の</a>手順に従う必要があります。 「始める前に」の部分<strong>のみに</strong>従ってください。</p>
+<pre><code class="language-js"><span class="hljs-comment">// web/src/index.js</span>
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> firebase <span class="hljs-keyword">from</span> <span class="hljs-string">'firebase/app'</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'firebase/auth'</span>
+
+<span class="hljs-keyword">const</span> firebaseClientConfig = {
+  <span class="hljs-attr">apiKey</span>: process.env.FIREBASE_API_KEY,
+  <span class="hljs-attr">authDomain</span>: process.env.FIREBASE_AUTH_DOMAIN,
+  <span class="hljs-attr">databaseURL</span>: process.env.FIREBASE_DATABASE_URL,
+  <span class="hljs-attr">projectId</span>: process.env.FIREBASE_PROJECT_ID,
+  <span class="hljs-attr">storageBucket</span>: process.env.FIREBASE_STORAGE_BUCKET,
+  <span class="hljs-attr">messagingSenderId</span>: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  <span class="hljs-attr">appId</span>: process.env.FIREBASE_APP_ID,
+}
+
+<span class="hljs-keyword">const</span> firebaseClient = <span class="hljs-function">(<span class="hljs-params">(config</span>) =&gt;</span> {
+  firebase.initializeApp(config)
+  <span class="hljs-keyword">return</span> firebase
+})(firebaseClientConfig)
+
+ReactDOM.render(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">FatalErrorBoundary</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{FatalErrorPage}</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">AuthProvider</span> <span class="hljs-attr">client</span>=<span class="hljs-string">{firebaseClient}</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"firebase"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">RedwoodProvider</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Routes</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">RedwoodProvider</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">AuthProvider</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">FatalErrorBoundary</span>&gt;</span></span>,
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'redwood-app'</span>)
+)
+</code></pre>
+<h4 id="使用法"><a class="markdownIt-Anchor" href="#使用法">#</a> 使用法</h4>
+<pre><code class="language-js"><span class="hljs-keyword">const</span> UserAuthTools = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-keyword">const</span> { loading, isAuthenticated, logIn, logOut } = useAuth()
+
+  <span class="hljs-keyword">if</span> (loading) {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>
+  }
+
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span>
+      <span class="hljs-attr">onClick</span>=<span class="hljs-string">{async</span> () =&gt;</span> {
+        if (isAuthenticated) {
+          await logOut()
+          navigate('/')
+        } else {
+          await logIn()
+        }
+      }}
+    &gt;
+      {isAuthenticated ? 'Log out' : 'Log in'}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>
+  )
+}
+</code></pre>
+</details>
+<h2 id="api"><a class="markdownIt-Anchor" href="#api">#</a> API</h2>
+<p>次の値は、 <code>useAuth</code>フックから利用できます。</p>
+<ul>
+<li>async <code>logIn()</code> ：クライアントライブラリに基づいて異なり、Netlify Identity ではポップアップが表示され、Auth0 ではユーザーがリダイレクトされます</li>
+<li>async <code>logOut()</code> ：現在のユーザーをログアウトします</li>
+<li><code>currentUser</code> ：現在のユーザーに関する情報を含むオブジェクト。ユーザーが認証されていない場合は<code>null</code></li>
+<li>async <code>reauthenticate()</code>: 認証データを再フェッチし、状態を入力します。</li>
+<li>async <code>getToken()</code> ：jwt を返します</li>
+<li><code>client</code> ： <code>AuthProvider</code>渡したクライアントのインスタンスにアクセスします</li>
+<li><code>isAuthenticated</code> ：現在のユーザーが認証されているかどうかを判断するために使用されます</li>
+<li><code>hasRole</code> ：現在のユーザーに役割が割り当てられているかどうかを判断するために使用されます</li>
+<li><code>loading</code> ：ユーザーが初めてサイトにアクセスしたときに認証状態が非同期に復元されます。これを使用して、正しい状態かどうかを判断します。</li>
+</ul>
+<h2 id="レッドウッドでの使用法"><a class="markdownIt-Anchor" href="#レッドウッドでの使用法">#</a> レッドウッドでの使用法</h2>
+<p>Redwood は、Auth パッケージを使用するときに zeroconf エクスペリエンスを提供します！</p>
+<h3 id="graphql-クエリとミューテーション"><a class="markdownIt-Anchor" href="#graphql-クエリとミューテーション">#</a> GraphQL クエリとミューテーション</h3>
+<p>GraphQL リクエストは、ユーザーが認証されると自動的に<code>Authorization</code>ヘッダーを受け取ります。</p>
+<h3 id="api-2"><a class="markdownIt-Anchor" href="#api-2">#</a> API</h3>
+<p>ユーザーがサインインしている場合、<code> Authorization {/ code0}トークンが検証、デコードされ、</code> context.currentUser {/ code1}で利用可能になります``</p>
+<pre><code class="language-js"><span class="hljs-keyword">import</span> { context } <span class="hljs-keyword">from</span> <span class="hljs-string">'@redwoodjs/api'</span>
+
+<span class="hljs-built_in">console</span>.log(context.currentUser)
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//    sub: '&lt;netlify-id&gt;</span>
+<span class="hljs-comment">//    email: 'user@example.com',</span>
+<span class="hljs-comment">//    [...]</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+<p><code>getCurrentUser</code>関数を<code>createCreateGraphQLHandler</code>渡すことで、「生のデコードされた JWT」を実際のユーザーオブジェクトにマッピングできます。</p>
+<p><code>getCurrentUser</code>をエクスポートする<code>src/lib/auth.js|ts</code>ファイルを作成することをお勧めします。 （注：すでにスタブ関数がある場合があります。）</p>
+<pre><code class="language-js"><span class="hljs-keyword">import</span> { getCurrentUser } <span class="hljs-keyword">from</span> <span class="hljs-string">'src/lib/auth'</span>
+<span class="hljs-comment">// Example:</span>
+<span class="hljs-comment">//  export const getCurrentUser = async (decoded) =&gt; {</span>
+<span class="hljs-comment">//    return await db.user.findOne({ where: { decoded.email } })</span>
+<span class="hljs-comment">//  }</span>
+<span class="hljs-comment">//</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> handler = createGraphQLHandler({
+  <span class="hljs-attr">schema</span>: makeMergedSchema({
+    schemas,
+    <span class="hljs-attr">services</span>: makeServices({ services }),
+  }),
+  getCurrentUser,
+})
+</code></pre>
+<p><code> getCurrentUser {/ code0}によって返される値は、</code> context.currentUser {/ code1}で利用できます。``</p>
+<p>サービスで<code>requireAuth</code>を使用して、ユーザーがログインしているかどうか、ロールが割り当てられているかどうかを確認し、そうでない場合はオプションでエラーを発生させます。</p>
+<pre><code class="language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> requireAuth = <span class="hljs-function">(<span class="hljs-params">{ role }</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (!context.currentUser) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> AuthenticationError(<span class="hljs-string">"You don't have permission to do that."</span>)
+  }
+
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> role !== <span class="hljs-string">'undefined'</span> &amp;&amp; !context.currentUser.roles?.includes(role)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> ForbiddenError(<span class="hljs-string">"You don't have access to do that."</span>)
+  }
+}
+</code></pre>
+<h3 id="api-固有の統合"><a class="markdownIt-Anchor" href="#api-固有の統合">#</a> API 固有の統合</h3>
+<details>
+<summary><span class="details-marker">&nbsp;</span>Auth0</summary><p>Auth0 を使用している場合は、<a href="https://auth0.com/docs/quickstart/spa/react/02-calling-an-api#create-an-api"> API {/ a0}を作成し、オーディエンスパラメータを設定する必要があります。そうしないと、JWT トークンの代わりに不透明なトークンを受け取り、Redwood は JWT トークンを受け取ることを期待します。</a></p>
+<h4 id="役割ベースのアクセス制御rbac"><a class="markdownIt-Anchor" href="#役割ベースのアクセス制御rbac">#</a> 役割ベースのアクセス制御（RBAC）</h4>
+<p><a href="https://auth0.com/docs/authorization/concepts/rbac">ロールベースのアクセス制御（RBAC）</a>は、組織内でのロールに基づいてユーザーにアクセス許可を割り当てるという考え方を指します。これは、きめ細かい制御を提供し、ユーザーに個別にアクセス許可を割り当てるよりもエラーが発生しにくい、アクセス管理へのシンプルで管理しやすいアプローチを提供します。</p>
+<p>基本的に、ロールは、ユーザーに適用できる権限のコレクションです。役割は、「管理者」、「編集者」、または「発行者」の場合があります。これは、「publish：blog」などのアクセス許可とは異なります。</p>
+<h4 id="アプリのメタデータ"><a class="markdownIt-Anchor" href="#アプリのメタデータ">#</a> アプリのメタデータ</h4>
+<p>Auth0 は、情報（サポートプランのサブスクリプション、セキュリティロール、アクセス制御グループなど）を「アプリメタデータ」に保存します。 <code>app_metadata</code>保存されているデータは、ユーザーが編集することはできません。</p>
+<p>Auth0 の「ユーザーとロール」管理ビューでアプリケーションのロールを作成および管理します。次に、これらの役割をユーザーに割り当てることができます。</p>
+<p>ただし、その情報は、認証時にユーザーのアプリメタデータまたは RedwoodJS ですぐに利用できるわけではありません。</p>
+<p>ユーザーに Auth0 の「管理者」ロールを割り当てる場合、ユーザーの app_metadata を次のように表示する必要があります。</p>
+<pre><code>{
+  &quot;roles&quot;: [
+    &quot;admin&quot;
+  ]
+}
+</code></pre>
+<p>この情報を設定して RedwoodJS で利用できるようにするには、 <a href="https://auth0.com/docs/rules">Auth0 ルール</a>を使用できます。</p>
+<h4 id="アプリメタデータの-auth0-ルール"><a class="markdownIt-Anchor" href="#アプリメタデータの-auth0-ルール">#</a> アプリメタデータの Auth0 ルール</h4>
+<p>RedwoodJS は、 <code>app_metadata</code>が 1）役割情報を含み、2）デコードされる JWT に存在する必要があります。</p>
+<p>これらのタスクを実行するには、 <a href="https://auth0.com/docs/rules">Auth0 ルール</a>を使用して、JWT にカスタムクレームとして追加します。</p>
+<h5 id="appmetadata-ルールに承認ロールを追加する"><a class="markdownIt-Anchor" href="#appmetadata-ルールに承認ロールを追加する">#</a> AppMetadata ルールに承認ロールを追加する</h5>
+<p>最初のルールは<code>Add Authorization Roles to AppMetadata</code> 。</p>
+<pre><code class="language-js"><span class="hljs-comment">/// Add Authorization Roles to AppMetadata</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">user, context, callback</span>) </span>{
+    auth0.users.updateAppMetadata(user.user_id, context.authorization)
+      .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+          callback(<span class="hljs-literal">null</span>, user, context);
+      })
+      .catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>)</span>{
+          callback(err);
+      });
+  }
+</code></pre>
+<p>Auth0 は、ユーザーロールの割り当て<code>context.authorization</code>維持します。このルールは、その情報をユーザーの<code>app_metadata</code>にコピーするだけです。</p>
+<pre><code>{
+  &quot;roles&quot;: [
+    &quot;admin&quot;
+  ]
+}
+</code></pre>
+<p>しかし、今あなたが含まれている必要があり<code>app_metdata</code> RedwoodJS が解読することをユーザーの JWT 上を。</p>
+<h5 id="appmetadata-を-jwt-ルールに追加する"><a class="markdownIt-Anchor" href="#appmetadata-を-jwt-ルールに追加する">#</a> AppMetadata を JWT ルールに追加する</h5>
+<p>したがって、2 番目のルールは<code>Add AppMetadata to JWT</code>ます。</p>
+<p><code>app_metadata</code>を<code>idToken</code>または<code>accessToken</code>追加できます。</p>
+<p><code>idToken</code>追加すると、アプリメタデータが RedwoodJS getuserMetadata にアクセスできるようになり、Auth0 の<code>getuserMetadata</code>は認証クライアントの<code>getUser</code>ます。</p>
+<p>Adding to <code>accessToken</code> will make the make App metadta accessible to RedwoodJS when decoding the JWT via <code>getToken</code>.</p>
+<p>While adding to <code>idToken</code> is optional. you <em>must</em> add to <code>accessToken</code>.</p>
+<p>To keep your custom claims from colliding with any reserved claims or claims from other resources, you must give them a <a href="https://auth0.com/docs/tokens/guides/create-namespaced-custom-claims">globally unique name using a namespaced format</a>. Otherwise, Auth0 will <em>not</em> add the infomration to the token(s).</p>
+<p>したがって、名前空間が「<a href="https://example.com">https://example.com</a>」の場合、トークンのapp_metadataは次のようになります。</p>
+<pre><code class="language-js"><span class="hljs-string">"https://example.com/app_metadata"</span>: {
+  <span class="hljs-string">"authorization"</span>: {
+    <span class="hljs-string">"roles"</span>: [
+      <span class="hljs-string">"admin"</span>
+    ]
+  }
+},
+</code></pre>
+<p>この名前空間情報を設定するには、ルールで次の関数を使用します。</p>
+<pre><code class="language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">user, context, callback</span>) </span>{
+  <span class="hljs-keyword">var</span> namespace = <span class="hljs-string">'https://example.com/'</span>;
+
+  <span class="hljs-comment">// adds to idToken, ie userMetadata in RedwoodJS</span>
+  context.idToken[namespace + <span class="hljs-string">'app_metadata'</span>] = {};
+  context.idToken[namespace + <span class="hljs-string">'app_metadata'</span>].authorization = {
+    <span class="hljs-attr">groups</span>: user.app_metadata.groups,
+    <span class="hljs-attr">roles</span>: user.app_metadata.roles,
+    <span class="hljs-attr">permissions</span>: user.app_metadata.permissions
+  };
+
+  context.idToken[namespace + <span class="hljs-string">'user_metadata'</span>] = {};
+
+  <span class="hljs-comment">// accessToken, ie the decoded JWT in RedwoodJS</span>
+  context.accessToken[namespace + <span class="hljs-string">'app_metadata'</span>] = {};
+  context.accessToken[namespace + <span class="hljs-string">'app_metadata'</span>].authorization = {
+    <span class="hljs-attr">groups</span>: user.app_metadata.groups,
+    <span class="hljs-attr">roles</span>: user.app_metadata.roles,
+    <span class="hljs-attr">permissions</span>: user.app_metadata.permissions
+  };
+
+   context.accessToken[namespace + <span class="hljs-string">'user_metadata'</span>] = {};
+
+  <span class="hljs-keyword">return</span> callback(<span class="hljs-literal">null</span>, user, context);
+}
+</code></pre>
+<p>これで、 <code>authorization</code>と<code>role</code>情報を<code>app_metadata</code>が、ログイン後にユーザーの JWT に表示されます。</p>
+<h4 id="アプリケーションの追加-hasrole-サポート"><a class="markdownIt-Anchor" href="#アプリケーションの追加-hasrole-サポート">#</a> アプリケーションの追加 hasRole サポート</h4>
+<p>If you intend to support, RBAC then in your <code>api/src/lib/auth.js</code> you need to extract <code>roles</code> using the <code>parseJWT</code> utility and set these roles on <code>currentUser</code>.</p>
+<p>ロールが名前空間付きの app_metadata クレームにある場合、 <code>parseJWT</code>はこの値を提供するオプションを提供します。</p>
+<pre><code class="language-js"><span class="hljs-comment">// api/src/lib/auth.js`</span>
+<span class="hljs-keyword">const</span> NAMESPACE = <span class="hljs-string">'https://example.com'</span>
+
+<span class="hljs-keyword">const</span> currentUserWithRoles = <span class="hljs-keyword">async</span> (decoded) =&gt; {
+  <span class="hljs-keyword">const</span> currentUser = <span class="hljs-keyword">await</span> userByUserId(decoded.sub)
+  <span class="hljs-keyword">return</span> {
+    ...currentUser,
+    <span class="hljs-attr">roles</span>: parseJWT({ <span class="hljs-attr">decoded</span>: decoded, <span class="hljs-attr">namespace</span>: NAMESPACE }).roles,
+  }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> getCurrentUser = <span class="hljs-keyword">async</span> (decoded, { type, token }) =&gt; {
+  <span class="hljs-keyword">try</span> {
+    requireAccessToken(decoded, { type, token })
+    <span class="hljs-keyword">return</span> currentUserWithRoles(decoded)
+  } <span class="hljs-keyword">catch</span> (error) {
+    <span class="hljs-keyword">return</span> decoded
+  }
+}
+</code></pre>
+<h5 id="機能-サービス-および-web-での役割保護"><a class="markdownIt-Anchor" href="#機能-サービス-および-web-での役割保護">#</a> 機能、サービス、および Web での役割保護</h5>
+<p><code>requireAuth</code>オプションのロールを指定して、ユーザーが認証され、ロールが割り当てられているかどうかを確認できます。</p>
+<pre><code class="language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> myThings = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  requireAuth({ <span class="hljs-attr">role</span>: <span class="hljs-string">'admin'</span>})
+
+  <span class="hljs-keyword">return</span> db.user.findOne({ <span class="hljs-attr">where</span>: { <span class="hljs-attr">id</span>: context.currentUser.id } }).things()
+}
+
+You can also protect routes:
+
+</code></pre>
+<router>
+</router>
+  <private unauthenticated="forbidden" role="admin">
+    <route path="/settings" page="{SettingsPage}" name="settings"></route>
+    <route path="/admin" page="{AdminPage}" name="sites"></route>
+  </private>
+<p><route notfound="" page="{NotFoundPage}"></route><route path="/forbidden" page="{ForbiddenPage}" name="forbidden"></route>`` `</p>
+<p>また、 <code>userAuth()</code>フックを介してページまたはコンポーネントのコンテンツを保護します。</p>
+<pre><code>const { isAuthenticated, hasRole } = useAuth()
+
+...
+
+{hasRole('admin') &amp;&amp; (
+  &lt;Link to={routes.admin()}&gt;Admin&lt;/Link&gt;
+)}
+</code></pre>
+</details>
+<details>
+<summary><span class="details-marker">&nbsp;</span>Magic.Link</summary><p>redwood API には、magiclinks 認証トークンをデコードする機能が含まれていないため、クライアントが開始され、 <code>getCurrentUser</code>内のトークンがデコードされます。</p>
+<p>Magic.link は、発行者をユーザー ID として使用することをお勧めします。</p>
+<pre><code class="language-js"><span class="hljs-comment">// redwood/api/src/lib/auth.ts</span>
+<span class="hljs-keyword">import</span> { Magic } <span class="hljs-keyword">from</span> <span class="hljs-string">'@magic-sdk/admin'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> getCurrentUser = <span class="hljs-keyword">async</span> (_decoded, { token }) =&gt; {
+  <span class="hljs-keyword">const</span> mAdmin = <span class="hljs-keyword">new</span> Magic(process.env.MAGICLINK_SECRET)
+  <span class="hljs-keyword">const</span> { email, publicAddress, issuer } = <span class="hljs-keyword">await</span> mAdmin.users.getMetadataByToken(token)
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> db.user.findOne({ <span class="hljs-attr">where</span>: { issuer } })
+}
+</code></pre>
+</details>
+<details>
+<summary><span class="details-marker">&nbsp;</span>Firebase</summary><p>You must follow the <a href="https://firebase.google.com/docs/auth/web/google-signin">&quot;Before you begin&quot;</a> part of the &quot;Authenticate Using Google Sign-In with JavaScript&quot; guide. +++</p>
+<h3 id="ルート"><a class="markdownIt-Anchor" href="#ルート">#</a> ルート</h3>
+<p>ルートは、 <code>&lt;Private&gt;</code>コンポーネントでラップすることにより、認証を要求できます。認証されていないユーザーは、 <code>unauthenticated</code>指定されたページにリダイレクトされます。</p>
+<pre><code class="language-js"><span class="hljs-keyword">import</span> { Router, Route, Private } <span class="hljs-keyword">from</span> <span class="hljs-string">'@redwoodjs/router'</span>
+
+;<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Router</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"/"</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{HomePage}</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"home"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"/login"</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{LoginPage}</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"login"</span> /&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">Private</span> <span class="hljs-attr">unauthenticated</span>=<span class="hljs-string">"login"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"/admin"</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{AdminPage}</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"admin"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"/secret-page"</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{SecretPage}</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"secret"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Private</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">Router</span>&gt;</span></span>
+</code></pre>
+<p><code>&lt;Private&gt;</code>コンポーネントで<code>hasRole(roleName)</code>指定することにより、ロールによってルートを再制限することもできます。ロールが割り当てられていないユーザーは、 <code>unauthenticated</code>指定されたページにリダイレクトされます。</p>
+<pre><code class="language-js"><span class="hljs-keyword">import</span> { Router, Route, Private } <span class="hljs-keyword">from</span> <span class="hljs-string">'@redwoodjs/router'</span>
+
+;<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Router</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"/"</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{HomePage}</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"home"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"/login"</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{LoginPage}</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"login"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"/forbidden"</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{ForbiddenPage}</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"login"</span> /&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">Private</span> <span class="hljs-attr">unauthenticated</span>=<span class="hljs-string">"login"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"/secret-page"</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{SecretPage}</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"secret"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Private</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">Private</span> <span class="hljs-attr">unauthenticated</span>=<span class="hljs-string">"forbidd4n"</span> <span class="hljs-attr">hasRole</span>=<span class="hljs-string">"admin"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"/admin"</span> <span class="hljs-attr">page</span>=<span class="hljs-string">{AdminPage}</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"admin"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Private</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">Router</span>&gt;</span></span>
+</code></pre>
+<h2 id="貢献"><a class="markdownIt-Anchor" href="#貢献">#</a> 貢献</h2>
+<p><a href="https://github.com/redwoodjs/redwood/blob/main/packages/auth/README.md%E3%82%92%E5%8F%82%E7%85%A7%E3%81%97%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84">https://github.com/redwoodjs/redwood/blob/main/packages/auth/README.mdを参照してください</a></p>
+</details>
+
+  
+</div>
