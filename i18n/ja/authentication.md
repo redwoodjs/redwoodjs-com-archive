@@ -294,7 +294,7 @@ const UserAuthTools = () => {
 - async `logIn()` ：クライアントライブラリに基づいて異なり、Netlify Identityではポップアップが表示され、Auth0ではユーザーがリダイレクトされます
 - async `logOut()` ：現在のユーザーをログアウトします
 - `currentUser` ：現在のユーザーに関する情報を含むオブジェクト。ユーザーが認証されていない場合は`null`
-- async `reauthenticate()`: Refetch the authentication data and populate the state.
+- async `reauthenticate()`: 認証データを再フェッチし、状態を入力します。
 - async `getToken()` ：jwtを返します
 - `client` ： `AuthProvider`渡したクライアントのインスタンスにアクセスします
 - `isAuthenticated` ：現在のユーザーが認証されているかどうかを判断するために使用されます
@@ -311,7 +311,7 @@ GraphQLリクエストは、ユーザーが認証されると自動的に`Author
 
 ### API
 
-If a user is signed in, the `Authorization` token is verified, decoded and available in `context.currentUser`
+ユーザーがサインインしている場合、` Authorization {/ code0}トークンが検証、デコードされ、` context.currentUser {/ code1}で利用可能になります``
 
 ```js
 import { context }  from '@redwoodjs/api'
@@ -345,7 +345,7 @@ export const handler = createGraphQLHandler({
 })
 ```
 
-The value returned by `getCurrentUser` is available in `context.currentUser`
+` getCurrentUser {/ code0}によって返される値は、` context.currentUser {/ code1}で利用できます。``
 
 サービスで`requireAuth`を使用して、ユーザーがログインしているかどうか、ロールが割り当てられているかどうかを確認し、そうでない場合はオプションでエラーを発生させます。
 
@@ -369,7 +369,7 @@ export const requireAuth = ({ role }) => {
 
 +++ Auth0
 
-If you're using Auth0 you must also [create an API](https://auth0.com/docs/quickstart/spa/react/02-calling-an-api#create-an-api) and set the audience parameter, or you'll receive an opaque token instead of a JWT token, and Redwood expects to receive a JWT token.
+Auth0を使用している場合は、[ API {/ a0}を作成し、オーディエンスパラメータを設定する必要があります。そうしないと、JWTトークンの代わりに不透明なトークンを受け取り、RedwoodはJWTトークンを受け取ることを期待します。](https://auth0.com/docs/quickstart/spa/react/02-calling-an-api#create-an-api)
 
 #### 役割ベースのアクセス制御（RBAC）
 
