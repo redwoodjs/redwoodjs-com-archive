@@ -537,7 +537,13 @@ You can also protect routes:
     <route path="/admin" page="{AdminPage}" name="sites"></route>
   </private>
 
+<<<<<<< HEAD
 <route notfound="" page="{NotFoundPage}"></route><route path="/forbidden" page="{ForbiddenPage}" name="forbidden"></route>`` `
+=======
+
+
+<route data-md-type="raw_html" notfound="" page="{NotFoundPage}"></route><route data-md-type="raw_html" path="/forbidden" page="{ForbiddenPage}" name="forbidden"></route>`` `
+>>>>>>> 4f7f0d48cceb530330058f764e5a2177dbfbc6f9
 
 また、 `userAuth()`フックを介してページまたはコンポーネントのコンテンツを保護します。
 
