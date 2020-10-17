@@ -311,7 +311,7 @@ GraphQLリクエストは、ユーザーが認証されると自動的に`Author
 
 ### API
 
-If a user is signed in, the `Authorization` token is verified, decoded and available in `context.currentUser`
+ユーザーがサインインしている場合、` Authorization {/ code0}トークンが検証、デコードされ、` context.currentUser {/ code1}で利用可能になります``
 
 ```js
 import { context }  from '@redwoodjs/api'
@@ -345,7 +345,7 @@ export const handler = createGraphQLHandler({
 })
 ```
 
-The value returned by `getCurrentUser` is available in `context.currentUser`
+` getCurrentUser {/ code0}によって返される値は、` context.currentUser {/ code1}で利用できます。``
 
 サービスで`requireAuth`を使用して、ユーザーがログインしているかどうか、ロールが割り当てられているかどうかを確認し、そうでない場合はオプションでエラーを発生させます。
 
