@@ -16,7 +16,7 @@ Redwoodアプリの設定は`redwood.toml`構成できます。デフォルト�
   open = true
 ```
 
-These are listed by default because they're the ones that you're most likely to configure. But there are plenty more available. The rest are spread between Redwood's [webpack configuration files](https://github.com/redwoodjs/redwood/tree/main/packages/core/config) and `@redwoodjs/internal`'s [config.ts](https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/config.ts#L42-L60):
+<br>これらは、構成する可能性が最も高いものであるため、デフォルトでリストされています。しかし、利用できるオプションがもっとたくさんあります。残りは、Redwoodの<a> webpack構成ファイル{/ a1}と<code data-md-type="codespan"> @ redwoodjs / internal {/ code1}の<a href="https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/config.ts#L42-L60" data-md-type="link"> config.ts {/ a2}の間に分散されます。</a></code></a>
 
 ```javascript
 // redwood/packages/internal/src/config.ts
@@ -41,11 +41,11 @@ const DEFAULT_CONFIG: Config = {
 }
 ```
 
-The options and their structure are based on Redwood's notion of sides and targets. Right now, Redwood has two fixed sides, api and web, that target NodeJS Lambdas and Browsers respectively. In the future, we'll add support for more sides and targets, like Electron and React Native (you can already see them listed as enums in [TargetEnum](https://github.com/redwoodjs/redwood/blob/d51ade08118c17459cebcdb496197ea52485364a/packages/internal/src/config.ts#L11-L12)), and as we do, you'll see them reflected in `redwood.toml`. But right now, you'll most likely never touch options like `target`.
+オプションとその構造は、レッドウッドの側面とターゲットの概念に基づいています。 現在、Redwoodには、NodeJS LambdasとBrowserをそれぞれターゲットとする、apiとwebの2つの固定面があります。 将来的には、ElectronやReact Nativeなどのサイドとターゲットのサポートを追加する予定です（[ TargetEnum {/ a0}に列挙型としてリストされています）。そうすると、それらが表示されます。 ` redwood.toml {/ code1}に反映されます。 ただし、現時点では、` target {/ code2}のようなオプションには触れない可能性があります。``](https://github.com/redwoodjs/redwood/blob/d51ade08118c17459cebcdb496197ea52485364a/packages/internal/src/config.ts#L11-L12)
 
 将来的には、ここでの変更により、カスケードの「アプリレベル」の効果が生じるという考え方です。例としてジェネレーターを使用すると、サイドとターゲットに基づいて、ジェネレーターの動作は異なりますが、適切に異なります。
 
-> For the difference between a side and a target, see [Redwood File Structure](https://redwoodjs.com/tutorial/redwood-file-structure).
+> 「サイド」と「ターゲット」の違いについては、 [Redwood FileStructureを](https://redwoodjs.com/tutorial/redwood-file-structure)参照してください。
 
 `redwood.toml`は、Redwoodのwebpack構成ファイル上の便利なレイヤーと考えることができます。 、特定の設定のため、代わりに直接のWebPACKに対処することで、私たちはあなたを経由してすばやくアクセス与えていること`redwood.toml` 。これらの設定の一部は開発用、一部は本番用、一部は両方用です。あなたは、実際に、これは各configuraitonオプションがイン・参照されるWebPACKのファイルに反映さ見ることができます[webpack.development.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.development.js) 、 [webpack.production.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.production.js) 、および[webpack.common.jsを](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.common.js)。
 
@@ -128,7 +128,7 @@ API側の構成。
   open = true
 ```
 
-Setting `open` to `true` like this will open the browser to web's `host:port` (by default, localhost:8910) after the dev server starts. If you want your browser to stop opening when you `yarn rw dev`, set this to false. Or just remove it entirely.
+このように`open`を<code data-md-type="codespan"> true に設定すると、開発サーバーの起動後にブラウザがWebの<code>host：port</code>（デフォルトではlocalhost：8910）に開きます。 <code>yarn rw dev</code>のときにブラウザが開かないようにする場合は、これをfalseに設定します。 または、完全に削除します。
 
 システムのデフォルトの代わりに使用するブラウザの名前を指定することもできます。たとえば、 `open = 'Firefox'`は、システムのデフォルトのブラウザに関係なくFirefoxを開きます。
 
