@@ -4,7 +4,7 @@
 
 - [Netlify Identity Widget](https://github.com/netlify/netlify-identity-widget)
 - [Auth0](https://github.com/auth0/auth0-spa-js)
-- [Azure AD](https://github.com/AzureAD/microsoft-authentication-library-for-js)
+- [Azure Active Directory](https://github.com/AzureAD/microsoft-authentication-library-for-js)
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
@@ -218,7 +218,7 @@ See the Auth0 information within this doc's [Auth Provider Specific Integration]
 
 +++
 
-### Azure AD
+### Azure Active Directory
 
 +++ View Installation and Setup
 
@@ -227,7 +227,7 @@ See the Auth0 information within this doc's [Auth Provider Specific Integration]
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth azureAd
+yarn rw generate auth azureActiveDirectory
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -239,15 +239,15 @@ yarn add msal
 
 #### Setup
 
-To get your application credentials, create a [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure AD tenant. Take a note of your generated _Application (client) ID_ and the _Directory (tenant) ID_.
+To get your application credentials, create a [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application (client) ID_ and the _Directory (tenant) ID_.
 
 ##### Supported account types
 
-In most cases you want to choose _Accounts in this organizational directory only (Single tenant)_, as this will allow only users in your Azure AD tenant to login to your application. If you want to enable Microsoft accounts to be able to login, choose the bottom alternative.
+In most cases you want to choose _Accounts in this organizational directory only (Single tenant)_, as this will allow only users in your Azure Active Directory tenant to login to your application. If you want to enable Microsoft accounts to be able to login, choose the bottom alternative.
 
 ##### Redirect URIs
 
-Enter allowed redirect urls for the integrations, e.g. `http://localhost:8910`. This will be the `AZUREAD_REDIRECT_URI` environment variable, and suggestively `AZUREAD_LOGOUT_REDIRECT_URI`.
+Enter allowed redirect urls for the integrations, e.g. `http://localhost:8910`. This will be the `AZURE_ACTIVE_DIRECTORY_REDIRECT_URI` environment variable, and suggestively `AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI`.
 
 ##### ID tokens
 
@@ -257,25 +257,25 @@ This allows an application to request a token directly from the authorization en
 
 #### Authority
 
-The authority is a URL that indicates a directory that MSAL can request tokens from which you can read about [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-client-application-configuration#authority). However, you most likely want to have e.g. `https://login.microsoftonline.com/<tenant>` as authority url, where `<tenant>` is the Azure AD tenant id. This will be the `AZUREAD_AUTHORITY` environment variable.
+The authority is a URL that indicates a directory that MSAL can request tokens from which you can read about [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-client-application-configuration#authority). However, you most likely want to have e.g. `https://login.microsoftonline.com/<tenant>` as authority url, where `<tenant>` is the Azure Active Directory tenant id. This will be the `AZURE_ACTIVE_DIRECTORY_AUTHORITY` environment variable.
 
 ```js
 // web/src/index.js
 import { AuthProvider } from '@redwoodjs/auth'
 import { UserAgentApplication } from 'msal'
 
-const azureAdClient = new UserAgentApplication({
+const azureActiveDirectoryClient = new UserAgentApplication({
   auth: {
-    clientId: process.env.AZUREAD_CLIENT_ID,
-    authority: process.env.AZUREAD_AUTHORITY,
-    redirectUri: process.env.AZUREAD_REDIRECT_URI,
-    postLogoutRedirectUri: process.env.AZUREAD_LOGOUT_REDIRECT_URI,
+    clientId: process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID,
+    authority: process.env.AZURE_ACTIVE_DIRECTORY_AUTHORITY,
+    redirectUri: process.env.AZURE_ACTIVE_DIRECTORY_REDIRECT_URI,
+    postLogoutRedirectUri: process.env.AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI,
   },
 })
 
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
-    <AuthProvider client={azureAdClient} type="azureAd">
+    <AuthProvider client={azureActiveDirectoryClient} type="azureActiveDirectory">
       <RedwoodProvider>
         <Routes />
       </RedwoodProvider>
@@ -287,7 +287,7 @@ ReactDOM.render(
 
 #### Login and Logout Options
 
-When using the Azure AD client, `login` take `options` that can be used to override the client config. See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/loginPopup.html) or see [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors).
+When using the Azure Active Directory client, `login` take `options` that can be used to override the client config. See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/loginPopup.html) or see [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors).
 
 +++
 
