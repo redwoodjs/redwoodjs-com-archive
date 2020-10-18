@@ -168,6 +168,8 @@ That's it for the backend.
 
 ## Our First Page
 
+### Generating the Home page
+
 Let's give our users something to look at besides the Redwood welcome page. We'll use the `redwood` command line tool to create a page for us:
 
     yarn redwood generate page home /
@@ -179,7 +181,11 @@ The command above does three things:
 - Creates a Storybook file for this component at `web/src/pages/HomePage/HomePage.stories.js`. Storybook is a wonderful tool for efficiently developing and organizing UI components. If you'd like to learn more, see this [Redwood Forum topic](https://community.redwoodjs.com/t/how-to-use-the-new-storybook-integration-in-v0-13-0/873) to start using it in your development process.
 - Adds a `<Route>` in `web/src/Routes.js` that maps the path `/` to the new _HomePage_ page.
 
+> ### Automatic import of pages in Routes file
+>
 > If you look in Routes you'll notice that we're referencing a component, `HomePage`, that isn't imported anywhere. Redwood automatically imports all pages in the Routes file since we're going to need to reference them all anyway. It saves a potentially huge `import` declaration from cluttering up the routes file.
+
+### Auto-reloading
 
 In fact this page is already live (your browser automatically reloaded):
 
@@ -201,7 +207,7 @@ Try changing the route to something like:
 <Route path="/hello" page="{HomePage}" name="home" />
 ```
 
-Now you'll see the `NotFoundPage` page. As soon as you add your first route, you'll never see the Redwood splash screen again. From now on, when no route can be found that matches the requested URL, Redwood will render the `NotFoundPage`. Change your URL to http://localhost:8910/hello and you should see the homepage again.
+As soon as you add your first route, you'll never see the initial Redwood splash screen again. From now on, when no route can be found that matches the requested URL, Redwood will render the `NotFoundPage`. Change your URL to http://localhost:8910/hello and you should see the homepage again.
 
 Change the route path back to `/` before continuing!
 
