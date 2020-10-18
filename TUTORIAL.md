@@ -48,7 +48,7 @@ yarn --version
 
 Please do upgrade accordingly. Then proceed to the RedwoodJS installation when you're ready!
 
-> ### Installing Node and Yarn
+> **Installing Node and Yarn**
 >
 > There are many ways to install and manage both Node.js and Yarn. If you're installing for the first time, we recommend the following:
 >
@@ -181,7 +181,7 @@ The command above does three things:
 - Creates a Storybook file for this component at `web/src/pages/HomePage/HomePage.stories.js`. Storybook is a wonderful tool for efficiently developing and organizing UI components. If you'd like to learn more, see this [Redwood Forum topic](https://community.redwoodjs.com/t/how-to-use-the-new-storybook-integration-in-v0-13-0/873) to start using it in your development process.
 - Adds a `<Route>` in `web/src/Routes.js` that maps the path `/` to the new _HomePage_ page.
 
-> ### Automatic import of pages in Routes file
+> **Automatic import of pages in Routes file**
 >
 > If you look in Routes you'll notice that we're referencing a component, `HomePage`, that isn't imported anywhere. Redwood automatically imports all pages in the Routes file since we're going to need to reference them all anyway. It saves a potentially huge `import` declaration from cluttering up the routes file.
 
@@ -221,7 +221,7 @@ Let's create an "About" page for our blog so everyone knows about the geniuses b
 
 Notice that we didn't specify a route path this time. If you leave it off the `redwood generate page` command, Redwood will create a `Route` and give it a path that is the same as the page name you specified prepended with a slash. In this case it will be `/about`.
 
-> ### Code-splitting each page
+> **Code-splitting each page**
 >
 > As you add more pages to your app, you may start to worry that more and more code has to be downloaded by the client on any initial page load. Fear not! Redwood will automatically code-split on each Page, which means that initial page loads can be blazingly fast, and you can create as many Pages as you want without having to worry about impacting overall webpack bundle size. If, however, you do want specific Pages to be included in the main bundle, you can override the default behavior.
 
