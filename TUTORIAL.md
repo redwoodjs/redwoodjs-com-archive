@@ -1595,7 +1595,14 @@ Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's
 ```javascript{9,21-23,31-33,41-43}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField, TextAreaField, Submit, FieldError, Label } from '@redwoodjs/forms'
+import {
+  Form,
+  TextField,
+  TextAreaField,
+  Submit,
+  FieldError,
+  Label,
+} from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
@@ -1609,19 +1616,31 @@ const ContactPage = () => {
         <Label name="name" errorClassName="error">
           Name
         </Label>
-        <TextField name="name" validation={{ required: true }} errorClassName="error" />
+        <TextField
+          name="name"
+          validation={{ required: true }}
+          errorClassName="error"
+        />        
         <FieldError name="name" className="error" />
 
         <Label name="email" errorClassName="error">
           Email
         </Label>
-        <TextField name="email" validation={{ required: true }} errorClassName="error" />
+        <TextField
+          name="email"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
         <FieldError name="email" className="error" />
 
         <Label name="message" errorClassName="error">
           Message
         </Label>
-        <TextAreaField name="message" validation={{ required: true }} errorClassName="error" />
+        <TextAreaField
+          name="message"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
         <FieldError name="message" className="error" />
 
         <Submit>Save</Submit>
@@ -1642,15 +1661,34 @@ export default ContactPage
 We should make sure the email field actually contains an email:
 
 ```html{7-9}
-// web/src/pages/ContactPage/ContactPage.js <TextField name="email" validation={{ required: true, pattern: { value:
-/[^@]+@[^.]+\..+/, }, }} errorClassName="error" />
+// web/src/pages/ContactPage/ContactPage.js
+<TextField
+  name="email"
+  validation={{
+    required: true,
+    pattern: {
+      value: /[^@]+@[^.]+\..+/,
+    },
+  }}
+  errorClassName="error"
+/>
 ```
 
 That is definitely not the end-all-be-all for email address validation, but pretend it's bulletproof. Let's also change the message on the email validation to be a little more friendly:
 
 ```html{9}
-// web/src/pages/ContactPage/ContactPage.js <TextField name="email" validation={{ required: true, pattern: { value:
-/[^@]+@[^.]+\..+/, message: 'Please enter a valid email address', }, }} errorClassName="error" />
+// web/src/pages/ContactPage/ContactPage.js
+<TextField
+  name="email"
+  validation={{
+    required: true,
+    pattern: {
+      value: /[^@]+@[^.]+\..+/,
+      message: 'Please enter a valid email address',
+    },
+  }}
+  errorClassName="error"
+/>
 ```
 
 <img src="https://user-images.githubusercontent.com/300/80259139-bd92e500-8639-11ea-99d5-be278dc67afc.png" />
@@ -1662,7 +1700,9 @@ You may have noticed that trying to submit a form with validation errors outputs
 Finally, you know what would _really_ be nice: if the fields were validated as soon as the user leaves each one so they don't fill out the whole thing and submit just to see multiple errors appear. Let's do that:
 
 ```html
-// web/src/pages/ContactPage/ContactPage.js <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
+// web/src/pages/ContactPage/ContactPage.js
+
+<Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
 ```
 
 Well, what do you think? Was it worth the hype? A couple of new components and you've got forms that handle validation and wrap up submitted values in a nice data object, all for free.
@@ -2030,8 +2070,15 @@ We already capture any existing error in the `error` constant that we got from `
 To get a server error to fire, let's remove the email format validation so that the client-side error isn't shown:
 
 ```html
-// web/src/pages/ContactPage/ContactPage.js <TextField name="email" validation={{ required: true, }}
-errorClassName="error" />
+// web/src/pages/ContactPage/ContactPage.js
+
+<TextField
+  name="email"
+  validation={{
+    required: true,
+  }}
+  errorClassName="error"
+/>
 ```
 
 Now try filling out the form with an invalid email address:
@@ -2146,8 +2193,15 @@ const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
 Here's the final `ContactPage.js` page:
 
 ```javascript
-import { Form, TextField, TextAreaField, Submit, FieldError, Label, FormError } from '@redwoodjs/forms'
-import { Flash, useFlash, useMutation } from '@redwoodjs/web'
+import {
+  Form,
+  TextField,
+  TextAreaField,
+  Submit,
+  FieldError,
+  Label,
+  FormError,
+} from '@redwoodjs/forms'import { Flash, useFlash, useMutation } from '@redwoodjs/web'
 import { useForm } from 'react-hook-form'
 import BlogLayout from 'src/layouts/BlogLayout'
 
@@ -2166,7 +2220,7 @@ const ContactPage = () => {
   const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
     onCompleted: () => {
       addMessage('Thank you for your submission!', {
-        style: { backgroundColor: 'green', color: 'white', padding: '1rem' },
+        style: { backgroundColor: 'green', color: 'white', padding: '1rem' }
       })
       formMethods.reset()
     },
@@ -2640,8 +2694,8 @@ const BlogLayout = ({ children }) => {
             <Link to={routes.contact()}>Contact</Link>
           </li>
           <li>
-            <a href="#" onClick={ isAuthenticated ? logOut : logIn }>
-              { isAuthenticated ? 'Log Out' : 'Log In' }
+            <a href="#" onClick={isAuthenticated ? logOut : logIn}>
+              {isAuthenticated ? 'Log Out' : 'Log In'}
             </a>
           </li>
         </ul>
@@ -2685,11 +2739,11 @@ const BlogLayout = ({ children }) => {
             <Link to={routes.contact()}>Contact</Link>
           </li>
           <li>
-            <a href="#" onClick={ isAuthenticated ? logOut : logIn }>
-              { isAuthenticated ? 'Log Out' : 'Log In' }
+            <a href="#" onClick={isAuthenticated ? logOut : logIn}>
+              {isAuthenticated ? 'Log Out' : 'Log In'}
             </a>
           </li>
-          { isAuthenticated && <li>{currentUser.email}</li> }
+          {isAuthenticated && <li>{currentUser.email}</li>}
         </ul>
       </nav>
       <main>{children}</main>
