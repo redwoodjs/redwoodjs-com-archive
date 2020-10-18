@@ -1567,11 +1567,12 @@ return (
   <BlogLayout>
     <Form onSubmit={onSubmit}>
       <label htmlFor="name">Name</label>
-     <TextField
+      <TextField
         name="name"
         validation={{ required: true }}
         errorClassName="error"
-      />      <FieldError name="name" className="error" />
+      />      
+      <FieldError name="name" className="error" />
 
       <label htmlFor="email">Email</label>
       <TextField
