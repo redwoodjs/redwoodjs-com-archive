@@ -36,8 +36,8 @@ You could work through this tutorial without knowing anything about these techno
 
 During installation, RedwoodJS checks if your system meets version requirements for Node and Yarn:
 
-- node: ">=12"
-- yarn: ">=1.15"
+- Node: ">=12"
+- Yarn: ">=1.15"
 
 👉 **Heads Up:** If your system versions do not meet both requirements, _the installation bootstrap will result in an ERROR._ To check, please run the following from your terminal command line:
 
@@ -48,6 +48,8 @@ yarn --version
 
 Please do upgrade accordingly. Then proceed to the RedwoodJS installation when you're ready!
 
+> ### Installing Node and Yarn
+>
 > There are many ways to install and manage both Node.js and Yarn. If you're installing for the first time, we recommend the following:
 >
 > **Yarn**
