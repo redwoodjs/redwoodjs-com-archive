@@ -1253,10 +1253,7 @@ Before we start, let's add a couple of CSS classes to make the default form layo
 ```css
 /* web/src/index.css */
 
-button,
-input,
-label,
-textarea {
+button, input, label, textarea {
   display: block;
   outline: none;
 }
@@ -1269,8 +1266,7 @@ label {
   color: red;
 }
 
-input.error,
-textarea.error {
+input.error, textarea.error {
   border: 1px solid red;
 }
 ```
@@ -1571,15 +1567,26 @@ return (
   <BlogLayout>
     <Form onSubmit={onSubmit}>
       <label htmlFor="name">Name</label>
-      <TextField name="name" validation={{ required: true }} errorClassName="error" />
-      <FieldError name="name" className="error" />
+     <TextField
+        name="name"
+        validation={{ required: true }}
+        errorClassName="error"
+      />      <FieldError name="name" className="error" />
 
       <label htmlFor="email">Email</label>
-      <TextField name="email" validation={{ required: true }} errorClassName="error" />
+      <TextField
+        name="email"
+        validation={{ required: true }}
+        errorClassName="error"
+      />
       <FieldError name="email" className="error" />
 
       <label htmlFor="message">Message</label>
-      <TextAreaField name="message" validation={{ required: true }} errorClassName="error" />
+      <TextAreaField
+        name="message"
+        validation={{ required: true }}
+        errorClassName="error"
+      />
       <FieldError name="message" className="error" />
 
       <Submit>Save</Submit>
@@ -2201,7 +2208,8 @@ import {
   FieldError,
   Label,
   FormError,
-} from '@redwoodjs/forms'import { Flash, useFlash, useMutation } from '@redwoodjs/web'
+} from '@redwoodjs/forms'
+import { Flash, useFlash, useMutation } from '@redwoodjs/web'
 import { useForm } from 'react-hook-form'
 import BlogLayout from 'src/layouts/BlogLayout'
 
