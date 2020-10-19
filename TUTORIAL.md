@@ -36,8 +36,8 @@ You could work through this tutorial without knowing anything about these techno
 
 During installation, RedwoodJS checks if your system meets version requirements for Node and Yarn:
 
-- Node: ">=12"
-- Yarn: ">=1.15"
+- node: ">=12"
+- yarn: ">=1.15"
 
 👉 **Heads Up:** If your system versions do not meet both requirements, _the installation bootstrap will result in an ERROR._ To check, please run the following from your terminal command line:
 
@@ -168,8 +168,6 @@ That's it for the backend.
 
 ## Our First Page
 
-### Generating the Home page
-
 Let's give our users something to look at besides the Redwood welcome page. We'll use the `redwood` command line tool to create a page for us:
 
     yarn redwood generate page home /
@@ -184,8 +182,6 @@ The command above does three things:
 > **Automatic import of pages in Routes file**
 >
 > If you look in Routes you'll notice that we're referencing a component, `HomePage`, that isn't imported anywhere. Redwood automatically imports all pages in the Routes file since we're going to need to reference them all anyway. It saves a potentially huge `import` declaration from cluttering up the routes file.
-
-### Auto-reloading
 
 In fact this page is already live (your browser automatically reloaded):
 
@@ -213,8 +209,6 @@ Change the route path back to `/` before continuing!
 
 ## A Second Page and a Link
 
-### Generating the About page
-
 Let's create an "About" page for our blog so everyone knows about the geniuses behind this achievement. We'll create another page using `redwood`:
 
     yarn redwood generate page about
@@ -224,8 +218,6 @@ Notice that we didn't specify a route path this time. If you leave it off the `r
 > **Code-splitting each page**
 >
 > As you add more pages to your app, you may start to worry that more and more code has to be downloaded by the client on any initial page load. Fear not! Redwood will automatically code-split on each Page, which means that initial page loads can be blazingly fast, and you can create as many Pages as you want without having to worry about impacting overall webpack bundle size. If, however, you do want specific Pages to be included in the main bundle, you can override the default behavior.
-
-### Creating a Link to our new About page
 
 http://localhost:8910/about should show our new page. But no one's going to find it by manually changing the URL so let's add a link from our homepage to the About page and vice versa. We'll start creating a simple header and nav bar at the same time on the HomePage:
 
@@ -263,8 +255,6 @@ Let's point out a few things here:
   `<Route path="/about" page={AboutPage} name="about" />`
 
   If you don't like the name that `redwood generate` used for your route, feel free to change it in `Routes.js`! Named routes are awesome because if you ever change the path associated with a route, you need only change it in `Routes.js` and every link using a named route function will still point to the correct place. You can also pass a string to the `to` attribute, but you'll lose out on all the Redwood goodness that named routes provide.
-
-### Creating a link to the Home page from the About page
 
 Once we get to the About page we don't have any way to get back so let's add a link there as well:
 
@@ -634,6 +624,7 @@ export const Empty = () => <div>No posts yet!</div>
 export const Failure = ({ error }) => (
   <div>Error loading posts: {error.message}</div>
 )
+
 export const Success = ({ posts }) => {
   return posts.map((post) => (
     <article>
@@ -1577,7 +1568,7 @@ return (
         name="name"
         validation={{ required: true }}
         errorClassName="error"
-      />      
+      />
       <FieldError name="name" className="error" />
 
       <label htmlFor="email">Email</label>
@@ -1634,7 +1625,7 @@ const ContactPage = () => {
           name="name"
           validation={{ required: true }}
           errorClassName="error"
-        />        
+        />
         <FieldError name="name" className="error" />
 
         <Label name="email" errorClassName="error">
@@ -1676,6 +1667,7 @@ We should make sure the email field actually contains an email:
 
 ```html{7-9}
 // web/src/pages/ContactPage/ContactPage.js
+
 <TextField
   name="email"
   validation={{
@@ -1692,6 +1684,7 @@ That is definitely not the end-all-be-all for email address validation, but pret
 
 ```html{9}
 // web/src/pages/ContactPage/ContactPage.js
+
 <TextField
   name="email"
   validation={{
@@ -2266,7 +2259,7 @@ const ContactPage = () => {
           name="name"
           validation={{ required: true }}
           errorClassName="error"
-        />        
+        />
         <FieldError name="name" className="error" />
 
         <Label name="name" errorClassName="error">
