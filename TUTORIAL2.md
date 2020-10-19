@@ -111,7 +111,7 @@ Components
 
 This makes it easy to create variants of your component and have them all displayed together.
 
-> Where did that sample blog post data come from? We (the Redwood team) added that to the story in the `redwood-tutorial` repo to show you what a story might look like after you hook up some sample data. The rest of the tutorial will be showing you how to do this yourself with new components as you create them.
+> Where did that sample blog post data come from? We (the Redwood team) added that to the story in the `redwood-tutorial` repo to show you what a story might look like after you hook up some sample data. Several of the stories need data like this, some inline and some in those `mock.js` files. The rest of the tutorial will be showing you how to do this yourself with new components as you create them.
 
 ## Our First Story
 
@@ -148,7 +148,7 @@ export default BlogPost
 
 We'll pass an additional `summary` prop to the component to let it know if should show
 just the summary or the whole thing. We default it to `false` to preserve the existing
-behavior (always showing the full body).
+behavior—always showing the full body.
 
 Now in the story, let's create a `summary` story that uses `BlogPost` the same way that
 `generated` does, but adds the new prop. We'll take the content of the sample post and
@@ -229,7 +229,7 @@ And if you head to the real site you'll see the summary there as well:
 
 ![image](https://user-images.githubusercontent.com/300/95527363-ef9ac800-0989-11eb-9c53-6dc8ab58799c.png)
 
-Storybook makes it easy to create your components in isolation and actually helps
+Storybook makes it easy to create and modify your components in isolation and actually helps
 enforce a general best practice when building React applications: components should
 be self-contained and reusable by just changing the props that are sent in.
 
@@ -241,8 +241,8 @@ what could go wrong?
 
 There are a couple of ways we could go about building this new feature:
 
-1. Start with the form, then the comment display
-2. Start with the comment display, then add the form
+1. Start with the form and then the comment display
+2. Start with the comment display and then add the form
 
 To keep things simple let's start with the display first, then we'll move on to more complex work of a form and service to save data.
 
@@ -278,7 +278,7 @@ Once you save that file and Storybook reloads you'll see it blow up:
 
 ![image](https://user-images.githubusercontent.com/300/95784285-6684d900-0c88-11eb-9380-743079870147.png)
 
-We need to update the story to include that comment object:
+We need to update the story to include that comment object and pass it as a prop:
 
 ```javascript{8-11}
 // web/src/components/Comment/Comment.stories.js
@@ -418,11 +418,11 @@ export const Empty = () => <div>Empty</div>
 export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
 export const Success = ({ comments }) => {
-  return comments.map((comment, i) => <Comment key={i} comment={comment} />)
+  return comments.map((comment) => <Comment key={comment.id} comment={comment} />)
 }
 ```
 
-Note that we're also passing a `key` prop to make React happy.
+We're passing an additional `key` prop to make React happy when iterating over an array with `map`.
 
 If you check Storybook, you'll seen an error. We'll need to update the `mock.js` file that came along for the ride when we generated the Cell so that it returns an array instead of just a simple object with some sample data:
 
@@ -432,10 +432,10 @@ If you check Storybook, you'll seen an error. We'll need to update the `mock.js`
 export const standard = (/* vars, { ctx, req } */) => ({
   comments: [
     {
-      name: 'Rob Cameron', body: 'First comment', createdAt: '2020-01-02T12:34:56Z'
+      id: 1, name: 'Rob Cameron', body: 'First comment', createdAt: '2020-01-02T12:34:56Z'
     },
     {
-      name: 'David Price', body: 'Second comment', createdAt: '2020-02-03T23:00:00Z'
+      id: 2, name: 'David Price', body: 'Second comment', createdAt: '2020-02-03T23:00:00Z'
     },
   ]
 })
@@ -451,11 +451,13 @@ Storybook refreshes and we've got comments! We've got the same issue here where 
 The gap between the two comments *is* a concern for this component, since it's responsible for drawing multiple comments and their layout. So let's fix that in CommentsCell:
 
 ```javascript
+// web/src/components/CommentsCell/CommentsCell.js
+
 export const Success = ({ comments }) => {
   return (
     <div className="-mt-8">
-      {comments.map((comment, i) => (
-        <div key={i} className="mt-8">
+      {comments.map((comment) => (
+        <div key={comment.id} className="mt-8">
           <Comment comment={comment} />
         </div>
       ))}
@@ -466,9 +468,13 @@ export const Success = ({ comments }) => {
 
 We had to move the `key` prop to the surrounding `<div>`. We then gave each comment a top margin and removed an equal top margin from the entire container to set it back to zero.
 
+> Why a top margin and not a bottom margin? Remember when we said a component should be responsible for *it's own* display? If you add a bottom margin, that's one component influcing the one below it (which it shouldn't care about). Adding a *top* margin is this component moving *itself* down, which means it's again responsible for its own display.
+
 Let's add a margin around the story itself, similar to what we did in the Comment story:
 
 ```javascript
+// web/src/components/CommentsCell/CommentsCell.stories.js
+
 export const success = () => {
   return Success ? (
     <div className="m-8 mt-16">
@@ -478,7 +484,7 @@ export const success = () => {
 }
 ```
 
-> Why both `m-8` and `mt-16`? One of the fun rules of CSS is that if a parent and child both have margins, but no border or padding between them, their `margin-top` and `margin-bottom` [collapses](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing). So even though the story container will have a margin of 8 (which equals 2rem) remember that the container for CommentsCell has a -8 margin. Those two collapse and essential cancel each other out to 0 top margin. Setting `mt-16` sets a 4rem margin, which leaves us with 2rem, which is what we wanted to start with!
+> Why both `m-8` and `mt-16`? One of the fun rules of CSS is that if a parent and child both have margins, but no border or padding between them, their `margin-top` and `margin-bottom` [collapses](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing). So even though the story container will have a margin of 8 (which equals 2rem) remember that the container for CommentsCell has a -8 margin (-2rem). Those two collapse and essentially cancel each other out to 0 top margin. Setting `mt-16` sets a 4rem margin, which after subtracing 2rem leaves us with 2rem, which is what we wanted to start with!
 
 ![image](https://user-images.githubusercontent.com/300/95800481-4cf58880-0cac-11eb-9457-ff3f1f0d34b8.png)
 
@@ -513,63 +519,62 @@ const BlogPost = ({ post, summary = false }) => {
 export default BlogPost
 ```
 
-If we are *not* showing the summary, then we'll show the comments.
+If we are *not* showing the summary, then we'll show the comments. Take a look at the **Full** and **Summary** stories and you should see comments on one and not on the other.
 
-<!--
-  TODO This may not be an issue after Peter gets a chance to look at mocks
-  https://github.com/redwoodjs/redwood/issues/1374
--->
+Once again our component is bumping right up against the edges of the window. We've got two stories in this file and would have to manually add margins around both of them. Ugh. Luckily Storybook has a way to add styling to all stories using [decorators](https://storybook.js.org/docs/react/writing-stories/decorators). In the `default` export at the bottom of the story you can define a `decorators` key and the value is JSX that will wrap all the stories in the file automatically:
 
-If you check out Components > BlogPost > Summary you'll see nothing has changed. But going to Components > BlogPost > Full and you'll see that Storybook doesn't like something:
+```javascript{5-7}
+// web/src/components/BlogPost/BlogPost.js
 
-![image](https://user-images.githubusercontent.com/300/95800778-18ce9780-0cad-11eb-927d-d308d2d02071.png)
-
-What's happening here is that although the CommentsCell story uses the neighboring `mock.js` file, as soon as we use that component in another story, Storybook is just trying to use it like a regular component—it doesn't know about the `mock.js` file, that's a Redwood convention. Let's tell the `BlogPost` to use the data from `CommentsCell.mock.js`:
-
-```javascript{4,18-20}
-// web/src/components/BlogPost/BlogPost.stories.js
-
-import BlogPost from './BlogPost'
-import { standard as comments } from 'src/components/CommentsCell/CommentsCell.mock'
-
-const POST = {
-  id: 1,
-  title: 'First Post',
-  body: `Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin
-         post-ironic vape cred DIY. Street art next level umami squid. Hammock
-         hexagon glossier 8-bit banjo. Neutra la croix mixtape echo park four
-         loko semiotics kitsch forage chambray. Semiotics salvia selfies jianbing
-         hella shaman. Letterpress helvetica vaporware cronut, shaman butcher
-         YOLO poke fixie hoodie gentrify woke heirloom.`,
+export default {
+  title: 'Components/BlogPost',
+  decorators: [
+    (Story) => <div className="m-8"><Story /></div>
+  ]
 }
-
-export const full = () => {
-  mockGraphQLQuery('CommentsQuery', () => comments())
-
-  return <BlogPost post={POST} />
-}
-
-export const summary = () => {
-  return <BlogPost post={POST} summary={true} />
-}
-
-export default { title: 'Components/BlogPost' }
 ```
 
-So, first we import the `standard` mock from `CommentsCell.mock.js` and rename it `comments` for clarity. Note that this is a function, not an object.
+Save, and both the **Full** and **Summary** stories should have margins around them now.
 
-Next we use Redwood's built-in `mockGraphQLQuery()` function to return a fake response when a query named `CommentsQuery` is executed (that's the name of the query in `CommentsCell` main `QUERY`):
+> For more extensive, global styling options, look into Storybook [theming](https://storybook.js.org/docs/react/configure/theming).
 
-```javascript{4}
-// web/components/CommentsCell/CommentsCell.js
+![image](https://user-images.githubusercontent.com/300/96509066-5d5bb500-1210-11eb-8ddd-8786b7033cac.png)
 
-export const QUERY = gql`
-  query CommentsQuery {
-    comments {
-      id
-    }
-  }
-`
+We could use a gap between the end of the blog post and the start of the comments, as well as a title to help separate the two:
+
+```javascript{14-21}
+// web/src/components/BlogPost/BlogPost.js
+
+const BlogPost = ({ post, summary = false }) => {
+  return (
+    <article className="mt-10">
+      <header>
+        <h2 className="text-xl text-blue-700 font-semibold">
+          <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
+        </h2>
+      </header>
+      <div className="mt-2 text-gray-900 font-light">
+        {summary ? truncate(post.body, 100) : post.body}
+      </div>
+      {!summary && (
+        <div className="mt-12">
+          <h3 className="font-light text-lg text-gray-600">Comments</h3>
+          <div className="mt-12">
+            <CommentsCell />
+          </div>
+        </div>
+      )}
+    </article>
+  )
+}
+
+export default BlogPost
 ```
 
-When that query is found, return `comments()` (the mock data function we imported at the top).
+![image](https://user-images.githubusercontent.com/300/96508982-4026e680-1210-11eb-9b76-0a4029835e27.png)
+
+Okay, comment display is looking good! However, you may have noticed that if you tried going to the actual site there's an error where the comments should be:
+
+![image](https://user-images.githubusercontent.com/300/96509825-7a44b800-1211-11eb-880c-841c9341360f.png)
+
+Why is that? Remember that we started with the `CommentsCell`, but never actually created a Comment model in `schema.prisma` or created an SDL and service! That's another neat part of working with Storybook: you can build out UI functionality completely isolated from the api-side. In a team setting this is great because a web-side team can work on the UI while the api-side team can be building the backend end simultaneously and one doesn't have to wait for the other.
