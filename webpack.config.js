@@ -18,7 +18,7 @@ module.exports = {
       partials: 'partials',
     }),
     new webpack.DefinePlugin({
-      'process.env.IALGOLA_APP_ID': JSON.stringify(process.env['ALGOLIA_APP_ID']),
+      'process.env.ALGOLA_APP_ID': JSON.stringify(process.env['ALGOLIA_APP_ID']),
       'process.env.ALGOLIA_API_KEY': JSON.stringify(process.env['ALGOLIA_API_KEY']),
       'process.env.ALGOLIA_SEARCH_KEY': JSON.stringify(process.env['ALGOLIA_SEARCH_KEY']),
       'process.env.ALGOLIA_INDEX_NAME': JSON.stringify(
