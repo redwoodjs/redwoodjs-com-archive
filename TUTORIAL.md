@@ -256,6 +256,8 @@ Let's point out a few things here:
 
   If you don't like the name that `redwood generate` used for your route, feel free to change it in `Routes.js`! Named routes are awesome because if you ever change the path associated with a route, you need only change it in `Routes.js` and every link using a named route function will still point to the correct place. You can also pass a string to the `to` attribute, but you'll lose out on all the Redwood goodness that named routes provide.
 
+### Back Home
+
 Once we get to the About page we don't have any way to get back so let's add a link there as well:
 
 ```javascript{3,7-25}
@@ -2281,7 +2283,7 @@ const ContactPage = () => {
           name="message"
           validation={{ required: true }}
           errorClassName="error"
-        />        
+        />
         <FieldError name="message" className="error" />
 
         <Submit disabled={loading}>Save</Submit>
