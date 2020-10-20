@@ -631,17 +631,16 @@ export const Success = ({ posts }) => {
 }
 ```
 
-When React renders this component, Redwood will:
+When React renders this component, Redwood will perform the `QUERY` and display the `Loading` component until a response is received.
 
-- Perform the `QUERY` and display the `Loading` component until a response is received
-- Once the query returns it will display one of three states:
+Once the query returns, it will display one of three states:
   - If there was an error, the `Failure` component
   - If the data return is empty (`null` or empty array), the `Empty` component
   - Otherwise, the `Success` component
 
-There are also some lifecycle helpers like `beforeQuery` (for massaging any props before being given to the `QUERY`) and `afterQuery` (for massaging the data returned from GraphQL but before being sent to the `Success` component)
+There are also some lifecycle helpers like `beforeQuery` (for massaging any props before being given to the `QUERY`) and `afterQuery` (for massaging the data returned from GraphQL but before being sent to the `Success` component).
 
-The minimum you need for a cell are the `QUERY` and `Success` exports. If you don't export an `Empty` component, empty results will be sent to your `Success` component. If you don't provide a `Failure` component you'll get error output sent to the console.
+The minimum you need for a cell are the `QUERY` and `Success` exports. If you don't export an `Empty` component, empty results will be sent to your `Success` component. If you don't provide a `Failure` component, you'll get error output sent to the console.
 
 A guideline for when to use cells is if your component needs some data from the database or other service that may be delayed in responding. Let Redwood worry about juggling what is displayed when and you can focus on the happy path of the final, rendered component populated with data.
 
