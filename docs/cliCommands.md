@@ -1162,7 +1162,7 @@ yarn rw open
 
 Redwood's companion CLI development tool. You'll be using this if you're contributing to Redwood. See [Contributing](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#cli-reference-redwood-tools) in the Redwood repo.  
 
-## setup command
+## setup
 The setup command docs is a comprehensive reference of the Redwood CLI. See the [docs](https://redwoodjs.com/reference/command-line-interface#setup) for refrences.
 
 ## test
