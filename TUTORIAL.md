@@ -597,7 +597,7 @@ Oh boy, our first page with data and we already have to worry about loading stat
 
 ## Cells
 
-These features are common in most web apps. We wanted to see if there was something we could do to make developers' lives easier when it comes to adding them to a typical component. We think we've come up with something to help. We call them _Cells_. Cells provide a simpler and more declarative approach to data fetching. (You can read the full documentation about Cells [here](https://redwoodjs.com/docs/cells).)
+These features are common in most web apps. We wanted to see if there was something we could do to make developers' lives easier when it comes to adding them to a typical component. We think we've come up with something to help. We call them _Cells_. Cells provide a simpler and more declarative approach to data fetching. ([Read the full documentation about Cells](https://redwoodjs.com/docs/cells).)
 
 When you create a cell you export several specially named constants and then Redwood takes it from there. A typical cell may look something like:
 
@@ -631,7 +631,7 @@ export const Success = ({ posts }) => {
 }
 ```
 
-When React renders this component Redwood will:
+When React renders this component, Redwood will:
 
 - Perform the `QUERY` and display the `Loading` component until a response is received
 - Once the query returns it will display one of three states:
