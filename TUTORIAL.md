@@ -674,6 +674,8 @@ export const Success = ({ blogPosts }) => {
 }
 ```
 
+> **Generator case insensitivity**
+>
 > When generating you can use any case you'd like and Redwood will do the right thing when it comes to naming. These will all create the same filename:
 >
 >     yarn rw g cell blog_posts
