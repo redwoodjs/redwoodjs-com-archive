@@ -685,7 +685,31 @@ export const Success = ({ blogPosts }) => {
 >
 > You will need _some_ kind of indication that you're using more than one word. Calling `yarn redwood g cell blogposts` will generate a file at `web/src/components/BlogpostsCell/BlogpostsCell.js`
 
-To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case it called the query `blogPosts` which is not a valid query name for our existing Posts SDL and Service. We'll have to rename that to just `posts` in both the query name and prop named in `Success`:
+To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case it called the query `blogPosts`, which is not a valid query name for our existing Posts SDL and Service. (Check the [Creating a Post Editor section](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor) in the *Getting Dynamic* part if you don't remember where these files came from.)
+
+```javascript
+// web/src/components/BlogPostsCell/BlogPostsCell.js
+
+export const QUERY = gql`
+  query BlogPostsQuery {
+    blogPosts {
+      id
+    }
+  }
+`
+
+export const Loading = () => <div>Loading...</div>
+
+export const Empty = () => <div>Empty</div>
+
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
+
+export const Success = ({ posts }) => {
+  return JSON.stringify(posts)
+}
+```
+
+We'll have to rename that to just `posts` in both the query name and prop named in `Success`:
 
 ```javascript{5,17,18}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
