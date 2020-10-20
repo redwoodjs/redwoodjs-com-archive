@@ -1075,8 +1075,7 @@ export const users = () => {
 ```
 
 ### util
-WARNING: This command is deprecated.  
-Use "yarn rw setup" command. See setup command [here](https://redwoodjs.com/reference/command-line-interface#setup)
+This command is **deprecated** in favor of `yarn rw setup <command>`. See Setup command [here](https://redwoodjs.com/reference/command-line-interface#setup)
 
 Quality of life utilities.
 
