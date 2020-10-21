@@ -49,6 +49,20 @@ should open to a fresh new blog app:
 
 ![image](https://user-images.githubusercontent.com/300/95521547-a5f8b000-097e-11eb-911c-5fde4bed6d97.png)
 
+Let's run the test suite to make sure everything is working as expected:
+
+```terminal
+yarn rw test
+```
+
+This command starts a persistence process which watches for file changes and automatically runs any tests associated with the changed file (changing a component *or* its tests will trigger a test run).
+
+Since we just started the suite, and we haven't changed any files yet, it may not actually run any tests at all. Hit `a` to tell it run **a**ll tests and we should get a passing suite:
+
+![image](https://user-images.githubusercontent.com/300/96655360-21991c00-12f2-11eb-9394-c34c39b69f01.png)
+
+More on testing later, but for now just know that this is always what we want to aim for—all green! In fact best pracitices tell us you should not even commit any code unless the test suite passes locally. Not everyone adhears to this quite as strictly as others...*&lt;cough, cough&gt;*
+
 ## Introduction to Storybook
 
 Let's see what this Storybook thing is all about. Run this command to start up the Storybook server:
@@ -90,7 +104,13 @@ export const generated = () => {
       post={{
         id: 1,
         title: 'First Post',
-        body: 'Neutra tacos hot chicken prism raw denim...',
+        body: `Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin
+              post-ironic vape cred DIY. Street art next level umami squid. Hammock
+              hexagon glossier 8-bit banjo. Neutra la croix mixtape echo park four
+              loko semiotics kitsch forage chambray. Semiotics salvia selfies jianbing
+              hella shaman. Letterpress helvetica vaporware cronut, shaman butcher
+              YOLO poke fixie hoodie gentrify woke heirloom.`,
+        createdAt: '2020-01-01T12:34:45Z'
       }}
     />
   )
@@ -190,7 +210,7 @@ Great! Now to complete the picture let's use the summary in our home page displa
 The actual Home page isn't what references the `BlogPost` component though, that's in the
 `BlogPostsCell`. We'll add the summary prop and then check the result in Storybook:
 
-```javascript{26}
+```javascript{27}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 import BlogPost from 'src/components/BlogPost'
@@ -214,9 +234,11 @@ export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
 export const Success = ({ posts }) => {
   return (
-    <div className="-mt-12">
+    <div className="-mt-10">
       {posts.map((post) => (
-        <BlogPost key={post.id} post={post} summary={true} />
+        <div key={post.id} className="mt-10">
+          <BlogPost key={post.id} post={post} summary={true} />
+        </div>
       ))}
     </div>
   )
@@ -232,6 +254,106 @@ And if you head to the real site you'll see the summary there as well:
 Storybook makes it easy to create and modify your components in isolation and actually helps
 enforce a general best practice when building React applications: components should
 be self-contained and reusable by just changing the props that are sent in.
+
+## Our First Test
+
+So if Storybook is the first phase of creating/updating a component, phase two must be confirming the functionality with a test. Let's add a test for our new summary functionality.
+
+First let's run the existing suite to see if we broke anything:
+
+```terminal
+yarn rw test
+```
+
+Well that didn't take long! Can you guess what we broke?
+
+![image](https://user-images.githubusercontent.com/300/96655765-1b576f80-12f3-11eb-9e92-0024c19703cc.png)
+
+The test was looking for the full text of the blog post, but remember that in `BlogPostsCell` we had `BlogPost` only display the `summary` of the post, not the full text. This test is looking for the full text match.
+
+Let's update the test so that it checks for the expected behavior instead. There are entire books written on the best way to test your code, so no matter how we decide on testing this code there will be someone out there to tell us we're doing it wrong. As just one example: the simplest test would be to just copy what's output and use that for the text in the test:
+
+```javascript
+test('Success renders successfully', async () => {
+  const posts = standard().posts
+  render(<Success posts={posts} />)
+
+  expect(screen.getByText(posts[0].title)).toBeInTheDocument()
+  expect(screen.getByText("Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Str...")).toBeInTheDocument()
+})
+```
+
+But the number of characters we truncate to could be changed, so how do we encapsulate that in our test? Or should we? The number of characters is in the `BlogPost` component, which this one shouldn't know about. Even if we refactored the `truncate` function into a shared place and imported it into both `BlogPost` and this test, the test will still be knowing too much about `BlogPost`—why should it know the internals of `BlogPost` and that it's making use of this `truncate` function at all? It shouldn't!
+
+Let's compromise—by virtue of the fact that this functionality has a prop called "summary" we can guess that it's doing "something" to shorten the text. So what if we test three things that we can make reasonable assumptions about right now:
+
+1. The full body of the post body *is not* present
+2. But, at least the first couple of words of the post *are* present
+3. The text that is shown ends in `...`
+
+This gives us a buffer if we decide to truncate to something like 25 words, or even if we go up to a couple of hundred. What it *doesn't* encompass, however, is the case where the body of the blog post is shorter than the truncate limit. In that case the full text would be present, and we should probably update the `truncate` function to not add the `...` in that case. We'll leave adding that functionality and test case up to you in your free time. ;)
+
+Okay, let's do this:
+
+```javascript{27-34}
+// web/src/components/BlogPostsCell.test.js
+
+import { render, screen } from '@redwoodjs/testing'
+import { Loading, Empty, Failure, Success } from './BlogPostsCell'
+import { standard } from './BlogPostsCell.mock'
+
+describe('BlogPostsCell', () => {
+  test('Loading renders successfully', () => {
+    render(<Loading />)
+    expect(screen.getByText('Loading...')).toBeInTheDocument()
+  })
+
+  test('Empty renders successfully', async () => {
+    render(<Empty />)
+    expect(screen.getByText('Empty')).toBeInTheDocument()
+  })
+
+  test('Failure renders successfully', async () => {
+    render(<Failure error={new Error('Oh no')} />)
+    expect(screen.getByText(/Oh no/i)).toBeInTheDocument()
+  })
+
+  test('Success renders successfully', async () => {
+    const posts = standard().posts
+    render(<Success posts={posts} />)
+
+    posts.forEach((post) => {
+      const truncatedBody = posts[0].body.substring(0, 10)
+      const regex = new RegExp(`${truncatedBody}.*?\.{3}`, 'i')
+
+      expect(screen.getByText(post.title)).toBeInTheDocument()
+      expect(() => screen.getByText(post.body)).toThrowError()
+      expect(screen.getByText(regex)).toBeInTheDocument()
+    })
+  })
+})
+```
+
+This loops through each post in our `standard()` mock and for each one:
+
+`const truncatedBody = posts[0].body.substring(0, 10)`
+: Create a variable `truncatedBody` containing the first 10 characters of the
+
+`const regex = new RegExp(`${truncatedBody}.*?\.{3}`, 'i')`
+: Create regex which contains those 10 characters followed by any characters until it reaches three periods (the ellipsis at the end of the truncated text)
+
+`expect(screen.getByText(post.title)).toBeInTheDocument()`
+: Find the title in the page
+
+`expect(() => screen.getByText(post.body)).toThrowError()`
+: Trying to find the *full* text of the body should raise an error
+
+`expect(screen.getByText(regex)).toBeInTheDocument()`
+: Find the truncated-body-plus-ellipsis somewhere in the page
+
+As soon as you saved that test file the test should have run and passed! Press `a` to run the whole suite.
+
+To double check that we're testing what we think we're testing, open up `BlogPostCell.js` and remove the `summary={true}` prop—the test will now fail (because the full body of the post is now on the page and `expect(() => screen.getByText(post.body)).toThrowError()` is not raising an error any more. Make sure to put the `summary={true}` back before we continue!
 
 ## Building a Component with Storybook
 
