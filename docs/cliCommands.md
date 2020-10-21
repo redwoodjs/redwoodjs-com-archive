@@ -1075,21 +1075,6 @@ export const users = () => {
 ```
 
 ### util
-WARNING: This command is deprecated.  
-Use "yarn rw setup" command. See setup command [here](https://redwoodjs.com/reference/command-line-interface#setup)
-
-Quality of life utilities.
-
-```
-yarn rw generate util <util>
-```
-
-<br/>
-
-| Arguments & Options | Description                              |
-| :------------------ | :--------------------------------------- |
-| `util`              | Utility to setup. Choices are `tailwind` |
-| `--force, -f`       | Overwrite existing configuration         |
 
 #### tailwind
 
@@ -1161,10 +1146,40 @@ yarn rw open
 
 ## redwood-tools (alias rwt)
 
-Redwood's companion CLI development tool. You'll be using this if you're contributing to Redwood. See [Contributing](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#cli-reference-redwood-tools) in the Redwood repo.  
+WARNING: This command is deprecated.  
+Use "yarn rw setup" command. See setup command [here](https://redwoodjs.com/reference/command-line-interface#setup)
 
-## setup command
-The setup command docs is a comprehensive reference of the Redwood CLI. See the [docs](https://redwoodjs.com/reference/command-line-interface#setup) for refrences.
+Quality of life utilities.
+
+```
+yarn rw generate util <util>
+```
+
+<br/>
+
+| Arguments & Options | Description                              |
+| :------------------ | :--------------------------------------- |
+| `util`              | Utility to setup. Choices are `tailwind` |
+| `--force, -f`       | Overwrite existing configuration         |  
+ 
+
+
+```   
+$ rw setup --help
+
+Initialize project config and install packages
+
+Commands:
+  rw setup i18n               Setup i18n
+  rw setup tailwind         Setup tailwindcss and PostCSS
+  rw setup webpack       Setup webpack in your project so you can add custom config
+
+Options:
+  --help     Show help                                                 [boolean]
+  --version  Show version number                             [boolean] 
+  ```  
+
+
 
 ## test
 
