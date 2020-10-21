@@ -324,7 +324,7 @@ describe('BlogPostsCell', () => {
 
     posts.forEach((post) => {
       const truncatedBody = posts[0].body.substring(0, 10)
-      const regex = new RegExp(`${truncatedBody}.*?\.{3}`, 'i')
+      const regex = new RegExp(`${truncatedBody}.*?\.{3}`)
 
       expect(screen.getByText(post.title)).toBeInTheDocument()
       expect(() => screen.getByText(post.body)).toThrowError()
@@ -337,10 +337,10 @@ describe('BlogPostsCell', () => {
 This loops through each post in our `standard()` mock and for each one:
 
 `const truncatedBody = posts[0].body.substring(0, 10)`
-: Create a variable `truncatedBody` containing the first 10 characters of the
+: Create a variable `truncatedBody` containing the first 10 characters of the post body
 
-`const regex = new RegExp(`${truncatedBody}.*?\.{3}`, 'i')`
-: Create regex which contains those 10 characters followed by any characters until it reaches three periods (the ellipsis at the end of the truncated text)
+``const regex = new RegExp(`${truncatedBody}.*?\.{3}`)``
+: Create a regular expression which contains those 10 characters followed by any characters `.*?` until it reaches three periods `\.{3}` (the ellipsis at the end of the truncated text)
 
 `expect(screen.getByText(post.title)).toBeInTheDocument()`
 : Find the title in the page

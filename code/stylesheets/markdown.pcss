@@ -69,7 +69,8 @@
   }
 
   p code,
-  li code {
+  li code,
+  dl code {
     @apply bg-red-200 text-gray-900 text-sm px-1 py-half rounded;
   }
 
@@ -155,6 +156,22 @@
   summary {
     @apply outline-none cursor-pointer;
   }
+
+  dl {
+    @apply my-8;
+  }
+
+  dt {
+    @apply mt-4;
+  }
+
+  dd {
+    @apply text-sm text-gray-800 mt-1 ml-4;
+    code {
+      @apply text-xs;
+    }
+  }
+
 }
 
 #status-0 {
