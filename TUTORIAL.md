@@ -489,7 +489,7 @@ This says that we want a table called `Post` and it should have:
 - A `body` field that will contain a `String`
 - A `createdAt` field that will be a `DateTime` and will `@default` to `now()` when we create a new record (so we don't have to set the time manually in our app)
 
-> **Integer vs. string ids**
+> **Integer vs. String IDs**
 >
 > For the tutorial we're keeping things simple and using an integer for our ID column. Some apps may want to use a CUID or a UUID which Prisma supports. In that case you would use `String` for the datatype instead of `Int` and use `cuid()` or `uuid()` instead of `autoincrement()`:
 >
