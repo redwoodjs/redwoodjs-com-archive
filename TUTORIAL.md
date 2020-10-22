@@ -489,11 +489,15 @@ This says that we want a table called `Post` and it should have:
 - A `body` field that will contain a `String`
 - A `createdAt` field that will be a `DateTime` and will `@default` to `now()` when we create a new record (so we don't have to set the time manually in our app)
 
+> **Integer vs. String IDs**
+>
 > For the tutorial we're keeping things simple and using an integer for our ID column. Some apps may want to use a CUID or a UUID which Prisma supports. In that case you would use `String` for the datatype instead of `Int` and use `cuid()` or `uuid()` instead of `autoincrement()`:
 >
 > `id String @id @default(cuid())`
 >
-> Integers also make for nicer URLs like https://redwoodblog.com/posts/123 instead of https://redwoodblog.com/posts/eebb026c-b661-42fe-93bf-f1a373421a13 Take a look at the [official Prisma documentation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/data-model#ids) for more on ID fields.
+> Integers also make for nicer URLs like https://redwoodblog.com/posts/123 instead of https://redwoodblog.com/posts/eebb026c-b661-42fe-93bf-f1a373421a13. 
+>
+> Take a look at the [official Prisma documentation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/data-model#defining-an-id-field) for more on ID fields.
 
 ### Migrations
 
@@ -509,6 +513,8 @@ We apply the migration with another command:
 
     yarn rw db up
 
+> **`redwood` Shorthand**
+>
 > From now on we'll use the shorter `rw` alias instead of the full `redwood` name.
 
 This will apply the migration (which runs the commands against the database to create the changes we need) which results in creating a new table called `Post` with the fields we defined above.
@@ -567,6 +573,8 @@ Here's what happened when we ran that `yarn rw g scaffold post` command:
   - `PostForm` the actual form used by both the New and Edit components
   - `Posts` displays the table of all posts
 
+> **Generator Naming Conventions**
+>
 > You'll notice that some of the generated parts have plural names and some have singular. This convention is borrowed from Ruby on Rails which uses a more "human" naming convention: if you're dealing with multiple of something (like the list of all posts) it will be plural. If you're only dealing with a single something (like creating a new post) it will be singular. It sounds natural when speaking, too: "show me a list of all the posts" versus "I'm going to create a new post."
 >
 > As far as the generators are concerned:
