@@ -573,7 +573,7 @@ Here's what happened when we ran that `yarn rw g scaffold post` command:
   - `PostForm` the actual form used by both the New and Edit components
   - `Posts` displays the table of all posts
 
-> **Generator naming conventions**
+> **Generator Naming Conventions**
 >
 > You'll notice that some of the generated parts have plural names and some have singular. This convention is borrowed from Ruby on Rails which uses a more "human" naming convention: if you're dealing with multiple of something (like the list of all posts) it will be plural. If you're only dealing with a single something (like creating a new post) it will be singular. It sounds natural when speaking, too: "show me a list of all the posts" versus "I'm going to create a new post."
 >
