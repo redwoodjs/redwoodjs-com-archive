@@ -513,7 +513,7 @@ We apply the migration with another command:
 
     yarn rw db up
 
-> **`redwood` shorthand**
+> **`redwood` Shorthand**
 >
 > From now on we'll use the shorter `rw` alias instead of the full `redwood` name.
 
