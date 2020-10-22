@@ -58,7 +58,7 @@ What exactly just happened? Glad you asked.
 
 Just like that, we are done. No seriously. Visit http://localhost:8910/user-examples to see for yourself. 
 
-<img src="/images/emptyUserExample.png" />
+<img width="463" alt="Screen Shot 2020-10-21 at 6 28 08 PM" src="https://user-images.githubusercontent.com/2951/96807389-3eede900-13cb-11eb-828a-52210cd67e3e.png">
 
 Redwood has created everything we need to create, edit, delete and view a User. And you didn't have to write one line of boilerplate code. 
 
