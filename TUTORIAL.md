@@ -691,7 +691,7 @@ export const Success = ({ blogPosts }) => {
 >     yarn rw g cell blogPosts
 >     yarn rw g cell BlogPosts
 
-To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case it called the query `blogPosts`, which is not a valid query name for our existing Posts SDL and Service. (Go back to the [Creating a Post Editor section](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor) in the *Getting Dynamic* part to see where these files come from.)
+To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case the query is called `blogPosts`:
 
 ```javascript
 // web/src/components/BlogPostsCell/BlogPostsCell.js
@@ -714,6 +714,8 @@ export const Success = ({ posts }) => {
   return JSON.stringify(posts)
 }
 ```
+
+However, this is not a valid query name for our existing Posts SDL (`src/graphql/posts.sdl.js`) and Service (`src/services/posts/posts.js`). (To see where these files come from, go back to the [Creating a Post Editor section](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor) in the *Getting Dynamic* part.)
 
 We'll have to rename that to just `posts` in both the query name and prop named in `Success`:
 
