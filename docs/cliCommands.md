@@ -1075,6 +1075,23 @@ export const users = () => {
 ```
 
 ### util
+<<<<<<< HEAD
+=======
+This command is **deprecated** in favor of `yarn rw setup <command>`. See Setup command [here](https://redwoodjs.com/reference/command-line-interface#setup)
+
+Quality of life utilities.
+
+```
+yarn rw generate util <util>
+```
+
+<br/>
+
+| Arguments & Options | Description                              |
+| :------------------ | :--------------------------------------- |
+| `util`              | Utility to setup. Choices are `tailwind` |
+| `--force, -f`       | Overwrite existing configuration         |
+>>>>>>> f9f32491ca3dbd590fa0cbc9b155703079ced8bc
 
 #### tailwind
 
@@ -1180,6 +1197,11 @@ Options:
   ```  
 
 
+<<<<<<< HEAD
+=======
+## setup
+The setup command docs is a comprehensive reference of the Redwood CLI. See the [docs](https://redwoodjs.com/reference/command-line-interface#setup) for refrences.
+>>>>>>> f9f32491ca3dbd590fa0cbc9b155703079ced8bc
 
 ## test
 
