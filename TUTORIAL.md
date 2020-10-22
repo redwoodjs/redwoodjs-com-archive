@@ -682,16 +682,14 @@ export const Success = ({ blogPosts }) => {
 }
 ```
 
-> **Generator case insensitivity**
+> **Cell Generator Naming**
 >
-> When generating you can use any case you'd like and Redwood will do the right thing when it comes to naming. These will all create the same filename:
+> When generating cells you can use any case you'd like and Redwood will do the right thing when it comes to naming. However, for our use case you will need _some_ kind of indication that you're using more than one blog post. Calling `yarn redwood g cell blogposts` will generate a file at `web/src/components/BlogpostsCell/BlogpostsCell.js`. These will all create the same filename:
 >
 >     yarn rw g cell blog_posts
 >     yarn rw g cell blog-posts
 >     yarn rw g cell blogPosts
 >     yarn rw g cell BlogPosts
->
-> You will need _some_ kind of indication that you're using more than one word. Calling `yarn redwood g cell blogposts` will generate a file at `web/src/components/BlogpostsCell/BlogpostsCell.js`
 
 To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case it called the query `blogPosts`, which is not a valid query name for our existing Posts SDL and Service. (Go back to the [Creating a Post Editor section](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor) in the *Getting Dynamic* part to see where these files come from.)
 
