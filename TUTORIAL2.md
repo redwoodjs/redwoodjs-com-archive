@@ -319,6 +319,10 @@ This loops through each post in our `standard()` mock and for each one:
 
 As soon as you saved that test file the test should have run and passed! Press `a` to run the whole suite.
 
+> **What's the difference between `getByText()` and `queryByText()`?**
+>
+> `getByText()` will throw an error if the text isn't found in the document, whereas `queryByText()` will  return `null`. You can read more about these in the [DOM Testing Library Queries](https://testing-library.com/docs/dom-testing-library/api-queries) docs.
+
 To double check that we're testing what we think we're testing, open up `BlogPostCell.js` and remove the `summary={true}` prop (or set it to `false`)—the test will now fail (because the full body of the post is now on the page and `expect(screen.queryByText(post.body)).not.toBeInTheDocument()` *is* in the document. Make sure to put the `summary={true}` back before we continue!
 
 ### Testing BlogPost
@@ -515,6 +519,43 @@ Now we can see our roundedness quite easily in Storybook:
 > If you haven't used TailwindCSS before just know that the `m` in the className is short for "margin" and the `4` refers to four "units" of margin. By default one unit is 0.25rem. So "m-4" is equivalent to `margin: 1rem`.
 
 Our amazing blog posts will obviously garner a huge and passionate fanbase and we will very rarely have only a single comment. Let's work on displaying a list of comments.
+
+### Testing the Comment Component
+
+We don't want Santa to skip our house for being naughty developers so let's test our Comment component. We could test that the author's name and the body of the comment appear, as well as the date it was posted.
+
+The default test that comes with a generated component just makes sure that no errors are thrown, which is the least we could ask of our components!
+
+Let's add a sample Comment to the test and check that the various parts are being rendered:
+
+```javascript{9-21}
+// web/src/components/Comment.test.js
+
+import { render, screen } from '@redwoodjs/testing'
+
+import Comment from './Comment'
+
+describe('Comment', () => {
+  it('renders successfully', () => {
+    const comment = {
+      name: 'John Doe',
+      body: 'This is my comment',
+      createdAt: '2020-01-02T12:34:56Z',
+    }
+
+    const { container } = render(<Comment comment={comment} />)
+
+    expect(screen.getByText(comment.name)).toBeInTheDocument()
+    expect(screen.getByText(comment.body)).toBeInTheDocument()
+    expect(
+      container.querySelector(`time[datetime="${comment.createdAt}"]`)
+    ).toBeInTheDocument()
+  })
+})
+
+```
+
+We have do something slightly different to check that there's a `<time>` tag with a `datetime` attribute as the helpers on `screen` only have a [limited set](https://testing-library.com/docs/dom-testing-library/api-queries#queries) of checks you can do compared to rendering to `container` where you can query for whatever you want.
 
 ## Multiple Comments
 
