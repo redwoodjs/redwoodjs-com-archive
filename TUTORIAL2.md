@@ -557,6 +557,10 @@ describe('Comment', () => {
 
 We have do something slightly different to check that there's a `<time>` tag with a `datetime` attribute as the helpers on `screen` only have a [limited set](https://testing-library.com/docs/dom-testing-library/api-queries#queries) of checks you can do compared to rendering to `container` where you can query for whatever you want.
 
+> Notice that we didn't test for the formatted date output. That would require putting the formula for formatting in the test as well, and now the code and the test are doing the exact same thing, and if you change one you have to change the other. Having this duplication provides no apparent benefit and just makes the test brittle. According to the HTML5 spec the `<time>` tag "may include the `datetime` attribute to translate dates into machine-readable format" which is exactly what the ISO8601 Datetime format is for. It's a good bet we won't have to change the datetime representation here, so we test for that instead.
+>
+> One alternative approach could be to move the formatting formula into a function that you can export from the Comment component. Then you can import that in your test and use it to check the formatted output. Now if you change the formula the test keeps passing because it's sharing the function with Comment.
+
 ## Multiple Comments
 
 Let's think about where our comments are being displayed. Probably not on the homepage, since that only shows a summary of each post. A user would need to go to the full page to show the comments for that blog post. But that page is only fetching the data for the single blog post itself, nothing else. We'll need to get the comments and since we'll be fetching *and* displaying them, that sounds like a job for a Cell.
