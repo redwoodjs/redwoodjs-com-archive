@@ -1,40 +1,23 @@
 # Welcome to Redwood, Part II: Redwood's Revenge
 
-Part 1 of the tutorial was a huge success! It introduced hundreds (maybe thousands?)
-of developers to what Redwood could do to make web development in the Javascript
-ecosystem a delight. But that was just the beginning.
+Part 1 of the tutorial was a huge success! It introduced hundreds (maybe thousands?) of developers to what Redwood could do to make web development in the Javascript ecosystem a delight. But that was just the beginning.
 
-If you read the README [closely](https://github.com/redwoodjs/redwood#technologies)
-you may have seen a few technologies that we didn't
-touch on at all in the first tutorial: [Storybook](https://storybook.js.org/) and [Jest](https://jestjs.io/). In reality, these
-have been core to the very idea of Redwood from the beginning—an improvement to the
-entire experience of developing a web application.
+If you read the README [closely](https://github.com/redwoodjs/redwood#technologies) you may have seen a few technologies that we didn't touch on at all in the first tutorial: [Storybook](https://storybook.js.org/) and [Jest](https://jestjs.io/). In reality, these have been core to the very idea of Redwood from the beginning—an improvement to the entire experience of developing a web application.
 
-While they're totally optional, we believe using these two tools will greatly
-improve your development experience, making your applications easier to develop,
-easier to maintain, and easier to share with a larger team. In this second tutorial
-we're going to show you how.
+While they're totally optional, we believe using these two tools will greatly improve your development experience, making your applications easier to develop, easier to maintain, and easier to share with a larger team. In this second tutorial we're going to show you how.
 
-Oh, and while we're at we'll introduce Role-based Authorization Control (RBAC),
-which wasn't available when we wrote the first tutorial, but is now, and it's amazing.
+Oh, and while we're at we'll introduce Role-based Authorization Control (RBAC), which wasn't available when we wrote the first tutorial, but is now, and it's amazing.
 
 ## Prerequisites
 
-We highly recommend going through the first tutorial first, or at least have built
-a slightly complex Redwood app on your own. You've hopefully got experience with:
+We highly recommend going through the first tutorial first, or at least have built a slightly complex Redwood app on your own. You've hopefully got experience with:
 
 * Authorization
 * Cells
 * GraphQL & SDLs
 * Services
 
-If you haven't been through the first tutorial, or maybe you went through it on an
-older version of Redwood (before 0.19.0) you can clone this repo which contains
-everything built in part 1 and also adds a little styling so it isn't quite so...ugly.
-Don't get us wrong, what we built in part 1 had a great personality! We just gave it
-some hipper clothes and a nice haircut. We used [TailwindCSS](https://tailwindcss.com)
-to style things up and added a `<div>` or two to give us some additional hooks to hang
-some styling.
+If you haven't been through the first tutorial, or maybe you went through it on an older version of Redwood (before 0.19.0) you can clone this repo which contains everything built in part 1 and also adds a little styling so it isn't quite so...ugly. Don't get us wrong, what we built in part 1 had a great personality! We just gave it some hipper clothes and a nice haircut. We used [TailwindCSS](https://tailwindcss.com) to style things up and added a `<div>` or two to give us some additional hooks to hang some styling.
 
     git clone https://github.com/redwoodjs/redwood-tutorial
     cd redwood-tutorial
@@ -43,9 +26,7 @@ some styling.
     yarn rw db seed
     yarn dev
 
-That'll check out the repo, install all the dependencies, create your local database
-and fill it with a few blog posts, and finally start up the dev server. Your browser
-should open to a fresh new blog app:
+That'll check out the repo, install all the dependencies, create your local database and fill it with a few blog posts, and finally start up the dev server. Your browser should open to a fresh new blog app:
 
 ![image](https://user-images.githubusercontent.com/300/95521547-a5f8b000-097e-11eb-911c-5fde4bed6d97.png)
 
@@ -69,14 +50,11 @@ Let's see what this Storybook thing is all about. Run this command to start up t
 
     yarn rw storybook
 
-After some compling you should get a message saying that Storybook has started and it's
-available at http://localhost:7910
+After some compling you should get a message saying that Storybook has started and it's available at http://localhost:7910
 
 ![image](https://user-images.githubusercontent.com/300/95522673-8f078d00-0981-11eb-9551-0a211c726802.png)
 
-If you poke around at the file tree on the left you'll see all of the components, cells,
-layouts and pages we created during the tutorial. Where did they come from? You may recall
-that everytime we generated a new page/cell/component we actaully created at least *three* files:
+If you poke around at the file tree on the left you'll see all of the components, cells, layouts and pages we created during the tutorial. Where did they come from? You may recall that everytime we generated a new page/cell/component we actaully created at least *three* files:
 
 * BlogPost.js
 * BlogPost.stories.js
@@ -84,16 +62,13 @@ that everytime we generated a new page/cell/component we actaully created at lea
 
 > If you generated a cell then you also got a `.mock.js` file (more on those later).
 
-Those `.stories.js` files are what makes the tree on the left side of the Storybook browser
-possible! From their homepage, Storybook describes itself as:
+Those `.stories.js` files are what makes the tree on the left side of the Storybook browser possible! From their homepage, Storybook describes itself as:
 
 *"Storybook is an open source tool for developing UI components in isolation for React, Vue, Angular, and more. It makes building stunning UIs organized and efficient."*
 
-So, the idea here is that you can build out your components/cells/pages in isolation, get them
-looking the way you want and displaying the correct data, then plug them into your full application.
+So, the idea here is that you can build out your components/cells/pages in isolation, get them looking the way you want and displaying the correct data, then plug them into your full application.
 
-When Storybook opened it should have opened Components > BlogPost > Generated which is the
-generated component we created to display a single blog post. If you open `web/src/components/BlogPost/BlogPost.stories.js` you'll see what it takes to explain this component to Storybook, and it isn't much:
+When Storybook opened it should have opened Components > BlogPost > Generated which is the generated component we created to display a single blog post. If you open `web/src/components/BlogPost/BlogPost.stories.js` you'll see what it takes to explain this component to Storybook, and it isn't much:
 
 ```javascript
 import BlogPost from './BlogPost'
@@ -119,9 +94,7 @@ export const generated = () => {
 export default { title: 'Components/BlogPost' }
 ```
 
-You import the component you want to use and then all of the named exports in the file will be
-a single "story" as displayed in Storybook. In this case the generator named it "generated"
-which shows as the "Generated" story in the tree view:
+You import the component you want to use and then all of the named exports in the file will be a single "story" as displayed in Storybook. In this case the generator named it "generated" which shows as the "Generated" story in the tree view:
 
 ```terminal
 Components
@@ -166,14 +139,9 @@ const BlogPost = ({ post, summary = false }) => {
 export default BlogPost
 ```
 
-We'll pass an additional `summary` prop to the component to let it know if should show
-just the summary or the whole thing. We default it to `false` to preserve the existing
-behavior—always showing the full body.
+We'll pass an additional `summary` prop to the component to let it know if should show just the summary or the whole thing. We default it to `false` to preserve the existing behavior—always showing the full body.
 
-Now in the story, let's create a `summary` story that uses `BlogPost` the same way that
-`generated` does, but adds the new prop. We'll take the content of the sample post and
-put that in a constant that both stories will use. We'll also rename `generated` to
-`full` to make it clear what's different between the two:
+Now in the story, let's create a `summary` story that uses `BlogPost` the same way that `generated` does, but adds the new prop. We'll take the content of the sample post and put that in a constant that both stories will use. We'll also rename `generated` to `full` to make it clear what's different between the two:
 
 ```javascript{5-14,16-18,20-22}
 // web/components/BlogPost/BlogPost.stories.js
@@ -206,9 +174,7 @@ As soon as you save the change the stories Storybook should refresh and show the
 
 ![image](https://user-images.githubusercontent.com/300/95523957-ed823a80-0984-11eb-9572-31f1c249cb6b.png)
 
-Great! Now to complete the picture let's use the summary in our home page display of blog posts.
-The actual Home page isn't what references the `BlogPost` component though, that's in the
-`BlogPostsCell`. We'll add the summary prop and then check the result in Storybook:
+Great! Now to complete the picture let's use the summary in our home page display of blog posts. The actual Home page isn't what references the `BlogPost` component though, that's in the `BlogPostsCell`. We'll add the summary prop and then check the result in Storybook:
 
 ```javascript{27}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
@@ -251,9 +217,7 @@ And if you head to the real site you'll see the summary there as well:
 
 ![image](https://user-images.githubusercontent.com/300/95527363-ef9ac800-0989-11eb-9c53-6dc8ab58799c.png)
 
-Storybook makes it easy to create and modify your components in isolation and actually helps
-enforce a general best practice when building React applications: components should
-be self-contained and reusable by just changing the props that are sent in.
+Storybook makes it easy to create and modify your components in isolation and actually helps enforce a general best practice when building React applications: components should be self-contained and reusable by just changing the props that are sent in.
 
 ## Our First Test
 
@@ -293,6 +257,8 @@ Let's compromise—by virtue of the fact that this functionality has a prop call
 
 This gives us a buffer if we decide to truncate to something like 25 words, or even if we go up to a couple of hundred. What it *doesn't* encompass, however, is the case where the body of the blog post is shorter than the truncate limit. In that case the full text would be present, and we should probably update the `truncate` function to not add the `...` in that case. We'll leave adding that functionality and test case up to you in your free time. ;)
 
+### Adding the Test
+
 Okay, let's do this:
 
 ```javascript{27-34}
@@ -327,7 +293,7 @@ describe('BlogPostsCell', () => {
       const regex = new RegExp(`${truncatedBody}.*?\.{3}`)
 
       expect(screen.getByText(post.title)).toBeInTheDocument()
-      expect(() => screen.getByText(post.body)).toThrowError()
+      expect(screen.queryByText(post.body)).not.toBeInTheDocument()
       expect(screen.getByText(regex)).toBeInTheDocument()
     })
   })
@@ -345,15 +311,73 @@ This loops through each post in our `standard()` mock and for each one:
 `expect(screen.getByText(post.title)).toBeInTheDocument()`
 : Find the title in the page
 
-`expect(() => screen.getByText(post.body)).toThrowError()`
-: Trying to find the *full* text of the body should raise an error
+`expect(screen.queryByText(post.body)).not.toBeInTheDocument()`
+: When trying to find the *full* text of the body, it should not be present
 
 `expect(screen.getByText(regex)).toBeInTheDocument()`
 : Find the truncated-body-plus-ellipsis somewhere in the page
 
 As soon as you saved that test file the test should have run and passed! Press `a` to run the whole suite.
 
-To double check that we're testing what we think we're testing, open up `BlogPostCell.js` and remove the `summary={true}` prop—the test will now fail (because the full body of the post is now on the page and `expect(() => screen.getByText(post.body)).toThrowError()` is not raising an error any more. Make sure to put the `summary={true}` back before we continue!
+To double check that we're testing what we think we're testing, open up `BlogPostCell.js` and remove the `summary={true}` prop (or set it to `false`)—the test will now fail (because the full body of the post is now on the page and `expect(screen.queryByText(post.body)).not.toBeInTheDocument()` *is* in the document. Make sure to put the `summary={true}` back before we continue!
+
+### Testing BlogPost
+
+Our test suite is passing again but it's a trick! We never added a test for the actual `summary` functionality that we added to the `BlogPost` component! We tested that `BlogPostCell` requests that `BlogPost` return a summary, but what it means to render a summary is knowledge that only `BlogPost` contains.
+
+When you get into the flow of building your app it can be very easy to overlook testing functionality like this. Wasn't it Winston Chuchill who said "a thorough test suite requires eternal vigilence"? Techniques like [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) (TDD) were established to help combat this tendency—write the test first, watch it fail, then write the code to make the test pass. What we're doing is affectionately known as [Development Driven Testing](https://medium.com/table-xi/development-driven-testing-673d3959dac2). You'll probably settle somewhere in the middle but one maxim is always true—some tests are better than no tests.
+
+The summary functionality in `BlogPost` is pretty simple, but there are a couple of different ways we could test it:
+
+* Export the `truncate` function and test it directly
+* Test the final rendered state of the component
+
+In this case `truncate` "belongs to" `BlogPost` and the outside world really shouldn't need to worry about it or know that it exists. If we came to a point in development where another component needed to truncate text that would be a perfect time to move this function to a shared location and import it into both components that need it. `truncate` could then have its own dedicated test. But for now let's keep our separation of concerns and test the one thing that's "public" about this component—the result of the render.
+
+In this case let's just test that the output matches an exact string. You could spin yourself in circles trying to refactor the code to make it absolutely bulletproof to code changes breaking the tests, but will you ever actually need that level of flexibility? It's always a trade-off!
+
+We'll move the sample input data to a constant and then use it in both the existing test (which tests that not passing the `summary` prop at all results in the full body being rendered) and our new test that tests for the summary version being rendered:
+
+```javascript{7-12,22-31}
+// web/src/components/BlogPost.test.js
+
+import { render, screen } from '@redwoodjs/testing'
+
+import BlogPost, { SUMMARY_LENGTH, SUMMARY_SUFFIX } from './BlogPost'
+
+const POST = {
+  id: 1,
+  title: 'First post',
+  body: `Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Street art next level umami squid. Hammock hexagon glossier 8-bit banjo. Neutra la croix mixtape echo park four loko semiotics kitsch forage chambray. Semiotics salvia selfies jianbing hella shaman. Letterpress helvetica vaporware cronut, shaman butcher YOLO poke fixie hoodie gentrify woke heirloom.`,
+  createdAt: new Date().toISOString(),
+}
+
+describe('BlogPost', () => {
+  it('renders a blog post', () => {
+    render(<BlogPost post={POST} />)
+
+    expect(screen.getByText(POST.title)).toBeInTheDocument()
+    expect(screen.getByText(POST.body)).toBeInTheDocument()
+  })
+
+  it('renders a summary of a blog post', () => {
+    render(<BlogPost post={POST} summary={true} />)
+
+    expect(screen.getByText(POST.title)).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        'Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Str...'
+      )
+    ).toBeInTheDocument()
+  })
+})
+```
+
+Saving that change should run the tests for that single file and pressing `a` will run them all to make sure the rest of the suite is still happy.
+
+### One Last Thing
+
+Remember we set the `summary` prop to default to `false` if it doesn't exist, which is tested by the first test case. However, we don't have a test that checks what happens if `false` is set explictly. Feel free to add that now if you want Complete Coverage&trade;!
 
 ## Building a Component with Storybook
 
