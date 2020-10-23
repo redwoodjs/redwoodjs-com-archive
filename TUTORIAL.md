@@ -48,6 +48,8 @@ yarn --version
 
 Please do upgrade accordingly. Then proceed to the RedwoodJS installation when you're ready!
 
+> **Installing Node and Yarn**
+>
 > There are many ways to install and manage both Node.js and Yarn. If you're installing for the first time, we recommend the following:
 >
 > **Yarn**
@@ -158,7 +160,7 @@ That's it for the backend.
 - `public` contains assets not used by React components (they will be copied over unmodified to the final app's root directory):
   - `favicon.png` is the icon that goes in a browser tab when your page is open (apps start with the RedwoodJS logo).
   - `robots.txt` can be used to control what web indexers are [allowed to do](https://www.robotstxt.org/robotstxt.html).
-  - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can read it on Github [here](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
+  - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can also [read this README.md file on GitHub](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
 - `index.css` is a generic place to put your CSS, but there are many options.
 - `index.html` is the standard React starting point for our app.
 - `index.js` the bootstraping code to get our Redwood app up and running.
@@ -177,6 +179,8 @@ The command above does three things:
 - Creates a Storybook file for this component at `web/src/pages/HomePage/HomePage.stories.js`. Storybook is a wonderful tool for efficiently developing and organizing UI components. If you'd like to learn more, see this [Redwood Forum topic](https://community.redwoodjs.com/t/how-to-use-the-new-storybook-integration-in-v0-13-0/873) to start using it in your development process.
 - Adds a `<Route>` in `web/src/Routes.js` that maps the path `/` to the new _HomePage_ page.
 
+> **Automatic import of pages in Routes file**
+>
 > If you look in Routes you'll notice that we're referencing a component, `HomePage`, that isn't imported anywhere. Redwood automatically imports all pages in the Routes file since we're going to need to reference them all anyway. It saves a potentially huge `import` declaration from cluttering up the routes file.
 
 In fact this page is already live (your browser automatically reloaded):
@@ -199,7 +203,7 @@ Try changing the route to something like:
 <Route path="/hello" page={HomePage} name="home" />
 ```
 
-Now you'll see the `NotFoundPage` page. As soon as you add your first route, you'll never see the Redwood splash screen again. From now on, when no route can be found that matches the requested URL, Redwood will render the `NotFoundPage`. Change your URL to http://localhost:8910/hello and you should see the homepage again.
+As soon as you add your first route, you'll never see the initial Redwood splash screen again. From now on, when no route can be found that matches the requested URL, Redwood will render the `NotFoundPage`. Change your URL to http://localhost:8910/hello and you should see the homepage again.
 
 Change the route path back to `/` before continuing!
 
@@ -211,6 +215,8 @@ Let's create an "About" page for our blog so everyone knows about the geniuses b
 
 Notice that we didn't specify a route path this time. If you leave it off the `redwood generate page` command, Redwood will create a `Route` and give it a path that is the same as the page name you specified prepended with a slash. In this case it will be `/about`.
 
+> **Code-splitting each page**
+>
 > As you add more pages to your app, you may start to worry that more and more code has to be downloaded by the client on any initial page load. Fear not! Redwood will automatically code-split on each Page, which means that initial page loads can be blazingly fast, and you can create as many Pages as you want without having to worry about impacting overall webpack bundle size. If, however, you do want specific Pages to be included in the main bundle, you can override the default behavior.
 
 http://localhost:8910/about should show our new page. But no one's going to find it by manually changing the URL so let's add a link from our homepage to the About page and vice versa. We'll start creating a simple header and nav bar at the same time on the HomePage:
@@ -2360,6 +2366,7 @@ Before we continue, make sure your app is fully committed and pushed to GitHub, 
 > ```
 
 ### Vercel (alternative deploy target)
+
 Redwood officially supports multiple hosting providers (with even more on the way). Although this Tutorial continues with a focus on Netlify deployment and authentication with Netlify Identity, you can deploy to [Vercel](https://vercel.com/redwoodjs-core) instead. To do this, first complete "The Database" section below, but then use this [Vercel deploy walkthrough](https://redwoodjs.com/docs/deploy#redwood-deploy-configuration) in place of the following "Netlify" instructions. **Note**: Netlify Identity, used in upcoming "Authentication" section, won’t work on the Vercel platform.
 
 ### The Database
@@ -2751,10 +2758,10 @@ const BlogLayout = ({ children }) => {
           </li>
           <li>
             <a href="#" onClick={isAuthenticated ? logOut : logIn}>
-              { isAuthenticated ? 'Log Out' : 'Log In' }
+              {isAuthenticated ? 'Log Out' : 'Log In'}
             </a>
           </li>
-          { isAuthenticated && <li>{currentUser.email}</li> }
+          {isAuthenticated && <li>{currentUser.email}</li>}
         </ul>
       </nav>
       <main>{children}</main>
