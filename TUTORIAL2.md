@@ -387,7 +387,7 @@ Saving that change should run the tests for that single file and pressing `a` wi
 
 Remember we set the `summary` prop to default to `false` if it doesn't exist, which is tested by the first test case. However, we don't have a test that checks what happens if `false` is set explictly. Feel free to add that now if you want Complete Coverage&trade;!
 
-## Building a Component with Storybook
+## Building a Component the Redwood Way
 
 What's our blog missing? Comments. Let's add a simple comment engine so people can leave
 their completely rational, well-reasoned comments on our blog posts. It's the Internet,
@@ -399,6 +399,8 @@ There are a couple of ways we could go about building this new feature:
 2. Start with the comment display and then add the form
 
 To keep things simple let's start with the display first, then we'll move on to more complex work of a form and service to save data.
+
+### Storybook
 
 Let's create a component for the display of a single comment. First up, the generator:
 
@@ -524,7 +526,7 @@ Now we can see our roundedness quite easily in Storybook:
 
 Our amazing blog posts will obviously garner a huge and passionate fanbase and we will very rarely have only a single comment. Let's work on displaying a list of comments.
 
-### Testing the Comment Component
+### Testing
 
 We don't want Santa to skip our house for being naughty developers so let's test our Comment component. We could test that the author's name and the body of the comment appear, as well as the date it was posted.
 
@@ -584,6 +586,8 @@ Let's think about where our comments are being displayed. Probably not on the ho
 > **But what about—**
 >
 > Look, we gotta end this sidebar and get back to building this thing. You can ask more questions later, promise!
+
+### Storybook
 
 Let's generate a `CommentsCell`:
 
@@ -774,6 +778,10 @@ Okay, comment display is looking good! However, you may have noticed that if you
 
 Why is that? Remember that we started with the `CommentsCell`, but never actually created a Comment model in `schema.prisma` or created an SDL and service! That's another neat part of working with Storybook: you can build out UI functionality completely isolated from the api-side. In a team setting this is great because a web-side team can work on the UI while the api-side team can be building the backend end simultaneously and one doesn't have to wait for the other.
 
+### Testing
+
+(TBD)
+
 ## Adding Comments to the Schema
 
 If you went through the first part of the tutorial you should be somewhat familiar with this flow:
@@ -781,6 +789,8 @@ If you went through the first part of the tutorial you should be somewhat famili
 1. Add a model to `schema.prisma`
 2. Run a couple of `yarn rw db` commands to migrate the database
 3. Generate an SDL and service
+
+### Adding the Comment model
 
 Let's do that now:
 
@@ -853,3 +863,35 @@ We also added a convenience `comments` field to `Post` which gives us the same c
 ```javascript
 db.post.findOne({ where: { id: 1 }}).comments()
 ```
+
+### Running the Migration
+
+(TBD)
+
+### Creating the SDL and Service
+
+(TBD)
+
+## Creating a Comment Form
+
+(TBD)
+
+### Storybook
+
+(TBD)
+
+### Testing
+
+(TBD)
+
+## Putting it all together
+
+(TBD)
+
+## Role-Based Authorization Control (RBAC)
+
+(TBD)
+
+## Finishing Up
+
+(TBD)
