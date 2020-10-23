@@ -24,7 +24,7 @@ If you haven't been through the first tutorial, or maybe you went through it on 
     yarn install
     yarn rw db up
     yarn rw db seed
-    yarn dev
+    yarn rw dev
 
 That'll check out the repo, install all the dependencies, create your local database and fill it with a few blog posts, and finally start up the dev server. Your browser should open to a fresh new blog app:
 
@@ -174,6 +174,8 @@ As soon as you save the change the stories Storybook should refresh and show the
 
 ![image](https://user-images.githubusercontent.com/300/95523957-ed823a80-0984-11eb-9572-31f1c249cb6b.png)
 
+### Displaying the Summary
+
 Great! Now to complete the picture let's use the summary in our home page display of blog posts. The actual Home page isn't what references the `BlogPost` component though, that's in the `BlogPostsCell`. We'll add the summary prop and then check the result in Storybook:
 
 ```javascript{27}
@@ -221,7 +223,7 @@ Storybook makes it easy to create and modify your components in isolation and ac
 
 ## Our First Test
 
-So if Storybook is the first phase of creating/updating a component, phase two must be confirming the functionality with a test. Let's add a test for our new summary functionality.
+So if Storybook is the first phase of creating/updating a component, phase two must be confirming the functionality with a test. Let's add a test for our new summary feature.
 
 First let's run the existing suite to see if we broke anything:
 
@@ -238,6 +240,8 @@ The test was looking for the full text of the blog post, but remember that in `B
 Let's update the test so that it checks for the expected behavior instead. There are entire books written on the best way to test your code, so no matter how we decide on testing this code there will be someone out there to tell us we're doing it wrong. As just one example: the simplest test would be to just copy what's output and use that for the text in the test:
 
 ```javascript
+// web/src/components/BlogPostsCell.test.js
+
 test('Success renders successfully', async () => {
   const posts = standard().posts
   render(<Success posts={posts} />)
@@ -769,3 +773,83 @@ Okay, comment display is looking good! However, you may have noticed that if you
 ![image](https://user-images.githubusercontent.com/300/96509825-7a44b800-1211-11eb-880c-841c9341360f.png)
 
 Why is that? Remember that we started with the `CommentsCell`, but never actually created a Comment model in `schema.prisma` or created an SDL and service! That's another neat part of working with Storybook: you can build out UI functionality completely isolated from the api-side. In a team setting this is great because a web-side team can work on the UI while the api-side team can be building the backend end simultaneously and one doesn't have to wait for the other.
+
+## Adding Comments to the Schema
+
+If you went through the first part of the tutorial you should be somewhat familiar with this flow:
+
+1. Add a model to `schema.prisma`
+2. Run a couple of `yarn rw db` commands to migrate the database
+3. Generate an SDL and service
+
+Let's do that now:
+
+```javascript{17,29-36}
+// api/prisma/schema.prisma
+
+datasource DS {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = "native"
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  body      String
+  comments  Comment[]
+  createdAt DateTime @default(now())
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  name      String
+  body      String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+  createdAt DateTime @default(now())
+}
+```
+
+Most of these lines look very similar to what we've already seen, but this is the first instance of a [relation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations) between two models. `Comment` gets two entries:
+
+* `post` which has a type of `Post` and a special `@relation` keyword that tells Prisma how to connect a `Comment` to a `Post`. In this case the field `postId` references the field `id` in `Post`
+* `postId` is just a regular `Int` column which contains the `id` of the `Post` that this comment is referencing
+
+This gives us a classic database model:
+
+```
+┌───────────┐       ┌───────────┐
+│   Post    │       │  Comment  │
+├───────────┤       ├───────────┤
+│ id        │───┐   │ id        │
+│ title     │   │   │ name      │
+│ body      │   │   │ body      │
+│ createdAt │   └──<│ postId    │
+└───────────┘       │ createdAt │
+                    └───────────┘
+```
+
+Note that there is no column called `post` on `Comment`—this is special syntax for Prisma to know how to connect the models together and for you to reference that connection. When you query for a `Comment` using Prisma you can get access to the attached `Post` using that name:
+
+```javascript
+db.comment.findOne({ where: { id: 1 }}).post()
+```
+
+We also added a convenience `comments` field to `Post` which gives us the same capability in reverse:
+
+```javascript
+db.post.findOne({ where: { id: 1 }}).comments()
+```
