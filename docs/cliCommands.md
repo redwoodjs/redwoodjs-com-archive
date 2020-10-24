@@ -1090,26 +1090,7 @@ export const users = () => {
 
 ### util
 
-Quality of life utilities.
-
-```
-yarn rw generate util <util>
-```
-
-<br/>
-
-| Arguments & Options | Description                              |
-| :------------------ | :--------------------------------------- |
-| `util`              | Utility to setup. Choices are `tailwind` |
-| `--force, -f`       | Overwrite existing configuration         |
-
-#### tailwind
-
-Setup [Tailwind CSS](https://tailwindcss.com/).
-
-This command automates all the steps enumerated in the Webpack Configuration doc's [Adding Tailwind CSS](https://redwoodjs.com/docs/webpack-configuration#adding-tailwindcss) section.
-
-Right now, this'll generate the `tailwind.config.js` file in `web` (instead of in `web/config`) to get the vscode extension working.
+This command has been deprecated. See [Setup command](#setup).
 
 ## info
 
@@ -1174,6 +1155,22 @@ yarn rw open
 ## redwood-tools (alias rwt)
 
 Redwood's companion CLI development tool. You'll be using this if you're contributing to Redwood. See [Contributing](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#cli-reference-redwood-tools) in the Redwood repo.
+
+## setup
+
+Initialize project config and install packages
+
+```
+yarn rw setup <command>
+```
+
+<br/>
+
+| Commands            | Description                              |
+| :------------------ | :--------------------------------------- |
+| `i18n`              | Setup i18n                               |
+| `tailwind`          | Setup tailwindcss and PostCSS            |
+| `webpack`           | Setup webpack in your project so you can add custom config            |
 
 ## test
 
