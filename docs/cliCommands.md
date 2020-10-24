@@ -73,9 +73,9 @@ Files are output to each side's `dist` directory:
 
 ```plaintext{2,6}
 ├── api
-│   ├── dist
-│   ├── prisma
-│   └── src
+│   ├── dist
+│   ├── prisma
+│   └── src
 └── web
     ├── dist
     ├── public
@@ -231,9 +231,9 @@ Running `yarn rw db save` generates the following directories and files as neces
 ```terminal
 api/prisma/migrations
 ├── 20200516162516-create-users
-│   ├── README.md
-│   ├── schema.prisma
-│   └── steps.json
+│   ├── README.md
+│   ├── schema.prisma
+│   └── steps.json
 └── migrate.lock
 ```
 
@@ -320,7 +320,7 @@ yarn redwood dev [side..]
 
 **Usage**
 
-If you're only working on your sdl and services, you can run just the api server to get GraphiQL on port 8911:
+If you're only working on your sdl and services, you can run just the api server to get GraphQL Playground on port 8911:
 
 ```plaintext{10}
 ~/redwood-app$ yarn rw dev api
@@ -340,6 +340,20 @@ Using `--forward` (alias `--fwd`), you can pass one or more Webpack DevServer co
 ```plaintext{10}
 ~/redwood-app$ yarn rw dev --fwd="--port=1234 --open=false"
 ```
+
+## deploy
+
+Deploy your redwood project.
+
+```
+yarn rw deploy <command>
+```
+
+<br/>
+
+| Command              | Description                                                                     |
+| :------------------- | :------------------------------------------------------------------------------ |
+| `api <provider>`     | Deploy the API using the selected provider                                      |
 
 ## destroy (alias d)
 
@@ -547,7 +561,7 @@ Creates a data migration script in `api/prisma/dataMigrations`.
 
 See the [Data Migration](/docs/data-migrations) docs.
 
-### deploy
+### deploy (config)
 
 Generate a deployment configuration.
 
@@ -1075,9 +1089,6 @@ export const users = () => {
 ```
 
 ### util
-<<<<<<< HEAD
-=======
-This command is **deprecated** in favor of `yarn rw setup <command>`. See Setup command [here](https://redwoodjs.com/reference/command-line-interface#setup)
 
 Quality of life utilities.
 
@@ -1091,7 +1102,6 @@ yarn rw generate util <util>
 | :------------------ | :--------------------------------------- |
 | `util`              | Utility to setup. Choices are `tailwind` |
 | `--force, -f`       | Overwrite existing configuration         |
->>>>>>> f9f32491ca3dbd590fa0cbc9b155703079ced8bc
 
 #### tailwind
 
@@ -1163,45 +1173,7 @@ yarn rw open
 
 ## redwood-tools (alias rwt)
 
-WARNING: This command is deprecated.  
-Use "yarn rw setup" command. See setup command [here](https://redwoodjs.com/reference/command-line-interface#setup)
-
-Quality of life utilities.
-
-```
-yarn rw generate util <util>
-```
-
-<br/>
-
-| Arguments & Options | Description                              |
-| :------------------ | :--------------------------------------- |
-| `util`              | Utility to setup. Choices are `tailwind` |
-| `--force, -f`       | Overwrite existing configuration         |  
- 
-
-
-```   
-$ rw setup --help
-
-Initialize project config and install packages
-
-Commands:
-  rw setup i18n               Setup i18n
-  rw setup tailwind         Setup tailwindcss and PostCSS
-  rw setup webpack       Setup webpack in your project so you can add custom config
-
-Options:
-  --help     Show help                                                 [boolean]
-  --version  Show version number                             [boolean] 
-  ```  
-
-
-<<<<<<< HEAD
-=======
-## setup
-The setup command docs is a comprehensive reference of the Redwood CLI. See the [docs](https://redwoodjs.com/reference/command-line-interface#setup) for refrences.
->>>>>>> f9f32491ca3dbd590fa0cbc9b155703079ced8bc
+Redwood's companion CLI development tool. You'll be using this if you're contributing to Redwood. See [Contributing](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#cli-reference-redwood-tools) in the Redwood repo.
 
 ## test
 
@@ -1233,9 +1205,25 @@ yarn rw upgrade
 
 This command does all the heavy-lifting of upgrading to a new release for you.
 
-Besides upgrading to a new release, you can use this command to upgrade to either of our unstable releases: `canary` and `rc`. A canary release is published to npm every time a branch is merged to master, and when we're getting close to a new release, we publish release candidates.
+Besides upgrading to a new stable release, you can use this command to upgrade to either of our unstable releases, `canary` and `rc`, or you can upgrade to a specific release version. 
+
+A canary release is published to npm every time a PR is merged to the `main` branch, and when we're getting close to a new release, we publish release candidates.
 
 | Option          | Description                                                                                                                         |
 | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
 | `--dry-run, -d` | Check for outdated packages without upgrading                                                                                       |
-| `--tag, -t`     | WARNING: Unstable releases! Force upgrades packages to the most recent version for the given `--tag`. Choices are `canary` and `rc` |
+| `--tag, -t`     | Choices are "canary", "rc", or a specific version (e.g. "0.19.3"). WARNING: Unstable releases in the case of "canary" and "rc", which will force upgrade packages to the most recent release of the specified tag.  |
+
+**Example**
+
+Upgrade to the most recent canary:
+
+```terminal
+yarn redwood upgrade -t canary
+```
+
+Upgrade to a specific version:
+
+```terminal
+yarn redwood upgrade -t 0.19.3
+```
