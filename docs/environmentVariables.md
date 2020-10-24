@@ -151,6 +151,8 @@ config({
 })
 ```
 
+Remember, if `yarn rw dev` is already running, your local app won't reflect any changes you make to your `.env` file until you stop and re-run `yarn rw dev`.
+
 ## Seeding your Database
 
 <!-- Source: https://github.com/motdotla/dotenv#should-i-have-multiple-env-files -->

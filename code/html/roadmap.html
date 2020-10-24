@@ -106,7 +106,7 @@
 )
 
 <div class="markdown">
-  <h1 id="roadmap"><a class="markdownIt-Anchor" href="#roadmap">#</a> Roadmap</h1>
+  <h1 id="roadmap"><a class="markdownIt-Anchor" href="#roadmap" data-turbolinks="false">#</a> Roadmap</h1>
 <p><em>Last updated 25 Aug 2020</em></p>
 <p>We want to hit <code>1.0</code> by the end of the year. And we think we can do it. But there are a lot of moving parts, each at a different level of maturity.</p>
 <p>At this stage of development, when it's so important to keep the finish line in mind, a high-level overview is invaluable. Hence, this roadmap, and these color-coded labels:</p>
@@ -122,66 +122,66 @@
 <p>If you know Shape Up, then you'll know that our scopes are probably too big. They are. But we want to orient people who aren't knee-deep in this, and questions like &quot;how's TypeScript going?&quot; are usually the kinds they have. This means that even if we say TypeScript is <span id="status-3" class="font-mono">Making it happen</span>, there are some parts of it that might be <span id="status-0" class="font-mono">Didn't start</span>.</p>
 </blockquote>
 <p>This document is alive. We'll update it as often as we can, and when it's appropriate to do so. And as always, feel free to <a href="https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md">open a PR</a>!</p>
-<h2 id="what-goes-in-10"><a class="markdownIt-Anchor" href="#what-goes-in-10">#</a> What goes in 1.0?</h2>
+<h2 id="what-goes-in-10"><a class="markdownIt-Anchor" href="#what-goes-in-10" data-turbolinks="false">#</a> What goes in 1.0?</h2>
 <p>Not everything will be in <code>1.0</code>. Even things that are core to the Redwood dream, like more sides and targets, won't be there. But that's by design: we need to be very careful about our priorities, both because we want <code>1.0</code> to be something special and because if we aren't careful, we'll never get there. The hardest thing in open source is saying no, but as we get closer to <code>1.0</code>, it's increasingly what we'll have to do.</p>
 <p>With that said, here's a high level overview of the <code>1.0</code> roadmap with links to relevant GitHub project boards and forum topics. If you're interested in helping with one of these, just let us know in the <a href="https://community.redwoodjs.com/">RedwoodJS Forum</a> and we'll be happy to get you set up!</p>
-<h2 id="accessibility"><a class="markdownIt-Anchor" href="#accessibility">#</a> Accessibility</h2>
+<h2 id="accessibility"><a class="markdownIt-Anchor" href="#accessibility" data-turbolinks="false">#</a> Accessibility</h2>
 <p><span id="status-1" class="font-mono">Figuring it out</span></p>
 <p>Accessibility isn't something we're going to compromise on. It has to be first class. Our goal is to help app authors build accessible experiences without having to jump through hoops. As background reading, Gatsby has some <a href="https://www.gatsbyjs.org/blog/2020-02-10-accessible-client-side-routing-improvements/">great blog posts</a>.</p>
 <p><a href="https://github.com/redwoodjs/redwood/projects/5">Accessibility • GitHub Project Board</a></p>
-<h2 id="auth"><a class="markdownIt-Anchor" href="#auth">#</a> Auth</h2>
+<h2 id="auth"><a class="markdownIt-Anchor" href="#auth" data-turbolinks="false">#</a> Auth</h2>
 <p><span id="status-3" class="font-mono">Making it happen</span></p>
 <p>Authentication and authorization are baked into Redwood. We plan to have easy-to-install, sophisticated authentication methods for a variety of popular auth providers. On top of that, we'll also provide RBAC (role-based access control) capabilities if you want them.</p>
 <p><a href="https://github.com/redwoodjs/redwood/projects/6">Auth • GitHub Project Board</a></p>
-<h2 id="core"><a class="markdownIt-Anchor" href="#core">#</a> Core</h2>
+<h2 id="core"><a class="markdownIt-Anchor" href="#core" data-turbolinks="false">#</a> Core</h2>
 <p><span id="status-3" class="font-mono">Making it happen</span></p>
 <p>Redwood depends on a few libraries—namely Apollo and Prisma—for some of its core functionality. For us to be <code>1.0</code>, they have to be too.</p>
 <p>ApolloClient recently hit 3.0. Right now, Redwood uses 2.6, but we plan on upgrading as soon as we can. Prisma Client made it to general availability earlier this year, but Redwood depends on Prisma Migrate too, which is still experimental. You can check its status on Prisma's <a href="https://www.notion.so/Prisma-public-roadmap-50766227b779464ab98899accb98295f">public roadmap</a>.</p>
 <p><a href="https://github.com/redwoodjs/redwood/projects/14">Core • GitHub Project Board</a></p>
-<h2 id="deployment"><a class="markdownIt-Anchor" href="#deployment">#</a> Deployment</h2>
+<h2 id="deployment"><a class="markdownIt-Anchor" href="#deployment" data-turbolinks="false">#</a> Deployment</h2>
 <p><span id="status-2" class="font-mono">There's a plan</span></p>
 <p>We'd like to support several deployment targets. The ones high-up on our list are: Netlify (done), Vercel (done), AWS, and Google Cloud Run. Deployment strategies should be done in a way that makes it easy for additional targets to be added and for users to create their own custom strategies.</p>
 <p><a href="https://github.com/redwoodjs/redwood/projects/9">Deployment • GitHub Project Board</a></p>
-<h2 id="docs"><a class="markdownIt-Anchor" href="#docs">#</a> Docs</h2>
+<h2 id="docs"><a class="markdownIt-Anchor" href="#docs" data-turbolinks="false">#</a> Docs</h2>
 <p><span id="status-3" class="font-mono">Making it happen</span></p>
 <p>Part of Redwood's initial success was the quality of the tutorial. The practice of readable and comprehensive documentation is something we plan to continue. The road to <code>1.0</code> doesn't mean sacrificing on the quality of docs. On the contrary, the more the framework can do, the better the docs have to be.</p>
 <p>Docs are tracked on the <a href="https://github.com/redwoodjs/redwoodjs.com/projects/1">redwoodjs.com repo</a></p>
-<h2 id="generators"><a class="markdownIt-Anchor" href="#generators">#</a> Generators</h2>
+<h2 id="generators"><a class="markdownIt-Anchor" href="#generators" data-turbolinks="false">#</a> Generators</h2>
 <p><span id="status-1" class="font-mono">Figuring it out</span></p>
 <p>Our generators are already in pretty good shape. So as we get closer to <code>1.0</code>, we don't just mean more generators, but more advanced generators. Especially given the recent addition of <code>@redwoodjs/structure</code>.</p>
 <p><a href="https://github.com/redwoodjs/redwood/projects/13">Generators • GitHub Project Board</a></p>
-<h2 id="logging"><a class="markdownIt-Anchor" href="#logging">#</a> Logging</h2>
+<h2 id="logging"><a class="markdownIt-Anchor" href="#logging" data-turbolinks="false">#</a> Logging</h2>
 <p><span id="status-1" class="font-mono">Figuring it out</span></p>
 <p>Logging has wiped out almost all of the old-growth Redwoods in California. But that doesn't mean we're not fans of logging here at RedwoodJS. As long as the logging helps you figure out what your app is doing! A production Redwood app will need great logging, so we intend to make it easy to get hooked up.</p>
 <p><a href="https://github.com/redwoodjs/redwood/projects/7">Logging • GitHub Project Board</a></p>
-<h2 id="performance"><a class="markdownIt-Anchor" href="#performance">#</a> Performance</h2>
+<h2 id="performance"><a class="markdownIt-Anchor" href="#performance" data-turbolinks="false">#</a> Performance</h2>
 <p><span id="status-0" class="font-mono">Didn't start</span></p>
 <p>Can you have great developer ergonomics <strong>and</strong> performance? We intend to find out.</p>
 <p>Bundle size will be important here, so a good place to start is by building with the stats flag (<code>yarn rw build --stats</code>). This will make Redwood bundle with the <a href="https://github.com/webpack-contrib/webpack-bundle-analyzer">Webpack Bundle Analyzer</a>.</p>
 <p><a href="https://github.com/redwoodjs/redwood/projects/10">Performance • GitHub Project Board</a></p>
-<h2 id="prerender"><a class="markdownIt-Anchor" href="#prerender">#</a> Prerender</h2>
+<h2 id="prerender"><a class="markdownIt-Anchor" href="#prerender" data-turbolinks="false">#</a> Prerender</h2>
 <p><span id="status-1" class="font-mono">Figuring it out</span></p>
 <ul>
 <li><a href="https://community.redwoodjs.com/t/prerender-proposal/849">Prerender proposal</a></li>
 <li><a href="https://community.redwoodjs.com/t/pre-rendering-with-react-snap-redwood/863">Pre-rendering with react-snap &amp; Redwood</a></li>
 </ul>
-<h2 id="router"><a class="markdownIt-Anchor" href="#router">#</a> Router</h2>
+<h2 id="router"><a class="markdownIt-Anchor" href="#router" data-turbolinks="false">#</a> Router</h2>
 <p><span id="status-1" class="font-mono">Figuring it out</span></p>
 <p>We've written our own router for Redwood, and we need to make sure it is competitive with existing routers in the React ecosystem (e.g. React Router, Reach Router). We've taken a stance on desiring a flat routing scheme (vs a nested one) and this currently comes with some performance downsides that need to be addressed.</p>
 <p><a href="https://github.com/redwoodjs/redwood/projects/11">Router • GitHub Project Board</a></p>
-<h2 id="storybook"><a class="markdownIt-Anchor" href="#storybook">#</a> Storybook</h2>
+<h2 id="storybook"><a class="markdownIt-Anchor" href="#storybook" data-turbolinks="false">#</a> Storybook</h2>
 <p><span id="status-3" class="font-mono">Making it happen</span></p>
 <p>Redwood's component-development workflow starts with Storybook. Being able to develop your components in isolation without ever starting the dev server is a real game-changer.</p>
 <p><a href="https://github.com/redwoodjs/redwood/projects/8">Storybook • GitHub Project Board</a></p>
-<h2 id="structure"><a class="markdownIt-Anchor" href="#structure">#</a> Structure</h2>
+<h2 id="structure"><a class="markdownIt-Anchor" href="#structure" data-turbolinks="false">#</a> Structure</h2>
 <p><span id="status-3" class="font-mono">Making it happen</span></p>
 <p>Using Redwood's Structure package, we can use the same logic to power both an IDE (e.g. Jamstack IDE) and Redwood itself. Redwood Structure's most common use-case is getting the diagnostics of a complete Redwood project, but being able to programatically talk about a Redwood project like an AST moves many other amazing things we can't anticipate into the adjacent possible.</p>
 <p><a href="https://github.com/redwoodjs/redwood/projects/12">Structure • GitHub Project Board</a></p>
-<h2 id="testing-app"><a class="markdownIt-Anchor" href="#testing-app">#</a> Testing (App)</h2>
+<h2 id="testing-app"><a class="markdownIt-Anchor" href="#testing-app" data-turbolinks="false">#</a> Testing (App)</h2>
 <p><span id="status-3" class="font-mono">Making it happen</span></p>
 <p>We've integrated testing for both sides and made Jest configurable. From here, improving the templates that the generators create is a must, not only for the sake of completeness but also for user learning.</p>
 <p><a href="https://github.com/redwoodjs/redwood/projects/4">Testing • GitHub Project Board</a></p>
-<h2 id="typescript"><a class="markdownIt-Anchor" href="#typescript">#</a> TypeScript</h2>
+<h2 id="typescript"><a class="markdownIt-Anchor" href="#typescript" data-turbolinks="false">#</a> TypeScript</h2>
 <p><span id="status-3" class="font-mono">Making it happen</span></p>
 <p>We want Redwood apps to default to TypeScript. There's a lot to do, both on the Framework-side and the app-side, but its happening.</p>
 <p><a href="https://github.com/redwoodjs/redwood/projects/2">TypeScript • GitHub Project Board</a></p>

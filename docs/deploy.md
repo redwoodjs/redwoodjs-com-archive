@@ -12,7 +12,7 @@ Currently, these are the officially supported deploy targets:
 - [Vercel](https://vercel.com)
 - [AWS-Serverless](https://serverless.com)
 
-Redwood has a CLI generator that adds the code and configuration required by the specified provider (see the [CLI Doc](https://redwoodjs.com/docs/cli-commands#deploy) for more information):
+Redwood has a CLI generator that adds the code and configuration required by the specified provider (see the [CLI Doc](https://redwoodjs.com/docs/cli-commands#deploy-config) for more information):
 ```shell
 yarn rw generate deploy <provider>
 ```

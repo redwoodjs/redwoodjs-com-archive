@@ -27,7 +27,7 @@ In even more simpler terms authentication is the _process_ of verifying oneself,
 
 When thinking about security, it helps to think in terms of familiar examples.
 
-Let's consider one from the phyisical world -- access to the various rooms of a 🏠 house -- and compare it to a digital example of a Blog.
+Let's consider one from the physical world -- access to the various rooms of a 🏠 house -- and compare it to a digital example of a Blog.
 
 #### RBAC Example: House
 
@@ -43,7 +43,7 @@ The plumber can access the basement to get at the pipes, use the 🚽, access th
 
 Neither of them should be allowed into your 🛏 bedroom.
 
-The owner knows who they claim to be and have given them keys.
+The owner knows who they claim to be and has given them keys.
 
 The passcodes inform what access they have because it says if they are a neighbor or plumber.
 
@@ -77,7 +77,7 @@ In our Blog example anyone can view Posts (authenticated or not). They are _publ
 
 ## Auth and RBAC Checklist
 
-In order to integrates RBAC in a RedwoodJS app, you will have to:
+In order to integrate RBAC in a RedwoodJS app, you will have to:
 
 - Implement an Identity as a Service/Authentication Provider
 - Define and Assign Roles
@@ -105,7 +105,7 @@ In other cases, you can still use an Identity Service such as:
 - Magic.link
 - Custom
 
-However, in these cases you must provide the `currentUser.roles` information directly, such as from a User to Role database table or otehr source.
+However, in these cases you must provide the `currentUser.roles` information directly, such as from a User to Role database table or other source.
 
 ### Netlify Identity Access Token (JWT) & App Metadata
 
@@ -113,17 +113,17 @@ The following is a brief example of a **decoded** JSON Web Token (JWT) similar t
 
 There are the following standard claims:
 
-- `exp`: When the tokejn expires.
+- `exp`: When the token expires.
 - `sub`: The token's subject, in this case the user identifier.
 
-Other comon clains are `iss` for issuer and `aud` for audience (ie, the recipient for which the JWT is intended).
+Other common claims are `iss` for issuer and `aud` for audience (ie, the recipient for which the JWT is intended).
 
 Please see [Introduction to JSON Web Tokens](https://jwt.io/introduction/) for a complete discussion.
 
 This decoded token also includes:
 
 - `app_metadata`: Stores information (such as, support plan subscriptions, security roles, or access control groups) that can impact a user's core functionality, such as how an application functions or what the user can access. Data stored in app_metadata cannot be edited by users
-- `user_metadata`: Stores user attributes such as preferences that do not impact a user's core functionality. Logged in users can edit their data stored in user_metadata typically by making an api call the the Identity service user profile endpoint with their access_token to identify themselves.
+- `user_metadata`: Stores user attributes such as preferences that do not impact a user's core functionality. Logged in users can edit their data stored in user_metadata typically by making an api call the Identity service user profile endpoint with their access_token to identify themselves.
 
 Roles may be stored within `app_metadata` or sometimes within `authorization` under `app_metadata`.
 
@@ -485,7 +485,7 @@ This function should be located in `api/src/lib/auth.js` for your RedwoodJS app 
  *
  * @example
  *
- * // checks if currentUser is authenticated and assigned one of thw given roles
+ * // checks if currentUser is authenticated and assigned one of the given roles
  * requireAuth({ roles: 'admin' })
  * requireAuth({ roles: 'admin' })
  */

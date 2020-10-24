@@ -14,7 +14,7 @@ Then build the tutorial and doc pages (after you've installed all dependencies w
 
     yarn build
 
-And to develop locally:
+And to develop locally (you'll need to run `yarn build` once first in order to generate some of the navigation menus):
 
     yarn dev
 

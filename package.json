@@ -7,13 +7,14 @@
     "dev": "yarn serve & yarn watch",
     "netlify": "yarn watch & netlify dev",
     "rebuild": "yarn clean && yarn build",
-    "serve": "live-server --watch=./publish --mount=/:./publish --entry-file='publish/404.html'",
+    "serve": "live-server --watch=./publish --mount=/:./publish --entry-file='publish/404.html' --middleware=../../../lib/middleware/use-extension --middleware=../../../lib/middleware/use-headers --middleware=../../../lib/middleware/use-redirects",
     "watch": "webpack --watch & postcss --verbose code/stylesheets/application.pcss -o publish/stylesheets/application.css --watch"
   },
   "private": true,
   "devDependencies": {
     "del-cli": "^3.0.0",
-    "live-server": "^1.2.1"
+    "live-server": "^1.2.1",
+    "toml": "^3.0.0"
   },
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^2.0.6",
@@ -25,6 +26,7 @@
     "clipboard": "^2.0.6",
     "dotenv": "^8.2.0",
     "highlight.js": "^9.18.1",
+    "highlightjs-graphql": "^1.0.2",
     "install": "^0.13.0",
     "lodash.clone": "^4.5.0",
     "lodash.escape": "^4.0.1",
