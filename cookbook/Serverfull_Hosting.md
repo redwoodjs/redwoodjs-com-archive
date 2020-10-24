@@ -158,6 +158,10 @@ yarn deploy
 
 Enjoy! 😁
 
+## Example
+
+A code example can be found at: https://github.com/njjkgeerts/redwood-pm2
+
 ## Caveats
 
 Here are some caveats I have encountered:
