@@ -691,7 +691,7 @@ export const Success = ({ blogPosts }) => {
 >     yarn rw g cell blogPosts
 >     yarn rw g cell BlogPosts
 >
-> You just need _some_ kind of indication that you're using more than one word: either an underscore (`blog_posts`), hyphen (`blog-posts`), or capitalization of the new word (`blogPost`, `BlogPosts`). 
+> You just need _some_ kind of indication that you're using more than one word: either an underscore (`blog_posts`), hyphen (`blog-posts`), or capitalization of the next word (`blogPost`, `BlogPosts`). 
 > 
 > Calling `yarn redwood g cell blogposts` (without any indication that we're using two words) will generate a file at `web/src/components/BlogpostsCell/BlogpostsCell.js`.
 
