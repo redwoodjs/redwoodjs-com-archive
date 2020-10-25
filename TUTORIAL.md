@@ -721,7 +721,7 @@ export const Success = ({ posts }) => {
 
 However, this is not a valid query name for our existing Posts SDL (`src/graphql/posts.sdl.js`) and Service (`src/services/posts/posts.js`). (To see where these files come from, go back to the [Creating a Post Editor section](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor) in the *Getting Dynamic* part.)
 
-We'll have to rename that to just `posts` in both the query name and prop named in `Success`:
+We'll have to rename that to just `posts` in both the query name and in the prop name in `Success`:
 
 ```javascript{5,17,18}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
