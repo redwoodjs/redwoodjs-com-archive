@@ -684,12 +684,16 @@ export const Success = ({ blogPosts }) => {
 
 > **Cell Generator Naming**
 >
-> When generating cells you can use any case you'd like and Redwood will do the right thing when it comes to naming. However, for our use case you will need _some_ kind of indication that you're using more than one blog post. Calling `yarn redwood g cell blogposts` will generate a file at `web/src/components/BlogpostsCell/BlogpostsCell.js`. These will all create the same filename:
+> When generating a cell you can use any case you'd like and Redwood will do the right thing when it comes to naming. These will all create the same filename (`web/src/components/BlogPostsCell/BlogPostsCell.js`):
 >
 >     yarn rw g cell blog_posts
 >     yarn rw g cell blog-posts
 >     yarn rw g cell blogPosts
 >     yarn rw g cell BlogPosts
+>
+> You just need _some_ kind of indication that you're using more than one word: either an underscore (`blog_posts`), hyphen (`blog-posts`), or capitalization of the new word (`blogPost`, `BlogPosts`). 
+> 
+> Calling `yarn redwood g cell blogposts` (without any indication that we're using two words) will generate a file at `web/src/components/BlogpostsCell/BlogpostsCell.js`.
 
 To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case the query is called `blogPosts`:
 
