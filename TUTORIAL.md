@@ -817,7 +817,7 @@ export const Success = ({ posts }) => {
         <h2>{post.title}</h2>
       </header>
       <p>{post.body}</p>
-      <div>Posted at: <time datetime={post.createdAt}>{post.createdAt}</time></div>
+      <div>Posted at: {post.createdAt}</div>
     </article>
   ))
 }
