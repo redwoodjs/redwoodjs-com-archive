@@ -1259,7 +1259,7 @@ Forms in React are infamously annoying to work with. There are [Controlled Compo
 
 We think Redwood is a step or two in the right direction by not only freeing you from writing controlled component plumbing, but also dealing with validation and errors automatically. Let's see how it works.
 
-Before we start, let's add a couple of CSS classes to make the default form layout a little cleaner and save us from having to write a bunch of `style` attribute that will clutter up the examples and make them harder to follow. For now we'll just put these in the root `index.css` file in `web/src`:
+Before we start, let's add a couple of CSS classes to make the default form layout a little cleaner and save us from having to write a bunch of `style` attributes that will clutter up the examples and make them harder to follow. For now we'll just put these in the root `index.css` file in `web/src`:
 
 ```css
 /* web/src/index.css */
