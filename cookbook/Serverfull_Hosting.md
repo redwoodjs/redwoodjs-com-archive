@@ -55,7 +55,7 @@ Your server should have a user for deploying the app with. It should be configur
 
 Your Nginx configuration file for the app should look something like this. Typically, this file would be stored at `/etc/nginx/sites-available/redwood-pm2` and is symbolically linked to `/etc/nginx/sites-enabled/redwood-pm2`.
 
-Please note that the trailing slash in the proxy_pass value is essental to correctly map the API functions.
+Please note that the trailing slash in the proxy_pass value is essential to correctly map the API functions.
 
 ```nginx
 server {
