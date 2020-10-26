@@ -682,7 +682,7 @@ export const Success = ({ blogPosts }) => {
 }
 ```
 
-> **Cell Generator Naming**
+> **Indicating Multiplicity to the Generator**
 >
 > When generating a cell you can use any case you'd like and Redwood will do the right thing when it comes to naming. These will all create the same filename (`web/src/components/BlogPostsCell/BlogPostsCell.js`):
 >
