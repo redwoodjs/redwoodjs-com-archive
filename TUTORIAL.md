@@ -615,7 +615,7 @@ Oh boy, our first page with data and we already have to worry about loading stat
 
 ## Cells
 
-These features are common in most web apps. We wanted to see if there was something we could do to make developers' lives easier when it comes to adding them to a typical component. We think we've come up with something to help. We call them _Cells_. Cells provide a simpler and more declarative approach to data fetching. (You can read the full documentation about Cells [here](https://redwoodjs.com/docs/cells).)
+These features are common in most web apps. We wanted to see if there was something we could do to make developers' lives easier when it comes to adding them to a typical component. We think we've come up with something to help. We call them _Cells_. Cells provide a simpler and more declarative approach to data fetching. ([Read the full documentation about Cells](https://redwoodjs.com/docs/cells).)
 
 When you create a cell you export several specially named constants and then Redwood takes it from there. A typical cell may look something like:
 
@@ -649,17 +649,16 @@ export const Success = ({ posts }) => {
 }
 ```
 
-When React renders this component Redwood will:
+When React renders this component, Redwood will perform the `QUERY` and display the `Loading` component until a response is received.
 
-- Perform the `QUERY` and display the `Loading` component until a response is received
-- Once the query returns it will display one of three states:
+Once the query returns, it will display one of three states:
   - If there was an error, the `Failure` component
   - If the data return is empty (`null` or empty array), the `Empty` component
   - Otherwise, the `Success` component
 
-There are also some lifecycle helpers like `beforeQuery` (for massaging any props before being given to the `QUERY`) and `afterQuery` (for massaging the data returned from GraphQL but before being sent to the `Success` component)
+There are also some lifecycle helpers like `beforeQuery` (for massaging any props before being given to the `QUERY`) and `afterQuery` (for massaging the data returned from GraphQL but before being sent to the `Success` component).
 
-The minimum you need for a cell are the `QUERY` and `Success` exports. If you don't export an `Empty` component, empty results will be sent to your `Success` component. If you don't provide a `Failure` component you'll get error output sent to the console.
+The minimum you need for a cell are the `QUERY` and `Success` exports. If you don't export an `Empty` component, empty results will be sent to your `Success` component. If you don't provide a `Failure` component, you'll get error output sent to the console.
 
 A guideline for when to use cells is if your component needs some data from the database or other service that may be delayed in responding. Let Redwood worry about juggling what is displayed when and you can focus on the happy path of the final, rendered component populated with data.
 
@@ -693,16 +692,46 @@ export const Success = ({ blogPosts }) => {
 }
 ```
 
-> When generating you can use any case you'd like and Redwood will do the right thing when it comes to naming. These will all create the same filename:
+> **Indicating Multiplicity to the Cell Generator**
+>
+> When generating a cell you can use any case you'd like and Redwood will do the right thing when it comes to naming. These will all create the same filename (`web/src/components/BlogPostsCell/BlogPostsCell.js`):
 >
 >     yarn rw g cell blog_posts
 >     yarn rw g cell blog-posts
 >     yarn rw g cell blogPosts
 >     yarn rw g cell BlogPosts
 >
-> You will need _some_ kind of indication that you're using more than one word. Calling `yarn redwood g cell blogposts` will generate a file at `web/src/components/BlogpostsCell/BlogpostsCell.js`
+> You will need _some_ kind of indication that you're using more than one word: either snake_case (`blog_posts`), kebab-case (`blog-posts`), camelCase (`blogPosts`) or PascalCase (`BlogPosts`). 
+> 
+> Calling `yarn redwood g cell blogposts` (without any indication that we're using two words) will generate a file at `web/src/components/BlogpostsCell/BlogpostsCell.js`.
 
-To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case it called the query `blogPosts` which is not a valid query name for our existing Posts SDL and Service. We'll have to rename that to just `posts` in both the query name and prop named in `Success`:
+To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case the query is called `blogPosts`:
+
+```javascript
+// web/src/components/BlogPostsCell/BlogPostsCell.js
+
+export const QUERY = gql`
+  query BlogPostsQuery {
+    blogPosts {
+      id
+    }
+  }
+`
+
+export const Loading = () => <div>Loading...</div>
+
+export const Empty = () => <div>Empty</div>
+
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
+
+export const Success = ({ posts }) => {
+  return JSON.stringify(posts)
+}
+```
+
+However, this is not a valid query name for our existing Posts SDL (`src/graphql/posts.sdl.js`) and Service (`src/services/posts/posts.js`). (To see where these files come from, go back to the [Creating a Post Editor section](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor) in the *Getting Dynamic* part.)
+
+We'll have to rename that to just `posts` in both the query name and in the prop name in `Success`:
 
 ```javascript{5,17,18}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
