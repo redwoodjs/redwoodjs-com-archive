@@ -549,23 +549,23 @@ describe('Comment', () => {
       createdAt: '2020-01-02T12:34:56Z',
     }
 
-    const { container } = render(<Comment comment={comment} />)
-
     expect(screen.getByText(comment.name)).toBeInTheDocument()
     expect(screen.getByText(comment.body)).toBeInTheDocument()
-    expect(
-      container.querySelector(`time[datetime="${comment.createdAt}"]`)
-    ).toBeInTheDocument()
+
+    const dateExpect = screen.getByText('2 January 2020')
+    expect(dateExpect).toBeInTheDocument()
+    expect(dateElement.nodeName).toEqual('TIME')
+    expect(dateExpect).toHaveAttribute('datetime', comment.createdAt)
   })
 })
 
 ```
 
-We have do something slightly different to check that there's a `<time>` tag with a `datetime` attribute as the helpers on `screen` only have a [limited set](https://testing-library.com/docs/dom-testing-library/api-queries#queries) of checks you can do compared to rendering to `container` where you can query for whatever you want.
+Here we're testing for both elements of the output `createdAt` timestamp: the actual text that's output (similar to how we tested for a blog post's truncated body) but also that the element that wraps that text is a `<time>` tag and that it contains a `datetime` attribute with the raw value of `comment.createdAt`. This might seem like overkill but the point of the `datetime` attribute is to provide a machine-readable timestamp that the browser could (theoretically) hook into and do stuff with. This makes sure that we preseve that ability!
 
-> Notice that we didn't test for the formatted date output. That would require putting the formula for formatting in the test as well, and now the code and the test are doing the exact same thing, and if you change one you have to change the other. Having this duplication provides no apparent benefit and just makes the test brittle. According to the HTML5 spec the `<time>` tag "may include the `datetime` attribute to translate dates into machine-readable format" which is exactly what the ISO8601 Datetime format is for. It's a good bet we won't have to change the datetime representation here, so we test for that instead.
+> **What happens if we change the formatted output of the timestamp? Wouldn't we have to change the test?**
 >
-> One alternative approach could be to move the formatting formula into a function that you can export from the Comment component. Then you can import that in your test and use it to check the formatted output. Now if you change the formula the test keeps passing because it's sharing the function with Comment.
+> Yes, just like we'd have to change the truncation text if we changed the length of the truncation. One alternative approach to testing for the formatted output could be to move the date formatting formula into a function that you can export from the Comment component. Then you can import that in your test and use it to check the formatted output. Now if you change the formula the test keeps passing because it's sharing the function with Comment.
 
 ## Multiple Comments
 
@@ -780,7 +780,141 @@ Why is that? Remember that we started with the `CommentsCell`, but never actuall
 
 ### Testing
 
-(TBD)
+We added one component (`<Comments>`) and edited another (`<BlogPost>`) so we'll want to add tests in both.
+
+#### Testing Comments
+
+The actual `<Comment>` component does most of the work so there's no need to test all of that functionality again. What things does `<CommentsCell`> do that make it unique?
+
+* Has a loading message
+* Has an error message
+* Has a failure message
+* When it renders succesfully, it outputs as many comments as were returned by the `QUERY`
+
+The default `CommentsCell.test.js` actually tests every state for us, albeit at an absolute minimum level—it make sure no errors are thrown:
+
+```javascript
+import { render, screen } from '@redwoodjs/testing'
+import { Loading, Empty, Failure, Success } from './CommentsCell'
+import { standard } from './CommentsCell.mock'
+
+describe('CommentsCell', () => {
+  test('Loading renders successfully', () => {
+    expect(() => {
+      render(<Loading />)
+    }).not.toThrow()
+  })
+
+  test('Empty renders successfully', async () => {
+    expect(() => {
+      render(<Empty />)
+    }).not.toThrow()
+  })
+
+  test('Failure renders successfully', async () => {
+    expect(() => {
+      render(<Failure error={new Error('Oh no')} />)
+    }).not.toThrow()
+  })
+
+  test('Success renders successfully', async () => {
+    expect(() => {
+      render(<Success comments={standard().comments} />)
+    }).not.toThrow()
+  })
+})
+```
+
+And that's nothing to scoff at! As you've probably experienced, a React component usually either works 100% or throws an error. If it works, great! If it fails then the test fails too, which is exactly what we want to happen.
+
+But in this case we can do a little more to make sure `<CommentsCell>` is doing what we expect. First let's update the `CommentsCell.mock.js` to send in two comments:
+
+```javascript{5-16}
+// web/src/components/CommentsCell/CommentsCell.mock.js
+
+export const standard = (/* vars, { ctx, req } */) => ({
+  comments: [
+    {
+      id: 1,
+      name: 'Rob Cameron',
+      body: 'First comment',
+      createdAt: '2020-01-02T12:34:56Z',
+    },
+    {
+      id: 2,
+      name: 'David Price',
+      body: 'Second comment',
+      createdAt: '2020-02-03T23:00:00Z',
+    },
+  ],
+})
+```
+
+And now let's update the `Success` test in `CommentsCell.test.js` to check that exactly the number of comments we passed in as a prop are rendered. How do we know a comment was rendered? How about if we check that each `comment.body` (the most important part of the comment) is present on the screen:
+
+```javascript
+// web/src/components/CommentsCell/CommentsCell.test.js
+
+test('Success renders successfully', async () => {
+  const comments = standard().comments
+  render(<Success comments={comments} />)
+
+  comments.forEach((comment) => {
+    expect(screen.getByText(comment.body)).toBeInTheDocument()
+  })
+})
+```
+
+We're looping through each `comment` from the mock so that even if we add more later, we're covered.
+
+#### Testing BlogPost
+
+The functionality we added to `<BlogPost>` says to show the comments for the post if we are *not* showing the summary. We've got a test for both the "full" and "summary" renders already. Generally you want your tests to be testing "one thing" so let's add two additional tests for our new functionality:
+
+```javascript{}
+import { render, screen } from '@redwoodjs/testing'
+
+import BlogPost from './BlogPost'
+import { standard } from 'src/components/CommentsCell/CommentsCell.mock'
+
+const POST = {
+  id: 1,
+  title: 'First post',
+  body: `Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Street art next level umami squid. Hammock hexagon glossier 8-bit banjo. Neutra la croix mixtape echo park four loko semiotics kitsch forage chambray. Semiotics salvia selfies jianbing hella shaman. Letterpress helvetica vaporware cronut, shaman butcher YOLO poke fixie hoodie gentrify woke heirloom.`,
+  createdAt: new Date().toISOString(),
+}
+
+describe('BlogPost', () => {
+  it('renders a blog post', () => {
+    render(<BlogPost post={POST} />)
+
+    expect(screen.getByText(POST.title)).toBeInTheDocument()
+    expect(screen.getByText(POST.body)).toBeInTheDocument()
+  })
+
+  it('renders comments when displaying a full blog post', () => {
+
+  })
+
+  it('renders a summary of a blog post', () => {
+    render(<BlogPost post={POST} summary={true} />)
+
+    expect(screen.getByText(POST.title)).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        'Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Str...'
+      )
+    ).toBeInTheDocument()
+  })
+
+  it('does not render comments when displaying a summary', () => {
+    render(<BlogPost post={POST} summary={true} />)
+
+    expect(screen.queryByText(comment.title)).not.toBeInTheDocument()
+  })
+})
+
+```
 
 ## Adding Comments to the Schema
 
