@@ -173,7 +173,7 @@ export const handler = (event, context, callback) => {
 
 Yeah, kinda gross. What's with that `null` as the first parameter? That's used if your handler needs to return an error. More on callback-based handlers can be found in [Netlify's docs](https://docs.netlify.com/functions/build-with-javascript/#format).
 
-The callback syntax may not be *too* bad for this simple example. But, if you find yourself dealing with Promises inside your handler, and you choose to go use callback syntax, you may want to lie down and rethink the life choices that brought you to this moment. If you still want to use callbacks you had better hope that time travel is invented by the time this code goes into production, so you can go back in time and prevent yourself from ruining your own life. You will, of course, fail because you already choose to use callbacks the first time so you must have been unsuccessful in stopping yourself when you went back.
+The callback syntax may not be *too* bad for this simple example. But, if you find yourself dealing with Promises inside your handler, and you choose to go use callback syntax, you may want to lie down and rethink the life choices that brought you to this moment. If you still want to use callbacks you had better hope that time travel is invented by the time this code goes into production, so you can go back in time and prevent yourself from ruining your own life. You will, of course, fail because you already chose to use callbacks the first time so you must have been unsuccessful in stopping yourself when you went back.
 
 Trust us, it's probably best to just stick with async/await instead of tampering with spacetime.
 
