@@ -178,4 +178,4 @@ And there you have it! You have now added pagination to your redwood blog. One t
 
 Most of the code in this tutorial was copy/pasted from the ["Hammer Blog" RedwoodJS example](https://github.com/redwoodjs/example-blog)
 
-If you want to learn more about [pagination with Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/pagination) and [pagination with Apollo](https://www.apollographql.com/docs/react/data/pagination/) they both have excelent docs on the topic.
+If you want to learn more about [pagination with Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/pagination) and [pagination with Apollo](https://www.apollographql.com/docs/react/data/pagination/) they both have excellent docs on the topic.
