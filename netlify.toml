@@ -164,3 +164,8 @@ to = "/cookbook/mocking-graphql-in-storybook"
 [[redirects]]
 from = "/cookbook/go-true-auth"
 to = "/cookbook/gotrue-auth"
+
+[[redirects]]
+  from = "/newsletter"
+  to = "https://redwoodjs.us19.list-manage.com/subscribe/post?u=0c27354a06a7fdf4d83ce07fc&id=09f634eea4"
+  force = true

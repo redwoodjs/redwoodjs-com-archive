@@ -73,9 +73,9 @@ Files are output to each side's `dist` directory:
 
 ```plaintext{2,6}
 ├── api
-│   ├── dist
-│   ├── prisma
-│   └── src
+│   ├── dist
+│   ├── prisma
+│   └── src
 └── web
     ├── dist
     ├── public
@@ -231,9 +231,9 @@ Running `yarn rw db save` generates the following directories and files as neces
 ```terminal
 api/prisma/migrations
 ├── 20200516162516-create-users
-│   ├── README.md
-│   ├── schema.prisma
-│   └── steps.json
+│   ├── README.md
+│   ├── schema.prisma
+│   └── steps.json
 └── migrate.lock
 ```
 
@@ -320,7 +320,7 @@ yarn redwood dev [side..]
 
 **Usage**
 
-If you're only working on your sdl and services, you can run just the api server to get GraphiQL on port 8911:
+If you're only working on your sdl and services, you can run just the api server to get GraphQL Playground on port 8911:
 
 ```plaintext{10}
 ~/redwood-app$ yarn rw dev api
@@ -1090,26 +1090,7 @@ export const users = () => {
 
 ### util
 
-Quality of life utilities.
-
-```
-yarn rw generate util <util>
-```
-
-<br/>
-
-| Arguments & Options | Description                              |
-| :------------------ | :--------------------------------------- |
-| `util`              | Utility to setup. Choices are `tailwind` |
-| `--force, -f`       | Overwrite existing configuration         |
-
-#### tailwind
-
-Setup [Tailwind CSS](https://tailwindcss.com/).
-
-This command automates all the steps enumerated in the Webpack Configuration doc's [Adding Tailwind CSS](https://redwoodjs.com/docs/webpack-configuration#adding-tailwindcss) section.
-
-Right now, this'll generate the `tailwind.config.js` file in `web` (instead of in `web/config`) to get the vscode extension working.
+This command has been deprecated. See [Setup command](#setup).
 
 ## info
 
@@ -1175,6 +1156,22 @@ yarn rw open
 
 Redwood's companion CLI development tool. You'll be using this if you're contributing to Redwood. See [Contributing](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#cli-reference-redwood-tools) in the Redwood repo.
 
+## setup
+
+Initialize project config and install packages
+
+```
+yarn rw setup <command>
+```
+
+<br/>
+
+| Commands            | Description                              |
+| :------------------ | :--------------------------------------- |
+| `i18n`              | Setup i18n                               |
+| `tailwind`          | Setup tailwindcss and PostCSS            |
+| `webpack`           | Setup webpack in your project so you can add custom config            |
+
 ## test
 
 Run Jest tests for api and web.
@@ -1205,9 +1202,25 @@ yarn rw upgrade
 
 This command does all the heavy-lifting of upgrading to a new release for you.
 
-Besides upgrading to a new release, you can use this command to upgrade to either of our unstable releases: `canary` and `rc`. A canary release is published to npm every time a branch is merged to master, and when we're getting close to a new release, we publish release candidates.
+Besides upgrading to a new stable release, you can use this command to upgrade to either of our unstable releases, `canary` and `rc`, or you can upgrade to a specific release version. 
+
+A canary release is published to npm every time a PR is merged to the `main` branch, and when we're getting close to a new release, we publish release candidates.
 
 | Option          | Description                                                                                                                         |
 | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
 | `--dry-run, -d` | Check for outdated packages without upgrading                                                                                       |
-| `--tag, -t`     | WARNING: Unstable releases! Force upgrades packages to the most recent version for the given `--tag`. Choices are `canary` and `rc` |
+| `--tag, -t`     | Choices are "canary", "rc", or a specific version (e.g. "0.19.3"). WARNING: Unstable releases in the case of "canary" and "rc", which will force upgrade packages to the most recent release of the specified tag.  |
+
+**Example**
+
+Upgrade to the most recent canary:
+
+```terminal
+yarn redwood upgrade -t canary
+```
+
+Upgrade to a specific version:
+
+```terminal
+yarn redwood upgrade -t 0.19.3
+```

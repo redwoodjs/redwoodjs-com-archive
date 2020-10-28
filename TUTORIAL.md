@@ -48,6 +48,8 @@ yarn --version
 
 Please do upgrade accordingly. Then proceed to the RedwoodJS installation when you're ready!
 
+> **Installing Node and Yarn**
+>
 > There are many ways to install and manage both Node.js and Yarn. If you're installing for the first time, we recommend the following:
 >
 > **Yarn**
@@ -158,7 +160,7 @@ That's it for the backend.
 - `public` contains assets not used by React components (they will be copied over unmodified to the final app's root directory):
   - `favicon.png` is the icon that goes in a browser tab when your page is open (apps start with the RedwoodJS logo).
   - `robots.txt` can be used to control what web indexers are [allowed to do](https://www.robotstxt.org/robotstxt.html).
-  - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can read it on Github [here](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
+  - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can also [read this README.md file on GitHub](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
 - `index.css` is a generic place to put your CSS, but there are many options.
 - `index.html` is the standard React starting point for our app.
 - `index.js` the bootstraping code to get our Redwood app up and running.
@@ -177,6 +179,8 @@ The command above does three things:
 - Creates a Storybook file for this component at `web/src/pages/HomePage/HomePage.stories.js`. Storybook is a wonderful tool for efficiently developing and organizing UI components. If you'd like to learn more, see this [Redwood Forum topic](https://community.redwoodjs.com/t/how-to-use-the-new-storybook-integration-in-v0-13-0/873) to start using it in your development process.
 - Adds a `<Route>` in `web/src/Routes.js` that maps the path `/` to the new _HomePage_ page.
 
+> **Automatic import of pages in Routes file**
+>
 > If you look in Routes you'll notice that we're referencing a component, `HomePage`, that isn't imported anywhere. Redwood automatically imports all pages in the Routes file since we're going to need to reference them all anyway. It saves a potentially huge `import` declaration from cluttering up the routes file.
 
 In fact this page is already live (your browser automatically reloaded):
@@ -199,7 +203,7 @@ Try changing the route to something like:
 <Route path="/hello" page={HomePage} name="home" />
 ```
 
-Now you'll see the `NotFoundPage` page. As soon as you add your first route, you'll never see the Redwood splash screen again. From now on, when no route can be found that matches the requested URL, Redwood will render the `NotFoundPage`. Change your URL to http://localhost:8910/hello and you should see the homepage again.
+As soon as you add your first route, you'll never see the initial Redwood splash screen again. From now on, when no route can be found that matches the requested URL, Redwood will render the `NotFoundPage`. Change your URL to http://localhost:8910/hello and you should see the homepage again.
 
 Change the route path back to `/` before continuing!
 
@@ -211,6 +215,8 @@ Let's create an "About" page for our blog so everyone knows about the geniuses b
 
 Notice that we didn't specify a route path this time. If you leave it off the `redwood generate page` command, Redwood will create a `Route` and give it a path that is the same as the page name you specified prepended with a slash. In this case it will be `/about`.
 
+> **Code-splitting each page**
+>
 > As you add more pages to your app, you may start to worry that more and more code has to be downloaded by the client on any initial page load. Fear not! Redwood will automatically code-split on each Page, which means that initial page loads can be blazingly fast, and you can create as many Pages as you want without having to worry about impacting overall webpack bundle size. If, however, you do want specific Pages to be included in the main bundle, you can override the default behavior.
 
 http://localhost:8910/about should show our new page. But no one's going to find it by manually changing the URL so let's add a link from our homepage to the About page and vice versa. We'll start creating a simple header and nav bar at the same time on the HomePage:
@@ -302,6 +308,8 @@ Let's create a layout to hold that `<header>`:
 
     yarn redwood g layout blog
 
+> **`generate` shorthand**
+>
 > From now on we'll use the shorter `g` alias instead of `generate`
 
 That created `web/src/layouts/BlogLayout/BlogLayout.js` and an associated test file. We're calling this the "blog" layout because we may have other layouts at some point in the future (an "admin" layout, perhaps?).
@@ -369,6 +377,8 @@ const AboutPage = () => {
 export default AboutPage
 ```
 
+> **The `src` alias**
+>
 > Notice that the import statement uses `src/layouts/BlogLayout` and not `../src/layouts/BlogLayout` or `./src/layouts/BlogLayout`. Being able to use just `src` is a convenience feature provided by Redwood: `src` is an alias to the `src` path in the current workspace. So if you're working in `web` then `src` points to `web/src` and in `api` it points to `api/src`.
 
 Back to the browser and you should see...nothing different. But that's good, it means our layout is working.
@@ -489,11 +499,15 @@ This says that we want a table called `Post` and it should have:
 - A `body` field that will contain a `String`
 - A `createdAt` field that will be a `DateTime` and will `@default` to `now()` when we create a new record (so we don't have to set the time manually in our app)
 
+> **Integer vs. String IDs**
+>
 > For the tutorial we're keeping things simple and using an integer for our ID column. Some apps may want to use a CUID or a UUID which Prisma supports. In that case you would use `String` for the datatype instead of `Int` and use `cuid()` or `uuid()` instead of `autoincrement()`:
 >
 > `id String @id @default(cuid())`
 >
-> Integers also make for nicer URLs like https://redwoodblog.com/posts/123 instead of https://redwoodblog.com/posts/eebb026c-b661-42fe-93bf-f1a373421a13 Take a look at the [official Prisma documentation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/data-model#ids) for more on ID fields.
+> Integers also make for nicer URLs like https://redwoodblog.com/posts/123 instead of https://redwoodblog.com/posts/eebb026c-b661-42fe-93bf-f1a373421a13. 
+>
+> Take a look at the [official Prisma documentation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/data-model#defining-an-id-field) for more on ID fields.
 
 ### Migrations
 
@@ -509,6 +523,8 @@ We apply the migration with another command:
 
     yarn rw db up
 
+> **`redwood` Shorthand**
+>
 > From now on we'll use the shorter `rw` alias instead of the full `redwood` name.
 
 This will apply the migration (which runs the commands against the database to create the changes we need) which results in creating a new table called `Post` with the fields we defined above.
@@ -567,6 +583,8 @@ Here's what happened when we ran that `yarn rw g scaffold post` command:
   - `PostForm` the actual form used by both the New and Edit components
   - `Posts` displays the table of all posts
 
+> **Generator Naming Conventions**
+>
 > You'll notice that some of the generated parts have plural names and some have singular. This convention is borrowed from Ruby on Rails which uses a more "human" naming convention: if you're dealing with multiple of something (like the list of all posts) it will be plural. If you're only dealing with a single something (like creating a new post) it will be singular. It sounds natural when speaking, too: "show me a list of all the posts" versus "I'm going to create a new post."
 >
 > As far as the generators are concerned:
@@ -597,7 +615,7 @@ Oh boy, our first page with data and we already have to worry about loading stat
 
 ## Cells
 
-These features are common in most web apps. We wanted to see if there was something we could do to make developers' lives easier when it comes to adding them to a typical component. We think we've come up with something to help. We call them _Cells_. Cells provide a simpler and more declarative approach to data fetching. (You can read the full documentation about Cells [here](https://redwoodjs.com/docs/cells).)
+These features are common in most web apps. We wanted to see if there was something we could do to make developers' lives easier when it comes to adding them to a typical component. We think we've come up with something to help. We call them _Cells_. Cells provide a simpler and more declarative approach to data fetching. ([Read the full documentation about Cells](https://redwoodjs.com/docs/cells).)
 
 When you create a cell you export several specially named constants and then Redwood takes it from there. A typical cell may look something like:
 
@@ -631,17 +649,16 @@ export const Success = ({ posts }) => {
 }
 ```
 
-When React renders this component Redwood will:
+When React renders this component, Redwood will perform the `QUERY` and display the `Loading` component until a response is received.
 
-- Perform the `QUERY` and display the `Loading` component until a response is received
-- Once the query returns it will display one of three states:
+Once the query returns, it will display one of three states:
   - If there was an error, the `Failure` component
   - If the data return is empty (`null` or empty array), the `Empty` component
   - Otherwise, the `Success` component
 
-There are also some lifecycle helpers like `beforeQuery` (for massaging any props before being given to the `QUERY`) and `afterQuery` (for massaging the data returned from GraphQL but before being sent to the `Success` component)
+There are also some lifecycle helpers like `beforeQuery` (for massaging any props before being given to the `QUERY`) and `afterQuery` (for massaging the data returned from GraphQL but before being sent to the `Success` component).
 
-The minimum you need for a cell are the `QUERY` and `Success` exports. If you don't export an `Empty` component, empty results will be sent to your `Success` component. If you don't provide a `Failure` component you'll get error output sent to the console.
+The minimum you need for a cell are the `QUERY` and `Success` exports. If you don't export an `Empty` component, empty results will be sent to your `Success` component. If you don't provide a `Failure` component, you'll get error output sent to the console.
 
 A guideline for when to use cells is if your component needs some data from the database or other service that may be delayed in responding. Let Redwood worry about juggling what is displayed when and you can focus on the happy path of the final, rendered component populated with data.
 
@@ -675,16 +692,46 @@ export const Success = ({ blogPosts }) => {
 }
 ```
 
-> When generating you can use any case you'd like and Redwood will do the right thing when it comes to naming. These will all create the same filename:
+> **Indicating Multiplicity to the Cell Generator**
+>
+> When generating a cell you can use any case you'd like and Redwood will do the right thing when it comes to naming. These will all create the same filename (`web/src/components/BlogPostsCell/BlogPostsCell.js`):
 >
 >     yarn rw g cell blog_posts
 >     yarn rw g cell blog-posts
 >     yarn rw g cell blogPosts
 >     yarn rw g cell BlogPosts
 >
-> You will need _some_ kind of indication that you're using more than one word. Calling `yarn redwood g cell blogposts` will generate a file at `web/src/components/BlogpostsCell/BlogpostsCell.js`
+> You will need _some_ kind of indication that you're using more than one word: either snake_case (`blog_posts`), kebab-case (`blog-posts`), camelCase (`blogPosts`) or PascalCase (`BlogPosts`). 
+> 
+> Calling `yarn redwood g cell blogposts` (without any indication that we're using two words) will generate a file at `web/src/components/BlogpostsCell/BlogpostsCell.js`.
 
-To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case it called the query `blogPosts` which is not a valid query name for our existing Posts SDL and Service. We'll have to rename that to just `posts` in both the query name and prop named in `Success`:
+To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case the query is called `blogPosts`:
+
+```javascript
+// web/src/components/BlogPostsCell/BlogPostsCell.js
+
+export const QUERY = gql`
+  query BlogPostsQuery {
+    blogPosts {
+      id
+    }
+  }
+`
+
+export const Loading = () => <div>Loading...</div>
+
+export const Empty = () => <div>Empty</div>
+
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
+
+export const Success = ({ posts }) => {
+  return JSON.stringify(posts)
+}
+```
+
+However, this is not a valid query name for our existing Posts SDL (`src/graphql/posts.sdl.js`) and Service (`src/services/posts/posts.js`). (To see where these files come from, go back to the [Creating a Post Editor section](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor) in the *Getting Dynamic* part.)
+
+We'll have to rename that to just `posts` in both the query name and in the prop name in `Success`:
 
 ```javascript{5,17,18}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
@@ -2064,7 +2111,7 @@ We already capture any existing error in the `error` constant that we got from `
 >   try {
 >     await create({ variables: { input: data } })
 >     console.log(data)
->   catch (error) {
+>   } catch (error) {
 >     console.log(error)
 >   }
 > }
@@ -2193,7 +2240,7 @@ const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
 
 > You can put the email validation back into the `<TextField>` now, but you should leave the server validation in place, just in case.
 
-Here's the final `ContactForm.js` page:
+Here's the final `ContactPage.js` page:
 
 ```javascript
 import {
@@ -2352,6 +2399,7 @@ Before we continue, make sure your app is fully committed and pushed to GitHub, 
 > ```
 
 ### Vercel (alternative deploy target)
+
 Redwood officially supports multiple hosting providers (with even more on the way). Although this Tutorial continues with a focus on Netlify deployment and authentication with Netlify Identity, you can deploy to [Vercel](https://vercel.com/redwoodjs-core) instead. To do this, first complete "The Database" section below, but then use this [Vercel deploy walkthrough](https://redwoodjs.com/docs/deploy#redwood-deploy-configuration) in place of the following "Netlify" instructions. **Note**: Netlify Identity, used in upcoming "Authentication" section, won’t work on the Vercel platform.
 
 ### The Database
@@ -2743,10 +2791,10 @@ const BlogLayout = ({ children }) => {
           </li>
           <li>
             <a href="#" onClick={isAuthenticated ? logOut : logIn}>
-              { isAuthenticated ? 'Log Out' : 'Log In' }
+              {isAuthenticated ? 'Log Out' : 'Log In'}
             </a>
           </li>
-          { isAuthenticated && <li>{currentUser.email}</li> }
+          {isAuthenticated && <li>{currentUser.email}</li>}
         </ul>
       </nav>
       <main>{children}</main>
