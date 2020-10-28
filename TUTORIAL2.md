@@ -871,8 +871,10 @@ We're looping through each `comment` from the mock so that even if we add more l
 
 The functionality we added to `<BlogPost>` says to show the comments for the post if we are *not* showing the summary. We've got a test for both the "full" and "summary" renders already. Generally you want your tests to be testing "one thing" so let's add two additional tests for our new functionality:
 
-```javascript{}
-import { render, screen } from '@redwoodjs/testing'
+```javascript{3,23-30,43-51}
+// web/src/components/BlogPost/BlogPost.test.js
+
+import { render, screen, waitFor } from '@redwoodjs/testing'
 
 import BlogPost from './BlogPost'
 import { standard } from 'src/components/CommentsCell/CommentsCell.mock'
@@ -892,8 +894,13 @@ describe('BlogPost', () => {
     expect(screen.getByText(POST.body)).toBeInTheDocument()
   })
 
-  it('renders comments when displaying a full blog post', () => {
+  it('renders comments when displaying a full blog post', async () => {
+    const comment = standard().comments[0]
+    render(<BlogPost post={POST} />)
 
+    await waitFor(() =>
+      expect(screen.getByText(comment.body)).toBeInTheDocument()
+    )
   })
 
   it('renders a summary of a blog post', () => {
@@ -907,16 +914,28 @@ describe('BlogPost', () => {
     ).toBeInTheDocument()
   })
 
-  it('does not render comments when displaying a summary', () => {
+  it('does not render comments when displaying a summary', async () => {
+    const comment = standard().comments[0]
     render(<BlogPost post={POST} summary={true} />)
 
-    expect(screen.queryByText(comment.title)).not.toBeInTheDocument()
+    await waitFor(() =>
+      expect(screen.queryByText(comment.body)).not.toBeInTheDocument()
+    )
   })
 })
-
 ```
 
+We're introducting a new test function here `waitFor()` which will wait for things like GraphQL queries to finish running before checking for what's been rendered. Since `<BlogPost>` renders `<CommentsCell>` we need to wait for the `Success` component of `<CommentsCell>` to be rendered.
+
+> The summary version of `<BlogPost>` does *not* render the `<CommentsCell>`, but we should still wait. Why? If we did mistakenly start including `<CommentsCell>`, but didn't wait for the render, we would get a falsely passing test—indeed the text isn't on the page but that's because it's still showing the `Loading` component! If we had waited we would have seen the actual comment body get rendered, and the test would (correctly) fail.
+
+Okay we're finally ready to let users create their comments. But first we need to update the database to start storing them.
+
 ## Adding Comments to the Schema
+
+Let's take a moment to notice how amazing this is—we built, and tested, a completely new component for our app, which displays data from an API call (which would pull that data from a database) without actually having to build any of that backend functionality! Storybook and Jest let us provide fake data so we could get our component working.
+
+Unfortunately, there's still no such thing as a free lunch when it comes to a web app—eventually you're going to have to actually do that backend work. Now's the time.
 
 If you went through the first part of the tutorial you should be somewhat familiar with this flow:
 
@@ -1000,9 +1019,18 @@ db.post.findOne({ where: { id: 1 }}).comments()
 
 ### Running the Migration
 
-(TBD)
+This one is easy enough: we'll create a new migration with a name and then run it:
+
+```terminal
+yarn rw db save create comments
+yarn rw db up
+```
 
 ### Creating the SDL and Service
+
+(TBD)
+
+### Testing
 
 (TBD)
 
@@ -1019,6 +1047,31 @@ db.post.findOne({ where: { id: 1 }}).comments()
 (TBD)
 
 ## Putting it all together
+
+(TBD)
+
+### Storybook
+
+(TBD)
+
+### Testing
+
+(TBD)
+
+## Improvements
+
+### Loading Screens
+
+React Content Loader
+
+* https://github.com/danilowoz/react-content-loader
+* https://skeletonreact.com/#gallery
+
+### Empty Screens
+
+(TBD)
+
+### Error Screens
 
 (TBD)
 
