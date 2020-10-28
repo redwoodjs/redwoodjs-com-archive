@@ -114,7 +114,7 @@ Configuration for the browser target.
 
 | Key    | Description                                                       | Default | Context       |
 | :----- | :---------------------------------------------------------------- | :------ | :------------ |
-| `open` | Open the browser to web's `host:port` after the dev server starts | `false` | `development` |
+| `open` | Open the browser to web's `host:port` after the dev server starts | `true` | `development` |
 
 ### open
 
