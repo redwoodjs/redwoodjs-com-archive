@@ -114,7 +114,7 @@ Configuration for the browser target.
 
 | Key    | Description                                                       | Default | Context       |
 | :----- | :---------------------------------------------------------------- | :------ | :------------ |
-| `open` | Open the browser to web's `host:port` after the dev server starts | `true` | `development` |
+| `open` | Open the browser to web's `host:port` after the dev server starts | `false` | `development` |
 
 ### open
 
@@ -126,6 +126,8 @@ Configuration for the browser target.
 Setting `open` to `true` like this will open the browser to web's `host:port` (by default, localhost:8910) after the dev server starts. If you want your browser to stop opening when you `yarn rw dev`, set this to false. Or just remove it entirely.
 
 You can also provide the name of a browser to use instead of the system default. E.g., `open = 'Firefox'` will open Firefox regardless of which browser's the default on your system.
+
+When you generate a new app the `open` value will be set to `true` by default for you. When you remove the `open` key from the `redwood.toml` file we will default to `false`.
 
 There's a lot more you can do here. For all the details, see Webpack's docs on [devServer.open](https://webpack.js.org/configuration/dev-server/#devserveropen).
 
