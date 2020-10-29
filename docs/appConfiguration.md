@@ -127,7 +127,7 @@ Setting `open` to `true` like this will open the browser to web's `host:port` (b
 
 You can also provide the name of a browser to use instead of the system default. E.g., `open = 'Firefox'` will open Firefox regardless of which browser's the default on your system.
 
-When you generate a new app, the `open` value is set to `true`. If you delete the `open` config from `redwood.toml`, it will default to `false`. For example, removing the line `open = true` disables automatic browser opening.
+> When you generate a new app, the `open` value is set to `true`. If you delete the `open` config from `redwood.toml`, it will default to `false`. For example, removing the line `open = true` disables automatic browser opening.
 
 There's a lot more you can do here. For all the details, see Webpack's docs on [devServer.open](https://webpack.js.org/configuration/dev-server/#devserveropen).
 
