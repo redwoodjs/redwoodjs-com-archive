@@ -774,7 +774,7 @@ export default BlogPost
 
 Okay, comment display is looking good! However, you may have noticed that if you tried going to the actual site there's an error where the comments should be:
 
-![image](https://user-images.githubusercontent.com/300/96509825-7a44b800-1211-11eb-880c-841c9341360f.png)
+![image](https://user-images.githubusercontent.com/300/97620392-c0063b00-19de-11eb-84e8-d35f028d67b8.png)
 
 Why is that? Remember that we started with the `CommentsCell`, but never actually created a Comment model in `schema.prisma` or created an SDL and service! That's another neat part of working with Storybook: you can build out UI functionality completely isolated from the api-side. In a team setting this is great because a web-side team can work on the UI while the api-side team can be building the backend end simultaneously and one doesn't have to wait for the other.
 
@@ -933,9 +933,9 @@ Okay we're finally ready to let users create their comments. But first we need t
 
 ## Adding Comments to the Schema
 
-Let's take a moment to notice how amazing this is—we built, and tested, a completely new component for our app, which displays data from an API call (which would pull that data from a database) without actually having to build any of that backend functionality! Storybook and Jest let us provide fake data so we could get our component working.
+Let's take a moment to appreciate how amazing this is—we built, designed and tested a completely new component for our app, which displays data from an API call (which would pull that data from a database) without actually having to build any of that backend functionality! Storybook and Jest let us provide fake data so we could get our component working.
 
-Unfortunately, there's still no such thing as a free lunch when it comes to a web app—eventually you're going to have to actually do that backend work. Now's the time.
+Unfortunately, even with all of this flexibility there's still no such thing as a free lunch. Eventually we're going to have to actually do that backend work. Now's the time.
 
 If you went through the first part of the tutorial you should be somewhat familiar with this flow:
 
@@ -1028,7 +1028,38 @@ yarn rw db up
 
 ### Creating the SDL and Service
 
-(TBD)
+Next we'll create the SDL (that defines the GraphQL interface) and a service (to get the records out of the database):
+
+```terminal
+yarn rw g sdl comment
+```
+
+That command will create both the SDL and the service. And if you take a look back in the browser you should see a different message than the error we were seeing before:
+
+![image](https://user-images.githubusercontent.com/300/97620271-8fbe9c80-19de-11eb-8d95-86c1cb7bcb91.png)
+
+"Empty" means the Cell rendered correctly! There just aren't any comments in the database yet. Let's update the `<CommentsCell>` component to make that "Empty" message a little more friendly:
+
+```javascript
+// web/src/components/CommentsCell/CommentsCell.js
+
+export const Empty = () => {
+  return <div className="text-center text-gray-500">No comments yet</div>
+}
+```
+
+That's better. Let's update the test that covers the Empty component render as well:
+
+```javascript
+// web/src/components/CommentsCell/CommentsCell.test.js
+
+test('Empty renders a "no comments" message', () => {
+  render(<Empty />)
+  expect(screen.getByText('No comments yet')).toBeInTheDocument()
+})
+```
+
+Next we need some tests for our service.
 
 ### Testing
 
