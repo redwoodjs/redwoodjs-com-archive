@@ -1,6 +1,6 @@
-# Serverfull Hosting
+# Self-hosting Redwood
 
-Do you prefer to host a Redwood app on your own server instead of all this serverless magic? Well, you can! In this recipe we configure a Redwood app with PM2 and Nginx on a Linux server.
+Do you prefer to host a Redwood app on your own server, the traditional serverfull way, instead of all this serverless magic? Well, you can! In this recipe we configure a Redwood app with PM2 and Nginx on a Linux server.
 
 ## Example
 
@@ -126,7 +126,7 @@ module.exports = {
 }
 ```
 
-> Caveat: the API seems to only work in fork mode in PM2, not cluster mode
+> Caveat: the API seems to only work in fork mode in PM2, not [cluster mode](https://pm2.keymetrics.io/docs/usage/cluster-mode/)
 
 ## Deploying
 
