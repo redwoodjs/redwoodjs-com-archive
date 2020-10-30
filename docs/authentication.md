@@ -542,9 +542,9 @@ Therefore, your second rule will `Add AppMetadata to JWT`.
 
 You can add `app_metadata` to the `idToken` or `accessToken`.
 
-Adding to `idToken` will make the make App metadta accessible to RedwoodJS `getuserMetadata` which for Auth0 calls the auth client's `getUser`.
+Adding to `idToken` will make the make App metadata accessible to RedwoodJS `getUserMetadata` which for Auth0 calls the auth client's `getUser`.
 
-Adding to `accessToken` will make the make App metadta accessible to RedwoodJS when decoding the JWT via `getToken`.
+Adding to `accessToken` will make the make App metadata accessible to RedwoodJS when decoding the JWT via `getToken`.
 
 While adding to `idToken` is optional. you _must_ add to `accessToken`.
 
