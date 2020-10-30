@@ -1,4 +1,4 @@
-# Self-hosting Redwood
+# Self-hosting Redwood: Serverfull
 
 Do you prefer to host a Redwood app on your own server, the traditional serverfull way, instead of all this serverless magic? Well, you can! In this recipe we configure a Redwood app with PM2 and Nginx on a Linux server.
 
