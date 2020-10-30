@@ -634,6 +634,8 @@ netlify functions:invoke <function-name> --port 8910
 ```
 `<function-name>` should be replaced by `identity-validate`, `identity-signup`, `identity-login` or your own function.
 
+Note that the netlify-cli does not generate fake user data for each invocation of an identity function. It always provides the same `Test Person` data.
+
 ## Additional Resources
 
 - [RBAC Example & Demo Site](https://redwoodblog-with-identity.netlify.app/)
