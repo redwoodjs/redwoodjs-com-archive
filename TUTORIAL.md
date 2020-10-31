@@ -63,7 +63,7 @@ Please do upgrade accordingly. Then proceed to the RedwoodJS installation when y
 >   - For **Linux** users, you can follow the [installation instructions from `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating).
 > - We recommend **Windows** users visit [Nodejs.org](https://nodejs.org/en/) for installation.
 >
-> If you're confused about which of the two current Node versions to use, we recommend using the most recent "even" LTS, which is currently v12.
+> If you're confused about which of the two current Node versions to use, we recommend using the most recent "even" LTS, which is currently v14.
 
 ## Installation & Starting Development
 
