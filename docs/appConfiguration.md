@@ -32,6 +32,7 @@ const DEFAULT_CONFIG: Config = {
     port: 8911,
     path: './api',
     target: TargetEnum.NODE,
+    schemaPath: './api/db',
   },
   browser: {
     open: true,
