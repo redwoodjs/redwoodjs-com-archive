@@ -618,6 +618,24 @@ export const handler = async (req, _context) => {
 }
 ```
 
+#### How to invoke serverless functions while in dev
+
+So long as `yarn rw dev` is running, `netlify-cli` can be used to invoke your function. Steps are:
+
+```terminal
+# Install the cli
+yarn add netlify-cli -g
+
+# Rebuild api after any changes to /functions
+yarn rw build api
+
+# Invoke your function with the CLI, pointing it to the rw dev port
+netlify functions:invoke <function-name> --port 8910
+```
+`<function-name>` should be replaced by `identity-validate`, `identity-signup`, `identity-login` or your own function.
+
+Note that the netlify-cli does not generate fake user data for each invocation of an identity function. It always provides the same `Test Person` data.
+
 ## Additional Resources
 
 - [RBAC Example & Demo Site](https://redwoodblog-with-identity.netlify.app/)
