@@ -2158,7 +2158,7 @@ import { Flash, useFlash, useMutation } from '@redwoodjs/web'
 
 return (
   <BlogLayout>
-    <Flash timeout={1000}>
+    <Flash timeout={1000} />
     <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }} error={error}>
       <FormError
         error={error}
@@ -2213,7 +2213,7 @@ Finally we'll tell `<Form>` to use the `formMethods` we just instantiated instea
 
 return (
   <BlogLayout>
-    <Flash timeout={1000}>
+    <Flash timeout={1000} />
     <Form
       onSubmit={onSubmit}
       validation={{ mode: 'onBlur' }}
