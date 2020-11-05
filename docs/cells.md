@@ -365,4 +365,4 @@ export const Cell = () => {
 
 That's a lot of code. A lot of imperative code too.
 
-We're basically just dumping the contents of [withCell.js](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/graphql/withCell.js) into this file. Can you imagine having to do this every time you wanted to fetch data that might be delayed in responding? Yikes.
+We're basically just dumping the contents of [withCell.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/graphql/withCell.tsx) into this file. Can you imagine having to do this every time you wanted to fetch data that might be delayed in responding? Yikes.
