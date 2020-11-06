@@ -1059,15 +1059,86 @@ test('Empty renders a "no comments" message', () => {
 })
 ```
 
-Next we need some tests for our service.
+Okay, let's focus on the service for bit. We'll need to add a function to let users create a new comment and we'll add a test that covers the new functionality.
 
-### Testing
+### Building out the Service
 
-(TBD)
+By virtue of using the generator we've already got the function we need to select all comments from the database:
+
+```javascript
+// api/src/services/comments/comments.js
+
+export const comments = () => {
+  return db.comment.findMany()
+}
+```
+
+> Have you noticed that something may be amiss? This function returns *all* comments, and all comments only.
+>
+> To be continued...
+
+We need to be able to create a comment as well. We'll use the same convention we use in Redwood's generated scaffolds: the create endpoint will accept a single parameter `input` which is an object with the individual model fields:
+
+```javascript
+// api/src/services/comments/comments.js
+
+export const createComment = ({ input }) => {
+  return db.comment.create({
+    data: input,
+  })
+}
+```
+
+We'll also need to expose this function via GraphQL so we'll add a Mutation to the SDL:
+
+```graphql
+// api/src/graphql/comments.sdl.js
+
+type Mutation {
+  createComment(input: CreateCommentInput!): Comment!
+}
+```
+
+> The `CreateCommentInput` type was already created for us by the SDL generator.
+
+That's all we need to create a comment! But let's think for a moment: is there anything else we need to do with a comment? Let's make the decision that users won't be able to update an existing comment. And we don't need to select individual comments (remember earlier we talked about the possibility of each comment being responsible for its own API request and display, but we decided against it).
+
+What about deleting a comment? We won't let a user delete their own comment, but as owners of the blog we should be able to delete/moderate them. So we'll need a delete function and API endpoint as well. Let's add those:
+
+```javascript
+// api/src/services/comments/comments.js
+
+export const deleteComment = ({ id }) => {
+  return db.comment.delete({
+    where: { id },
+  })
+}
+```
+
+```graphql{5}
+// api/src/graphql/comments.sdl.js
+
+type Mutation {
+  createComment(input: CreateCommentInput!): Comment!
+  deleteComment(id: Int!): Comment!
+}
+```
+
+### Testing the Service
+
+Let's make sure our service functionality is working and continues to work as we modify our app.
+
+First we'll test the `createComment()` function by actually trying to create a comment and then make sure it makes it to the database without an error:
+
+(TBD, waiting on Prisma's new foreign key syntax)
 
 ## Creating a Comment Form
 
-(TBD)
+We're ready to let users add their own comments! Let's generate a form and then we'll build it out and integrate it in Storybook, and then add some tests.
+
+```terminal
+yarn rw g component CommentForm
+```
 
 ### Storybook
 
