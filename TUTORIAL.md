@@ -1750,7 +1750,9 @@ model Contact {
 }
 ```
 
-> To mark a column as optional (that is, allowing `NULL` as a value) you can suffix the datatype with question mark: `name String?`
+> Make field type optional
+>
+> To mark a field as optional (that is, allowing `NULL` as a value) you can suffix the datatype with a question mark, e.g. `name String?`. This will allow `name`'s value to be both `String` or `NULL`.
 
 Next we create a migration file:
 
