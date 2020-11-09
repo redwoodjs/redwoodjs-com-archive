@@ -1818,12 +1818,38 @@ As described in [Side Quest: How Redwood Deals with Data](side-quest-how-redwood
 
 In this case we're creating a single `Mutation` that we'll call `createContact`. Add that to the end of the SDL file (before the closing backtick):
 
-```javascript
+```javascript{28-30}
 // api/src/graphql/contacts.sdl.js
 
-type Mutation {
-  createContact(input: CreateContactInput!): Contact
-}
+export const schema = gql`
+  type Contact {
+    id: Int!
+    name: String!
+    email: String!
+    message: String!
+    createdAt: DateTime!
+  }
+
+  type Query {
+    contacts: [Contact!]!
+  }
+
+  input CreateContactInput {
+    name: String!
+    email: String!
+    message: String!
+  }
+
+  input UpdateContactInput {
+    name: String
+    email: String
+    message: String
+  }
+
+  type Mutation {
+    createContact(input: CreateContactInput!): Contact
+  }
+`
 ```
 
 The `createContact` mutation will accept a single variable, `input`, that is an object that conforms to what we expect for a `CreateContactInput`, namely `{ name, email, message }`.
