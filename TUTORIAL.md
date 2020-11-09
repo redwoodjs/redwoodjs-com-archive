@@ -2696,9 +2696,9 @@ const BlogLayout = ({ children }) => {
             <Link to={routes.contact()}>Contact</Link>
           </li>
           <li>
-            <a href="#" onClick={logIn}>
+            <button onClick={logIn}>
               Log In
-            </a>
+            </button>
           </li>
         </ul>
       </nav>
@@ -2755,9 +2755,9 @@ const BlogLayout = ({ children }) => {
             <Link to={routes.contact()}>Contact</Link>
           </li>
           <li>
-            <a href="#" onClick={isAuthenticated ? logOut : logIn}>
+            <button onClick={isAuthenticated ? logOut : logIn}>
               {isAuthenticated ? 'Log Out' : 'Log In'}
-            </a>
+            </button>
           </li>
         </ul>
       </nav>
@@ -2800,9 +2800,9 @@ const BlogLayout = ({ children }) => {
             <Link to={routes.contact()}>Contact</Link>
           </li>
           <li>
-            <a href="#" onClick={isAuthenticated ? logOut : logIn}>
+            <button onClick={isAuthenticated ? logOut : logIn}>
               {isAuthenticated ? 'Log Out' : 'Log In'}
-            </a>
+            </button>
           </li>
           {isAuthenticated && <li>{currentUser.email}</li>}
         </ul>
