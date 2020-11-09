@@ -1732,7 +1732,9 @@ Finally, you know what would _really_ be nice? If the fields were validated as s
 
 Well, what do you think? Was it worth the hype? A couple of new components and you've got forms that handle validation and wrap up submitted values in a nice data object, all for free.
 
-> Redwood's forms are built on top of [React Hook Form](https://react-hook-form.com/) so there is even more functionality available than we've documented here.
+> **Learn more about Redwood Forms** 
+>
+> Redwood's forms are built on top of [React Hook Form](https://react-hook-form.com/) so there is even more functionality available than we've documented here. Visit the [Form docs](https://redwoodjs.com/docs/form) to learn more about all form functionalities.
 
 Redwood has one more trick up its sleeve when it comes to forms but we'll save that for when we're actually submitting one to the server.
 
