@@ -1673,7 +1673,9 @@ export default ContactPage
 
 <img src="https://user-images.githubusercontent.com/300/80259003-70af0e80-8639-11ea-97cf-b6b816118fbf.png" />
 
-> In addition to `className` and `errorClassName` you can also use `style` and `errorStyle`
+> **Error styling**
+>
+> In addition to `className` and `errorClassName` you can also use `style` and `errorStyle`. Check out the [Form docs](https://redwoodjs.com/docs/form) for more details on error styling.
 
 ### Validating Input Format
 
