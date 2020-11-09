@@ -1750,7 +1750,7 @@ model Contact {
 }
 ```
 
-> Make field type optional
+> **Prisma syntax for optional field**
 >
 > To mark a field as optional (that is, allowing `NULL` as a value) you can suffix the datatype with a question mark, e.g. `name String?`. This will allow `name`'s value to be both `String` or `NULL`.
 
@@ -1807,9 +1807,12 @@ What's `CreateContactInput` and `UpdateContactInput`? Redwood follows the GraphQ
 
 > Redwood assumes your code won't try to set a value on any field named `id` or `createdAt` so it left those out of the Input types, but if your database allowed either of those to be set manually you can update `CreateContactInput` or `UpdateContactInput` and add them.
 
-Since all of the DB columns were required in the `schema.prisma` file they are marked as required here (the `!` suffix on the datatype).
+Since all of the DB columns were required in the `schema.prisma` file they are marked as required in the GraphQL Types with the `!` suffix on the datatype (e.g. `name: String!`).
+).
 
-> **Remember:** `schema.prisma` syntax requires an extra `?` character when a field is _not_ required, GraphQL's SDL syntax requires an extra `!` when a field _is_ required.
+> **GraphQL syntax for required field**
+>
+> GraphQL's SDL syntax requires an extra `!` when a field _is_ required. Remember: `schema.prisma` syntax requires an extra `?` character when a field is _not_ required.
 
 As described in [Side Quest: How Redwood Deals with Data](side-quest-how-redwood-works-with-data) there are no explicit resolvers defined in the SDL file. Redwood follows a simple naming convention—each field listed in the `Query` and `Mutation` types map to a function with the same name in the `services` file and in the `sdl` file (`api/src/graphql/contacts.sdl.js -> api/src/services/contacts/contacts.js`)
 
