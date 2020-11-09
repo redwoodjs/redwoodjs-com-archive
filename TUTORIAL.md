@@ -2412,6 +2412,16 @@ First we'll let Prisma know that we intend to use Postgres in addition to SQLite
 provider = ["sqlite", "postgresql"]
 ```
 
+> If you are deploying to Netlify and using Prisma version `< 2.11.0`, you will need to add `rhel-openssl-1.0.x` to your `binaryTargets`:
+> ```javascript
+> // api/prisma/schema.prisma
+>
+> generator client {
+>   provider      = "prisma-client-js"
+>   binaryTargets = ["native", "rhel-openssl-1.0.x"]
+> }
+> ```
+
 If you'd like to develop locally with Postgres, see the
 [Local Postgres Setup](/docs/local-postgres-setup) guide.
 
