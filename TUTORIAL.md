@@ -1758,7 +1758,7 @@ Next we create a migration file:
 
     yarn rw db save create contact
 
-Finally we execute the migration to run the DDL commands to upgrade the database:
+Finally we execute the migration to run the [DDL](https://en.wikipedia.org/wiki/Data_definition_language) commands to upgrade the database:
 
     yarn rw db up
 
