@@ -1609,7 +1609,7 @@ return (
 
 <img src="https://user-images.githubusercontent.com/300/80258907-39d8f880-8639-11ea-8816-03a11c69e8ac.png" />
 
-Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's custom `<Label>` component for that. Note that the `for` attribute of `<label>` becomes `name` for `<Label>`, just like with the other components. And don't forget the import:
+Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's custom `<Label>` component for that. Note that the `for` attribute of `<label>` becomes `name` on `<Label>`, just like the other Redwood form components. And don't forget the import:
 
 ```javascript{9,21-23,31-33,41-43}
 // web/src/pages/ContactPage/ContactPage.js
