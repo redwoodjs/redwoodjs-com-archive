@@ -1288,7 +1288,7 @@ Forms in React are infamously annoying to work with. There are [Controlled Compo
 
 We think Redwood is a step or two in the right direction by not only freeing you from writing controlled component plumbing, but also dealing with validation and errors automatically. Let's see how it works.
 
-Before we start, let's add a couple of CSS classes to make the default form layout a little cleaner and save us from having to write a bunch of `style` attribute that will clutter up the examples and make them harder to follow. For now we'll just put these in the root `index.css` file in `web/src`:
+Before we start, let's add a couple of CSS classes to make the default form layout a little cleaner and save us from having to write a bunch of `style` attributes that will clutter up the examples and make them harder to follow. For now we'll just put these in the root `index.css` file in `web/src`:
 
 ```css
 /* web/src/index.css */
@@ -1467,7 +1467,7 @@ Try filling out the form and submitting and you should get a console message wit
 
 ### Validation
 
-"Okay Redwood tutorial author," you're saying, "what's the big deal? You built up Redwood's form helpers as The Next Big Thing but there are plenty of libraries that will let me skip creating controlled inputs manually. So what?" And you're right! Anyone can fill out a form _correctly_ (although there are plenty of QA folks who would challenge that statement), but what happens when someone leaves something out, or makes a mistake, or tries to haxorz our form? Now who's going to be there to help? Redwood, that's who!
+"Okay, Redwood tutorial author," you're saying, "what's the big deal? You built up Redwood's form helpers as The Next Big Thing but there are plenty of libraries that will let me skip creating controlled inputs manually. So what?" And you're right! Anyone can fill out a form _correctly_ (although there are plenty of QA folks who would challenge that statement), but what happens when someone leaves something out, or makes a mistake, or tries to haxorz our form? Now who's going to be there to help? Redwood, that's who!
 
 All three of these fields should be required in order for someone to send a message to us. Let's enforce that with the standard HTML `required` attribute:
 
@@ -1519,7 +1519,7 @@ return (
 )
 ```
 
-And now when we submit the form with blank fields...the Name field gets focus. Boring. But this is just a stepping stone to our amazing reveal! We have one more form helper component to add—the one that displays errors on a field. Oh it just so happens that it's plain HTML so we can style it however we want!
+And now when we submit the form with blank fields...the Name field gets focus. Boring. But this is just a stepping stone to our amazing reveal! We have one more form helper component to add—the one that displays errors on a field. Oh, it just so happens that it's plain HTML so we can style it however we want!
 
 ### `<FieldError>`
 
@@ -1598,7 +1598,7 @@ return (
 
 <img src="https://user-images.githubusercontent.com/300/73306040-3cf65100-41d0-11ea-99a9-9468bba82da7.png" />
 
-You know what would be nice, if the input itself somehow displayed the fact that there was an error. Check out the `errorClassName` attributes on the inputs:
+You know what would be nice? If the input itself somehow displayed the fact that there was an error. Check out the `errorClassName` attributes on the inputs:
 
 ```javascript{10,18,26}
 // web/src/pages/ContactPage/ContactPage.js
@@ -1638,7 +1638,7 @@ return (
 
 <img src="https://user-images.githubusercontent.com/300/80258907-39d8f880-8639-11ea-8816-03a11c69e8ac.png" />
 
-Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's custom `<Label>` component for that (note that `for` becomes `name` just like the other components). Don't forget the import:
+Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's custom `<Label>` component for that. Note that the `for` attribute of `<label>` becomes the `name` prop on `<Label>`, just like with the other Redwood form components. And don't forget the import:
 
 ```javascript{9,21-23,31-33,41-43}
 // web/src/pages/ContactPage/ContactPage.js
@@ -1702,7 +1702,9 @@ export default ContactPage
 
 <img src="https://user-images.githubusercontent.com/300/80259003-70af0e80-8639-11ea-97cf-b6b816118fbf.png" />
 
-> In addition to `className` and `errorClassName` you can also use `style` and `errorStyle`
+> **Error styling**
+>
+> In addition to `className` and `errorClassName` you can also use `style` and `errorStyle`. Check out the [Form docs](https://redwoodjs.com/docs/form) for more details on error styling.
 
 ### Validating Input Format
 
@@ -1745,9 +1747,11 @@ That is definitely not the end-all-be-all for email address validation, but pret
 
 You may have noticed that trying to submit a form with validation errors outputs nothing to the console—it's not actually submitting. That's a good thing! Fix the errors and all is well.
 
+> **Instant client-side field validation**
+>
 > When a validation error appears it will _disappear_ as soon as you fix the content of the field. You don't have to click "Submit" again to remove the error messages.
 
-Finally, you know what would _really_ be nice: if the fields were validated as soon as the user leaves each one so they don't fill out the whole thing and submit just to see multiple errors appear. Let's do that:
+Finally, you know what would _really_ be nice? If the fields were validated as soon as the user leaves each one so they don't fill out the whole thing and submit just to see multiple errors appear. Let's do that:
 
 ```html
 // web/src/pages/ContactPage/ContactPage.js
@@ -1757,7 +1761,9 @@ Finally, you know what would _really_ be nice: if the fields were validated as s
 
 Well, what do you think? Was it worth the hype? A couple of new components and you've got forms that handle validation and wrap up submitted values in a nice data object, all for free.
 
-> Redwood's forms are built on top of [React Hook Form](https://react-hook-form.com/) so there is even more functionality available than we've documented here.
+> **Learn more about Redwood Forms** 
+>
+> Redwood's forms are built on top of [React Hook Form](https://react-hook-form.com/) so there is even more functionality available than we've documented here. Visit the [Form docs](https://redwoodjs.com/docs/form) to learn more about all form functionalities.
 
 Redwood has one more trick up its sleeve when it comes to forms but we'll save that for when we're actually submitting one to the server.
 
