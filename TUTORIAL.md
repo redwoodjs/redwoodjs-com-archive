@@ -2139,7 +2139,7 @@ Now try filling out the form with an invalid email address:
 
 <img src="https://user-images.githubusercontent.com/300/80259406-5aee1900-863a-11ea-9b82-def3a4f3e162.png" />
 
-It ain't pretty, but it works. Seeing a "GraphQL error" is not ideal, and it would be nice if the field itself was highlighted like it was when the inline validation was in place...
+It ain't pretty, but it works. It would be nice if the field itself was highlighted like it was when the inline validation was in place...
 
 Remember when we said that `<Form>` had one more trick up its sleeve? Here it comes!
 
