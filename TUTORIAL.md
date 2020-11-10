@@ -1810,7 +1810,7 @@ What's `CreateContactInput` and `UpdateContactInput`? Redwood follows the GraphQ
 Since all of the DB columns were required in the `schema.prisma` file they are marked as required in the GraphQL Types with the `!` suffix on the datatype (e.g. `name: String!`).
 ).
 
-> **GraphQL syntax for required field**
+> **GraphQL syntax for required fields**
 >
 > GraphQL's SDL syntax requires an extra `!` when a field _is_ required. Remember: `schema.prisma` syntax requires an extra `?` character when a field is _not_ required.
 
