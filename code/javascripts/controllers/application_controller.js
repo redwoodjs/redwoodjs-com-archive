@@ -32,7 +32,7 @@ export default class extends Controller {
   }
 
   focusSearch(event) {
-    if (event.key === '/' && !this.someInputHasFocus) {
+    if (event.code === 'Slash' && !this.someInputHasFocus) {
       this.searchTarget.focus()
       event.preventDefault()
     }
