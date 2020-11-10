@@ -2186,7 +2186,7 @@ We get that error message at the top saying something went wrong in plain Englis
 > - `wrapperStyle` / `wrapperClassName`: the container for the entire message
 > - `titleStyle` / `titleClassName`: the "Can't create new contact" title
 > - `listStyle` / `listClassName`: the `<ul>` that contains the list of errors
-> - `listItemStyle` / `listItemClassName`: each individual `<li>` around each error  
+> - `listItemStyle` / `listItemClassName`: each individual `<li>` around each error 
 
 ### One more thing...
 
