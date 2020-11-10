@@ -2019,7 +2019,7 @@ It may be hard to see a difference in development because the submit is so fast,
 
 You'll see that the "Save" button become disabled for a second or two while waiting for the response.
 
-Next, let's use Redwood's `Flash` system to let the user know their submission was successful. `useMutation` accepts an options object as a second argument. One of the options is a callback function, `onCompleted`, that will be invoked when the mutation successfully completes. We'll use that callback to add a message for the `Flash` component to display. Add the `Flash` component to the page and use the `timeout` prop to schedule the message's dismissal. (You can read the full documentation about Redwood's Flash system [here](https://redwoodjs.com/docs/flash-messaging-bus).)
+Next, let's use Redwood's `Flash` system to let the user know their submission was successful. `useMutation` accepts an options object as a second argument. One of the options is a callback function, `onCompleted`, that will be invoked when the mutation successfully completes. We'll use that callback to add a message for the `Flash` component to display. Add the `Flash` component to the page and use the `timeout` prop to schedule the message's dismissal. ([Read the full documentation about Redwood's Flash system](https://redwoodjs.com/docs/flash-messaging-bus).)
 
 ```javascript{4,10,13-17,24}
 // web/src/pages/ContactPage/ContactPage.js
