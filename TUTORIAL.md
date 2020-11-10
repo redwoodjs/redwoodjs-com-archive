@@ -2410,7 +2410,7 @@ And scroll down to **Heroku Postgres**:
 
 Click that and then on the detail page that comes up, click the **Install Heroku Postgres** button that's at the top right. On the next screen tell it you want to connect it to the app you just created, then click **Submit Order Form**:
 
-<img alt="Screen Shot 2020-02-03 at 3 24 15 PM" src="https://user-images.githubusercontent.com/300/73703930-64548e80-46a6-11ea-9f1b-e06a183834f4.png">
+<img alt="Screen Shot 2020-02-03 at 3 24 15 PM" src="https://user-images.githubusercontent.com/16427929/98684805-e759f200-2366-11eb-8dd5-6f283898ed6f.PNG">
 
 You'll be returned to your app's detail page. You should be on the **Resources** tab and see the Heroku Postgres add-on ready to go:
 
