@@ -1814,7 +1814,7 @@ Since all of the DB columns were required in the `schema.prisma` file they are m
 >
 > GraphQL's SDL syntax requires an extra `!` when a field _is_ required. Remember: `schema.prisma` syntax requires an extra `?` character when a field is _not_ required.
 
-As described in [Side Quest: How Redwood Deals with Data](side-quest-how-redwood-works-with-data) there are no explicit resolvers defined in the SDL file. Redwood follows a simple naming convention—each field listed in the `Query` and `Mutation` types in the `sdl` file (`api/src/graphql/contacts.sdl.js`) map to a function with the same name in the `services` file (`api/src/services/contacts/contacts.js`).
+As described in [Side Quest: How Redwood Deals with Data](side-quest-how-redwood-works-with-data), there are no explicit resolvers defined in the SDL file. Redwood follows a simple naming convention: each field listed in the `Query` and `Mutation` types in the `sdl` file (`api/src/graphql/contacts.sdl.js`) maps to a function with the same name in the `services` file (`api/src/services/contacts/contacts.js`).
 
 In this case we're creating a single `Mutation` that we'll call `createContact`. Add that to the end of the SDL file (before the closing backtick):
 
