@@ -2311,7 +2311,7 @@ const ContactPage = () => {
         />
         <FieldError name="name" className="error" />
 
-        <Label name="name" errorClassName="error">
+        <Label name="email" errorClassName="error">
           Email
         </Label>
         <TextField
@@ -2323,7 +2323,7 @@ const ContactPage = () => {
         />
         <FieldError name="email" className="error" />
 
-        <Label name="name" errorClassName="error">
+        <Label name="message" errorClassName="error">
           Message
         </Label>
         <TextAreaField
