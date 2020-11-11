@@ -2513,7 +2513,7 @@ yarn rw g auth netlify
 
 The generator adds one file and modifies a couple others.
 
-> Don't see any changes?
+> **Are you on the latest Redwood?**
 >
 > For this to work you must be on version `0.7.0` or greater of Redwood. If you
 > don't see any file changes, try
@@ -2613,9 +2613,11 @@ export const Post = {
 
 Now try creating, editing or deleting a post from our admin pages. Nothing happens! Should we show some kind of friendly error message? In this case, probably not—we're going to lockdown the admin pages altogether so they won't be accessible by a browser. The only way someone would be able to trigger these errors in the API is if they tried to access the GraphQL endpoint directly, without going through our UI. The API is already returning an error message (open the Web Inspector in your browser and try that create/edit/delete again) so we are covered.
 
-> Note that we're putting the authentication checks in the service and not checking in the GraphQL interface (in the SDL files).
+> **Services as Containers for Your Business Logic**
 >
-> Redwood created the concept of **services** as containers for your business logic which can be used by other parts of your application besides the GraphQL API. By putting authentication checks here you can be sure that any other code that tries to create/update/delete a post will fall under the same authentication checks. In fact, Apollo (the GraphQL library Redwood uses) [agrees with us](https://www.apollographql.com/docs/apollo-server/security/authentication/#authorization-in-data-models)!
+> Note that we're putting the authentication checks in the service and not checking in the GraphQL interface (in the SDL files). Redwood created the concept of **services** as containers for your business logic which can be used by other parts of your application besides the GraphQL API. 
+>
+> By putting authentication checks here you can be sure that any other code that tries to create/update/delete a post will fall under the same authentication checks. In fact, Apollo (the GraphQL library Redwood uses) [agrees with us](https://www.apollographql.com/docs/apollo-server/security/authentication/#authorization-in-data-models)!
 
 ### Web Authentication
 
