@@ -2523,17 +2523,34 @@ Take a look at the newly created `api/src/lib/auth.js` (usage comments omitted):
 ```javascript
 // api/src/lib/auth.js
 
-import { AuthenticationError } from '@redwoodjs/api'
+import { AuthenticationError, ForbiddenError, parseJWT } from '@redwoodjs/api'
 
-export const getCurrentUser = async (decoded, { token, type }) => {
-  return decoded
+export const getCurrentUser = async (decoded, { _token, _type }) => {
+  return { ...decoded, roles: parseJWT({ decoded }).roles }
 }
 
-export const requireAuth = () => {
+export const requireAuth = ({ role } = {}) => {
   if (!context.currentUser) {
     throw new AuthenticationError("You don't have permission to do that.")
   }
+
+  if (
+    typeof role !== 'undefined' &&
+    typeof role === 'string' &&
+    !context.currentUser.roles?.includes(role)
+  ) {
+    throw new ForbiddenError("You don't have access to do that.")
+  }
+
+  if (
+    typeof role !== 'undefined' &&
+    Array.isArray(role) &&
+    !context.currentUser.roles?.some((r) => role.includes(r))
+  ) {
+    throw new ForbiddenError("You don't have access to do that.")
+  }
 }
+
 ```
 
 By default the authentication system will return only the data that the third-party auth handler knows about (that's what's inside the `jwt` object above). For Netlify Identity that's an email address, an optional name and optional array of roles. Usually you'll have your own concept of a user in your local database. You can modify `getCurrentUser` to return that user, rather than the details that the auth system stores. The comments at the top of the file give one example of how you could look up a user based on their email address. We also provide a simple implementation for requiring that a user be authenticated when trying to access a service: `requireAuth()`. It will throw an error that GraphQL knows what to do with if a non-authenticated person tries to get to something they shouldn't.
