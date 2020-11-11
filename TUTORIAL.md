@@ -2477,6 +2477,8 @@ But you know Redwood has your back! Login isn't something we have to write from 
 
 We're going to demo a Netlify Identity integration in this tutorial since we're already deployed there and it's very easy to add to a Netlify site.
 
+> **Authentication vs. Authorization**
+>
 > There are two terms which contain a lot of letters, starting with an "A" and ending in "ation" (which means you could rhyme them if you wanted to) that become involved in most discussions about login:
 >
 > * Authentication
