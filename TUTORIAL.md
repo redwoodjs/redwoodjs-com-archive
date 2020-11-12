@@ -2137,7 +2137,7 @@ To get a server error to fire, let's remove the email format validation so that 
 
 Now try filling out the form with an invalid email address:
 
-<img src="https://user-images.githubusercontent.com/300/80259406-5aee1900-863a-11ea-9b82-def3a4f3e162.png" />
+<img src="https://user-images.githubusercontent.com/16427929/98918425-e394af80-24cd-11eb-9056-58c295cf0d5c.PNG" />
 
 It ain't pretty, but it works. It would be nice if the field itself was highlighted like it was when the inline validation was in place...
 
