@@ -2525,31 +2525,15 @@ Take a look at the newly created `api/src/lib/auth.js` (usage comments omitted):
 ```javascript
 // api/src/lib/auth.js
 
-import { AuthenticationError, ForbiddenError, parseJWT } from '@redwoodjs/api'
+import { AuthenticationError } from '@redwoodjs/api'
 
-export const getCurrentUser = async (decoded, { _token, _type }) => {
-  return { ...decoded, roles: parseJWT({ decoded }).roles }
+export const getCurrentUser = async (decoded, { token, type }) => {
+  return decoded
 }
 
-export const requireAuth = ({ role } = {}) => {
+export const requireAuth = () => {
   if (!context.currentUser) {
     throw new AuthenticationError("You don't have permission to do that.")
-  }
-
-  if (
-    typeof role !== 'undefined' &&
-    typeof role === 'string' &&
-    !context.currentUser.roles?.includes(role)
-  ) {
-    throw new ForbiddenError("You don't have access to do that.")
-  }
-
-  if (
-    typeof role !== 'undefined' &&
-    Array.isArray(role) &&
-    !context.currentUser.roles?.some((r) => role.includes(r))
-  ) {
-    throw new ForbiddenError("You don't have access to do that.")
   }
 }
 
