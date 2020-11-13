@@ -10,7 +10,7 @@ Flash makes use of [React's Context API](https://reactjs.org/docs/context.html) 
 
 ## FlashContext
 
-FlashContext is the headquarters for Redwood's Flash system. Its provider component is packaged with the `<RedwoodProvider />` component which makes it ready to use out of the box. Your components can pass (think, "send and recieve") message objects by subscribing to it via the provided [useFlash hook](#useflash-hook).
+FlashContext is the headquarters for Redwood's Flash system. Its provider component is packaged with the `<RedwoodProvider />` component which makes it ready to use out of the box. Your components can pass (think, "send and receive") message objects by subscribing to it via the provided [useFlash hook](#useflash-hook).
 
 FlashContext provides update functions which allow subscribed components to send and manipulate message objects. Subscribers can [consume](#consume-messages), [add](#add-a-message), [dismiss](#dismiss-a-message), and [cycle messages](#cycle-a-message).
 
@@ -214,4 +214,4 @@ By default, each message is marked as viewed once it is initially rendered and t
 
 The component accepts a `timeout` prop; an integer interpreted as milliseconds. If a value is provided, the message will be dismissed (thusly, removed from the dom) after this time has lapsed.
 
-Note: In the future, `<Flash />` will recieve a cycleDependency prop with which a cycle is triggered on a falsy comparison.
+Note: In the future, `<Flash />` will receive a cycleDependency prop with which a cycle is triggered on a falsy comparison.
