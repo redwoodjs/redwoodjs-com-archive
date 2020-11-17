@@ -1179,7 +1179,7 @@ This also calls a `scenario()` function, but this one assures that your data str
 
 > **The "standard" scenario**
 >
-> The exported fixture scenario here is named "standard." Is there something special about that name? Remember when we worked on component tests and mocks, there was a special mock named `standard` which Redwood would use by default if you didn't specify a name. The same rule applies here! When we add a test for `createComment()` we'll see an example of using a different scenario with a unique name.
+> The exported fixture scenario here is named "standard." Remember when we worked on component tests and mocks, there was a special mock named `standard` which Redwood would use by default if you didn't specify a name? The same rule applies here! When we add a test for `createComment()` we'll see an example of using a different scenario with a unique name.
 
 The nested structure of a fixture is defined like this:
 
@@ -1206,7 +1206,7 @@ export const standard = scenario({
       post: {
         create: {
           title: 'Redwood Leaves',
-          body: 'Lorem ipsum dolar sit amet'
+          body: 'The quick brown fox jumped over the lazy dog.'
         }
       }
     },
@@ -1216,7 +1216,7 @@ export const standard = scenario({
       post: {
         create: {
           title: 'Root Systems',
-          body: 'The quick brown fox jumped over the lazy dog'
+          body: 'The five boxing wizards jump quickly.'
         }
       }
     }
@@ -1263,6 +1263,11 @@ describe('comments', () => {
         postId: fixtures.post.bark.id
       }
     })
+
+    expect(comment.name).toEqual('Billy Bob')
+    expect(comment.message).toEqual("A tree's bark is worse than its bite")
+    expect(comment.postId).toEqual(fixtures.post.park.id)
+    expect(comment.createdAt).not.toEqual(null)
   })
 })
 ```
@@ -1271,7 +1276,9 @@ We pass an optional first argument to `scenario()` which is the named scenario t
 
 We were able to use the `id` of the post that we created in our fixture because the fixtures contain the actual database data after being inserted, not just the few fields we defined in the fixture itself. In addition to `id` we could access `createdAt` which is defaulted to `now()` in the database.
 
-Okay, our comments service is thoroughly tested! The last step is add an actual form so that users can actually create comments on blog posts.
+We'll test that all the fields we give to the `createComment()` function are actually created in the database, and for good measure just make sure that `createdAt` is set to a non-null value. We could test the actual timestamp is correct, but that involves freezing the Javascript Date object so that no matter how long the test takes, you can still compare to value to `new Date` which is right *now*, down to the millisecond. While possible, it's beyond the scope of our fun tutorial, since it gets [very gnarly](https://codewithhugo.com/mocking-the-current-date-in-jest-tests/)!
+
+Okay, our comments service is feeling pretty solid now that we have our tests in place. The last step is add an actual form so that users can actually create comments on blog posts.
 
 ## Creating a Comment Form
 
