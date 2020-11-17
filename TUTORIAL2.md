@@ -1235,13 +1235,15 @@ Let's add our first service test by making sure that `createComment()` actually 
 
 export const postOnly = scenario({
   post: {
-    title: 'Bark',
-    body: 'Sphinx of black quartz, judge my vow.'
+    bark: {
+      title: 'Bark',
+      body: 'Sphinx of black quartz, judge my vow.'
+    }
   }
 })
 ```
 
-Now we can use the name `postOnly` in our new `scenario()` test:
+Now we can pass the `postOnly` scenario name as the first argument to a new `scenario()` test:
 
 ```javascript{3,12-25}
 // api/src/services/comments/comments.test.js
@@ -1256,16 +1258,16 @@ describe('comments', () => {
   })
 
   scenario('postOnly', 'creates a new comment', async (fixtures) => {
-    const comment = await db.comment.create({
-      data: {
+    const comment = await createComment({
+      input: {
         name: 'Billy Bob',
-        message: "A tree's bark is worse than its bite",
+        body: "A tree's bark is worse than its bite",
         postId: fixtures.post.bark.id
       }
     })
 
     expect(comment.name).toEqual('Billy Bob')
-    expect(comment.message).toEqual("A tree's bark is worse than its bite")
+    expect(comment.body).toEqual("A tree's bark is worse than its bite")
     expect(comment.postId).toEqual(fixtures.post.park.id)
     expect(comment.createdAt).not.toEqual(null)
   })
@@ -1276,13 +1278,13 @@ We pass an optional first argument to `scenario()` which is the named scenario t
 
 We were able to use the `id` of the post that we created in our fixture because the fixtures contain the actual database data after being inserted, not just the few fields we defined in the fixture itself. In addition to `id` we could access `createdAt` which is defaulted to `now()` in the database.
 
-We'll test that all the fields we give to the `createComment()` function are actually created in the database, and for good measure just make sure that `createdAt` is set to a non-null value. We could test the actual timestamp is correct, but that involves freezing the Javascript Date object so that no matter how long the test takes, you can still compare to value to `new Date` which is right *now*, down to the millisecond. While possible, it's beyond the scope of our fun tutorial, since it gets [very gnarly](https://codewithhugo.com/mocking-the-current-date-in-jest-tests/)!
+We'll test that all the fields we give to the `createComment()` function are actually created in the database, and for good measure just make sure that `createdAt` is set to a non-null value. We could test that the actual timestamp is correct, but that involves freezing the Javascript Date object so that no matter how long the test takes, you can still compare the value to `new Date` which is right *now*, down to the millisecond. While possible, it's beyond the scope of our easy, breezy tutorial since it gets [very gnarly](https://codewithhugo.com/mocking-the-current-date-in-jest-tests/)!
 
-Okay, our comments service is feeling pretty solid now that we have our tests in place. The last step is add an actual form so that users can actually create comments on blog posts.
+Okay, our comments service is feeling pretty solid now that we have our tests in place. The last step is add a form so that users can actually leave a comment on a blog post.
 
 ## Creating a Comment Form
 
-We're ready to let users add their own comments! Let's generate a form and then we'll build it out and integrate it in Storybook, and then add some tests.
+Let's generate a form and then we'll build it out and integrate it via Storybook, then add some tests.
 
 ```terminal
 yarn rw g component CommentForm
