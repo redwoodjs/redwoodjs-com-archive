@@ -1136,17 +1136,17 @@ If you open up `api/src/services/comments/comments.test.js` you'll see there's o
 import { comments } from './comments'
 
 describe('comments', () => {
-  scenario('returns a list of comments', async (fixtures) => {
+  scenario('returns a list of comments', async (scenario) => {
     const list = await comments()
 
-    expect(list.length).toEqual(Object.keys(fixtures.comment).length)
+    expect(list.length).toEqual(Object.keys(scenario.comment).length)
   })
 })
 ```
 
-What is this `scenario()` function? That's made available by Redwood that mostly acts like Jest's built-in `it()` and `test()` functions, but with one important difference: it pre-seeds a test database with data that is then passed to you in the `fixtures` argument. You can count on this data existing in the database and being reset between tests in case you make changes to it.
+What is this `scenario()` function? That's made available by Redwood that mostly acts like Jest's built-in `it()` and `test()` functions, but with one important difference: it pre-seeds a test database with data that is then passed to you in the `scenario` argument. You can count on this data existing in the database and being reset between tests in case you make changes to it.
 
-Where does that data come from? Take a look at the `comments.fixtures.js` file which is next door:
+Where does that data come from? Take a look at the `comments.scenarios.js` file which is next door:
 
 ```javascript
 export const standard = scenario({
@@ -1179,24 +1179,24 @@ This also calls a `scenario()` function, but this one assures that your data str
 
 > **The "standard" scenario**
 >
-> The exported fixture scenario here is named "standard." Remember when we worked on component tests and mocks, there was a special mock named `standard` which Redwood would use by default if you didn't specify a name? The same rule applies here! When we add a test for `createComment()` we'll see an example of using a different scenario with a unique name.
+> The exported scenario here is named "standard." Remember when we worked on component tests and mocks, there was a special mock named `standard` which Redwood would use by default if you didn't specify a name? The same rule applies here! When we add a test for `createComment()` we'll see an example of using a different scenario with a unique name.
 
-The nested structure of a fixture is defined like this:
+The nested structure of a scenario is defined like this:
 
 * **comment**: the name of the model this data is for
-  * **one, two**: a friendly name given to the fixture data which you can reference in your tests
-    * **name, message, post**: the actual data that will be put in the database. In this case a **Comment** requires that it be related to a **Post**, so the fixture has a `post` key and values as well (using Prisma's [nested create syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-writes))
+  * **one, two**: a friendly name given to the scenario data which you can reference in your tests
+    * **name, message, post**: the actual data that will be put in the database. In this case a **Comment** requires that it be related to a **Post**, so the scenario has a `post` key and values as well (using Prisma's [nested create syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-writes))
 
-When you receive the `fixtures` argument in your test you can follow the same object nesting in order to reference the fields, like `fixtures.comment.one.name`.
+When you receive the `scenario` argument in your test you can follow the same object nesting in order to reference the fields, like `scenario.comment.one.name`.
 
 > **Why is every field just containing the string "String"?**
 >
-> When generating the service (and the test and fixture) all we (Redwood) knows about your data is the types for each field as defined in `schema.prisma`, namely `String`, `Integer` or `DateTime`. So we add the simplest data possible that fulfills the type requirement by Prisma to get the data into the database. You should definitely replace this data with something that looks more like the real data your app will be expecting. In fact...
+> When generating the service (and the test and scenarios) all we (Redwood) knows about your data is the types for each field as defined in `schema.prisma`, namely `String`, `Integer` or `DateTime`. So we add the simplest data possible that fulfills the type requirement by Prisma to get the data into the database. You should definitely replace this data with something that looks more like the real data your app will be expecting. In fact...
 
-Let's replace that fixture data with something more like what we expect to see in our app:
+Let's replace that scenario data with something more like what we expect to see in our app:
 
 ```javascript
-// api/src/services/comments/comments.fixtures.js
+// api/src/services/comments/comments.scenarios.js
 
 export const standard = scenario({
   comment: {
@@ -1231,7 +1231,7 @@ The test created by the service generator simply checks to make sure the same nu
 Let's add our first service test by making sure that `createComment()` actually stores a new comment in the database. When creating a comment we're not as worried about existing data in the database so let's create a new scenario which only contains a post—the post we'll be linking the new comment to through the comment's `postId` field:
 
 ```javascript
-// api/src/services/comments/comments.fixtures.js
+// api/src/services/comments/comments.scenarios.js
 
 export const postOnly = scenario({
   post: {
@@ -1251,24 +1251,24 @@ Now we can pass the `postOnly` scenario name as the first argument to a new `sce
 import { comments, createComment } from './comments'
 
 describe('comments', () => {
-  scenario('returns a list of comments', async (fixtures) => {
+  scenario('returns a list of comments', async (scenario) => {
     const list = await comments()
 
-    expect(list.length).toEqual(Object.keys(fixtures.comment).length)
+    expect(list.length).toEqual(Object.keys(scenario.comment).length)
   })
 
-  scenario('postOnly', 'creates a new comment', async (fixtures) => {
+  scenario('postOnly', 'creates a new comment', async (scenario) => {
     const comment = await createComment({
       input: {
         name: 'Billy Bob',
         body: "A tree's bark is worse than its bite",
-        postId: fixtures.post.bark.id
+        postId: scenario.post.bark.id
       }
     })
 
     expect(comment.name).toEqual('Billy Bob')
     expect(comment.body).toEqual("A tree's bark is worse than its bite")
-    expect(comment.postId).toEqual(fixtures.post.park.id)
+    expect(comment.postId).toEqual(scenario.post.park.id)
     expect(comment.createdAt).not.toEqual(null)
   })
 })
@@ -1276,7 +1276,7 @@ describe('comments', () => {
 
 We pass an optional first argument to `scenario()` which is the named scenario to use, instead of the default of "standard."
 
-We were able to use the `id` of the post that we created in our fixture because the fixtures contain the actual database data after being inserted, not just the few fields we defined in the fixture itself. In addition to `id` we could access `createdAt` which is defaulted to `now()` in the database.
+We were able to use the `id` of the post that we created in our scenario because the scenarios contain the actual database data after being inserted, not just the few fields we defined in the scenario itself. In addition to `id` we could access `createdAt` which is defaulted to `now()` in the database.
 
 We'll test that all the fields we give to the `createComment()` function are actually created in the database, and for good measure just make sure that `createdAt` is set to a non-null value. We could test that the actual timestamp is correct, but that involves freezing the Javascript Date object so that no matter how long the test takes, you can still compare the value to `new Date` which is right *now*, down to the millisecond. While possible, it's beyond the scope of our easy, breezy tutorial since it gets [very gnarly](https://codewithhugo.com/mocking-the-current-date-in-jest-tests/)!
 
