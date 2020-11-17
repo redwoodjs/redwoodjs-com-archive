@@ -1128,9 +1128,150 @@ type Mutation {
 
 Let's make sure our service functionality is working and continues to work as we modify our app.
 
-First we'll test the `createComment()` function by actually trying to create a comment and then make sure it makes it to the database without an error:
+If you open up `api/src/services/comments/comments.test.js` you'll see there's one in there already, making sure that retrieving all comments (the default `comments()` function that was generated along with the service) works:
 
-(TBD, waiting on Prisma's new foreign key syntax)
+```javascript
+// api/src/services/comments/comments.test.js
+
+import { comments } from './comments'
+
+describe('comments', () => {
+  scenario('returns a list of comments', async (fixtures) => {
+    const list = await comments()
+
+    expect(list.length).toEqual(Object.keys(fixtures.comment).length)
+  })
+})
+```
+
+What is this `scenario()` function? That's made available by Redwood that mostly acts like Jest's built-in `it()` and `test()` functions, but with one important difference: it pre-seeds a test database with data that is then passed to you in the `fixtures` argument. You can count on this data existing in the database and being reset between tests in case you make changes to it.
+
+Where does that data come from? Take a look at the `comments.fixtures.js` file which is next door:
+
+```javascript
+export const standard = scenario({
+  comment: {
+    one: {
+      name: 'String',
+      message: 'String',
+      post: {
+        create: {
+          title: 'String',
+          body: 'String'
+        }
+      }
+    },
+    two: {
+      name: 'String',
+      message: 'String',
+      post: {
+        create: {
+          title: 'String',
+          body: 'String'
+        }
+      }
+    }
+  }
+})
+```
+
+This also calls a `scenario()` function, but this one assures that your data structure matches what's defined in Prisma. It just returns the same object you give it.
+
+> **The "standard" scenario**
+>
+> The exported fixture scenario here is named "standard." Is there something special about that name? Remember when we worked on component tests and mocks, there was a special mock named `standard` which Redwood would use by default if you didn't specify a name. The same rule applies here! When we add a test for `createComment()` we'll see an example of using a different scenario with a unique name.
+
+The nested structure of a fixture is defined like this:
+
+* **comment**: the name of the model this data is for
+  * **one, two**: a friendly name given to the fixture data which you can reference in your tests
+    * **name, message, post**: the actual data that will be put in the database. In this case a **Comment** requires that it be related to a **Post**, so the fixture has a `post` key and values as well (using Prisma's [nested create syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-writes))
+
+When you receive the `fixtures` argument in your test you can follow the same object nesting in order to reference the fields, like `fixtures.comment.one.name`.
+
+> **Why is every field just containing the string "String"?**
+>
+> When generating the service (and the test and fixture) all we (Redwood) knows about your data is the types for each field as defined in `schema.prisma`, namely `String`, `Integer` or `DateTime`. So we add the simplest data possible that fulfills the type requirement by Prisma to get the data into the database. You should definitely replace this data with something that looks more like the real data your app will be expecting. In fact...
+
+Let's replace that fixture data with something more like what we expect to see in our app:
+
+```javascript
+// api/src/services/comments/comments.fixtures.js
+
+export const standard = scenario({
+  comment: {
+    jane: {
+      name: 'Jane Doe',
+      message: 'I like trees',
+      post: {
+        create: {
+          title: 'Redwood Leaves',
+          body: 'Lorem ipsum dolar sit amet'
+        }
+      }
+    },
+    john: {
+      name: 'John Doe',
+      message: 'Hug a tree today',
+      post: {
+        create: {
+          title: 'Root Systems',
+          body: 'The quick brown fox jumped over the lazy dog'
+        }
+      }
+    }
+  }
+})
+```
+
+The test created by the service generator simply checks to make sure the same number of records are returned so changing the content of the data here won't affect the test.
+
+#### Testing createComment()
+
+Let's add our first service test by making sure that `createComment()` actually stores a new comment in the database. When creating a comment we're not as worried about existing data in the database so let's create a new scenario which only contains a post—the post we'll be linking the new comment to through the comment's `postId` field:
+
+```javascript
+// api/src/services/comments/comments.fixtures.js
+
+export const postOnly = scenario({
+  post: {
+    title: 'Bark',
+    body: 'Sphinx of black quartz, judge my vow.'
+  }
+})
+```
+
+Now we can use the name `postOnly` in our new `scenario()` test:
+
+```javascript{3,
+// api/src/services/comments/comments.test.js
+
+import { comments, createComment } from './comments'
+
+describe('comments', () => {
+  scenario('returns a list of comments', async (fixtures) => {
+    const list = await comments()
+
+    expect(list.length).toEqual(Object.keys(fixtures.comment).length)
+  })
+
+  scenario('postOnly', 'creates a new comment', async (fixtures) => {
+    const comment = await db.comment.create({
+      data: {
+        name: 'Billy Bob',
+        message: "A tree's bark is worse than its bite",
+        postId: fixtures.post.bark.id
+      }
+    })
+  })
+})
+```
+
+We pass an optional first argument to `scenario()` which is the named scenario to use, instead of the default of "standard."
+
+We were able to use the `id` of the post that we created in our fixture because the fixtures contain the actual database data after being inserted, not just the few fields we defined in the fixture itself. In addition to `id` we could access `createdAt` which is defaulted to `now()` in the database.
+
+Okay, our comments service is thoroughly tested! The last step is add an actual form so that users can actually create comments on blog posts.
 
 ## Creating a Comment Form
 
