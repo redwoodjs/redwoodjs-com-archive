@@ -1243,7 +1243,7 @@ export const postOnly = scenario({
 
 Now we can use the name `postOnly` in our new `scenario()` test:
 
-```javascript{3,
+```javascript{3,12-25}
 // api/src/services/comments/comments.test.js
 
 import { comments, createComment } from './comments'
