@@ -8,6 +8,7 @@ You can configure your Redwood app's settings in `redwood.toml`. By default, `re
 [web]
   port = 8910
   apiProxyPath = "/.netlify/functions"
+  experimentalFastRefresh = false
 [api]
   port = 8911
 [browser]
@@ -26,6 +27,7 @@ const DEFAULT_CONFIG: Config = {
     path: './web',
     target: TargetEnum.BROWSER,
     apiProxyPath: '/.netlify/functions',
+    experimentalFastRefresh: false,
   },
   api: {
     host: 'localhost',
@@ -68,7 +70,7 @@ Configuration for the web side.
 | `target`                      | Target for the web side            | `TargetEnum.BROWSER`    | `both`        |
 | `apiProxyPath`                | Proxy path to the api side         | `'/.netlify/functions'` | `production`  |
 | `includeEnvironmentVariables` | Environment variables to whitelist |                         | `both`        |
-
+| `experimentalFastRefresh`     | Enable webpack's fast refresh      | false                   | `development` | 
 ### apiProxyPath
 
 ```toml
