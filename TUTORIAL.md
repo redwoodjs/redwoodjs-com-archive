@@ -2526,6 +2526,8 @@ But you know Redwood has your back! Login isn't something we have to write from 
 
 We're going to demo a Netlify Identity integration in this tutorial since we're already deployed there and it's very easy to add to a Netlify site.
 
+> **Authentication vs. Authorization**
+>
 > There are two terms which contain a lot of letters, starting with an "A" and ending in "ation" (which means you could rhyme them if you wanted to) that become involved in most discussions about login:
 >
 > * Authentication
@@ -2560,7 +2562,7 @@ yarn rw g auth netlify
 
 The generator adds one file and modifies a couple others.
 
-> Don't see any changes?
+> **Are you on the latest Redwood?**
 >
 > For this to work you must be on version `0.7.0` or greater of Redwood. If you
 > don't see any file changes, try
@@ -2583,6 +2585,7 @@ export const requireAuth = () => {
     throw new AuthenticationError("You don't have permission to do that.")
   }
 }
+
 ```
 
 By default the authentication system will return only the data that the third-party auth handler knows about (that's what's inside the `jwt` object above). For Netlify Identity that's an email address, an optional name and optional array of roles. Usually you'll have your own concept of a user in your local database. You can modify `getCurrentUser` to return that user, rather than the details that the auth system stores. The comments at the top of the file give one example of how you could look up a user based on their email address. We also provide a simple implementation for requiring that a user be authenticated when trying to access a service: `requireAuth()`. It will throw an error that GraphQL knows what to do with if a non-authenticated person tries to get to something they shouldn't.
@@ -2641,11 +2644,13 @@ export const Post = {
 }
 ```
 
-Now try creating, editing or deleting a post from our admin pages. Nothing happens! Should we show some kind of friendly error message? In this case, probably not—we're going to lockdown the admin pages altogether so they won't be accessible by a browser. The only way someone would be able to trigger these errors in the API is if they tried to access the GraphQL endpoint directly, without going through our UI. The API is already returning an error message (open the Web Inspector in your browser and try that create/edit/delete again) so we are covered.
+Now try creating, editing or deleting a post from our admin pages. Nothing happens! Should we show some kind of friendly error message? In this case, probably not—we're going to lock down the admin pages altogether so they won't be accessible by a browser. The only way someone would be able to trigger these errors in the API is if they tried to access the GraphQL endpoint directly, without going through our UI. The API is already returning an error message (open the Web Inspector in your browser and try that create/edit/delete again) so we are covered.
 
-> Note that we're putting the authentication checks in the service and not checking in the GraphQL interface (in the SDL files).
+> **Services as Containers for Your Business Logic**
 >
-> Redwood created the concept of **services** as containers for your business logic which can be used by other parts of your application besides the GraphQL API. By putting authentication checks here you can be sure that any other code that tries to create/update/delete a post will fall under the same authentication checks. In fact, Apollo (the GraphQL library Redwood uses) [agrees with us](https://www.apollographql.com/docs/apollo-server/security/authentication/#authorization-in-data-models)!
+> Note that we're putting the authentication checks in the service and not checking in the GraphQL interface (in the SDL files). Redwood created the concept of **services** as containers for your business logic which can be used by other parts of your application besides the GraphQL API. 
+>
+> By putting authentication checks here you can be sure that any other code that tries to create/update/delete a post will fall under the same authentication checks. In fact, Apollo (the GraphQL library Redwood uses) [agrees with us](https://www.apollographql.com/docs/apollo-server/security/authentication/#authorization-in-data-models)!
 
 ### Web Authentication
 
@@ -2827,7 +2832,9 @@ export default BlogLayout
 
 ![Logged in email](https://user-images.githubusercontent.com/300/82389433-05b2e680-99f1-11ea-9d01-456cad508c80.png)
 
-> Check out the settings for Identity over at Netlify for more options, including allowing users to create accounts rather than having to be invited, add third party login buttons for Bitbucket, GitHub, GitLab and Google, receive webhooks when someone logs in, and more!
+> **More on Netlify Identity**
+>
+> Check out the settings (or [docs](https://docs.netlify.com/visitor-access/identity/)) for Identity over at Netlify for more options, including allowing users to create accounts rather than having to be invited, add third party login buttons for Bitbucket, GitHub, GitLab and Google, receive webhooks when someone logs in, and more!
 
 Believe it or not, that's it! Authentication with Redwood is a breeze and we're just getting started. Expect more magic soon!
 
