@@ -1785,13 +1785,15 @@ model Contact {
 }
 ```
 
-> To mark a column as optional (that is, allowing `NULL` as a value) you can suffix the datatype with question mark: `name String?`
+> **Prisma syntax for optional fields**
+>
+> To mark a field as optional (that is, allowing `NULL` as a value) you can suffix the datatype with a question mark, e.g. `name String?`. This will allow `name`'s value to be both `String` or `NULL`.
 
 Next we create a migration file:
 
     yarn rw db save create contact
 
-Finally we execute the migration to run the DDL commands to upgrade the database:
+Finally we execute the migration to run the [DDL](https://en.wikipedia.org/wiki/Data_definition_language) commands to upgrade the database:
 
     yarn rw db up
 
@@ -1840,20 +1842,49 @@ What's `CreateContactInput` and `UpdateContactInput`? Redwood follows the GraphQ
 
 > Redwood assumes your code won't try to set a value on any field named `id` or `createdAt` so it left those out of the Input types, but if your database allowed either of those to be set manually you can update `CreateContactInput` or `UpdateContactInput` and add them.
 
-Since all of the DB columns were required in the `schema.prisma` file they are marked as required here (the `!` suffix on the datatype).
+Since all of the DB columns were required in the `schema.prisma` file they are marked as required in the GraphQL Types with the `!` suffix on the datatype (e.g. `name: String!`).
+).
 
-> **Remember:** `schema.prisma` syntax requires an extra `?` character when a field is _not_ required, GraphQL's SDL syntax requires an extra `!` when a field _is_ required.
+> **GraphQL syntax for required fields**
+>
+> GraphQL's SDL syntax requires an extra `!` when a field _is_ required. Remember: `schema.prisma` syntax requires an extra `?` character when a field is _not_ required.
 
-As described in [Side Quest: How Redwood Deals with Data](side-quest-how-redwood-works-with-data) there are no explicit resolvers defined in the SDL file. Redwood follows a simple naming convention—each field listed in the `Query` and `Mutation` types map to a function with the same name in the `services` file and in the `sdl` file (`api/src/graphql/contacts.sdl.js -> api/src/services/contacts/contacts.js`)
+As described in [Side Quest: How Redwood Deals with Data](side-quest-how-redwood-works-with-data), there are no explicit resolvers defined in the SDL file. Redwood follows a simple naming convention: each field listed in the `Query` and `Mutation` types in the `sdl` file (`api/src/graphql/contacts.sdl.js`) maps to a function with the same name in the `services` file (`api/src/services/contacts/contacts.js`).
 
 In this case we're creating a single `Mutation` that we'll call `createContact`. Add that to the end of the SDL file (before the closing backtick):
 
-```javascript
+```javascript{28-30}
 // api/src/graphql/contacts.sdl.js
 
-type Mutation {
-  createContact(input: CreateContactInput!): Contact
-}
+export const schema = gql`
+  type Contact {
+    id: Int!
+    name: String!
+    email: String!
+    message: String!
+    createdAt: DateTime!
+  }
+
+  type Query {
+    contacts: [Contact!]!
+  }
+
+  input CreateContactInput {
+    name: String!
+    email: String!
+    message: String!
+  }
+
+  input UpdateContactInput {
+    name: String
+    email: String
+    message: String
+  }
+
+  type Mutation {
+    createContact(input: CreateContactInput!): Contact
+  }
+`
 ```
 
 The `createContact` mutation will accept a single variable, `input`, that is an object that conforms to what we expect for a `CreateContactInput`, namely `{ name, email, message }`.
@@ -2023,7 +2054,7 @@ It may be hard to see a difference in development because the submit is so fast,
 
 You'll see that the "Save" button become disabled for a second or two while waiting for the response.
 
-Next, let's use Redwood's `Flash` system to let the user know their submission was successful. `useMutation` accepts an options object as a second argument. One of the options is a callback function, `onCompleted`, that will be invoked when the mutation successfully completes. We'll use that callback to add a message for the `Flash` component to display. Add the `Flash` component to the page and use the `timeout` prop to schedule the message's dismissal. (You can read the full documentation about Redwood's Flash system [here](https://redwoodjs.com/docs/flash-messaging-bus).)
+Next, let's use Redwood's `Flash` system to let the user know their submission was successful. `useMutation` accepts an options object as a second argument. One of the options is a callback function, `onCompleted`, that will be invoked when the mutation successfully completes. We'll use that callback to add a message for the `Flash` component to display. Add the `Flash` component to the page and use the `timeout` prop to schedule the message's dismissal. ([Read the full documentation about Redwood's Flash system](https://redwoodjs.com/docs/flash-messaging-bus).)
 
 ```javascript{4,10,13-17,24}
 // web/src/pages/ContactPage/ContactPage.js
@@ -2059,6 +2090,8 @@ Next we'll inform the user of any server errors. So far we've only notified the 
 
 We have email validation on the client, but any good developer knows [_never trust the client_](https://www.codebyamir.com/blog/never-trust-data-from-the-browser). Let's add the email validation on the API as well to be sure no bad data gets into our database, even if someone somehow bypassed our client-side validation.
 
+> **No server-side validation?**
+>
 > Why don't we need server-side validation for the existence of name, email and message? Because the database is doing that for us. Remember the `String!` in our SDL definition? That adds a constraint in the database that the field cannot be `null`. If a `null` was to get all the way down to the database it would reject the insert/update and GraphQL would throw an error back to us on the client.
 >
 > There's no `Email!` datatype so we'll need to validate that on our own.
@@ -2139,9 +2172,9 @@ To get a server error to fire, let's remove the email format validation so that 
 
 Now try filling out the form with an invalid email address:
 
-<img src="https://user-images.githubusercontent.com/300/80259406-5aee1900-863a-11ea-9b82-def3a4f3e162.png" />
+<img src="https://user-images.githubusercontent.com/16427929/98918425-e394af80-24cd-11eb-9056-58c295cf0d5c.PNG" />
 
-It ain't pretty, but it works. Seeing a "GraphQL error" is not ideal, and it would be nice if the field itself was highlighted like it was when the inline validation was in place...
+It ain't pretty, but it works. It would be nice if the field itself was highlighted like it was when the inline validation was in place...
 
 Remember when we said that `<Form>` had one more trick up its sleeve? Here it comes!
 
@@ -2179,8 +2212,10 @@ Now submit a message with an invalid email address:
 
 <img src="https://user-images.githubusercontent.com/300/80259553-c46e2780-863a-11ea-9441-54a9112b9ce5.png" />
 
-We get that error message at the top saying something went wrong in plain english _and_ the actual field is highlighted for us, just like the inline validation! The message at the top may be overkill for such a short form, but it can be key if a form is multiple screens long; the user gets a summary of what went wrong all in one place and they don't have to resort to hunting through a long form looking for red boxes. You don't have to use that message box at the top, though; just remove `<FormError>` and the field will still be highlighted as expected.
+We get that error message at the top saying something went wrong in plain English _and_ the actual field is highlighted for us, just like the inline validation! The message at the top may be overkill for such a short form, but it can be key if a form is multiple screens long; the user gets a summary of what went wrong all in one place and they don't have to resort to hunting through a long form looking for red boxes. You don't have to use that message box at the top, though; just remove `<FormError>` and the field will still be highlighted as expected.
 
+> **`<FormError>` styling options**
+>
 > `<FormError>` has several styling options which are attached to different parts of the message:
 >
 > - `wrapperStyle` / `wrapperClassName`: the container for the entire message
