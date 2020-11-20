@@ -1170,6 +1170,27 @@ yarn rw setup <command>
 | `tailwind`          | Setup tailwindcss and PostCSS            |
 | `webpack`           | Setup webpack in your project so you can add custom config            |
 
+## storybook
+
+Starts Storybook locally 
+
+```terminal
+yarn rw storybook
+```
+
+<br/>
+
+[Storybook](https://storybook.js.org/docs/react/get-started/introduction) is a tool for UI development that allows you to develop your components in isolation, away from all the conflated cruft of your real app.
+
+> "Props in, views out! Make it simple to reason about."
+
+RedwoodJS supports Storybook by creating stories when generating cells, components, layouts and pages. You can then use these to describe how to render that UI component with representative data.
+
+| Arguments & Options | Description                                                                                                                                    |
+| :------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--open`            | Open Storybook in your browser on start
+| `--port`            | Which port to run Storybook on (defaults to 7910)
+
 ## test
 
 Run Jest tests for api and web.
