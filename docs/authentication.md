@@ -780,7 +780,7 @@ const Routes = () => {
 }
 ```
 
-Routes can also be restircted by role by specifying `hasRole="role"` or `hasRole={['role', 'another_role']})` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in `unauthenticated`.
+Routes can also be restricted by role by specifying `hasRole="role"` or `hasRole={['role', 'another_role']})` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in `unauthenticated`.
 
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'
