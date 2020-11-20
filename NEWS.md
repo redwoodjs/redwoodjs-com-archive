@@ -271,3 +271,15 @@
 ### Anthony Morris gives a high level overview of RedwoodJS and how it empowers developers to focus on what they want to build, not just how they want to build it.
 
 #### Video
+
+---
+
+![The Live Coders Conference 3](https://user-images.githubusercontent.com/51720070/99728681-a51f6780-2a6e-11eb-8ed6-3042c19f5a19.png)
+
+# [Adventures in the Jamstack forest: Discovering Redwood](https://www.twitch.tv/videos/808273985?t=4h44m14s)
+
+## November 19 2020
+
+### This talk from Kim-Adeline Miguel shines a spotlight on contributing to Redwood, and being part of its thriving community.
+
+#### Video
