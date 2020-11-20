@@ -260,8 +260,6 @@ Runs `seed.js` in `./api/prisma`. `seed.js` instantiates the Prisma client and p
 
 Start <a href="https://github.com/prisma/studio">Prisma Studio</a>, a visual editor for your database.
 
-> **WARNING:** Prisma Studio is currently experimental.
-
 ```terminal
 yarn rw db studio
 ```
