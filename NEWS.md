@@ -192,7 +192,7 @@
 
 ![RedwoodJS Meetup](https://user-images.githubusercontent.com/2951/92313389-31e27b00-ef80-11ea-9903-b7a04aac2d39.png)
 
-# [YouTube Playlist](https://www.youtube.com/playlist?list=PL1HNO86XPhd0Gb_tfA7v7QX08pHjCI_WA)
+# [July 30th Recording](https://www.youtube.com/playlist?list=PL1HNO86XPhd0Gb_tfA7v7QX08pHjCI_WA)
 
 ## July 30 2020
 
@@ -204,7 +204,7 @@
 
 ![RedwoodJS Meetup](https://user-images.githubusercontent.com/2951/92313389-31e27b00-ef80-11ea-9903-b7a04aac2d39.png)
 
-# [YouTube Playlist](https://www.youtube.com/playlist?list=PL1HNO86XPhd0NgiN-kDFzIVEkKzxHHqM6)
+# [August 29th Recording](https://www.youtube.com/playlist?list=PL1HNO86XPhd0NgiN-kDFzIVEkKzxHHqM6)
 
 ## August 28 2020
 
@@ -238,6 +238,18 @@
 
 ---
 
+![RedwoodJS Meetup](https://user-images.githubusercontent.com/2951/92313389-31e27b00-ef80-11ea-9903-b7a04aac2d39.png)
+
+# [September 11th Recording](https://www.youtube.com/playlist?list=PL1HNO86XPhd1Qz2vCMXfp0-d35UedknUk)
+
+## September 11 2020
+
+### Recording of the main session: Ryan Chenkie (from Prisma) demos database model relations in Redwood.
+
+#### Meetup
+
+---
+
 ![Redwood Newsletter](https://user-images.githubusercontent.com/2951/85804346-3c6dd200-b6fe-11ea-8a26-6a989444452c.png)
 
 # [Issue 3](https://mailchi.mp/redwoodjs/all-the-redwoodjs-news-fit-to-print-issue-2)
@@ -262,6 +274,18 @@
 
 ---
 
+![RedwoodJS Meetup](https://user-images.githubusercontent.com/2951/92313389-31e27b00-ef80-11ea-9903-b7a04aac2d39.png)
+
+# [September 24th Recording](https://www.youtube.com/playlist?list=PL1HNO86XPhd1L6OEEUiN5wGgk7GrxRiV3)
+
+## September 24 2020
+
+### Recording of the main session: Updates, Roadmap, Architecture, and a NextJS + Redwood demo.
+
+#### Meetup
+
+---
+
 ![React Vancouver](https://secure.meetupstatic.com/photos/event/4/e/b/8/highres_490040152.jpeg)
 
 # [How I Built a Product in 3 Days Thanks to RedwoodJS](https://youtu.be/cDVqhJuTSBo?t=939)
@@ -271,6 +295,30 @@
 ### Anthony Morris gives a high level overview of RedwoodJS and how it empowers developers to focus on what they want to build, not just how they want to build it.
 
 #### Video
+
+---
+
+![RedwoodJS Meetup](https://user-images.githubusercontent.com/2951/92313389-31e27b00-ef80-11ea-9903-b7a04aac2d39.png)
+
+# [October 8th Recording](https://www.youtube.com/playlist?list=PL1HNO86XPhd3WLYTpyJU6ISaeA5LlWxL3)
+
+## October 8 2020
+
+### Recording of the main session: How to Contribute to Redwood, including a full walkthrough of local dev setup.
+
+#### Meetup
+
+---
+
+![RedwoodJS Meetup](https://user-images.githubusercontent.com/2951/92313389-31e27b00-ef80-11ea-9903-b7a04aac2d39.png)
+
+# [November 5th Recording](https://www.youtube.com/playlist?list=PL1HNO86XPhd0_XCebypbmzJkdF9I5W_iB)
+
+## November 5 2020
+
+### Recording of the main session: Redwood Demos of VS Code IDE Extension, Tape.sh, Vida.io, and Pyplyn.netlify.app
+
+#### Meetup
 
 ---
 
