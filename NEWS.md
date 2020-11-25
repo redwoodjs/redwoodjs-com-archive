@@ -283,3 +283,15 @@
 ### This talk from Kim-Adeline Miguel shines a spotlight on contributing to Redwood, and being part of its thriving community.
 
 #### Video
+
+---
+
+![Redwood Newsletter](https://user-images.githubusercontent.com/2951/85804346-3c6dd200-b6fe-11ea-8a26-6a989444452c.png)
+
+# [Issue 4](https://mailchi.mp/redwoodjs/all-the-redwoodjs-news-fit-to-print-issue-2)
+
+## November 25 2020
+
+### All the RedwoodJS News that’s Fit to Print: Jammie Award, v0.21.0, VS Code IDE Extension, Made with Redwood, and more.
+
+#### Newsletter
