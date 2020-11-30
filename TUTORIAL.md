@@ -96,7 +96,7 @@ Let's take a look at the files and directories that were created for us (config 
 
 ```terminal
 ├── api
-│   ├── prisma
+│   ├── db
 │   │   ├── schema.prisma
 │   │   └── seeds.js
 │   └── src
@@ -134,7 +134,7 @@ At the top level we have two directories, `api` and `web`. Redwood separates the
 
 Within `api` there are two directories:
 
-- `prisma` contains the plumbing for the database:
+- `db` contains the plumbing for the database:
 
   - `schema.prisma` contains the database schema (tables and columns)
   - `seeds.js` is used to populate your database with any data that needs to exist for your app to run at all (maybe an admin user or site configuration).
@@ -472,7 +472,7 @@ We use [Prisma Client JS](https://github.com/prisma/prisma-client-js) to talk to
 First let's define the data structure for a post in the database. Open up `api/prisma/schema.prisma` and add the definition of our Post table (remove any "sample" models that are present in the file). Once you're done the entire schema file should look like:
 
 ```plaintext{13-18}
-// api/prisma/schema.prisma
+// api/db/schema.prisma
 
 datasource DS {
   provider = "sqlite"
@@ -513,7 +513,7 @@ This says that we want a table called `Post` and it should have:
 
 That was simple. Now we'll want to snapshot this as a migration:
 
-    yarn redwood db save create posts
+    yarn redwood db save "create posts"
 
 You've named the migration "create posts", and this is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference for future developers.
 
