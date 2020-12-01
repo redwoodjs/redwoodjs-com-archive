@@ -739,7 +739,7 @@ Save, and both the **Full** and **Summary** stories should have margins around t
 
 ![image](https://user-images.githubusercontent.com/300/96509066-5d5bb500-1210-11eb-8ddd-8786b7033cac.png)
 
-We could use a gap between the end of the blog post and the start of the comments, as well as a title to help separate the two:
+We could use a gap between the end of the blog post and the start of the comments to help separate the two:
 
 ```javascript{14-21}
 // web/src/components/BlogPost/BlogPost.js
@@ -756,11 +756,8 @@ const BlogPost = ({ post, summary = false }) => {
         {summary ? truncate(post.body, 100) : post.body}
       </div>
       {!summary && (
-        <div className="mt-12">
-          <h3 className="font-light text-lg text-gray-600">Comments</h3>
-          <div className="mt-12">
-            <CommentsCell />
-          </div>
+        <div className="mt-24">
+         <CommentsCell />
         </div>
       )}
     </article>
@@ -770,7 +767,7 @@ const BlogPost = ({ post, summary = false }) => {
 export default BlogPost
 ```
 
-![image](https://user-images.githubusercontent.com/300/96508982-4026e680-1210-11eb-9b76-0a4029835e27.png)
+![image](https://user-images.githubusercontent.com/300/100682809-bfd5c400-332b-11eb-98e0-d2d526c1aa58.png)
 
 Okay, comment display is looking good! However, you may have noticed that if you tried going to the actual site there's an error where the comments should be:
 
@@ -1153,25 +1150,16 @@ export const standard = scenario({
   comment: {
     one: {
       name: 'String',
-      message: 'String',
-      post: {
-        create: {
-          title: 'String',
-          body: 'String'
-        }
-      }
+      body: 'String',
+      post: { create: { title: 'String', body: 'String' } },
     },
+
     two: {
       name: 'String',
-      message: 'String',
-      post: {
-        create: {
-          title: 'String',
-          body: 'String'
-        }
-      }
-    }
-  }
+      body: 'String',
+      post: { create: { title: 'String', body: 'String' } },
+    },
+  },
 })
 ```
 
@@ -1290,9 +1278,324 @@ Let's generate a form and then we'll build it out and integrate it via Storybook
 yarn rw g component CommentForm
 ```
 
+And startup Storybook again if it isn't still running:
+
+```terminal
+yarn rw storybook
+```
+
+You'll see that there's a **CommentForm** entry in Storybook now, ready for us to get started.
+
 ### Storybook
 
-(TBD)
+Let's build a simple form to take the user's name and their comment and add some styling to match it to the blog:
+
+```javascript
+// web/src/components/CommentForm/CommentForm.js
+
+import { Form, Label, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
+
+const CommentForm = () => {
+  return (
+    <div>
+      <h3 className="font-light text-lg text-gray-600">Leave a Comment</h3>
+      <Form className="mt-4 w-full">
+        <Label name="name" className="block text-sm text-gray-600 uppercase">
+          Name
+        </Label>
+        <TextField
+          name="name"
+          className="block w-full p-1 border rounded text-xs "
+          validation={{ required: true }}
+        />
+
+        <Label
+          name="body"
+          className="block mt-4 text-sm text-gray-600 uppercase"
+        >
+          Comment
+        </Label>
+        <TextAreaField
+          name="body"
+          className="block w-full p-1 border rounded h-24 text-xs"
+          validation={{ required: true }}
+        />
+
+        <Submit
+          className="block mt-4 bg-blue-500 text-white text-xs font-semibold uppercase tracking-wide rounded px-3 py-2 disabled:opacity-50"
+        >
+          Submit
+        </Submit>
+      </Form>
+    </div>
+  )
+}
+
+export default CommentForm
+```
+
+Note that the form and its inputs are set to 100% width. Again, the form shouldn't be dictating anything about its layout that its parent should be resposible for, like how wide the inputs are. Those should be determined by whatever contains it so that it looks good with the rest of the content on the page. So the form will be 100% wide and the parent (whoever that ends up being) will decide how wide it really is on the page.
+
+And let's add some margin around the whole component in Storybook so that the 100% width doesn't run into the Storybook frame:
+
+```javascript{7,9}
+// web/src/components/CommentForm/CommentForm.stories.js
+
+import CommentForm from './CommentForm'
+
+export const generated = () => {
+  return (
+    <div className="m-4">
+      <CommentForm />
+    </div>
+  )
+}
+
+export default { title: 'Components/CommentForm' }
+```
+
+![image](https://user-images.githubusercontent.com/300/100663134-b5ef9900-330a-11eb-8ba3-e9e4bfe89b84.png)
+
+You can even try submitting the form right in Storybook! If you leave "name" or "comment" blank then they should get focus when you try to submit, indicating that they are required. If you fill them both in and click **Submit** nothing happens because we haven't hooked up the submit yet. Let's do that now.
+
+### Submitting
+
+Submitting the form should use the `createComment` function we added to our services and GraphQL. We'll need to add a mutation to the form component and an `onSubmit` hander to the form so that the create can be called with the data in the form:
+
+```javascript{4,6-15,19,21-23,54}
+// web/src/components/CommentForm/CommentForm.js
+
+import { Form, Label, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
+import { useMutation } from '@redwoodjs/web'
+
+const CREATE = gql`
+  mutation CreateCommentMutation($input: CreateCommentInput!) {
+    createComment(input: $input) {
+      id
+      name
+      body
+      createdAt
+    }
+  }
+`
+
+const CommentForm = () => {
+  const [createComment, { loading }] = useMutation(CREATE)
+
+  const onSubmit = (input) => {
+    createComment({ variables: { input } })
+  }
+
+  return (
+    <div>
+      <h3 className="font-light text-lg text-gray-600">Leave a Comment</h3>
+      <Form className="mt-4 w-full" onSubmit={onSubmit}>
+        <Label
+          name="name"
+          className="block text-xs font-semibold text-gray-500 uppercase"
+        >
+          Name
+        </Label>
+        <TextField
+          name="name"
+          className="block w-full p-1 border rounded text-sm "
+          validation={{ required: true }}
+        />
+
+        <Label
+          name="body"
+          className="block mt-4 text-xs font-semibold text-gray-500 uppercase"
+        >
+          Comment
+        </Label>
+        <TextAreaField
+          name="body"
+          className="block w-full p-1 border rounded h-24 text-sm"
+          validation={{ required: true }}
+        />
+
+        <Submit
+          disabled={loading}
+          className="block mt-4 bg-blue-500 text-white text-xs font-semibold uppercase tracking-wide rounded px-3 py-2 disabled:opacity-50"
+        >
+          Submit
+        </Submit>
+      </Form>
+    </div>
+  )
+}
+
+export default CommentForm
+```
+
+If you try to submit the form you'll get an error in the web console—Storybook doesn't actually start up a real GraphQL server to handle the request! But we can mock the request in the story and handle the response ourselves:
+
+```javascript{6-18}
+// web/src/components/CommentForm/CommentForm.stories.js
+
+import CommentForm from './CommentForm'
+
+export const generated = () => {
+  mockGraphQLMutation('CreateCommentMutation', (variables, { ctx }) => {
+    const id = parseInt(Math.random() * 1000)
+    ctx.delay(1000)
+
+    return {
+      comment: {
+        id,
+        name: variables.input.name,
+        body: variables.input.body,
+        createdAt: new Date().toISOString(),
+      },
+    }
+  })
+
+  return (
+    <div className="m-4">
+      <CommentForm />
+    </div>
+  )
+}
+
+export default { title: 'Components/CommentForm' }
+```
+
+To use `mockGraphQLMutation` you call it with the name of the mutation you want to intercept and then the function that will handle the interception and return a response. The arguments passed to that function give us some flexibility in how we handle the response.
+
+In our case we want the `variables` that were passed to the mutation (the `name` and `body`) as well as the context object (abbreviated as `ctx`) so that we can add a delay to simulate a round trip to the server. This will let us test that the **Submit** button is disabled for that one second and you can't submit a second comment while the first one is still being saved.
+
+Try out the form now and the error should be gone. Also the **Submit** button should become visually disabled and clicking it during that one second delay does nothing.
+
+Once our comment is sent notice that the comment form still contains their entries. That's not ideal. Let's clear that out. We did something [similar](/tutorial/saving-data#one-more-thing) back in Part 1 of the tutorial when we created the Contact form:
+
+```javascript{5,19-22,33}
+// web/src/components/CommentForm/CommentForm.js
+
+import { Form, Label, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
+import { useMutation } from '@redwoodjs/web'
+import { useForm } from 'react-hook-form'
+
+const CREATE = gql`
+  mutation CreateCommentMutation($input: CreateCommentInput!) {
+    createComment(input: $input) {
+      id
+      name
+      body
+      createdAt
+    }
+  }
+`
+
+const CommentForm = () => {
+  const formMethods = useForm()
+  const [createComment, { loading }] = useMutation(CREATE, {
+    onCompleted: formMethods.reset,
+  })
+
+  const onSubmit = (input) => {
+    createComment({ variables: { input } })
+  }
+
+  return (
+    <div>
+      <h3 className="font-light text-lg text-gray-600">Leave a Comment</h3>
+      <Form
+        className="mt-4 w-full"
+        formMethods={formMethods}
+        onSubmit={onSubmit}
+      >
+        <Label
+          name="name"
+          className="block text-xs font-semibold text-gray-500 uppercase"
+        >
+          Name
+        </Label>
+        <TextField
+          name="name"
+          className="block w-full p-1 border rounded text-sm "
+          validation={{ required: true }}
+        />
+
+        <Label
+          name="body"
+          className="block mt-4 text-xs font-semibold text-gray-500 uppercase"
+        >
+          Comment
+        </Label>
+        <TextAreaField
+          name="body"
+          className="block w-full p-1 border rounded h-24 text-sm"
+          validation={{ required: true }}
+        />
+
+        <Submit
+          disabled={loading}
+          className="block mt-4 bg-blue-500 text-white text-xs font-semibold uppercase tracking-wide rounded px-3 py-2 disabled:opacity-50"
+        >
+          Submit
+        </Submit>
+      </Form>
+    </div>
+  )
+}
+
+export default CommentForm
+```
+
+We extract the `formMethods` so that we can call `reset()` ourselves. We do that once the mutation completes.
+
+### Adding the Form to the Blog Post
+
+Right above the display of existing comments on a blog post is probably where our form should go. So should we add it to the **BlogPostCell** along with the **CommentsCell** component? If wherever we display we'll also include the form to add a new one, that feels like it should just go into the **CommentsCell** component itself. Let's put it there:
+
+```javascript{4,28}
+// web/components/CommentsCell/CommentsCell.js
+
+import Comment from 'src/components/Comment'
+import CommentForm from 'src/components/CommentForm'
+
+export const QUERY = gql`
+  query CommentsQuery {
+    comments {
+      id
+      name
+      body
+      createdAt
+    }
+  }
+`
+
+export const Loading = () => <div>Loading...</div>
+
+export const Empty = () => {
+  return <div className="text-center text-gray-500">No comments yet</div>
+}
+
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
+
+export const Success = ({ comments }) => {
+  return (
+    <div className="-mt-8">
+      <CommentForm />
+      {comments.map((comment, i) => (
+        <div key={i} className="mt-8">
+          <Comment comment={comment} />
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+Thanks to our planning ahead and having each component only responsible for its own layout, everything automatically looks great! Here it is in the **CommentsCell**:
+
+![image](https://user-images.githubusercontent.com/300/100682327-b39d3700-332a-11eb-80a0-76be6217455c.png)
+
+And the **BlogPost**:
+
+![image](https://user-images.githubusercontent.com/300/100682485-0d9dfc80-332b-11eb-806c-4ac561abf039.png)
+
+Awesome! How about we go over to the actual dev server now and try it out?
 
 ### Testing
 
