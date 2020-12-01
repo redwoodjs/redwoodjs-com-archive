@@ -1293,13 +1293,18 @@ Let's build a simple form to take the user's name and their comment and add some
 ```javascript
 // web/src/components/CommentForm/CommentForm.js
 
-import { Form, Label, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
+import { Form, FormError, Label, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
 
 const CommentForm = () => {
   return (
     <div>
       <h3 className="font-light text-lg text-gray-600">Leave a Comment</h3>
       <Form className="mt-4 w-full">
+        <FormError
+          error={error}
+          titleClassName="font-semibold"
+          wrapperClassName="bg-red-100 text-red-900 text-sm p-3 rounded"
+        />
         <Label name="name" className="block text-sm text-gray-600 uppercase">
           Name
         </Label>
@@ -1362,10 +1367,10 @@ You can even try submitting the form right in Storybook! If you leave "name" or 
 
 Submitting the form should use the `createComment` function we added to our services and GraphQL. We'll need to add a mutation to the form component and an `onSubmit` hander to the form so that the create can be called with the data in the form:
 
-```javascript{4,6-15,19,21-23,54}
+```javascript{4,6-15,18-22,58}
 // web/src/components/CommentForm/CommentForm.js
 
-import { Form, Label, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
+import { Form, FormError, Label, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 
 const CREATE = gql`
@@ -1390,6 +1395,11 @@ const CommentForm = () => {
     <div>
       <h3 className="font-light text-lg text-gray-600">Leave a Comment</h3>
       <Form className="mt-4 w-full" onSubmit={onSubmit}>
+        <FormError
+          error={error}
+          titleClassName="font-semibold"
+          wrapperClassName="bg-red-100 text-red-900 text-sm p-3 rounded"
+        />
         <Label
           name="name"
           className="block text-xs font-semibold text-gray-500 uppercase"
@@ -1471,7 +1481,7 @@ Once our comment is sent notice that the comment form still contains their entri
 ```javascript{5,19-22,33}
 // web/src/components/CommentForm/CommentForm.js
 
-import { Form, Label, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
+import { Form, FormError, Label, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 import { useForm } from 'react-hook-form'
 
@@ -1504,6 +1514,11 @@ const CommentForm = () => {
         formMethods={formMethods}
         onSubmit={onSubmit}
       >
+        <FormError
+          error={error}
+          titleClassName="font-semibold"
+          wrapperClassName="bg-red-100 text-red-900 text-sm p-3 rounded"
+        />
         <Label
           name="name"
           className="block text-xs font-semibold text-gray-500 uppercase"
@@ -1546,7 +1561,7 @@ We extract the `formMethods` so that we can call `reset()` ourselves. We do that
 
 ### Adding the Form to the Blog Post
 
-Right above the display of existing comments on a blog post is probably where our form should go. So should we add it to the **BlogPostCell** along with the **CommentsCell** component? If wherever we display we'll also include the form to add a new one, that feels like it should just go into the **CommentsCell** component itself. Let's put it there:
+Right above the display of existing comments on a blog post is probably where our form should go. So should we add it to the **BlogPostCell** along with the **CommentsCell** component? If wherever we display a list of comments we'll also include the form to add a new one, that feels like it may as well just go into the **CommentsCell** component itself. Let's put it there:
 
 ```javascript{4,28}
 // web/components/CommentsCell/CommentsCell.js
@@ -1587,15 +1602,145 @@ export const Success = ({ comments }) => {
 }
 ```
 
-Thanks to our planning ahead and having each component only responsible for its own layout, everything automatically looks great! Here it is in the **CommentsCell**:
+Thanks to our planning ahead and having each component only responsible for its own layout, everything automatically looks great! Here it is in the **Success** component of the **CommentsCell**:
 
 ![image](https://user-images.githubusercontent.com/300/100682327-b39d3700-332a-11eb-80a0-76be6217455c.png)
 
-And the **BlogPost**:
+And the **BlogPost** component:
 
-![image](https://user-images.githubusercontent.com/300/100682485-0d9dfc80-332b-11eb-806c-4ac561abf039.png)
+![image](https://user-images.githubusercontent.com/300/100776202-19d09b00-33b9-11eb-99b5-05006fb231b6.png)
 
 Awesome! How about we go over to the actual dev server now and try it out?
+
+![image](https://user-images.githubusercontent.com/300/100779202-e0019380-33bc-11eb-8821-1833b13c34e9.png)
+
+What the? Where's our form?
+
+Remember how cells render themselves: if there are no records returned from the GraphQL call then the Cell will render the **Empty** component. In this case we only put the **CommentForm** into the **Success** component. So it's not showing the form at all!
+
+> How come it worked fine in Storybook? Remember that Storybook is using fake data from our `*.mock.js` files, but the dev server is showing data from the actual database. There aren't any comments in the database yet!
+
+Time for a decision:
+
+1. Copy the **CommentForm** to the **Empty** component so that it still renders even when there are no comments in the database yet
+2. Move the **CommentForm** somewhere else, maybe into **BlogPost** itself, around the same place that the **CommentsCell** is included.
+
+You'll have to consider your tolerance for duplication and your adherance to the separation of concerns when deciding where it should go. For the purposes of the tutorial we're just going to go with option #2 and move the **CommentForm** component over to **BlogPost** instead (remember to remove it from **CommentsCell** as well):
+
+```javascript{5,23-24,28}
+// web/src/components/BlogPost/BlogPost.js
+
+import { Link, routes } from '@redwoodjs/router'
+import CommentsCell from 'src/components/CommentsCell'
+import CommentForm from 'src/components/CommentForm'
+
+const truncate = (text, length) => {
+  return text.substring(0, length) + '...'
+}
+
+const BlogPost = ({ post, summary = false }) => {
+  return (
+    <article>
+      <header>
+        <h2 className="text-xl text-blue-700 font-semibold">
+          <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
+        </h2>
+      </header>
+      <div className="mt-2 text-gray-900 font-light">
+        {summary ? truncate(post.body, 100) : post.body}
+      </div>
+      {!summary && (
+        <div className="mt-16">
+          <CommentForm />
+          <div className="mt-24">
+            <CommentsCell />
+          </div>
+        </div>
+      )}
+    </article>
+  )
+}
+
+export default BlogPost
+```
+
+That looks better!
+
+![image](https://user-images.githubusercontent.com/300/100779113-c06a6b00-33bc-11eb-9112-0f7fc30a3f22.png)
+
+Now comes the ultimate test: creating a comment! LET'S DO IT:
+
+![image](https://user-images.githubusercontent.com/300/100806468-5d40fe80-33e5-11eb-89f7-e4b504078eff.png)
+
+When we created our data schema we said that a post belongs to a comment via the `postId` field. And that field is required, so the GraphQL server is rejecting the request because we're not including that field. We're only sending `name` and `body`. Luckily we have access to the ID of the post we're commenting on thanks to the `post` object that's being passed into **BlogPost** itself!
+
+> **Why didn't the story we wrote earlier expose this problem?**
+>
+> We manually mocked the GraphQL response in the story, and our mock always returns a correct response, regardless of the input!
+>
+> There's always a tradeoff when creating mock data—it greatly simplifies testing by not having to rely on the entire GraphQL stack, but that means if you want it to be as accurate as the real thing you basically need to *re-write the real thing in your mock*. In this case, leaving out the `postId` was a one-time fix so it's probably not worth going through the work of creating a story/mock/test that simulates what would happen if we left it off.
+>
+> But, if **CommentForm** ended up being a component that was re-used throughout your application, or the code itself will go through a lot of churn because other developers will constantly be making changes to it, it might be worth investing the time to make sure the interface (the props passed to it and the expected return) are exactly what you want them to be.
+
+First let's pass the post's ID as a prop to **CommentForm**:
+
+```javascript{16}
+// web/src/components/BlogPost/BlogPost.js
+
+const BlogPost = ({ post, summary = false }) => {
+  return (
+    <article>
+      <header>
+        <h2 className="text-xl text-blue-700 font-semibold">
+          <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
+        </h2>
+      </header>
+      <div className="mt-2 text-gray-900 font-light">
+        {summary ? truncate(post.body, 100) : post.body}
+      </div>
+      {!summary && (
+        <div className="mt-16">
+          <CommentForm postId={post.id} />
+          <div className="mt-24">
+            <CommentsCell />
+          </div>
+        </div>
+      )}
+    </article>
+  )
+}
+```
+
+And then we'll append that ID to the `input` object that's being passed to `createComment` in the **CommentForm**:
+
+```javascript{3,10}
+// web/src/components/CommentForm/CommentForm.js
+
+const CommentForm = ({ postId }) => {
+  const formMethods = useForm()
+  const [createComment, { loading, error }] = useMutation(CREATE, {
+    onCompleted: formMethods.reset,
+  })
+
+  const onSubmit = (input) => {
+    createComment({ variables: { input: { postId, ...input } } })
+  }
+
+  return (
+    //...
+  )
+}
+```
+
+Now fill out the comment form and submit! And...nothing happened! Believe it or not that's actually an improvement in the situation—no more error! What if we reload the page?
+
+![image](https://user-images.githubusercontent.com/300/100807172-b52c3500-33e6-11eb-888a-270c8c985014.png)
+
+Yay! It would have been nicer if that comment appeared as soon as we submitted the comment, so maybe that's a half-yay? But, we can fix that! It involves telling the GraphQL client (Apollo) that we created a new record and, if it would be so kind, to try the query again that gets the comments for this page.
+
+### GraphQL Query Caching
+
+
 
 ### Testing
 
