@@ -322,6 +322,18 @@
 
 ---
 
+![This Dot Media](https://user-images.githubusercontent.com/2951/100915393-258b9280-3489-11eb-8e55-17fc4ae187ec.png)
+
+# [Modern Web Online: Full-stack with RedwoodJS](https://youtu.be/pd5izJOa8ZE?t=2455)
+
+## November 18 2020
+
+### In this recorded livestream, David Price introduces Redwood's architecture and demos the end-to-end developer experience from init to scaffold generator to built-in Jest tests and Storybook to deploy. 🚀
+
+#### Video
+
+---
+
 ![The Live Coders Conference 3](https://user-images.githubusercontent.com/51720070/99728681-a51f6780-2a6e-11eb-8ed6-3042c19f5a19.png)
 
 # [Adventures in the Jamstack forest: Discovering Redwood](https://www.twitch.tv/videos/808273985?t=4h44m14s)
