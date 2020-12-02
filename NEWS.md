@@ -252,7 +252,7 @@
 
 ![Redwood Newsletter](https://user-images.githubusercontent.com/2951/85804346-3c6dd200-b6fe-11ea-8a26-6a989444452c.png)
 
-# [Issue 3](https://mailchi.mp/redwoodjs/all-the-redwoodjs-news-fit-to-print-issue-2)
+# [Issue 3](https://mailchi.mp/redwoodjs/all-the-redwoodjs-news-fit-to-print-issue-3)
 
 ## September 17 2020
 
@@ -336,7 +336,7 @@
 
 ![Redwood Newsletter](https://user-images.githubusercontent.com/2951/85804346-3c6dd200-b6fe-11ea-8a26-6a989444452c.png)
 
-# [Issue 4](https://mailchi.mp/redwoodjs/all-the-redwoodjs-news-fit-to-print-issue-2)
+# [Issue 4](https://mailchi.mp/redwoodjs/all-the-redwoodjs-news-fit-to-print-issue-4)
 
 ## November 25 2020
 
