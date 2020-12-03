@@ -35,7 +35,7 @@ yarn rw build && yarn rw db up --no-db-client --auto-approve && yarn rw dataMigr
 ```
 
 ### 3. Prisma and Database
-Redwood uses Prisma for managing database access and migrations. The settings in `api/prisma/schema.prisma` must include the correct deployment database, e.g. postgresql, and the database connection string.
+Redwood uses Prisma for managing database access and migrations. The settings in ` api/db/schema.prisma` must include the correct deployment database, e.g. postgresql, and the database connection string.
 
 It is possible to use a different database type for local development and production. To do this, you need to use the Prisma dynamic provider syntax. For example, to use SQLite locally and PostgreSQL in production, include this in your `schema.prisma`:
 ```javascript
