@@ -505,7 +505,7 @@ This says that we want a table called `Post` and it should have:
 >
 > `id String @id @default(cuid())`
 >
-> Integers also make for nicer URLs like https://redwoodblog.com/posts/123 instead of https://redwoodblog.com/posts/eebb026c-b661-42fe-93bf-f1a373421a13. 
+> Integers also make for nicer URLs like https://redwoodblog.com/posts/123 instead of https://redwoodblog.com/posts/eebb026c-b661-42fe-93bf-f1a373421a13.
 >
 > Take a look at the [official Prisma documentation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/data-model#defining-an-id-field) for more on ID fields.
 
@@ -701,8 +701,8 @@ export const Success = ({ blogPosts }) => {
 >     yarn rw g cell blogPosts
 >     yarn rw g cell BlogPosts
 >
-> You will need _some_ kind of indication that you're using more than one word: either snake_case (`blog_posts`), kebab-case (`blog-posts`), camelCase (`blogPosts`) or PascalCase (`BlogPosts`). 
-> 
+> You will need _some_ kind of indication that you're using more than one word: either snake_case (`blog_posts`), kebab-case (`blog-posts`), camelCase (`blogPosts`) or PascalCase (`BlogPosts`).
+>
 > Calling `yarn redwood g cell blogposts` (without any indication that we're using two words) will generate a file at `web/src/components/BlogpostsCell/BlogpostsCell.js`.
 
 To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case the query is called `blogPosts`:
@@ -1761,7 +1761,7 @@ Finally, you know what would _really_ be nice? If the fields were validated as s
 
 Well, what do you think? Was it worth the hype? A couple of new components and you've got forms that handle validation and wrap up submitted values in a nice data object, all for free.
 
-> **Learn more about Redwood Forms** 
+> **Learn more about Redwood Forms**
 >
 > Redwood's forms are built on top of [React Hook Form](https://react-hook-form.com/) so there is even more functionality available than we've documented here. Visit the [Form docs](https://redwoodjs.com/docs/form) to learn more about all form functionalities.
 
@@ -1771,10 +1771,10 @@ Having a contact form is great, but only if you actually get the contact somehow
 
 ## Saving Data
 
-Let's add a new database table. Open up `api/prisma/schema.prisma` and add a Contact model after the Post model that's there now:
+Let's add a new database table. Open up `api/db/schema.prisma` and add a Contact model after the Post model that's there now:
 
 ```javascript
-// api/prisma/schema.prisma
+// api/db/schema.prisma
 
 model Contact {
   id        Int @id @default(autoincrement())
@@ -2457,7 +2457,7 @@ provider = ["sqlite", "postgresql"]
 
 > If you are deploying to Netlify and using Prisma version `< 2.11.0`, you will need to add `rhel-openssl-1.0.x` to your `binaryTargets`:
 > ```javascript
-> // api/prisma/schema.prisma
+> // api/db/schema.prisma
 >
 > generator client {
 >   provider      = "prisma-client-js"
@@ -2683,7 +2683,7 @@ Now try creating, editing or deleting a post from our admin pages. Nothing happe
 
 > **Services as Containers for Your Business Logic**
 >
-> Note that we're putting the authentication checks in the service and not checking in the GraphQL interface (in the SDL files). Redwood created the concept of **services** as containers for your business logic which can be used by other parts of your application besides the GraphQL API. 
+> Note that we're putting the authentication checks in the service and not checking in the GraphQL interface (in the SDL files). Redwood created the concept of **services** as containers for your business logic which can be used by other parts of your application besides the GraphQL API.
 >
 > By putting authentication checks here you can be sure that any other code that tries to create/update/delete a post will fall under the same authentication checks. In fact, Apollo (the GraphQL library Redwood uses) [agrees with us](https://www.apollographql.com/docs/apollo-server/security/authentication/#authorization-in-data-models)!
 
