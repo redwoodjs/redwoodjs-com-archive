@@ -46,7 +46,7 @@ yarn rw dev
 We'll create a single model to store our image data:
 
 ```javascript
-//  api/db/schema.prisma
+// api/prisma/schema.prisma
 
 model Image {
   id    Int    @default(autoincrement()) @id
