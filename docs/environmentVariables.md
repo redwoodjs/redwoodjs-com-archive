@@ -157,10 +157,10 @@ Remember, if `yarn rw dev` is already running, your local app won't reflect any 
 
 <!-- Source: https://github.com/motdotla/dotenv#should-i-have-multiple-env-files -->
 
-You can provide an `.env` file just for seeding your database. A Redwood app's seed file (`api/prisma/seed.js`) is setup to load it into `process.env`:
+You can provide an `.env` file just for seeding your database. A Redwood app's seed file (`api/db/seed.js`) is setup to load it into `process.env`:
 
 ```javascript{5-7}
-// api/prisma/seed.js
+// api/db/seed.js
 
 /* eslint-disable no-console */
 const { PrismaClient } = require('@prisma/client')
@@ -173,7 +173,7 @@ const db = new PrismaClient()
 
 ```
 
-So `api/prisma` you make an `.env` file in `api/prisma` with environment variables:
+So `api/db` you make an `.env` file in `api/db` with environment variables:
 
 ```
 SEEDING_MESSAGE=seeding the database...
