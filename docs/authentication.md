@@ -239,7 +239,7 @@ yarn add msal
 
 #### Setup
 
-To get your application credentials, create a [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application (client) ID_ and the _Directory (tenant) ID_.
+To get your application credentials, create an [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application (client) ID_ and the _Directory (tenant) ID_.
 
 ##### Supported account types
 
