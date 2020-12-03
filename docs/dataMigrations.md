@@ -21,12 +21,12 @@ Rather than create this model by hand, Redwood includes a CLI tool to add the mo
 
     yarn rw dataMigrate install
 
-You'll see a new directory created at ` api/db/dataMigrations` which will store our individual migration tasks.
+You'll see a new directory created at `api/prisma/dataMigrations` which will store our individual migration tasks.
 
 Take a look at `schema.prisma` to see the new model definition:
 
 ```javascript
-//  api/db/schema.prisma
+// api/prisma/schema.prisma
 
 model DataMigration {
   version    String   @id
@@ -52,10 +52,10 @@ To create a data migration we have a generator:
 
     yarn rw generate dataMigration copyPreferences
 
-This will create ` api/db/dataMigrations/20200721123456-copy-preferences.js`:
+This will create `api/prisma/dataMigrations/20200721123456-copy-preferences.js`:
 
 ```javascript
-//  api/db/dataMigrations/20200721123456-copy-preferences.js
+// api/prisma/dataMigrations/20200721123456-copy-preferences.js
 
 export default async ({ db }) => {
   // Migration here...
@@ -69,7 +69,7 @@ export default async ({ db }) => {
 Now it's up to you to define your data migration. In our user/preference example, it may look something like:
 
 ```javascript
-//  api/db/dataMigrations/20200721123456-copy-preferences.js
+// api/prisma/dataMigrations/20200721123456-copy-preferences.js
 
 const asyncForEach = async (array, callback) => {
   for (let index = 0; index < array.length; index++) {
@@ -112,7 +112,7 @@ When you're ready, you can execute your data migration with `dataMigrate`'s `up`
 
     yarn rw dataMigrate up
 
-This goes through each file in ` api/db/dataMigrations`, compares it against the list of migrations that have already run according to the `DataMigration` table in the database, and executes any that aren't present in that table, sorted oldest to newest based on the timestamp in the filename.
+This goes through each file in `api/prisma/dataMigrations`, compares it against the list of migrations that have already run according to the `DataMigration` table in the database, and executes any that aren't present in that table, sorted oldest to newest based on the timestamp in the filename.
 
 Any logging statements (like `console.info()`) you include in your data migration script will be output to the console as the script is running.
 
