@@ -295,7 +295,7 @@ Redwood comes with GraphQL integration built in so that seems like a logical way
 
 > **Doesn't Redwood have a generator for this?**
 >
-> Redwood does have an SDL generator, but it assumes you have a model defined in `api/prisma/schema.prisma` and so creates the SDL you need to access that data structure. If you're creating a custom one you're on your own!
+> Redwood does have an SDL generator, but it assumes you have a model defined in ` api/db/schema.prisma` and so creates the SDL you need to access that data structure. If you're creating a custom one you're on your own!
 
 ### The GraphQL API
 

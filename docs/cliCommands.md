@@ -114,14 +114,14 @@ yarn rw dataMigrate <command>
 
 | Command   | Description                                                                                     |
 | :-------- | :---------------------------------------------------------------------------------------------- |
-| `install` | Appends `DataMigration` model to `schema.prisma`, creates `api/prisma/dataMigrations` directory |
+| `install` | Appends `DataMigration` model to `schema.prisma`, creates ` api/db/dataMigrations` directory |
 | `up`      | Executes oustanding data migrations                                                             |
 
 ### install
 
 - Appends a `DataMigration` model to `schema.prisma` for tracking which data migrations have already run.
 - Creates a DB migration using `yarn rw db save 'create data migrations`.
-- Creates `api/prisma/dataMigrations` directory to contain data migration scripts
+- Creates ` api/db/dataMigrations` directory to contain data migration scripts
 
 ```terminal
 yarn rw dataMigrate install
@@ -129,7 +129,7 @@ yarn rw dataMigrate install
 
 ### up
 
-Executes outstanding data migrations against the database. Compares the list of files in `api/prisma/dataMigrations` to the records in the `DataMigration` table in the database and executes any files not present.
+Executes outstanding data migrations against the database. Compares the list of files in ` api/db/dataMigrations` to the records in the `DataMigration` table in the database and executes any files not present.
 
 If an error occurs during script execution, any remaining scripts are skipped and console output will let you know the error and how many subsequent scripts were skipped.
 
@@ -151,7 +151,7 @@ yarn rw db <command>
 | :----------------- | :-------------------------------------------------------------------------------------------------------- |
 | `down [decrement]` | Migrate your database down                                                                                |
 | `generate`         | Generate the Prisma client                                                                                |
-| `introspect`       | Introspect your database and generate models in `./api/prisma/schema.prisma`, overwriting existing models |
+| `introspect`       | Introspect your database and generate models in `./ api/db/schema.prisma`, overwriting existing models |
 | `save [name..]`    | Create a new migration                                                                                    |
 | `seed`             | Seed your database with test data                                                                         |
 | `studio`           | Start Prisma Studio                                                                                       |
@@ -178,7 +178,7 @@ yarn rw db down [decrement]
 Given the following migrations,
 
 ```plaintext{2,4}
-api/prisma/migrations/
+ api/db/migrations/
 ├── 20200518160457-create-users  <-- desired
 ├── 20200518160621-add-profiles
 ├── 20200518160811-add-posts     <-- current
@@ -204,7 +204,7 @@ This means that `yarn rw db generate` needs to be run after every change to your
 
 ### introspect
 
-Introspect your database and generate models in `./api/prisma/schema.prisma`, overwriting existing models.
+Introspect your database and generate models in `./ api/db/schema.prisma`, overwriting existing models.
 
 ```terminal
 yarn rw db introspect
@@ -229,7 +229,7 @@ A migration defines the steps necessary to update your current schema.
 Running `yarn rw db save` generates the following directories and files as necessary:
 
 ```terminal
-api/prisma/migrations
+ api/db/migrations
 ├── 20200516162516-create-users
 │   ├── README.md
 │   ├── schema.prisma
@@ -254,7 +254,7 @@ Seed your database with test data.
 yarn rw db seed
 ```
 
-Runs `seed.js` in `./api/prisma`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/prisma/seeds.js).
+Runs `seed.js` in `./ api/db`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/ api/db/seeds.js).
 
 ### studio
 
@@ -288,7 +288,7 @@ yarn rw db up [increment]
 Given the following migrations
 
 ```plaintext{2,4}
-api/prisma/migrations/
+ api/db/migrations/
 ├── 20200518160457-create-users  <-- current
 ├── 20200518160621-add-profiles
 ├── 20200518160811-add-posts     <-- desired
@@ -549,7 +549,7 @@ Generate a data migration script.
 yarn rw generate dataMigration <name>
 ```
 
-Creates a data migration script in `api/prisma/dataMigrations`.
+Creates a data migration script in ` api/db/dataMigrations`.
 
 | Arguments & Options | Description                                                              |
 | :------------------ | :----------------------------------------------------------------------- |
