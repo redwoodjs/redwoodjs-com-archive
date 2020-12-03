@@ -1070,7 +1070,7 @@ export const comments = () => {
 }
 ```
 
-> Have you noticed that something may be amiss? This function returns *all* comments, and all comments only.
+> Have you noticed that something may be amiss? This function returns *all* comments, and all comments only. Could this come back to bite us?
 >
 > To be continued...
 
@@ -1734,29 +1734,265 @@ const CommentForm = ({ postId }) => {
 
 Now fill out the comment form and submit! And...nothing happened! Believe it or not that's actually an improvement in the situation—no more error! What if we reload the page?
 
-![image](https://user-images.githubusercontent.com/300/100807172-b52c3500-33e6-11eb-888a-270c8c985014.png)
+![image](https://user-images.githubusercontent.com/300/100950150-98fcc680-34c0-11eb-8808-944637b5ca1f.png)
 
 Yay! It would have been nicer if that comment appeared as soon as we submitted the comment, so maybe that's a half-yay? But, we can fix that! It involves telling the GraphQL client (Apollo) that we created a new record and, if it would be so kind, to try the query again that gets the comments for this page.
 
 ### GraphQL Query Caching
 
+Much has been written about the [complexities](https://medium.com/swlh/how-i-met-apollo-cache-ee804e6485e9) of [Apollo](https://medium.com/@galen.corey/understanding-apollo-fetch-policies-705b5ad71980) [caching](https://levelup.gitconnected.com/basics-of-caching-data-in-graphql-7ce9489dac15), but for the sake of brevity (and sanity) we're going to do the easiest thing that works, and that's tell Apollo to just re-fetch the query that shows comments in the cell.
 
+Along with the variables you pass to a mutation function (`createComment` in our case) there's another option named `refetchQueries` where you pass an array of queries that should be re-run because, presumably, the data you just mutated is reflected in the result of those queries. In our case there's a single query, the **QUERY** export of **CommentsCell**. We'll import that at the top of **CommentForm** (and rename so it's clear what it is to the rest of our code) and then pass it along to the `refetchQueries` option:
 
-### Testing
+```javascript{13,21}
+// web/src/components/CommentForm/CommentForm.js
 
-(TBD)
+import {
+  Form,
+  FormError,
+  Label,
+  TextField,
+  TextAreaField,
+  Submit,
+} from '@redwoodjs/forms'
+import { useMutation } from '@redwoodjs/web'
+import { useForm } from 'react-hook-form'
+import { QUERY as CommentsQuery } from 'src/components/CommentsCell'
 
-## Putting it all together
+// ...
 
-(TBD)
+const CommentForm = ({ postId }) => {
+  const formMethods = useForm()
+  const [createComment, { loading, error }] = useMutation(CREATE, {
+    onCompleted: formMethods.reset,
+    refetchQueries: [{ query: CommentsQuery }],
+  })
 
-### Storybook
+  //...
+}
+```
 
-(TBD)
+Now when we create a comment it appears right away! It might be hard to tell because it's at the bottom of the comments list (which is a fine position if you want to read comments in chronological order, oldest to newest). Let's pop up a little notification that the comment was successful to let the user know their contribution was successful.
 
-### Testing
+We'll make use of good old fashioned React state to keep track of whether a comment has been posted in the form yet or not. If so, let's remove the comment form completely and show a "Thanks for your comment" message. We'll remove the form and show the message with just a couple of CSS classes:
 
-(TBD)
+```javascript{14,29,31-34,43,45-51,53}
+// web/src/components/CommentForm/CommentForm.js
+
+import {
+  Form,
+  FormError,
+  Label,
+  TextField,
+  TextAreaField,
+  Submit,
+} from '@redwoodjs/forms'
+import { useMutation } from '@redwoodjs/web'
+import { useForm } from 'react-hook-form'
+import { QUERY as CommentsQuery } from 'src/components/CommentsCell'
+import { useState } from 'react'
+
+// ...
+
+const CommentForm = ({ postId }) => {
+  const formMethods = useForm()
+  const [hasPosted, setHasPosted] = useState(false)
+  const [createComment, { loading, error }] = useMutation(CREATE, {
+    onCompleted: () => {
+      formMethods.reset()
+      setHasPosted(true)
+    },
+    refetchQueries: [{ query: CommentsQuery }],
+  })
+
+  const onSubmit = (input) => {
+    createComment({ variables: { input: { postId, ...input } } })
+  }
+
+  return (
+    <div className="relative">
+      <h3 className="font-light text-lg text-gray-600">Leave a Comment</h3>
+      <div
+        className={`${
+          hasPosted ? 'absolute' : 'hidden'
+        } flex items-center justify-center w-full h-full text-lg`}
+      >
+        <h4 className="text-green-500">Thank you for your comment!</h4>
+      </div>
+      <Form
+        className={`mt-4 w-full ${hasPosted ? 'invisible' : ''}`}
+        formMethods={formMethods}
+        onSubmit={onSubmit}
+        error={error}
+      >
+      //...
+```
+
+![image](https://user-images.githubusercontent.com/300/100949950-2d1a5e00-34c0-11eb-8c1c-3c9f925c6ecb.png)
+
+We used `invisible` to just hide the form but have it still take up as much vertical space as it did before so that the comments don't suddenly jump up the page, which could be a little jarring.
+
+So it looks like we're just about done here! Try going back to the homepage and go to another blog post. Let's bask in the glory of our amazing coding abilities and—OH NO:
+
+![image](https://user-images.githubusercontent.com/300/100950583-7d45f000-34c1-11eb-8975-2c6f22c67843.png)
+
+Every post has the same comments! WHAT HAVE WE DONE??
+
+Remember our foreshadowing callout a few pages back, wondering if our `comments()` service which only returns *all* comments could come back to bite us? It finally has: when we get the comments for a post we're not actually getting them for only that post. We're ignoring the `postId` completely and just returning *all* comments! Turns out the old axiom is true: computers only do exactly what you tell them to. :(
+
+Let's fix it!
+
+### Returning Only Some Comments
+
+Just like Redwood is split into a web- and api-side, we'll need to make both frontend and backend changes to get only some comments to show. Let's start with the backend and do a little test-driven development to make this change.
+
+#### Updating the Service
+
+Try running the test suite (or if it's already running take a peek at that terminal window) and make sure all of our tests still pass. The "lowest level" of the api-side is the services, so let's start there. Open up the **comments** service test and let's update it expect a new `postId` argument to be passed to the `comments()` function, the contents of which will be the `postId` of one of the comments that are created in our scenario:
+
+```javascript{4}
+// api/src/services/comments/comments.test.js
+
+scenario('returns all comments from the database', async (scenario) => {
+  const result = await comments({ postId: scenario.comment.one.postId })
+
+  expect(result.length).toEqual(Object.keys(scenario.comment).length)
+})
+```
+
+When the test suite runs everything will still pass. Javascript won't care if you're passing an argument all of a sudden (although if you were using Typescript you will actually get an error at this point!). In TDD you generally want to get your test to fail before adding code to the thing you're testing which will then cause the test to pass. What's something in this test that will be different once we're only returning *some* comments? How about the number of comments expected to be returned?
+
+Based on our current scenario, each comment will also get associated with its own, unique post. So of the two comments in our scenario, only one should be returned for a given `postId`:
+
+```javascript{6}
+// api/src/services/comments/comments.test.js
+
+scenario('returns all comments from the database', async (scenario) => {
+  const result = await comments({ postId: scenario.comment.one.postId })
+
+  expect(result.length).toEqual(1)
+})
+```
+
+Now it should fail! Before we get it passing again, let's also change the name of the test to reflect what it's actually testing:
+
+```javascript{3}
+// api/src/services/comments/comments.test.js
+
+scenario('returns all comments for a single post from the database', async (scenario) => {
+  const result = await comments({ postId: scenario.comment.one.postId })
+
+  expect(result.length).toEqual(1)
+})
+```
+
+Okay, open up the actual `comments.js` service and we'll update it to accept the `postId` arugment and use it as an option to `findMany()`:
+
+```javascript{3,4}
+// api/src/services/comments/comments.js
+
+export const comments = ({ postId }) => {
+  return db.comment.findMany({ where: { postId } })
+}
+```
+
+Save that and the test should pass again!
+
+#### Updating GraphQL
+
+Next we need to let GraphQL know that it should expect a `postId` to be passed for the `comments` query, and it's required (we don't currently have any view that allows you see all comments everywhere so we can ask that it always be present for now):
+
+```javascript{4}
+// api/src/graphql/comments.sdl.js
+
+type Query {
+  comments(postId: Int!): [Comment!]!
+}
+```
+
+Now if you try refreshing the real site in dev mode you'll see an error where the comments should be displayed:
+
+![image](https://user-images.githubusercontent.com/300/100953652-de70c200-34c7-11eb-90a5-55ca5d61d657.png)
+
+If you inspect that error in the web inspector you'll see that it's complaining about `postId` not being present—exactly what we want!
+
+That completes the backend updates, now we just need to tell **CommentsCell** to pass through the `postId` to the GraphQL query it makes.
+
+#### Updating the Cell
+
+First we'll need to get the `postId` to the cell itself. Remember when we added a `postId` prop to the **CommentForm** component so it knew which post to attach the new comment to? Let's do the same for **CommentsCell**. Open up **BlogPost**:
+
+```javascript{18}
+// web/src/components/BlogPost/BlogPost.js
+
+const BlogPost = ({ post, summary = false }) => {
+  return (
+    <article>
+      <header>
+        <h2 className="text-xl text-blue-700 font-semibold">
+          <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
+        </h2>
+      </header>
+      <div className="mt-2 text-gray-900 font-light">
+        {summary ? truncate(post.body, 100) : post.body}
+      </div>
+      {!summary && (
+        <div className="mt-16">
+          <CommentForm postId={post.id} />
+          <div className="mt-24">
+            <CommentsCell postId={post.id} />
+          </div>
+        </div>
+      )}
+    </article>
+  )
+}
+```
+
+And finally, we need to take that `postId` and pass it on to the `QUERY` in the cell:
+
+```javascript{4,5}
+// web/src/components/CommentsCell/CommentsCell.js
+
+export const QUERY = gql`
+  query CommentsQuery($postId: Int!) {
+    comments(postId: $postId) {
+      id
+      name
+      body
+      createdAt
+    }
+  }
+`
+```
+
+Where does this magical `$postId` come from? Redwood is nice enough to automatically provide it to you since you passed it in as a prop when you called the component!
+
+Try going to a couple of different blog posts and now only the first should show comment(s). You can add a comment to each blog post individually and they'll stick to their proper owners:
+
+![image](https://user-images.githubusercontent.com/300/100954162-de24f680-34c8-11eb-817b-0a7ad802f28b.png)
+
+However, you may have noticed that now when you post a comment it no longer appears right away! ARGH! Okay, turns out there's one more thing we need to do. Remember when we told the comment creation logic to `refetchQueries`? We need to include any variables that were present the first time so that it can refetch the proper ones.
+
+#### Updating the Form
+
+Okay this is the last fix, promise!
+
+```javascript{8}
+// web/src/components/CommentForm/CommentForm.js
+
+const [createComment, { loading, error }] = useMutation(CREATE, {
+  onCompleted: () => {
+    formMethods.reset()
+    setHasPosted(true)
+  },
+  refetchQueries: [{ query: CommentsQuery, variables: { postId } }],
+})
+```
+
+There we go, comment engine complete! Our blog is totally perfect and there's absolutely nothing we could do to make it better.
+
+Or is there?
 
 ## Improvements
 
