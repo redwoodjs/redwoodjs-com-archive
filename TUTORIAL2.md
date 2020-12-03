@@ -1776,7 +1776,7 @@ Now when we create a comment it appears right away! It might be hard to tell bec
 
 We'll make use of good old fashioned React state to keep track of whether a comment has been posted in the form yet or not. If so, let's remove the comment form completely and show a "Thanks for your comment" message. We'll remove the form and show the message with just a couple of CSS classes:
 
-```javascript{14,29,31-34,43,45-51,53}
+```javascript{14,20,23-26,35,37-43,45}
 // web/src/components/CommentForm/CommentForm.js
 
 import {
@@ -1836,7 +1836,7 @@ So it looks like we're just about done here! Try going back to the homepage and 
 
 ![image](https://user-images.githubusercontent.com/300/100950583-7d45f000-34c1-11eb-8975-2c6f22c67843.png)
 
-Every post has the same comments! WHAT HAVE WE DONE??
+Every post has the same comments! **WHAT HAVE WE DONE??**
 
 Remember our foreshadowing callout a few pages back, wondering if our `comments()` service which only returns *all* comments could come back to bite us? It finally has: when we get the comments for a post we're not actually getting them for only that post. We're ignoring the `postId` completely and just returning *all* comments! Turns out the old axiom is true: computers only do exactly what you tell them to. :(
 
