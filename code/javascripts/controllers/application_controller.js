@@ -4,7 +4,7 @@ import ClipboardJS from 'clipboard'
 
 export default class extends Controller {
   static get targets() {
-    return ['header','logo','search','stars','nav','innerNav','body','code','year']
+    return ['header','logo','search','stars','nav','innerNav','body','code','year','thanks', 'cone']
   }
 
   connect() {
@@ -28,7 +28,9 @@ export default class extends Controller {
     this._openCollapsedSectionForHash()
 
     // get the star count
-    this._showStarCount()
+    if (this.hasThanksTarget) {
+      this._spawnCones()
+    }
   }
 
   focusSearch(event) {
@@ -142,6 +144,32 @@ export default class extends Controller {
         parent.open = true
         window.scrollTo(0, element.offsetTop)
       }
+    }
+  }
+
+  _spawnCones() {
+    let count = 0
+
+    while (count < 20) {
+      const fallTime = Math.random() * 2 + 1.5
+      const rotateStart = Math.random() * 360 - 180
+      const rotateEnd = Math.random() * 360 - 180
+      const wait = Math.random() * 1
+      const size = Math.random() * 64 + 24
+      const cone = this.coneTarget.cloneNode(true)
+
+      this.element.appendChild(cone)
+      cone.style.left = `${Math.random() * this.element.offsetWidth}px`
+      cone.style.width = `${size}px`
+      cone.style.setProperty('--rotateStart',`${rotateStart}deg`)
+      cone.style.setProperty('--rotateEnd',`${rotateEnd}deg`)
+
+      setTimeout(() => {
+        cone.classList.remove('hidden')
+        cone.style.animation = `falling ${fallTime}s ease-in forwards`
+      }, wait * 1000)
+
+      count++
     }
   }
 
