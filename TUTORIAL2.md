@@ -1576,6 +1576,7 @@ export const QUERY = gql`
       name
       body
       createdAt
+      postId
     }
   }
 `
@@ -1961,6 +1962,7 @@ export const QUERY = gql`
       name
       body
       createdAt
+      postId
     }
   }
 `
@@ -2086,9 +2088,9 @@ const formattedDate = (datetime) => {
 
 const Comment = ({ comment }) => {
   const { hasRole } = useAuth()
-  const deleteComment = () => {
+  const moderate = () => {
     if (confirm('Are you sure?')) {
-      // do something
+      // TODO: delete a comment
     }
   }
 
@@ -2104,7 +2106,7 @@ const Comment = ({ comment }) => {
       {hasRole('moderator') && (
         <button
           type="button"
-          onClick={deleteComment}
+          onClick={moderate}
           className="absolute bottom-2 right-2 bg-red-500 text-xs rounded text-white px-2 py-1"
         >
           Delete
@@ -2119,8 +2121,106 @@ export default Comment
 
 > **What about the tests you hypocrite??**
 >
-> We'd love to say this is an instance where leaving the exercise for the student is a way to achieve a deeper understanding of the techniques, but really it's because this second tutorial is already really long and we could all use a break.
+> We'd love to say this is an instance where leaving the exercise for the student is a way to achieve a deeper understanding of the techniques we've learned, but really it's because this second tutorial is already really long and we could all use a break.
 >
 > But really, you should add tests around this functionality!
 
-So if the user has the "moderator" role, render the delete button. If you log out completely you'll see the delete button go away because when `currentUser` is `null`, `hasRole()` will always return false.
+So if the user has the "moderator" role, render the delete button. If you log out and back in as the admin, or if you log out completely, you'll see the delete button go away. When logged out (that is, `curentUser === null`) `hasRole()` will always return `false`.
+
+![image](https://user-images.githubusercontent.com/300/101229168-c75edb00-3653-11eb-85f0-6eb61af7d4e6.png)
+
+What should we put in place of the TODO? A GraphQL mutation that deletes a comment, of course. We'll need a new service function, GraphQL endpoint on the api-side and a new GraphQL and `useMutation()` call on the web-side.
+
+Thanks to our forward-thinking earlier we already have a `deleteComment()` in our comments service, so we just need a GraphQL mutation to get the web-side access:
+
+```graphql{3-5,9}
+// api/src/graphql/comments.sdl.js
+
+type Mutation {
+  createComment(input: CreateCommentInput!): Comment!
+  deleteComment(id: Int!): Comment!
+}
+```
+
+`deleteComment` will be given a single argument, the ID of the comment to delete, and it's required. A common pattern is to return the record that was just deleted in case you wanted to notify the user or some other system about the details of the thing that was just removed, so we'll do that here as well. But, you could just as well return `null`.
+
+And thanks to the nice encapsultation of our **Comment** component we can make all the required web-site changes in this one component:
+
+```javascript{3-5,13-19,23-30,33-35}
+// web/src/components/Comment/Comment.js
+
+import { useAuth } from '@redwoodjs/auth'
+import { useMutation } from '@redwoodjs/web'
+import { QUERY as CommentsQuery } from 'src/components/CommentsCell'
+
+const formattedDate = (datetime) => {
+  const parsedDate = new Date(datetime)
+  const month = parsedDate.toLocaleString('default', { month: 'long' })
+  return `${parsedDate.getDate()} ${month} ${parsedDate.getFullYear()}`
+}
+
+const DELETE = gql`
+  mutation DeleteCommentMutation($id: Int!) {
+    deleteComment(id: $id) {
+      postId
+    }
+  }
+`
+
+const Comment = ({ comment }) => {
+  const { hasRole } = useAuth()
+  const [deleteComment] = useMutation(DELETE, {
+    refetchQueries: [
+      {
+        query: CommentsQuery,
+        variables: { postId: comment.postId },
+      },
+    ],
+  })
+  const moderate = () => {
+    if (confirm('Are you sure?')) {
+      deleteComment({
+        variables: { id: comment.id },
+      })
+    }
+  }
+
+  return (
+    <div className="relative bg-gray-200 p-8 rounded-lg">
+      <header className="flex justify-between">
+        <h2 className="font-semibold text-gray-700">{comment.name}</h2>
+        <time className="text-xs text-gray-500" dateTime={comment.createdAt}>
+          {formattedDate(comment.createdAt)}
+        </time>
+      </header>
+      <p className="text-sm mt-2">{comment.body}</p>
+      {hasRole('moderator') && (
+        <button
+          type="button"
+          onClick={moderate}
+          className="absolute bottom-2 right-2 bg-red-500 text-xs rounded text-white px-2 py-1"
+        >
+          Delete
+        </button>
+      )}
+    </div>
+  )
+}
+
+export default Comment
+```
+
+Click "Delete" (as a moderator) and the comment should be removed!
+
+Having a role like "admin" implies that they can do everything...shouldn't they be able to delete comments as well? Right you are! There are two things we can do here:
+
+* Add "admin" to the list of roles in the `hasRole` function call
+* Additionally add the "moderator" role to the list of roles that the admin has in Netlify Identity
+
+By virtue of the name "admin" it really feels like someone should only have that one single roll and be able to do everything. So in this case it feels better to add "admin" to `hasRole()`.
+
+If you wanted to be more fine-grained with your roles then maybe the "admin" role should really be called "author". That way it makes it clear they only author posts, and if you want someone to be able to do both actions, then you explicity give them the "moderator" role in addition to "author."
+
+## Wrapping up
+
+TBD
