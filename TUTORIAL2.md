@@ -1994,27 +1994,133 @@ There we go, comment engine complete! Our blog is totally perfect and there's ab
 
 Or is there?
 
-## Improvements
-
-### Loading Screens
-
-React Content Loader
-
-* https://github.com/danilowoz/react-content-loader
-* https://skeletonreact.com/#gallery
-
-### Empty Screens
-
-(TBD)
-
-### Error Screens
-
-(TBD)
-
 ## Role-Based Authorization Control (RBAC)
 
-(TBD)
+Imagine a few weeks in the future of our blog when every post hits the front page of the New York Times and we're getting hundreds of comments a day. We can't be expected to come up with quality content each day *and* moderate the endless stream of (mostly well-meaning) comments! We're going to need help. Let's hire a comment moderator to remove obvious spam and bad intentioned posts and help make the internet a better place.
 
-## Finishing Up
+We already have a login system for our blog, but right now it's all-or-nothing: you either get access to create blog posts, or you don't. In this case our comment moderator(s) will need logins so that we know who they are, but we're not going let them create new blog posts. We need some of role that we can give to our two kinds of users so we can distinguish them from one another.
 
-(TBD)
+Enter role-based authorization control, thankfully shortened to the common phrase **RBAC**. Authentication says who the person, authorization says what they can do. Currently the blog has the lowest common denominator of authroization: if they are logged in, they can do everything. Let's add a "less than anything, but more than nothing" level.
+
+### Definining Roles
+
+If you remember back in the first part of the tutorial we actually [pointed out](/tutorial/authentication#authentication-generation) that Netlify Identity provides an optional array of roles that you can attach to a user. That's exactly what we need!
+
+> **What about other auth providers besides Netlify?**
+>
+> Some auth providers have a similar data structure that you can attach to a user, but if not you'll need to rely on your own database. Read more in the [RBAC Cookbook](/cookbook/role-based-access-control-rbac.html#roles-from-a-database).
+
+If you started with your own blog code from Part 1 of the tutorial and already have it deployed on Netlify, you're ready to continue! If you cloned the [redwood-tutorial](https://github.com/redwoodjs/redwood-tutorial) code from GitHub you'll need to [create a Netlify site and deploy it](/tutorial/deployment), then [enable Netlify Identity](/tutorial/authentication#netlify-identity-setup) as described in the first part of the tutorial.
+
+First we'll want to create a new user that will represent the comment moderator. You can use a completely different email address (if you have one), but if not you can use **The Plus Trick** to create a new, unique email address as far as Netlify is concerned, but that is actually the same as your original email address! **Note that not all email providers support this syntax, but the big ones like Gmail do.**
+
+> The Plus Trick is a very handy feature of the email standard known as a "boxname", the idea being that you may have other inboxes besides one just named "Inbox" and by adding +something to your email address you can specify which inbox the mail should be sorted into. They don't appear t be in common usage these days, but they are ridiculously helpful for us developers when we're constantly needing new email addresses for testing!
+>
+> Use append +something to your email address before the @:
+>
+> * jane.doe+testing@example.com
+> * john-doe+sample@example.com
+
+Add your user and then edit them, adding a role of "moderator" in the Roles input box:
+
+![image](https://user-images.githubusercontent.com/300/101226219-9d53eb80-3648-11eb-846e-df0eecb442ba.png)
+
+Edit your original user to have the role "admin":
+
+![image](https://user-images.githubusercontent.com/300/101226249-ba88ba00-3648-11eb-8e83-7b4d17822442.png)
+
+Be sure to accept the invite for your new user and set a password so that you can actually log in as them.
+
+If all went well, you should be able to log in as either user with no change in the functionality between them—both can access http://localhost:8910/admin/posts Log in as your moderator user and go there now so we can verify that we get booted out once we add some authorization rules.
+
+### Roles in Routes
+
+The easiest form of RBAC involves locking down entire routes. Let's add one so that only admins can see the admin pages.
+
+In the Router simply add a `role` prop and pass it the name of the role that should be allowed. This prop also [accepts an array](/cookbook/role-based-access-control-rbac#how-to-protect-a-route) if more than one role should have access.
+
+```javascript{12}
+// web/src/Routes.js
+
+import { Router, Route, Private } from '@redwoodjs/router'
+
+const Routes = () => {
+  return (
+    <Router>
+      <Route path="/contact" page={ContactPage} name="contact" />
+      <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
+      <Route path="/about" page={AboutPage} name="about" />
+      <Route path="/" page={HomePage} name="home" />
+      <Private unauthenticated="home" role="admin">
+        <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
+        <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
+        <Route path="/admin/posts/{id:Int}" page={PostPage} name="post" />
+        <Route path="/admin/posts" page={PostsPage} name="posts" />
+      </Private>
+      <Route notfound page={NotFoundPage} />
+    </Router>
+  )
+}
+
+export default Routes
+```
+
+When you save that change the browser should refresh and you'll be sent back to the homepage. Log out and back in as the admin user and you should still have access.
+
+### Roles in Components
+
+Locking down a whole page is easy enough, but what about individual functionality within a page or component?
+
+Redwood provides a `hasRole()` function you can get from the `useAuth()` hook which returns `true` or `false` depending on whether the logged in user has the given role. Let's try it out by adding a `Delete` button when a moderator is viewing a blog post's comments:
+
+```javascript{3,12-17,28-36}
+// web/src/components/Comment/Comment.js
+
+import { useAuth } from '@redwoodjs/auth'
+
+const formattedDate = (datetime) => {
+  const parsedDate = new Date(datetime)
+  const month = parsedDate.toLocaleString('default', { month: 'long' })
+  return `${parsedDate.getDate()} ${month} ${parsedDate.getFullYear()}`
+}
+
+const Comment = ({ comment }) => {
+  const { hasRole } = useAuth()
+  const deleteComment = () => {
+    if (confirm('Are you sure?')) {
+      // do something
+    }
+  }
+
+  return (
+    <div className="relative bg-gray-200 p-8 rounded-lg">
+      <header className="flex justify-between">
+        <h2 className="font-semibold text-gray-700">{comment.name}</h2>
+        <time className="text-xs text-gray-500" dateTime={comment.createdAt}>
+          {formattedDate(comment.createdAt)}
+        </time>
+      </header>
+      <p className="text-sm mt-2">{comment.body}</p>
+      {hasRole('moderator') && (
+        <button
+          type="button"
+          onClick={deleteComment}
+          className="absolute bottom-2 right-2 bg-red-500 text-xs rounded text-white px-2 py-1"
+        >
+          Delete
+        </button>
+      )}
+    </div>
+  )
+}
+
+export default Comment
+```
+
+> **What about the tests you hypocrite??**
+>
+> We'd love to say this is an instance where leaving the exercise for the student is a way to achieve a deeper understanding of the techniques, but really it's because this second tutorial is already really long and we could all use a break.
+>
+> But really, you should add tests around this functionality!
+
+So if the user has the "moderator" role, render the delete button. If you log out completely you'll see the delete button go away because when `currentUser` is `null`, `hasRole()` will always return false.
