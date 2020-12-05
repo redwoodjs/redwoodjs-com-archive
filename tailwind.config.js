@@ -4,13 +4,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'hacktoberfest-purple': {
-          400: '#BC7E97',
-          500: '#9F466B',
-        },
-        'hacktoberfest-blue': {
-          500: '#072540'
-        },
         red: {
           '100': '#FDF8F6',
           '200': '#FAEAE5',

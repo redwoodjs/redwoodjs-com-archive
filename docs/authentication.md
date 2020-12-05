@@ -394,7 +394,7 @@ The most complete example (although now a bit outdated) is found in [this forum 
 The following values are available from the `useAuth` hook:
 
 - async `logIn(options?)`: Differs based on the client library, with Netlify Identity a pop-up is shown, and with Auth0 the user is redirected. Options are passed to the client.
-- async `logOut(options?)`: Log out the current user. Options are passed to the client.
+- async `logOut(options?)`: Log the current user out. Options are passed to the client.
 - async `signUp(options?)`: If the provider has a sign up flow we'll show that, otherwise we'll fall back to the logIn flow.
 - `currentUser`: An object containing information about the current user as set on the `api` side, or `null` if the user is not authenticated.
 - `userMetadata`: An object containing the user's metadata (or profile information) fetched directly from an instance of the auth provider client, or `null` if the user is not authenticated.
@@ -483,13 +483,13 @@ Essentially, a role is a collection of permissions that you can apply to users. 
 
 #### App metadata in Auth0
 
-Auth0 stores information (such as, support plan subscriptions, security roles, or access control groups) in "App metadata". Data stored in `app_metadata` cannot be edited by users.
+Auth0 stores information (such as, support plan subscriptions, security roles, or access control groups) in `app_metadata`. Data stored in `app_metadata` cannot be edited by users.
 
 Create and manage roles for your application in Auth0's "User & Role" management views. You can then assign these roles to users.
 
-However, that info is not immediately available on the user's App metadata or to RedwoodJS when authenticating.
+However, that info is not immediately available on the user's `app_metadata` or to RedwoodJS when authenticating.
 
-If you assign your user the "admin" role in Auth0, you will want you user's app_metadata to look like:
+If you assign your user the "admin" role in Auth0, you will want your user's `app_metadata` to look like:
 
 ```
 {
@@ -503,16 +503,16 @@ To set this information and make it available to RedwoodJS, you can use [Auth0 R
 
 #### Auth0 Rules for App Metadata
 
-RedwoodJS needs the `app_metadata` to 1) contain the role information and 2) be present in the JWT that is decoded.
+RedwoodJS needs `app_metadata` to 1) contain the role information and 2) be present in the JWT that is decoded.
 
 To accomplish these tasks, you can use [Auth0 Rules](https://auth0.com/docs/rules) to add them as custom claims on your JWT.
 
-#### Add Authorization Roles to AppMetadata Rule
+#### Add Authorization Roles to App Metadata Rule
 
-Your first rule will `Add Authorization Roles to AppMetadata`.
+Your first rule will `Add Authorization Roles to App Metadata`.
 
 ```js
-/// Add Authorization Roles to AppMetadata
+/// Add Authorization Roles to App Metadata
 function (user, context, callback) {
     auth0.users.updateAppMetadata(user.user_id, context.authorization)
       .then(function(){
@@ -524,7 +524,7 @@ function (user, context, callback) {
   }
 ```
 
-Auth0 maintains user role assignments `context.authorization`. This rule simply copies thate information into the user's `app_metadata`, such as:
+Auth0 exposes the user's roles in `context.authorization`. This rule simply copies that information into the user's `app_metadata`, such as:
 
 ```
 {
@@ -534,23 +534,23 @@ Auth0 maintains user role assignments `context.authorization`. This rule simply 
 }
 ```
 
-But, now you must include the `app_metdata` on the user's JWT that RedwoodJS will decode.
+However, now you must include the `app_metadata` on the user's JWT that RedwoodJS will decode.
 
-#### Add AppMetadata to JWT Rule in Auth0
+#### Add App Metadata to JWT Rule in Auth0
 
-Therefore, your second rule will `Add AppMetadata to JWT`.
+Therefore, your second rule will `Add App Metadata to JWT`.
 
 You can add `app_metadata` to the `idToken` or `accessToken`.
 
-Adding to `idToken` will make the make App metadta accessible to RedwoodJS `getuserMetadata` which for Auth0 calls the auth client's `getUser`.
+Adding to `idToken` will make the make app metadata accessible to RedwoodJS `getUserMetadata` which for Auth0 calls the auth client's `getUser`.
 
-Adding to `accessToken` will make the make App metadta accessible to RedwoodJS when decoding the JWT via `getToken`.
+Adding to `accessToken` will make the make app metadata accessible to RedwoodJS when decoding the JWT via `getToken`.
 
-While adding to `idToken` is optional. you _must_ add to `accessToken`.
+While adding to `idToken` is optional, you _must_ add to `accessToken`.
 
 To keep your custom claims from colliding with any reserved claims or claims from other resources, you must give them a [globally unique name using a namespaced format](https://auth0.com/docs/tokens/guides/create-namespaced-custom-claims). Otherwise, Auth0 will _not_ add the information to the token(s).
 
-Therefore, with a namespace of "https://example.com", the app_metadata on your token should look like:
+Therefore, with a namespace of "https://example.com", the `app_metadata` on your token should look like:
 
 ```js
 "https://example.com/app_metadata": {
@@ -568,7 +568,7 @@ To set this namespace information, use the following function in your rule:
 function (user, context, callback) {
   var namespace = 'https://example.com/';
 
-  // adds to idToken, ie userMetadata in RedwoodJS
+  // adds to idToken, i.e. userMetadata in RedwoodJS
   context.idToken[namespace + 'app_metadata'] = {};
   context.idToken[namespace + 'app_metadata'].authorization = {
     groups: user.app_metadata.groups,
@@ -578,7 +578,7 @@ function (user, context, callback) {
 
   context.idToken[namespace + 'user_metadata'] = {};
 
-  // accessToken, ie the decoded JWT in RedwoodJS
+  // accessToken, i.e. the decoded JWT in RedwoodJS
   context.accessToken[namespace + 'app_metadata'] = {};
   context.accessToken[namespace + 'app_metadata'].authorization = {
     groups: user.app_metadata.groups,
@@ -598,7 +598,7 @@ Now, your `app_metadata` with `authorization` and `role` information will be on 
 
 If you intend to support, RBAC then in your `api/src/lib/auth.js` you need to extract `roles` using the `parseJWT` utility and set these roles on `currentUser`.
 
-If your roles are on a namespaced app_metadata claim, then `parseJWT` provides an option to provide this value.
+If your roles are on a namespaced `app_metadata` claim, then `parseJWT` provides an option to provide this value.
 
 ```js
 // api/src/lib/auth.js`
@@ -626,7 +626,7 @@ export const getCurrentUser = async (decoded, { type, token }) => {
 
 #### Magic.Link
 
-The redwood API does not include the functionality to decode the magiclinks authentication tokens so the client is initiated and decodes the tokens inside of `getCurrentUser`.
+The Redwood API does not include the functionality to decode Magic.link authentication tokens, so the client is initiated and decodes the tokens inside of `getCurrentUser`.
 
 +++ View Magic.link Options
 
@@ -678,7 +678,7 @@ Essentially, a role is a collection of permissions that you can apply to users. 
 
 #### App metadata in Netlify Identity
 
-Netlify Identity stores information (such as, support plan subscriptions, security roles, or access control groups) in "App metadata". Data stored in `app_metadata` cannot be edited by users.
+Netlify Identity stores information (such as, support plan subscriptions, security roles, or access control groups) in `app_metadata`. Data stored in `app_metadata` cannot be edited by users.
 
 Create and manage roles for your application in Netlify's "Identity" management views. You can then assign these roles to users.
 
@@ -760,7 +760,7 @@ const { isAuthenticated, hasRole } = useAuth()
 
 ### Routes
 
-Routes can require authentication by wrapping them in a `<Private>` component. An unauthenticated user will be redirected to the page specified in`unauthenticated`.
+Routes can require authentication by wrapping them in a `<Private>` component. An unauthenticated user will be redirected to the page specified in `unauthenticated`.
 
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'
@@ -780,7 +780,7 @@ const Routes = () => {
 }
 ```
 
-Routes can also be restirected by role by specifying `hasRole="role"` or `hasRole={['role', 'another_role']})` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in `unauthenticated`.
+Routes can also be restricted by role by specifying `hasRole="role"` or `hasRole={['role', 'another_role']})` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in `unauthenticated`.
 
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'

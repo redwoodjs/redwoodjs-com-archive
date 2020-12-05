@@ -33,7 +33,7 @@ Take a visit to the [CLI Doc](https://redwoodjs.com/docs/cli-commands.html) to s
 
 Redwood generators make monotonous developer tasks a breeze. Creating all the boilerplate code required for CRUD operations on a model can be accomplished with a few commands. Three to be exact. 
 
-Every new Redwood project comes with a default Model called UserExample in `api/prisma/schema.prisma`. 
+Every new Redwood project comes with a default Model called UserExample in `api/db/schema.prisma`. 
 
 ```
 model UserExample {

@@ -200,7 +200,7 @@ import { useMutation } from '@redwoodjs/web'
 const ContactPage = (props) => {
   const [create, { loading, error }] = useMutation(CREATE_CONTACT)
 
-  onSubmit = (data) => {
+  const onSubmit = (data) => {
     create({ variables: { input: data }})
   }
 
