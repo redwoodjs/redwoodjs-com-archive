@@ -2219,7 +2219,7 @@ Having a role like "admin" implies that they can do everything...shouldn't they 
 
 By virtue of the name "admin" it really feels like someone should only have that one single roll and be able to do everything. So in this case it feels better to add "admin" to `hasRole()`.
 
-If you wanted to be more fine-grained with your roles then maybe the "admin" role should really be called "author". That way it makes it clear they only author posts, and if you want someone to be able to do both actions, then you explicity give them the "moderator" role in addition to "author."
+If you wanted to be more fine-grained with your roles then maybe the "admin" role should really be called "author". That way it makes it clear they only author posts, and if you want someone to be able to do both actions you can explicity give them the "moderator" role in addition to "author."
 
 ## Wrapping up
 
