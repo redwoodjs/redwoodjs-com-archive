@@ -2241,9 +2241,15 @@ Managing roles can be a tricky thing to get right. Spend a little time up front 
 
 ## Wrapping up
 
-You made it! Again! In Part 1 of the tutorial we learned about a lot of features that make it easier to create functionality for your users—cells, forms, scaffolding, and more. In Part 2 we learned more about the features that make life easier for us, the developers—Storybook and testing.
+You made it! Again! In Part 1 of the tutorial we learned about a lot of features that make it easier to create functionality for your users—cells, forms, scaffolding, and more. In Part 2 we learned more about the features that make life easier for us, the developers: Storybook and testing.
 
-Testing is like wearing a seat belt—99% of the time you don't see any benefit, but that other 1% of the time you're *really* glad you were wearing it. The first time your build stops and prevents some production crashing bug from going live you'll think that all those hours you spent writing tests were all worth it. Getting into the habit of writing tests along with your user-facing code is the greatest gife you can give your future developer self (that, and adding good comments to your code!).
+Testing is like wearing a seat belt—99% of the time you don't see any benefit, but that other 1% of the time you're *really* glad you were wearing it. The first time your build stops and prevents some production-crashing bug from going live you'll know that all those hours you spent writing tests were worth it. Getting into the habit of writing tests along with your user-facing code is the greatest gift you can give your future developer self (that, and writing good comments!).
+
+Will there be a Part III of the tutorial? It's a fact that the best things come in threes: Lord of the Rings movies, The Three Stooges, and Super Mario Bros. games on the NES. We've spent a lot of time getting our features working but not much time with optimization and polish. [Premature optimization is the root of all evil](http://wiki.c2.com/?PrematureOptimization), but once your site is live and you've got real users on it you'll get a sense of what could be faster, better or prettier. That's when time spent optimizing can pay huge dividends, but knowing how best to optimize your code...that's a whole different story. The kind of story that Redwood loves to help you write!
+
+So until next time, a bit of wisdom from Ernest Hemmingway to maybe help combat that next bout of imposter syndrome:
+
+> "There is nothing noble in being superior to your fellow man; true nobility is being superior to your former self."
 
 ### What's Next?
 
