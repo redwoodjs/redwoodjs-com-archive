@@ -1,8 +1,8 @@
 # Welcome to Redwood, Part II: Redwood's Revenge
 
-Part 1 of the tutorial was a huge success! It introduced hundreds (maybe thousands?) of developers to what Redwood could do to make web development in the Javascript ecosystem a delight. But that was just the beginning.
+Part I of the tutorial was a huge success! It introduced hundreds (maybe thousands?) of developers to what Redwood could do to make web development in the Javascript ecosystem a delight. But that was just the beginning.
 
-If you read the README [closely](https://github.com/redwoodjs/redwood#technologies) you may have seen a few technologies that we didn't touch on at all in the first tutorial: [Storybook](https://storybook.js.org/) and [Jest](https://jestjs.io/). In reality, these have been core to the very idea of Redwood from the beginning—an improvement to the entire experience of developing a web application.
+If you read the README [closely](https://github.com/redwoodjs/redwood#technologies) you may have seen a few technologies that we didn't touch on at all in the first tutorial: [Storybook](https://storybook.js.org/) and [Jest](https://jestjs.io/) to name a couple. In reality, these have been core to the very idea of Redwood from the beginning—an improvement to the entire experience of developing a web application.
 
 While they're totally optional, we believe using these two tools will greatly improve your development experience, making your applications easier to develop, easier to maintain, and easier to share with a larger team. In this second tutorial we're going to show you how.
 
@@ -10,21 +10,23 @@ Oh, and while we're at we'll introduce Role-based Authorization Control (RBAC), 
 
 ## Prerequisites
 
-We highly recommend going through the first tutorial first, or at least have built a slightly complex Redwood app on your own. You've hopefully got experience with:
+We highly recommend going through the first tutorial or at least have built a slightly complex Redwood app on your own. You've hopefully got experience with:
 
 * Authorization
 * Cells
 * GraphQL & SDLs
 * Services
 
-If you haven't been through the first tutorial, or maybe you went through it on an older version of Redwood (before 0.19.0) you can clone this repo which contains everything built in part 1 and also adds a little styling so it isn't quite so...ugly. Don't get us wrong, what we built in part 1 had a great personality! We just gave it some hipper clothes and a nice haircut. We used [TailwindCSS](https://tailwindcss.com) to style things up and added a `<div>` or two to give us some additional hooks to hang some styling on.
+If you haven't been through the first tutorial, or maybe you went through it on an older version of Redwood (before 0.21.0) you can clone this repo which contains everything built in part 1 and also adds a little styling so it isn't quite so...tough to look at. Don't get us wrong, what we built in Part I had a great personality! We just gave it some hipper clothes and a nice haircut. We used [TailwindCSS](https://tailwindcss.com) to style things up and added a `<div>` or two to give us some additional hooks to hang styling on.
 
-    git clone https://github.com/redwoodjs/redwood-tutorial
-    cd redwood-tutorial
-    yarn install
-    yarn rw db up
-    yarn rw db seed
-    yarn rw dev
+```terminal
+git clone https://github.com/redwoodjs/redwood-tutorial
+cd redwood-tutorial
+yarn install
+yarn rw db up
+yarn rw db seed
+yarn rw dev
+```
 
 That'll check out the repo, install all the dependencies, create your local database and fill it with a few blog posts, and finally start up the dev server. Your browser should open to a fresh new blog app:
 
