@@ -2119,19 +2119,11 @@ const Comment = ({ comment }) => {
 export default Comment
 ```
 
-> **What about the tests you hypocrite??**
->
-> We'd love to say this is an instance where leaving the exercise for the student is a way to achieve a deeper understanding of the techniques we've learned, but really it's because this second tutorial is already really long and we could all use a break.
->
-> But really, you should add tests around this functionality!
-
 So if the user has the "moderator" role, render the delete button. If you log out and back in as the admin, or if you log out completely, you'll see the delete button go away. When logged out (that is, `curentUser === null`) `hasRole()` will always return `false`.
 
 ![image](https://user-images.githubusercontent.com/300/101229168-c75edb00-3653-11eb-85f0-6eb61af7d4e6.png)
 
-What should we put in place of the TODO? A GraphQL mutation that deletes a comment, of course. We'll need a new service function, GraphQL endpoint on the api-side and a new GraphQL and `useMutation()` call on the web-side.
-
-Thanks to our forward-thinking earlier we already have a `deleteComment()` in our comments service, so we just need a GraphQL mutation to get the web-side access:
+What should we put in place of the TODO? A GraphQL mutation that deletes a comment, of course. Thanks to our forward-thinking earlier we already have a `deleteComment()` service function but we'll need to add a GraphQL endpoint on the api-side and a new GraphQL query and `useMutation()` call on the web-side.
 
 ```graphql{3-5,9}
 // api/src/graphql/comments.sdl.js
@@ -2212,15 +2204,65 @@ export default Comment
 
 Click "Delete" (as a moderator) and the comment should be removed!
 
+### Roles on the API Side
+
+Remember: never trust the client! We need to lock down the backend to be sure that someone can't discover our `deleteComment` GraphQL resource and start deleing comments willy nilly.
+
+If you remember in part 1 of the tutorial we used a function `requireAuth()` to be sure that someone was logged in before allowing them to take action on the server. `requireAuth()` takes an optional `roles` key:
+
+```javascript{4,9}
+// api/src/services/comments/comments.js
+
+import { db } from 'src/lib/db'
+import { requireAuth } from 'src/lib/auth'
+
+// ...
+
+export const deleteComment = ({ id }) => {
+  requireAuth({ roles: 'moderator' })
+  return db.comment.delete({
+    where: { id },
+  })
+}
+```
+
+### Last Word on Roles
+
 Having a role like "admin" implies that they can do everything...shouldn't they be able to delete comments as well? Right you are! There are two things we can do here:
 
-* Add "admin" to the list of roles in the `hasRole` function call
+* Add "admin" to the list of roles in the `hasRole()` and `requireAuth()` function calls
 * Additionally add the "moderator" role to the list of roles that the admin has in Netlify Identity
 
-By virtue of the name "admin" it really feels like someone should only have that one single roll and be able to do everything. So in this case it feels better to add "admin" to `hasRole()`.
+By virtue of the name "admin" it really feels like someone should only have that one single roll and be able to do everything. So in this case it feels better to add "admin" to `hasRole()` and `requireAuth()`.
 
-If you wanted to be more fine-grained with your roles then maybe the "admin" role should really be called "author". That way it makes it clear they only author posts, and if you want someone to be able to do both actions you can explicity give them the "moderator" role in addition to "author."
+But if you wanted to be more fine-grained with your roles then maybe the "admin" role should really be called "author". That way it makes it clear they only author posts, and if you want someone to be able to do both actions you can explicity give them the "moderator" role in addition to "author."
+
+Managing roles can be a tricky thing to get right. Spend a little time up front thinking about they'll interact and how much duplication you're willing to accept in your role-based function calls on the site. If you see yourself constantly adding multiple roles to `hasRole()` that may be an indication that it's time to add a single, new role that includes those abilities and remove that duplication in your code.
 
 ## Wrapping up
 
-TBD
+You made it! Again! In Part 1 of the tutorial we learned about a lot of features that make it easier to create functionality for your users—cells, forms, scaffolding, and more. In Part 2 we learned more about the features that make life easier for us, the developers—Storybook and testing.
+
+Testing is like wearing a seat belt—99% of the time you don't see any benefit, but that other 1% of the time you're *really* glad you were wearing it. The first time your build stops and prevents some production crashing bug from going live you'll think that all those hours you spent writing tests were all worth it. Getting into the habit of writing tests along with your user-facing code is the greatest gife you can give your future developer self (that, and adding good comments to your code!).
+
+### What's Next?
+
+Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/docs/local-postgres-setup)? We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
+
+### Roadmap
+
+Check out our [Roadmap](https://redwoodjs.com/roadmap) to see where we're headed and how we're going to get there.
+If you're interested in helping with anything you see, just let us know over on the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up.
+We want to hit `1.0` by the end of the year. And with your help, we think we can do it!
+
+### Help Us!
+
+What did you think of Redwood? Is it the Next Step for JS frameworks? What can it do better? We've got a lot more planned. Want to help us build these upcoming features?
+
+- [Open a PR](https://github.com/redwoodjs/redwood/pulls)
+- [Write some docs](/docs/introduction)
+- [Join the community](https://community.redwoodjs.com)
+
+Thanks for following along. Now go out and build something amazing!
+
+
