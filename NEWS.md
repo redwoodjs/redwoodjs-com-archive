@@ -355,3 +355,16 @@
 ### All the RedwoodJS News that’s Fit to Print: Jammie Award, v0.21.0, VS Code IDE Extension, Made with Redwood, and more.
 
 #### Newsletter
+
+---
+
+![FSJam Podcast](https://user-images.githubusercontent.com/300/101669947-7100ec00-3a07-11eb-9bc7-4c0d9d6e9bb8.png)
+)
+
+# [Bringing Fullstack to the Jamstack with Tom Preston-Werner](https://fsjam.org/episodes/episode-4-bringing-fullstack-to-the-jamstack-with-tom-preston-werner)
+
+## December 2 2020
+
+### Tom Preston-Werner joins the hosts to do a deep-dive into the RedwoodJS.
+
+#### Podcast
