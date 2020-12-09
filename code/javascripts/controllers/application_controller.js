@@ -27,7 +27,10 @@ export default class extends Controller {
     // if there is a hash in the URL, open a collapsed sections that contains that target
     this._openCollapsedSectionForHash()
 
-    // get the star count
+    // show the star count
+    this._showStarCount()
+
+    // show a rain of cones on the sticker thank you page
     if (this.hasThanksTarget) {
       this._spawnCones()
     }
