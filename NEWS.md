@@ -361,7 +361,7 @@
 ![FSJam Podcast](https://user-images.githubusercontent.com/300/101669947-7100ec00-3a07-11eb-9bc7-4c0d9d6e9bb8.png)
 )
 
-# [Bringing Fullstack to the Jamstack with Tom Preston-Werner](https://fsjam.org/episodes/episode-4-bringing-fullstack-to-the-jamstack-with-tom-preston-werner)
+# [Episode 4: Bringing Fullstack to the Jamstack with Tom Preston-Werner](https://fsjam.org/episodes/episode-4-bringing-fullstack-to-the-jamstack-with-tom-preston-werner)
 
 ## December 2 2020
 
