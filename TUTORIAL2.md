@@ -30,9 +30,9 @@ yarn rw dev
 
 That'll check out the repo, install all the dependencies, create your local database and fill it with a few blog posts, and finally start up the dev server. Your browser should open to a fresh new blog app:
 
-![image](https://user-images.githubusercontent.com/300/95521547-a5f8b000-097e-11eb-911c-5fde4bed6d97.png)
+![image](https://user-images.githubusercontent.com/300/101423176-54e93780-38ad-11eb-9230-ba8557764eb4.png)
 
-Let's run the test suite to make sure everything is working as expected:
+Let's run the test suite to make sure everything is working as expected (you can stop the dev server or run the command in a second terminal window):
 
 ```terminal
 yarn rw test
@@ -48,9 +48,11 @@ More on testing later, but for now just know that this is always what we want to
 
 ## Introduction to Storybook
 
-Let's see what this Storybook thing is all about. Run this command to start up the Storybook server:
+Let's see what this Storybook thing is all about. Run this command to start up the Storybook server (again, you can cancel the test runner and run this in the same session, or start a new one):
 
-    yarn rw storybook
+```terminal
+yarn rw storybook
+```
 
 After some compling you should get a message saying that Storybook has started and it's available at http://localhost:7910
 
@@ -73,6 +75,8 @@ So, the idea here is that you can build out your components/cells/pages in isola
 When Storybook opened it should have opened **Components > BlogPost > Generated** which is the generated component we created to display a single blog post. If you open `web/src/components/BlogPost/BlogPost.stories.js` you'll see what it takes to explain this component to Storybook, and it isn't much:
 
 ```javascript
+// web/src/components/BlogPost/BlogPost.stories.js
+
 import BlogPost from './BlogPost'
 
 export const generated = () => {
@@ -110,9 +114,9 @@ This makes it easy to create variants of your component and have them all displa
 
 ## Our First Story
 
-Let's say that on our homepage we only want to show the first couple of sentences in our blog post and you'll have to click through to see the full post.
+Let's say that on our homepage we only want to show the first couple of sentences in our blog post as a short summary, and then you'll have to click through to see the full post.
 
-First let's update the `BlogPost` component to contain that functionality:
+First let's update the **BlogPost** component to contain that functionality:
 
 ```javascript{5-7,9,18}
 // web/src/components/BlogPost/BlogPost.js
@@ -143,7 +147,7 @@ export default BlogPost
 
 We'll pass an additional `summary` prop to the component to let it know if should show just the summary or the whole thing. We default it to `false` to preserve the existing behavior—always showing the full body.
 
-Now in the story, let's create a `summary` story that uses `BlogPost` the same way that `generated` does, but adds the new prop. We'll take the content of the sample post and put that in a constant that both stories will use. We'll also rename `generated` to `full` to make it clear what's different between the two:
+Now in the story, let's create a `summary` story that uses **BlogPost** the same way that `generated` does, but adds the new prop. We'll take the content of the sample post and put that in a constant that both stories will use. We'll also rename `generated` to `full` to make it clear what's different between the two:
 
 ```javascript{5-14,16-18,20-22}
 // web/components/BlogPost/BlogPost.stories.js
@@ -178,7 +182,7 @@ As soon as you save the change the stories Storybook should refresh and show the
 
 ### Displaying the Summary
 
-Great! Now to complete the picture let's use the summary in our home page display of blog posts. The actual Home page isn't what references the `BlogPost` component though, that's in the `BlogPostsCell`. We'll add the summary prop and then check the result in Storybook:
+Great! Now to complete the picture let's use the summary in our home page display of blog posts. The actual Home page isn't what references the **BlogPost** component though, that's in the **BlogPostsCell**. We'll add the summary prop and then check the result in Storybook:
 
 ```javascript{27}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
@@ -219,7 +223,7 @@ export const Success = ({ posts }) => {
 
 And if you head to the real site you'll see the summary there as well:
 
-![image](https://user-images.githubusercontent.com/300/95527363-ef9ac800-0989-11eb-9c53-6dc8ab58799c.png)
+![image](https://user-images.githubusercontent.com/300/101545160-b2d45880-395b-11eb-9a32-f8cb8106de7f.png)
 
 Storybook makes it easy to create and modify your components in isolation and actually helps enforce a general best practice when building React applications: components should be self-contained and reusable by just changing the props that are sent in.
 
@@ -237,9 +241,9 @@ Well that didn't take long! Can you guess what we broke?
 
 ![image](https://user-images.githubusercontent.com/300/96655765-1b576f80-12f3-11eb-9e92-0024c19703cc.png)
 
-The test was looking for the full text of the blog post, but remember that in `BlogPostsCell` we had `BlogPost` only display the `summary` of the post, not the full text. This test is looking for the full text match.
+The test was looking for the full text of the blog post, but remember that in **BlogPostsCell** we had **BlogPost** only display the summary of the post. This test is looking for the full text match, which is no longer present on the page.
 
-Let's update the test so that it checks for the expected behavior instead. There are entire books written on the best way to test your code, so no matter how we decide on testing this code there will be someone out there to tell us we're doing it wrong. As just one example: the simplest test would be to just copy what's output and use that for the text in the test:
+Let's update the test so that it checks for the expected behavior instead. There are entire books written on the best way to test, so no matter what we decide on testing in this code there will be someone out there to tell us we're doing it wrong. As just one example: the simplest test would be to just copy what's output and use that for the text in the test:
 
 ```javascript
 // web/src/components/BlogPostsCell.test.js
@@ -253,15 +257,15 @@ test('Success renders successfully', async () => {
 })
 ```
 
-But the number of characters we truncate to could be changed, so how do we encapsulate that in our test? Or should we? The number of characters is in the `BlogPost` component, which this one shouldn't know about. Even if we refactored the `truncate` function into a shared place and imported it into both `BlogPost` and this test, the test will still be knowing too much about `BlogPost`—why should it know the internals of `BlogPost` and that it's making use of this `truncate` function at all? It shouldn't!
+But the number of characters we truncate to could be changed, so how do we encapsulate that in our test? Or should we? The number of characters is in the **BlogPost** component, which this one shouldn't know about. Even if we refactored the `truncate` function into a shared place and imported it into both **BlogPost** and this test, the test will still be knowing too much about **BlogPost**—why should it know the internals of **BlogPost** and that it's making use of this `truncate` function at all? It shouldn't!
 
-Let's compromise—by virtue of the fact that this functionality has a prop called "summary" we can guess that it's doing "something" to shorten the text. So what if we test three things that we can make reasonable assumptions about right now:
+Let's compromise—by virtue of the fact that this functionality has a prop called "summary" we can guess that it's doing *something* to shorten the text. So what if we test three things that we can make reasonable assumptions about right now:
 
 1. The full body of the post body *is not* present
 2. But, at least the first couple of words of the post *are* present
 3. The text that is shown ends in `...`
 
-This gives us a buffer if we decide to truncate to something like 25 words, or even if we go up to a couple of hundred. What it *doesn't* encompass, however, is the case where the body of the blog post is shorter than the truncate limit. In that case the full text would be present, and we should probably update the `truncate` function to not add the `...` in that case. We'll leave adding that functionality and test case up to you in your free time. ;)
+This gives us a buffer if we decide to truncate to something like 25 words, or even if we go up to a couple of hundred. What it *doesn't* encompass, however, is the case where the body of the blog post is shorter than the truncate limit. In that case the full text would be present, and we should probably update the `truncate` function to not add the `...` in that case. We'll leave adding that functionality and test case up to you to add in your free time. ;)
 
 ### Adding the Test
 
@@ -318,7 +322,7 @@ This loops through each post in our `standard()` mock and for each one:
 : Find the title in the page
 
 `expect(screen.queryByText(post.body)).not.toBeInTheDocument()`
-: When trying to find the *full* text of the body, it should not be present
+: When trying to find the *full* text of the body, it should *not* be present
 
 `expect(screen.getByText(regex)).toBeInTheDocument()`
 : Find the truncated-body-plus-ellipsis somewhere in the page
@@ -329,31 +333,30 @@ As soon as you saved that test file the test should have run and passed! Press `
 >
 > `getByText()` will throw an error if the text isn't found in the document, whereas `queryByText()` will  return `null`. You can read more about these in the [DOM Testing Library Queries](https://testing-library.com/docs/dom-testing-library/api-queries) docs.
 
-To double check that we're testing what we think we're testing, open up `BlogPostCell.js` and remove the `summary={true}` prop (or set it to `false`)—the test will now fail (because the full body of the post is now on the page and `expect(screen.queryByText(post.body)).not.toBeInTheDocument()` *is* in the document. Make sure to put the `summary={true}` back before we continue!
+To double check that we're testing what we think we're testing, open up `BlogPostCell.js` and remove the `summary={true}` prop (or set it to `false`)—the test will fail: now the full body of the post *is* on the page and `expect(screen.queryByText(post.body)).not.toBeInTheDocument()` *is* in the document. Make sure to put the `summary={true}` back before we continue!
 
 ### Testing BlogPost
 
-Our test suite is passing again but it's a trick! We never added a test for the actual `summary` functionality that we added to the `BlogPost` component! We tested that `BlogPostCell` requests that `BlogPost` return a summary, but what it means to render a summary is knowledge that only `BlogPost` contains.
+Our test suite is passing again but it's a trick! We never added a test for the actual `summary` functionality that we added to the **BlogPost** component. We tested that **BlogPostCell** requests that **BlogPost** return a summary, but what it means to render a summary is knowledge that only **BlogPost** contains.
 
-When you get into the flow of building your app it can be very easy to overlook testing functionality like this. Wasn't it Winston Chuchill who said "a thorough test suite requires eternal vigilence"? Techniques like [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) (TDD) were established to help combat this tendency—write the test first, watch it fail, then write the code to make the test pass. What we're doing is affectionately known as [Development Driven Testing](https://medium.com/table-xi/development-driven-testing-673d3959dac2). You'll probably settle somewhere in the middle but one maxim is always true—some tests are better than no tests.
+When you get into the flow of building your app it can be very easy to overlook testing functionality like this. Wasn't it Winston Chuchill who said "a thorough test suite requires eternal vigilence"? Techniques like [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) (TDD) were established to help combat this tendency—write the test first, watch it fail, then write the code to make the test pass so that you know every line of real code you write is backed by a test. What we're doing is affectionately known as [Development Driven Testing](https://medium.com/table-xi/development-driven-testing-673d3959dac2). You'll probably settle somewhere in the middle but one maxim is always true—some tests are better than no tests.
 
-The summary functionality in `BlogPost` is pretty simple, but there are a couple of different ways we could test it:
+The summary functionality in **BlogPost** is pretty simple, but there are a couple of different ways we could test it:
 
 * Export the `truncate` function and test it directly
 * Test the final rendered state of the component
 
-In this case `truncate` "belongs to" `BlogPost` and the outside world really shouldn't need to worry about it or know that it exists. If we came to a point in development where another component needed to truncate text that would be a perfect time to move this function to a shared location and import it into both components that need it. `truncate` could then have its own dedicated test. But for now let's keep our separation of concerns and test the one thing that's "public" about this component—the result of the render.
+In this case `truncate` "belongs to" **BlogPost** and the outside world really shouldn't need to worry about it or know that it exists. If we came to a point in development where another component needed to truncate text then that would be a perfect time to move this function to a shared location and import it into both components that need it. `truncate` could then have its own dedicated test. But for now let's keep our separation of concerns and test the one thing that's "public" about this component—the result of the render.
 
 In this case let's just test that the output matches an exact string. You could spin yourself in circles trying to refactor the code to make it absolutely bulletproof to code changes breaking the tests, but will you ever actually need that level of flexibility? It's always a trade-off!
 
-We'll move the sample input data to a constant and then use it in both the existing test (which tests that not passing the `summary` prop at all results in the full body being rendered) and our new test that tests for the summary version being rendered:
+We'll move the sample post data to a constant and then use it in both the existing test (which tests that not passing the `summary` prop at all results in the full body being rendered) and our new test that tests for the summary version being rendered:
 
 ```javascript{7-12,22-31}
-// web/src/components/BlogPost.test.js
+// web/src/components/BlogPost/BlogPost.test.js
 
 import { render, screen } from '@redwoodjs/testing'
-
-import BlogPost, { SUMMARY_LENGTH, SUMMARY_SUFFIX } from './BlogPost'
+import BlogPost from './BlogPost'
 
 const POST = {
   id: 1,
@@ -383,7 +386,7 @@ describe('BlogPost', () => {
 })
 ```
 
-Saving that change should run the tests for that single file and pressing `a` will run them all to make sure the rest of the suite is still happy.
+Saving that change should run the tests and we'll see that our suite is still happy.
 
 ### One Last Thing
 
@@ -392,7 +395,7 @@ Remember we set the `summary` prop to default to `false` if it doesn't exist, wh
 ## Building a Component the Redwood Way
 
 What's our blog missing? Comments. Let's add a simple comment engine so people can leave
-their completely rational, well-reasoned comments on our blog posts. It's the Internet,
+their completely rational, well-reasoned comments on our blog posts. It's the internet,
 what could go wrong?
 
 There are a couple of ways we could go about building this new feature:
@@ -400,7 +403,7 @@ There are a couple of ways we could go about building this new feature:
 1. Start with the form and then the comment display
 2. Start with the comment display and then add the form
 
-To keep things simple let's start with the display first, then we'll move on to more complex work of a form and service to save data.
+To ease into things, let's start with the fetching and displaing comments first and then we'll move on to more complex work of adding a form and service to save data. Of course, this is Redwood, so even forms and services aren't *that* complex!
 
 ### Storybook
 
@@ -414,7 +417,7 @@ Storybook should refresh and our "Generated" Comment story will be ready to go:
 
 ![image](https://user-images.githubusercontent.com/300/95784041-e9596400-0c87-11eb-9b9f-016e0264e0e1.png)
 
-Let's think about what we want to ask users for and then display in a comment. How about just their name and the content of the comment itself? And we'll throw in the date/time it was created. Let's update the Comment component to accept a `comment` object with those two properties:
+Let's think about what we want to ask users for and then display in a comment. How about just their name and the content of the comment itself? And we'll throw in the date/time it was created. Let's update the **Comment** component to accept a `comment` object with those two properties:
 
 ```javascript{3,6-7}
 // web/src/components/Comment/Comment.js
@@ -458,13 +461,13 @@ export const generated = () => {
 export default { title: 'Components/Comment' }
 ```
 
-> Note that Datetimes will come from GraphQL in ISO8601 format
+> Note that Datetimes will come from GraphQL in ISO8601 format so we need to return one in that format here.
 
 Storybook will reload and be much happier:
 
 ![image](https://user-images.githubusercontent.com/300/95785006-ccbe2b80-0c89-11eb-8d3b-bdf5ad5a6d63.png)
 
-Let's add a little bit of styling and date conversion to get this Comment component looking like a nice, completed design element:
+Let's add a little bit of styling and date conversion to get this **Comment** component looking like a nice, completed design element:
 
 ```javascript{3-7,11-18}
 // web/src/components/Comment/Comment.js
@@ -526,21 +529,18 @@ Now we can see our roundedness quite easily in Storybook:
 
 > If you haven't used TailwindCSS before just know that the `m` in the className is short for "margin" and the `4` refers to four "units" of margin. By default one unit is 0.25rem. So "m-4" is equivalent to `margin: 1rem`.
 
-Our amazing blog posts will obviously garner a huge and passionate fanbase and we will very rarely have only a single comment. Let's work on displaying a list of comments.
-
 ### Testing
 
-We don't want Santa to skip our house for being naughty developers so let's test our Comment component. We could test that the author's name and the body of the comment appear, as well as the date it was posted.
+We don't want Santa to skip our house for being naughty developers so let's test our **Comment** component. We could test that the author's name and the body of the comment appear, as well as the date it was posted.
 
 The default test that comes with a generated component just makes sure that no errors are thrown, which is the least we could ask of our components!
 
-Let's add a sample Comment to the test and check that the various parts are being rendered:
+Let's add a sample comment to the test and check that the various parts are being rendered:
 
 ```javascript{9-21}
 // web/src/components/Comment.test.js
 
 import { render, screen } from '@redwoodjs/testing'
-
 import Comment from './Comment'
 
 describe('Comment', () => {
@@ -551,12 +551,13 @@ describe('Comment', () => {
       createdAt: '2020-01-02T12:34:56Z',
     }
 
+    render(<Comment comment={comment} />)
+
     expect(screen.getByText(comment.name)).toBeInTheDocument()
     expect(screen.getByText(comment.body)).toBeInTheDocument()
-
     const dateExpect = screen.getByText('2 January 2020')
     expect(dateExpect).toBeInTheDocument()
-    expect(dateElement.nodeName).toEqual('TIME')
+    expect(dateExpect.nodeName).toEqual('TIME')
     expect(dateExpect).toHaveAttribute('datetime', comment.createdAt)
   })
 })
@@ -567,9 +568,11 @@ Here we're testing for both elements of the output `createdAt` timestamp: the ac
 
 > **What happens if we change the formatted output of the timestamp? Wouldn't we have to change the test?**
 >
-> Yes, just like we'd have to change the truncation text if we changed the length of the truncation. One alternative approach to testing for the formatted output could be to move the date formatting formula into a function that you can export from the Comment component. Then you can import that in your test and use it to check the formatted output. Now if you change the formula the test keeps passing because it's sharing the function with Comment.
+> Yes, just like we'd have to change the truncation text if we changed the length of the truncation. One alternative approach to testing for the formatted output could be to move the date formatting formula into a function that you can export from the Comment component. Then you can import that in your test and use it to check the formatted output. Now if you change the formula the test keeps passing because it's sharing the function with **Comment**.
 
 ## Multiple Comments
+
+Our amazing blog posts will obviously garner a huge and passionate fanbase and we will very rarely have only a single comment. Let's work on displaying a list of comments.
 
 Let's think about where our comments are being displayed. Probably not on the homepage, since that only shows a summary of each post. A user would need to go to the full page to show the comments for that blog post. But that page is only fetching the data for the single blog post itself, nothing else. We'll need to get the comments and since we'll be fetching *and* displaying them, that sounds like a job for a Cell.
 
@@ -579,11 +582,11 @@ Let's think about where our comments are being displayed. Probably not on the ho
 >
 > **But what about the Comment component we just made, why doesn't that fetch its own data?**
 >
-> There aren't any instances I (the author) could think of where we would ever want to display only a single comment in isolation—it would always be a list of all comments on a post. If displaying a single Comment was common for your use case then it could definitely be converted to a CommentCell and have it responsible for pulling the data for that single comment itself. But keep in mind that if you have 50 comments on a blog post, that's now 50 GraphQL calls that need to go out, one for each comment. There's always a tradeoff!
+> There aren't any instances I (the author) could think of where we would ever want to display only a single comment in isolation—it would always be a list of all comments on a post. If displaying a single comment was common for your use case then it could definitely be converted to a **CommentCell** and have it responsible for pulling the data for that single comment itself. But keep in mind that if you have 50 comments on a blog post, that's now 50 GraphQL calls that need to go out, one for each comment. There's always a tradeoff!
 >
 > **Then why make a standalone Comment component at all? Why not just do all the display in the CommentsCell?**
 >
-> We're trying to start in small chunks to make the tutorial more digestable for a new audience so we're starting simple and getting more complex as we go. But it also just feels *nice* to build up a UI from these smaller chunks that are easier to reason about and keep separate in my (the author's) head.
+> We're trying to start in small chunks to make the tutorial more digestable for a new audience so we're starting simple and getting more complex as we go. But it also just feels *nice* to build up a UI from these smaller chunks that are easier to reason about and keep separate in your head.
 >
 > **But what about—**
 >
@@ -591,15 +594,15 @@ Let's think about where our comments are being displayed. Probably not on the ho
 
 ### Storybook
 
-Let's generate a `CommentsCell`:
+Let's generate a **CommentsCell**:
 
 ```terminal
 yarn rw g cell Comments
 ```
 
-Storybook updates with a new **CommentsCell** under the **Cells** folder. Let's update the Success story to use the Comment component created earlier:
+Storybook updates with a new **CommentsCell** under the **Cells** folder. Let's update the Success story to use the Comment component created earlier, and return all of the fields we'll need for the **Comment** to render:
 
-```javascript{3,20}
+```javascript{3,9-11,23}
 // web/src/components/CommentsCell/CommentsCell.js
 
 import Comment from 'src/components/Comment'
@@ -608,6 +611,9 @@ export const QUERY = gql`
   query CommentsQuery {
     comments {
       id
+      name
+      body
+      createdAt
     }
   }
 `
@@ -619,7 +625,9 @@ export const Empty = () => <div>Empty</div>
 export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
 export const Success = ({ comments }) => {
-  return comments.map((comment) => <Comment key={comment.id} comment={comment} />)
+  return comments.map((comment) => (
+    <Comment key={comment.id} comment={comment} />
+  ))
 }
 ```
 
@@ -633,14 +641,19 @@ If you check Storybook, you'll seen an error. We'll need to update the `mock.js`
 export const standard = (/* vars, { ctx, req } */) => ({
   comments: [
     {
-      id: 1, name: 'Rob Cameron', body: 'First comment', createdAt: '2020-01-02T12:34:56Z'
+      id: 1,
+      name: 'Rob Cameron',
+      body: 'First comment',
+      createdAt: '2020-01-02T12:34:56Z',
     },
     {
-      id: 2, name: 'David Price', body: 'Second comment', createdAt: '2020-02-03T23:00:00Z'
+      id: 2,
+      name: 'David Price',
+      body: 'Second comment',
+      createdAt: '2020-02-03T23:00:00Z',
     },
-  ]
+  ],
 })
-
 ```
 
 > What's this `standard` thing? Think of it as the standard, default mock if you don't do anything else. We would have loved to use the name "default" but that's already a reserved word in Javascript!
@@ -649,9 +662,9 @@ Storybook refreshes and we've got comments! We've got the same issue here where 
 
 ![image](https://user-images.githubusercontent.com/300/95799544-dce60300-0ca9-11eb-9520-a1aac4ec46e6.png)
 
-The gap between the two comments *is* a concern for this component, since it's responsible for drawing multiple comments and their layout. So let's fix that in CommentsCell:
+The gap between the two comments *is* a concern for this component, since it's responsible for drawing multiple comments and their layout. So let's fix that in **CommentsCell**:
 
-```javascript
+```javascript{5,7,9,11}
 // web/src/components/CommentsCell/CommentsCell.js
 
 export const Success = ({ comments }) => {
@@ -722,6 +735,10 @@ export default BlogPost
 
 If we are *not* showing the summary, then we'll show the comments. Take a look at the **Full** and **Summary** stories and you should see comments on one and not on the other.
 
+> **Shouldn't the CommentsCell cause an actual GraphQL request? How does this work?**
+>
+> Redwood has added some functionality around Storybook so if you're testing a component that itself isn't a Cell (like **BlogPost**) but that renders a cell (**CommentsCell**) that it needs to mock the GraphQL and use the `standard` mock that goes along with that Cell. Pretty cool, huh?
+
 Once again our component is bumping right up against the edges of the window. We've got two stories in this file and would have to manually add margins around both of them. Ugh. Luckily Storybook has a way to add styling to all stories using [decorators](https://storybook.js.org/docs/react/writing-stories/decorators). In the `default` export at the bottom of the story you can define a `decorators` key and the value is JSX that will wrap all the stories in the file automatically:
 
 ```javascript{5-7}
@@ -765,25 +782,23 @@ const BlogPost = ({ post, summary = false }) => {
     </article>
   )
 }
-
-export default BlogPost
 ```
 
 ![image](https://user-images.githubusercontent.com/300/100682809-bfd5c400-332b-11eb-98e0-d2d526c1aa58.png)
 
 Okay, comment display is looking good! However, you may have noticed that if you tried going to the actual site there's an error where the comments should be:
 
-![image](https://user-images.githubusercontent.com/300/97620392-c0063b00-19de-11eb-84e8-d35f028d67b8.png)
+![image](https://user-images.githubusercontent.com/300/101549636-e1096680-3962-11eb-83fe-930d4bc631df.png)
 
 Why is that? Remember that we started with the `CommentsCell`, but never actually created a Comment model in `schema.prisma` or created an SDL and service! That's another neat part of working with Storybook: you can build out UI functionality completely isolated from the api-side. In a team setting this is great because a web-side team can work on the UI while the api-side team can be building the backend end simultaneously and one doesn't have to wait for the other.
 
 ### Testing
 
-We added one component (`<Comments>`) and edited another (`<BlogPost>`) so we'll want to add tests in both.
+We added one component, **Comments**, and edited another, **BlogPost**, so we'll want to add tests in both.
 
 #### Testing Comments
 
-The actual `<Comment>` component does most of the work so there's no need to test all of that functionality again. What things does `<CommentsCell`> do that make it unique?
+The actual **Comment** component does most of the work so there's no need to test all of that functionality again. What things does **CommentsCell** do that make it unique?
 
 * Has a loading message
 * Has an error message
@@ -826,30 +841,7 @@ describe('CommentsCell', () => {
 
 And that's nothing to scoff at! As you've probably experienced, a React component usually either works 100% or throws an error. If it works, great! If it fails then the test fails too, which is exactly what we want to happen.
 
-But in this case we can do a little more to make sure `<CommentsCell>` is doing what we expect. First let's update the `CommentsCell.mock.js` to send in two comments:
-
-```javascript{5-16}
-// web/src/components/CommentsCell/CommentsCell.mock.js
-
-export const standard = (/* vars, { ctx, req } */) => ({
-  comments: [
-    {
-      id: 1,
-      name: 'Rob Cameron',
-      body: 'First comment',
-      createdAt: '2020-01-02T12:34:56Z',
-    },
-    {
-      id: 2,
-      name: 'David Price',
-      body: 'Second comment',
-      createdAt: '2020-02-03T23:00:00Z',
-    },
-  ],
-})
-```
-
-And now let's update the `Success` test in `CommentsCell.test.js` to check that exactly the number of comments we passed in as a prop are rendered. How do we know a comment was rendered? How about if we check that each `comment.body` (the most important part of the comment) is present on the screen:
+But in this case we can do a little more to make sure **CommentsCell** is doing what we expect. Let's update the `Success` test in `CommentsCell.test.js` to check that exactly the number of comments we passed in as a prop are rendered. How do we know a comment was rendered? How about if we check that each `comment.body` (the most important part of the comment) is present on the screen:
 
 ```javascript
 // web/src/components/CommentsCell/CommentsCell.test.js
@@ -864,7 +856,7 @@ test('Success renders successfully', async () => {
 })
 ```
 
-We're looping through each `comment` from the mock so that even if we add more later, we're covered.
+We're looping through each `comment` from the mock, the same mock used by Storybook, so that even if we add more later, we're covered.
 
 #### Testing BlogPost
 
@@ -874,7 +866,6 @@ The functionality we added to `<BlogPost>` says to show the comments for the pos
 // web/src/components/BlogPost/BlogPost.test.js
 
 import { render, screen, waitFor } from '@redwoodjs/testing'
-
 import BlogPost from './BlogPost'
 import { standard } from 'src/components/CommentsCell/CommentsCell.mock'
 
@@ -924,11 +915,11 @@ describe('BlogPost', () => {
 })
 ```
 
-We're introducting a new test function here `waitFor()` which will wait for things like GraphQL queries to finish running before checking for what's been rendered. Since `<BlogPost>` renders `<CommentsCell>` we need to wait for the `Success` component of `<CommentsCell>` to be rendered.
+We're introducting a new test function here `waitFor()` which will wait for things like GraphQL queries to finish running before checking for what's been rendered. Since **BlogPost** renders **CommentsCell** we need to wait for the `Success` component of **CommentsCell** to be rendered.
 
-> The summary version of `<BlogPost>` does *not* render the `<CommentsCell>`, but we should still wait. Why? If we did mistakenly start including `<CommentsCell>`, but didn't wait for the render, we would get a falsely passing test—indeed the text isn't on the page but that's because it's still showing the `Loading` component! If we had waited we would have seen the actual comment body get rendered, and the test would (correctly) fail.
+> The summary version of **BlogPost** does *not* render the **CommentsCell**, but we should still wait. Why? If we did mistakenly start including **CommentsCell**, but didn't wait for the render, we would get a falsely passing test—indeed the text isn't on the page but that's because it's still showing the **Loading** component! If we had waited we would have seen the actual comment body get rendered, and the test would (correctly) fail.
 
-Okay we're finally ready to let users create their comments. But first we need to update the database to start storing them.
+Okay we're finally ready to let users create their comments.
 
 ## Adding Comments to the Schema
 
@@ -947,7 +938,7 @@ If you went through the first part of the tutorial you should be somewhat famili
 Let's do that now:
 
 ```javascript{17,29-36}
-// api/prisma/schema.prisma
+// api/db/schema.prisma
 
 datasource DS {
   provider = "sqlite"
@@ -1004,7 +995,7 @@ This gives us a classic database model:
                     └───────────┘
 ```
 
-Note that there is no column called `post` on `Comment`—this is special syntax for Prisma to know how to connect the models together and for you to reference that connection. When you query for a `Comment` using Prisma you can get access to the attached `Post` using that name:
+Note that there is no real database column named `post` in `Comment`—this is special syntax for Prisma to know how to connect the models together and for you to reference that connection. When you query for a `Comment` using Prisma you can get access to the attached `Post` using that name:
 
 ```javascript
 db.comment.findOne({ where: { id: 1 }}).post()
@@ -1025,19 +1016,21 @@ yarn rw db save create comments
 yarn rw db up
 ```
 
+> You'll need to restart the test suite runner at this point if it's still running. Redwood creates a second, test database for you to run your tests against (it is at `.redwood/test.db` by default). The database migrations are run against that test database whenever the test suite is **started**, not while it's running, so you'll need to restart it to test against the new database structure.
+
 ### Creating the SDL and Service
 
-Next we'll create the SDL (that defines the GraphQL interface) and a service (to get the records out of the database):
+Next we'll create the SDL (that defines the GraphQL interface) and a service (to get the records out of the database) with a generator call:
 
 ```terminal
 yarn rw g sdl comment
 ```
 
-That command will create both the SDL and the service. And if you take a look back in the browser you should see a different message than the error we were seeing before:
+That command will create both the SDL and the service. And if you take a look back in the browser you should see a different message than the GraphQL error we were seeing before:
 
-![image](https://user-images.githubusercontent.com/300/97620271-8fbe9c80-19de-11eb-8d95-86c1cb7bcb91.png)
+![image](https://user-images.githubusercontent.com/300/101552505-d1405100-3967-11eb-883f-1227689e5f88.png)
 
-"Empty" means the Cell rendered correctly! There just aren't any comments in the database yet. Let's update the `<CommentsCell>` component to make that "Empty" message a little more friendly:
+"Empty" means the Cell rendered correctly! There just aren't any comments in the database yet. Let's update the **CommentsCell** component to make that "Empty" message a little more friendly:
 
 ```javascript
 // web/src/components/CommentsCell/CommentsCell.js
@@ -1074,7 +1067,7 @@ export const comments = () => {
 
 > Have you noticed that something may be amiss? This function returns *all* comments, and all comments only. Could this come back to bite us?
 >
-> To be continued...
+> Hmmm...
 
 We need to be able to create a comment as well. We'll use the same convention we use in Redwood's generated scaffolds: the create endpoint will accept a single parameter `input` which is an object with the individual model fields:
 
@@ -1090,12 +1083,39 @@ export const createComment = ({ input }) => {
 
 We'll also need to expose this function via GraphQL so we'll add a Mutation to the SDL:
 
-```graphql
+```graphql{29-31}
 // api/src/graphql/comments.sdl.js
 
-type Mutation {
-  createComment(input: CreateCommentInput!): Comment!
-}
+export const schema = gql`
+  type Comment {
+    id: Int!
+    name: String!
+    body: String!
+    post: Post!
+    postId: Int!
+    createdAt: DateTime!
+  }
+
+  type Query {
+    comments: [Comment!]!
+  }
+
+  input CreateCommentInput {
+    name: String!
+    body: String!
+    postId: Int!
+  }
+
+  input UpdateCommentInput {
+    name: String
+    body: String
+    postId: Int
+  }
+
+  type Mutation {
+    createComment(input: CreateCommentInput!): Comment!
+  }
+`
 ```
 
 > The `CreateCommentInput` type was already created for us by the SDL generator.
@@ -1179,7 +1199,7 @@ The nested structure of a scenario is defined like this:
 
 When you receive the `scenario` argument in your test you can follow the same object nesting in order to reference the fields, like `scenario.comment.one.name`.
 
-> **Why is every field just containing the string "String"?**
+> **Why does every field just contain the string "String"?**
 >
 > When generating the service (and the test and scenarios) all we (Redwood) knows about your data is the types for each field as defined in `schema.prisma`, namely `String`, `Integer` or `DateTime`. So we add the simplest data possible that fulfills the type requirement by Prisma to get the data into the database. You should definitely replace this data with something that looks more like the real data your app will be expecting. In fact...
 
@@ -1192,7 +1212,7 @@ export const standard = scenario({
   comment: {
     jane: {
       name: 'Jane Doe',
-      message: 'I like trees',
+      body: 'I like trees',
       post: {
         create: {
           title: 'Redwood Leaves',
@@ -1202,7 +1222,7 @@ export const standard = scenario({
     },
     john: {
       name: 'John Doe',
-      message: 'Hug a tree today',
+      body: 'Hug a tree today',
       post: {
         create: {
           title: 'Root Systems',
@@ -1220,8 +1240,12 @@ The test created by the service generator simply checks to make sure the same nu
 
 Let's add our first service test by making sure that `createComment()` actually stores a new comment in the database. When creating a comment we're not as worried about existing data in the database so let's create a new scenario which only contains a post—the post we'll be linking the new comment to through the comment's `postId` field:
 
-```javascript
+```javascript{7-14}
 // api/src/services/comments/comments.scenarios.js
+
+export const standard = scenario({
+  // ...
+})
 
 export const postOnly = scenario({
   post: {
@@ -1258,7 +1282,7 @@ describe('comments', () => {
 
     expect(comment.name).toEqual('Billy Bob')
     expect(comment.body).toEqual("A tree's bark is worse than its bite")
-    expect(comment.postId).toEqual(scenario.post.park.id)
+    expect(comment.postId).toEqual(scenario.post.bark.id)
     expect(comment.createdAt).not.toEqual(null)
   })
 })
@@ -1295,18 +1319,19 @@ Let's build a simple form to take the user's name and their comment and add some
 ```javascript
 // web/src/components/CommentForm/CommentForm.js
 
-import { Form, FormError, Label, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
+import {
+  Form,
+  Label,
+  TextField,
+  TextAreaField,
+  Submit,
+} from '@redwoodjs/forms'
 
 const CommentForm = () => {
   return (
     <div>
       <h3 className="font-light text-lg text-gray-600">Leave a Comment</h3>
       <Form className="mt-4 w-full">
-        <FormError
-          error={error}
-          titleClassName="font-semibold"
-          wrapperClassName="bg-red-100 text-red-900 text-sm p-3 rounded"
-        />
         <Label name="name" className="block text-sm text-gray-600 uppercase">
           Name
         </Label>
@@ -1369,10 +1394,17 @@ You can even try submitting the form right in Storybook! If you leave "name" or 
 
 Submitting the form should use the `createComment` function we added to our services and GraphQL. We'll need to add a mutation to the form component and an `onSubmit` hander to the form so that the create can be called with the data in the form:
 
-```javascript{4,6-15,18-22,58}
+```javascript{5,11,13-22,25,27-29,35-39,65}
 // web/src/components/CommentForm/CommentForm.js
 
-import { Form, FormError, Label, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
+import {
+  Form,
+  FormError,
+  Label,
+  TextField,
+  TextAreaField,
+  Submit,
+} from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 
 const CREATE = gql`
@@ -1387,7 +1419,7 @@ const CREATE = gql`
 `
 
 const CommentForm = () => {
-  const [createComment, { loading }] = useMutation(CREATE)
+  const [createComment, { loading, error }] = useMutation(CREATE)
 
   const onSubmit = (input) => {
     createComment({ variables: { input } })
@@ -1440,7 +1472,7 @@ const CommentForm = () => {
 export default CommentForm
 ```
 
-If you try to submit the form you'll get an error in the web console—Storybook doesn't actually start up a real GraphQL server to handle the request! But we can mock the request in the story and handle the response ourselves:
+If you try to submit the form you'll get an error in the web console—Storybook will automatically mock GraphQL queries, but not mutations. But, we can mock the request in the story and handle the response manually:
 
 ```javascript{6-18}
 // web/src/components/CommentForm/CommentForm.stories.js
@@ -1478,157 +1510,17 @@ In our case we want the `variables` that were passed to the mutation (the `name`
 
 Try out the form now and the error should be gone. Also the **Submit** button should become visually disabled and clicking it during that one second delay does nothing.
 
-Once our comment is sent notice that the comment form still contains their entries. That's not ideal. Let's clear that out. We did something [similar](/tutorial/saving-data#one-more-thing) back in Part 1 of the tutorial when we created the Contact form:
-
-```javascript{5,19-22,33}
-// web/src/components/CommentForm/CommentForm.js
-
-import { Form, FormError, Label, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
-import { useMutation } from '@redwoodjs/web'
-import { useForm } from 'react-hook-form'
-
-const CREATE = gql`
-  mutation CreateCommentMutation($input: CreateCommentInput!) {
-    createComment(input: $input) {
-      id
-      name
-      body
-      createdAt
-    }
-  }
-`
-
-const CommentForm = () => {
-  const formMethods = useForm()
-  const [createComment, { loading }] = useMutation(CREATE, {
-    onCompleted: formMethods.reset,
-  })
-
-  const onSubmit = (input) => {
-    createComment({ variables: { input } })
-  }
-
-  return (
-    <div>
-      <h3 className="font-light text-lg text-gray-600">Leave a Comment</h3>
-      <Form
-        className="mt-4 w-full"
-        formMethods={formMethods}
-        onSubmit={onSubmit}
-      >
-        <FormError
-          error={error}
-          titleClassName="font-semibold"
-          wrapperClassName="bg-red-100 text-red-900 text-sm p-3 rounded"
-        />
-        <Label
-          name="name"
-          className="block text-xs font-semibold text-gray-500 uppercase"
-        >
-          Name
-        </Label>
-        <TextField
-          name="name"
-          className="block w-full p-1 border rounded text-sm "
-          validation={{ required: true }}
-        />
-
-        <Label
-          name="body"
-          className="block mt-4 text-xs font-semibold text-gray-500 uppercase"
-        >
-          Comment
-        </Label>
-        <TextAreaField
-          name="body"
-          className="block w-full p-1 border rounded h-24 text-sm"
-          validation={{ required: true }}
-        />
-
-        <Submit
-          disabled={loading}
-          className="block mt-4 bg-blue-500 text-white text-xs font-semibold uppercase tracking-wide rounded px-3 py-2 disabled:opacity-50"
-        >
-          Submit
-        </Submit>
-      </Form>
-    </div>
-  )
-}
-
-export default CommentForm
-```
-
-We extract the `formMethods` so that we can call `reset()` ourselves. We do that once the mutation completes.
-
 ### Adding the Form to the Blog Post
 
-Right above the display of existing comments on a blog post is probably where our form should go. So should we add it to the **BlogPostCell** along with the **CommentsCell** component? If wherever we display a list of comments we'll also include the form to add a new one, that feels like it may as well just go into the **CommentsCell** component itself. Let's put it there:
+Right above the display of existing comments on a blog post is probably where our form should go. So should we add it to the **BlogPost** along with the **CommentsCell** component? If wherever we display a list of comments we'll also include the form to add a new one, that feels like it may as well just go into the **CommentsCell** component itself. However, this presents a problem:
 
-```javascript{4,28}
-// web/components/CommentsCell/CommentsCell.js
+If we put the **CommentForm** in the **Success** component of **CommentsCell** then what happens when there are no comments yet? The **Empty** component renders, which doesn't include the form! So it becomes impossible to add the first comment.
 
-import Comment from 'src/components/Comment'
-import CommentForm from 'src/components/CommentForm'
+We could copy the **CommentForm** to the **Empty** component as well, but as soon as you find yourself duplcating code like this it can be a hint that you need to rethink something about your design.
 
-export const QUERY = gql`
-  query CommentsQuery {
-    comments {
-      id
-      name
-      body
-      createdAt
-      postId
-    }
-  }
-`
+Maybe **CommentsCell** should really only be responsible for retrieving and displaying comments. Having it also accept user input seems outside of it's primary concern.
 
-export const Loading = () => <div>Loading...</div>
-
-export const Empty = () => {
-  return <div className="text-center text-gray-500">No comments yet</div>
-}
-
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
-
-export const Success = ({ comments }) => {
-  return (
-    <div className="-mt-8">
-      <CommentForm />
-      {comments.map((comment, i) => (
-        <div key={i} className="mt-8">
-          <Comment comment={comment} />
-        </div>
-      ))}
-    </div>
-  )
-}
-```
-
-Thanks to our planning ahead and having each component only responsible for its own layout, everything automatically looks great! Here it is in the **Success** component of the **CommentsCell**:
-
-![image](https://user-images.githubusercontent.com/300/100682327-b39d3700-332a-11eb-80a0-76be6217455c.png)
-
-And the **BlogPost** component:
-
-![image](https://user-images.githubusercontent.com/300/100776202-19d09b00-33b9-11eb-99b5-05006fb231b6.png)
-
-Awesome! How about we go over to the actual dev server now and try it out?
-
-![image](https://user-images.githubusercontent.com/300/100779202-e0019380-33bc-11eb-8821-1833b13c34e9.png)
-
-What the? Where's our form?
-
-Remember how cells render themselves: if there are no records returned from the GraphQL call then the Cell will render the **Empty** component. In this case we only put the **CommentForm** into the **Success** component. So it's not showing the form at all!
-
-> How come it worked fine in Storybook? Remember that Storybook is using fake data from our `*.mock.js` files, but the dev server is showing data from the actual database. There aren't any comments in the database yet!
-
-Time for a decision:
-
-1. Copy the **CommentForm** to the **Empty** component so that it still renders even when there are no comments in the database yet
-2. Move the **CommentForm** somewhere else, maybe into **BlogPost** itself, around the same place that the **CommentsCell** is included.
-
-You'll have to consider your tolerance for duplication and your adherance to the separation of concerns when deciding where it should go. For the purposes of the tutorial we're just going to go with option #2 and move the **CommentForm** component over to **BlogPost** instead (remember to remove it from **CommentsCell** as well):
+So let's use **BlogPost** as the clearning house for where all these disparate parts are combined—the actual blog post, the form to add a new comment, and the list of comments.
 
 ```javascript{5,23-24,28}
 // web/src/components/BlogPost/BlogPost.js
@@ -1643,7 +1535,7 @@ const truncate = (text, length) => {
 
 const BlogPost = ({ post, summary = false }) => {
   return (
-    <article>
+    <article className="mt-10">
       <header>
         <h2 className="text-xl text-blue-700 font-semibold">
           <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
@@ -1677,7 +1569,7 @@ Now comes the ultimate test: creating a comment! LET'S DO IT:
 
 When we created our data schema we said that a post belongs to a comment via the `postId` field. And that field is required, so the GraphQL server is rejecting the request because we're not including that field. We're only sending `name` and `body`. Luckily we have access to the ID of the post we're commenting on thanks to the `post` object that's being passed into **BlogPost** itself!
 
-> **Why didn't the story we wrote earlier expose this problem?**
+> **Why didn't the Storybook story we wrote earlier expose this problem?**
 >
 > We manually mocked the GraphQL response in the story, and our mock always returns a correct response, regardless of the input!
 >
@@ -1692,7 +1584,7 @@ First let's pass the post's ID as a prop to **CommentForm**:
 
 const BlogPost = ({ post, summary = false }) => {
   return (
-    <article>
+    <article className="mt-10">
       <header>
         <h2 className="text-xl text-blue-700 font-semibold">
           <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
@@ -1716,14 +1608,11 @@ const BlogPost = ({ post, summary = false }) => {
 
 And then we'll append that ID to the `input` object that's being passed to `createComment` in the **CommentForm**:
 
-```javascript{3,10}
+```javascript{3,7}
 // web/src/components/CommentForm/CommentForm.js
 
 const CommentForm = ({ postId }) => {
-  const formMethods = useForm()
-  const [createComment, { loading, error }] = useMutation(CREATE, {
-    onCompleted: formMethods.reset,
-  })
+  const [createComment, { loading, error }] = useMutation(CREATE)
 
   const onSubmit = (input) => {
     createComment({ variables: { input: { postId, ...input } } })
@@ -1739,15 +1628,15 @@ Now fill out the comment form and submit! And...nothing happened! Believe it or 
 
 ![image](https://user-images.githubusercontent.com/300/100950150-98fcc680-34c0-11eb-8808-944637b5ca1f.png)
 
-Yay! It would have been nicer if that comment appeared as soon as we submitted the comment, so maybe that's a half-yay? But, we can fix that! It involves telling the GraphQL client (Apollo) that we created a new record and, if it would be so kind, to try the query again that gets the comments for this page.
+Yay! It would have been nicer if that comment appeared as soon as we submitted the comment, so maybe that's a half-yay? Also, the text boxes stayed filled with our name/messages which isn't idea. But, we can fix both of those! One involves telling the GraphQL client (Apollo) that we created a new record and, if it would be so kind, to try the query again that gets the comments for this page, and we'll fix the other by just removing the form from the page completely.
 
 ### GraphQL Query Caching
 
-Much has been written about the [complexities](https://medium.com/swlh/how-i-met-apollo-cache-ee804e6485e9) of [Apollo](https://medium.com/@galen.corey/understanding-apollo-fetch-policies-705b5ad71980) [caching](https://levelup.gitconnected.com/basics-of-caching-data-in-graphql-7ce9489dac15), but for the sake of brevity (and sanity) we're going to do the easiest thing that works, and that's tell Apollo to just re-fetch the query that shows comments in the cell.
+Much has been written about the [complexities](https://medium.com/swlh/how-i-met-apollo-cache-ee804e6485e9) of [Apollo](https://medium.com/@galen.corey/understanding-apollo-fetch-policies-705b5ad71980) [caching](https://levelup.gitconnected.com/basics-of-caching-data-in-graphql-7ce9489dac15), but for the sake of brevity (and sanity) we're going to do the easiest thing that works, and that's tell Apollo to just re-run the query that shows comments in the cell, known as "refetching."
 
-Along with the variables you pass to a mutation function (`createComment` in our case) there's another option named `refetchQueries` where you pass an array of queries that should be re-run because, presumably, the data you just mutated is reflected in the result of those queries. In our case there's a single query, the **QUERY** export of **CommentsCell**. We'll import that at the top of **CommentForm** (and rename so it's clear what it is to the rest of our code) and then pass it along to the `refetchQueries` option:
+Along with the variables you pass to a mutation function (`createComment` in our case) there's an option named `refetchQueries` where you pass an array of queries that should be re-run because, presumably, the data you just mutated is reflected in the result of those queries. In our case there's a single query, the **QUERY** export of **CommentsCell**. We'll import that at the top of **CommentForm** (and rename so it's clear what it is to the rest of our code) and then pass it along to the `refetchQueries` option:
 
-```javascript{13,21}
+```javascript{12,18}
 // web/src/components/CommentForm/CommentForm.js
 
 import {
@@ -1759,15 +1648,12 @@ import {
   Submit,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
-import { useForm } from 'react-hook-form'
 import { QUERY as CommentsQuery } from 'src/components/CommentsCell'
 
 // ...
 
 const CommentForm = ({ postId }) => {
-  const formMethods = useForm()
   const [createComment, { loading, error }] = useMutation(CREATE, {
-    onCompleted: formMethods.reset,
     refetchQueries: [{ query: CommentsQuery }],
   })
 
@@ -1779,7 +1665,7 @@ Now when we create a comment it appears right away! It might be hard to tell bec
 
 We'll make use of good old fashioned React state to keep track of whether a comment has been posted in the form yet or not. If so, let's remove the comment form completely and show a "Thanks for your comment" message. We'll remove the form and show the message with just a couple of CSS classes:
 
-```javascript{14,20,23-26,35,37-43,45}
+```javascript{13,19-22,31,33-39,41}
 // web/src/components/CommentForm/CommentForm.js
 
 import {
@@ -1791,18 +1677,15 @@ import {
   Submit,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
-import { useForm } from 'react-hook-form'
 import { QUERY as CommentsQuery } from 'src/components/CommentsCell'
 import { useState } from 'react'
 
 // ...
 
 const CommentForm = ({ postId }) => {
-  const formMethods = useForm()
   const [hasPosted, setHasPosted] = useState(false)
   const [createComment, { loading, error }] = useMutation(CREATE, {
     onCompleted: () => {
-      formMethods.reset()
       setHasPosted(true)
     },
     refetchQueries: [{ query: CommentsQuery }],
@@ -1824,9 +1707,7 @@ const CommentForm = ({ postId }) => {
       </div>
       <Form
         className={`mt-4 w-full ${hasPosted ? 'invisible' : ''}`}
-        formMethods={formMethods}
         onSubmit={onSubmit}
-        error={error}
       >
       //...
 ```
@@ -1841,7 +1722,7 @@ So it looks like we're just about done here! Try going back to the homepage and 
 
 Every post has the same comments! **WHAT HAVE WE DONE??**
 
-Remember our foreshadowing callout a few pages back, wondering if our `comments()` service which only returns *all* comments could come back to bite us? It finally has: when we get the comments for a post we're not actually getting them for only that post. We're ignoring the `postId` completely and just returning *all* comments! Turns out the old axiom is true: computers only do exactly what you tell them to. :(
+Remember our foreshadowing callout a few pages back, wondering if our `comments()` service which only returns *all* comments could come back to bite us? It finally has: when we get the comments for a post we're not actually getting them for only that post. We're ignoring the `postId` completely and just returning *all* comments in the database! Turns out the old axiom is true: computers only do exactly what you tell them to do. :(
 
 Let's fix it!
 
@@ -1856,9 +1737,8 @@ Try running the test suite (or if it's already running take a peek at that termi
 ```javascript{4}
 // api/src/services/comments/comments.test.js
 
-scenario('returns all comments from the database', async (scenario) => {
-  const result = await comments({ postId: scenario.comment.one.postId })
-
+scenario('returns all comments', async (scenario) => {
+  const result = await comments({ postId: scenario.comment.jane.postId })
   expect(result.length).toEqual(Object.keys(scenario.comment).length)
 })
 ```
@@ -1867,12 +1747,11 @@ When the test suite runs everything will still pass. Javascript won't care if yo
 
 Based on our current scenario, each comment will also get associated with its own, unique post. So of the two comments in our scenario, only one should be returned for a given `postId`:
 
-```javascript{6}
+```javascript{5}
 // api/src/services/comments/comments.test.js
 
 scenario('returns all comments from the database', async (scenario) => {
-  const result = await comments({ postId: scenario.comment.one.postId })
-
+  const result = await comments({ postId: scenario.comment.jane.postId })
   expect(result.length).toEqual(1)
 })
 ```
@@ -1883,8 +1762,7 @@ Now it should fail! Before we get it passing again, let's also change the name o
 // api/src/services/comments/comments.test.js
 
 scenario('returns all comments for a single post from the database', async (scenario) => {
-  const result = await comments({ postId: scenario.comment.one.postId })
-
+  const result = await comments({ postId: scenario.comment.jane.postId })
   expect(result.length).toEqual(1)
 })
 ```
@@ -1903,7 +1781,7 @@ Save that and the test should pass again!
 
 #### Updating GraphQL
 
-Next we need to let GraphQL know that it should expect a `postId` to be passed for the `comments` query, and it's required (we don't currently have any view that allows you see all comments everywhere so we can ask that it always be present for now):
+Next we need to let GraphQL know that it should expect a `postId` to be passed for the `comments` query, and it's required (we don't currently have any view that allows you see all comments everywhere so we can ask that it always be present):
 
 ```javascript{4}
 // api/src/graphql/comments.sdl.js
@@ -1930,7 +1808,7 @@ First we'll need to get the `postId` to the cell itself. Remember when we added 
 
 const BlogPost = ({ post, summary = false }) => {
   return (
-    <article>
+    <article className="mt-10">
       <header>
         <h2 className="text-xl text-blue-700 font-semibold">
           <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
@@ -1964,7 +1842,6 @@ export const QUERY = gql`
       name
       body
       createdAt
-      postId
     }
   }
 `
@@ -1982,12 +1859,11 @@ However, you may have noticed that now when you post a comment it no longer appe
 
 Okay this is the last fix, promise!
 
-```javascript{8}
+```javascript{7}
 // web/src/components/CommentForm/CommentForm.js
 
 const [createComment, { loading, error }] = useMutation(CREATE, {
   onCompleted: () => {
-    formMethods.reset()
     setHasPosted(true)
   },
   refetchQueries: [{ query: CommentsQuery, variables: { postId } }],
