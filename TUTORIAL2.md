@@ -1143,6 +1143,8 @@ type Mutation {
 }
 ```
 
+`deleteComment` will be given a single argument, the ID of the comment to delete, and it's required. A common pattern is to return the record that was just deleted in case you wanted to notify the user or some other system about the details of the thing that was just removed, so we'll do that here as well. But, you could just as well return `null`.
+
 ### Testing the Service
 
 Let's make sure our service functionality is working and continues to work as we modify our app.
@@ -1878,9 +1880,9 @@ Or is there?
 
 Imagine a few weeks in the future of our blog when every post hits the front page of the New York Times and we're getting hundreds of comments a day. We can't be expected to come up with quality content each day *and* moderate the endless stream of (mostly well-meaning) comments! We're going to need help. Let's hire a comment moderator to remove obvious spam and bad intentioned posts and help make the internet a better place.
 
-We already have a login system for our blog, but right now it's all-or-nothing: you either get access to create blog posts, or you don't. In this case our comment moderator(s) will need logins so that we know who they are, but we're not going let them create new blog posts. We need some of role that we can give to our two kinds of users so we can distinguish them from one another.
+We already have a login system for our blog (Netlify Identity, if you followed the first tutorial), but right now it's all-or-nothing: you either get access to create blog posts, or you don't. In this case our comment moderator(s) will need logins so that we know who they are, but we're not going let them create new blog posts. We need some kind of role that we can give to our two kinds of users so we can distinguish them from one another.
 
-Enter role-based authorization control, thankfully shortened to the common phrase **RBAC**. Authentication says who the person, authorization says what they can do. Currently the blog has the lowest common denominator of authroization: if they are logged in, they can do everything. Let's add a "less than anything, but more than nothing" level.
+Enter role-based authorization control, thankfully shortened to the common phrase **RBAC**. Authentication says who the person, authorization says what they can do. Currently the blog has the lowest common denominator of authroization: if they are logged in, they can do everything. Let's add a "less than everything, but more than nothing" level.
 
 ### Definining Roles
 
@@ -1894,9 +1896,9 @@ If you started with your own blog code from Part 1 of the tutorial and already h
 
 First we'll want to create a new user that will represent the comment moderator. You can use a completely different email address (if you have one), but if not you can use **The Plus Trick** to create a new, unique email address as far as Netlify is concerned, but that is actually the same as your original email address! **Note that not all email providers support this syntax, but the big ones like Gmail do.**
 
-> The Plus Trick is a very handy feature of the email standard known as a "boxname", the idea being that you may have other inboxes besides one just named "Inbox" and by adding +something to your email address you can specify which inbox the mail should be sorted into. They don't appear t be in common usage these days, but they are ridiculously helpful for us developers when we're constantly needing new email addresses for testing!
+> The Plus Trick is a very handy feature of the email standard known as a "boxname", the idea being that you may have other inboxes besides one just named "Inbox" and by adding +something to your email address you can specify which inbox the mail should be sorted into. They don't appear to be in common usage these days, but they are ridiculously helpful for us developers when we're constantly needing new email addresses for testing!
 >
-> Use append +something to your email address before the @:
+> Just append +something to your email address before the @:
 >
 > * jane.doe+testing@example.com
 > * john-doe+sample@example.com
@@ -1909,7 +1911,7 @@ Edit your original user to have the role "admin":
 
 ![image](https://user-images.githubusercontent.com/300/101226249-ba88ba00-3648-11eb-8e83-7b4d17822442.png)
 
-Be sure to accept the invite for your new user and set a password so that you can actually log in as them.
+Be sure to accept the invite for your new user and set a password so that you can actually log in as them (if you haven't deployed yet you'll need to copy the `invite_token` from the URL and use it on your local dev web server, as described [here](/tutorial/authentication#accepting-invites)).
 
 If all went well, you should be able to log in as either user with no change in the functionality between them—both can access http://localhost:8910/admin/posts Log in as your moderator user and go there now so we can verify that we get booted out once we add some authorization rules.
 
@@ -1945,7 +1947,7 @@ const Routes = () => {
 export default Routes
 ```
 
-When you save that change the browser should refresh and you'll be sent back to the homepage. Log out and back in as the admin user and you should still have access.
+When you save that change the browser should refresh and your moderator will be sent back to the homepage. Log out and back in as the admin user and you should still have access.
 
 ### Roles in Components
 
@@ -1968,7 +1970,7 @@ const Comment = ({ comment }) => {
   const { hasRole } = useAuth()
   const moderate = () => {
     if (confirm('Are you sure?')) {
-      // TODO: delete a comment
+      // TODO: delete comment
     }
   }
 
@@ -2001,20 +2003,9 @@ So if the user has the "moderator" role, render the delete button. If you log ou
 
 ![image](https://user-images.githubusercontent.com/300/101229168-c75edb00-3653-11eb-85f0-6eb61af7d4e6.png)
 
-What should we put in place of the TODO? A GraphQL mutation that deletes a comment, of course. Thanks to our forward-thinking earlier we already have a `deleteComment()` service function but we'll need to add a GraphQL endpoint on the api-side and a new GraphQL query and `useMutation()` call on the web-side.
+What should we put in place of the TODO? A GraphQL mutation that deletes a comment, of course. Thanks to our forward-thinking earlier we already have a `deleteComment()` service function and GraphQL mutation.
 
-```graphql{3-5,9}
-// api/src/graphql/comments.sdl.js
-
-type Mutation {
-  createComment(input: CreateCommentInput!): Comment!
-  deleteComment(id: Int!): Comment!
-}
-```
-
-`deleteComment` will be given a single argument, the ID of the comment to delete, and it's required. A common pattern is to return the record that was just deleted in case you wanted to notify the user or some other system about the details of the thing that was just removed, so we'll do that here as well. But, you could just as well return `null`.
-
-And thanks to the nice encapsultation of our **Comment** component we can make all the required web-site changes in this one component:
+And due to the nice encapsultation of our **Comment** component we can make all the required web-site changes in this one component:
 
 ```javascript{3-5,13-19,23-30,33-35}
 // web/src/components/Comment/Comment.js
@@ -2086,7 +2077,7 @@ Click "Delete" (as a moderator) and the comment should be removed!
 
 Remember: never trust the client! We need to lock down the backend to be sure that someone can't discover our `deleteComment` GraphQL resource and start deleing comments willy nilly.
 
-If you remember in part 1 of the tutorial we used a function `requireAuth()` to be sure that someone was logged in before allowing them to take action on the server. `requireAuth()` takes an optional `roles` key:
+Recall in Part 1 of the tutorial we used a function `requireAuth()` to be sure that someone was logged in before allowing them to take action on the server. It turns out that `requireAuth()` takes an optional `roles` key:
 
 ```javascript{4,9}
 // api/src/services/comments/comments.js
@@ -2104,6 +2095,8 @@ export const deleteComment = ({ id }) => {
 }
 ```
 
+Now you can try deleting a comment in the [GraphQL Playground](https://redwoodjs.com/tutorial/saving-data.html#graphql-playground) and see that a delete no longer works without authorization:
+
 ### Last Word on Roles
 
 Having a role like "admin" implies that they can do everything...shouldn't they be able to delete comments as well? Right you are! There are two things we can do here:
@@ -2115,7 +2108,7 @@ By virtue of the name "admin" it really feels like someone should only have that
 
 But if you wanted to be more fine-grained with your roles then maybe the "admin" role should really be called "author". That way it makes it clear they only author posts, and if you want someone to be able to do both actions you can explicity give them the "moderator" role in addition to "author."
 
-Managing roles can be a tricky thing to get right. Spend a little time up front thinking about they'll interact and how much duplication you're willing to accept in your role-based function calls on the site. If you see yourself constantly adding multiple roles to `hasRole()` that may be an indication that it's time to add a single, new role that includes those abilities and remove that duplication in your code.
+Managing roles can be a tricky thing to get right. Spend a little time up front thinking about how they'll interact and how much duplication you're willing to accept in your role-based function calls on the site. If you see yourself constantly adding multiple roles to `hasRole()` that may be an indication that it's time to add a single, new role that includes those abilities and remove that duplication in your code.
 
 ## Wrapping up
 
@@ -2123,7 +2116,7 @@ You made it! Again! In Part 1 of the tutorial we learned about a lot of features
 
 Testing is like wearing a seat belt—99% of the time you don't see any benefit, but that other 1% of the time you're *really* glad you were wearing it. The first time your build stops and prevents some production-crashing bug from going live you'll know that all those hours you spent writing tests were worth it. Getting into the habit of writing tests along with your user-facing code is the greatest gift you can give your future developer self (that, and writing good comments!).
 
-Will there be a Part III of the tutorial? It's a fact that the best things come in threes: Lord of the Rings movies, The Three Stooges, and Super Mario Bros. games on the NES. We've spent a lot of time getting our features working but not much time with optimization and polish. [Premature optimization is the root of all evil](http://wiki.c2.com/?PrematureOptimization), but once your site is live and you've got real users on it you'll get a sense of what could be faster, better or prettier. That's when time spent optimizing can pay huge dividends, but knowing how best to optimize your code...that's a whole different story. The kind of story that Redwood loves to help you write!
+Will there be a Part 3 of the tutorial? It's a fact that the best things come in threes: Lord of the Rings movies, The Three Stooges, and Super Mario Bros. games on the NES. We've spent a lot of time getting our features working but not much time with optimization and polish. [Premature optimization is the root of all evil](http://wiki.c2.com/?PrematureOptimization), but once your site is live and you've got real users on it you'll get a sense of what could be faster, better or prettier. That's when time spent optimizing can pay huge dividends. But, discovering the techniques and best practicies for those optimzations...that's a whole different story. The kind of story that Redwood loves to help you write!
 
 So until next time, a bit of wisdom from Ernest Hemmingway to maybe help combat that next bout of imposter syndrome:
 
@@ -2148,5 +2141,3 @@ What did you think of Redwood? Is it the Next Step for JS frameworks? What can i
 - [Join the community](https://community.redwoodjs.com)
 
 Thanks for following along. Now go out and build something amazing!
-
-
