@@ -358,6 +358,18 @@
 
 ---
 
+![Learn with Jason](https://user-images.githubusercontent.com/300/101706650-70377c80-3a3e-11eb-8bee-b4281efb74cf.png)
+
+# [Let's Learn RedwoodJS!](https://www.learnwithjason.dev/let-s-learn-redwoodjs)
+
+## December 1 2020
+
+### If we want to use the Jamstack, but also we need a database, but also you just want to build things and not waste all your energy configuring them? Anthony Campolo will teach us how Redwoodjs can help!
+
+#### Video
+
+---
+
 ![FSJam Podcast](https://user-images.githubusercontent.com/300/101669947-7100ec00-3a07-11eb-9bc7-4c0d9d6e9bb8.png)
 )
 
@@ -366,5 +378,17 @@
 ## December 2 2020
 
 ### Tom Preston-Werner joins the hosts to do a deep-dive into the RedwoodJS.
+
+#### Podcast
+
+---
+
+![Talking Serverless](https://user-images.githubusercontent.com/300/101706933-0bc8ed00-3a3f-11eb-9f2b-58a8ca986931.png)
+
+# [Episode 30: Anthony Campolo RedwoodJS Contributor](https://www.talkingserverless.io/?wix-music-track-id=5123793965023232&wix-music-comp-id=comp-kdpjg7ey)
+
+## December 5 2020
+
+### In the Talking Serverless podcast, we dive into the world of serverless and talk to people in and around the space who are making contributions to the industry at large.
 
 #### Podcast
