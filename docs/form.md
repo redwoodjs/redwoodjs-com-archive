@@ -321,7 +321,7 @@ You can also pass a function to `transformValue`. For instance, you might remove
 ```javascript
 <TextField
   name='revenue'
-  transformValue={str => parseInt(str.replace(/,/g, ''), 10)}
+  transformValue={(str) => parseInt(str.replace(/,/g, ''), 10)}
   // '42,000,000' => 42000000
 />
 ```
