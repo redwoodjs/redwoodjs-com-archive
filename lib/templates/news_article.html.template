@@ -3,7 +3,7 @@
     <% if (image !== '') { %>
       <img
         src="${image}"
-        class="rounded-t"
+        class="rounded-t border border-gray-400 border-b-0"
       />
     <% } %>
     <div class="p-4 border border-gray-400 rounded-b border-t-0">
