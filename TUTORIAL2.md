@@ -682,7 +682,7 @@ export const Success = ({ comments }) => {
 
 We had to move the `key` prop to the surrounding `<div>`. We then gave each comment a top margin and removed an equal top margin from the entire container to set it back to zero.
 
-> Why a top margin and not a bottom margin? Remember when we said a component should be responsible for *it's own* display? If you add a bottom margin, that's one component influcing the one below it (which it shouldn't care about). Adding a *top* margin is this component moving *itself* down, which means it's again responsible for its own display.
+> Why a top margin and not a bottom margin? Remember when we said a component should be responsible for *its own* display? If you add a bottom margin, that's one component influcing the one below it (which it shouldn't care about). Adding a *top* margin is this component moving *itself* down, which means it's again responsible for its own display.
 
 Let's add a margin around the story itself, similar to what we did in the Comment story:
 
@@ -1520,7 +1520,7 @@ If we put the **CommentForm** in the **Success** component of **CommentsCell** t
 
 We could copy the **CommentForm** to the **Empty** component as well, but as soon as you find yourself duplcating code like this it can be a hint that you need to rethink something about your design.
 
-Maybe **CommentsCell** should really only be responsible for retrieving and displaying comments. Having it also accept user input seems outside of it's primary concern.
+Maybe **CommentsCell** should really only be responsible for retrieving and displaying comments. Having it also accept user input seems outside of its primary concern.
 
 So let's use **BlogPost** as the clearning house for where all these disparate parts are combined—the actual blog post, the form to add a new comment, and the list of comments.
 
@@ -1884,7 +1884,7 @@ We already have a login system for our blog (Netlify Identity, if you followed t
 
 Enter role-based authorization control, thankfully shortened to the common phrase **RBAC**. Authentication says who the person, authorization says what they can do. Currently the blog has the lowest common denominator of authroization: if they are logged in, they can do everything. Let's add a "less than everything, but more than nothing" level.
 
-### Definining Roles
+### Defining Roles
 
 If you remember back in the first part of the tutorial we actually [pointed out](/tutorial/authentication#authentication-generation) that Netlify Identity provides an optional array of roles that you can attach to a user. That's exactly what we need!
 
