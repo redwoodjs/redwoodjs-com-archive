@@ -1884,7 +1884,7 @@ We already have a login system for our blog (Netlify Identity, if you followed t
 
 Enter role-based authorization control, thankfully shortened to the common phrase **RBAC**. Authentication says who the person, authorization says what they can do. Currently the blog has the lowest common denominator of authroization: if they are logged in, they can do everything. Let's add a "less than everything, but more than nothing" level.
 
-### Definining Roles
+### Defining Roles
 
 If you remember back in the first part of the tutorial we actually [pointed out](/tutorial/authentication#authentication-generation) that Netlify Identity provides an optional array of roles that you can attach to a user. That's exactly what we need!
 
