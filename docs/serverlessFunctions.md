@@ -13,11 +13,21 @@ detected the modules are reimported.
 
 You can use code in `./api/src` e.g. `import { db } from 'src/lib/db'`
 
-A lambda function must export a `handler`. You can execute the
-supplied callback function to return a response:
+A lambda function must export a `handler` and return a status code.
 
 ```js
-export const handler = (event, context) => {
-  return { statusCode: 200, body: 'Hello, world' }
+export const handler = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      data: 'Serverless function',
+    }),
+  }
 }
+```
+
+You can also use the generator to create the function.
+
+```terminal
+yarn rw g function <name>
 ```
