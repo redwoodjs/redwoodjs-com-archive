@@ -11,11 +11,13 @@ at `http://localhost:8911/graphql`.
 The `./api` directory is watched for modifications, when they are
 detected the modules are reimported.
 
+You can use code in `./api/src` e.g. `import { db } from 'src/lib/db'`
+
 A lambda function must export a `handler`. You can execute the
 supplied callback function to return a response:
 
 ```js
-export const handler = (event, context, callback) => {
-  return callback(null, { statusCode: 200, body: 'Hello, world' })
+export const handler = (event, context) => {
+  return { statusCode: 200, body: 'Hello, world' }
 }
 ```
