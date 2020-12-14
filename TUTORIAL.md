@@ -2893,7 +2893,7 @@ Want to add some more features to your app? Check out some of our Cookbook recip
 
 Check out our [Roadmap](https://redwoodjs.com/roadmap) to see where we're headed and how we're going to get there.
 If you're interested in helping with anything you see, just let us know over on the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up.
-We want to hit `1.0` by the end of the year. And with your help, we think we can do it!
+We want to hit `1.0` by Redwood's first birthday in March 2021. And with your help, we think we can do it!
 
 ### Help Us!
 
