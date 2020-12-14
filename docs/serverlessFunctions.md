@@ -26,7 +26,7 @@ export const handler = async (event, context) => {
 }
 ```
 
-You can also use the generator to create the function.
+Redwood comes with a generator to help you create serverless functions.
 
 ```terminal
 yarn rw g function <name>
