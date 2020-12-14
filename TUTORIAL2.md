@@ -366,7 +366,7 @@ In this case let's just test that the output matches an exact string. You could 
 
 We'll move the sample post data to a constant and then use it in both the existing test (which tests that not passing the `summary` prop at all results in the full body being rendered) and our new test that tests for the summary version being rendered:
 
-```javascript{7-12,22-31}
+```javascript{6-17,27-37}
 // web/src/components/BlogPost/BlogPost.test.js
 
 import { render, screen } from '@redwoodjs/testing'
@@ -375,7 +375,13 @@ import BlogPost from './BlogPost'
 const POST = {
   id: 1,
   title: 'First post',
-  body: `Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Street art next level umami squid. Hammock hexagon glossier 8-bit banjo. Neutra la croix mixtape echo park four loko semiotics kitsch forage chambray. Semiotics salvia selfies jianbing hella shaman. Letterpress helvetica vaporware cronut, shaman butcher YOLO poke fixie hoodie gentrify woke heirloom.`,
+  body: `Neutra tacos hot chicken prism raw denim, put a bird on it \
+         enamel pin post-ironic vape cred DIY. Street art next level \
+         umami squid. Hammock hexagon glossier 8-bit banjo. Neutra la \
+         croix mixtape echo park four loko semiotics kitsch forage \
+         chambray. Semiotics salvia selfies jianbing hella shaman. \
+         Letterpress helvetica vaporware cronut, shaman butcher YOLO \
+         poke fixie hoodie gentrify woke heirloom.`,
   createdAt: new Date().toISOString(),
 }
 
@@ -393,7 +399,8 @@ describe('BlogPost', () => {
     expect(screen.getByText(POST.title)).toBeInTheDocument()
     expect(
       screen.getByText(
-        'Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Str...'
+        'Neutra tacos hot chicken prism raw denim, put a bird \
+        on it enamel pin post-ironic vape cred DIY. Str...'
       )
     ).toBeInTheDocument()
   })
@@ -433,7 +440,7 @@ Storybook should refresh and our "Generated" Comment story will be ready to go:
 
 Let's think about what we want to ask users for and then display in a comment. How about just their name and the content of the comment itself? And we'll throw in the date/time it was created. Let's update the **Comment** component to accept a `comment` object with those two properties:
 
-```javascript{3,6-7}
+```javascript{3,6-8}
 // web/src/components/Comment/Comment.js
 
 const Comment = ({ comment }) => {
@@ -455,7 +462,7 @@ Once you save that file and Storybook reloads you'll see it blow up:
 
 We need to update the story to include that comment object and pass it as a prop:
 
-```javascript{8-11}
+```javascript{8-12}
 // web/src/components/Comment/Comment.stories.js
 
 import Comment from './Comment'
@@ -483,7 +490,7 @@ Storybook will reload and be much happier:
 
 Let's add a little bit of styling and date conversion to get this **Comment** component looking like a nice, completed design element:
 
-```javascript{3-7,11-18}
+```javascript{3-7,11-19}
 // web/src/components/Comment/Comment.js
 
 const formattedDate = (datetime) => {
@@ -513,7 +520,7 @@ export default Comment
 
 It's tough to see our rounded corners, but rather than adding margin or padding to the component itself (which would add them everywhere we use the component) let's add a margin in the story so it only shows in Storybook:
 
-```javascript{7,15}
+```javascript{7}
 // web/src/components/Comment/Comment.stories.js
 
 import Comment from './Comment'
@@ -521,6 +528,7 @@ import Comment from './Comment'
 export const generated = () => {
   return (
     <div className="m-4">
+
       <Comment
         comment={{
           name: 'Rob Cameron',
@@ -528,8 +536,7 @@ export const generated = () => {
           createdAt: '2020-01-01T12:34:56Z',
         }}
       />
-    </div>
-  )
+    </div>  )
 }
 
 export default { title: 'Components/Comment' }
@@ -551,7 +558,7 @@ The default test that comes with a generated component just makes sure that no e
 
 Let's add a sample comment to the test and check that the various parts are being rendered:
 
-```javascript{9-21}
+```javascript{8-20}
 // web/src/components/Comment.test.js
 
 import { render, screen } from '@redwoodjs/testing'
@@ -564,7 +571,6 @@ describe('Comment', () => {
       body: 'This is my comment',
       createdAt: '2020-01-02T12:34:56Z',
     }
-
     render(<Comment comment={comment} />)
 
     expect(screen.getByText(comment.name)).toBeInTheDocument()
@@ -616,7 +622,7 @@ yarn rw g cell Comments
 
 Storybook updates with a new **CommentsCell** under the **Cells** folder. Let's update the Success story to use the Comment component created earlier, and return all of the fields we'll need for the **Comment** to render:
 
-```javascript{3,9-11,23}
+```javascript{3,9-11,24}
 // web/src/components/CommentsCell/CommentsCell.js
 
 import Comment from 'src/components/Comment'
@@ -649,7 +655,7 @@ We're passing an additional `key` prop to make React happy when iterating over a
 
 If you check Storybook, you'll seen an error. We'll need to update the `mock.js` file that came along for the ride when we generated the Cell so that it returns an array instead of just a simple object with some sample data:
 
-```javascript{4-11}
+```javascript{4-17}
 // web/src/components/CommentsCell/CommentsCell.mock.js
 
 export const standard = (/* vars, { ctx, req } */) => ({
@@ -684,13 +690,13 @@ The gap between the two comments *is* a concern for this component, since it's r
 export const Success = ({ comments }) => {
   return (
     <div className="-mt-8">
+
       {comments.map((comment) => (
         <div key={comment.id} className="mt-8">
           <Comment comment={comment} />
         </div>
       ))}
-    </div>
-  )
+    </div>  )
 }
 ```
 
@@ -700,15 +706,15 @@ We had to move the `key` prop to the surrounding `<div>`. We then gave each comm
 
 Let's add a margin around the story itself, similar to what we did in the Comment story:
 
-```javascript
+```javascript{5}
 // web/src/components/CommentsCell/CommentsCell.stories.js
 
 export const success = () => {
   return Success ? (
     <div className="m-8 mt-16">
+
       <Success {...standard()} />
-    </div>
-  ) : null
+    </div>  ) : null
 }
 ```
 
@@ -774,7 +780,7 @@ Save, and both the **Full** and **Summary** stories should have margins around t
 
 We could use a gap between the end of the blog post and the start of the comments to help separate the two:
 
-```javascript{14-21}
+```javascript{15-17}
 // web/src/components/BlogPost/BlogPost.js
 
 const BlogPost = ({ post, summary = false }) => {
@@ -790,7 +796,7 @@ const BlogPost = ({ post, summary = false }) => {
       </div>
       {!summary && (
         <div className="mt-24">
-         <CommentsCell />
+          <CommentsCell />
         </div>
       )}
     </article>
@@ -857,7 +863,7 @@ And that's nothing to scoff at! As you've probably experienced, a React componen
 
 But in this case we can do a little more to make sure **CommentsCell** is doing what we expect. Let's update the `Success` test in `CommentsCell.test.js` to check that exactly the number of comments we passed in as a prop are rendered. How do we know a comment was rendered? How about if we check that each `comment.body` (the most important part of the comment) is present on the screen:
 
-```javascript
+```javascript{4-9}
 // web/src/components/CommentsCell/CommentsCell.test.js
 
 test('Success renders successfully', async () => {
@@ -876,7 +882,7 @@ We're looping through each `comment` from the mock, the same mock used by Storyb
 
 The functionality we added to `<BlogPost>` says to show the comments for the post if we are *not* showing the summary. We've got a test for both the "full" and "summary" renders already. Generally you want your tests to be testing "one thing" so let's add two additional tests for our new functionality:
 
-```javascript{3,23-30,43-51}
+```javascript{3,22-30,42-49}
 // web/src/components/BlogPost/BlogPost.test.js
 
 import { render, screen, waitFor } from '@redwoodjs/testing'
@@ -1046,7 +1052,7 @@ That command will create both the SDL and the service. And if you take a look ba
 
 "Empty" means the Cell rendered correctly! There just aren't any comments in the database yet. Let's update the **CommentsCell** component to make that "Empty" message a little more friendly:
 
-```javascript
+```javascript{4}
 // web/src/components/CommentsCell/CommentsCell.js
 
 export const Empty = () => {
@@ -1056,7 +1062,7 @@ export const Empty = () => {
 
 That's better. Let's update the test that covers the Empty component render as well:
 
-```javascript
+```javascript{4-5}
 // web/src/components/CommentsCell/CommentsCell.test.js
 
 test('Empty renders a "no comments" message', () => {
@@ -1191,7 +1197,6 @@ export const standard = scenario({
       body: 'String',
       post: { create: { title: 'String', body: 'String' } },
     },
-
     two: {
       name: 'String',
       body: 'String',
@@ -1221,7 +1226,7 @@ When you receive the `scenario` argument in your test you can follow the same ob
 
 Let's replace that scenario data with something more like what we expect to see in our app:
 
-```javascript
+```javascript{4-25}
 // api/src/services/comments/comments.scenarios.js
 
 export const standard = scenario({
@@ -1394,9 +1399,9 @@ import CommentForm from './CommentForm'
 export const generated = () => {
   return (
     <div className="m-4">
+
       <CommentForm />
-    </div>
-  )
+    </div>  )
 }
 
 export default { title: 'Components/CommentForm' }
@@ -1408,7 +1413,7 @@ You can even try submitting the form right in Storybook! If you leave "name" or 
 
 ### Submitting
 
-Submitting the form should use the `createComment` function we added to our services and GraphQL. We'll need to add a mutation to the form component and an `onSubmit` hander to the form so that the create can be called with the data in the form:
+Submitting the form should use the `createComment` function we added to our services and GraphQL. We'll need to add a mutation to the form component and an `onSubmit` hander to the form so that the create can be called with the data in the form. And since `createComment` could return an error we'll add the **FormError** component to display it:
 
 ```javascript{5,11,13-22,25,27-29,35-39,65}
 // web/src/components/CommentForm/CommentForm.js
@@ -1644,7 +1649,7 @@ Now fill out the comment form and submit! And...nothing happened! Believe it or 
 
 ![image](https://user-images.githubusercontent.com/300/100950150-98fcc680-34c0-11eb-8808-944637b5ca1f.png)
 
-Yay! It would have been nicer if that comment appeared as soon as we submitted the comment, so maybe that's a half-yay? Also, the text boxes stayed filled with our name/messages which isn't idea. But, we can fix both of those! One involves telling the GraphQL client (Apollo) that we created a new record and, if it would be so kind, to try the query again that gets the comments for this page, and we'll fix the other by just removing the form from the page completely.
+Yay! It would have been nicer if that comment appeared as soon as we submitted the comment, so maybe that's a half-yay? Also, the text boxes stayed filled with our name/messages which isn't idea. But, we can fix both of those! One involves telling the GraphQL client (Apollo) that we created a new record and, if it would be so kind, to try the query again that gets the comments for this page, and we'll fix the other by just removing the form from the page completely when a new comment is submitted.
 
 ### GraphQL Query Caching
 
@@ -1652,7 +1657,7 @@ Much has been written about the [complexities](https://medium.com/swlh/how-i-met
 
 Along with the variables you pass to a mutation function (`createComment` in our case) there's an option named `refetchQueries` where you pass an array of queries that should be re-run because, presumably, the data you just mutated is reflected in the result of those queries. In our case there's a single query, the **QUERY** export of **CommentsCell**. We'll import that at the top of **CommentForm** (and rename so it's clear what it is to the rest of our code) and then pass it along to the `refetchQueries` option:
 
-```javascript{12,18}
+```javascript{12,17-19}
 // web/src/components/CommentForm/CommentForm.js
 
 import {
@@ -1681,7 +1686,7 @@ Now when we create a comment it appears right away! It might be hard to tell bec
 
 We'll make use of good old fashioned React state to keep track of whether a comment has been posted in the form yet or not. If so, let's remove the comment form completely and show a "Thanks for your comment" message. We'll remove the form and show the message with just a couple of CSS classes:
 
-```javascript{13,19-22,31,33-39,41}
+```javascript{13,20-22,31,33-39,41}
 // web/src/components/CommentForm/CommentForm.js
 
 import {
@@ -1817,7 +1822,9 @@ That completes the backend updates, now we just need to tell **CommentsCell** to
 
 #### Updating the Cell
 
-First we'll need to get the `postId` to the cell itself. Remember when we added a `postId` prop to the **CommentForm** component so it knew which post to attach the new comment to? Let's do the same for **CommentsCell**. Open up **BlogPost**:
+First we'll need to get the `postId` to the cell itself. Remember when we added a `postId` prop to the **CommentForm** component so it knew which post to attach the new comment to? Let's do the same for **CommentsCell**.
+
+Open up **BlogPost**:
 
 ```javascript{18}
 // web/src/components/BlogPost/BlogPost.js
@@ -1871,7 +1878,7 @@ Try going to a couple of different blog posts and now only the first should show
 
 However, you may have noticed that now when you post a comment it no longer appears right away! ARGH! Okay, turns out there's one more thing we need to do. Remember when we told the comment creation logic to `refetchQueries`? We need to include any variables that were present the first time so that it can refetch the proper ones.
 
-#### Updating the Form
+#### Updating the Form Refetch
 
 Okay this is the last fix, promise!
 
@@ -2115,8 +2122,8 @@ Now you can try deleting a comment in the [GraphQL Playground](https://redwoodjs
 
 Having a role like "admin" implies that they can do everything...shouldn't they be able to delete comments as well? Right you are! There are two things we can do here:
 
-* Add "admin" to the list of roles in the `hasRole()` and `requireAuth()` function calls
-* Additionally add the "moderator" role to the list of roles that the admin has in Netlify Identity
+1. Add "admin" to the list of roles in the `hasRole()` and `requireAuth()` function calls
+2. In addition to "admin", also give the "moderator" role to those users in Netlify Identity
 
 By virtue of the name "admin" it really feels like someone should only have that one single roll and be able to do everything. So in this case it feels better to add "admin" to `hasRole()` and `requireAuth()`.
 
@@ -2128,15 +2135,17 @@ Managing roles can be a tricky thing to get right. Spend a little time up front 
 
 You made it! Again! In Part 1 of the tutorial we learned about a lot of features that make it easier to create functionality for your users—cells, forms, scaffolding, and more. In Part 2 we learned more about the features that make life easier for us, the developers: Storybook and testing.
 
-Testing is like wearing a seat belt—99% of the time you don't see any benefit, but that other 1% of the time you're *really* glad you were wearing it. The first time your build stops and prevents some production-crashing bug from going live you'll know that all those hours you spent writing tests were worth it. Getting into the habit of writing tests along with your user-facing code is the greatest gift you can give your future developer self (that, and writing good comments!).
+Testing is like wearing a seat belt: 99% of the time you don't see any benefit, but that other 1% of the time you're *really* glad you were wearing it. The first time your build stops and prevents some production-crashing bug from going live you'll know that all those hours you spent writing tests were worth it. Getting into the habit of writing tests along with your user-facing code is the greatest gift you can give your future developer self (that, and writing good comments!).
 
-Will there be a Part 3 of the tutorial? It's a fact that the best things come in threes: Lord of the Rings movies, The Three Stooges, and Super Mario Bros. games on the NES. We've spent a lot of time getting our features working but not much time with optimization and polish. [Premature optimization is the root of all evil](http://wiki.c2.com/?PrematureOptimization), but once your site is live and you've got real users on it you'll get a sense of what could be faster, better or prettier. That's when time spent optimizing can pay huge dividends. But, discovering the techniques and best practicies for those optimzations...that's a whole different story. The kind of story that Redwood loves to help you write!
+Will there be a Part 3 of the tutorial? It's a fact that the best things come in threes: Lord of the Rings movies, sides of a triangle, and Super Mario Bros. games on the NES. We've spent a lot of time getting our features working but not much time with optimization and polish. [Premature optimization is the root of all evil](http://wiki.c2.com/?PrematureOptimization), but once your site is live and you've got real users on it you'll get a sense of what could be faster, prettier or more efficient. That's when time spent optimizing can pay huge dividends. But, discovering the techniques and best practicies for those optimzations...that's a whole different story. The kind of story that Redwood loves to help you write!
 
-So until next time, a bit of wisdom from Ernest Hemmingway to maybe help combat that next bout of imposter syndrome:
+So until next time, a bit of wisdom to help combat that next bout of every developer's nemesis, imposter syndrome:
 
-> "There is nothing noble in being superior to your fellow man; true nobility is being superior to your former self."
+<div class="font-serif font-light italic">
+"There is nothing noble in being superior to your fellow man; true nobility is being superior to your former self." — Ernest Hemmingway
+</div>
 
-### What's Next?
+### What's Next
 
 Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/docs/local-postgres-setup)? We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
 
@@ -2144,7 +2153,7 @@ Want to add some more features to your app? Check out some of our Cookbook recip
 
 Check out our [Roadmap](https://redwoodjs.com/roadmap) to see where we're headed and how we're going to get there.
 If you're interested in helping with anything you see, just let us know over on the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up.
-We want to hit `1.0` by the end of the year. And with your help, we think we can do it!
+We want to hit `1.0` by Redwood's first birthday in March 2021. And with your help, we think we can do it!
 
 ### Help Us!
 
