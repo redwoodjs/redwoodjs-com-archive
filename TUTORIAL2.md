@@ -312,20 +312,34 @@ describe('BlogPostsCell', () => {
 
 This loops through each post in our `standard()` mock and for each one:
 
-`const truncatedBody = posts[0].body.substring(0, 10)`
-: Create a variable `truncatedBody` containing the first 10 characters of the post body
+<div class="code-dl">
 
-``const regex = new RegExp(`${truncatedBody}.*?\.{3}`)``
-: Create a regular expression which contains those 10 characters followed by any characters `.*?` until it reaches three periods `\.{3}` (the ellipsis at the end of the truncated text)
+```javascript
+const truncatedBody = posts[0].body.substring(0, 10)
+```
+Create a variable `truncatedBody` containing the first 10 characters of the post body
 
-`expect(screen.getByText(post.title)).toBeInTheDocument()`
-: Find the title in the page
+```javascript
+const regex = new RegExp(`${truncatedBody}.*?\.{3}`)
+```
+Create a regular expression which contains those 10 characters followed by any characters `.*?` until it reaches three periods `\.{3}` (the ellipsis at the end of the truncated text)
 
-`expect(screen.queryByText(post.body)).not.toBeInTheDocument()`
-: When trying to find the *full* text of the body, it should *not* be present
+```javascript
+expect(screen.getByText(post.title)).toBeInTheDocument()
+```
+Find the title in the page
 
-`expect(screen.getByText(regex)).toBeInTheDocument()`
-: Find the truncated-body-plus-ellipsis somewhere in the page
+```javascript
+expect(screen.queryByText(post.body)).not.toBeInTheDocument()
+```
+When trying to find the *full* text of the body, it should *not* be present
+
+```javascript
+expect(screen.getByText(regex)).toBeInTheDocument()
+```
+Find the truncated-body-plus-ellipsis somewhere in the page
+
+</div>
 
 As soon as you saved that test file the test should have run and passed! Press `a` to run the whole suite.
 
