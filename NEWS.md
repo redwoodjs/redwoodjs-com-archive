@@ -383,6 +383,18 @@
 
 ---
 
+![RedwoodJS Meetup](https://user-images.githubusercontent.com/2951/92313389-31e27b00-ef80-11ea-9903-b7a04aac2d39.png)
+
+# [December 3rd Recording](https://www.youtube.com/playlist?list=PL1HNO86XPhd0f91WSTILWMDSkNJiqksUM)
+
+## December 3 2020
+
+### Recording of the main session: Introducing the RedwoodJS Core Team, Demo of Redwood v1 End-to-End DX, Presentation and Demo of Everfund.co.uk
+
+#### Meetup
+
+---
+
 ![Talking Serverless](https://user-images.githubusercontent.com/300/101706933-0bc8ed00-3a3f-11eb-9f2b-58a8ca986931.png)
 
 # [Episode 30: Anthony Campolo RedwoodJS Contributor](https://www.talkingserverless.io/?wix-music-track-id=5123793965023232&wix-music-comp-id=comp-kdpjg7ey)
