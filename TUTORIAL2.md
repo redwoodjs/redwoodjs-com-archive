@@ -2094,6 +2094,85 @@ export default Comment
 
 Click "Delete" (as a moderator) and the comment should be removed!
 
+Ideally we'd have both versions of this component (with and without the "Delete" button) present in Storybook so we can iterate on the design. But there's no such thing as "logging in" in Storybook and our code depends on being logged in so we can check our roles...how will that work?
+
+### Mocking currentUser for Storybook
+
+Similar to how we can mock GraphQL calls in Storybook, we can mock user authentication and authorization functionality in a story.
+
+In `Comment.stories.js` let's add a second story for the moderator view of the component (and rename the existing one for clarity):
+
+```javascript{5,19-31}
+// web/src/components/Comment/Comment.stories.js
+
+import Comment from './Comment'
+
+export const defaultView = () => {
+  return (
+    <div className="m-4">
+      <Comment
+        comment={{
+          name: 'Rob Cameron',
+          body: 'This is the first comment!',
+          createdAt: '2020-01-01T12:34:56Z',
+        }}
+      />
+    </div>
+  )
+}
+
+export const moderatorView = () => {
+  return (
+    <div className="m-4">
+      <Comment
+        comment={{
+          name: 'Rob Cameron',
+          body: 'This is the first comment!',
+          createdAt: '2020-01-01T12:34:56Z',
+        }}
+      />
+    </div>
+  )
+}
+
+export default { title: 'Components/Comment' }
+```
+
+The **moderatorView** story needs to have a user available that has the moderator role. We can do that with the `mockCurrentUser` function:
+
+```javascript{4-6}
+// web/src/components/Comment/Comment.stories.js
+
+export const moderatorView = () => {
+  mockCurrentUser({
+    roles: ['moderator'],
+  })
+
+  return (
+    <div className="m-4">
+      <Comment
+        comment={{
+          name: 'Rob Cameron',
+          body: 'This is the first comment!',
+          createdAt: '2020-01-01T12:34:56Z',
+        }}
+      />
+    </div>
+  )
+}
+```
+
+> **Where did `mockCurrentUser()` come from?**
+>
+> Similar to `mockGraphQLQuery()` and `mockGraphQLMutation()`, `mockCurrentUser()` is a global available in Storybook automatically, no need to import.
+
+`mockCurrentUser()` accepts an object and you can put whatever you want in there (it should be similar to what you return in `getCurrentUser()` in `api/src/lib/auth.js`). But since we want `hasRole()` to work properly then the object *must* have a `roles` key that is an array of strings.
+
+Check out **Comment** in Storybook and you should see two stories for Comment, one with a "Delete" button and one without!
+
+![image](https://user-images.githubusercontent.com/300/102554392-99c55900-4079-11eb-94cb-78ee12d72577.png)
+
+
 ### Roles on the API Side
 
 Remember: never trust the client! We need to lock down the backend to be sure that someone can't discover our `deleteComment` GraphQL resource and start deleing comments willy nilly.
