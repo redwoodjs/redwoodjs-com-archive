@@ -662,6 +662,21 @@ None.
 
 #### Add Application hasRole Support in Firebase
 
+#### Auth Providers
+
+Providers can be configured by specifying `logIn(provider)` and `signUp(provider)`.
+
+Supported providers:
+
+- google.com (Default)
+- facebook.com
+- github.com
+- twitter.com
+- microsoft.com
+- apple.com
+
+Email/password authentication is supported by calling `login({ username, password })` and `signUp({ username, password })`.
+
 +++
 
 #### Netlify Identity
