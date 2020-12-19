@@ -371,7 +371,7 @@ You will need to add your Supabase URL and Client API Key to your .env file (e.g
 
 #### Installation
 
-The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+The following CLI command (not implemented, see https://github.com/redwoodjs/redwood/issues/1585) will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
 yarn rw generate auth custom
@@ -385,7 +385,7 @@ If you are trying to implement your own auth, support is very early and limited 
 
 However, there are examples contributed by developers in the Redwood forums and Discord server.
 
-The most complete example (although now a bit outdated) is found in [this forum thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610).
+The most complete example (although now a bit outdated) is found in [this forum thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610). Here's another [helpful message in the thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610/25).
 +++
 
 
