@@ -53,7 +53,7 @@ yarn rw generate scaffold UserExample
 What exactly just happened? Glad you asked.
 
 - `yarn rw db save` creates a snapshot of our UserExample model for our migration
-- `yarn db up` applies the migration and creates a new table in our database called `UserExample`
+- `yarn rw db up` applies the migration and creates a new table in our database called `UserExample`
 - `yarn rw generate scaffold UserExample` tells Redwood to create the necessary Pages, SDL, and Services for the given Model 
 
 Just like that, we are done. No seriously. Visit http://localhost:8910/user-examples to see for yourself. 
