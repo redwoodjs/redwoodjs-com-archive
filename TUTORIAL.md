@@ -172,7 +172,7 @@ Let's give our users something to look at besides the Redwood welcome page. We'l
 
     yarn redwood generate page home /
 
-The command above does three things:
+The command above does four things:
 
 - Creates `web/src/pages/HomePage/HomePage.js`. Redwood takes the name you specified as the first argument, capitalizes it, and appends "Page" to construct your new page component.
 - Creates a test file to go along with this new page component at `web/src/pages/HomePage/HomePage.test.js` with a single, passing test. You _do_ write tests for your components, _don't you??_
