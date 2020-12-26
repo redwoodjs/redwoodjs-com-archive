@@ -44,7 +44,7 @@ Since we just started the suite, and we haven't changed any files yet, it may no
 
 ![image](https://user-images.githubusercontent.com/300/96655360-21991c00-12f2-11eb-9394-c34c39b69f01.png)
 
-More on testing later, but for now just know that this is always what we want to aim for—all green! In fact best pracitices tell us you should not even commit any code unless the test suite passes locally. Not everyone adhears to this quite as strictly as others...*&lt;cough, cough&gt;*
+More on testing later, but for now just know that this is always what we want to aim for—all green! In fact best pracitices tell us you should not even commit any code unless the test suite passes locally. Not everyone adheres to this quite as strictly as others...*&lt;cough, cough&gt;*
 
 ## Introduction to Storybook
 
