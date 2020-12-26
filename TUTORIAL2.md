@@ -6,7 +6,7 @@ If you read the README [closely](https://github.com/redwoodjs/redwood#technologi
 
 While they're totally optional, we believe using these two tools will greatly improve your development experience, making your applications easier to develop, easier to maintain, and easier to share with a larger team. In this second tutorial we're going to show you how.
 
-Oh, and while we're at we'll introduce Role-based Authorization Control (RBAC), which wasn't available when we wrote the first tutorial, but is now, and it's amazing.
+Oh, and while we're at it we'll introduce Role-based Authorization Control (RBAC), which wasn't available when we wrote the first tutorial, but is now, and it's amazing.
 
 ## Prerequisites
 
@@ -1741,7 +1741,7 @@ So it looks like we're just about done here! Try going back to the homepage and 
 
 ![image](https://user-images.githubusercontent.com/300/100950583-7d45f000-34c1-11eb-8975-2c6f22c67843.png)
 
-Every post has the same comments! **WHAT HAVE WE DONE??**
+All posts have the same comments! **WHAT HAVE WE DONE??**
 
 Remember our foreshadowing callout a few pages back, wondering if our `comments()` service which only returns *all* comments could come back to bite us? It finally has: when we get the comments for a post we're not actually getting them for only that post. We're ignoring the `postId` completely and just returning *all* comments in the database! Turns out the old axiom is true: computers only do exactly what you tell them to do. :(
 
