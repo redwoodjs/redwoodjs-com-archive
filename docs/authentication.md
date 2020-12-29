@@ -8,6 +8,7 @@
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
 - [Supabase](https://supabase.io/docs/library/getting-started#reference)
+- [Ethereum](https://github.com/oneclickdapp/ethereum-auth)
 - Custom
 - [Contribute one](https://github.com/redwoodjs/redwood/tree/main/packages/auth), it's SuperEasy™!
 
@@ -362,6 +363,35 @@ yarn rw generate auth supabase
 #### Setup
 
 You will need to add your Supabase URL and Client API Key to your .env file (e.g., `SUPABASE_KEY`). See: https://supabase.io/docs/library/getting-started#reference
+
++++
+
+### Ethereum
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw generate auth ethereum
+```
+
+_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
+
+```bash
+cd web
+yarn add @redwoodjs/auth @oneclickdapp/ethereum-auth
+```
+
+#### Setup
+
+```js
+// web/src/index.js
+
+// TODO
+```
 
 +++
 
