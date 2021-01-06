@@ -2178,7 +2178,9 @@ Check out **Comment** in Storybook and you should see two stories for Comment, o
 
 We can use the same `mockCurrentUser()` function in our Jest tests as well. Let's check that the word "Delete" is present in the component's output when the user is a moderator, and that it's not present if the user has any other role (or no role):
 
-```javascript{5-9,23-36}
+```javascript{6-10,24-37}
+// web/src/components/Comment/Comment.test.js
+
 import { render, screen, waitFor } from '@redwoodjs/testing'
 import Comment from './Comment'
 
