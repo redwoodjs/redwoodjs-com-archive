@@ -1190,7 +1190,7 @@ What is this `scenario()` function? That's made available by Redwood that mostly
 Where does that data come from? Take a look at the `comments.scenarios.js` file which is next door:
 
 ```javascript
-export const standard = scenario({
+export const standard = defineScenario({
   comment: {
     one: {
       name: 'String',
@@ -1206,7 +1206,7 @@ export const standard = scenario({
 })
 ```
 
-This also calls a `scenario()` function, but this one assures that your data structure matches what's defined in Prisma. It just returns the same object you give it.
+This calls a `defineScenario()` function which will check that your data structure matches what's defined in Prisma. This is purely a type-checking feature, it doesn't change the object at all—it just returns the same object you give it.
 
 > **The "standard" scenario**
 >
@@ -1229,7 +1229,7 @@ Let's replace that scenario data with something more like what we expect to see 
 ```javascript{4-25}
 // api/src/services/comments/comments.scenarios.js
 
-export const standard = scenario({
+export const standard = defineScenario({
   comment: {
     jane: {
       name: 'Jane Doe',
@@ -1264,11 +1264,11 @@ Let's add our first service test by making sure that `createComment()` actually 
 ```javascript{7-14}
 // api/src/services/comments/comments.scenarios.js
 
-export const standard = scenario({
+export const standard = defineScenario({
   // ...
 })
 
-export const postOnly = scenario({
+export const postOnly = defineScenario({
   post: {
     bark: {
       title: 'Bark',
@@ -2172,6 +2172,56 @@ Check out **Comment** in Storybook and you should see two stories for Comment, o
 
 ![image](https://user-images.githubusercontent.com/300/102554392-99c55900-4079-11eb-94cb-78ee12d72577.png)
 
+### Mocking currentUser for Jest
+
+We can use the same `mockCurrentUser()` function in our Jest tests as well. Let's check that the word "Delete" is present in the component's output when the user is a moderator, and that it's not present if the user has any other role (or no role):
+
+```javascript{5-9,23-36}
+import { render, screen, waitFor } from '@redwoodjs/testing'
+import Comment from './Comment'
+
+const COMMENT = {
+  name: 'John Doe',
+  body: 'This is my comment',
+  createdAt: '2020-01-02T12:34:56Z',
+}
+
+describe('Comment', () => {
+  it('renders successfully', () => {
+    render(<Comment comment={COMMENT} />)
+
+    expect(screen.getByText(COMMENT.name)).toBeInTheDocument()
+    expect(screen.getByText(COMMENT.body)).toBeInTheDocument()
+    const dateExpect = screen.getByText('2 January 2020')
+    expect(dateExpect).toBeInTheDocument()
+    expect(dateExpect.nodeName).toEqual('TIME')
+    expect(dateExpect).toHaveAttribute('datetime', COMMENT.createdAt)
+  })
+
+  it('does not render a delete button if user is logged out', async () => {
+    render(<Comment comment={COMMENT} />)
+
+    await waitFor(() =>
+      expect(screen.queryByText('Delete')).not.toBeInTheDocument()
+    )
+  })
+
+  it('renders a delete button if the user is a moderator', async () => {
+    mockCurrentUser({ roles: ['moderator'] })
+    render(<Comment comment={COMMENT} />)
+
+    await waitFor(() => expect(screen.getByText('Delete')).toBeInTheDocument())
+  })
+})
+```
+
+We moved the default `comment` object to a constant and then used that in all tests. We also needed to add `waitFor()` since the `hasRole()` check in the Comment itself actually executes some GraphQL calls behind the scenes to figure out who the user is. (The test suite actually makes mocked GraphQL calls but they're still asynchronous and need to be waited for.)
+
+> This isn't the most robust test that's ever been written: what if the sample text of the comment itself had the word "Delete" in it? Whoops! But you get the idea—find some meaningful difference in each possible render state of a component and write a test that verifies its presence (or lack of presence).
+>
+> Think of each conditional in your component as another branch you need to have a test for. In the worst case, each conditional adds ^2 possible render states. If you have three conditionals that's eight possible combinations of output and to be safe you'll want to test them all. When you get yourself into this scenario it's a good sign that it's time to refactor and simplify your component. Maybe into subcomponents where each is responsible for just one of those conditional outputs? You'll still need the same number of total tests, but each component and its test is now operating in isolation and making sure it does one thing, and does it well. This has benefits for your mental model of the codebase as well.
+>
+> It's like finally organizing that junk drawer in the kitchen—you still have the same number of things when you're done, but each thing is in its own space and easier to remember where it lives and find it next time.
 
 ### Roles on the API Side
 
