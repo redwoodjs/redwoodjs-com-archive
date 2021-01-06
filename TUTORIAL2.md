@@ -1757,7 +1757,7 @@ Just like Redwood is split into a web- and api-side, we'll need to make both fro
 
 It would be nice if we could try out sending some arguments to our Prisma calls and be sure that we can request a single post's comments without having to write the whole stack into the app (component/cell, GraphQL, service) just to see if it works.
 
-That's where the Redwood Console command comes in! In a new terminal instance, try this:
+That's where the Redwood Console comes in! In a new terminal instance, try this:
 
 ```terminal
 yarn rw console
