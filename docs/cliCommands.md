@@ -102,6 +102,31 @@ web/src/Routes.js:17:40: error: Page component not found
 web/src/Routes.js:17:19: error (INVALID_ROUTE_PATH_SYNTAX): Error: Route path contains duplicate parameter: "/{id}/{id}"
 ```
 
+## console (alias c)
+
+Launch an interactive Redwood shell (experimental).
+
+> In your shell, be sure to set the `NODE_OPTIONS` env var to `--experimental-repl-await`:
+>
+> ```terminal
+> export NODE_OPTIONS="--experimental-repl-await"
+> ```
+
+```
+yarn rw console
+```
+
+Right now, you can only use the Redwood console to interact with your database:
+
+**Example**
+
+```terminal
+~/redwood-app$ yarn rw console
+yarn run v1.22.4
+> await db.user.findMany()
+> [ { id: 1, email: 'tom@redwoodjs.com', name: 'Tom'  } ]
+```
+
 ## dataMigrate
 
 Data migration tools.
