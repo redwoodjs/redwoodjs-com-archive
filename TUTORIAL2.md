@@ -1753,6 +1753,119 @@ Let's fix it!
 
 Just like Redwood is split into a web- and api-side, we'll need to make both frontend and backend changes to get only some comments to show. Let's start with the backend and do a little test-driven development to make this change.
 
+#### Introducing the Redwood Console
+
+It would be nice if we could try out sending some arguments to our Prisma calls and be sure that we can request a single post's comments without having to write the whole stack into the app (component/cell, GraphQL, service) just to see if it works.
+
+That's where the Redwood Console command comes in! In a new terminal instance, try this:
+
+```terminal
+yarn rw console
+```
+
+You'll see a standard Node console but with most of Redwood's internals already imported and ready to go! Most importantly, that includes the database. Try it out:
+
+```terminal
+> await db.comment.findMany()
+[
+  {
+    id: 1,
+    name: 'Rob',
+    body: 'The first real comment!',
+    postId: 1,
+    createdAt: 2020-12-08T23:45:10.641Z
+  },
+  {
+    id: 2,
+    name: 'Tom',
+    body: 'Here is another comment',
+    postId: 1,
+    createdAt: 2020-12-08T23:46:10.641Z
+  }
+]
+```
+
+(Output will be slightly different, of course, depending on what comments you already have in your database.)
+
+Let's try the syntax that will allow us to only get comments for a given `postId`:
+
+```terminal
+> await db.comment.findMany({ where: { postId: 1 }})
+[
+  {
+    id: 1,
+    name: 'Rob',
+    body: 'The first real comment!',
+    postId: 1,
+    createdAt: 2020-12-08T23:45:10.641Z
+  },
+  {
+    id: 2,
+    name: 'Tom',
+    body: 'Here is another comment',
+    postId: 1,
+    createdAt: 2020-12-08T23:46:10.641Z
+  }
+]
+```
+
+Well it worked, but the list is exactly the same. That's because we've only added comments for a single post! Let's create a comment for a second post and make sure that only those comments for a specific `postId` are returned.
+
+We'll need the `id` of another post. Make sure you have at least two (create one through the admin if you need to). We can get a list of all the existing posts and copy the `id`:
+
+```terminal
+> await db.post.findMany({ select: { id: true } })
+[ { id: 1 }, { id: 2 } ]
+```
+
+Okay, now let's create a comment for that second post via the console:
+
+```terminal
+> await db.comment.create({ data: { name: 'Peter', body: 'I also like leaving comments', postId: 2 } })
+{
+  id: 3,
+  name: 'Peter',
+  body: 'I also like leaving comments',
+  postId: 2,
+  createdAt: 2020-12-08T23:47:10.641Z
+}
+```
+
+Now we'll try our comment query again, once with each `postId`:
+
+```terminal
+> await db.comment.findMany({ where: { postId: 1 }})
+[
+  {
+    id: 1,
+    name: 'Rob',
+    body: 'The first real comment!',
+    postId: 1,
+    createdAt: 2020-12-08T23:45:10.641Z
+  },
+  {
+    id: 2,
+    name: 'Tom',
+    body: 'Here is another comment',
+    postId: 1,
+    createdAt: 2020-12-08T23:46:10.641Z
+  }
+]
+
+> await db.comment.findMany({ where: { postId: 2 }})
+[
+  {
+    id: 3,
+    name: 'Peter',
+    body: 'I also like leaving comments',
+    postId: 2,
+    createdAt: 2020-12-08T23:45:10.641Z
+  },
+
+```
+
+Great! Now that we've tested out the syntax let's use that in the service. You can exit the console by pressing Ctrl-C twice or typing `.exit`
+
 #### Updating the Service
 
 Try running the test suite (or if it's already running take a peek at that terminal window) and make sure all of our tests still pass. The "lowest level" of the api-side is the services, so let's start there. Open up the **comments** service test and let's update it expect a new `postId` argument to be passed to the `comments()` function, the contents of which will be the `postId` of one of the comments that are created in our scenario:
