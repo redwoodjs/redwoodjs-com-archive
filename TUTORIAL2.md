@@ -991,7 +991,7 @@ describe('BlogPost', () => {
 })
 ```
 
-We're introducting a new test function here `waitFor()` which will wait for things like GraphQL queries to finish running before checking for what's been rendered. Since **BlogPost** renders **CommentsCell** we need to wait for the `Success` component of **CommentsCell** to be rendered.
+We're introducting a new test function here, `waitFor()`, which will wait for things like GraphQL queries to finish running before checking for what's been rendered. Since **BlogPost** renders **CommentsCell** we need to wait for the `Success` component of **CommentsCell** to be rendered.
 
 > The summary version of **BlogPost** does *not* render the **CommentsCell**, but we should still wait. Why? If we did mistakenly start including **CommentsCell**, but didn't wait for the render, we would get a falsely passing test—indeed the text isn't on the page but that's because it's still showing the **Loading** component! If we had waited we would have seen the actual comment body get rendered, and the test would (correctly) fail.
 
@@ -999,7 +999,7 @@ Okay we're finally ready to let users create their comments.
 
 ## Adding Comments to the Schema
 
-Let's take a moment to appreciate how amazing this is—we built, designed and tested a completely new component for our app, which displays data from an API call (which would pull that data from a database) without actually having to build any of that backend functionality! Storybook and Jest let us provide fake data so we could get our component working.
+Let's take a moment to appreciate how amazing this is—we built, designed and tested a completely new component for our app, which displays data from an API call (which would pull that data from a database) without actually having to build any of that backend functionality! Redwood let us provide fake data to Storybook and Jest so we could get our component working.
 
 Unfortunately, even with all of this flexibility there's still no such thing as a free lunch. Eventually we're going to have to actually do that backend work. Now's the time.
 
