@@ -4,6 +4,7 @@
 
 - [Netlify Identity Widget](https://github.com/netlify/netlify-identity-widget)
 - [Auth0](https://github.com/auth0/auth0-spa-js)
+- [Azure Active Directory](https://github.com/AzureAD/microsoft-authentication-library-for-js)
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
@@ -217,6 +218,83 @@ See the Auth0 information within this doc's [Auth Provider Specific Integration]
 
 +++
 
+### Azure Active Directory
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw generate auth azureActiveDirectory
+```
+
+_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
+
+```bash
+cd web
+yarn add msal
+```
+
+#### Setup
+
+To get your application credentials, create an [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application (client) ID_ and the _Directory (tenant) ID_.
+
+##### Supported account types
+
+In most cases you want to choose _Accounts in this organizational directory only (Single tenant)_, as this will allow only users in your Azure Active Directory tenant to login to your application. If you want to enable Microsoft accounts to be able to login, choose the bottom alternative.
+
+##### Redirect URIs
+
+Enter allowed redirect urls for the integrations, e.g. `http://localhost:8910`. This will be the `AZURE_ACTIVE_DIRECTORY_REDIRECT_URI` environment variable, and suggestively `AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI`.
+
+##### ID tokens
+
+Under the _Authentication_ tab, tick `ID tokens`.
+
+This allows an application to request a token directly from the authorization endpoint. Checking Access tokens and ID tokens is recommended only if the application has a single-page architecture (SPA). [Learn more about the implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps)
+
+#### Authority
+
+The Authority is a URL that indicates a directory that MSAL can request tokens from which you can read about [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-client-application-configuration#authority). However, you most likely want to have e.g. `https://login.microsoftonline.com/<tenant>` as Authority URL, where `<tenant>` is the Azure Active Directory tenant id. This will be the `AZURE_ACTIVE_DIRECTORY_AUTHORITY` environment variable.
+
+```js
+// web/src/index.js
+import { AuthProvider } from '@redwoodjs/auth'
+import { UserAgentApplication } from 'msal'
+
+const azureActiveDirectoryClient = new UserAgentApplication({
+  auth: {
+    clientId: process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID,
+    authority: process.env.AZURE_ACTIVE_DIRECTORY_AUTHORITY,
+    redirectUri: process.env.AZURE_ACTIVE_DIRECTORY_REDIRECT_URI,
+    postLogoutRedirectUri: process.env.AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI,
+  },
+})
+
+ReactDOM.render(
+  <FatalErrorBoundary page={FatalErrorPage}>
+    <AuthProvider client={azureActiveDirectoryClient} type="azureActiveDirectory">
+      <RedwoodProvider>
+        <Routes />
+      </RedwoodProvider>
+    </AuthProvider>
+  </FatalErrorBoundary>,
+  document.getElementById('redwood-app')
+)
+```
+
+#### Roles
+
+To setup your App Registration with custom roles and have them exposed via the `roles` claim, follow [this documentation](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
+
+#### Login and Logout Options
+
+When using the Azure Active Directory client, `login` take `options` that can be used to override the client config. See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/loginPopup.html) or see [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors).
+
++++
+
 ### Magic.Link
 
 +++ View Installation and Setup
@@ -361,7 +439,7 @@ yarn rw generate auth supabase
 
 #### Setup
 
-You will need to add your Supabase URL and Client API Key to your .env file (e.g., `SUPABASE_KEY`). See: https://supabase.io/docs/library/getting-started#reference
+You will need to add your Supabase URL and Client API Key to your .env file (e.g., `SUPABASE_KEY`). See: <https://supabase.io/docs/library/getting-started#reference>
 
 +++
 
@@ -387,7 +465,6 @@ However, there are examples contributed by developers in the Redwood forums and 
 
 The most complete example (although now a bit outdated) is found in [this forum thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610). Here's another [helpful message in the thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610/25).
 +++
-
 
 ## API
 
