@@ -524,7 +524,7 @@ export default Comment
 
 It's tough to see our rounded corners, but rather than adding margin or padding to the component itself (which would add them everywhere we use the component) let's add a margin in the story so it only shows in Storybook:
 
-```javascript{7,16}
+```javascript{7,15}
 // web/src/components/Comment/Comment.stories.js
 
 import Comment from './Comment'
