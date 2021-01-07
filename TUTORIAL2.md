@@ -247,9 +247,9 @@ Well that didn't take long! Can you guess what we broke?
 
 The test was looking for the full text of the blog post, but remember that in **BlogPostsCell** we had **BlogPost** only display the *summary* of the post. This test is looking for the full text match, which is no longer present on the page.
 
-Let's update the test so that it checks for the expected behavior instead. There are entire books written on the best way to test, so no matter what we decide on testing in this code there will be someone out there to tell us we're doing it wrong. As just one example: the simplest test would be to just copy what's output and use that for the text in the test:
+Let's update the test so that it checks for the expected behavior instead. There are entire books written on the best way to test, so no matter what we decide on testing in this code there will be someone out there to tell us we're doing it wrong. As just one example, the simplest test would be to just copy what's output and use that for the text in the test:
 
-```javascript
+```javascript{7-8}
 // web/src/components/BlogPostsCell.test.js
 
 test('Success renders successfully', async () => {
