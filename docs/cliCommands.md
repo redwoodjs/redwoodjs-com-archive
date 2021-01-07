@@ -113,6 +113,11 @@ Launch an interactive Redwood shell (experimental):
 > ```terminal
 > export NODE_OPTIONS="--experimental-repl-await"
 > ```
+>
+> Alternatively, on Mac or Linux you can pass the env var when you run the command:
+> ```
+> NODE_OPTIONS="--experimental-repl-await" yarn rw console
+> ```
 
 ```
 yarn rw console
