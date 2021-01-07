@@ -1077,7 +1077,7 @@ Note that there is no real database column named `post` in `Comment`—this is s
 db.comment.findUnique({ where: { id: 1 }}).post()
 ```
 
-We also added a convenience `comments` field to `Post` which gives us the same capability in reverse:
+Prisma also added a convenience `comments` field to `Post` which gives us the same capability in reverse:
 
 ```javascript
 db.post.findUnique({ where: { id: 1 }}).comments()
@@ -1145,7 +1145,7 @@ export const comments = () => {
 >
 > Hmmm...
 
-We need to be able to create a comment as well. We'll use the same convention we use in Redwood's generated scaffolds: the create endpoint will accept a single parameter `input` which is an object with the individual model fields:
+We need to be able to create a comment as well. We'll use the same convention that's used in Redwood's generated scaffolds: the create endpoint will accept a single parameter `input` which is an object with the individual model fields:
 
 ```javascript
 // api/src/services/comments/comments.js
@@ -1242,6 +1242,16 @@ describe('comments', () => {
 ```
 
 What is this `scenario()` function? That's made available by Redwood that mostly acts like Jest's built-in `it()` and `test()` functions, but with one important difference: it pre-seeds a test database with data that is then passed to you in the `scenario` argument. You can count on this data existing in the database and being reset between tests in case you make changes to it.
+
+> **In the section on mocks you said relying on data in the database for testing was dumb?**
+>
+> Yes, all things being equal it would be great to not have these tests depend on a piece of software outside of our control.
+>
+> However, the difference here is that in a service almost all of the logic you write will depend on moving data in and out of a database and it's much simpler to just let that code run and *really* access the database, rather than trying to mock and intercept each and every possible call that Prisma could make.
+>
+> Not to mention that Prisma itself is currently under heavy development and implementations could change at any time. Trying to keep pace with those changes and constantly keep mocks in sync would be a nightmare!
+>
+> That being said, if you really wanted to you could use Jest's [mocking utilities](https://jestjs.io/docs/en/mock-functions) and completely mock the Prisma interface abstract the database away completely. But don't say we didn't warn you!
 
 Where does that data come from? Take a look at the `comments.scenarios.js` file which is next door:
 
