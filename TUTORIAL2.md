@@ -8,7 +8,7 @@ While they're totally optional, we believe using these two tools will greatly im
 
 Oh, and while we're at we'll introduce Role-based Authorization Control (RBAC), which wasn't available when we wrote the first tutorial, but is now, and it's amazing.
 
-Why "Redwood's Revenge"? Because all great sequels have "Revenge" in their title. But also this tutorial is focused more on ourselves, the codebase in general, and making our jobs easier. Part 1 of the tutorial was about getting up and running quickly and getting an app out the door for users to start using. Part 2 is about helping us, the developers, build new features quicker and making sure the code we wrote keeps working as intended. And as the old saying goes, the best revenge is living well.
+Why "Redwood's Revenge"? Because all great sequels have "Revenge" in their title. But also this tutorial is focused more on ourselves, the codebase in general, and making our jobs easier. Part 1 of the tutorial was about getting up and running quickly and getting an app out the door for users to start using. Part 2 is about helping us, the developers, build new features quicker and making sure the code we wrote keeps working as intended. And as the old saying goes: the best revenge is living well.
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ We highly recommend going through the first tutorial or at least have built a sl
 * GraphQL & SDLs
 * Services
 
-If you haven't been through the first tutorial, or maybe you went through it on an older version of Redwood (before 0.21.0) you can clone this repo which contains everything built in part 1 and also adds a little styling so it isn't quite so...tough to look at. Don't get us wrong, what we built in Part I had a great personality! We just gave it some hipper clothes and a nice haircut. We used [TailwindCSS](https://tailwindcss.com) to style things up and added a `<div>` or two to give us some additional hooks to hang styling on.
+If you haven't been through the first tutorial, or maybe you went through it on an older version of Redwood (any version less than v0.22.0) you can clone [this repo](https://github.com/redwoodjs/redwood-tutorial) which contains everything built in part 1 and also adds a little styling so it isn't quite so...tough to look at. Don't get us wrong, what we built in Part I had a great personality! We just gave it some hipper clothes and a nice haircut. We used [TailwindCSS](https://tailwindcss.com) to style things up and added a `<div>` or two to give us some additional hooks to hang styling on.
 
 ```terminal
 git clone https://github.com/redwoodjs/redwood-tutorial
@@ -1815,7 +1815,7 @@ We'll need the `id` of another post. Make sure you have at least two (create one
 
 ```terminal
 > await db.post.findMany({ select: { id: true } })
-[ { id: 1 }, { id: 2 } ]
+[ { id: 1 }, { id: 2 }, { id: 3 } ]
 ```
 
 Okay, now let's create a comment for that second post via the console:
