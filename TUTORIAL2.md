@@ -1381,6 +1381,18 @@ We were able to use the `id` of the post that we created in our scenario because
 
 We'll test that all the fields we give to the `createComment()` function are actually created in the database, and for good measure just make sure that `createdAt` is set to a non-null value. We could test that the actual timestamp is correct, but that involves freezing the Javascript Date object so that no matter how long the test takes, you can still compare the value to `new Date` which is right *now*, down to the millisecond. While possible, it's beyond the scope of our easy, breezy tutorial since it gets [very gnarly](https://codewithhugo.com/mocking-the-current-date-in-jest-tests/)!
 
+> **What's up with the names for scenario data? posts.bark? Really?**
+>
+> This makes reasoning about your tests much nicer! Which of these would you rather work with:
+>
+>   "`claire` paid for an `ebook` using her `visa` credit card."
+>
+> or:
+>
+>   "`user[3]` paid for `product[0]` using their `cards[2]` credit card?
+>
+> If you said the second one, then you probably hate kittens and sleep on broken glass.
+
 Okay, our comments service is feeling pretty solid now that we have our tests in place. The last step is add a form so that users can actually leave a comment on a blog post.
 
 ## Creating a Comment Form
