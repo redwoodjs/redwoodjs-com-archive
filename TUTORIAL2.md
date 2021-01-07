@@ -1338,7 +1338,7 @@ export const postOnly = defineScenario({
   post: {
     bark: {
       title: 'Bark',
-      body: 'Sphinx of black quartz, judge my vow.'
+      body: "A tree's bark is worse than its bite"
     }
   }
 })
@@ -1362,13 +1362,13 @@ describe('comments', () => {
     const comment = await createComment({
       input: {
         name: 'Billy Bob',
-        body: "A tree's bark is worse than its bite",
+        body: 'What is your favorite tree bark?',
         postId: scenario.post.bark.id
       }
     })
 
     expect(comment.name).toEqual('Billy Bob')
-    expect(comment.body).toEqual("A tree's bark is worse than its bite")
+    expect(comment.body).toEqual('What is your favorite tree bark?')
     expect(comment.postId).toEqual(scenario.post.bark.id)
     expect(comment.createdAt).not.toEqual(null)
   })
