@@ -353,6 +353,58 @@ As soon as you saved that test file the test should have run and passed! Press `
 
 To double check that we're testing what we think we're testing, open up `BlogPostCell.js` and remove the `summary={true}` prop (or set it to `false`)—the test will fail: now the full body of the post *is* on the page and `expect(screen.queryByText(post.body)).not.toBeInTheDocument()` *is* in the document. Make sure to put the `summary={true}` back before we continue!
 
+### What's the Deal with Mocks?
+
+Mocks are used when you want to define the data that would normally be returned by GraphQL. In cells, a GraphQL call goes out (the query defined by **QUERY**) and returned to the **Success** component. We don't want to have to run the api-side server and have real data in the database just for Storybook or our tests, so Redwood intercepts those GraphQL calls and returns the data from the mock instead.
+
+The names you give your mocks are then available in your tests and stories files. Just import the one you want to use (`standard` is imported for you in generated test files) and you can use the spread syntax to pass it through to your **Success** component.
+
+Let's say our mock looks like this:
+
+```javascript
+export const standard = () => ({
+  posts: [
+    {
+      id: 1,
+      title: 'First Post',
+      body: `Neutra tacos hot chicken prism raw denim...`,
+      createdAt: '2020-01-01T12:34:56Z',
+    },
+    {
+      id: 2,
+      title: 'Second Post',
+      body: `Master cleanse gentrify irony put a bird on it...`,
+      createdAt: '2020-01-01T12:34:56Z',
+    },
+  ],
+})
+```
+
+The first key in the object that's returned is named `posts`. That's also the name of the prop that's expected to be sent into **Success** in the cell:
+
+```javascript{1}
+export const Success = ({ posts }) => {
+  return (
+    {posts.map((post) => <BlogPost post={post} />)}
+  )
+}
+```
+
+So we can just spread the result of `standard()` in a story or test when using the **Success** component and everything works out:
+
+```javascript{5}
+import { Success } from './BlogPostsCell'
+import { standard } from './BlogPostsCell.mock'
+
+export const success = () => {
+  return Success ? <Success {...standard()} /> : null
+}
+
+export default { title: 'Cells/BlogPostsCell' }
+```
+
+You can have as many mocks as you want, just import the names of the ones you need and send them in as props to your components.
+
 ### Testing BlogPost
 
 Our test suite is passing again but it's a trick! We never added a test for the actual `summary` functionality that we added to the **BlogPost** component. We tested that **BlogPostCell** requests that **BlogPost** return a summary, but what it means to render a summary is knowledge that only **BlogPost** contains.
@@ -602,11 +654,11 @@ Let's think about where our comments are being displayed. Probably not on the ho
 
 > **Couldn't the query for the blog post page also fetch the comments?**
 >
-> Yes, it could! But the idea behind Cells is to make components even more [composable](https://en.wikipedia.org/wiki/Composability) by having them be responsible for their own data fetching *and* display. If we rely on a blog post to fetch the comments then the new Comments component we're about to create now requires something else to fetch the comments and pass them in. If we re-use the Comments component somewhere, now we're fetching comments in two different places.
+> Yes, it could! But the idea behind Cells is to make components even more [composable](https://en.wikipedia.org/wiki/Composability) by having them be responsible for their own data fetching *and* display. If we rely on a blog post to fetch the comments then the new Comments component we're about to create now requires something *else* to fetch the comments and pass them in. If we re-use the Comments component somewhere, now we're fetching comments in two different places.
 >
 > **But what about the Comment component we just made, why doesn't that fetch its own data?**
 >
-> There aren't any instances I (the author) could think of where we would ever want to display only a single comment in isolation—it would always be a list of all comments on a post. If displaying a single comment was common for your use case then it could definitely be converted to a **CommentCell** and have it responsible for pulling the data for that single comment itself. But keep in mind that if you have 50 comments on a blog post, that's now 50 GraphQL calls that need to go out, one for each comment. There's always a tradeoff!
+> There aren't any instances I (the author) could think of where we would ever want to display only a single comment in isolation—it would always be a list of all comments on a post. If displaying a single comment was common for your use case then it could definitely be converted to a **CommentCell** and have it responsible for pulling the data for that single comment itself. But keep in mind that if you have 50 comments on a blog post, that's now 50 GraphQL calls that need to go out, one for each comment. There's always a trade-off!
 >
 > **Then why make a standalone Comment component at all? Why not just do all the display in the CommentsCell?**
 >
@@ -722,7 +774,7 @@ export const success = () => {
 }
 ```
 
-> Why both `m-8` and `mt-16`? One of the fun rules of CSS is that if a parent and child both have margins, but no border or padding between them, their `margin-top` and `margin-bottom` [collapses](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing). So even though the story container will have a margin of 8 (which equals 2rem) remember that the container for CommentsCell has a -8 margin (-2rem). Those two collapse and essentially cancel each other out to 0 top margin. Setting `mt-16` sets a 4rem margin, which after subtracing 2rem leaves us with 2rem, which is what we wanted to start with!
+> Why both `m-8` and `mt-16`? One of the fun rules of CSS is that if a parent and child both have margins, but no border or padding between them, their `margin-top` and `margin-bottom` [collapses](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing). So even though the story container will have a margin of 8 (which equals 2rem) remember that the container for CommentsCell has a -8 margin (-2rem). Those two collapse and essentially cancel each other out to 0 top margin. Setting `mt-16` sets a 4rem margin, which after subtracting 2rem leaves us with 2rem, which is what we wanted to start with!
 
 ![image](https://user-images.githubusercontent.com/300/95800481-4cf58880-0cac-11eb-9457-ff3f1f0d34b8.png)
 
