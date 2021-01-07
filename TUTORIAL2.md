@@ -1020,13 +1020,13 @@ This gives us a classic database model:
 Note that there is no real database column named `post` in `Comment`—this is special syntax for Prisma to know how to connect the models together and for you to reference that connection. When you query for a `Comment` using Prisma you can get access to the attached `Post` using that name:
 
 ```javascript
-db.comment.findOne({ where: { id: 1 }}).post()
+db.comment.findUnique({ where: { id: 1 }}).post()
 ```
 
 We also added a convenience `comments` field to `Post` which gives us the same capability in reverse:
 
 ```javascript
-db.post.findOne({ where: { id: 1 }}).comments()
+db.post.findUnique({ where: { id: 1 }}).comments()
 ```
 
 ### Running the Migration
