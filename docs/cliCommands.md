@@ -104,7 +104,9 @@ web/src/Routes.js:17:19: error (INVALID_ROUTE_PATH_SYNTAX): Error: Route path co
 
 ## console (alias c)
 
-Launch an interactive Redwood shell (experimental).
+Launch an interactive Redwood shell (experimental):
+- This has not yet been tested on Windows. 
+- The Prisma Client must be generated _prior_ to running this command, e.g. `yarn rw db up`. This is a known issue.
 
 > In your shell, be sure to set the `NODE_OPTIONS` env var to `--experimental-repl-await`:
 >
