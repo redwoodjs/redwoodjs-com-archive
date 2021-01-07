@@ -88,12 +88,12 @@ export const generated = () => {
         id: 1,
         title: 'First Post',
         body: `Neutra tacos hot chicken prism raw denim, put a bird on it
-        enamel pin
-              post-ironic vape cred DIY. Street art next level umami squid. Hammock
-              hexagon glossier 8-bit banjo. Neutra la croix mixtape echo park four
-              loko semiotics kitsch forage chambray. Semiotics salvia selfies jianbing
-              hella shaman. Letterpress helvetica vaporware cronut, shaman butcher
-              YOLO poke fixie hoodie gentrify woke heirloom.`,
+              enamel pin post-ironic vape cred DIY. Street art next level
+              umami squid. Hammock hexagon glossier 8-bit banjo. Neutra
+              la croix mixtape echo park four loko semiotics kitsch forage
+              chambray. Semiotics salvia selfies jianbing hella shaman.
+              etterpress helvetica vaporware cronut, shaman butcher YOLO
+              poke fixie hoodie gentrify woke heirloom.`,
         createdAt: '2020-01-01T12:34:45Z'
       }}
     />
@@ -150,7 +150,7 @@ export default BlogPost
 
 We'll pass an additional `summary` prop to the component to let it know if should show just the summary or the whole thing. We default it to `false` to preserve the existing behavior—always showing the full body.
 
-Now in the story, let's create a `summary` story that uses **BlogPost** the same way that `generated` does, but adds the new prop. We'll take the content of the sample post and put that in a constant that both stories will use. We'll also rename `generated` to `full` to make it clear what's different between the two:
+Now in the Storybook story let's create a `summary` story that uses **BlogPost** the same way that `generated` does, but adds the new prop. We'll take the content of the sample post and put that in a constant that both stories will use. We'll also rename `generated` to `full` to make it clear what's different between the two:
 
 ```javascript{5-14,16-18,20-22}
 // web/components/BlogPost/BlogPost.stories.js
