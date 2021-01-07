@@ -370,7 +370,7 @@ In this case let's just test that the output matches an exact string. You could 
 
 We'll move the sample post data to a constant and then use it in both the existing test (which tests that not passing the `summary` prop at all results in the full body being rendered) and our new test that checks for the summary version being rendered:
 
-```javascript{6-17,21 23-24,27-37}
+```javascript{6-17,21,23-24,27-37}
 // web/src/components/BlogPost/BlogPost.test.js
 
 import { render, screen } from '@redwoodjs/testing'
