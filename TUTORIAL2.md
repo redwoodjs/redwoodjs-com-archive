@@ -980,6 +980,7 @@ describe('BlogPost', () => {
     ).toBeInTheDocument()
   })
 
+
   it('does not render comments when displaying a summary', async () => {
     const comment = standard().comments[0]
     render(<BlogPost post={POST} summary={true} />)
