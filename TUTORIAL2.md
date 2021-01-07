@@ -423,12 +423,12 @@ What's our blog missing? Comments. Let's add a simple comment engine so people c
 their completely rational, well-reasoned comments on our blog posts. It's the internet,
 what could go wrong?
 
-There are a couple of ways we could go about building this new feature:
+There are two main features we need to build:
 
-1. Start with the form and then the comment display
-2. Start with the comment display and then add the form
+1. Comment form and creation
+2. Comment retrieval and display
 
-To ease into things, let's start with the fetching and displaing comments first and then we'll move on to more complex work of adding a form and service to save data. Of course, this is Redwood, so even forms and services aren't *that* complex!
+Which order we build them in is up to us. To ease into things, let's start with the fetching and displaing comments first and then we'll move on to more complex work of adding a form and service to create a new comment. Of course, this is Redwood, so even forms and services aren't *that* complex!
 
 ### Storybook
 
