@@ -261,15 +261,15 @@ test('Success renders successfully', async () => {
 })
 ```
 
-But the number of characters we truncate to could be changed, so how do we encapsulate that in our test? Or should we? The number of characters is in the **BlogPost** component, which this one shouldn't know about. Even if we refactored the `truncate` function into a shared place and imported it into both **BlogPost** and this test, the test will still be knowing too much about **BlogPost**—why should it know the internals of **BlogPost** and that it's making use of this `truncate` function at all? It shouldn't!
+But the number of characters we truncate to could be changed, so how do we encapsulate that in our test? Or should we? The number of characters is in the **BlogPost** component, which this one shouldn't know about. Even if we refactored the `truncate()` function into a shared place and imported it into both **BlogPost** and this test, the test will still be knowing too much about **BlogPost**—why should it know the internals of **BlogPost** and that it's making use of this `truncate()` function at all? It shouldn't!
 
 Let's compromise—by virtue of the fact that this functionality has a prop called "summary" we can guess that it's doing *something* to shorten the text. So what if we test three things that we can make reasonable assumptions about right now:
 
 1. The full body of the post body *is not* present
 2. But, at least the first couple of words of the post *are* present
-3. The text that is shown ends in `...`
+3. The text that is shown ends in "..."
 
-This gives us a buffer if we decide to truncate to something like 25 words, or even if we go up to a couple of hundred. What it *doesn't* encompass, however, is the case where the body of the blog post is shorter than the truncate limit. In that case the full text would be present, and we should probably update the `truncate` function to not add the `...` in that case. We'll leave adding that functionality and test case up to you to add in your free time. ;)
+This gives us a buffer if we decide to truncate to something like 25 words, or even if we go up to a couple of hundred. What it *doesn't* encompass, however, is the case where the body of the blog post is shorter than the truncate limit. In that case the full text would be present, and we should probably update the `truncate()` function to not add the `...` in that case. We'll leave adding that functionality and test case up to you to add in your free time. ;)
 
 ### Adding the Test
 
@@ -349,7 +349,7 @@ As soon as you saved that test file the test should have run and passed! Press `
 
 > **What's the difference between `getByText()` and `queryByText()`?**
 >
-> `getByText()` will throw an error if the text isn't found in the document, whereas `queryByText()` will  return `null`. You can read more about these in the [DOM Testing Library Queries](https://testing-library.com/docs/dom-testing-library/api-queries) docs.
+> `getByText()` will throw an error if the text isn't found in the document, whereas `queryByText()` will  return `null` and let you continue with your testing (and is one way to test that some text is *not* present on the page). You can read more about these in the [DOM Testing Library Queries](https://testing-library.com/docs/dom-testing-library/api-queries) docs.
 
 To double check that we're testing what we think we're testing, open up `BlogPostCell.js` and remove the `summary={true}` prop (or set it to `false`)—the test will fail: now the full body of the post *is* on the page and `expect(screen.queryByText(post.body)).not.toBeInTheDocument()` *is* in the document. Make sure to put the `summary={true}` back before we continue!
 
@@ -361,16 +361,16 @@ When you get into the flow of building your app it can be very easy to overlook 
 
 The summary functionality in **BlogPost** is pretty simple, but there are a couple of different ways we could test it:
 
-* Export the `truncate` function and test it directly
+* Export the `truncate()` function and test it directly
 * Test the final rendered state of the component
 
-In this case `truncate` "belongs to" **BlogPost** and the outside world really shouldn't need to worry about it or know that it exists. If we came to a point in development where another component needed to truncate text then that would be a perfect time to move this function to a shared location and import it into both components that need it. `truncate` could then have its own dedicated test. But for now let's keep our separation of concerns and test the one thing that's "public" about this component—the result of the render.
+In this case `truncate()` "belongs to" **BlogPost** and the outside world really shouldn't need to worry about it or know that it exists. If we came to a point in development where another component needed to truncate text then that would be a perfect time to move this function to a shared location and import it into both components that need it. `truncate()` could then have its own dedicated test. But for now let's keep our separation of concerns and test the one thing that's "public" about this component—the result of the render.
 
 In this case let's just test that the output matches an exact string. You could spin yourself in circles trying to refactor the code to make it absolutely bulletproof to code changes breaking the tests, but will you ever actually need that level of flexibility? It's always a trade-off!
 
-We'll move the sample post data to a constant and then use it in both the existing test (which tests that not passing the `summary` prop at all results in the full body being rendered) and our new test that tests for the summary version being rendered:
+We'll move the sample post data to a constant and then use it in both the existing test (which tests that not passing the `summary` prop at all results in the full body being rendered) and our new test that checks for the summary version being rendered:
 
-```javascript{6-17,27-37}
+```javascript{6-17,21,27-37}
 // web/src/components/BlogPost/BlogPost.test.js
 
 import { render, screen } from '@redwoodjs/testing'
@@ -379,12 +379,12 @@ import BlogPost from './BlogPost'
 const POST = {
   id: 1,
   title: 'First post',
-  body: `Neutra tacos hot chicken prism raw denim, put a bird on it \
-         enamel pin post-ironic vape cred DIY. Street art next level \
-         umami squid. Hammock hexagon glossier 8-bit banjo. Neutra la \
-         croix mixtape echo park four loko semiotics kitsch forage \
-         chambray. Semiotics salvia selfies jianbing hella shaman. \
-         Letterpress helvetica vaporware cronut, shaman butcher YOLO \
+  body: `Neutra tacos hot chicken prism raw denim, put a bird on it
+         enamel pin post-ironic vape cred DIY. Street art next level
+         umami squid. Hammock hexagon glossier 8-bit banjo. Neutra la
+         croix mixtape echo park four loko semiotics kitsch forage
+         chambray. Semiotics salvia selfies jianbing hella shaman.
+         Letterpress helvetica vaporware cronut, shaman butcher YOLO
          poke fixie hoodie gentrify woke heirloom.`,
   createdAt: new Date().toISOString(),
 }
