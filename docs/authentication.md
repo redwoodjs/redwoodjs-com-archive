@@ -447,7 +447,7 @@ Update your .env file with the following settings supplied when you created your
 
 You can find these values in your project's dashboard under Settings -> API.
 
-See: <https://supabase.io/docs/library/getting-started#reference>
+For full client docs, see: <https://supabase.io/docs/library/getting-started#reference>
 
 +++
 
