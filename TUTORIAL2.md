@@ -1966,7 +1966,7 @@ Try running the test suite (or if it's already running take a peek at that termi
 >
 > There are no hard and fast rules here, but generally the farther down you put your business logic (the code that deals with moving and manipulating data) the easier it will be to build and maintain your application. Redwood encourages you to put your business logic in services since they're "closest" to the data and behind the GraphQL interface.
 
- Open up the **comments** service test and let's update it expect a new `postId` argument to be passed to the `comments()` function, the contents of which will be the `postId` of one of the comments that are created in our scenario:
+ Open up the **comments** service test and let's update it expect the `postId` argument to be passed to the `comments()` function like we tested out in the console:
 
 ```javascript{4}
 // api/src/services/comments/comments.test.js
@@ -2085,7 +2085,7 @@ export const QUERY = gql`
 
 Where does this magical `$postId` come from? Redwood is nice enough to automatically provide it to you since you passed it in as a prop when you called the component!
 
-Try going to a couple of different blog posts and now only the first should show comment(s). You can add a comment to each blog post individually and they'll stick to their proper owners:
+Try going to a couple of different blog posts and you should see only comments associated to the proper posts (including the one we created in the console!). You can add a comment to each blog post individually and they'll stick to their proper owners:
 
 ![image](https://user-images.githubusercontent.com/300/100954162-de24f680-34c8-11eb-817b-0a7ad802f28b.png)
 
@@ -2116,7 +2116,7 @@ Imagine a few weeks in the future of our blog when every post hits the front pag
 
 We already have a login system for our blog (Netlify Identity, if you followed the first tutorial), but right now it's all-or-nothing: you either get access to create blog posts, or you don't. In this case our comment moderator(s) will need logins so that we know who they are, but we're not going let them create new blog posts. We need some kind of role that we can give to our two kinds of users so we can distinguish them from one another.
 
-Enter role-based authorization control, thankfully shortened to the common phrase **RBAC**. Authentication says who the person, authorization says what they can do. Currently the blog has the lowest common denominator of authroization: if they are logged in, they can do everything. Let's add a "less than everything, but more than nothing" level.
+Enter role-based authorization control, thankfully shortened to the common phrase **RBAC**. Authentication says who the person is, authorization says what they can do. Currently the blog has the lowest common denominator of authroization: if they are logged in, they can do everything. Let's add a "less than everything, but more than nothing" level.
 
 ### Defining Roles
 
