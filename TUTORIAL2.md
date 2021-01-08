@@ -2472,7 +2472,7 @@ export const deleteComment = ({ id }) => {
 }
 ```
 
-Now you can try deleting a comment in the [GraphQL Playground](https://redwoodjs.com/tutorial/saving-data.html#graphql-playground) and see that a delete no longer works without authorization:
+Now you can try deleting a comment in the [GraphQL Playground](https://redwoodjs.com/tutorial/saving-data.html#graphql-playground) and see that a delete no longer works without authorization.
 
 ### Last Word on Roles
 
@@ -2503,17 +2503,15 @@ So until next time, a bit of wisdom to help combat that next bout of every devel
 
 ### What's Next
 
-Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/docs/local-postgres-setup)? We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
+Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
 
 ### Roadmap
 
-Check out our [Roadmap](https://redwoodjs.com/roadmap) to see where we're headed and how we're going to get there.
-If you're interested in helping with anything you see, just let us know over on the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up.
-We want to hit `1.0` by Redwood's first birthday in March 2021. And with your help, we think we can do it!
+Check out our [Roadmap](https://redwoodjs.com/roadmap) to see where we're headed and how we're going to get there. If you're interested in helping with anything you see, just let us know over on the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up. We want to hit `1.0` by Redwood's first birthday in March 2021. And with your help, we think we can do it!
 
 ### Help Us!
 
-What did you think of Redwood? Is it the Next Step for JS frameworks? What can it do better? We've got a lot more planned. Want to help us build these upcoming features?
+What do you think of Redwood? Is it the Next Step for JS frameworks? What can it do better? We've got a lot more planned. Want to help us build these upcoming features?
 
 - [Open a PR](https://github.com/redwoodjs/redwood/pulls)
 - [Write some docs](/docs/introduction)
