@@ -2128,9 +2128,21 @@ If you remember back in the first part of the tutorial we actually [pointed out]
 
 If you started with your own blog code from Part 1 of the tutorial and already have it deployed on Netlify, you're ready to continue! If you cloned the [redwood-tutorial](https://github.com/redwoodjs/redwood-tutorial) code from GitHub you'll need to [create a Netlify site and deploy it](/tutorial/deployment), then [enable Netlify Identity](/tutorial/authentication#netlify-identity-setup) as described in the first part of the tutorial.
 
+> If you don't want to go through getting Netlify Identity working, but still want to follow along, you can simulate the roles returned by Netlify by just hard-coding them into `/api/src/lib/auth.js`. Just have the `getCurrentUser()` function return a simple object that contains a `roles` property:
+>
+> ```javascript
+> // api/src/lib/auth.js
+>
+> export const getCurrentUser = () => {
+>   return { email: 'jon.doe@example.com', roles: ['moderator'] }
+> }
+> ```
+>
+> That will get auth and roles working in development mode. If you want to simulate being logged out just return `null` instead of that object.
+
 First we'll want to create a new user that will represent the comment moderator. You can use a completely different email address (if you have one), but if not you can use **The Plus Trick** to create a new, unique email address as far as Netlify is concerned, but that is actually the same as your original email address! **Note that not all email providers support this syntax, but the big ones like Gmail do.**
 
-> The Plus Trick is a very handy feature of the email standard known as a "boxname", the idea being that you may have other inboxes besides one just named "Inbox" and by adding +something to your email address you can specify which inbox the mail should be sorted into. They don't appear to be in common usage these days, but they are ridiculously helpful for us developers when we're constantly needing new email addresses for testing!
+> The Plus Trick is a very handy feature of the email standard known as a "boxname", the idea being that you may have other incoming boxes besides one just named "Inbox" and by adding +something to your email address you can specify which box the mail should be sorted into. They don't appear to be in common usage these days, but they are ridiculously helpful for us developers when we're constantly needing new email addresses for testing!
 >
 > Just append +something to your email address before the @:
 >
