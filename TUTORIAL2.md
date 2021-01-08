@@ -1809,6 +1809,10 @@ const CommentForm = ({ postId }) => {
         onSubmit={onSubmit}
       >
       //...
+      </Form>
+    </div>
+  )
+}
 ```
 
 ![image](https://user-images.githubusercontent.com/300/100949950-2d1a5e00-34c0-11eb-8c1c-3c9f925c6ecb.png)
