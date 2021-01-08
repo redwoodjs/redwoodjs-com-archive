@@ -1827,7 +1827,7 @@ Let's fix it!
 
 ### Returning Only Some Comments
 
-Just like Redwood is split into a web- and api-side, we'll need to make both frontend and backend changes to get only some comments to show. Let's start with the backend and do a little test-driven development to make this change.
+We'll need to make both frontend and backend changes to get only some comments to show. Let's start with the backend and do a little test-driven development to make this change.
 
 #### Introducing the Redwood Console
 
@@ -1944,7 +1944,25 @@ Great! Now that we've tested out the syntax let's use that in the service. You c
 
 #### Updating the Service
 
-Try running the test suite (or if it's already running take a peek at that terminal window) and make sure all of our tests still pass. The "lowest level" of the api-side is the services, so let's start there. Open up the **comments** service test and let's update it expect a new `postId` argument to be passed to the `comments()` function, the contents of which will be the `postId` of one of the comments that are created in our scenario:
+Try running the test suite (or if it's already running take a peek at that terminal window) and make sure all of our tests still pass. The "lowest level" of the api-side is the services, so let's start there.
+
+> One way to think about your codebase is a "top to bottom" view where the top is what's "closest" to the user and what they interact with (React components) and the bottom is the "farthest" thing from them, in the case of a web application that would usually be a database or other data store (behind a third party API, perhaps). One level above the database are the services, which directly communicate to the database:
+>
+> ```
+>    Browser
+>       |
+>     React    ─┐
+>       |       │
+>    Graph QL   ├─ Redwood
+>       |       │
+>    Services  ─┘
+>       |
+>    Database
+> ```
+>
+> There are no hard and fast rules here, but generally the farther down you put your business logic (the code that deals with moving and manipulating data) the easier it will be to build and maintain your application. Redwood encourages you to put your business logic in services since they're "closest" to the data and behind the GraphQL interface.
+
+ Open up the **comments** service test and let's update it expect the `postId` argument to be passed to the `comments()` function like we tested out in the console:
 
 ```javascript{4}
 // api/src/services/comments/comments.test.js
@@ -2063,7 +2081,7 @@ export const QUERY = gql`
 
 Where does this magical `$postId` come from? Redwood is nice enough to automatically provide it to you since you passed it in as a prop when you called the component!
 
-Try going to a couple of different blog posts and now only the first should show comment(s). You can add a comment to each blog post individually and they'll stick to their proper owners:
+Try going to a couple of different blog posts and you should see only comments associated to the proper posts (including the one we created in the console!). You can add a comment to each blog post individually and they'll stick to their proper owners:
 
 ![image](https://user-images.githubusercontent.com/300/100954162-de24f680-34c8-11eb-817b-0a7ad802f28b.png)
 
@@ -2094,7 +2112,7 @@ Imagine a few weeks in the future of our blog when every post hits the front pag
 
 We already have a login system for our blog (Netlify Identity, if you followed the first tutorial), but right now it's all-or-nothing: you either get access to create blog posts, or you don't. In this case our comment moderator(s) will need logins so that we know who they are, but we're not going let them create new blog posts. We need some kind of role that we can give to our two kinds of users so we can distinguish them from one another.
 
-Enter role-based authorization control, thankfully shortened to the common phrase **RBAC**. Authentication says who the person, authorization says what they can do. Currently the blog has the lowest common denominator of authorization: if they are logged in, they can do everything. Let's add a "less than everything, but more than nothing" level.
+Enter role-based authorization control, thankfully shortened to the common phrase **RBAC**. Authentication says who the person is, authorization says what they can do. Currently the blog has the lowest common denominator of authorization: if they are logged in, they can do everything. Let's add a "less than everything, but more than nothing" level.
 
 ### Defining Roles
 
@@ -2102,13 +2120,25 @@ If you remember back in the first part of the tutorial we actually [pointed out]
 
 > **What about other auth providers besides Netlify?**
 >
-> Some auth providers have a similar data structure that you can attach to a user, but if not you'll need to rely on your own database. Read more in the [RBAC Cookbook](/cookbook/role-based-access-control-rbac.html#roles-from-a-database).
+> Some auth providers have a similar data structure that you can attach to a user, but if not you'll need to rely on your own database to store their roles. Read more in the [RBAC Cookbook](/cookbook/role-based-access-control-rbac.html#roles-from-a-database).
 
 If you started with your own blog code from Part 1 of the tutorial and already have it deployed on Netlify, you're ready to continue! If you cloned the [redwood-tutorial](https://github.com/redwoodjs/redwood-tutorial) code from GitHub you'll need to [create a Netlify site and deploy it](/tutorial/deployment), then [enable Netlify Identity](/tutorial/authentication#netlify-identity-setup) as described in the first part of the tutorial.
 
+> If you don't want to go through getting Netlify Identity working, but still want to follow along, you can simulate the roles returned by Netlify by just hard-coding them into `/api/src/lib/auth.js`. Just have the `getCurrentUser()` function return a simple object that contains a `roles` property:
+>
+> ```javascript
+> // api/src/lib/auth.js
+>
+> export const getCurrentUser = () => {
+>   return { email: 'jon.doe@example.com', roles: ['moderator'] }
+> }
+> ```
+>
+> That will get auth and roles working in development mode. If you want to simulate being logged out just return `null` instead of that object.
+
 First we'll want to create a new user that will represent the comment moderator. You can use a completely different email address (if you have one), but if not you can use **The Plus Trick** to create a new, unique email address as far as Netlify is concerned, but that is actually the same as your original email address! **Note that not all email providers support this syntax, but the big ones like Gmail do.**
 
-> The Plus Trick is a very handy feature of the email standard known as a "boxname", the idea being that you may have other inboxes besides one just named "Inbox" and by adding +something to your email address you can specify which inbox the mail should be sorted into. They don't appear to be in common usage these days, but they are ridiculously helpful for us developers when we're constantly needing new email addresses for testing!
+> The Plus Trick is a very handy feature of the email standard known as a "boxname", the idea being that you may have other incoming boxes besides one just named "Inbox" and by adding +something to your email address you can specify which box the mail should be sorted into. They don't appear to be in common usage these days, but they are ridiculously helpful for us developers when we're constantly needing new email addresses for testing!
 >
 > Just append +something to your email address before the @:
 >
@@ -2211,7 +2241,7 @@ const Comment = ({ comment }) => {
 export default Comment
 ```
 
-So if the user has the "moderator" role, render the delete button. If you log out and back in as the admin, or if you log out completely, you'll see the delete button go away. When logged out (that is, `curentUser === null`) `hasRole()` will always return `false`.
+So if the user has the "moderator" role, render the delete button. If you log out and back in as the admin, or if you log out completely, you'll see the delete button go away. When logged out (that is, `currentUser === null`) `hasRole()` will always return `false`.
 
 ![image](https://user-images.githubusercontent.com/300/101229168-c75edb00-3653-11eb-85f0-6eb61af7d4e6.png)
 
@@ -2219,7 +2249,7 @@ What should we put in place of the TODO? A GraphQL mutation that deletes a comme
 
 And due to the nice encapsulation of our **Comment** component we can make all the required web-site changes in this one component:
 
-```javascript{3-5,13-19,23-30,33-35}
+```javascript{4-5,13-19,23-30,33-35}
 // web/src/components/Comment/Comment.js
 
 import { useAuth } from '@redwoodjs/auth'
