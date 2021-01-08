@@ -8,7 +8,7 @@
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
-- [Supabase](https://supabase.io/docs/library/getting-started#reference)
+- [Supabase](https://supabase.io/docs/guides/auth)
 - Custom
 - [Contribute one](https://github.com/redwoodjs/redwood/tree/main/packages/auth), it's SuperEasy™!
 
@@ -439,7 +439,15 @@ yarn rw generate auth supabase
 
 #### Setup
 
-You will need to add your Supabase URL and Client API Key to your .env file (e.g., `SUPABASE_KEY`). See: <https://supabase.io/docs/library/getting-started#reference>
+Update your .env file with the following settings supplied when you created your new Supabase project:
+
+* `SUPABASE_URL` with the unique Supabase URL for your project
+* `SUPABASE_KEY` with the unique Supabase Key that identifies which API KEY to use
+* `SUPABASE_JWT_SECRET` with the secret used to sign and verify the JSON Web Token (JWT)
+
+You can find these values in your project's dashboard under Settings -> API.
+
+For full client docs, see: <https://supabase.io/docs/library/getting-started#reference>
 
 +++
 
