@@ -1831,7 +1831,7 @@ Let's fix it!
 
 ### Returning Only Some Comments
 
-Just like Redwood is split into a web- and api-side, we'll need to make both frontend and backend changes to get only some comments to show. Let's start with the backend and do a little test-driven development to make this change.
+We'll need to make both frontend and backend changes to get only some comments to show. Let's start with the backend and do a little test-driven development to make this change.
 
 #### Introducing the Redwood Console
 
