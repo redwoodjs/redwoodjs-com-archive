@@ -521,7 +521,7 @@ Our recommendation is to create a `src/lib/auth.js|ts` file that exports a `getC
 import { getCurrentUser } from 'src/lib/auth'
 // Example:
 //  export const getCurrentUser = async (decoded) => {
-//    return await db.user.findOne({ where: { decoded.email } })
+//    return await db.user.findUnique({ where: { decoded.email } })
 //  }
 //
 
@@ -725,7 +725,7 @@ export const getCurrentUser = async (_decoded, { token }) => {
   const mAdmin = new Magic(process.env.MAGICLINK_SECRET)
   const { email, publicAddress, issuer } = await mAdmin.users.getMetadataByToken(token)
 
-  return await db.user.findOne({ where: { issuer } })
+  return await db.user.findUnique({ where: { issuer } })
 }
 ```
 
@@ -809,13 +809,13 @@ You can specify an optional role in `requireAuth` to check if the user is both a
 export const myThings = () => {
   requireAuth({ role: 'admin' })
 
-  return db.user.findOne({ where: { id: context.currentUser.id } }).things()
+  return db.user.findUnique({ where: { id: context.currentUser.id } }).things()
 }
 
 export const myBooks = () => {
   requireAuth({ role: ['author', 'editor'] })
 
-  return db.user.findOne({ where: { id: context.currentUser.id } }).books()
+  return db.user.findUnique({ where: { id: context.currentUser.id } }).books()
 }
 ```
 

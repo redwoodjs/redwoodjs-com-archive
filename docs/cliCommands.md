@@ -1064,7 +1064,7 @@ export const users = () => {
 
 export const User = {
   profile: (_obj, { root }) => {
-    db.user.findOne({ where: { id: root.id } }).profile(),
+    db.user.findUnique({ where: { id: root.id } }).profile(),
   }
 }
 ```
