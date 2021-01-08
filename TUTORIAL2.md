@@ -2124,7 +2124,7 @@ If you remember back in the first part of the tutorial we actually [pointed out]
 
 > **What about other auth providers besides Netlify?**
 >
-> Some auth providers have a similar data structure that you can attach to a user, but if not you'll need to rely on your own database. Read more in the [RBAC Cookbook](/cookbook/role-based-access-control-rbac.html#roles-from-a-database).
+> Some auth providers have a similar data structure that you can attach to a user, but if not you'll need to rely on your own database to store their roles. Read more in the [RBAC Cookbook](/cookbook/role-based-access-control-rbac.html#roles-from-a-database).
 
 If you started with your own blog code from Part 1 of the tutorial and already have it deployed on Netlify, you're ready to continue! If you cloned the [redwood-tutorial](https://github.com/redwoodjs/redwood-tutorial) code from GitHub you'll need to [create a Netlify site and deploy it](/tutorial/deployment), then [enable Netlify Identity](/tutorial/authentication#netlify-identity-setup) as described in the first part of the tutorial.
 
