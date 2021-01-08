@@ -2245,7 +2245,7 @@ const Comment = ({ comment }) => {
 export default Comment
 ```
 
-So if the user has the "moderator" role, render the delete button. If you log out and back in as the admin, or if you log out completely, you'll see the delete button go away. When logged out (that is, `curentUser === null`) `hasRole()` will always return `false`.
+So if the user has the "moderator" role, render the delete button. If you log out and back in as the admin, or if you log out completely, you'll see the delete button go away. When logged out (that is, `currentUser === null`) `hasRole()` will always return `false`.
 
 ![image](https://user-images.githubusercontent.com/300/101229168-c75edb00-3653-11eb-85f0-6eb61af7d4e6.png)
 
@@ -2253,7 +2253,7 @@ What should we put in place of the TODO? A GraphQL mutation that deletes a comme
 
 And due to the nice encapsultation of our **Comment** component we can make all the required web-site changes in this one component:
 
-```javascript{3-5,13-19,23-30,33-35}
+```javascript{4-5,13-19,23-30,33-35}
 // web/src/components/Comment/Comment.js
 
 import { useAuth } from '@redwoodjs/auth'
