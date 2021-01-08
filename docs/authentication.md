@@ -445,7 +445,7 @@ Update your .env file with the following settings supplied when you created your
 * `SUPABASE_KEY` with the unique Supabase Key that identifies which API KEY to use
 * `SUPABASE_JWT_SECRET` with the secret used to sign and verify the JSON Web Token (JWT)
 
-You can find these values in your Project's `Dashboard` under `API Settings`.
+You can find these values in your project's dashboard under Settings -> API.
 
 See: <https://supabase.io/docs/library/getting-started#reference>
 
