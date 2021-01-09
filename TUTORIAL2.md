@@ -215,7 +215,7 @@ export const Success = ({ posts }) => {
     <div className="-mt-10">
       {posts.map((post) => (
         <div key={post.id} className="mt-10">
-          <BlogPost key={post.id} post={post} summary={true} />
+          <BlogPost post={post} summary={true} />
         </div>
       ))}
     </div>
