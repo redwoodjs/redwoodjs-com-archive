@@ -46,7 +46,7 @@ Since we just started the suite, and we haven't changed any files yet, it may no
 
 ![image](https://user-images.githubusercontent.com/300/96655360-21991c00-12f2-11eb-9394-c34c39b69f01.png)
 
-More on testing later, but for now just know that this is always what we want to aim for—all green in that left column! In fact best pracitices tell us you should not even commit any code unless the test suite passes locally. Not everyone adheres to this quite as strictly as others...*&lt;cough, cough&gt;*
+More on testing later, but for now just know that this is always what we want to aim for—all green in that left column! In fact best practices tell us you should not even commit any code unless the test suite passes locally. Not everyone adheres to this quite as strictly as others...*&lt;cough, cough&gt;*
 
 ## Introduction to Storybook
 
@@ -56,11 +56,11 @@ Let's see what this Storybook thing is all about. Run this command to start up t
 yarn rw storybook
 ```
 
-After some compling you should get a message saying that Storybook has started and it's available at http://localhost:7910
+After some compiling you should get a message saying that Storybook has started and it's available at http://localhost:7910
 
 ![image](https://user-images.githubusercontent.com/300/95522673-8f078d00-0981-11eb-9551-0a211c726802.png)
 
-If you poke around at the file tree on the left you'll see all of the components, cells, layouts and pages we created during the tutorial. Where did they come from? You may recall that everytime we generated a new page/cell/component we actaully created at least *three* files:
+If you poke around at the file tree on the left you'll see all of the components, cells, layouts and pages we created during the tutorial. Where did they come from? You may recall that every time we generated a new page/cell/component we actually created at least *three* files:
 
 * BlogPost.js
 * BlogPost.stories.js
@@ -409,7 +409,7 @@ You can have as many mocks as you want, just import the names of the ones you ne
 
 Our test suite is passing again but it's a trick! We never added a test for the actual `summary` functionality that we added to the **BlogPost** component. We tested that **BlogPostCell** requests that **BlogPost** return a summary, but what it means to render a summary is knowledge that only **BlogPost** contains.
 
-When you get into the flow of building your app it can be very easy to overlook testing functionality like this. Wasn't it Winston Chuchill who said "a thorough test suite requires eternal vigilence"? Techniques like [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) (TDD) were established to help combat this tendency—write the test first, watch it fail, then write the code to make the test pass so that you know every line of real code you write is backed by a test. What we're doing is affectionately known as [Development Driven Testing](https://medium.com/table-xi/development-driven-testing-673d3959dac2). You'll probably settle somewhere in the middle but one maxim is always true—some tests are better than no tests.
+When you get into the flow of building your app it can be very easy to overlook testing functionality like this. Wasn't it Winston Churchill who said "a thorough test suite requires eternal vigilance"? Techniques like [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) (TDD) were established to help combat this tendency—write the test first, watch it fail, then write the code to make the test pass so that you know every line of real code you write is backed by a test. What we're doing is affectionately known as [Development Driven Testing](https://medium.com/table-xi/development-driven-testing-673d3959dac2). You'll probably settle somewhere in the middle but one maxim is always true—some tests are better than no tests.
 
 The summary functionality in **BlogPost** is pretty simple, but there are a couple of different ways we could test it:
 
@@ -467,7 +467,7 @@ Saving that change should run the tests and we'll see that our suite is still ha
 
 ### One Last Thing
 
-Remember we set the `summary` prop to default to `false` if it doesn't exist, which is tested by the first test case. However, we don't have a test that checks what happens if `false` is set explictly. Feel free to add that now if you want Complete Coverage&trade;!
+Remember we set the `summary` prop to default to `false` if it doesn't exist, which is tested by the first test case. However, we don't have a test that checks what happens if `false` is set explicitly. Feel free to add that now if you want Complete Coverage&trade;!
 
 ## Building a Component the Redwood Way
 
@@ -480,7 +480,7 @@ There are two main features we need to build:
 1. Comment form and creation
 2. Comment retrieval and display
 
-Which order we build them in is up to us. To ease into things, let's start with the fetching and displaing comments first and then we'll move on to more complex work of adding a form and service to create a new comment. Of course, this is Redwood, so even forms and services aren't *that* complex!
+Which order we build them in is up to us. To ease into things, let's start with the fetching and displaying comments first and then we'll move on to more complex work of adding a form and service to create a new comment. Of course, this is Redwood, so even forms and services aren't *that* complex!
 
 ### Storybook
 
@@ -640,7 +640,7 @@ describe('Comment', () => {
 
 ```
 
-Here we're testing for both elements of the output `createdAt` timestamp: the actual text that's output (similar to how we tested for a blog post's truncated body) but also that the element that wraps that text is a `<time>` tag and that it contains a `datetime` attribute with the raw value of `comment.createdAt`. This might seem like overkill but the point of the `datetime` attribute is to provide a machine-readable timestamp that the browser could (theoretically) hook into and do stuff with. This makes sure that we preseve that ability!
+Here we're testing for both elements of the output `createdAt` timestamp: the actual text that's output (similar to how we tested for a blog post's truncated body) but also that the element that wraps that text is a `<time>` tag and that it contains a `datetime` attribute with the raw value of `comment.createdAt`. This might seem like overkill but the point of the `datetime` attribute is to provide a machine-readable timestamp that the browser could (theoretically) hook into and do stuff with. This makes sure that we preserve that ability!
 
 > **What happens if we change the formatted output of the timestamp? Wouldn't we have to change the test?**
 >
@@ -662,7 +662,7 @@ Let's think about where our comments are being displayed. Probably not on the ho
 >
 > **Then why make a standalone Comment component at all? Why not just do all the display in the CommentsCell?**
 >
-> We're trying to start in small chunks to make the tutorial more digestable for a new audience so we're starting simple and getting more complex as we go. But it also just feels *nice* to build up a UI from these smaller chunks that are easier to reason about and keep separate in your head.
+> We're trying to start in small chunks to make the tutorial more digestible for a new audience so we're starting simple and getting more complex as we go. But it also just feels *nice* to build up a UI from these smaller chunks that are easier to reason about and keep separate in your head.
 >
 > **But what about—**
 >
@@ -734,7 +734,7 @@ export const standard = (/* vars, { ctx, req } */) => ({
 
 > What's this `standard` thing? Think of it as the standard, default mock if you don't do anything else. We would have loved to use the name "default" but that's already a reserved word in Javascript!
 
-Storybook refreshes and we've got comments! We've got the same issue here where it's hard to see our rounded corners and also the two separate comments are are hard to distinguish because they're right next to each other:
+Storybook refreshes and we've got comments! We've got the same issue here where it's hard to see our rounded corners and also the two separate comments are hard to distinguish because they're right next to each other:
 
 ![image](https://user-images.githubusercontent.com/300/95799544-dce60300-0ca9-11eb-9520-a1aac4ec46e6.png)
 
@@ -758,7 +758,7 @@ export const Success = ({ comments }) => {
 
 We had to move the `key` prop to the surrounding `<div>`. We then gave each comment a top margin and removed an equal top margin from the entire container to set it back to zero.
 
-> Why a top margin and not a bottom margin? Remember when we said a component should be responsible for *its own* display? If you add a bottom margin, that's one component influcing the one below it (which it shouldn't care about). Adding a *top* margin is this component moving *itself* down, which means it's again responsible for its own display.
+> Why a top margin and not a bottom margin? Remember when we said a component should be responsible for *its own* display? If you add a bottom margin, that's one component influencing the one below it (which it shouldn't care about). Adding a *top* margin is this component moving *itself* down, which means it's again responsible for its own display.
 
 Let's add a margin around the story itself, similar to what we did in the Comment story:
 
@@ -879,7 +879,7 @@ The actual **Comment** component does most of the work so there's no need to tes
 * Has a loading message
 * Has an error message
 * Has a failure message
-* When it renders succesfully, it outputs as many comments as were returned by the `QUERY`
+* When it renders successfully, it outputs as many comments as were returned by the `QUERY`
 
 The default `CommentsCell.test.js` actually tests every state for us, albeit at an absolute minimum level—it make sure no errors are thrown:
 
@@ -991,7 +991,7 @@ describe('BlogPost', () => {
 })
 ```
 
-We're introducting a new test function here, `waitFor()`, which will wait for things like GraphQL queries to finish running before checking for what's been rendered. Since **BlogPost** renders **CommentsCell** we need to wait for the `Success` component of **CommentsCell** to be rendered.
+We're introducing a new test function here, `waitFor()`, which will wait for things like GraphQL queries to finish running before checking for what's been rendered. Since **BlogPost** renders **CommentsCell** we need to wait for the `Success` component of **CommentsCell** to be rendered.
 
 > The summary version of **BlogPost** does *not* render the **CommentsCell**, but we should still wait. Why? If we did mistakenly start including **CommentsCell**, but didn't wait for the render, we would get a falsely passing test—indeed the text isn't on the page but that's because it's still showing the **Loading** component! If we had waited we would have seen the actual comment body get rendered, and the test would (correctly) fail.
 
@@ -1465,7 +1465,7 @@ const CommentForm = () => {
 export default CommentForm
 ```
 
-Note that the form and its inputs are set to 100% width. Again, the form shouldn't be dictating anything about its layout that its parent should be resposible for, like how wide the inputs are. Those should be determined by whatever contains it so that it looks good with the rest of the content on the page. So the form will be 100% wide and the parent (whoever that ends up being) will decide how wide it really is on the page.
+Note that the form and its inputs are set to 100% width. Again, the form shouldn't be dictating anything about its layout that its parent should be responsible for, like how wide the inputs are. Those should be determined by whatever contains it so that it looks good with the rest of the content on the page. So the form will be 100% wide and the parent (whoever that ends up being) will decide how wide it really is on the page.
 
 And let's add some margin around the whole component in Storybook so that the 100% width doesn't run into the Storybook frame:
 
@@ -1619,7 +1619,7 @@ We could copy the **CommentForm** to the **Empty** component as well, but as soo
 
 Maybe **CommentsCell** should really only be responsible for retrieving and displaying comments. Having it also accept user input seems outside of its primary concern.
 
-So let's use **BlogPost** as the clearning house for where all these disparate parts are combined—the actual blog post, the form to add a new comment, and the list of comments.
+So let's use **BlogPost** as the cleaning house for where all these disparate parts are combined—the actual blog post, the form to add a new comment, and the list of comments.
 
 ```javascript{5,23-24,28}
 // web/src/components/BlogPost/BlogPost.js
@@ -1731,7 +1731,7 @@ Yay! It would have been nicer if that comment appeared as soon as we submitted t
 
 ### GraphQL Query Caching
 
-Much has been written about the [complexities](https://medium.com/swlh/how-i-met-apollo-cache-ee804e6485e9) of [Apollo](https://medium.com/@galen.corey/understanding-apollo-fetch-policies-705b5ad71980) [caching](https://levelup.gitconnected.com/basics-of-caching-data-in-graphql-7ce9489dac15), but for the sake of brevity (and sanity) we're going to do the easiest thing that works, and that's to tell Apollo to just re-run the query that shows comments in the cell, known as "refetching."
+Much has been written about the [complexities](https://medium.com/swlh/how-i-met-apollo-cache-ee804e6485e9) of [Apollo](https://medium.com/@galen.corey/understanding-apollo-fetch-policies-705b5ad71980) [caching](https://levelup.gitconnected.com/basics-of-caching-data-in-graphql-7ce9489dac15), but for the sake of brevity (and sanity) we're going to do the easiest thing that works, and that's tell Apollo to just re-run the query that shows comments in the cell, known as "refetching."
 
 Along with the variables you pass to a mutation function (`createComment` in our case) there's an option named `refetchQueries` where you pass an array of queries that should be re-run because, presumably, the data you just mutated is reflected in the result of those queries. In our case there's a single query, the **QUERY** export of **CommentsCell**. We'll import that at the top of **CommentForm** (and rename so it's clear what it is to the rest of our code) and then pass it along to the `refetchQueries` option:
 
@@ -1809,10 +1809,6 @@ const CommentForm = ({ postId }) => {
         onSubmit={onSubmit}
       >
       //...
-      </Form>
-    </div>
-  )
-}
 ```
 
 ![image](https://user-images.githubusercontent.com/300/100949950-2d1a5e00-34c0-11eb-8c1c-3c9f925c6ecb.png)
@@ -2116,7 +2112,7 @@ Imagine a few weeks in the future of our blog when every post hits the front pag
 
 We already have a login system for our blog (Netlify Identity, if you followed the first tutorial), but right now it's all-or-nothing: you either get access to create blog posts, or you don't. In this case our comment moderator(s) will need logins so that we know who they are, but we're not going let them create new blog posts. We need some kind of role that we can give to our two kinds of users so we can distinguish them from one another.
 
-Enter role-based authorization control, thankfully shortened to the common phrase **RBAC**. Authentication says who the person is, authorization says what they can do. Currently the blog has the lowest common denominator of authroization: if they are logged in, they can do everything. Let's add a "less than everything, but more than nothing" level.
+Enter role-based authorization control, thankfully shortened to the common phrase **RBAC**. Authentication says who the person is, authorization says what they can do. Currently the blog has the lowest common denominator of authorization: if they are logged in, they can do everything. Let's add a "less than everything, but more than nothing" level.
 
 ### Defining Roles
 
@@ -2251,7 +2247,7 @@ So if the user has the "moderator" role, render the delete button. If you log ou
 
 What should we put in place of the TODO? A GraphQL mutation that deletes a comment, of course. Thanks to our forward-thinking earlier we already have a `deleteComment()` service function and GraphQL mutation.
 
-And due to the nice encapsultation of our **Comment** component we can make all the required web-site changes in this one component:
+And due to the nice encapsulation of our **Comment** component we can make all the required web-site changes in this one component:
 
 ```javascript{4-5,13-19,23-30,33-35}
 // web/src/components/Comment/Comment.js
@@ -2483,7 +2479,7 @@ Having a role like "admin" implies that they can do everything...shouldn't they 
 
 By virtue of the name "admin" it really feels like someone should only have that one single roll and be able to do everything. So in this case it feels better to add "admin" to `hasRole()` and `requireAuth()`.
 
-But if you wanted to be more fine-grained with your roles then maybe the "admin" role should really be called "author". That way it makes it clear they only author posts, and if you want someone to be able to do both actions you can explicity give them the "moderator" role in addition to "author."
+But if you wanted to be more fine-grained with your roles then maybe the "admin" role should really be called "author". That way it makes it clear they only author posts, and if you want someone to be able to do both actions you can explicitly give them the "moderator" role in addition to "author."
 
 Managing roles can be a tricky thing to get right. Spend a little time up front thinking about how they'll interact and how much duplication you're willing to accept in your role-based function calls on the site. If you see yourself constantly adding multiple roles to `hasRole()` that may be an indication that it's time to add a single, new role that includes those abilities and remove that duplication in your code.
 
@@ -2493,7 +2489,7 @@ You made it! Again! In Part 1 of the tutorial we learned about a lot of features
 
 Testing is like wearing a seat belt: 99% of the time you don't see any benefit, but that other 1% of the time you're *really* glad you were wearing it. The first time your build stops and prevents some production-crashing bug from going live you'll know that all those hours you spent writing tests were worth it. Getting into the habit of writing tests along with your user-facing code is the greatest gift you can give your future developer self (that, and writing good comments!).
 
-Will there be a Part 3 of the tutorial? It's a fact that the best things come in threes: Lord of the Rings movies, sides of a triangle, and Super Mario Bros. games on the NES. We've spent a lot of time getting our features working but not much time with optimization and polish. [Premature optimization is the root of all evil](http://wiki.c2.com/?PrematureOptimization), but once your site is live and you've got real users on it you'll get a sense of what could be faster, prettier or more efficient. That's when time spent optimizing can pay huge dividends. But, discovering the techniques and best practicies for those optimzations...that's a whole different story. The kind of story that Redwood loves to help you write!
+Will there be a Part 3 of the tutorial? It's a fact that the best things come in threes: Lord of the Rings movies, sides of a triangle, and Super Mario Bros. games on the NES. We've spent a lot of time getting our features working but not much time with optimization and polish. [Premature optimization is the root of all evil](http://wiki.c2.com/?PrematureOptimization), but once your site is live and you've got real users on it you'll get a sense of what could be faster, prettier or more efficient. That's when time spent optimizing can pay huge dividends. But, discovering the techniques and best practices for those optimizations...that's a whole different story. The kind of story that Redwood loves to help you write!
 
 So until next time, a bit of wisdom to help combat that next bout of every developer's nemesis, imposter syndrome:
 
