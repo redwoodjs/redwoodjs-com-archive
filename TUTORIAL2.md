@@ -818,7 +818,7 @@ If we are *not* showing the summary, then we'll show the comments. Take a look a
 Once again our component is bumping right up against the edges of the window. We've got two stories in this file and would have to manually add margins around both of them. Ugh. Luckily Storybook has a way to add styling to all stories using [decorators](https://storybook.js.org/docs/react/writing-stories/decorators). In the `default` export at the bottom of the story you can define a `decorators` key and the value is JSX that will wrap all the stories in the file automatically:
 
 ```javascript{5-7}
-// web/src/components/BlogPost/BlogPost.js
+// web/src/components/BlogPost/BlogPost.stories.js
 
 export default {
   title: 'Components/BlogPost',
