@@ -148,7 +148,7 @@ const BlogPost = ({ post, summary = false }) => {
 export default BlogPost
 ```
 
-We'll pass an additional `summary` prop to the component to let it know if should show just the summary or the whole thing. We default it to `false` to preserve the existing behavior—always showing the full body.
+We'll pass an additional `summary` prop to the component to let it know if it should show just the summary or the whole thing. We default it to `false` to preserve the existing behavior—always showing the full body.
 
 Now in the Storybook story let's create a `summary` story that uses **BlogPost** the same way that `generated` does, but adds the new prop. We'll take the content of the sample post and put that in a constant that both stories will use. We'll also rename `generated` to `full` to make it clear what's different between the two:
 
@@ -215,7 +215,7 @@ export const Success = ({ posts }) => {
     <div className="-mt-10">
       {posts.map((post) => (
         <div key={post.id} className="mt-10">
-          <BlogPost key={post.id} post={post} summary={true} />
+          <BlogPost post={post} summary={true} />
         </div>
       ))}
     </div>
@@ -319,7 +319,7 @@ This loops through each post in our `standard()` mock and for each one:
 <div class="code-dl">
 
 ```javascript
-const truncatedBody = posts[0].body.substring(0, 10)
+const truncatedBody = post.body.substring(0, 10)
 ```
 Create a variable `truncatedBody` containing the first 10 characters of the post body
 
@@ -351,7 +351,7 @@ As soon as you saved that test file the test should have run and passed! Press `
 >
 > `getByText()` will throw an error if the text isn't found in the document, whereas `queryByText()` will  return `null` and let you continue with your testing (and is one way to test that some text is *not* present on the page). You can read more about these in the [DOM Testing Library Queries](https://testing-library.com/docs/dom-testing-library/api-queries) docs.
 
-To double check that we're testing what we think we're testing, open up `BlogPostCell.js` and remove the `summary={true}` prop (or set it to `false`)—the test will fail: now the full body of the post *is* on the page and `expect(screen.queryByText(post.body)).not.toBeInTheDocument()` *is* in the document. Make sure to put the `summary={true}` back before we continue!
+To double check that we're testing what we think we're testing, open up `BlogPostsCell.js` and remove the `summary={true}` prop (or set it to `false`)—the test will fail: now the full body of the post *is* on the page and `expect(screen.queryByText(post.body)).not.toBeInTheDocument()` *is* in the document. Make sure to put the `summary={true}` back before we continue!
 
 ### What's the Deal with Mocks?
 
@@ -407,7 +407,7 @@ You can have as many mocks as you want, just import the names of the ones you ne
 
 ### Testing BlogPost
 
-Our test suite is passing again but it's a trick! We never added a test for the actual `summary` functionality that we added to the **BlogPost** component. We tested that **BlogPostCell** requests that **BlogPost** return a summary, but what it means to render a summary is knowledge that only **BlogPost** contains.
+Our test suite is passing again but it's a trick! We never added a test for the actual `summary` functionality that we added to the **BlogPost** component. We tested that **BlogPostsCell** requests that **BlogPost** return a summary, but what it means to render a summary is knowledge that only **BlogPost** contains.
 
 When you get into the flow of building your app it can be very easy to overlook testing functionality like this. Wasn't it Winston Churchill who said "a thorough test suite requires eternal vigilance"? Techniques like [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) (TDD) were established to help combat this tendency—write the test first, watch it fail, then write the code to make the test pass so that you know every line of real code you write is backed by a test. What we're doing is affectionately known as [Development Driven Testing](https://medium.com/table-xi/development-driven-testing-673d3959dac2). You'll probably settle somewhere in the middle but one maxim is always true—some tests are better than no tests.
 
@@ -818,7 +818,7 @@ If we are *not* showing the summary, then we'll show the comments. Take a look a
 Once again our component is bumping right up against the edges of the window. We've got two stories in this file and would have to manually add margins around both of them. Ugh. Luckily Storybook has a way to add styling to all stories using [decorators](https://storybook.js.org/docs/react/writing-stories/decorators). In the `default` export at the bottom of the story you can define a `decorators` key and the value is JSX that will wrap all the stories in the file automatically:
 
 ```javascript{5-7}
-// web/src/components/BlogPost/BlogPost.js
+// web/src/components/BlogPost/BlogPost.stories.js
 
 export default {
   title: 'Components/BlogPost',
@@ -1397,7 +1397,7 @@ Okay, our comments service is feeling pretty solid now that we have our tests in
 
 ## Creating a Comment Form
 
-Let's generate a form and then we'll build it out and integrate it via Storybook, then add some tests.
+Let's generate a form and then we'll build it out and integrate it via Storybook, then add some tests:
 
 ```terminal
 yarn rw g component CommentForm
@@ -1619,7 +1619,7 @@ We could copy the **CommentForm** to the **Empty** component as well, but as soo
 
 Maybe **CommentsCell** should really only be responsible for retrieving and displaying comments. Having it also accept user input seems outside of its primary concern.
 
-So let's use **BlogPost** as the cleaning house for where all these disparate parts are combined—the actual blog post, the form to add a new comment, and the list of comments.
+So let's use **BlogPost** as the cleaning house for where all these disparate parts are combined—the actual blog post, the form to add a new comment, and the list of comments:
 
 ```javascript{5,23-24,28}
 // web/src/components/BlogPost/BlogPost.js
@@ -2161,7 +2161,7 @@ If all went well, you should be able to log in as either user with no change in 
 
 The easiest form of RBAC involves locking down entire routes. Let's add one so that only admins can see the admin pages.
 
-In the Router simply add a `role` prop and pass it the name of the role that should be allowed. This prop also [accepts an array](/cookbook/role-based-access-control-rbac#how-to-protect-a-route) if more than one role should have access.
+In the Router simply add a `role` prop and pass it the name of the role that should be allowed. This prop also [accepts an array](/cookbook/role-based-access-control-rbac#how-to-protect-a-route) if more than one role should have access:
 
 ```javascript{12}
 // web/src/Routes.js
@@ -2241,7 +2241,7 @@ const Comment = ({ comment }) => {
 export default Comment
 ```
 
-So if the user has the "moderator" role, render the delete button. If you log out and back in as the admin, or if you log out completely, you'll see the delete button go away. When logged out (that is, `currentUser === null`) `hasRole()` will always return `false`.
+So if the user has the "moderator" role, render the delete button. If you log out and back in as the admin, or if you log out completely, you'll see the delete button go away. When logged out (that is, `currentUser === null`) `hasRole()` will always return `false`:
 
 ![image](https://user-images.githubusercontent.com/300/101229168-c75edb00-3653-11eb-85f0-6eb61af7d4e6.png)
 
