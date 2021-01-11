@@ -1397,7 +1397,7 @@ Okay, our comments service is feeling pretty solid now that we have our tests in
 
 ## Creating a Comment Form
 
-Let's generate a form and then we'll build it out and integrate it via Storybook, then add some tests.
+Let's generate a form and then we'll build it out and integrate it via Storybook, then add some tests:
 
 ```terminal
 yarn rw g component CommentForm
@@ -1619,7 +1619,7 @@ We could copy the **CommentForm** to the **Empty** component as well, but as soo
 
 Maybe **CommentsCell** should really only be responsible for retrieving and displaying comments. Having it also accept user input seems outside of its primary concern.
 
-So let's use **BlogPost** as the cleaning house for where all these disparate parts are combined—the actual blog post, the form to add a new comment, and the list of comments.
+So let's use **BlogPost** as the cleaning house for where all these disparate parts are combined—the actual blog post, the form to add a new comment, and the list of comments:
 
 ```javascript{5,23-24,28}
 // web/src/components/BlogPost/BlogPost.js
@@ -2161,7 +2161,7 @@ If all went well, you should be able to log in as either user with no change in 
 
 The easiest form of RBAC involves locking down entire routes. Let's add one so that only admins can see the admin pages.
 
-In the Router simply add a `role` prop and pass it the name of the role that should be allowed. This prop also [accepts an array](/cookbook/role-based-access-control-rbac#how-to-protect-a-route) if more than one role should have access.
+In the Router simply add a `role` prop and pass it the name of the role that should be allowed. This prop also [accepts an array](/cookbook/role-based-access-control-rbac#how-to-protect-a-route) if more than one role should have access:
 
 ```javascript{12}
 // web/src/Routes.js
@@ -2241,7 +2241,7 @@ const Comment = ({ comment }) => {
 export default Comment
 ```
 
-So if the user has the "moderator" role, render the delete button. If you log out and back in as the admin, or if you log out completely, you'll see the delete button go away. When logged out (that is, `currentUser === null`) `hasRole()` will always return `false`.
+So if the user has the "moderator" role, render the delete button. If you log out and back in as the admin, or if you log out completely, you'll see the delete button go away. When logged out (that is, `currentUser === null`) `hasRole()` will always return `false`:
 
 ![image](https://user-images.githubusercontent.com/300/101229168-c75edb00-3653-11eb-85f0-6eb61af7d4e6.png)
 
