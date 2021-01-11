@@ -303,7 +303,7 @@ describe('BlogPostsCell', () => {
     render(<Success posts={posts} />)
 
     posts.forEach((post) => {
-      const truncatedBody = posts[0].body.substring(0, 10)
+      const truncatedBody = post.body.substring(0, 10)
       const regex = new RegExp(`${truncatedBody}.*\.{3}`)
 
       expect(screen.getByText(post.title)).toBeInTheDocument()
