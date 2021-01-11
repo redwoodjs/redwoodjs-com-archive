@@ -303,8 +303,8 @@ describe('BlogPostsCell', () => {
     render(<Success posts={posts} />)
 
     posts.forEach((post) => {
-      const truncatedBody = post.body.substring(0, 10)
-      const regex = new RegExp(`${truncatedBody}.*?\.{3}`)
+      const truncatedBody = posts[0].body.substring(0, 10)
+      const regex = new RegExp(`${truncatedBody}.*\.{3}`)
 
       expect(screen.getByText(post.title)).toBeInTheDocument()
       expect(screen.queryByText(post.body)).not.toBeInTheDocument()
@@ -324,9 +324,9 @@ const truncatedBody = post.body.substring(0, 10)
 Create a variable `truncatedBody` containing the first 10 characters of the post body
 
 ```javascript
-const regex = new RegExp(`${truncatedBody}.*?\.{3}`)
+const regex = new RegExp(`${truncatedBody}.*\.{3}`)
 ```
-Create a regular expression which contains those 10 characters followed by any characters `.*?` until it reaches three periods `\.{3}` (the ellipsis at the end of the truncated text)
+Create a regular expression which contains those 10 characters followed by any characters `.*` until it reaches three periods `\.{3}` (the ellipsis at the end of the truncated text)
 
 ```javascript
 expect(screen.getByText(post.title)).toBeInTheDocument()
