@@ -1844,7 +1844,7 @@ yarn rw console
 You'll see a standard Node console but with most of Redwood's internals already imported and ready to go! Most importantly, that includes the database. Try it out:
 
 ```terminal
-> await db.comment.findMany()
+> db.comment.findMany()
 [
   {
     id: 1,
@@ -1868,7 +1868,7 @@ You'll see a standard Node console but with most of Redwood's internals already 
 Let's try the syntax that will allow us to only get comments for a given `postId`:
 
 ```terminal
-> await db.comment.findMany({ where: { postId: 1 }})
+> db.comment.findMany({ where: { postId: 1 }})
 [
   {
     id: 1,
@@ -1892,14 +1892,14 @@ Well it worked, but the list is exactly the same. That's because we've only adde
 We'll need the `id` of another post. Make sure you have at least two (create one through the admin if you need to). We can get a list of all the existing posts and copy the `id`:
 
 ```terminal
-> await db.post.findMany({ select: { id: true } })
+> db.post.findMany({ select: { id: true } })
 [ { id: 1 }, { id: 2 }, { id: 3 } ]
 ```
 
 Okay, now let's create a comment for that second post via the console:
 
 ```terminal
-> await db.comment.create({ data: { name: 'Peter', body: 'I also like leaving comments', postId: 2 } })
+> db.comment.create({ data: { name: 'Peter', body: 'I also like leaving comments', postId: 2 } })
 {
   id: 3,
   name: 'Peter',
@@ -1912,7 +1912,7 @@ Okay, now let's create a comment for that second post via the console:
 Now we'll try our comment query again, once with each `postId`:
 
 ```terminal
-> await db.comment.findMany({ where: { postId: 1 }})
+> db.comment.findMany({ where: { postId: 1 }})
 [
   {
     id: 1,
@@ -1930,7 +1930,7 @@ Now we'll try our comment query again, once with each `postId`:
   }
 ]
 
-> await db.comment.findMany({ where: { postId: 2 }})
+> db.comment.findMany({ where: { postId: 2 }})
 [
   {
     id: 3,
@@ -1943,6 +1943,10 @@ Now we'll try our comment query again, once with each `postId`:
 ```
 
 Great! Now that we've tested out the syntax let's use that in the service. You can exit the console by pressing Ctrl-C twice or typing `.exit`
+
+> **Where's the `await`?**
+>
+> Calls to `db` return a Promise, which you would normally need to add an `await` to in order to get the results right away. Having to add `await` every time is pretty annoying though, so the Redwood console does it for you! Redwood `await`s so you don't have to!
 
 #### Updating the Service
 
