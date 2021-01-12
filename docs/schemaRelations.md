@@ -116,7 +116,8 @@ const foreignKeyReplacement = (input) => {
 Applied to your own `posts.js`, your code would look like this:
 
 ```jsx
-// api/src/services/posts/posts.jsimport { db } from 'src/lib/db'
+// api/src/services/posts/posts.js
+import { db } from 'src/lib/db'
 
 // super hacky workaround function by @rob 🚀
 const foreignKeyReplacement = (input) => {
