@@ -1946,7 +1946,7 @@ Great! Now that we've tested out the syntax let's use that in the service. You c
 
 > **Where's the `await`?**
 >
-> Calls to `db` return a Promise, which you would normally need to add an `await` to in order to get the results right away. Having to add `await` every time is pretty annoying though, so the Redwood console does it for you! Redwood `await`s so you don't have to!
+> Calls to `db` return a Promise, which you would normally need to add an `await` to in order to get the results right away. Having to add `await` every time is pretty annoying though, so the Redwood console does it for you—Redwood `await`s so you don't have to!
 
 #### Updating the Service
 
