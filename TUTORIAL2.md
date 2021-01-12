@@ -2468,7 +2468,26 @@ export const deleteComment = ({ id }) => {
 }
 ```
 
-Now you can try deleting a comment in the [GraphQL Playground](https://redwoodjs.com/tutorial/saving-data.html#graphql-playground) and see that a delete no longer works without authorization.
+We'll need a test to go along with that functionality. How do we test `requireAuth()`? The api side also has a `mockCurrentUser()` function which behaves the same as the one on the web side:
+
+```javascript{}
+// api/src/services/comments/comments.test.js
+
+scenario('deletes a comment', async (scenario) => {
+  mockCurrentUser({ roles: ['moderator'] })
+
+  const comment = await deleteComment({
+    id: scenario.comment.jane.id,
+  })
+  expect(comment.id).toEqual(scenario.comment.jane.id)
+
+  expect(
+    await db.comment.findUnique({ where: { id: scenario.comment.jane.id } })
+  ).toEqual(null)
+})
+```
+
+Our first expectation here checks that we get the deleted comment back from a call to `deleteComment()`. The second expectation make sures that the comment was actually removed from the database: trying to find a comment with that `id` now returns `null`.
 
 ### Last Word on Roles
 
