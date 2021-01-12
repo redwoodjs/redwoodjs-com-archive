@@ -2883,9 +2883,11 @@ You made it! If you really went through the whole tutorial: congratulations! If 
 
 That was potentially a lot of new concepts to absorb all at once so don't feed bad if all of it didn't fully sink in. React, GraphQL, Prisma, serverless functions...so many things! Even those of us working on the framework are heading over to Google multiple times per day to figure out how to get these things to work together.
 
-As an anonymous Twitter user once mused: "If you enjoy feeling like both the smartest person on earth and the dumbest person in history within a span of 24 hours, programming may be the career for you!"
+As an anonymous Twitter user once mused: "If you enjoy switching between feeling like the smartest person on earth and the dumbest person in history all in the same day, programming may be the career for you!"
 
 ### What's Next?
+
+If you're ready for even more Redwood, head to the [Tutorial Part 2](https://redwoodjs.com/tutorial2)! We'll look at Storybook and Jest and build a new feature for the blog: comments. Storybook introduces a new way to build components. We'll also add tests and run them with Jest to make sure things keep working as we expect.
 
 Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/docs/local-postgres-setup)? We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
 
