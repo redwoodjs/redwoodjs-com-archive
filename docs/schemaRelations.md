@@ -19,7 +19,7 @@ There are two important things to understand about the, ahem, relationship betwe
 
 These generators *will* run correctly. However, when you try to use the associated CRUD UI (or your own UI, if applicable), you will encounter errors.
 
-Admittedly, trips up a lot of people. And we are definitely working on it. But until the generators offer improved support, here's a guide to the manual modifications you'll need to make when using the Scaffold (or SDL or Service) Generator with models containing relations.
+Admittedly, this trips up a lot of people. And we are definitely working on it. But until the generators offer improved support, here's a guide to the manual modifications you'll need to make when using the Scaffold (or SDL or Service) Generator with models containing relations.
 
 ## The Problem with Scaffold Code
 
