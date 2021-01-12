@@ -12,6 +12,8 @@ Why "Redwood's Revenge"? Because all great sequels have "Revenge" in their title
 
 ## Prerequisites
 
+You'll need to be on at least Redwood v0.23.0 to make it through this tutorial.
+
 We highly recommend going through the first tutorial or at least have built a slightly complex Redwood app on your own. You've hopefully got experience with:
 
 * Authorization
@@ -19,7 +21,7 @@ We highly recommend going through the first tutorial or at least have built a sl
 * GraphQL & SDLs
 * Services
 
-If you haven't been through the first tutorial, or maybe you went through it on an older version of Redwood (any version less than v0.22.0) you can clone [this repo](https://github.com/redwoodjs/redwood-tutorial) which contains everything built in part 1 and also adds a little styling so it isn't quite so...tough to look at. Don't get us wrong, what we built in Part I had a great personality! We just gave it some hipper clothes and a nice haircut. We used [TailwindCSS](https://tailwindcss.com) to style things up and added a `<div>` or two to give us some additional hooks to hang styling on.
+If you haven't been through the first tutorial, or maybe you went through it on an older version of Redwood (anything pre-0.23.0) you can clone [this repo](https://github.com/redwoodjs/redwood-tutorial) which contains everything built in part 1 and also adds a little styling so it isn't quite so...tough to look at. Don't get us wrong, what we built in Part I had a great personality! We just gave it some hipper clothes and a nice haircut. We used [TailwindCSS](https://tailwindcss.com) to style things up and added a `<div>` or two to give us some additional hooks to hang styling on.
 
 ```terminal
 git clone https://github.com/redwoodjs/redwood-tutorial
