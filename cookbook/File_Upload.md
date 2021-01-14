@@ -164,17 +164,14 @@ Clicking that actually launches the picker with all kinds of options, like picki
 
 ![Filestack picker](https://user-images.githubusercontent.com/300/82617240-51e26000-9b84-11ea-8aec-210b7a751e8c.png)
 
-There's no reason to make the user click that button, let's just show the picker on the page when it loads by adding a couple of [options](https://github.com/filestack/filestack-react#props). We'll need to create a container for it to live in, so we'll add a `<div>` and give it an `id` attribute that we'll tell `<ReactFilestack>` about. We'll also give the `<div>` a couple of styles so that the picker doesn't collapse to 0px tall:
+There's no reason to make the user click that button, let's just show the picker on the page when it loads by adding a couple of [pickerOptions](https://github.com/filestack/filestack-react#props). We'll need to create a container for it to live in, so we'll add a `<div>` and have it as a child of `<PickerInline>`. We'll also give the `<div>` a couple of styles so that the picker doesn't collapse to 0px tall:
 
 ```javascript
 // web/src/components/ImageForm/ImageForm.js
 
-<ReactFilestack
-  apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
-  componentDisplayMode={{ type: 'immediate' }}
-  actionOptions={{ displayMode: 'inline', container: 'picker' }}
-/>
-<div id="picker" style={{ marginTop: '2rem', height: '20rem' }}></div>
+<PickerInline apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}>
+  <div id="picker" style={{ marginTop: '2rem', height: '20rem' }}></div>
+</PickerInline>
 ```
 
 Great! You can even try uploading an image to make sure it works:
@@ -209,12 +206,11 @@ const ImageForm = (props) => {
 
   // form stuff...
 
-  <ReactFilestack
-    apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
-    onSuccess={onFileUpload}
-    componentDisplayMode={{ type: 'immediate' }}
-    actionOptions={{ displayMode: 'inline', container: 'picker' }}
-  />
+	<PickerInline
+		apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
+		onSuccess={onFileUpload}>
+  		<div id="picker" style={{ marginTop: '2rem', height: '20rem' }}></div>
+	</PickerInline>
 ```
 
 Well lookie here:
@@ -234,7 +230,7 @@ import {
   TextField,
   Submit,
 } from '@redwoodjs/forms'
-import ReactFilestack from 'filestack-react'
+import { PickerInline } from 'filestack-react'
 import { useState } from 'react'
 
 const CSS = {
@@ -433,20 +429,20 @@ We're already storing the attached image URL in state, so let's use the existenc
 ```javascript{14,18}
 // web/src/components/ImageForm/ImageForm.js
 
-<ReactFilestack
+<PickerInline
   apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
   onSuccess={onFileUpload}
-  componentDisplayMode={{ type: 'immediate' }}
-  actionOptions={{ displayMode: 'inline', container: 'picker' }}
-/>
-<div
-  id="picker"
-  style={{
-    marginTop: '2rem',
-    height: '20rem',
-    display: url ? 'none' : 'block',
-  }}
-></div>
+>
+	<div
+		id="picker"
+		style={{
+			marginTop: '2rem',
+			height: '20rem',
+			display: url ? 'none' : 'block',
+		}}
+	></div>
+</PickerInline>
+
 
 {url && <img src={url} style={{ marginTop: '2rem' }} />}
 ```
@@ -460,20 +456,19 @@ Now let's just add the ability to bring back the uploader if you decide you want
 ```javascript{18-29}
 // web/src/components/ImageForm/ImageForm.js
 
-<ReactFilestack
+<PickerInline
   apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
   onSuccess={onFileUpload}
-  componentDisplayMode={{ type: 'immediate' }}
-  actionOptions={{ displayMode: 'inline', container: 'picker' }}
-/>
-<div
-  id="picker"
-  style={{
-    marginTop: '2rem',
-    height: '20rem',
-    display: url ? 'none' : 'block',
-  }}
-></div>
+>
+	<div
+		id="picker"
+		style={{
+			marginTop: '2rem',
+			height: '20rem',
+			display: url ? 'none' : 'block',
+		}}
+	></div>
+</PickerInline>
 
 {url && (
   <div>
