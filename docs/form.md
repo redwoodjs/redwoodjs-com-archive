@@ -46,7 +46,7 @@ The `<TextAreaField>` and all InputFields accept the same options for validation
 
 `<FieldError>` only takes styling for errors and is only rendered if there is an error on the associated field.
 
-Certain `<TypeField>`s have type coercion built-in, like `<NumberField>`, but you can always override the coercion or, if it's not built-in, set it manually via the `dataType` attribute. See [dataType](#datatype).
+Certain `<TypeField>`s have type coercion built-in, like `<NumberField>`, but you can always override the coercion or, if it's not built-in, set it manually via the `transformValue` attribute. See [transformValue](#transformvalue).
 
 A typical React component using these helpers would look something like this Contact Us page form:
 
@@ -266,7 +266,7 @@ The `style` and `className` that should be passed to the HTML `<label>` tag that
 ## InputFields
 
 Inputs are the backbone of most forms. `<TextField>` renders an HTML `<input type="text">` field, but is registered with `react-hook-form` to provide some validation and error handling.
-Note that certain InputFields handle type coercion automatically, but you can always override the coercion or, if it's not built-in, set it manually via the `dataType` attribute (see [dataType](#datatype)).
+Note that certain InputFields handle type coercion automatically, but you can always override the coercion or, if it's not built-in, set it manually via the `transformValue` attribute (see [transformValue](#transformvalue)).
 
 ```html
 <TextField name="name" className="input" />
@@ -310,9 +310,21 @@ Options that define how this field should be validated. The options are passed t
 
 ### dataType
 
-If the type to coerce the input to can’t be inferred automatically, like making a `Float` from a `<TextField>` for example, you can explicitly set the InputField's `dataType` attribute to `Boolean`, `Float`, `Int`, or `Json`. 
+This attribute has been deprecated. See [transformValue](#transformvalue).
 
-In the future, we'll let you pass a function to this attribute so you can do the coercion however you want.
+### transformValue
+
+If the type to coerce the input to can’t be inferred automatically, like making a `Float` from a `<TextField>` for example, you can set the InputField's `transformValue` attribute to `Boolean`, `Float`, `Int`, or `Json`.
+
+You can also pass a function to `transformValue`. For instance, you might remove commas from large numbers.
+
+```javascript
+<TextField
+  name='revenue'
+  transformValue={(str) => parseInt(str.replace(/,/g, ''), 10)}
+  // '42,000,000' => 42000000
+/>
+```
 
 ## `<TextAreaField>`
 

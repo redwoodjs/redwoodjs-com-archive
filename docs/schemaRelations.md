@@ -19,7 +19,7 @@ There are two important things to understand about the, ahem, relationship betwe
 
 These generators *will* run correctly. However, when you try to use the associated CRUD UI (or your own UI, if applicable), you will encounter errors.
 
-Admittedly, trips up a lot of people. And we are definitely working on it. But until the generators offer improved support, here's a guide to the manual modifications you'll need to make when using the Scaffold (or SDL or Service) Generator with models containing relations.
+Admittedly, this trips up a lot of people. And we are definitely working on it. But until the generators offer improved support, here's a guide to the manual modifications you'll need to make when using the Scaffold (or SDL or Service) Generator with models containing relations.
 
 ## The Problem with Scaffold Code
 
@@ -66,7 +66,7 @@ model Post {
 
 Using Redwood’s generators to build a CRUD scaffold for Post, you can successfully run `yarn rw generate scaffold post`. But when you run `yarn rw dev`, and then try to create a new post and save from the UI, you’ll get an error.
 
-Looking at the Service file the Redwood generator created, `api/src/service/posts.js`, here’s what the mutation looks like to create a new post:
+Looking at the Service file the Redwood generator created, `api/src/services/posts/posts.js`, here’s what the mutation looks like to create a new post:
 
 ```jsx
 export const createPost = ({ input }) => {
@@ -116,7 +116,8 @@ const foreignKeyReplacement = (input) => {
 Applied to your own `posts.js`, your code would look like this:
 
 ```jsx
-// api/src/services/posts/posts.jsimport { db } from 'src/lib/db'
+// api/src/services/posts/posts.js
+import { db } from 'src/lib/db'
 
 // super hacky workaround function by @rob 🚀
 const foreignKeyReplacement = (input) => {
