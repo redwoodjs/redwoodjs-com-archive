@@ -2524,7 +2524,7 @@ So until next time, a bit of wisdom to help combat that next bout of every devel
 
 ### What's Next
 
-Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
+Want to add some more features to your app? Check out some of our Cookbook recipes like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
 
 ### Roadmap
 
