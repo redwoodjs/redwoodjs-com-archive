@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "build": "node lib/build.js && webpack && postcss --verbose code/stylesheets/application.pcss -o publish/stylesheets/application.css",
-    "clean": "del 'code/html/(cookbook|docs|tutorial)/*.html' 'code/html/_(cookbook|docs|tutorial)_nav.html' 'publish/!(downloads|images|favicon.*)'",
+    "clean": "del 'code/html/(cookbook|docs|tutorial|tutorial2)/*.html' 'code/html/_(cookbook|docs|tutorial|tutorial2)_nav.html' 'publish/!(downloads|images|favicon.*)'",
     "dev": "yarn serve & yarn watch",
     "netlify": "yarn watch & netlify dev",
     "rebuild": "yarn clean && yarn build",
@@ -33,6 +33,7 @@
     "lodash.template": "^4.5.0",
     "markdown-it": "^10.0.0",
     "markdown-it-collapsible": "^1.0.0",
+    "markdown-it-deflist": "^2.1.0",
     "markdown-it-highlight-lines": "^1.0.2",
     "markdown-it-toc-and-anchor": "^4.2.0",
     "marked": "^0.8.0",
