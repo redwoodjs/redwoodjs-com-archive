@@ -922,7 +922,7 @@ export const posts = () => {
 }
 
 export const post = ({ id }) => {
-  return db.post.findOne({
+  return db.post.findUnique({
     where: { id },
   })
 }
@@ -2647,7 +2647,7 @@ export const posts = () => {
 }
 
 export const post = ({ id }) => {
-  return db.post.findOne({
+  return db.post.findUnique({
     where: { id },
   })
 }
@@ -2675,7 +2675,7 @@ export const deletePost = ({ id }) => {
 }
 
 export const Post = {
-  user: (_obj, { root }) => db.post.findOne({ where: { id: root.id } }).user(),
+  user: (_obj, { root }) => db.post.findUnique({ where: { id: root.id } }).user(),
 }
 ```
 
