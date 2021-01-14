@@ -95,7 +95,7 @@ import {
   TextField,
   Submit,
 } from '@redwoodjs/forms'
-import ReactFilestack from 'filestack-react'
+import { PickerInline } from 'filestack-react'
 
 const CSS = {
   label: 'block mt-6 text-gray-700 font-semibold',
@@ -138,7 +138,7 @@ const ImageForm = (props) => {
         />
         <FieldError name="title" className={CSS.errorMessage} />
 
-        <ReactFilestack apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY} />
+        <PickerInline apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY} />
 
         <div className="mt-8 text-center">
           <Submit
@@ -156,7 +156,7 @@ const ImageForm = (props) => {
 export default ImageForm
 ```
 
-If you look closely there's a *little* button under the Title input:
+If you look closely there's a _little_ button under the Title input:
 
 ![Pick file button](https://user-images.githubusercontent.com/300/82617171-1c3d7700-9b84-11ea-9e70-d005c419ebe1.png)
 
