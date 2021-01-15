@@ -546,7 +546,15 @@ Storybook will reload and be much happier:
 
 ![image](https://user-images.githubusercontent.com/300/95785006-ccbe2b80-0c89-11eb-8d3b-bdf5ad5a6d63.png)
 
-Let's add a little bit of styling and date conversion to get this **Comment** component looking like a nice, completed design element:
+Let's add a little bit of styling and date conversion to get this **Comment** component looking like a nice, completed design element.
+
+Before we can do this, make sure you're set up to use TailwindCSS:
+
+```bash
+yarn rw setup tailwind
+```
+
+Now we can add our styling:
 
 ```javascript{3-7,11-19}
 // web/src/components/Comment/Comment.js
