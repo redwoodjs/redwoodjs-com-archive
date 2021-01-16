@@ -419,11 +419,11 @@ For this we will need define a custom `<div>` and have it as a child of `<Picker
   apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
   onSuccess={onFileUpload}
 >
-	<div
-		style={{
-			display: url ? 'none' : 'block',
-		}}
-	></div>
+  <div
+    style={{
+      display: url ? 'none' : 'block',
+    }}
+  ></div>
 </PickerInline>
 
 
@@ -443,11 +443,11 @@ Now let's just add the ability to bring back the uploader if you decide you want
   apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
   onSuccess={onFileUpload}
 >
-	<div
-		style={{
-			display: url ? 'none' : 'block',
-		}}
-	></div>
+  <div
+    style={{
+      display: url ? 'none' : 'block',
+    }}
+  ></div>
 </PickerInline>
 
 {url && (
