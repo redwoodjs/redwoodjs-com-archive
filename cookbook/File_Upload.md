@@ -156,25 +156,11 @@ const ImageForm = (props) => {
 export default ImageForm
 ```
 
-If you look closely there's a _little_ button under the Title input:
-
-![Pick file button](https://user-images.githubusercontent.com/300/82617171-1c3d7700-9b84-11ea-9e70-d005c419ebe1.png)
-
-Clicking that actually launches the picker with all kinds of options, like picking a local file, providing a URL or even grabbing one from Facebook, Instagram or Google Drive. Not bad!
+We now have created a picker with all kinds of options, like picking a local file, providing a URL or even grabbing one from Facebook, Instagram or Google Drive. Not bad!
 
 ![Filestack picker](https://user-images.githubusercontent.com/300/82617240-51e26000-9b84-11ea-8aec-210b7a751e8c.png)
 
-There's no reason to make the user click that button, let's just show the picker on the page when it loads by adding a couple of [pickerOptions](https://github.com/filestack/filestack-react#props). We'll need to create a container for it to live in, so we'll add a `<div>` and have it as a child of `<PickerInline>`. We'll also give the `<div>` a couple of styles so that the picker doesn't collapse to 0px tall:
-
-```javascript
-// web/src/components/ImageForm/ImageForm.js
-
-<PickerInline apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}>
-  <div id="picker" style={{ marginTop: '2rem', height: '20rem' }}></div>
-</PickerInline>
-```
-
-Great! You can even try uploading an image to make sure it works:
+... And....you can even try uploading an image to make sure it works:
 
 ![Upload](https://user-images.githubusercontent.com/300/82618035-bb636e00-9b86-11ea-9401-61b8c989f43c.png)
 
@@ -206,11 +192,9 @@ const ImageForm = (props) => {
 
   // form stuff...
 
-	<PickerInline
-		apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
-		onSuccess={onFileUpload}>
-  		<div id="picker" style={{ marginTop: '2rem', height: '20rem' }}></div>
-	</PickerInline>
+<PickerInline
+  apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
+  onSuccess={onFileUpload} />
 ```
 
 Well lookie here:
@@ -426,6 +410,8 @@ It would be nice if, after uploading, you could see the image you uploaded. Like
 
 We're already storing the attached image URL in state, so let's use the existence of that state to show the attached image. In fact, let's also hide the uploader and assume you're done (you'll be able to show it again if needed):
 
+For this we will need define a custom `<div>` and have it as a child of `<PickerInline>`. We'll also have the `<div>` display or hide itself (ie. the picker), if there exists a defined image url:
+
 ```javascript{14,18}
 // web/src/components/ImageForm/ImageForm.js
 
@@ -434,10 +420,7 @@ We're already storing the attached image URL in state, so let's use the existenc
   onSuccess={onFileUpload}
 >
 	<div
-		id="picker"
 		style={{
-			marginTop: '2rem',
-			height: '20rem',
 			display: url ? 'none' : 'block',
 		}}
 	></div>
@@ -461,10 +444,7 @@ Now let's just add the ability to bring back the uploader if you decide you want
   onSuccess={onFileUpload}
 >
 	<div
-		id="picker"
 		style={{
-			marginTop: '2rem',
-			height: '20rem',
 			display: url ? 'none' : 'block',
 		}}
 	></div>
