@@ -70,6 +70,6 @@ If you're adding tests, you'll want to include the types for `jest` in your `tsc
 +"types": ["jest"]
 ```
 
-Currently, these are added to `node_modules` by `@redwoodjs/core` and the above approach should just work. If this is not the case, you can `npm i -D @types/jest` in the `web` folder and they will resolve.
+Currently, these are added to `node_modules` by `@redwoodjs/core` and the above approach should just work. If this is not the case, you can `yarn add -D @types/jest` in the `web` folder and they will resolve.
 
 If you have any problems please open an issue and let us know.
