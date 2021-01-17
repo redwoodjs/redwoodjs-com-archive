@@ -410,7 +410,7 @@ It would be nice if, after uploading, you could see the image you uploaded. Like
 
 We're already storing the attached image URL in state, so let's use the existence of that state to show the attached image. In fact, let's also hide the uploader and assume you're done (you'll be able to show it again if needed):
 
-For this we will need define a custom `<div>` and have it as a child of `<PickerInline>`. We'll also have the `<div>` display or hide itself (ie. the picker), if there exists a defined image url:
+For this we will need to define a custom `<div>` and make it a child of `<PickerInline>`. We'll also have the `<div>` display or hide itself (i.e. the picker), if there exists a defined image url:
 
 ```javascript{14,18}
 // web/src/components/ImageForm/ImageForm.js
