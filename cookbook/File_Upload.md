@@ -156,7 +156,7 @@ const ImageForm = (props) => {
 export default ImageForm
 ```
 
-We now have created a picker with all kinds of options, like picking a local file, providing a URL or even grabbing one from Facebook, Instagram or Google Drive. Not bad!
+We have now created a picker with all kinds of options, like picking a local file, providing a URL or even grabbing a file from Facebook, Instagram or Google Drive. Not bad!
 
 ![Filestack picker](https://user-images.githubusercontent.com/300/82617240-51e26000-9b84-11ea-8aec-210b7a751e8c.png)
 
