@@ -160,7 +160,7 @@ We have now created a picker with all kinds of options, like picking a local fil
 
 ![Filestack picker](https://user-images.githubusercontent.com/300/82617240-51e26000-9b84-11ea-8aec-210b7a751e8c.png)
 
-... And....you can even try uploading an image to make sure it works:
+You can even try uploading an image to make sure it works:
 
 ![Upload](https://user-images.githubusercontent.com/300/82618035-bb636e00-9b86-11ea-9401-61b8c989f43c.png)
 
