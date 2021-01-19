@@ -49,6 +49,17 @@
     Turbolinks-Location = "/tutorial/welcome-to-redwood"
 
 [[redirects]]
+  from = "/tutorial2"
+  to = "/tutorial2/welcome-to-redwood-part-ii-redwood-s-revenge"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/tutorial2/welcome-to-redwood-part-ii-redwood-s-revenge"
+  [headers.values]
+    Turbolinks-Location = "/tutorial2/welcome-to-redwood-part-ii-redwood-s-revenge"
+
+[[redirects]]
   from = "/cookbook"
   to = "/cookbook/disable-api-database"
   status = 301
@@ -92,43 +103,43 @@ to = "/"
 
 [[redirects]]
   from = "/guides/command-line-interface"
-  to = "/docs/cli-commands"    
+  to = "/docs/cli-commands"
 
 [[redirects]]
 from = "/reference/command-line-interface"
-to = "/docs/cli-commands"  
+to = "/docs/cli-commands"
 
 [[redirects]]
 from = "/guides/connection-pooling"
-to = "/docs/connection-pooling"  
+to = "/docs/connection-pooling"
 
 [[redirects]]
 from = "/guides/contributing"
-to = "/docs/contributing"  
+to = "/docs/contributing"
 
 [[redirects]]
 from = "/guides/redwood-s-http-server-for-serverless-functions"
-to = "/docs/serverless-functions"  
+to = "/docs/serverless-functions"
 
 [[redirects]]
 from = "/guides/environment-variables"
-to = "/docs/environment-variables"    
+to = "/docs/environment-variables"
 
 [[redirects]]
 from = "/guides/local-postgres-setup"
-to = "/docs/local-postgres-setup" 
+to = "/docs/local-postgres-setup"
 
 [[redirects]]
 from = "/guides/redwood-router"
-to = "/docs/redwood-router"  
+to = "/docs/redwood-router"
 
 [[redirects]]
 from = "/guides/webpack-config"
-to = "/docs/webpack-configuration"  
+to = "/docs/webpack-configuration"
 
 [[redirects]]
 from = "/reference/app-configuration-redwood-toml"
-to = "/docs/app-configuration-redwood-toml"  
+to = "/docs/app-configuration-redwood-toml"
 
 [[redirects]]
 from = "/reference/redwood-form"

@@ -102,6 +102,38 @@ web/src/Routes.js:17:40: error: Page component not found
 web/src/Routes.js:17:19: error (INVALID_ROUTE_PATH_SYNTAX): Error: Route path contains duplicate parameter: "/{id}/{id}"
 ```
 
+## console (alias c)
+
+Launch an interactive Redwood shell (experimental):
+- This has not yet been tested on Windows. 
+- The Prisma Client must be generated _prior_ to running this command, e.g. `yarn rw db up`. This is a known issue.
+
+> In your shell, be sure to set the `NODE_OPTIONS` env var to `--experimental-repl-await`:
+>
+> ```terminal
+> export NODE_OPTIONS="--experimental-repl-await"
+> ```
+>
+> Alternatively, on Mac or Linux you can pass the env var when you run the command:
+> ```
+> NODE_OPTIONS="--experimental-repl-await" yarn rw console
+> ```
+
+```
+yarn rw console
+```
+
+Right now, you can only use the Redwood console to interact with your database:
+
+**Example**
+
+```terminal
+~/redwood-app$ yarn rw console
+yarn run v1.22.4
+> await db.user.findMany()
+> [ { id: 1, email: 'tom@redwoodjs.com', name: 'Tom'  } ]
+```
+
 ## dataMigrate
 
 Data migration tools.
@@ -1032,7 +1064,7 @@ export const users = () => {
 
 export const User = {
   profile: (_obj, { root }) => {
-    db.user.findOne({ where: { id: root.id } }).profile(),
+    db.user.findUnique({ where: { id: root.id } }).profile(),
   }
 }
 ```
