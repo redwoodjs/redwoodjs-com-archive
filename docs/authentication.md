@@ -378,20 +378,9 @@ The following CLI command will install required packages and generate boilerplat
 yarn rw generate auth ethereum
 ```
 
-_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
-
-```bash
-cd web
-yarn add @redwoodjs/auth @oneclickdapp/ethereum-auth
-```
-
 #### Setup
 
-```js
-// web/src/index.js
-
-// TODO
-```
+To complete setup, you'll also need to update your `api` server manually. See https://github.com/oneclickdapp/ethereum-auth for instructions.
 
 +++
 
@@ -417,7 +406,6 @@ However, there are examples contributed by developers in the Redwood forums and 
 
 The most complete example (although now a bit outdated) is found in [this forum thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610). Here's another [helpful message in the thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610/25).
 +++
-
 
 ## API
 
