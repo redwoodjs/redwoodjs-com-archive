@@ -8,6 +8,7 @@
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
+- [Ethereum](https://github.com/oneclickdapp/ethereum-auth)
 - [Supabase](https://supabase.io/docs/guides/auth)
 - Custom
 - [Contribute one](https://github.com/redwoodjs/redwood/tree/main/packages/auth), it's SuperEasy™!
@@ -448,6 +449,24 @@ Update your .env file with the following settings supplied when you created your
 You can find these values in your project's dashboard under Settings -> API.
 
 For full client docs, see: <https://supabase.io/docs/library/getting-started#reference>
+
++++
+
+### Ethereum
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw generate auth ethereum
+```
+
+#### Setup
+
+To complete setup, you'll also need to update your `api` server manually. See https://github.com/oneclickdapp/ethereum-auth for instructions.
 
 +++
 
