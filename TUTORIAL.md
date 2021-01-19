@@ -2561,7 +2561,7 @@ But you know Redwood has your back! Login isn't something we have to write from 
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
-- [Supabase](https://supabase.io/docs/library/getting-started#reference)
+- [Supabase](https://supabase.io/docs/guides/auth)
 - [Ethereum](https://github.com/oneclickdapp/ethereum-auth)
 
 We're going to demo a Netlify Identity integration in this tutorial since we're already deployed there and it's very easy to add to a Netlify site.
