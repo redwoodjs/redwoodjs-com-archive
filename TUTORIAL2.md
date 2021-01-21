@@ -21,6 +21,22 @@ We highly recommend going through the first tutorial or at least have built a sl
 * GraphQL & SDLs
 * Services
 
+If you've been through the first part of the tutorial, you can continue pick up where you left off and continue here with part 2. Or, you can start from an [example repo](https://github.com/redwoodjs/redwood-tutorial) that picks up at the end of part 1, but already has additional styling and a starting test suite.
+
+### Using Your Own Rep
+
+If you want to use the same CSS classes we use in the following examples you'll need to add Tailwind to your repo:
+
+```bash
+yarn rw setup tailwind
+```
+
+However, none of the screenshots below will come anywhere close to what you're seeing (except for those isolated components you build in Storybook) so you may want to just start with the example repo below.
+
+You'll also be missing out on a good starting test suite that we've added to the [example repo](https://github.com/redwoodjs/redwood-tutorial).
+
+### Using the Example Repo
+
 If you haven't been through the first tutorial, or maybe you went through it on an older version of Redwood (anything pre-0.23.0) you can clone [this repo](https://github.com/redwoodjs/redwood-tutorial) which contains everything built in part 1 and also adds a little styling so it isn't quite so...tough to look at. Don't get us wrong, what we built in Part I had a great personality! We just gave it some hipper clothes and a nice haircut. We used [TailwindCSS](https://tailwindcss.com) to style things up and added a `<div>` or two to give us some additional hooks to hang styling on.
 
 ```terminal
