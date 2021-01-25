@@ -316,7 +316,7 @@ When the `multiple` attribute is set to `true`
 
 Options that define how this field should be validated. The options are passed to the underlying `register` function provided by `react-hook-form`. The full list of possible values can be found in the [react-hook-form docs](https://react-hook-form.com/api#register) (ignore the usage of `ref` as that is called automaticaly for you by Redwood).
 
-In these two examples, one with multiple field selection, validation requires that the field be selected and then there is a custom validate callback that ensures the user does not select the first value in the dropdown menu. 
+In these two examples, one with multiple field selection, validation requires that the field be selected and there is a custom validate callback that ensures the user does not select the first value in the dropdown menu. 
 
 ```html
 <SelectField
