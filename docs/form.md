@@ -310,11 +310,62 @@ When the `multiple` attribute is set to `true`
 </SelectField>  
 
 <!-- The the user chose the lettuce, tomato and cheese options the onSubmit handler will receive { toppings:["lettuce", "tomato", "cheese"] } -->
+```
 
 #### Validation
 
 Options that define how this field should be validated. The options are passed to the underlying `register` function provided by `react-hook-form`. The full list of possible values can be found in the [react-hook-form docs](https://react-hook-form.com/api#register) (ignore the usage of `ref` as that is called automaticaly for you by Redwood).
 
+In these two examples, one with multiple field selection, validation requires that the field be selected and then there is a custom validate callback that ensures the user does not select the first value in the dropdown menu. 
+
+```html
+<SelectField
+  name="selectSingle"
+  validation={{
+    required: true,
+    validate: {
+      matchesInitialValue: (value) => {
+        return (
+          value !== 'Please select an option' ||
+          'Select an Option'
+        )
+      },
+    },
+  }}
+>
+  <option>Please select an option</option>
+  <option>Option 1</option>
+  <option>Option 2</option>
+</SelectField>
+<FieldError name="selectSingle" style={{ color: 'red' }} />
+
+```
+
+```html
+<SelectField
+  name="selectMultiple"
+  multiple={true}
+  validation={{
+    required: true,
+    validate: {
+      matchesInitialValue: (value) => {
+        let returnValue = [true]
+        returnValue = value.map((element) => {
+          if (element === 'Please select an option')
+            return 'Select an Option'
+        })
+        return returnValue[0]
+      },
+    },
+  }}
+>
+  <option>Please select an option</option>
+  <option>Option 1</option>
+  <option>Option 2</option>
+</SelectField>
+<FieldError name="selectMultiple" style={{ color: 'red' }} />
+
+```
 
 ## InputFields
 
