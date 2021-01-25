@@ -265,7 +265,7 @@ The `style` and `className` that should be passed to the HTML `<label>` tag that
 
 ## `<SelectField>`
 
-Generates an HTML `<select>` field and allows the user to select a value from the field.  Validation and error can be performed as the field is registerd with `react-hook-form`.  It is also possible to select multiple values from the field using the `multiple` attribute.  When the multiple value attribute is `true` then the return from this field will be an array of values returned in the same order as the list of options, not in the order they were selected.
+Generates an HTML `<select>` field and allows the user to select a value from the field.  Validation and error can be performed as the field is registered with `react-hook-form`.  It is also possible to select multiple values from the field using the `multiple` attribute.  When the multiple value attribute is `true` then the return from this field will be an array of values returned in the same order as the list of options, not in the order they were selected.
 
 ```html
 <SelectField name="name" validation={{required:true}}>
@@ -312,7 +312,7 @@ When the `multiple` attribute is set to `true`
 <!-- The the user chose the lettuce, tomato and cheese options the onSubmit handler will receive { toppings:["lettuce", "tomato", "cheese"] } -->
 ```
 
-#### Validation
+#### validation
 
 Options that define how this field should be validated. The options are passed to the underlying `register` function provided by `react-hook-form`. The full list of possible values can be found in the [react-hook-form docs](https://react-hook-form.com/api#register) (ignore the usage of `ref` as that is called automaticaly for you by Redwood).
 
