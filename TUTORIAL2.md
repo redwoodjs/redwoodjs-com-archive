@@ -2335,6 +2335,26 @@ const Comment = ({ comment }) => {
 export default Comment
 ```
 
+Don't forget to update the `CommentsQuery` we're importing from **CommentsCell** to include the `postId` field, since we are relying on it to perform the `refetchQuery` after a successful deletion.
+
+```javascript{11}
+// web/src/components/CommentsCell/CommentsCell.js
+
+import Comment from 'src/components/Comment'
+
+export const QUERY = gql`
+  query CommentsQuery($postId: Int!) {
+    comments(postId: $postId) {
+      id
+      name
+      body
+      postId
+      createdAt
+    }
+  }
+`
+```
+
 Click "Delete" (as a moderator) and the comment should be removed!
 
 Ideally we'd have both versions of this component (with and without the "Delete" button) present in Storybook so we can iterate on the design. But there's no such thing as "logging in" in Storybook and our code depends on being logged in so we can check our roles...how will that work?
