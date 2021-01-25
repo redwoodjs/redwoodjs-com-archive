@@ -36,7 +36,7 @@ What you want to do not on the roadmap? Well, still go for it! We love spikes an
 |[`@redwoodjs/router`](https://github.com/redwoodjs/redwood/blob/main/packages/router/README.md)|The built-in router for Redwood|
 |[`@redwoodjs/structure`](https://github.com/redwoodjs/redwood/blob/main/packages/structure/README.md)|Provides a way to build, validate and inspect an object graph that represents a complete Redwood project|
 |[`@redwoodjs/testing`](https://github.com/redwoodjs/redwood/blob/main/packages/testing/README.md)|Provides helpful defaults when testing a Redwood project's web side|
-|[`@redwoodjs/web`](https://github.com/redwoodjs/redwood/blob/main/packages/web/README.md)|Configures a Redwood's app web side: wraps the Apollo Client in `RedwoodProvider`; defines the Cell HOC|
+|[`@redwoodjs/web`](https://github.com/redwoodjs/redwood/blob/main/packages/web/README.md)|Configures a Redwood's app web side: wraps the Apollo Client in `RedwoodApolloProvider`; defines the Cell HOC|
 
 ## Contributing Docs
 

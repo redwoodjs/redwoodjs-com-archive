@@ -53,9 +53,9 @@ netlifyIdentity.init()
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={netlifyIdentity} type="netlify">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
@@ -113,9 +113,9 @@ const goTrue = new GoTrue({
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={goTrue} type="goTrue">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
@@ -167,9 +167,9 @@ const auth0 = new Auth0Client({
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={auth0} type="auth0">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
@@ -277,9 +277,9 @@ const azureActiveDirectoryClient = new UserAgentApplication({
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={azureActiveDirectoryClient} type="azureActiveDirectory">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
@@ -330,9 +330,9 @@ const m = new Magic(process.env.MAGICLINK_PUBLIC)
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={m} type="magicLink">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
@@ -385,9 +385,9 @@ const firebaseClient = ((config) => {
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={firebaseClient} type="firebase">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
