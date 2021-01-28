@@ -105,7 +105,7 @@ web/src/Routes.js:17:19: error (INVALID_ROUTE_PATH_SYNTAX): Error: Route path co
 ## console (alias c)
 
 Launch an interactive Redwood shell (experimental):
-- This has not yet been tested on Windows. 
+- This has not yet been tested on Windows.
 - The Prisma Client must be generated _prior_ to running this command, e.g. `yarn rw db up`. This is a known issue.
 
 > In your shell, be sure to set the `NODE_OPTIONS` env var to `--experimental-repl-await`:
@@ -418,7 +418,6 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 
 | Command                | Description                                                                                           |
 | :--------------------- | :---------------------------------------------------------------------------------------------------- |
-| `auth <provider>`      | Generate an auth configuration                                                                        |
 | `cell <name>`          | Generate a cell component                                                                             |
 | `component <name>`     | Generate a component component                                                                        |
 | `dataMigration <name>` | Generate a data migration component                                                                   |
@@ -433,26 +432,7 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 
 **Undoing a Generator with a Destroyer**
 
-Most generate commands (i.e., everything but `yarn rw generate auth` and `yarn rw generate dataMigration`) can be undone by their corresponding destroy command. For example, `yarn rw generate cell` can be undone with `yarn rw d cell`.
-
-### auth
-
-Generate an auth configuration.
-
-```
-yarn rw generate auth <provider>
-```
-
-You can get authentication out-of-the-box with generators. Right now we support Auth0, Firebase, GoTrue, Magic, and Netlify.
-
-| Arguments & Options | Description                                                                                      |
-| :------------------ | :----------------------------------------------------------------------------------------------- |
-| `provider`          | Auth provider to configure. Choices are `auth0`, `firebase`, `goTrue`, `magicLink` and `netlify` |
-| `--force, -f`       | Overwrite existing files                                                                         |
-
-**Usage**
-
-See [Authentication](https://redwoodjs.com/docs/authentication).
+Most generate commands (i.e., everything but `yarn rw generate dataMigration`) can be undone by their corresponding destroy command. For example, `yarn rw generate cell` can be undone with `yarn rw d cell`.
 
 ### cell
 
@@ -590,21 +570,6 @@ Creates a data migration script in `api/db/dataMigrations`.
 **Usage**
 
 See the [Data Migration](/docs/data-migrations) docs.
-
-### deploy (config)
-
-Generate a deployment configuration.
-
-```
-yarn rw generate deploy <provider>
-```
-
-Creates provider-specific code and configuration for deployment
-
-| Arguments & Options | Description                                                                        |
-| :------------------ | :--------------------------------------------------------------------------------- |
-| `provider`          | Deploy provider to configure. Choices are `netlify`, `vercel`, or `aws_serverless` |
-| `--force, -f`       | Overwrite existing configuration                                                   |
 
 **Usage**
 
@@ -1196,11 +1161,47 @@ yarn rw setup <command>
 
 <br/>
 
-| Commands            | Description                              |
-| :------------------ | :--------------------------------------- |
-| `i18n`              | Setup i18n                               |
-| `tailwind`          | Setup tailwindcss and PostCSS            |
-| `webpack`           | Setup webpack in your project so you can add custom config            |
+| Commands   | Description                                                            |
+| :--------- | :--------------------------------------------------------------------- |
+| `auth`     | Setup  auth configuration for a provider                               |
+| `deploy`   | Setup a deployment configuration for  a provider                       |
+| `i18n`     | Setup i18n                                                             |
+| `tailwind` | Setup tailwindcss and PostCSS                                          |
+| `webpack`  | Setup webpack config file in your project so you can add custom config |
+
+### setup deploy (config)
+
+Setup a deployment configuration.
+
+```
+yarn rw setup deploy <provider>
+```
+
+Creates provider-specific code and configuration for deployment
+
+| Arguments & Options | Description                                                                        |
+| :------------------ | :--------------------------------------------------------------------------------- |
+| `provider`          | Deploy provider to configure. Choices are `netlify`, `vercel`, or `aws_serverless` |
+| `--force, -f`       | Overwrite existing configuration                                                   |
+
+### setup auth
+
+Setup an auth configuration.
+
+```
+yarn rw setup auth <provider>
+```
+
+You can get authentication out-of-the-box with generators. Right now we support Auth0, Firebase, GoTrue, Magic, and Netlify.
+
+| Arguments & Options | Description                                                                                      |
+| :------------------ | :----------------------------------------------------------------------------------------------- |
+| `provider`          | Auth provider to configure. Choices are `auth0`, `firebase`, `goTrue`, `magicLink` and `netlify` |
+| `--force, -f`       | Overwrite existing files                                                                         |
+
+**Usage**
+
+See [Authentication](https://redwoodjs.com/docs/authentication).
 
 ## storybook
 
