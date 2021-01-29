@@ -287,7 +287,7 @@ To setup your App Registration with custom roles and have them exposed via the `
 
 #### Login Options
 
-Options in method `logIn(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html), and a login request expects at least one [scope](https://docs.microsoft.com/en-us/graph/permissions-reference#user-permissions) to be defined.
+Options in method `logIn(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html) and is a good place to pass in optional [scopes](https://docs.microsoft.com/en-us/graph/permissions-reference#user-permissions) to be authorized. By default, MSAL set `scopes` to [/.default](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#the-default-scope) which is built in for every application that refers to the static list of permissions configured on the application registration.
 
 ```js
 await logIn({
