@@ -11,11 +11,23 @@ at `http://localhost:8911/graphql`.
 The `./api` directory is watched for modifications, when they are
 detected the modules are reimported.
 
-A lambda function must export a `handler`. You can execute the
-supplied callback function to return a response:
+You can use code in `./api/src` e.g. `import { db } from 'src/lib/db'`
+
+A lambda function must export a `handler` and return a status code.
 
 ```js
-export const handler = (event, context, callback) => {
-  return callback(null, { statusCode: 200, body: 'Hello, world' })
+export const handler = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      data: 'Serverless function',
+    }),
+  }
 }
+```
+
+Redwood comes with a generator to help you create serverless functions.
+
+```terminal
+yarn rw g function <name>
 ```

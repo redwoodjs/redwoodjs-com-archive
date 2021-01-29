@@ -3,7 +3,7 @@
 Cells are a declarative approach to data fetching and one of Redwood's signature modes of abstraction. In a way, Cells create space: by providing conventions around data fetching, Redwood can get in between the request and the response and perform optimizations, all without you ever having to change your code.
 
 While it might seem like there must be lot of magic involved, a Cell is actually just a [higher-order component](https://reactjs.org/docs/higher-order-components.html) that executes a GraphQL query and manages its lifecycle.
-All the logic's actually in just one file: [withCell.js](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/graphql/withCell.js).
+All the logic's actually in just one file: [withCellHOC.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/withCellHOC.tsx).
 The idea is that, by exporting named constants that match the parameters of `withCell`, Redwood can assemble this higher-order component out of these constants at build-time using a babel plugin!
 
 All of this without writing a line of imperative code. Just say what is supposed to happen when, and Redwood will take care of the rest.
@@ -155,24 +155,25 @@ But why bother with Slow 3G when Redwood comes with Storybook? Storybook makes d
 
 A Cell renders this component if there's no data.
 
-What do we mean by no data? We mean if the response is 1) `null` or 2) an empty array (`[]`). There's actually four functions in [withCell.js](https://github.com/redwoodjs/redwood/blob/49c3afecc210709641dd340b974c86251ed207dc/packages/web/src/graphql/withCell.js) dedicated just to figuring this out:
+What do we mean by no data? We mean if the response is 1) `null` or 2) an empty array (`[]`). There's actually four functions in [withCellHOC.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/withCellHOC.tsx) dedicated just to figuring this out:
 
 ```javascript
-// withCell.js
+// withCellHOC.tsx
 
-const isDataNull = (data) => {
+const isDataNull = (data: DataObject) => {
   return dataField(data) === null
 }
 
-const isDataEmptyArray = (data) => {
-  return Array.isArray(dataField(data)) && dataField(data).length === 0
+const isDataEmptyArray = (data: DataObject) => {
+  const field = dataField(data)
+  return Array.isArray(field) && field.length === 0
 }
 
-const dataField = (data) => {
+const dataField = (data: DataObject) => {
   return data[Object.keys(data)[0]]
 }
 
-const isEmpty = (data) => {
+const isEmpty = (data: DataObject) => {
   return isDataNull(data) || isDataEmptyArray(data)
 }
 ```
@@ -202,7 +203,7 @@ In production, failed cells won't break your app, they'll just be empty divs... 
 
 If everything went well, a Cell renders `Success`.
 
-As mentioned, Success gets exclusive access to the `data` prop. But if you try to destructure it from props, you'll notice that it doesn't exist. This is because Redwood adds another layer of convenience: in [withCell.js](https://github.com/redwoodjs/redwood/blob/49c3afecc210709641dd340b974c86251ed207dc/packages/web/src/graphql/withCell.js#L82), Redwood spreads `data` (using the spread operator, `...`) into `Success` so that you can just destructure whatever data you were expecting from your `QUERY` directly.
+As mentioned, Success gets exclusive access to the `data` prop. But if you try to destructure it from props, you'll notice that it doesn't exist. This is because Redwood adds another layer of convenience: in [withCellHOC.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/withCellHOC.tsx#L121), Redwood spreads `data` (using the spread operator, `...`) into `Success` so that you can just destructure whatever data you were expecting from your `QUERY` directly.
 
 So, if you're querying for `posts` and `authors`, instead of doing:
 
@@ -365,4 +366,4 @@ export const Cell = () => {
 
 That's a lot of code. A lot of imperative code too.
 
-We're basically just dumping the contents of [withCell.js](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/graphql/withCell.js) into this file. Can you imagine having to do this every time you wanted to fetch data that might be delayed in responding? Yikes.
+We're basically just dumping the contents of [withCellHOC.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/withCellHOC.tsx) into this file. Can you imagine having to do this every time you wanted to fetch data that might be delayed in responding? Yikes.

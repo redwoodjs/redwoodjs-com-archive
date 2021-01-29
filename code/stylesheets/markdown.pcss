@@ -35,6 +35,10 @@
     h1, h2, h3, h4, h5, h6 {
       margin-left: -1.1rem;
     }
+
+    h4 {
+      margin-left: -0.9rem;
+    }
   }
 
   p {
@@ -69,7 +73,8 @@
   }
 
   p code,
-  li code {
+  li code,
+  dl code {
     @apply bg-red-200 text-gray-900 text-sm px-1 py-half rounded;
   }
 
@@ -79,6 +84,10 @@
 
   blockquote {
     @apply text-sm border border-red-300 bg-red-100 py-1 px-6 my-8 rounded-lg;
+  }
+
+  blockquote ul:last-child {
+    @apply mb-6;
   }
 
   img {
@@ -154,6 +163,27 @@
 
   summary {
     @apply outline-none cursor-pointer;
+  }
+
+  dl {
+    @apply my-8;
+  }
+
+  dt {
+    @apply mt-4;
+  }
+
+  dd {
+    @apply text-sm text-gray-800 mt-1 ml-4;
+    code {
+      @apply text-xs;
+    }
+  }
+  .code-dl {
+    @apply mt-8;
+    p {
+      @apply mt-1 mb-8;
+    }
   }
 }
 

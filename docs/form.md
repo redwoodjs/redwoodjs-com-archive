@@ -46,7 +46,7 @@ The `<TextAreaField>` and all InputFields accept the same options for validation
 
 `<FieldError>` only takes styling for errors and is only rendered if there is an error on the associated field.
 
-Certain `<TypeField>`s have type coercion built-in, like `<NumberField>`, but you can always override the coercion or, if it's not built-in, set it manually via the `dataType` attribute. See [dataType](#datatype).
+Certain `<TypeField>`s have type coercion built-in, like `<NumberField>`, but you can always override the coercion or, if it's not built-in, set it manually via the `transformValue` attribute. See [transformValue](#transformvalue).
 
 A typical React component using these helpers would look something like this Contact Us page form:
 
@@ -200,7 +200,7 @@ import { useMutation } from '@redwoodjs/web'
 const ContactPage = (props) => {
   const [create, { loading, error }] = useMutation(CREATE_CONTACT)
 
-  onSubmit = (data) => {
+  const onSubmit = (data) => {
     create({ variables: { input: data }})
   }
 
@@ -257,16 +257,120 @@ Besides the attributes listed below, any additional attributes are passed on as 
 
 #### name
 
-The name of the field that this label is connected to. This should be the same as the `name` attribute on the `<TextField>` or `<TextAreaField>` this label is for.
+The name of the field that this label is connected to. This should be the same as the `name` attribute on the `<TextField>`, `<TextAreaField>` or `<SelectField>` this label is for.
 
 #### errorStyle / errorClassName
 
 The `style` and `className` that should be passed to the HTML `<label>` tag that is generated *if* the field with the same `name` has a validation error.
 
+## `<SelectField>`
+
+Generates an HTML `<select>` field and allows the user to select a value from the field.  Validation and error can be performed as the field is registered with `react-hook-form`.  It is also possible to select multiple values from the field using the `multiple` attribute.  When the multiple value attribute is `true` then the return from this field will be an array of values returned in the same order as the list of options, not in the order they were selected.
+
+```html
+<SelectField name="name" validation={{required:true}}>
+   <option>Option 1</option>
+   <option>Option 2</option>
+   <option>Option 3</option>
+</SelectField>
+
+<!-- Renders 
+  <select id="name" validation="Object object">
+    <option>Option 1</option>
+    <option>Option 2</option>
+    <option>Option 3</option>
+  </select>
+-->
+```
+### Attributes
+
+Besides the attributes listed below, any additional attributes are passed on as props to the underlying `<select>` tag which is rendered
+
+#### name
+
+The name of this field which will be used as the key in the object sent to the form's onSubmit handler if the field passes validation. Any associated <Label> or <FieldError> helpers must have the same value for their name attribute in order to be connected properly.
+
+```html
+<SelectField name="operatingSystem">
+  <option>"MacOS"</option>
+  <option>"Windows 10"</option>
+</SelectField>  
+
+<!-- The onSubmit handler will receive { operatingSystem:"MacOS" } if that were the option chosen -->
+
+```
+When the `multiple` attribute is set to `true`
+
+```html
+<SelectField name="toppings" multiple={true}>
+  <option>"lettuce"</option>
+  <option>"tomato"</option>
+  <option>"pickle"</option>
+  <option>"cheese"</option>
+</SelectField>  
+
+<!-- The the user chose the lettuce, tomato and cheese options the onSubmit handler will receive { toppings:["lettuce", "tomato", "cheese"] } -->
+```
+
+#### validation
+
+Options that define how this field should be validated. The options are passed to the underlying `register` function provided by `react-hook-form`. The full list of possible values can be found in the [react-hook-form docs](https://react-hook-form.com/api#register) (ignore the usage of `ref` as that is called automaticaly for you by Redwood).
+
+In these two examples, one with multiple field selection, validation requires that the field be selected and there is a custom validate callback that ensures the user does not select the first value in the dropdown menu. 
+
+```html
+<SelectField
+  name="selectSingle"
+  validation={{
+    required: true,
+    validate: {
+      matchesInitialValue: (value) => {
+        return (
+          value !== 'Please select an option' ||
+          'Select an Option'
+        )
+      },
+    },
+  }}
+>
+  <option>Please select an option</option>
+  <option>Option 1</option>
+  <option>Option 2</option>
+</SelectField>
+<FieldError name="selectSingle" style={{ color: 'red' }} />
+
+```
+
+```html
+<SelectField
+  name="selectMultiple"
+  multiple={true}
+  validation={{
+    required: true,
+    validate: {
+      matchesInitialValue: (value) => {
+        let returnValue = [true]
+        returnValue = value.map((element) => {
+          if (element === 'Please select an option')
+            return 'Select an Option'
+        })
+        return returnValue[0]
+      },
+    },
+  }}
+>
+  <option>Please select an option</option>
+  <option>Option 1</option>
+  <option>Option 2</option>
+</SelectField>
+<FieldError name="selectMultiple" style={{ color: 'red' }} />
+
+```
+
 ## InputFields
 
 Inputs are the backbone of most forms. `<TextField>` renders an HTML `<input type="text">` field, but is registered with `react-hook-form` to provide some validation and error handling.
-Note that certain InputFields handle type coercion automatically, but you can always override the coercion or, if it's not built-in, set it manually via the `dataType` attribute (see [dataType](#datatype)).
+Note that certain InputFields handle type coercion automatically, but you can always override the coercion or, if it's not built-in, set it manually via the `transformValue` attribute (see [transformValue](#transformvalue)).
 
 ```html
 <TextField name="name" className="input" />
@@ -310,9 +414,21 @@ Options that define how this field should be validated. The options are passed t
 
 ### dataType
 
-If the type to coerce the input to can’t be inferred automatically, like making a `Float` from a `<TextField>` for example, you can explicitly set the InputField's `dataType` attribute to `Boolean`, `Float`, `Int`, or `Json`. 
+This attribute has been deprecated. See [transformValue](#transformvalue).
 
-In the future, we'll let you pass a function to this attribute so you can do the coercion however you want.
+### transformValue
+
+If the type to coerce the input to can’t be inferred automatically, like making a `Float` from a `<TextField>` for example, you can set the InputField's `transformValue` attribute to `Boolean`, `Float`, `Int`, or `Json`.
+
+You can also pass a function to `transformValue`. For instance, you might remove commas from large numbers.
+
+```javascript
+<TextField
+  name='revenue'
+  transformValue={(str) => parseInt(str.replace(/,/g, ''), 10)}
+  // '42,000,000' => 42000000
+/>
+```
 
 ## `<TextAreaField>`
 

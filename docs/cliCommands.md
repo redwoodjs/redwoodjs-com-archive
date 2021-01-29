@@ -73,9 +73,9 @@ Files are output to each side's `dist` directory:
 
 ```plaintext{2,6}
 ├── api
-│   ├── dist
-│   ├── prisma
-│   └── src
+│   ├── dist
+│   ├── prisma
+│   └── src
 └── web
     ├── dist
     ├── public
@@ -102,6 +102,38 @@ web/src/Routes.js:17:40: error: Page component not found
 web/src/Routes.js:17:19: error (INVALID_ROUTE_PATH_SYNTAX): Error: Route path contains duplicate parameter: "/{id}/{id}"
 ```
 
+## console (alias c)
+
+Launch an interactive Redwood shell (experimental):
+- This has not yet been tested on Windows. 
+- The Prisma Client must be generated _prior_ to running this command, e.g. `yarn rw db up`. This is a known issue.
+
+> In your shell, be sure to set the `NODE_OPTIONS` env var to `--experimental-repl-await`:
+>
+> ```terminal
+> export NODE_OPTIONS="--experimental-repl-await"
+> ```
+>
+> Alternatively, on Mac or Linux you can pass the env var when you run the command:
+> ```
+> NODE_OPTIONS="--experimental-repl-await" yarn rw console
+> ```
+
+```
+yarn rw console
+```
+
+Right now, you can only use the Redwood console to interact with your database:
+
+**Example**
+
+```terminal
+~/redwood-app$ yarn rw console
+yarn run v1.22.4
+> await db.user.findMany()
+> [ { id: 1, email: 'tom@redwoodjs.com', name: 'Tom'  } ]
+```
+
 ## dataMigrate
 
 Data migration tools.
@@ -114,14 +146,14 @@ yarn rw dataMigrate <command>
 
 | Command   | Description                                                                                     |
 | :-------- | :---------------------------------------------------------------------------------------------- |
-| `install` | Appends `DataMigration` model to `schema.prisma`, creates `api/prisma/dataMigrations` directory |
+| `install` | Appends `DataMigration` model to `schema.prisma`, creates `api/db/dataMigrations` directory     |
 | `up`      | Executes oustanding data migrations                                                             |
 
 ### install
 
 - Appends a `DataMigration` model to `schema.prisma` for tracking which data migrations have already run.
 - Creates a DB migration using `yarn rw db save 'create data migrations`.
-- Creates `api/prisma/dataMigrations` directory to contain data migration scripts
+- Creates `api/db/dataMigrations` directory to contain data migration scripts
 
 ```terminal
 yarn rw dataMigrate install
@@ -129,7 +161,7 @@ yarn rw dataMigrate install
 
 ### up
 
-Executes outstanding data migrations against the database. Compares the list of files in `api/prisma/dataMigrations` to the records in the `DataMigration` table in the database and executes any files not present.
+Executes outstanding data migrations against the database. Compares the list of files in `api/db/dataMigrations` to the records in the `DataMigration` table in the database and executes any files not present.
 
 If an error occurs during script execution, any remaining scripts are skipped and console output will let you know the error and how many subsequent scripts were skipped.
 
@@ -151,7 +183,7 @@ yarn rw db <command>
 | :----------------- | :-------------------------------------------------------------------------------------------------------- |
 | `down [decrement]` | Migrate your database down                                                                                |
 | `generate`         | Generate the Prisma client                                                                                |
-| `introspect`       | Introspect your database and generate models in `./api/prisma/schema.prisma`, overwriting existing models |
+| `introspect`       | Introspect your database and generate models in `./api/db/schema.prisma`, overwriting existing models     |
 | `save [name..]`    | Create a new migration                                                                                    |
 | `seed`             | Seed your database with test data                                                                         |
 | `studio`           | Start Prisma Studio                                                                                       |
@@ -178,7 +210,7 @@ yarn rw db down [decrement]
 Given the following migrations,
 
 ```plaintext{2,4}
-api/prisma/migrations/
+api/db/migrations/
 ├── 20200518160457-create-users  <-- desired
 ├── 20200518160621-add-profiles
 ├── 20200518160811-add-posts     <-- current
@@ -204,7 +236,7 @@ This means that `yarn rw db generate` needs to be run after every change to your
 
 ### introspect
 
-Introspect your database and generate models in `./api/prisma/schema.prisma`, overwriting existing models.
+Introspect your database and generate models in `./api/db/schema.prisma`, overwriting existing models.
 
 ```terminal
 yarn rw db introspect
@@ -229,11 +261,11 @@ A migration defines the steps necessary to update your current schema.
 Running `yarn rw db save` generates the following directories and files as necessary:
 
 ```terminal
-api/prisma/migrations
+api/db/migrations
 ├── 20200516162516-create-users
-│   ├── README.md
-│   ├── schema.prisma
-│   └── steps.json
+│   ├── README.md
+│   ├── schema.prisma
+│   └── steps.json
 └── migrate.lock
 ```
 
@@ -254,13 +286,11 @@ Seed your database with test data.
 yarn rw db seed
 ```
 
-Runs `seed.js` in `./api/prisma`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/prisma/seeds.js).
+Runs `seed.js` in `./api/db`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/db/seeds.js).
 
 ### studio
 
 Start <a href="https://github.com/prisma/studio">Prisma Studio</a>, a visual editor for your database.
-
-> **WARNING:** Prisma Studio is currently experimental.
 
 ```terminal
 yarn rw db studio
@@ -290,7 +320,7 @@ yarn rw db up [increment]
 Given the following migrations
 
 ```plaintext{2,4}
-api/prisma/migrations/
+api/db/migrations/
 ├── 20200518160457-create-users  <-- current
 ├── 20200518160621-add-profiles
 ├── 20200518160811-add-posts     <-- desired
@@ -320,7 +350,7 @@ yarn redwood dev [side..]
 
 **Usage**
 
-If you're only working on your sdl and services, you can run just the api server to get GraphiQL on port 8911:
+If you're only working on your sdl and services, you can run just the api server to get GraphQL Playground on port 8911:
 
 ```plaintext{10}
 ~/redwood-app$ yarn rw dev api
@@ -551,7 +581,7 @@ Generate a data migration script.
 yarn rw generate dataMigration <name>
 ```
 
-Creates a data migration script in `api/prisma/dataMigrations`.
+Creates a data migration script in `api/db/dataMigrations`.
 
 | Arguments & Options | Description                                                              |
 | :------------------ | :----------------------------------------------------------------------- |
@@ -1034,7 +1064,7 @@ export const users = () => {
 
 export const User = {
   profile: (_obj, { root }) => {
-    db.user.findOne({ where: { id: root.id } }).profile(),
+    db.user.findUnique({ where: { id: root.id } }).profile(),
   }
 }
 ```
@@ -1090,26 +1120,7 @@ export const users = () => {
 
 ### util
 
-Quality of life utilities.
-
-```
-yarn rw generate util <util>
-```
-
-<br/>
-
-| Arguments & Options | Description                              |
-| :------------------ | :--------------------------------------- |
-| `util`              | Utility to setup. Choices are `tailwind` |
-| `--force, -f`       | Overwrite existing configuration         |
-
-#### tailwind
-
-Setup [Tailwind CSS](https://tailwindcss.com/).
-
-This command automates all the steps enumerated in the Webpack Configuration doc's [Adding Tailwind CSS](https://redwoodjs.com/docs/webpack-configuration#adding-tailwindcss) section.
-
-Right now, this'll generate the `tailwind.config.js` file in `web` (instead of in `web/config`) to get the vscode extension working.
+This command has been deprecated. See [Setup command](#setup).
 
 ## info
 
@@ -1175,6 +1186,43 @@ yarn rw open
 
 Redwood's companion CLI development tool. You'll be using this if you're contributing to Redwood. See [Contributing](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#cli-reference-redwood-tools) in the Redwood repo.
 
+## setup
+
+Initialize project config and install packages
+
+```
+yarn rw setup <command>
+```
+
+<br/>
+
+| Commands            | Description                              |
+| :------------------ | :--------------------------------------- |
+| `i18n`              | Setup i18n                               |
+| `tailwind`          | Setup tailwindcss and PostCSS            |
+| `webpack`           | Setup webpack in your project so you can add custom config            |
+
+## storybook
+
+Starts Storybook locally
+
+```terminal
+yarn rw storybook
+```
+
+<br/>
+
+[Storybook](https://storybook.js.org/docs/react/get-started/introduction) is a tool for UI development that allows you to develop your components in isolation, away from all the conflated cruft of your real app.
+
+> "Props in, views out! Make it simple to reason about."
+
+RedwoodJS supports Storybook by creating stories when generating cells, components, layouts and pages. You can then use these to describe how to render that UI component with representative data.
+
+| Arguments & Options | Description                                                                                                                                    |
+| :------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--open`            | Open Storybook in your browser on start
+| `--port`            | Which port to run Storybook on (defaults to 7910)
+
 ## test
 
 Run Jest tests for api and web.
@@ -1205,9 +1253,25 @@ yarn rw upgrade
 
 This command does all the heavy-lifting of upgrading to a new release for you.
 
-Besides upgrading to a new release, you can use this command to upgrade to either of our unstable releases: `canary` and `rc`. A canary release is published to npm every time a branch is merged to master, and when we're getting close to a new release, we publish release candidates.
+Besides upgrading to a new stable release, you can use this command to upgrade to either of our unstable releases, `canary` and `rc`, or you can upgrade to a specific release version.
+
+A canary release is published to npm every time a PR is merged to the `main` branch, and when we're getting close to a new release, we publish release candidates.
 
 | Option          | Description                                                                                                                         |
 | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
 | `--dry-run, -d` | Check for outdated packages without upgrading                                                                                       |
-| `--tag, -t`     | WARNING: Unstable releases! Force upgrades packages to the most recent version for the given `--tag`. Choices are `canary` and `rc` |
+| `--tag, -t`     | Choices are "canary", "rc", or a specific version (e.g. "0.19.3"). WARNING: Unstable releases in the case of "canary" and "rc", which will force upgrade packages to the most recent release of the specified tag.  |
+
+**Example**
+
+Upgrade to the most recent canary:
+
+```terminal
+yarn redwood upgrade -t canary
+```
+
+Upgrade to a specific version:
+
+```terminal
+yarn redwood upgrade -t 0.19.3
+```

@@ -1,4 +1,4 @@
-@@layout("application", { "title": "RedwoodJS - Get a sticker!", "version": "v0.16.0" })
+@@layout("application", { "title": "RedwoodJS - Get a sticker!", "version": "v0.21.0" })
 
 <div class="xl:-mr-56">
   <section class="max-w-4xl mx-auto text-center">
@@ -8,9 +8,15 @@
     <form name="stickers" class="mt-8 max-w-lg mx-auto" data-netlify="true" action="/stickers-thanks.html">
       <input
         type="text"
+        name="email"
+        placeholder="Email (optional)"
+        class="block w-full border border-gray-300 px-3 py-2 rounded w-auto"
+      />
+      <input
+        type="text"
         name="name"
         placeholder="Name"
-        class="block w-full border border-gray-300 px-3 py-2 rounded w-auto"
+        class="mt-4 block w-full border border-gray-300 px-3 py-2 rounded w-auto"
         required
       />
       <input
@@ -317,7 +323,7 @@
         class="h-24 mt-4 block w-full border border-gray-300 px-3 py-2 rounded w-auto"
       ></textarea>
       <button type="submit" class="mt-4 bg-red-700 text-white px-4 py-2 rounded font-semibold">
-        Send me one!
+        Send me some!
       </button>
     </form>
   </section>

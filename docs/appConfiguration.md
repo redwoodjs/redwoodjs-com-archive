@@ -8,6 +8,7 @@ You can configure your Redwood app's settings in `redwood.toml`. By default, `re
 [web]
   port = 8910
   apiProxyPath = "/.netlify/functions"
+  experimentalFastRefresh = false
 [api]
   port = 8911
 [browser]
@@ -26,12 +27,14 @@ const DEFAULT_CONFIG: Config = {
     path: './web',
     target: TargetEnum.BROWSER,
     apiProxyPath: '/.netlify/functions',
+    experimentalFastRefresh: false,
   },
   api: {
     host: 'localhost',
     port: 8911,
     path: './api',
     target: TargetEnum.NODE,
+    schemaPath: './api/db/schema.prisma',
   },
   browser: {
     open: true,
@@ -68,7 +71,7 @@ Configuration for the web side.
 | `target`                      | Target for the web side            | `TargetEnum.BROWSER`    | `both`        |
 | `apiProxyPath`                | Proxy path to the api side         | `'/.netlify/functions'` | `production`  |
 | `includeEnvironmentVariables` | Environment variables to whitelist |                         | `both`        |
-
+| `experimentalFastRefresh`     | Enable webpack's fast refresh      | false                   | `development` | 
 ### apiProxyPath
 
 ```toml
@@ -126,6 +129,8 @@ Configuration for the browser target.
 Setting `open` to `true` like this will open the browser to web's `host:port` (by default, localhost:8910) after the dev server starts. If you want your browser to stop opening when you `yarn rw dev`, set this to false. Or just remove it entirely.
 
 You can also provide the name of a browser to use instead of the system default. E.g., `open = 'Firefox'` will open Firefox regardless of which browser's the default on your system.
+
+> When you generate a new app, the `open` value is set to `true`. If you delete the `open` config from `redwood.toml`, it will default to `false`. For example, removing the line `open = true` disables automatic browser opening.
 
 There's a lot more you can do here. For all the details, see Webpack's docs on [devServer.open](https://webpack.js.org/configuration/dev-server/#devserveropen).
 

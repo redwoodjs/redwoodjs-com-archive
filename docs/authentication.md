@@ -4,10 +4,12 @@
 
 - [Netlify Identity Widget](https://github.com/netlify/netlify-identity-widget)
 - [Auth0](https://github.com/auth0/auth0-spa-js)
+- [Azure Active Directory](https://github.com/AzureAD/microsoft-authentication-library-for-js)
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
-- [Supabase](https://supabase.io/docs/library/getting-started#reference)
+- [Ethereum](https://github.com/oneclickdapp/ethereum-auth)
+- [Supabase](https://supabase.io/docs/guides/auth)
 - Custom
 - [Contribute one](https://github.com/redwoodjs/redwood/tree/main/packages/auth), it's SuperEasy™!
 
@@ -217,6 +219,83 @@ See the Auth0 information within this doc's [Auth Provider Specific Integration]
 
 +++
 
+### Azure Active Directory
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw generate auth azureActiveDirectory
+```
+
+_If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
+
+```bash
+cd web
+yarn add msal
+```
+
+#### Setup
+
+To get your application credentials, create an [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application (client) ID_ and the _Directory (tenant) ID_.
+
+##### Supported account types
+
+In most cases you want to choose _Accounts in this organizational directory only (Single tenant)_, as this will allow only users in your Azure Active Directory tenant to login to your application. If you want to enable Microsoft accounts to be able to login, choose the bottom alternative.
+
+##### Redirect URIs
+
+Enter allowed redirect urls for the integrations, e.g. `http://localhost:8910`. This will be the `AZURE_ACTIVE_DIRECTORY_REDIRECT_URI` environment variable, and suggestively `AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI`.
+
+##### ID tokens
+
+Under the _Authentication_ tab, tick `ID tokens`.
+
+This allows an application to request a token directly from the authorization endpoint. Checking Access tokens and ID tokens is recommended only if the application has a single-page architecture (SPA). [Learn more about the implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps)
+
+#### Authority
+
+The Authority is a URL that indicates a directory that MSAL can request tokens from which you can read about [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-client-application-configuration#authority). However, you most likely want to have e.g. `https://login.microsoftonline.com/<tenant>` as Authority URL, where `<tenant>` is the Azure Active Directory tenant id. This will be the `AZURE_ACTIVE_DIRECTORY_AUTHORITY` environment variable.
+
+```js
+// web/src/index.js
+import { AuthProvider } from '@redwoodjs/auth'
+import { UserAgentApplication } from 'msal'
+
+const azureActiveDirectoryClient = new UserAgentApplication({
+  auth: {
+    clientId: process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID,
+    authority: process.env.AZURE_ACTIVE_DIRECTORY_AUTHORITY,
+    redirectUri: process.env.AZURE_ACTIVE_DIRECTORY_REDIRECT_URI,
+    postLogoutRedirectUri: process.env.AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI,
+  },
+})
+
+ReactDOM.render(
+  <FatalErrorBoundary page={FatalErrorPage}>
+    <AuthProvider client={azureActiveDirectoryClient} type="azureActiveDirectory">
+      <RedwoodProvider>
+        <Routes />
+      </RedwoodProvider>
+    </AuthProvider>
+  </FatalErrorBoundary>,
+  document.getElementById('redwood-app')
+)
+```
+
+#### Roles
+
+To setup your App Registration with custom roles and have them exposed via the `roles` claim, follow [this documentation](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
+
+#### Login and Logout Options
+
+When using the Azure Active Directory client, `login` take `options` that can be used to override the client config. See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/loginPopup.html) or see [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors).
+
++++
+
 ### Magic.Link
 
 +++ View Installation and Setup
@@ -361,7 +440,33 @@ yarn rw generate auth supabase
 
 #### Setup
 
-You will need to add your Supabase URL and Client API Key to your .env file (e.g., `SUPABASE_KEY`). See: https://supabase.io/docs/library/getting-started#reference
+Update your .env file with the following settings supplied when you created your new Supabase project:
+
+* `SUPABASE_URL` with the unique Supabase URL for your project
+* `SUPABASE_KEY` with the unique Supabase Key that identifies which API KEY to use
+* `SUPABASE_JWT_SECRET` with the secret used to sign and verify the JSON Web Token (JWT)
+
+You can find these values in your project's dashboard under Settings -> API.
+
+For full client docs, see: <https://supabase.io/docs/library/getting-started#reference>
+
++++
+
+### Ethereum
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw generate auth ethereum
+```
+
+#### Setup
+
+To complete setup, you'll also need to update your `api` server manually. See https://github.com/oneclickdapp/ethereum-auth for instructions.
 
 +++
 
@@ -371,7 +476,7 @@ You will need to add your Supabase URL and Client API Key to your .env file (e.g
 
 #### Installation
 
-The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+The following CLI command (not implemented, see https://github.com/redwoodjs/redwood/issues/1585) will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
 yarn rw generate auth custom
@@ -385,16 +490,15 @@ If you are trying to implement your own auth, support is very early and limited 
 
 However, there are examples contributed by developers in the Redwood forums and Discord server.
 
-The most complete example (although now a bit outdated) is found in [this forum thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610).
+The most complete example (although now a bit outdated) is found in [this forum thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610). Here's another [helpful message in the thread](https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth/610/25).
 +++
-
 
 ## API
 
 The following values are available from the `useAuth` hook:
 
 - async `logIn(options?)`: Differs based on the client library, with Netlify Identity a pop-up is shown, and with Auth0 the user is redirected. Options are passed to the client.
-- async `logOut(options?)`: Log out the current user. Options are passed to the client.
+- async `logOut(options?)`: Log the current user out. Options are passed to the client.
 - async `signUp(options?)`: If the provider has a sign up flow we'll show that, otherwise we'll fall back to the logIn flow.
 - `currentUser`: An object containing information about the current user as set on the `api` side, or `null` if the user is not authenticated.
 - `userMetadata`: An object containing the user's metadata (or profile information) fetched directly from an instance of the auth provider client, or `null` if the user is not authenticated.
@@ -436,7 +540,7 @@ Our recommendation is to create a `src/lib/auth.js|ts` file that exports a `getC
 import { getCurrentUser } from 'src/lib/auth'
 // Example:
 //  export const getCurrentUser = async (decoded) => {
-//    return await db.user.findOne({ where: { decoded.email } })
+//    return await db.user.findUnique({ where: { decoded.email } })
 //  }
 //
 
@@ -483,13 +587,13 @@ Essentially, a role is a collection of permissions that you can apply to users. 
 
 #### App metadata in Auth0
 
-Auth0 stores information (such as, support plan subscriptions, security roles, or access control groups) in "App metadata". Data stored in `app_metadata` cannot be edited by users.
+Auth0 stores information (such as, support plan subscriptions, security roles, or access control groups) in `app_metadata`. Data stored in `app_metadata` cannot be edited by users.
 
 Create and manage roles for your application in Auth0's "User & Role" management views. You can then assign these roles to users.
 
-However, that info is not immediately available on the user's App metadata or to RedwoodJS when authenticating.
+However, that info is not immediately available on the user's `app_metadata` or to RedwoodJS when authenticating.
 
-If you assign your user the "admin" role in Auth0, you will want you user's app_metadata to look like:
+If you assign your user the "admin" role in Auth0, you will want your user's `app_metadata` to look like:
 
 ```
 {
@@ -503,16 +607,16 @@ To set this information and make it available to RedwoodJS, you can use [Auth0 R
 
 #### Auth0 Rules for App Metadata
 
-RedwoodJS needs the `app_metadata` to 1) contain the role information and 2) be present in the JWT that is decoded.
+RedwoodJS needs `app_metadata` to 1) contain the role information and 2) be present in the JWT that is decoded.
 
 To accomplish these tasks, you can use [Auth0 Rules](https://auth0.com/docs/rules) to add them as custom claims on your JWT.
 
-#### Add Authorization Roles to AppMetadata Rule
+#### Add Authorization Roles to App Metadata Rule
 
-Your first rule will `Add Authorization Roles to AppMetadata`.
+Your first rule will `Add Authorization Roles to App Metadata`.
 
 ```js
-/// Add Authorization Roles to AppMetadata
+/// Add Authorization Roles to App Metadata
 function (user, context, callback) {
     auth0.users.updateAppMetadata(user.user_id, context.authorization)
       .then(function(){
@@ -524,7 +628,7 @@ function (user, context, callback) {
   }
 ```
 
-Auth0 maintains user role assignments `context.authorization`. This rule simply copies thate information into the user's `app_metadata`, such as:
+Auth0 exposes the user's roles in `context.authorization`. This rule simply copies that information into the user's `app_metadata`, such as:
 
 ```
 {
@@ -534,23 +638,23 @@ Auth0 maintains user role assignments `context.authorization`. This rule simply 
 }
 ```
 
-But, now you must include the `app_metdata` on the user's JWT that RedwoodJS will decode.
+However, now you must include the `app_metadata` on the user's JWT that RedwoodJS will decode.
 
-#### Add AppMetadata to JWT Rule in Auth0
+#### Add App Metadata to JWT Rule in Auth0
 
-Therefore, your second rule will `Add AppMetadata to JWT`.
+Therefore, your second rule will `Add App Metadata to JWT`.
 
 You can add `app_metadata` to the `idToken` or `accessToken`.
 
-Adding to `idToken` will make the make App metadta accessible to RedwoodJS `getuserMetadata` which for Auth0 calls the auth client's `getUser`.
+Adding to `idToken` will make the make app metadata accessible to RedwoodJS `getUserMetadata` which for Auth0 calls the auth client's `getUser`.
 
-Adding to `accessToken` will make the make App metadta accessible to RedwoodJS when decoding the JWT via `getToken`.
+Adding to `accessToken` will make the make app metadata accessible to RedwoodJS when decoding the JWT via `getToken`.
 
-While adding to `idToken` is optional. you _must_ add to `accessToken`.
+While adding to `idToken` is optional, you _must_ add to `accessToken`.
 
 To keep your custom claims from colliding with any reserved claims or claims from other resources, you must give them a [globally unique name using a namespaced format](https://auth0.com/docs/tokens/guides/create-namespaced-custom-claims). Otherwise, Auth0 will _not_ add the information to the token(s).
 
-Therefore, with a namespace of "https://example.com", the app_metadata on your token should look like:
+Therefore, with a namespace of "https://example.com", the `app_metadata` on your token should look like:
 
 ```js
 "https://example.com/app_metadata": {
@@ -568,7 +672,7 @@ To set this namespace information, use the following function in your rule:
 function (user, context, callback) {
   var namespace = 'https://example.com/';
 
-  // adds to idToken, ie userMetadata in RedwoodJS
+  // adds to idToken, i.e. userMetadata in RedwoodJS
   context.idToken[namespace + 'app_metadata'] = {};
   context.idToken[namespace + 'app_metadata'].authorization = {
     groups: user.app_metadata.groups,
@@ -578,7 +682,7 @@ function (user, context, callback) {
 
   context.idToken[namespace + 'user_metadata'] = {};
 
-  // accessToken, ie the decoded JWT in RedwoodJS
+  // accessToken, i.e. the decoded JWT in RedwoodJS
   context.accessToken[namespace + 'app_metadata'] = {};
   context.accessToken[namespace + 'app_metadata'].authorization = {
     groups: user.app_metadata.groups,
@@ -598,7 +702,7 @@ Now, your `app_metadata` with `authorization` and `role` information will be on 
 
 If you intend to support, RBAC then in your `api/src/lib/auth.js` you need to extract `roles` using the `parseJWT` utility and set these roles on `currentUser`.
 
-If your roles are on a namespaced app_metadata claim, then `parseJWT` provides an option to provide this value.
+If your roles are on a namespaced `app_metadata` claim, then `parseJWT` provides an option to provide this value.
 
 ```js
 // api/src/lib/auth.js`
@@ -626,7 +730,7 @@ export const getCurrentUser = async (decoded, { type, token }) => {
 
 #### Magic.Link
 
-The redwood API does not include the functionality to decode the magiclinks authentication tokens so the client is initiated and decodes the tokens inside of `getCurrentUser`.
+The Redwood API does not include the functionality to decode Magic.link authentication tokens, so the client is initiated and decodes the tokens inside of `getCurrentUser`.
 
 +++ View Magic.link Options
 
@@ -640,7 +744,7 @@ export const getCurrentUser = async (_decoded, { token }) => {
   const mAdmin = new Magic(process.env.MAGICLINK_SECRET)
   const { email, publicAddress, issuer } = await mAdmin.users.getMetadataByToken(token)
 
-  return await db.user.findOne({ where: { issuer } })
+  return await db.user.findUnique({ where: { issuer } })
 }
 ```
 
@@ -662,6 +766,21 @@ None.
 
 #### Add Application hasRole Support in Firebase
 
+#### Auth Providers
+
+Providers can be configured by specifying `logIn(provider)` and `signUp(provider)`.
+
+Supported providers:
+
+- google.com (Default)
+- facebook.com
+- github.com
+- twitter.com
+- microsoft.com
+- apple.com
+
+Email/password authentication is supported by calling `login({ username, password })` and `signUp({ username, password })`.
+
 +++
 
 #### Netlify Identity
@@ -678,7 +797,7 @@ Essentially, a role is a collection of permissions that you can apply to users. 
 
 #### App metadata in Netlify Identity
 
-Netlify Identity stores information (such as, support plan subscriptions, security roles, or access control groups) in "App metadata". Data stored in `app_metadata` cannot be edited by users.
+Netlify Identity stores information (such as, support plan subscriptions, security roles, or access control groups) in `app_metadata`. Data stored in `app_metadata` cannot be edited by users.
 
 Create and manage roles for your application in Netlify's "Identity" management views. You can then assign these roles to users.
 
@@ -709,13 +828,13 @@ You can specify an optional role in `requireAuth` to check if the user is both a
 export const myThings = () => {
   requireAuth({ role: 'admin' })
 
-  return db.user.findOne({ where: { id: context.currentUser.id } }).things()
+  return db.user.findUnique({ where: { id: context.currentUser.id } }).things()
 }
 
 export const myBooks = () => {
   requireAuth({ role: ['author', 'editor'] })
 
-  return db.user.findOne({ where: { id: context.currentUser.id } }).books()
+  return db.user.findUnique({ where: { id: context.currentUser.id } }).books()
 }
 ```
 
@@ -760,7 +879,7 @@ const { isAuthenticated, hasRole } = useAuth()
 
 ### Routes
 
-Routes can require authentication by wrapping them in a `<Private>` component. An unauthenticated user will be redirected to the page specified in`unauthenticated`.
+Routes can require authentication by wrapping them in a `<Private>` component. An unauthenticated user will be redirected to the page specified in `unauthenticated`.
 
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'
@@ -780,7 +899,7 @@ const Routes = () => {
 }
 ```
 
-Routes can also be restirected by role by specifying `hasRole="role"` or `hasRole={['role', 'another_role']})` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in `unauthenticated`.
+Routes can also be restricted by role by specifying `hasRole="role"` or `hasRole={['role', 'another_role']})` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in `unauthenticated`.
 
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'

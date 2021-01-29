@@ -48,6 +48,8 @@ yarn --version
 
 Please do upgrade accordingly. Then proceed to the RedwoodJS installation when you're ready!
 
+> **Installing Node and Yarn**
+>
 > There are many ways to install and manage both Node.js and Yarn. If you're installing for the first time, we recommend the following:
 >
 > **Yarn**
@@ -61,7 +63,7 @@ Please do upgrade accordingly. Then proceed to the RedwoodJS installation when y
 >   - For **Linux** users, you can follow the [installation instructions from `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating).
 > - We recommend **Windows** users visit [Nodejs.org](https://nodejs.org/en/) for installation.
 >
-> If you're confused about which of the two current Node versions to use, we recommend using the most recent "even" LTS, which is currently v12.
+> If you're confused about which of the two current Node versions to use, we recommend using the most recent "even" LTS, which is currently v14.
 
 ## Installation & Starting Development
 
@@ -94,7 +96,7 @@ Let's take a look at the files and directories that were created for us (config 
 
 ```terminal
 ├── api
-│   ├── prisma
+│   ├── db
 │   │   ├── schema.prisma
 │   │   └── seeds.js
 │   └── src
@@ -132,7 +134,7 @@ At the top level we have two directories, `api` and `web`. Redwood separates the
 
 Within `api` there are two directories:
 
-- `prisma` contains the plumbing for the database:
+- `db` contains the plumbing for the database:
 
   - `schema.prisma` contains the database schema (tables and columns)
   - `seeds.js` is used to populate your database with any data that needs to exist for your app to run at all (maybe an admin user or site configuration).
@@ -155,14 +157,14 @@ That's it for the backend.
   - `pages` contain components and are optionally wrapped inside _Layouts_ and are the "landing page" for a given URL (a URL like `/articles/hello-world` will map to one page and `/contact-us` will map to another). There are two pages included in a new app:
     - `NotFoundPage.js` will be served when no other route is found (see `Routes.js` below).
     - `FatalErrorPage.js` will be rendered when there is an uncaught error that can't be recovered from and would otherwise cause our application to really blow up (normally rendering a blank page).
+  - `index.css` is a generic place to put your CSS, but there are many options.
+  - `index.html` is the standard React starting point for our app.
+  - `index.js` the bootstraping code to get our Redwood app up and running.
+  - `Routes.js` the route definitions for our app which map a URL to a _Page_.
 - `public` contains assets not used by React components (they will be copied over unmodified to the final app's root directory):
   - `favicon.png` is the icon that goes in a browser tab when your page is open (apps start with the RedwoodJS logo).
   - `robots.txt` can be used to control what web indexers are [allowed to do](https://www.robotstxt.org/robotstxt.html).
-  - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can read it on Github [here](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
-- `index.css` is a generic place to put your CSS, but there are many options.
-- `index.html` is the standard React starting point for our app.
-- `index.js` the bootstraping code to get our Redwood app up and running.
-- `Routes.js` the route definitions for our app which map a URL to a _Page_.
+  - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can also [read this README.md file on GitHub](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
 
 ## Our First Page
 
@@ -170,13 +172,15 @@ Let's give our users something to look at besides the Redwood welcome page. We'l
 
     yarn redwood generate page home /
 
-The command above does three things:
+The command above does four things:
 
 - Creates `web/src/pages/HomePage/HomePage.js`. Redwood takes the name you specified as the first argument, capitalizes it, and appends "Page" to construct your new page component.
 - Creates a test file to go along with this new page component at `web/src/pages/HomePage/HomePage.test.js` with a single, passing test. You _do_ write tests for your components, _don't you??_
 - Creates a Storybook file for this component at `web/src/pages/HomePage/HomePage.stories.js`. Storybook is a wonderful tool for efficiently developing and organizing UI components. If you'd like to learn more, see this [Redwood Forum topic](https://community.redwoodjs.com/t/how-to-use-the-new-storybook-integration-in-v0-13-0/873) to start using it in your development process.
 - Adds a `<Route>` in `web/src/Routes.js` that maps the path `/` to the new _HomePage_ page.
 
+> **Automatic import of pages in Routes file**
+>
 > If you look in Routes you'll notice that we're referencing a component, `HomePage`, that isn't imported anywhere. Redwood automatically imports all pages in the Routes file since we're going to need to reference them all anyway. It saves a potentially huge `import` declaration from cluttering up the routes file.
 
 In fact this page is already live (your browser automatically reloaded):
@@ -199,7 +203,7 @@ Try changing the route to something like:
 <Route path="/hello" page={HomePage} name="home" />
 ```
 
-Now you'll see the `NotFoundPage` page. As soon as you add your first route, you'll never see the Redwood splash screen again. From now on, when no route can be found that matches the requested URL, Redwood will render the `NotFoundPage`. Change your URL to http://localhost:8910/hello and you should see the homepage again.
+As soon as you add your first route, you'll never see the initial Redwood splash screen again. From now on, when no route can be found that matches the requested URL, Redwood will render the `NotFoundPage`. Change your URL to http://localhost:8910/hello and you should see the homepage again.
 
 Change the route path back to `/` before continuing!
 
@@ -211,6 +215,8 @@ Let's create an "About" page for our blog so everyone knows about the geniuses b
 
 Notice that we didn't specify a route path this time. If you leave it off the `redwood generate page` command, Redwood will create a `Route` and give it a path that is the same as the page name you specified prepended with a slash. In this case it will be `/about`.
 
+> **Code-splitting each page**
+>
 > As you add more pages to your app, you may start to worry that more and more code has to be downloaded by the client on any initial page load. Fear not! Redwood will automatically code-split on each Page, which means that initial page loads can be blazingly fast, and you can create as many Pages as you want without having to worry about impacting overall webpack bundle size. If, however, you do want specific Pages to be included in the main bundle, you can override the default behavior.
 
 http://localhost:8910/about should show our new page. But no one's going to find it by manually changing the URL so let's add a link from our homepage to the About page and vice versa. We'll start creating a simple header and nav bar at the same time on the HomePage:
@@ -302,6 +308,8 @@ Let's create a layout to hold that `<header>`:
 
     yarn redwood g layout blog
 
+> **`generate` shorthand**
+>
 > From now on we'll use the shorter `g` alias instead of `generate`
 
 That created `web/src/layouts/BlogLayout/BlogLayout.js` and an associated test file. We're calling this the "blog" layout because we may have other layouts at some point in the future (an "admin" layout, perhaps?).
@@ -369,6 +377,8 @@ const AboutPage = () => {
 export default AboutPage
 ```
 
+> **The `src` alias**
+>
 > Notice that the import statement uses `src/layouts/BlogLayout` and not `../src/layouts/BlogLayout` or `./src/layouts/BlogLayout`. Being able to use just `src` is a convenience feature provided by Redwood: `src` is an alias to the `src` path in the current workspace. So if you're working in `web` then `src` points to `web/src` and in `api` it points to `api/src`.
 
 Back to the browser and you should see...nothing different. But that's good, it means our layout is working.
@@ -459,10 +469,10 @@ We need to decide what data we'll need for a blog post. We'll expand on this at 
 
 We use [Prisma Client JS](https://github.com/prisma/prisma-client-js) to talk to the database. Prisma has another library called [Migrate](https://github.com/prisma/migrate) that lets us update the database's schema in a predictable way and snapshot each of those changes. Each change is called a _migration_ and Migrate will create one when we make changes to our schema.
 
-First let's define the data structure for a post in the database. Open up `api/prisma/schema.prisma` and add the definition of our Post table (remove any "sample" models that are present in the file). Once you're done the entire schema file should look like:
+First let's define the data structure for a post in the database. Open up `api/db/schema.prisma` and add the definition of our Post table (remove any "sample" models that are present in the file). Once you're done the entire schema file should look like:
 
 ```plaintext{13-18}
-// api/prisma/schema.prisma
+// api/db/schema.prisma
 
 datasource DS {
   provider = "sqlite"
@@ -489,26 +499,32 @@ This says that we want a table called `Post` and it should have:
 - A `body` field that will contain a `String`
 - A `createdAt` field that will be a `DateTime` and will `@default` to `now()` when we create a new record (so we don't have to set the time manually in our app)
 
+> **Integer vs. String IDs**
+>
 > For the tutorial we're keeping things simple and using an integer for our ID column. Some apps may want to use a CUID or a UUID which Prisma supports. In that case you would use `String` for the datatype instead of `Int` and use `cuid()` or `uuid()` instead of `autoincrement()`:
 >
 > `id String @id @default(cuid())`
 >
-> Integers also make for nicer URLs like https://redwoodblog.com/posts/123 instead of https://redwoodblog.com/posts/eebb026c-b661-42fe-93bf-f1a373421a13 Take a look at the [official Prisma documentation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/data-model#ids) for more on ID fields.
+> Integers also make for nicer URLs like https://redwoodblog.com/posts/123 instead of https://redwoodblog.com/posts/eebb026c-b661-42fe-93bf-f1a373421a13.
+>
+> Take a look at the [official Prisma documentation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/data-model#defining-an-id-field) for more on ID fields.
 
 ### Migrations
 
 That was simple. Now we'll want to snapshot this as a migration:
 
-    yarn redwood db save create posts
+    yarn redwood db save "create posts"
 
 You've named the migration "create posts", and this is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference for future developers.
 
-After the command completes you'll see a new subdirectory created under `api/prisma/migrations` that has a timestamp and the name you gave the migration. It will contain a couple files inside (a snapshot of what the schema looked like at that point in time in `schema.prisma` and the directives that Prisma Migrate will use to make the change to the database in `steps.json`).
+After the command completes you'll see a new subdirectory created under `api/db/migrations` that has a timestamp and the name you gave the migration. It will contain a couple files inside (a snapshot of what the schema looked like at that point in time in `schema.prisma` and the directives that Prisma Migrate will use to make the change to the database in `steps.json`).
 
 We apply the migration with another command:
 
     yarn rw db up
 
+> **`redwood` Shorthand**
+>
 > From now on we'll use the shorter `rw` alias instead of the full `redwood` name.
 
 This will apply the migration (which runs the commands against the database to create the changes we need) which results in creating a new table called `Post` with the fields we defined above.
@@ -567,6 +583,8 @@ Here's what happened when we ran that `yarn rw g scaffold post` command:
   - `PostForm` the actual form used by both the New and Edit components
   - `Posts` displays the table of all posts
 
+> **Generator Naming Conventions**
+>
 > You'll notice that some of the generated parts have plural names and some have singular. This convention is borrowed from Ruby on Rails which uses a more "human" naming convention: if you're dealing with multiple of something (like the list of all posts) it will be plural. If you're only dealing with a single something (like creating a new post) it will be singular. It sounds natural when speaking, too: "show me a list of all the posts" versus "I'm going to create a new post."
 >
 > As far as the generators are concerned:
@@ -597,7 +615,7 @@ Oh boy, our first page with data and we already have to worry about loading stat
 
 ## Cells
 
-These features are common in most web apps. We wanted to see if there was something we could do to make developers' lives easier when it comes to adding them to a typical component. We think we've come up with something to help. We call them _Cells_. Cells provide a simpler and more declarative approach to data fetching. (You can read the full documentation about Cells [here](https://redwoodjs.com/docs/cells).)
+These features are common in most web apps. We wanted to see if there was something we could do to make developers' lives easier when it comes to adding them to a typical component. We think we've come up with something to help. We call them _Cells_. Cells provide a simpler and more declarative approach to data fetching. ([Read the full documentation about Cells](https://redwoodjs.com/docs/cells).)
 
 When you create a cell you export several specially named constants and then Redwood takes it from there. A typical cell may look something like:
 
@@ -631,17 +649,16 @@ export const Success = ({ posts }) => {
 }
 ```
 
-When React renders this component Redwood will:
+When React renders this component, Redwood will perform the `QUERY` and display the `Loading` component until a response is received.
 
-- Perform the `QUERY` and display the `Loading` component until a response is received
-- Once the query returns it will display one of three states:
+Once the query returns, it will display one of three states:
   - If there was an error, the `Failure` component
   - If the data return is empty (`null` or empty array), the `Empty` component
   - Otherwise, the `Success` component
 
-There are also some lifecycle helpers like `beforeQuery` (for massaging any props before being given to the `QUERY`) and `afterQuery` (for massaging the data returned from GraphQL but before being sent to the `Success` component)
+There are also some lifecycle helpers like `beforeQuery` (for massaging any props before being given to the `QUERY`) and `afterQuery` (for massaging the data returned from GraphQL but before being sent to the `Success` component).
 
-The minimum you need for a cell are the `QUERY` and `Success` exports. If you don't export an `Empty` component, empty results will be sent to your `Success` component. If you don't provide a `Failure` component you'll get error output sent to the console.
+The minimum you need for a cell are the `QUERY` and `Success` exports. If you don't export an `Empty` component, empty results will be sent to your `Success` component. If you don't provide a `Failure` component, you'll get error output sent to the console.
 
 A guideline for when to use cells is if your component needs some data from the database or other service that may be delayed in responding. Let Redwood worry about juggling what is displayed when and you can focus on the happy path of the final, rendered component populated with data.
 
@@ -675,16 +692,46 @@ export const Success = ({ blogPosts }) => {
 }
 ```
 
-> When generating you can use any case you'd like and Redwood will do the right thing when it comes to naming. These will all create the same filename:
+> **Indicating Multiplicity to the Cell Generator**
+>
+> When generating a cell you can use any case you'd like and Redwood will do the right thing when it comes to naming. These will all create the same filename (`web/src/components/BlogPostsCell/BlogPostsCell.js`):
 >
 >     yarn rw g cell blog_posts
 >     yarn rw g cell blog-posts
 >     yarn rw g cell blogPosts
 >     yarn rw g cell BlogPosts
 >
-> You will need _some_ kind of indication that you're using more than one word. Calling `yarn redwood g cell blogposts` will generate a file at `web/src/components/BlogpostsCell/BlogpostsCell.js`
+> You will need _some_ kind of indication that you're using more than one word: either snake_case (`blog_posts`), kebab-case (`blog-posts`), camelCase (`blogPosts`) or PascalCase (`BlogPosts`).
+>
+> Calling `yarn redwood g cell blogposts` (without any indication that we're using two words) will generate a file at `web/src/components/BlogpostsCell/BlogpostsCell.js`.
 
-To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case it called the query `blogPosts` which is not a valid query name for our existing Posts SDL and Service. We'll have to rename that to just `posts` in both the query name and prop named in `Success`:
+To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case the query is called `blogPosts`:
+
+```javascript
+// web/src/components/BlogPostsCell/BlogPostsCell.js
+
+export const QUERY = gql`
+  query BlogPostsQuery {
+    blogPosts {
+      id
+    }
+  }
+`
+
+export const Loading = () => <div>Loading...</div>
+
+export const Empty = () => <div>Empty</div>
+
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
+
+export const Success = ({ posts }) => {
+  return JSON.stringify(posts)
+}
+```
+
+However, this is not a valid query name for our existing Posts SDL (`src/graphql/posts.sdl.js`) and Service (`src/services/posts/posts.js`). (To see where these files come from, go back to the [Creating a Post Editor section](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor) in the *Getting Dynamic* part.)
+
+We'll have to rename that to just `posts` in both the query name and in the prop name in `Success`:
 
 ```javascript{5,17,18}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
@@ -875,7 +922,7 @@ export const posts = () => {
 }
 
 export const post = ({ id }) => {
-  return db.post.findOne({
+  return db.post.findUnique({
     where: { id },
   })
 }
@@ -1241,7 +1288,7 @@ Forms in React are infamously annoying to work with. There are [Controlled Compo
 
 We think Redwood is a step or two in the right direction by not only freeing you from writing controlled component plumbing, but also dealing with validation and errors automatically. Let's see how it works.
 
-Before we start, let's add a couple of CSS classes to make the default form layout a little cleaner and save us from having to write a bunch of `style` attribute that will clutter up the examples and make them harder to follow. For now we'll just put these in the root `index.css` file in `web/src`:
+Before we start, let's add a couple of CSS classes to make the default form layout a little cleaner and save us from having to write a bunch of `style` attributes that will clutter up the examples and make them harder to follow. For now we'll just put these in the root `index.css` file in `web/src`:
 
 ```css
 /* web/src/index.css */
@@ -1420,7 +1467,7 @@ Try filling out the form and submitting and you should get a console message wit
 
 ### Validation
 
-"Okay Redwood tutorial author," you're saying, "what's the big deal? You built up Redwood's form helpers as The Next Big Thing but there are plenty of libraries that will let me skip creating controlled inputs manually. So what?" And you're right! Anyone can fill out a form _correctly_ (although there are plenty of QA folks who would challenge that statement), but what happens when someone leaves something out, or makes a mistake, or tries to haxorz our form? Now who's going to be there to help? Redwood, that's who!
+"Okay, Redwood tutorial author," you're saying, "what's the big deal? You built up Redwood's form helpers as The Next Big Thing but there are plenty of libraries that will let me skip creating controlled inputs manually. So what?" And you're right! Anyone can fill out a form _correctly_ (although there are plenty of QA folks who would challenge that statement), but what happens when someone leaves something out, or makes a mistake, or tries to haxorz our form? Now who's going to be there to help? Redwood, that's who!
 
 All three of these fields should be required in order for someone to send a message to us. Let's enforce that with the standard HTML `required` attribute:
 
@@ -1472,7 +1519,7 @@ return (
 )
 ```
 
-And now when we submit the form with blank fields...the Name field gets focus. Boring. But this is just a stepping stone to our amazing reveal! We have one more form helper component to add—the one that displays errors on a field. Oh it just so happens that it's plain HTML so we can style it however we want!
+And now when we submit the form with blank fields...the Name field gets focus. Boring. But this is just a stepping stone to our amazing reveal! We have one more form helper component to add—the one that displays errors on a field. Oh, it just so happens that it's plain HTML so we can style it however we want!
 
 ### `<FieldError>`
 
@@ -1551,7 +1598,7 @@ return (
 
 <img src="https://user-images.githubusercontent.com/300/73306040-3cf65100-41d0-11ea-99a9-9468bba82da7.png" />
 
-You know what would be nice, if the input itself somehow displayed the fact that there was an error. Check out the `errorClassName` attributes on the inputs:
+You know what would be nice? If the input itself somehow displayed the fact that there was an error. Check out the `errorClassName` attributes on the inputs:
 
 ```javascript{10,18,26}
 // web/src/pages/ContactPage/ContactPage.js
@@ -1591,7 +1638,7 @@ return (
 
 <img src="https://user-images.githubusercontent.com/300/80258907-39d8f880-8639-11ea-8816-03a11c69e8ac.png" />
 
-Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's custom `<Label>` component for that (note that `for` becomes `name` just like the other components). Don't forget the import:
+Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's custom `<Label>` component for that. Note that the `htmlFor` attribute of `<label>` becomes the `name` prop on `<Label>`, just like with the other Redwood form components. And don't forget the import:
 
 ```javascript{9,21-23,31-33,41-43}
 // web/src/pages/ContactPage/ContactPage.js
@@ -1655,7 +1702,9 @@ export default ContactPage
 
 <img src="https://user-images.githubusercontent.com/300/80259003-70af0e80-8639-11ea-97cf-b6b816118fbf.png" />
 
-> In addition to `className` and `errorClassName` you can also use `style` and `errorStyle`
+> **Error styling**
+>
+> In addition to `className` and `errorClassName` you can also use `style` and `errorStyle`. Check out the [Form docs](https://redwoodjs.com/docs/form) for more details on error styling.
 
 ### Validating Input Format
 
@@ -1698,9 +1747,11 @@ That is definitely not the end-all-be-all for email address validation, but pret
 
 You may have noticed that trying to submit a form with validation errors outputs nothing to the console—it's not actually submitting. That's a good thing! Fix the errors and all is well.
 
+> **Instant client-side field validation**
+>
 > When a validation error appears it will _disappear_ as soon as you fix the content of the field. You don't have to click "Submit" again to remove the error messages.
 
-Finally, you know what would _really_ be nice: if the fields were validated as soon as the user leaves each one so they don't fill out the whole thing and submit just to see multiple errors appear. Let's do that:
+Finally, you know what would _really_ be nice? If the fields were validated as soon as the user leaves each one so they don't fill out the whole thing and submit just to see multiple errors appear. Let's do that:
 
 ```html
 // web/src/pages/ContactPage/ContactPage.js
@@ -1710,7 +1761,9 @@ Finally, you know what would _really_ be nice: if the fields were validated as s
 
 Well, what do you think? Was it worth the hype? A couple of new components and you've got forms that handle validation and wrap up submitted values in a nice data object, all for free.
 
-> Redwood's forms are built on top of [React Hook Form](https://react-hook-form.com/) so there is even more functionality available than we've documented here.
+> **Learn more about Redwood Forms**
+>
+> Redwood's forms are built on top of [React Hook Form](https://react-hook-form.com/) so there is even more functionality available than we've documented here. Visit the [Form docs](https://redwoodjs.com/docs/form) to learn more about all form functionalities.
 
 Redwood has one more trick up its sleeve when it comes to forms but we'll save that for when we're actually submitting one to the server.
 
@@ -1718,10 +1771,10 @@ Having a contact form is great, but only if you actually get the contact somehow
 
 ## Saving Data
 
-Let's add a new database table. Open up `api/prisma/schema.prisma` and add a Contact model after the Post model that's there now:
+Let's add a new database table. Open up `api/db/schema.prisma` and add a Contact model after the Post model that's there now:
 
 ```javascript
-// api/prisma/schema.prisma
+// api/db/schema.prisma
 
 model Contact {
   id        Int @id @default(autoincrement())
@@ -1732,13 +1785,15 @@ model Contact {
 }
 ```
 
-> To mark a column as optional (that is, allowing `NULL` as a value) you can suffix the datatype with question mark: `name String?`
+> **Prisma syntax for optional fields**
+>
+> To mark a field as optional (that is, allowing `NULL` as a value) you can suffix the datatype with a question mark, e.g. `name String?`. This will allow `name`'s value to be both `String` or `NULL`.
 
 Next we create a migration file:
 
     yarn rw db save create contact
 
-Finally we execute the migration to run the DDL commands to upgrade the database:
+Finally we execute the migration to run the [DDL](https://en.wikipedia.org/wiki/Data_definition_language) commands to upgrade the database:
 
     yarn rw db up
 
@@ -1787,20 +1842,49 @@ What's `CreateContactInput` and `UpdateContactInput`? Redwood follows the GraphQ
 
 > Redwood assumes your code won't try to set a value on any field named `id` or `createdAt` so it left those out of the Input types, but if your database allowed either of those to be set manually you can update `CreateContactInput` or `UpdateContactInput` and add them.
 
-Since all of the DB columns were required in the `schema.prisma` file they are marked as required here (the `!` suffix on the datatype).
+Since all of the DB columns were required in the `schema.prisma` file they are marked as required in the GraphQL Types with the `!` suffix on the datatype (e.g. `name: String!`).
+).
 
-> **Remember:** `schema.prisma` syntax requires an extra `?` character when a field is _not_ required, GraphQL's SDL syntax requires an extra `!` when a field _is_ required.
+> **GraphQL syntax for required fields**
+>
+> GraphQL's SDL syntax requires an extra `!` when a field _is_ required. Remember: `schema.prisma` syntax requires an extra `?` character when a field is _not_ required.
 
-As described in [Side Quest: How Redwood Deals with Data](side-quest-how-redwood-works-with-data) there are no explicit resolvers defined in the SDL file. Redwood follows a simple naming convention—each field listed in the `Query` and `Mutation` types map to a function with the same name in the `services` file and in the `sdl` file (`api/src/graphql/contacts.sdl.js -> api/src/services/contacts/contacts.js`)
+As described in [Side Quest: How Redwood Deals with Data](side-quest-how-redwood-works-with-data), there are no explicit resolvers defined in the SDL file. Redwood follows a simple naming convention: each field listed in the `Query` and `Mutation` types in the `sdl` file (`api/src/graphql/contacts.sdl.js`) maps to a function with the same name in the `services` file (`api/src/services/contacts/contacts.js`).
 
 In this case we're creating a single `Mutation` that we'll call `createContact`. Add that to the end of the SDL file (before the closing backtick):
 
-```javascript
+```javascript{28-30}
 // api/src/graphql/contacts.sdl.js
 
-type Mutation {
-  createContact(input: CreateContactInput!): Contact
-}
+export const schema = gql`
+  type Contact {
+    id: Int!
+    name: String!
+    email: String!
+    message: String!
+    createdAt: DateTime!
+  }
+
+  type Query {
+    contacts: [Contact!]!
+  }
+
+  input CreateContactInput {
+    name: String!
+    email: String!
+    message: String!
+  }
+
+  input UpdateContactInput {
+    name: String
+    email: String
+    message: String
+  }
+
+  type Mutation {
+    createContact(input: CreateContactInput!): Contact
+  }
+`
 ```
 
 The `createContact` mutation will accept a single variable, `input`, that is an object that conforms to what we expect for a `CreateContactInput`, namely `{ name, email, message }`.
@@ -1970,7 +2054,7 @@ It may be hard to see a difference in development because the submit is so fast,
 
 You'll see that the "Save" button become disabled for a second or two while waiting for the response.
 
-Next, let's use Redwood's `Flash` system to let the user know their submission was successful. `useMutation` accepts an options object as a second argument. One of the options is a callback function, `onCompleted`, that will be invoked when the mutation successfully completes. We'll use that callback to add a message for the `Flash` component to display. Add the `Flash` component to the page and use the `timeout` prop to schedule the message's dismissal. (You can read the full documentation about Redwood's Flash system [here](https://redwoodjs.com/docs/flash-messaging-bus).)
+Next, let's use Redwood's `Flash` system to let the user know their submission was successful. `useMutation` accepts an options object as a second argument. One of the options is a callback function, `onCompleted`, that will be invoked when the mutation successfully completes. We'll use that callback to add a message for the `Flash` component to display. Add the `Flash` component to the page and use the `timeout` prop to schedule the message's dismissal. ([Read the full documentation about Redwood's Flash system](https://redwoodjs.com/docs/flash-messaging-bus).)
 
 ```javascript{4,10,13-17,24}
 // web/src/pages/ContactPage/ContactPage.js
@@ -2006,6 +2090,8 @@ Next we'll inform the user of any server errors. So far we've only notified the 
 
 We have email validation on the client, but any good developer knows [_never trust the client_](https://www.codebyamir.com/blog/never-trust-data-from-the-browser). Let's add the email validation on the API as well to be sure no bad data gets into our database, even if someone somehow bypassed our client-side validation.
 
+> **No server-side validation?**
+>
 > Why don't we need server-side validation for the existence of name, email and message? Because the database is doing that for us. Remember the `String!` in our SDL definition? That adds a constraint in the database that the field cannot be `null`. If a `null` was to get all the way down to the database it would reject the insert/update and GraphQL would throw an error back to us on the client.
 >
 > There's no `Email!` datatype so we'll need to validate that on our own.
@@ -2064,7 +2150,7 @@ We already capture any existing error in the `error` constant that we got from `
 >   try {
 >     await create({ variables: { input: data } })
 >     console.log(data)
->   catch (error) {
+>   } catch (error) {
 >     console.log(error)
 >   }
 > }
@@ -2086,9 +2172,9 @@ To get a server error to fire, let's remove the email format validation so that 
 
 Now try filling out the form with an invalid email address:
 
-<img src="https://user-images.githubusercontent.com/300/80259406-5aee1900-863a-11ea-9b82-def3a4f3e162.png" />
+<img src="https://user-images.githubusercontent.com/16427929/98918425-e394af80-24cd-11eb-9056-58c295cf0d5c.PNG" />
 
-It ain't pretty, but it works. Seeing a "GraphQL error" is not ideal, and it would be nice if the field itself was highlighted like it was when the inline validation was in place...
+It ain't pretty, but it works. It would be nice if the field itself was highlighted like it was when the inline validation was in place...
 
 Remember when we said that `<Form>` had one more trick up its sleeve? Here it comes!
 
@@ -2111,7 +2197,7 @@ import { Flash, useFlash, useMutation } from '@redwoodjs/web'
 
 return (
   <BlogLayout>
-    <Flash timeout={1000}>
+    <Flash timeout={1000} />
     <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }} error={error}>
       <FormError
         error={error}
@@ -2126,8 +2212,10 @@ Now submit a message with an invalid email address:
 
 <img src="https://user-images.githubusercontent.com/300/80259553-c46e2780-863a-11ea-9441-54a9112b9ce5.png" />
 
-We get that error message at the top saying something went wrong in plain english _and_ the actual field is highlighted for us, just like the inline validation! The message at the top may be overkill for such a short form, but it can be key if a form is multiple screens long; the user gets a summary of what went wrong all in one place and they don't have to resort to hunting through a long form looking for red boxes. You don't have to use that message box at the top, though; just remove `<FormError>` and the field will still be highlighted as expected.
+We get that error message at the top saying something went wrong in plain English _and_ the actual field is highlighted for us, just like the inline validation! The message at the top may be overkill for such a short form, but it can be key if a form is multiple screens long; the user gets a summary of what went wrong all in one place and they don't have to resort to hunting through a long form looking for red boxes. You don't have to use that message box at the top, though; just remove `<FormError>` and the field will still be highlighted as expected.
 
+> **`<FormError>` styling options**
+>
 > `<FormError>` has several styling options which are attached to different parts of the message:
 >
 > - `wrapperStyle` / `wrapperClassName`: the container for the entire message
@@ -2166,7 +2254,7 @@ Finally we'll tell `<Form>` to use the `formMethods` we just instantiated instea
 
 return (
   <BlogLayout>
-    <Flash timeout={1000}>
+    <Flash timeout={1000} />
     <Form
       onSubmit={onSubmit}
       validation={{ mode: 'onBlur' }}
@@ -2193,7 +2281,7 @@ const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
 
 > You can put the email validation back into the `<TextField>` now, but you should leave the server validation in place, just in case.
 
-Here's the final `ContactForm.js` page:
+Here's the final `ContactPage.js` page:
 
 ```javascript
 import {
@@ -2258,7 +2346,7 @@ const ContactPage = () => {
         />
         <FieldError name="name" className="error" />
 
-        <Label name="name" errorClassName="error">
+        <Label name="email" errorClassName="error">
           Email
         </Label>
         <TextField
@@ -2270,7 +2358,7 @@ const ContactPage = () => {
         />
         <FieldError name="email" className="error" />
 
-        <Label name="name" errorClassName="error">
+        <Label name="message" errorClassName="error">
           Message
         </Label>
         <TextAreaField
@@ -2314,6 +2402,8 @@ Having the admin screens at `/admin` is a reasonable thing to do. Let's update t
 
 Head to http://localhost:8910/admin/posts and our generated scaffold page should come up. Thanks to named routes we don't have to update any of the `<Link>`s that were generated by the scaffolds since the `name`s of the pages didn't change!
 
+> **What about authentication?**
+>
 > On the last page we said we were going to set up an admin section **and** put it
 > behind a login. So far, all we've done is updated the routes. Don't worry, we
 > haven't forgotten! We will be setting up authentication in a [future step](/tutorial/authentication).
@@ -2352,7 +2442,8 @@ Before we continue, make sure your app is fully committed and pushed to GitHub, 
 > ```
 
 ### Vercel (alternative deploy target)
-Redwood officially supports multiple hosting providers (with even more on the way). Although this Tutorial continues with a focus on Netlify deployment and authentication with Netlify Identity, you can deploy to [Vercel](https://vercel.com/redwoodjs-core) instead. To do this, first complete "The Database" section below, but then use this [Vercel deploy walkthrough](https://redwoodjs.com/docs/deploy#redwood-deploy-configuration) in place of the following "Netlify" instructions. **Note**: Netlify Identity, used in upcoming "Authentication" section, won’t work on the Vercel platform.
+
+Redwood officially supports multiple hosting providers (with even more on the way). Although this Tutorial continues with a focus on Netlify deployment and authentication with Netlify Identity, you can deploy to [Vercel](https://vercel.com/redwoodjs-core) instead. To do this, first complete the "The Database" section below, but then use this [Vercel deploy walkthrough](https://redwoodjs.com/docs/deploy#redwood-deploy-configuration) in place of the following "Netlify" instructions. **Note**: Netlify Identity, used in upcoming "Authentication" section, won’t work on the Vercel platform.
 
 ### The Database
 
@@ -2363,6 +2454,16 @@ First we'll let Prisma know that we intend to use Postgres in addition to SQLite
 ```javascript
 provider = ["sqlite", "postgresql"]
 ```
+
+> If you are deploying to Netlify and using Prisma version `< 2.11.0`, you will need to add `rhel-openssl-1.0.x` to your `binaryTargets`:
+> ```javascript
+> // api/db/schema.prisma
+>
+> generator client {
+>   provider      = "prisma-client-js"
+>   binaryTargets = ["native", "rhel-openssl-1.0.x"]
+> }
+> ```
 
 If you'd like to develop locally with Postgres, see the
 [Local Postgres Setup](/docs/local-postgres-setup) guide.
@@ -2389,9 +2490,9 @@ And scroll down to **Heroku Postgres**:
 
 <img alt="Screen Shot 2020-02-03 at 3 23 48 PM" src="https://user-images.githubusercontent.com/300/73703883-556ddc00-46a6-11ea-8777-ee27d2202e0e.png">
 
-Click that and then on the detail page that comes up click the **Install Heroku Postgres** button that top right. On the next screen tell it you want to connect it to the app you just created, then click **Provision add-on**:
+Click that and then on the detail page that comes up, click the **Install Heroku Postgres** button that's at the top right. On the next screen tell it you want to connect it to the app you just created, then click **Submit Order Form**:
 
-<img alt="Screen Shot 2020-02-03 at 3 24 15 PM" src="https://user-images.githubusercontent.com/300/73703930-64548e80-46a6-11ea-9f1b-e06a183834f4.png">
+<img alt="Screen Shot 2020-02-03 at 3 24 15 PM" src="https://user-images.githubusercontent.com/16427929/98684805-e759f200-2366-11eb-8dd5-6f283898ed6f.PNG">
 
 You'll be returned to your app's detail page. You should be on the **Resources** tab and see the Heroku Postgres add-on ready to go:
 
@@ -2413,10 +2514,12 @@ Now just authorize Netlify to connect to your git hosting provider and find your
 
 Netlify will start building your app (click the **Deploying your site** link to watch the logs) and it will say "Site is live", but nothing will work. Why? We haven't told it where to find our database yet.
 
-Go back to the main site page and then to **Settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DATABASE_URL"). After pasting the value, append `?connection_limit=1` to the end. The URI will have the following format: `postgres://<user>:<pass>@<url>/<db>?connection_limit=1`.
+Go back to the main site page and then to **Site settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DATABASE_URL"). After pasting the value, append `?connection_limit=1` to the end. The URI will have the following format: `postgres://<user>:<pass>@<url>/<db>?connection_limit=1`.
 
 ![Adding ENV var](https://user-images.githubusercontent.com/300/83188236-3e834780-a0e4-11ea-8cfa-790c2e335a92.png)
 
+> **Connection limit**
+>
 > When configuring a database, you'll want to append `?connection_limit=1` to the URI. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context.
 
 Make sure to click the **Save** button. Now go over to the **Deploys** tab in the top nav and open the **Trigger deploy** dropdown on the right, then finally choose **Deploy site**:
@@ -2435,7 +2538,7 @@ If the deploy failed, check the log output in Netlify and see if you can make se
 
 ### Branch Deploys
 
-Another neat feature of Netlify is _Branch Deploys_. When you create a branch and push it up to your repo, Netlify will build that branch at a unique URL so that you can test your changes, leaving the main site alone. Once your branch is merged to `main` then a deploy at your main site will run and your changes will show to the world. To enable Branch Deploys go to **Settings** > **Continuous Deployment** and under the **Deploy contexts** section click **Edit settings** and change **Branch deploys** to "All". You can also enable _Deploy previews_ which will create them for any pull requests against your repo.
+Another neat feature of Netlify is _Branch Deploys_. When you create a branch and push it up to your repo, Netlify will build that branch at a unique URL so that you can test your changes, leaving the main site alone. Once your branch is merged to `main` then a deploy at your main site will run and your changes will show to the world. To enable Branch Deploys go to **Site settings** > **Build & deploy** > **Continuous Deployment** and under the **Deploy contexts** section click **Edit settings** and change **Branch deploys** to "All". You can also enable _Deploy previews_ which will create them for any pull requests against your repo.
 
 ![Netlify settings screenshot](https://user-images.githubusercontent.com/30793/90886476-c1016780-e3b2-11ea-851a-3014257484fd.png)
 
@@ -2455,9 +2558,16 @@ But you know Redwood has your back! Login isn't something we have to write from 
 
 - [Auth0](https://auth0.com/)
 - [Netlify Identity](https://docs.netlify.com/visitor-access/identity/)
+- [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
+- [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
+- [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
+- [Supabase](https://supabase.io/docs/guides/auth)
+- [Ethereum](https://github.com/oneclickdapp/ethereum-auth)
 
 We're going to demo a Netlify Identity integration in this tutorial since we're already deployed there and it's very easy to add to a Netlify site.
 
+> **Authentication vs. Authorization**
+>
 > There are two terms which contain a lot of letters, starting with an "A" and ending in "ation" (which means you could rhyme them if you wanted to) that become involved in most discussions about login:
 >
 > * Authentication
@@ -2492,7 +2602,7 @@ yarn rw g auth netlify
 
 The generator adds one file and modifies a couple others.
 
-> Don't see any changes?
+> **Are you on the latest Redwood?**
 >
 > For this to work you must be on version `0.7.0` or greater of Redwood. If you
 > don't see any file changes, try
@@ -2515,6 +2625,7 @@ export const requireAuth = () => {
     throw new AuthenticationError("You don't have permission to do that.")
   }
 }
+
 ```
 
 By default the authentication system will return only the data that the third-party auth handler knows about (that's what's inside the `jwt` object above). For Netlify Identity that's an email address, an optional name and optional array of roles. Usually you'll have your own concept of a user in your local database. You can modify `getCurrentUser` to return that user, rather than the details that the auth system stores. The comments at the top of the file give one example of how you could look up a user based on their email address. We also provide a simple implementation for requiring that a user be authenticated when trying to access a service: `requireAuth()`. It will throw an error that GraphQL knows what to do with if a non-authenticated person tries to get to something they shouldn't.
@@ -2541,7 +2652,7 @@ export const posts = () => {
 }
 
 export const post = ({ id }) => {
-  return db.post.findOne({
+  return db.post.findUnique({
     where: { id },
   })
 }
@@ -2569,21 +2680,23 @@ export const deletePost = ({ id }) => {
 }
 
 export const Post = {
-  user: (_obj, { root }) => db.post.findOne({ where: { id: root.id } }).user(),
+  user: (_obj, { root }) => db.post.findUnique({ where: { id: root.id } }).user(),
 }
 ```
 
-Now try creating, editing or deleting a post from our admin pages. Nothing happens! Should we show some kind of friendly error message? In this case, probably not—we're going to lockdown the admin pages altogether so they won't be accessible by a browser. The only way someone would be able to trigger these errors in the API is if they tried to access the GraphQL endpoint directly, without going through our UI. The API is already returning an error message (open the Web Inspector in your browser and try that create/edit/delete again) so we are covered.
+Now try creating, editing or deleting a post from our admin pages. Nothing happens! Should we show some kind of friendly error message? In this case, probably not—we're going to lock down the admin pages altogether so they won't be accessible by a browser. The only way someone would be able to trigger these errors in the API is if they tried to access the GraphQL endpoint directly, without going through our UI. The API is already returning an error message (open the Web Inspector in your browser and try that create/edit/delete again) so we are covered.
 
-> Note that we're putting the authentication checks in the service and not checking in the GraphQL interface (in the SDL files).
+> **Services as Containers for Your Business Logic**
 >
-> Redwood created the concept of **services** as containers for your business logic which can be used by other parts of your application besides the GraphQL API. By putting authentication checks here you can be sure that any other code that tries to create/update/delete a post will fall under the same authentication checks. In fact, Apollo (the GraphQL library Redwood uses) [agrees with us](https://www.apollographql.com/docs/apollo-server/security/authentication/#authorization-in-data-models)!
+> Note that we're putting the authentication checks in the service and not checking in the GraphQL interface (in the SDL files). Redwood created the concept of **services** as containers for your business logic which can be used by other parts of your application besides the GraphQL API.
+>
+> By putting authentication checks here you can be sure that any other code that tries to create/update/delete a post will fall under the same authentication checks. In fact, Apollo (the GraphQL library Redwood uses) [agrees with us](https://www.apollographql.com/docs/apollo-server/security/authentication/#authorization-in-data-models)!
 
 ### Web Authentication
 
 Now we'll restrict access to the admin pages completely unless you're logged in. The first step will be to denote which routes will require that you be logged in. Enter the `<Private>` tag:
 
-```javascript{3,11,16}
+```javascript{3,12,16}
 // web/src/Routes.js
 
 import { Router, Route, Private } from '@redwoodjs/router'
@@ -2638,9 +2751,9 @@ const BlogLayout = ({ children }) => {
             <Link to={routes.contact()}>Contact</Link>
           </li>
           <li>
-            <a href="#" onClick={logIn}>
+            <button onClick={logIn}>
               Log In
-            </a>
+            </button>
           </li>
         </ul>
       </nav>
@@ -2663,6 +2776,8 @@ We need to let the widget know the URL of our site so it knows where to go to ge
 You need the protocol and domain, not the rest of the path. Paste that into the modal and click that **Set site's URL** button. The modal should reload and now show a real login box:
 
 ![Netlify identity widget login](https://user-images.githubusercontent.com/300/82388116-97205980-99ed-11ea-8fb4-13436ee8e746.png)
+
+#### Accepting Invites
 
 Before we can log in, remember that confirmation email from Netlify? Go find that and click the **Accept the invite** link. That will bring you to your site live in production, where nothing will happen. But if you look at the URL it will end in something like `#invite_token=6gFSXhugtHCXO5Whlc5V`. Copy that (including the `#`) and appened it to your localhost URL: http://localhost:8910/#invite_token=6gFSXhugtHCXO5Whlc5Vg Hit Enter, then go back into the URL and hit Enter again to get it to actually reload the page. Now the modal will show **Complete your signup** and give you the ability to set your password:
 
@@ -2697,9 +2812,9 @@ const BlogLayout = ({ children }) => {
             <Link to={routes.contact()}>Contact</Link>
           </li>
           <li>
-            <a href="#" onClick={isAuthenticated ? logOut : logIn}>
+            <button onClick={isAuthenticated ? logOut : logIn}>
               {isAuthenticated ? 'Log Out' : 'Log In'}
-            </a>
+            </button>
           </li>
         </ul>
       </nav>
@@ -2742,11 +2857,11 @@ const BlogLayout = ({ children }) => {
             <Link to={routes.contact()}>Contact</Link>
           </li>
           <li>
-            <a href="#" onClick={isAuthenticated ? logOut : logIn}>
-              { isAuthenticated ? 'Log Out' : 'Log In' }
-            </a>
+            <button onClick={isAuthenticated ? logOut : logIn}>
+              {isAuthenticated ? 'Log Out' : 'Log In'}
+            </button>
           </li>
-          { isAuthenticated && <li>{currentUser.email}</li> }
+          {isAuthenticated && <li>{currentUser.email}</li>}
         </ul>
       </nav>
       <main>{children}</main>
@@ -2759,7 +2874,9 @@ export default BlogLayout
 
 ![Logged in email](https://user-images.githubusercontent.com/300/82389433-05b2e680-99f1-11ea-9d01-456cad508c80.png)
 
-> Check out the settings for Identity over at Netlify for more options, including allowing users to create accounts rather than having to be invited, add third party login buttons for Bitbucket, GitHub, GitLab and Google, receive webhooks when someone logs in, and more!
+> **More on Netlify Identity**
+>
+> Check out the settings (or [docs](https://docs.netlify.com/visitor-access/identity/)) for Identity over at Netlify for more options, including allowing users to create accounts rather than having to be invited, add third party login buttons for Bitbucket, GitHub, GitLab and Google, receive webhooks when someone logs in, and more!
 
 Believe it or not, that's it! Authentication with Redwood is a breeze and we're just getting started. Expect more magic soon!
 
@@ -2771,9 +2888,11 @@ You made it! If you really went through the whole tutorial: congratulations! If 
 
 That was potentially a lot of new concepts to absorb all at once so don't feed bad if all of it didn't fully sink in. React, GraphQL, Prisma, serverless functions...so many things! Even those of us working on the framework are heading over to Google multiple times per day to figure out how to get these things to work together.
 
-As an anonymous Twitter user once mused: "If you enjoy feeling like both the smartest person on earth and the dumbest person in history within a span of 24 hours, programming may be the career for you!"
+As an anonymous Twitter user once mused: "If you enjoy switching between feeling like the smartest person on earth and the dumbest person in history all in the same day, programming may be the career for you!"
 
 ### What's Next?
+
+If you're ready for even more Redwood, head to the [Tutorial Part 2](/tutorial2)! We'll look at Storybook and Jest and build a new feature for the blog: comments. Storybook introduces a new way to build components. We'll also add tests and run them with Jest to make sure things keep working as we expect.
 
 Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/docs/local-postgres-setup)? We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
 
@@ -2781,7 +2900,7 @@ Want to add some more features to your app? Check out some of our Cookbook recip
 
 Check out our [Roadmap](https://redwoodjs.com/roadmap) to see where we're headed and how we're going to get there.
 If you're interested in helping with anything you see, just let us know over on the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up.
-We want to hit `1.0` by the end of the year. And with your help, we think we can do it!
+We want to hit `1.0` by Redwood's first birthday in March 2021. And with your help, we think we can do it!
 
 ### Help Us!
 

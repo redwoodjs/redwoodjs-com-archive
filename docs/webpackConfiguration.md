@@ -167,12 +167,12 @@ Now, back in the browser, you'll see:
 
 ### Adding Tailwind CSS
 
-This section is inspired by mdv.io's excellent blog post, [Adding Tailwind CSS to RedwoodJS](https://mdv.io/). Note that the `webpack.config.js` file is no longer necessary since Redwood's webpack configuration now comes with postcss-loader by default (see [Supported Extensions and Loaders](#supported-extensions-and-loaders)). Neither is PurgeCSS, since, as of Tailwind CSS v1.4, it's [built-in](https://tailwindcss.com/docs/release-notes/#tailwind-css-v1-4).
+This section is inspired by mdv.io's excellent blog post, [Adding Tailwind CSS to RedwoodJS](https://mdv.io/tailwindcss-in-redwoodjs). Note that the `webpack.config.js` file is no longer necessary since Redwood's webpack configuration now comes with postcss-loader by default (see [Supported Extensions and Loaders](#supported-extensions-and-loaders)). Neither is PurgeCSS, since, as of Tailwind CSS v1.4, it's [built-in](https://tailwindcss.com/docs/release-notes/#tailwind-css-v1-4).
 
-> While following this example is a great way to learn about configuration in Redwood, do note that you can skip this section entirely and use the [Tailwind CSS generator](https://redwoodjs.com/docs/cli-commands#tailwind) instead:
+> While following this example is a great way to learn about configuration in Redwood, do note that you can skip this section entirely and use the [Tailwind CSS setup](https://redwoodjs.com/docs/cli-commands#setup) command instead:
 >
 > ```
-> yarn rw generate util tailwind
+> yarn rw setup tailwind
 > ```
 
 First, install the development dependencies:
