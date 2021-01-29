@@ -272,9 +272,9 @@ const azureActiveDirectoryClient = new UserAgentApplication({
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={azureActiveDirectoryClient} type="azureActiveDirectory">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
