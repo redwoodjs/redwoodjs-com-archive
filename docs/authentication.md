@@ -240,11 +240,7 @@ yarn add msal
 
 #### Setup
 
-To get your application credentials, create an [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application (client) ID_ and the _Directory (tenant) ID_.
-
-##### Supported account types
-
-In most cases you want to choose _Accounts in this organizational directory only (Single tenant)_, as this will allow only users in your Azure Active Directory tenant to login to your application. If you want to enable Microsoft accounts to be able to login, choose the bottom alternative.
+To get your application credentials, create an [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application ID_ (client), and the _Directory ID_ (tenant).
 
 ##### Redirect URIs
 
@@ -262,7 +258,6 @@ The Authority is a URL that indicates a directory that MSAL can request tokens f
 
 ```js
 // web/src/index.js
-import { AuthProvider } from '@redwoodjs/auth'
 import { UserAgentApplication } from 'msal'
 
 const azureActiveDirectoryClient = new UserAgentApplication({
@@ -290,9 +285,32 @@ ReactDOM.render(
 
 To setup your App Registration with custom roles and have them exposed via the `roles` claim, follow [this documentation](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
 
-#### Login and Logout Options
+#### Login Options
 
-When using the Azure Active Directory client, `login` take `options` that can be used to override the client config. See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/loginPopup.html) or see [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors).
+Options in method `logIn(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html), and a login request expects at least one [scope](https://docs.microsoft.com/en-us/graph/permissions-reference#user-permissions) to be defined.
+
+```js
+await logIn({
+  scopes: ['User.Read.All'],
+})
+```
+
+See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/loginPopup.html) or [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors) for more information.
+
+#### getToken Options
+
+Options in method `getToken(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html).
+By default, method `getToken` will be called with options below. Essentially this is MSAL's way of using the same scope that was used in the `logIn` request.
+
+```js
+await getToken({
+  scopes: [process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID],
+})
+```
+
+If you are using another environment variable name than `AZURE_ACTIVE_DIRECTORY_CLIENT_ID`, you should override the default options to reflect this.
+
+See [acquireTokenSilent](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/acquireTokenSilent.html), [MSAL's Resources and Scopes](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md#resources-and-scopes) or [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors) for more information.
 
 +++
 
@@ -442,9 +460,9 @@ yarn rw generate auth supabase
 
 Update your .env file with the following settings supplied when you created your new Supabase project:
 
-* `SUPABASE_URL` with the unique Supabase URL for your project
-* `SUPABASE_KEY` with the unique Supabase Key that identifies which API KEY to use
-* `SUPABASE_JWT_SECRET` with the secret used to sign and verify the JSON Web Token (JWT)
+- `SUPABASE_URL` with the unique Supabase URL for your project
+- `SUPABASE_KEY` with the unique Supabase Key that identifies which API KEY to use
+- `SUPABASE_JWT_SECRET` with the secret used to sign and verify the JSON Web Token (JWT)
 
 You can find these values in your project's dashboard under Settings -> API.
 
