@@ -250,7 +250,7 @@ Enter allowed redirect urls for the integrations, e.g. `http://localhost:8910`. 
 
 Under the _Authentication_ tab, tick `ID tokens`.
 
-This allows an application to request a token directly from the authorization endpoint. Checking Access tokens and ID tokens is recommended only if the application has a single-page architecture (SPA). [Learn more about the implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps)
+This allows an application to request a token directly from the authorization endpoint. Checking Access tokens and ID tokens is recommended only if the application has a single-page architecture (SPA). [Learn more about implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps).
 
 #### Authority
 
@@ -300,7 +300,7 @@ See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentA
 
 #### getToken Options
 
-Options in method `getToken(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html). By default, method `getToken` will be called with scope `[]` which would result in `openid` and `profile` being added as described above. Furthermore, because Azure Active Directory apply [incremental consent](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md#dynamic-scopes-and-incremental-consent) we can extend our permissions. In example below we extend permissions by including `Mail.Read` to the scope, which extends the previous login scope example.
+Options in method `getToken(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html). By default, `getToken` will be called with scope `['openid', 'profile']`. As Azure Active Directory apply [incremental consent](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md#dynamic-scopes-and-incremental-consent), we can extend the permissions from the login example by including another scope, for example `Mail.Read`.
 
 ```js
 await getToken({
