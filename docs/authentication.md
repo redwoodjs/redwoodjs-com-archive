@@ -466,6 +466,25 @@ You can find these values in your project's dashboard under Settings -> API.
 
 For full client docs, see: <https://supabase.io/docs/library/getting-started#reference>
 
+#### Usage
+
+Supabase supports several signin methods: 
+
+* email/password
+* passwordless via emailed magiclink
+* OAuth (such as Bitbucket, GitHub, GitLab, or Google).
+
+Depending on the credentials provided:
+
+* A user can sign up either via email or OAuth.
+* If you provide email without a password, the user will be sent a magic link.
+* The magic link's destination URL is determined by the SITE_URL config variable. To change this, you can go to Authentication -> Settings on `app.supabase.io` for your project.
+* Specifying an OAuth provider (such as Bitbucket, GitHub, GitLab, or Google) will open the browser to the relevant login page
+* Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to Authentication -> Settings on `app.supabase.io` for your project.
+
+For full Sign In docs, see: <https://supabase.io/docs/client/auth-signin>
+
+
 +++
 
 ### Ethereum
