@@ -28,7 +28,7 @@ You will need to instantiate your authentication client and pass it to the `<Aut
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth netlify
+yarn rw setup auth netlify
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -77,7 +77,7 @@ See the Netlify Identity information within this doc's [Auth Provider Specific I
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth goTrue
+yarn rw setup auth goTrue
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -133,7 +133,7 @@ ReactDOM.render(
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth auth0
+yarn rw setup auth auth0
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -228,7 +228,7 @@ See the Auth0 information within this doc's [Auth Provider Specific Integration]
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth azureActiveDirectory
+yarn rw setup auth azureActiveDirectory
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -321,7 +321,7 @@ See [acquireTokenSilent](https://pub.dev/documentation/msal_js/latest/msal_js/Us
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth magicLink
+yarn rw setup auth magicLink
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -369,7 +369,7 @@ See the Magic.Link information within this doc's [Auth Provider Specific Integra
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth firebase
+yarn rw setup auth firebase
 ```
 
 #### Setup
@@ -451,7 +451,7 @@ See the Firebase information within this doc's [Auth Provider Specific Integrati
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth supabase
+yarn rw setup auth supabase
 ```
 
 #### Setup
@@ -477,7 +477,7 @@ For full client docs, see: <https://supabase.io/docs/library/getting-started#ref
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth ethereum
+yarn rw setup auth ethereum
 ```
 
 #### Setup
@@ -495,7 +495,7 @@ To complete setup, you'll also need to update your `api` server manually. See ht
 The following CLI command (not implemented, see https://github.com/redwoodjs/redwood/issues/1585) will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth custom
+yarn rw setup auth custom
 ```
 
 #### Setup

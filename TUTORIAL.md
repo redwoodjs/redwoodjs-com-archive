@@ -2420,10 +2420,10 @@ Part 4 of the video tutorial picks up here:
 
 The whole reason we started building Redwood was to make full-stack web apps easier to build and deploy on the Jamstack. You've seen what building a Redwood app is like, how about we try deploying one?
 
-We've only got one change to make to the codebase to get it ready for deployment and we've got a generator to do it for us:
+We've only got one change to make to the codebase to get it ready for deployment and we've got a setup command to do it for us:
 
 ```terminal
-yarn rw g deploy netlify
+yarn rw setup deploy netlify
 ```
 
 This creates a file at `/netlify.toml` which contains the commands and file paths that Netlify needs to know about to build a Redwood app.
@@ -2592,15 +2592,15 @@ When the screen refreshes click the **Invite users** button and enter a real ema
 
 We'll need to get that email confirmation link soon, but for now let's set up our app for authentication.
 
-### Authentication Generation
+### Authentication Setup
 
-There are a couple of places we need to add some code for authentication and lucky for us Redwood can do it automatically with a generator:
+There are a couple of places we need to add some code for authentication and lucky for us Redwood can do it automatically with a setup command:
 
 ```terminal
-yarn rw g auth netlify
+yarn rw setup auth netlify
 ```
 
-The generator adds one file and modifies a couple others.
+The command adds one file and modifies a couple others.
 
 > **Are you on the latest Redwood?**
 >
