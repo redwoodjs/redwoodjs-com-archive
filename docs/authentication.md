@@ -240,11 +240,7 @@ yarn add msal
 
 #### Setup
 
-To get your application credentials, create an [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application (client) ID_ and the _Directory (tenant) ID_.
-
-##### Supported account types
-
-In most cases you want to choose _Accounts in this organizational directory only (Single tenant)_, as this will allow only users in your Azure Active Directory tenant to login to your application. If you want to enable Microsoft accounts to be able to login, choose the bottom alternative.
+To get your application credentials, create an [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application ID_ (client), and the _Directory ID_ (tenant).
 
 ##### Redirect URIs
 
@@ -254,7 +250,7 @@ Enter allowed redirect urls for the integrations, e.g. `http://localhost:8910`. 
 
 Under the _Authentication_ tab, tick `ID tokens`.
 
-This allows an application to request a token directly from the authorization endpoint. Checking Access tokens and ID tokens is recommended only if the application has a single-page architecture (SPA). [Learn more about the implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps)
+This allows an application to request a token directly from the authorization endpoint. Checking Access tokens and ID tokens is recommended only if the application has a single-page architecture (SPA). [Learn more about implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps).
 
 #### Authority
 
@@ -277,9 +273,9 @@ const azureActiveDirectoryClient = new UserAgentApplication({
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={azureActiveDirectoryClient} type="azureActiveDirectory">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
@@ -290,9 +286,29 @@ ReactDOM.render(
 
 To setup your App Registration with custom roles and have them exposed via the `roles` claim, follow [this documentation](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
 
-#### Login and Logout Options
+#### Login Options
 
-When using the Azure Active Directory client, `login` take `options` that can be used to override the client config. See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/loginPopup.html) or see [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors).
+Options in method `logIn(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html) and is a good place to pass in optional [scopes](https://docs.microsoft.com/en-us/graph/permissions-reference#user-permissions) to be authorized. By default, MSAL sets `scopes` to [/.default](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#the-default-scope) which is built in for every application that refers to the static list of permissions configured on the application registration. Furthermore, MSAL will add `openid` and `profile` to all requests. In example below we explicit include `User.Read.All` to the login scope.
+
+```js
+await logIn({
+  scopes: ['User.Read.All'], // becomes ['openid', 'profile', 'User.Read.All']
+})
+```
+
+See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/loginPopup.html), [UserAgentApplication class ](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors) and [Scopes Behavior](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-core/docs/scopes.md#scopes-behavior) for more documentation.
+
+#### getToken Options
+
+Options in method `getToken(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html). By default, `getToken` will be called with scope `['openid', 'profile']`. As Azure Active Directory apply [incremental consent](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md#dynamic-scopes-and-incremental-consent), we can extend the permissions from the login example by including another scope, for example `Mail.Read`.
+
+```js
+await getToken({
+  scopes: ['Mail.Read'], // becomes ['openid', 'profile', 'User.Read.All', 'Mail.Read']
+})
+```
+
+See [acquireTokenSilent](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/acquireTokenSilent.html), [Resources and Scopes](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md#resources-and-scopes) or [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors) for more documentation.
 
 +++
 
@@ -442,9 +458,9 @@ yarn rw generate auth supabase
 
 Update your .env file with the following settings supplied when you created your new Supabase project:
 
-* `SUPABASE_URL` with the unique Supabase URL for your project
-* `SUPABASE_KEY` with the unique Supabase Key that identifies which API KEY to use
-* `SUPABASE_JWT_SECRET` with the secret used to sign and verify the JSON Web Token (JWT)
+- `SUPABASE_URL` with the unique Supabase URL for your project
+- `SUPABASE_KEY` with the unique Supabase Key that identifies which API KEY to use
+- `SUPABASE_JWT_SECRET` with the secret used to sign and verify the JSON Web Token (JWT)
 
 You can find these values in your project's dashboard under Settings -> API.
 
