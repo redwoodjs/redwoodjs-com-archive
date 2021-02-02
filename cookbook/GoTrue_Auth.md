@@ -49,7 +49,8 @@ By specifying `goTrue` as the provider, Redwood automatically added the necessar
 import { AuthProvider } from '@redwoodjs/auth'
 import GoTrue from 'gotrue-js'
 import ReactDOM from 'react-dom'
-import { RedwoodProvider, FatalErrorBoundary } from '@redwoodjs/web'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 
 import Routes from 'src/Routes'
@@ -64,9 +65,9 @@ const goTrueClient = new GoTrue({
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={goTrueClient} type="goTrue">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
