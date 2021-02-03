@@ -1,6 +1,6 @@
 # Contributing
 
-Love Redwood and want to get involved? You’re in the right place and in good company! As of this writing, there are over [100 individuals](https://github.com/redwoodjs/redwood/blob/main/README.md#contributors) who have helped make Redwood awesome by contributing code and documentation. This doesn't include all those who participate in the vibrant, helpful, and encouraging Forums and Discord, which are both great places to get started if you have any questions.
+Love Redwood and want to get involved? You’re in the right place and in good company! As of this writing, there are more than [170 contributors](https://github.com/redwoodjs/redwood/blob/main/README.md#contributors) who have helped make Redwood awesome by contributing code and documentation. This doesn't include all those who participate in the vibrant, helpful, and encouraging Forums and Discord, which are both great places to get started if you have any questions.
 
 There are several ways you can contribute to Redwood:
 
@@ -23,6 +23,7 @@ What you want to do not on the roadmap? Well, still go for it! We love spikes an
 
 |Package|Description|
 |:-|:-|
+|[`@redwoodjs/api-server`](https://github.com/redwoodjs/redwood/blob/main/packages/api-server/README.md)|Run a Redwood app using Express server (alternative to serverless API)|
 |[`@redwoodjs/api`](https://github.com/redwoodjs/redwood/blob/main/packages/api/README.md)|Exposes functions to build the GraphQL API and provides services with `context`|
 |[`@redwoodjs/auth`](https://github.com/redwoodjs/redwood/blob/main/packages/auth/README.md#contributing)|A lightweight wrapper around popular SPA authentication libraries|
 |[`@redwoodjs/cli`](https://github.com/redwoodjs/redwood/blob/main/packages/cli/README.md)|All the commands for Redwood's built-in CLI|
