@@ -2892,9 +2892,9 @@ As an anonymous Twitter user once mused: "If you enjoy switching between feeling
 
 ### What's Next?
 
-If you're ready for even more Redwood, head to the [Tutorial Part 2](/tutorial2)! We'll look at Storybook and Jest and build a new feature for the blog: comments. Storybook introduces a new way to build components. We'll also add tests and run them with Jest to make sure things keep working as we expect.
+If you're ready for even more Redwood, head to the [Tutorial Part 2](/TUTORIAL2.md)! We'll look at Storybook and Jest and build a new feature for the blog: comments. Storybook introduces a new way to build components. We'll also add tests and run them with Jest to make sure things keep working as we expect.
 
-Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/docs/local-postgres-setup)? We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
+Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/Third_Party_API.md) and [deploying an app without an API at all](/cookbook/No_API.md). Have you grown out of SQLite and want to [install Postgres locally](/docs/localPostgresSetup.md)? We've also got lots of [guides](/docs/quick-start.md) for more info on Redwood's internals.
 
 ### Roadmap
 
