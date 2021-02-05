@@ -110,7 +110,7 @@ export const generated = () => {
               umami squid. Hammock hexagon glossier 8-bit banjo. Neutra
               la croix mixtape echo park four loko semiotics kitsch forage
               chambray. Semiotics salvia selfies jianbing hella shaman.
-              etterpress helvetica vaporware cronut, shaman butcher YOLO
+              Letterpress helvetica vaporware cronut, shaman butcher YOLO
               poke fixie hoodie gentrify woke heirloom.`,
         createdAt: '2020-01-01T12:34:45Z'
       }}
@@ -183,7 +183,7 @@ const POST = {
          umami squid. Hammock hexagon glossier 8-bit banjo. Neutra
          la croix mixtape echo park four loko semiotics kitsch forage
          chambray. Semiotics salvia selfies jianbing hella shaman.
-         etterpress helvetica vaporware cronut, shaman butcher YOLO
+         Letterpress helvetica vaporware cronut, shaman butcher YOLO
          poke fixie hoodie gentrify woke heirloom.`,
 }
 
