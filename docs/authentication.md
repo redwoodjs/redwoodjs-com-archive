@@ -472,11 +472,11 @@ Supabase supports several signin methods:
 
 * email/password
 * passwordless via emailed magiclink
-* OAuth (such as Bitbucket, GitHub, GitLab, or Google).
+* OAuth (via Azure Active Directory, Bitbucket, Facebook, GitHub, GitLab, or Google).
 
 Depending on the credentials provided:
 
-* A user can sign up either via email or OAuth.
+* A user can sign up either via email or a supported OAuth provider: `'azure' | 'bitbucket' | 'facebook' | 'github' | 'gitlab' | 'google'`
 * If you provide email without a password, the user will be sent a magic link.
 * The magic link's destination URL is determined by the SITE_URL config variable. To change this, you can go to Authentication -> Settings on `app.supabase.io` for your project.
 * Specifying an OAuth provider (such as Bitbucket, GitHub, GitLab, or Google) will open the browser to the relevant login page
