@@ -38,7 +38,11 @@ You could work through this tutorial without knowing anything about these techno
 
 ### Redwood Versions
 
-You will need to be on v0.25 or greater of Redwood to complete the tutorial.
+You will need to be on v0.25 or greater of Redwood to complete the tutorial. If this is your first time using Redwood then no worries: the latest version will be installed automatically when you create your app skeleton! If you have an existing site created with a version prior to 0.25 you'll need to upgrade. Run this command in the root of your app and follow the prompts:
+
+```bash
+yarn redwood upgrade
+```
 
 ### Node.js and Yarn Versions
 
@@ -106,7 +110,7 @@ Let's take a look at the files and directories that were created for us (config 
 ├── api
 │   ├── db
 │   │   ├── schema.prisma
-│   │   └── seeds.js
+│   │   └── seed.js
 │   └── src
 │       ├── functions
 │       │   └── graphql.js
@@ -145,7 +149,7 @@ Within `api` there are two directories:
 - `db` contains the plumbing for the database:
 
   - `schema.prisma` contains the database schema (tables and columns)
-  - `seeds.js` is used to populate your database with any data that needs to exist for your app to run at all (maybe an admin user or site configuration).
+  - `seed.js` is used to populate your database with any data that needs to exist for your app to run at all (maybe an admin user or site configuration).
 
   After we add our first database table there will also be a SQLite database file named `dev.db` and a directory called `migrations` created for us. `migrations` contains the files that act as snapshots of the database schema changing over time.
 
@@ -308,7 +312,7 @@ As a world-class developer you probably saw that copy-and-pasted `<header>` and 
 
 One way to solve the `<header>` dilemma would be to create a `<Header>` component and include it in both `HomePage` and `AboutPage`. That works, but is there a better solution? Ideally there should only be one reference to the `<header>` anywhere in our code.
 
-When you look at these two pages what do they really care about? They have some content they want to display. They really shouldn't have to care what comes before (like a `<header>`) or after (like a `<footer>`). That's exactly what layouts do: they wrap your pages in a component that then renders the page as its child:
+When you look at these two pages what do they really care about? They have some content they want to display. They really shouldn't have to care what comes before (like a `<header>`) or after (like a `<footer>`). That's where layouts come in: they wrap a page in a component that then renders the page as its child. The layout can contain any content that's outside of the page itself. Conceptually, the final rendered document will be structured something like:
 
 <img src="https://user-images.githubusercontent.com/300/70486228-dc874500-1aa5-11ea-81d2-eab69eb96ec0.png" alt="Layouts structure diagram" width="300">
 
@@ -529,11 +533,11 @@ That was simple. Now we'll want to snapshot this as a migration:
 
 > **`redwood` Shorthand**
 >
-> From now on we'll use the shorter `rw` alias instead of the full `redwood` name.
+> From now on we'll use the shorter `rw` alias instead of the full `redwood` argument.
 
 You'll be prompted to give this migration a name. Something that describes what it does is ideal, so how about "create posts" (without the quotes, of course). This is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference when looking through old migrations and trying to find when you created or modified something specific.
 
-After the command completes you'll see a new subdirectory created under `api/db/migrations` that has a timestamp and the name you gave the migration. It will contain a single file named `migration.sql` that contains the SQL necessary to bring the database structure up-to-date with whatever `schema.prisma` looked like at the time the migration was created. So you have a single `schema.prisma` file that describes what the database structure should look like right *now*, the migrations trace the history of the changes that took place to get to the current state. It's kind of like version control for your database structure, which can be pretty handy.
+After the command completes you'll see a new subdirectory created under `api/db/migrations` that has a timestamp and the name you gave the migration. It will contain a single file named `migration.sql` that contains the SQL necessary to bring the database structure up-to-date with whatever `schema.prisma` looked like at the time the migration was created. So you have a single `schema.prisma` file that describes what the database structure should look like right *now* and the migrations trace the history of the changes that took place to get to the current state. It's kind of like version control for your database structure, which can be pretty handy.
 
 In addition to creating the migration file, the above command will also execute the SQL against the database, which "applies" the migration. The final result is a new database table called `Post` with the fields we defined above.
 
@@ -569,7 +573,7 @@ Okay but what if we click "Delete"?
 
 <img src="https://user-images.githubusercontent.com/300/73031339-aea95600-3df0-11ea-9d58-475d9ef43988.png" />
 
-So, Redwood just created all the pages, components and services necessary to perform all CRUD actions on our posts table. No need to open a database GUI or login through a terminal window and write SQL from scratch. Redwood calls these _scaffolds_. Pretty neat, right?
+So, Redwood just created all the pages, components and services necessary to perform all CRUD actions on our posts table. No need to open a database GUI or login through a terminal window and write SQL from scratch. Redwood calls these _scaffolds_.
 
 Here's what happened when we ran that `yarn rw g scaffold post` command:
 
@@ -593,7 +597,7 @@ Here's what happened when we ran that `yarn rw g scaffold post` command:
 
 > **Generator Naming Conventions**
 >
-> You'll notice that some of the generated parts have plural names and some have singular. This convention is borrowed from Ruby on Rails which uses a more "human" naming convention: if you're dealing with multiple of something (like the list of all posts) it will be plural. If you're only dealing with a single something (like creating a new post) it will be singular. It sounds natural when speaking, too: "show me a list of all the posts" versus "I'm going to create a new post."
+> You'll notice that some of the generated parts have plural names and some have singular. This convention is borrowed from Ruby on Rails which uses a more "human" naming convention: if you're dealing with multiple of something (like the list of all posts) it will be plural. If you're only dealing with a single something (like creating a new post) it will be singular. It sounds natural when speaking, too: "show me a list of all the posts" and "I'm going to create a new post."
 >
 > As far as the generators are concerned:
 >
@@ -1799,7 +1803,7 @@ model Contact {
 
 > **Prisma syntax for optional fields**
 >
-> To mark a field as optional (that is, allowing `NULL` as a value) you can suffix the datatype with a question mark, e.g. `name String?`. This will allow `name`'s value to be both `String` or `NULL`.
+> To mark a field as optional (that is, allowing `NULL` as a value) you can suffix the datatype with a question mark, e.g. `name String?`. This will allow `name`'s value to either a `String` or `NULL`.
 
 Next we create and apply a migration:
 
@@ -2412,8 +2416,7 @@ Having the admin screens at `/admin` is a reasonable thing to do. Let's update t
 
 Head to http://localhost:8910/admin/posts and our generated scaffold page should come up. Thanks to named routes we don't have to update any of the `<Link>`s that were generated by the scaffolds since the `name`s of the pages didn't change!
 
-On the last page we said we were going to set up an admin section **and** put it
-behind a login. Here we go!
+Having the admin at a different path is great, but nothing is stopping someone from just browsing to that new path and messing with our blog posts. How do we keep prying eyes/fingers away?
 
 ## Authentication
 
@@ -2421,9 +2424,9 @@ behind a login. Here we go!
 
 But you know Redwood has your back! Login isn't something we have to write from scratch—it's a solved problem and is one less thing we should have to worry about. Today Redwood includes integrations to:
 
-- [Auth0](https://auth0.com/)
 - [Netlify Identity](https://docs.netlify.com/visitor-access/identity/)
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
+- [Auth0](https://auth0.com/)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
 - [Supabase](https://supabase.io/docs/guides/auth)
@@ -2447,9 +2450,11 @@ We're going to demo a Netlify Identity integration in this tutorial since we're 
 
 ### Netlify Setup
 
-Before we can enable Netlify Identity we need to setup a new Netlify site with our app. The easiest way to do this is to simply deploy our site so let's do that now. Note that the deploy won't complete successfully because we don't have a database for our production app to talk to. But we'll fix that later—for now we just need enough configured in Netlify so that we can enable Identity.
+Before we can enable Netlify Identity we need to setup a new Netlify site with our app. [Netlify](https://netlify.com) is a hosting platform that takes your code from a git repo and then builds and deploys the generated files to their CDN, and provides serverless function endpoints that your frontend can access. To say that again without as many fancy words: it turns the web-side into plain HTML, CSS and JS files and turns the api-side into a real API accessible by both the web-side and the internet in general.
 
-We've only got one change to make to our codebase to get it ready for deployment and we've got a setup command to do it for us:
+The easiest way to setup a site on Netlify is to simply deploy our site. You don't often hear the terms "simply" and "deploy" together in the same sentence (unless that sentence is "one does not simply deploy code to the internet"), but Netlify actually makes it easy! (Note that the deploy won't complete successfully because we don't have a database for our production app to talk to. But we'll fix that later—for now we just need enough configured in Netlify so that we can enable Identity.)
+
+We've only got one change to make to our codebase to get it ready for deployment and Redwood has a setup command to do it for us:
 
 ```terminal
 yarn rw setup deploy netlify
@@ -2477,7 +2482,7 @@ We'll need to get that email confirmation link soon, but in the meantime let's s
 
 ### Authentication Setup
 
-There are a couple of places we need to add some code for authentication and lucky for us Redwood can do it automatically with a setup command:
+There are a couple of places we need to add some code for authentication and once again Redwood can do it automatically with a setup command:
 
 ```terminal
 yarn rw setup auth netlify
@@ -2751,7 +2756,7 @@ export default BlogLayout
 >
 > Check out the settings (or [docs](https://docs.netlify.com/visitor-access/identity/)) for Identity over at Netlify for more options, including allowing users to create accounts rather than having to be invited, add third party login buttons for Bitbucket, GitHub, GitLab and Google, receive webhooks when someone logs in, and more!
 
-Believe it or not, that's it! Authentication with Redwood is a breeze and we're just getting started. Expect more magic soon!
+Believe it or not, that's it! Authentication with Redwood is a breeze and we're just getting started. Now let's get this site working in production.
 
 ## Deployment
 
@@ -2840,11 +2845,17 @@ Another neat feature of Netlify is _Branch Deploys_. When you create a branch an
 
 > You also have the ability to "lock" the `main` branch so that deploys do not automatically occur on every push—you need to manually tell Netlify to deploy the latest, either by going to the site or using the [Netlify CLI](https://cli.netlify.com/).
 
-### A Note About DB Connections
+### Database Concerns
 
-In this tutorial, your lambda functions will be connecting directly to the Postgres database. Because Postgres has a limited number of concurrent connections it will accept, this does not scale very well. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. To learn how to do that, see the [Connection Pooling](/docs/connection-pooling) guide.
+#### Connections
 
-We are working on making this process much easier, but keep it in mind before you deploy a Redwood app to production and announce it to the world.
+In this tutorial, your serverless functions will be connecting directly to the Postgres database. Because Postgres has a limited number of concurrent connections it will accept, this does not scale—imagine a flood of traffic to your site which causes a 100x increase in the number of serverless function calls. Netlify (and behind the scenes, AWS) will happily spin up 100+ serverless Lambda instances to handle the traffic. The problem is that each one will open it's own connection to your database, potentially exhausting the number of available connections. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. To learn how to do that, see the [Connection Pooling](/docs/connection-pooling) guide.
+
+#### Security
+
+Your database will need to be open to the world because you never know what IP address a serverless function will have when it runs. You could potentially get the CIDR block for ALL IP addresses that your hosting provider has and only allow connections from that list, but those ranges usually change over time and keeping them in sync is not trivial. As long as you keep your DB username/password secure you should be safe, but we understand this is not the ideal solution.
+
+As this form of full-stack Jamstack gains more prominence we're counting on database providers to provide more robust, secure solutions that address these issues. Our team is working closely with several of them and will hopefully have good news to share in the near future!
 
 ## Wrapping Up
 
