@@ -49,6 +49,12 @@ Note the `connection_limit` parameter. This is [recommended by Prisma](https://w
 relational databases in a Serverless context. You should also append this parameter to your production
 `DATABASE_URL` when configuring your deployments.
 
+### Local Test DB
+You should also set up a test database similarly by adding `TEST_DATABASE_URL` to your `.env` file.
+```env
+TEST_DATABASE_URL="postgresql://postgres@localhost:5432/redwoodblog_test?connection_limit=1"
+```
+
 > Note: local postgres server will need manual start/stop -- this is not handled automatically by RW CLI in a manner similar to sqlite
 
 ### Base URL and path

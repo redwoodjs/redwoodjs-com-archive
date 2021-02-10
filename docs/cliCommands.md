@@ -105,19 +105,8 @@ web/src/Routes.js:17:19: error (INVALID_ROUTE_PATH_SYNTAX): Error: Route path co
 ## console (alias c)
 
 Launch an interactive Redwood shell (experimental):
-- This has not yet been tested on Windows. 
+- This has not yet been tested on Windows.
 - The Prisma Client must be generated _prior_ to running this command, e.g. `yarn rw db up`. This is a known issue.
-
-> In your shell, be sure to set the `NODE_OPTIONS` env var to `--experimental-repl-await`:
->
-> ```terminal
-> export NODE_OPTIONS="--experimental-repl-await"
-> ```
->
-> Alternatively, on Mac or Linux you can pass the env var when you run the command:
-> ```
-> NODE_OPTIONS="--experimental-repl-await" yarn rw console
-> ```
 
 ```
 yarn rw console
@@ -383,7 +372,7 @@ yarn rw deploy <command>
 
 | Command              | Description                                                                     |
 | :------------------- | :------------------------------------------------------------------------------ |
-| `api <provider>`     | Deploy the API using the selected provider                                      |
+| `api <provider>`     | Deploy the API using the selected provider [choices: "aws_serverless"]          |
 
 ## destroy (alias d)
 
@@ -418,7 +407,6 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 
 | Command                | Description                                                                                           |
 | :--------------------- | :---------------------------------------------------------------------------------------------------- |
-| `auth <provider>`      | Generate an auth configuration                                                                        |
 | `cell <name>`          | Generate a cell component                                                                             |
 | `component <name>`     | Generate a component component                                                                        |
 | `dataMigration <name>` | Generate a data migration component                                                                   |
@@ -433,26 +421,7 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 
 **Undoing a Generator with a Destroyer**
 
-Most generate commands (i.e., everything but `yarn rw generate auth` and `yarn rw generate dataMigration`) can be undone by their corresponding destroy command. For example, `yarn rw generate cell` can be undone with `yarn rw d cell`.
-
-### auth
-
-Generate an auth configuration.
-
-```
-yarn rw generate auth <provider>
-```
-
-You can get authentication out-of-the-box with generators. Right now we support Auth0, Firebase, GoTrue, Magic, and Netlify.
-
-| Arguments & Options | Description                                                                                      |
-| :------------------ | :----------------------------------------------------------------------------------------------- |
-| `provider`          | Auth provider to configure. Choices are `auth0`, `firebase`, `goTrue`, `magicLink` and `netlify` |
-| `--force, -f`       | Overwrite existing files                                                                         |
-
-**Usage**
-
-See [Authentication](https://redwoodjs.com/docs/authentication).
+Most generate commands (i.e., everything but `yarn rw generate dataMigration`) can be undone by their corresponding destroy command. For example, `yarn rw generate cell` can be undone with `yarn rw d cell`.
 
 ### cell
 
@@ -464,12 +433,14 @@ yarn rw generate cell <name>
 
 Cells are signature to Redwood. We think they provide a simpler and more declarative approach to data fetching.
 
-| Arguments & Options  | Description               |
-| :------------------- | :------------------------ |
-| `name`               | Name of the cell          |
-| `--force, -f`        | Overwrite existing files  |
-| `--javascript, --js` | Generate JavaScript files |
-| `--typescript, --ts` | Generate TypeScript files |
+| Arguments & Options  | Description                              |
+| :------------------- | :--------------------------------------- |
+| `name`               | Name of the cell                         |
+| `--force, -f`        | Overwrite existing files                 |
+| `--javascript, --js` | Generate JavaScript files                |
+| `--typescript, --ts` | Generate TypeScript files                |
+| `--tests`            | Generate test files [default: true]      |
+| `--stories`          | Generate Storybook files [default: true] |
 
 **Usage**
 
@@ -529,12 +500,14 @@ yarn rw generate component <name>
 
 Redwood loves function components and makes extensive use of React Hooks, which are only enabled in function components.
 
-| Arguments & Options  | Description               |
-| :------------------- | :------------------------ |
-| `name`               | Name of the component     |
-| `--force, -f`        | Overwrite existing files  |
-| `--javascript, --js` | Generate JavaScript files |
-| `--typescript, --ts` | Generate TypeScript files |
+| Arguments & Options  | Description                              |
+| :------------------- | :--------------------------------------- |
+| `name`               | Name of the component                    |
+| `--force, -f`        | Overwrite existing files                 |
+| `--javascript, --js` | Generate JavaScript files                |
+| `--typescript, --ts` | Generate TypeScript files                |
+| `--tests`            | Generate test files [default: true]      |
+| `--stories`          | Generate Storybook files [default: true] |
 
 **Destroying**
 
@@ -590,21 +563,6 @@ Creates a data migration script in `api/db/dataMigrations`.
 **Usage**
 
 See the [Data Migration](/docs/data-migrations) docs.
-
-### deploy (config)
-
-Generate a deployment configuration.
-
-```
-yarn rw generate deploy <provider>
-```
-
-Creates provider-specific code and configuration for deployment
-
-| Arguments & Options | Description                                                                        |
-| :------------------ | :--------------------------------------------------------------------------------- |
-| `provider`          | Deploy provider to configure. Choices are `netlify`, `vercel`, or `aws_serverless` |
-| `--force, -f`       | Overwrite existing configuration                                                   |
 
 **Usage**
 
@@ -687,12 +645,14 @@ yarn rw generate layout <name>
 
 Layouts wrap pages and help you stay DRY.
 
-| Arguments & Options  | Description               |
-| :------------------- | :------------------------ |
-| `name`               | Name of the layout        |
-| `--force, -f`        | Overwrite existing files  |
-| `--javascript, --js` | Generate JavaScript files |
-| `--typescript, --ts` | Generate TypeScript files |
+| Arguments & Options  | Description                              |
+| :------------------- | :--------------------------------------- |
+| `name`               | Name of the layout                       |
+| `--force, -f`        | Overwrite existing files                 |
+| `--javascript, --js` | Generate JavaScript files                |
+| `--typescript, --ts` | Generate TypeScript files                |
+| `--tests`            | Generate test files [default: true]      |
+| `--stories`          | Generate Storybook files [default: true] |
 
 **Usage**
 
@@ -746,11 +706,13 @@ from `name` and the route parameter, if specified, will be added to the end.
 
 This also updates `Routes.js` in `./web/src`.
 
-| Arguments & Options | Description                              |
-| :------------------ | :--------------------------------------- |
-| `name`              | Name of the page                         |
-| `path`              | URL path to the page. Defaults to `name` |
-| `--force, -f`       | Overwrite existing files                 |
+| Arguments & Options | Description                               |
+| :------------------ | :---------------------------------------- |
+| `name`              | Name of the page                          |
+| `path`              | URL path to the page. Defaults to `name`  |
+| `--force, -f`       | Overwrite existing files                  |
+| `--tests`            | Generate test files [default: true]      |
+| `--stories`          | Generate Storybook files [default: true] |
 
 **Destroying**
 
@@ -1079,12 +1041,14 @@ yarn rw generate service <name>
 
 Services are where Redwood puts its business logic. They can be used by your GraphQL API or any other place in your backend code. See [How Redwood Works with Data](https://redwoodjs.com/tutorial/side-quest-how-redwood-works-with-data).
 
-| Arguments & Options  | Description               |
-| :------------------- | :------------------------ |
-| `name`               | Name of the service       |
-| `--force, -f`        | Overwrite existing files  |
-| `--javascript, --js` | Generate JavaScript files |
-| `--typescript, --ts` | Generate TypeScript files |
+| Arguments & Options  | Description                              |
+| :------------------- | :--------------------------------------- |
+| `name`               | Name of the service                      |
+| `--force, -f`        | Overwrite existing files                 |
+| `--javascript, --js` | Generate JavaScript files                |
+| `--typescript, --ts` | Generate TypeScript files                |
+| `--tests`            | Generate test files [default: true]      |
+| `--stories`          | Generate Storybook files [default: true] |
 
 **Destroying**
 
@@ -1196,11 +1160,47 @@ yarn rw setup <command>
 
 <br/>
 
-| Commands            | Description                              |
-| :------------------ | :--------------------------------------- |
-| `i18n`              | Setup i18n                               |
-| `tailwind`          | Setup tailwindcss and PostCSS            |
-| `webpack`           | Setup webpack in your project so you can add custom config            |
+| Commands   | Description                                                            |
+| :--------- | :--------------------------------------------------------------------- |
+| `auth`     | Setup  auth configuration for a provider                               |
+| `deploy`   | Setup a deployment configuration for  a provider                       |
+| `i18n`     | Setup i18n                                                             |
+| `tailwind` | Setup tailwindcss and PostCSS                                          |
+| `webpack`  | Setup webpack config file in your project so you can add custom config |
+
+### setup deploy (config)
+
+Setup a deployment configuration.
+
+```
+yarn rw setup deploy <provider>
+```
+
+Creates provider-specific code and configuration for deployment
+
+| Arguments & Options | Description                                                                        |
+| :------------------ | :--------------------------------------------------------------------------------- |
+| `provider`          | Deploy provider to configure. Choices are `netlify`, `vercel`, or `aws_serverless` |
+| `--force, -f`       | Overwrite existing configuration                                                   |
+
+### setup auth
+
+Setup an auth configuration.
+
+```
+yarn rw setup auth <provider>
+```
+
+You can get authentication out-of-the-box with generators. Right now we support Auth0, Firebase, GoTrue, Magic, and Netlify.
+
+| Arguments & Options | Description                                                                                      |
+| :------------------ | :----------------------------------------------------------------------------------------------- |
+| `provider`          | Auth provider to configure. Choices are `auth0`, `firebase`, `goTrue`, `magicLink` and `netlify` |
+| `--force, -f`       | Overwrite existing files                                                                         |
+
+**Usage**
+
+See [Authentication](https://redwoodjs.com/docs/authentication).
 
 ## storybook
 
@@ -1218,10 +1218,11 @@ yarn rw storybook
 
 RedwoodJS supports Storybook by creating stories when generating cells, components, layouts and pages. You can then use these to describe how to render that UI component with representative data.
 
-| Arguments & Options | Description                                                                                                                                    |
-| :------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--open`            | Open Storybook in your browser on start
-| `--port`            | Which port to run Storybook on (defaults to 7910)
+| Arguments & Options | Description                                      |
+| :------------------ | :----------------------------------------------- |
+| `--open`            | Open Storybook in your browser on start          |
+| `--build`           | Build Storybook                                  |
+| `--port`            | Which port to run Storybook on (defaults to 7910)|
 
 ## test
 
@@ -1238,7 +1239,7 @@ yarn rw test [side..]
 | `side`              | Which side(s) to test. Choices are `api, web`. Defaults to "watch mode"                                                                        |
 | `--help`            | Show help                                                                                                                                      |
 | `--version`         | Show version number                                                                                                                            |
-| `--watch`           | Run tests related to changed files based on hg/git (uncommitted files). Specify the name or path to a file to focus on a specific set of tests |
+| `--watch`           | Run tests related to changed files based on hg/git (uncommitted files). Specify the name or path to a file to focus on a specific set of tests [default: true] |
 | `--watchAll`        | Run all tests                                                                                                                                  |
 | `--collectCoverage` | Show test coverage summary and output info to `coverage` directory in project root. See this directory for an .html coverage report            |
 | `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                 |
@@ -1259,8 +1260,9 @@ A canary release is published to npm every time a PR is merged to the `main` bra
 
 | Option          | Description                                                                                                                         |
 | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
-| `--dry-run, -d` | Check for outdated packages without upgrading                                                                                       |
+| `--dry-run, -d` | Check for outdated packages without upgrading |
 | `--tag, -t`     | Choices are "canary", "rc", or a specific version (e.g. "0.19.3"). WARNING: Unstable releases in the case of "canary" and "rc", which will force upgrade packages to the most recent release of the specified tag.  |
+| `--pr` | Installs packages for the given PR |
 
 **Example**
 
@@ -1274,4 +1276,10 @@ Upgrade to a specific version:
 
 ```terminal
 yarn redwood upgrade -t 0.19.3
+```
+
+Upgrade using packages from PR #1714 (version tag provided in PR comments):
+
+```terminal
+yarn rw upgrade --pr 1714:0.24.0-38ba18c
 ```
