@@ -2,9 +2,13 @@
 
 Welcome to Redwood! If you haven't yet, check out the [Redwood README](https://github.com/redwoodjs/redwood/blob/main/README.md) to get a little background on why we created Redwood and the problems it's meant to solve. Redwood brings several existing technologies together for the first time into what we think is the future of database-backed single page applications.
 
-In this tutorial we're going to build a blog engine. In reality a blog is probably not the ideal candidate for a Redwood app: blog articles can be stored in a CMS and statically generated to HTML files and served as flat files from a CDN. But as most developers are familiar with a blog and it uses all of the features we want to demonstrate, we decided to build one anyway.
+In this tutorial we're going to build a blog engine. In reality a blog is probably not the ideal candidate for a Redwood app: blog articles can be stored in a CMS and statically generated to HTML files and served as flat files from a CDN (the classic Jamstack usecase). But as most developers are familiar with a blog and it uses all of the features we want to demonstrate, we decided to build one anyway.
 
 Want to watch this tutorial instead? Start here:
+
+> **Ancient Content Notice**
+>
+> These videos were recorded with an earlier version of Redwood and many commands are now out-of-date. If you really want to build the blog app you'll need to follow along with the text which we keep up-to-date with the latest releases.
 
 <div class="relative pb-9/16">
   <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/tiF9SdM1i7M?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
@@ -32,6 +36,10 @@ This tutorial assumes you are already familiar with a few core concepts:
 
 You could work through this tutorial without knowing anything about these technologies but you may find yourself getting lost in terminology that we don't stop and take the time to explain. It also helps knowing where the line is between what is built into React and what additional features Redwood brings to the table.
 
+### Redwood Versions
+
+You will need to be on v0.25 or greater of Redwood to complete the tutorial.
+
 ### Node.js and Yarn Versions
 
 During installation, RedwoodJS checks if your system meets version requirements for Node and Yarn:
@@ -39,14 +47,14 @@ During installation, RedwoodJS checks if your system meets version requirements 
 - node: ">=12"
 - yarn: ">=1.15"
 
-👉 **Heads Up:** If your system versions do not meet both requirements, _the installation bootstrap will result in an ERROR._ To check, please run the following from your terminal command line:
+If your system versions do not meet both requirements, _the installation bootstrap will result in an ERROR._ To check, please run the following from your terminal command line:
 
 ```
 node --version
 yarn --version
 ```
 
-Please do upgrade accordingly. Then proceed to the RedwoodJS installation when you're ready!
+Please do upgrade accordingly. Then proceed to the Redwood installation when you're ready!
 
 > **Installing Node and Yarn**
 >
@@ -387,7 +395,7 @@ Back to the browser and you should see...nothing different. But that's good, it 
 >
 > You may have noticed some duplication in Redwood's file names. Pages live in a directory called `/pages` and also contain `Page` in their name. Same with Layouts. What's the deal?
 >
-> When you have dozens of files open in your editor it's easy to get lost, especially when you have several files with names that are similar or even the same (they happen to be in different directories). We've found that the extra duplication in the names of files is worth the productivity benefit when scanning through your open tabs.
+> When you have dozens of files open in your editor it's easy to get lost, especially when you have several files with names that are similar or even the same (they happen to be in different directories). Imagine a dozen files named `index.js` and then trying to find the one you're looking for in your open tabs! We've found that the extra duplication in the names of files is worth the productivity benefit when scanning for a specific open file.
 >
 > If you're using the [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) plugin this also helps disambiguate when browsing through your component stack:
 >
@@ -450,6 +458,10 @@ export default AboutPage
 
 Part 2 of the video tutorial picks up here:
 
+> **Ancient Content Notice**
+>
+> These videos were recorded with an earlier version of Redwood and many commands are now out-of-date. If you really want to build the blog app you'll need to follow along with the text which we keep up-to-date with the latest releases.
+
 <div class="relative pb-9/16">
   <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/SP5vbsWf5Yg?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
 </div>
@@ -467,9 +479,9 @@ We need to decide what data we'll need for a blog post. We'll expand on this at 
 - `body` the actual content of the blog post
 - `createdAt` a timestamp of when this record was created
 
-We use [Prisma Client JS](https://github.com/prisma/prisma-client-js) to talk to the database. Prisma has another library called [Migrate](https://github.com/prisma/migrate) that lets us update the database's schema in a predictable way and snapshot each of those changes. Each change is called a _migration_ and Migrate will create one when we make changes to our schema.
+We use [Prisma](https://www.prisma.io/) to talk to the database. Prisma has another library called [Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate) that lets us update the database's schema in a predictable way and snapshot each of those changes. Each change is called a _migration_ and Migrate will create one when we make changes to our schema.
 
-First let's define the data structure for a post in the database. Open up `api/db/schema.prisma` and add the definition of our Post table (remove any "sample" models that are present in the file). Once you're done the entire schema file should look like:
+First let's define the data structure for a post in the database. Open up `api/db/schema.prisma` and add the definition of our Post table (remove any "sample" models that are present in the file, like the `UserExample` model). Once you're done the entire schema file should look like:
 
 ```plaintext{13-18}
 // api/db/schema.prisma
@@ -513,21 +525,17 @@ This says that we want a table called `Post` and it should have:
 
 That was simple. Now we'll want to snapshot this as a migration:
 
-    yarn redwood db save "create posts"
-
-You've named the migration "create posts", and this is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference for future developers.
-
-After the command completes you'll see a new subdirectory created under `api/db/migrations` that has a timestamp and the name you gave the migration. It will contain a couple files inside (a snapshot of what the schema looked like at that point in time in `schema.prisma` and the directives that Prisma Migrate will use to make the change to the database in `steps.json`).
-
-We apply the migration with another command:
-
-    yarn rw db up
+    yarn rw prisma migrate dev
 
 > **`redwood` Shorthand**
 >
 > From now on we'll use the shorter `rw` alias instead of the full `redwood` name.
 
-This will apply the migration (which runs the commands against the database to create the changes we need) which results in creating a new table called `Post` with the fields we defined above.
+You'll be prompted to give this migration a name. Something that describes what it does is ideal, so how about "create posts" (without the quotes, of course). This is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference when looking through old migrations and trying to find when you created or modified something specific.
+
+After the command completes you'll see a new subdirectory created under `api/db/migrations` that has a timestamp and the name you gave the migration. It will contain a single file named `migration.sql` that contains the SQL necessary to bring the database structure up-to-date with whatever `schema.prisma` looked like at the time the migration was created. So you have a single `schema.prisma` file that describes what the database structure should look like right *now*, the migrations trace the history of the changes that took place to get to the current state. It's kind of like version control for your database structure, which can be pretty handy.
+
+In addition to creating the migration file, the above command will also execute the SQL against the database, which "applies" the migration. The final result is a new database table called `Post` with the fields we defined above.
 
 ### Creating a Post Editor
 
