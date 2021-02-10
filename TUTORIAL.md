@@ -574,7 +574,7 @@ So, Redwood just created all the pages, components and services necessary to per
 Here's what happened when we ran that `yarn rw g scaffold post` command:
 
 - Added an _SDL_ file to define several GraphQL queries and mutations in `api/src/graphql/posts.sdl.js`
-- Added a _services_ file in `api/src/services/posts/posts.js` that makes the Prisma Client JS calls to get data in and out of the database
+- Added a _services_ file in `api/src/services/posts/posts.js` that makes the Prisma client calls to get data in and out of the database
 - Created several _pages_ in `web/src/pages`:
   - `EditPostPage` for editing a post
   - `NewPostPage` for creating a new post
@@ -1915,7 +1915,7 @@ export const createContact = ({ input }) => {
 }
 ```
 
-Thanks to Prisma Client JS it takes very little code to actually save something to the database! This is an asynchronous call but we didn't have to worry about resolving Promises or dealing with `async/await`. Apollo will do that for us!
+Thanks to Prisma it takes very little code to actually save something to the database! This is an asynchronous call but we didn't have to worry about resolving Promises or dealing with `async/await`. Apollo will do that for us!
 
 Before we plug this into the UI, let's take a look at a nifty GUI you get just by running `yarn redwood dev`.
 
@@ -1923,7 +1923,7 @@ Before we plug this into the UI, let's take a look at a nifty GUI you get just b
 
 Often it's nice to experiment and call your API in a more "raw" form before you get too far down the path of implementation only to find out something is missing. Is there a typo in the API layer or the web layer? Let's find out by accessing just the API layer.
 
-When you started development with `yarn redwood dev` you actually started a second process running at the same time. Open a new browser tab and head to http://localhost:8911/graphql This is Prisma's [GraphQL Playground](https://github.com/prisma-labs/graphql-playground), a web-based GUI for GraphQL APIs:
+When you started development with `yarn redwood dev` you actually started a second process running at the same time. Open a new browser tab and head to http://localhost:8911/graphql This is Apollo Server's [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/testing/graphql-playground/), a web-based GUI for GraphQL APIs:
 
 <img src="https://user-images.githubusercontent.com/300/70950852-9b97af00-2016-11ea-9550-b6983ce664e2.png" />
 
@@ -2777,7 +2777,9 @@ First we'll let Prisma know that we intend to use Postgres instead of SQLite. Up
 provider = "postgresql"
 ```
 
-Once you've made this change you'll also need to start using Postgres locally to continue developing your app. See our [Local Postgres Setup](/docs/local-postgres-setup) guide to get you started.
+> **!!! Extremely Important Notice You Should Read !!!**
+>
+> Prisma only supports one database provider at a time, and since we can't use SQLite in production and *must* switch the Postgres or MySQL, that means we need to use the same database on our local development system after making this change. See our [Local Postgres Setup](/docs/local-postgres-setup) guide to get you started.
 
 There are several hosting providers where you can quickly start up a Postgres instance:
 
@@ -2786,7 +2788,7 @@ There are several hosting providers where you can quickly start up a Postgres in
 - [Digital Ocean](https://www.digitalocean.com/products/managed-databases)
 - [AWS](https://aws.amazon.com/rds/postgresql/)
 
-We're going to go with Railway for now because it's a) free and b) ridiculously easy to get started—you don't even need to create a login! The only limitation is that your database will be removed after seven days unless you create an account. But unless you *really* procrastinate that should be plenty of time to get through the rest of the tutorial.
+We're going to go with Railway for now because it's a) free and b) ridiculously easy to get started, by far the easiest we've found. You don't even need to create a login! The only limitation is that if you *don't* create an account, your database will be removed after seven days. But unless you *really* procrastinate that should be plenty of time to get through the rest of the tutorial!
 
 Head over to Railway and click **Get Started**:
 
