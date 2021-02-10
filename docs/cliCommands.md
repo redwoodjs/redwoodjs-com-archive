@@ -272,10 +272,10 @@ api/db/migrations
 Seed your database with test data.
 
 ```terminal
-yarn rw db seed
+yarn rw prisma db seed
 ```
 
-Runs `seed.js` in `./api/db`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/db/seeds.js).
+Runs `seed.js` in `./api/db`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/db/seed.js).
 
 ### studio
 

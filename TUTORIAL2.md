@@ -44,7 +44,7 @@ git clone https://github.com/redwoodjs/redwood-tutorial
 cd redwood-tutorial
 yarn install
 yarn rw db up
-yarn rw db seed
+yarn rw prisma db seed
 yarn rw dev
 ```
 
