@@ -29,31 +29,43 @@ Each hosting provider has different requirements for how (and where) the deploym
 The most important Redwood configuration is to set the `apiProxyPath` in your `redwood.toml` This sets the API path for your serverless functions specific to your hosting provider.
 
 ### 2. Build Command
-The build command is used to prepare the Web and API for deployment. Additionally, other actions can be run during build such as database migrations. This is the current default Redwood build command:
+The build command is used to prepare the Web and API for deployment. Additionally, other actions can be run during build such as database migrations. The Redwood build command must specify one of the supported hosting providers (aka `target`):
+
 ```shell
-yarn rw build && yarn rw db up --no-db-client --auto-approve && yarn rw dataMigrate up
+yarn rw prisma deploy <target>
+```
+
+For example:
+
+```shell
+# Build command for Netlify deploy target
+yarn rw prisma deploy netlify
+```
+
+```shell
+# Build command for Vercel deploy target
+yarn rw prisma deploy vercel
+```
+
+
+```shell
+# Build command for Serverless deploy target
+yarn rw prisma deploy serverless
 ```
 
 ### 3. Prisma and Database
-Redwood uses Prisma for managing database access and migrations. The settings in `api/db/schema.prisma` must include the correct deployment database, e.g. postgresql, and the database connection string.
+Redwood uses Prisma for managing database access and migrations. The settings in `api/prisma/schema.prisma` must include the correct deployment database, e.g. postgresql, and the database connection string.
 
-It is possible to use a different database type for local development and production. To do this, you need to use the Prisma dynamic provider syntax. For example, to use SQLite locally and PostgreSQL in production, include this in your `schema.prisma`:
+To use PostgreSQL in production, include this in your `schema.prisma`:
+
 ```javascript
 datasource DS {
-  provider = ["sqlite", "postgresql"]
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 ```
 
 The `url` setting above accesses the database connection string via an environment variable, `DATABASE_URL`. Using env vars is the recommended method for both ease of development process as well as security best practices.
-
-Whenever you make changes to your `schema.prisma`, you must run the following commands:
-```shell
-$ yarn rw db save # creates a new Prisma DB migration
-$ yarn rw db up # applies the new migration to your local DB
-```
-
-_Don't forget to save, commit, and push any changes prior to deploying!_
 
 ### 4. Environment Variables
 Any environment variables used locally, e.g. in your `env.defaults` or `.env`, must also be added to your hosting provider settings. (See documentation specific to your provider.)
