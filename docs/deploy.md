@@ -159,6 +159,6 @@ From now on, each time you push code to your git repo, Vercel will automatically
 ## AWS Serverless Deploy
 >The following instructions assume you have read the [General Deployment Setup](#general-deployment-setup) section above.
 
-Deploying via AWS Serverless assumes that you have setup the [credentials](https://www.serverless.com/framework/docs/providers/aws/guide/credentials/) for the Serverless Framework on your computer. In order to setup your Redwood project to use AWS Serverless run: `yarn rw setup deploy aws_serverless`
+Deploying via AWS Serverless assumes that you have setup the [credentials](https://www.serverless.com/framework/docs/providers/aws/guide/credentials/) for the Serverless Framework on your computer. In order to setup your Redwood project to use AWS Serverless run: `yarn rw setup deploy aws-serverless`
 
-Once that's complete you can invoke a deployment via: `yarn rw deploy api aws_serverless`. This command will take care of building, packaging, and shipping your AWS Serverless functions.
+Once that's complete you can invoke a deployment via: `yarn rw deploy aws`. This command will take care of building, packaging, and shipping your AWS Serverless functions.
