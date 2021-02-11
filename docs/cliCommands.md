@@ -162,13 +162,14 @@ yarn rw dataMigrate up
 
 Database tools.
 
-```
-yarn rw db <command>
-```
-
 > **WARNING**
 >
 > As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+
+
+```
+yarn rw db <command>
+```
 
 <br/>
 
@@ -187,7 +188,9 @@ yarn rw db <command>
 
 Migrate your database down.
 
-> **WARNING:** Prisma's migration functionality is currently experimental.
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
 yarn rw db down [decrement]
@@ -221,6 +224,10 @@ we could get to `20200518160457-create-users` by running:
 
 Generate the Prisma client.
 
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+
 ```terminal
 yarn rw db generate
 ```
@@ -232,6 +239,10 @@ This means that `yarn rw db generate` needs to be run after every change to your
 
 Introspect your database and generate models in `./api/db/schema.prisma`, overwriting existing models.
 
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+
 ```terminal
 yarn rw db introspect
 ```
@@ -240,7 +251,9 @@ yarn rw db introspect
 
 Create a new migration.
 
-> **WARNING:** Prisma's migration functionality is currently experimental.
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
 yarn rw db save [name..]
@@ -276,6 +289,10 @@ api/db/migrations
 
 Seed your database with test data.
 
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+
 ```terminal
 yarn rw db seed
 ```
@@ -286,6 +303,10 @@ Runs `seed.js` in `./api/db`. `seed.js` instantiates the Prisma client and provi
 
 Start <a href="https://github.com/prisma/studio">Prisma Studio</a>, a visual editor for your database.
 
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+
 ```terminal
 yarn rw db studio
 ```
@@ -294,7 +315,9 @@ yarn rw db studio
 
 Generate the Prisma client and apply migrations.
 
-> **WARNING:** Prisma's migration functionality is currently experimental.
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
 yarn rw db up [increment]
