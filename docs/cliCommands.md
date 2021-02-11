@@ -166,13 +166,8 @@ Database tools.
 yarn rw db <command>
 ```
 
-> **WARNING**
->
-> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
-
 <br/>
 
-<!-- new command? link? deprecated b4... -->
 | Command            | Description                                                                                               |
 | :----------------- | :-------------------------------------------------------------------------------------------------------- |
 | `down [decrement]` | Migrate your database down                                                                                |
@@ -1150,41 +1145,6 @@ Open your project in your browser.
 ```terminal
 yarn rw open
 ```
-
-## prisma
-
-Run Prisma CLI with experimental features.
-
-```
-yarn rw prisma
-```
-
-Redwood's `prisma` command is a lightweight wrapper around the Prisma CLI. It's the primary way you interact with your database.
-
-> **What do you mean it's a lightweight wrapper?**
->
-> By lightweight wrapper, we mean that we're handling some flags under the hood for you.
-> You can use the Prisma CLI directly (`yarn prisma`), but letting Redwood act as a proxy (`yarn redwood prisma`) saves you a lot of keystrokes. 
-> For example, Redwood adds the `--preview-feature` and `--schema=api/db/schema.prisma` flags automatically.
->
-> If you want to know exactly what `yarn redwood prisma <command>` runs, which flags it's passing, etc., it's right at the top:
->
-> ```sh{3}
-> $ yarn rw prisma introspect
-> yarn run v1.22.10
-> $ ~/redwood-app/node_modules/.bin/rw prisma introspect
-> Running prisma cli:
-> yarn prisma introspect --schema "~/redwood-app/api/db/schema.prisma"
-> ...
-> ```
-
-Since `yarn rw prisma` is just an entry point into the large swath of database commands that the Prisma CLI has to offer, we won't try to provide an exhaustive reference of everything you can do with it here. Instead what we'll do is focus on some of the most common commands; those that you'll be running on a regular basis, and how they fit into Redwood's workflows.
-
-For the complete list of commands, see the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference). It's the authority. 
-
-Along with the CLI reference, bookmark Prisma's [Migration Flows](https://www.prisma.io/docs/concepts/components/prisma-migrate/prisma-migrate-flows) doc&mdash;it'll prove to be an invaluable resource for understanding `yarn rw prisma migrate`.
-
-<!-- table of common commands... -->
 
 ## redwood-tools (alias rwt)
 
