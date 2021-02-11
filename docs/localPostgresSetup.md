@@ -1,27 +1,78 @@
 # Local Postgres Setup
 
 RedwoodJS uses a SQLite database by default. While SQLite makes local development easy, you're
-likely going to want to run the same database setup you use on production. Here's how to set up
-Postgres.
+likely going to want to run the same database you use in production locally at some point. And since the odds of that database being Postgres are high, here's how to set up Postgres.
 
 ## Install Postgres
 
-Ensure you have Postgres installed and running on your machine. If you're on a Mac, we recommend
-Homebrew:
+If you're on a Mac, we recommend using Homebrew:
 
 ```bash
 brew install postgres
 ```
 
-Follow the instructions provided. If you're using another platform, See
-[prisma.io/docs/guides/database-workflows/setting-up-a-database/postgresql](https://www.prisma.io/docs/guides/database-workflows/setting-up-a-database/postgresql).
+> **Install Postgres? I've messed up my Postgres installation so many times, I wish I could just uninstall everything and start over!**
+> 
+> We've been there before. For those of you on a Mac, [this video](https://www.youtube.com/watch?v=1aybOgni7lI) is a great resource on how to wipe the various Postgres installs off your machine so you can get back to a blank slate.
+> Obviously, warning! This resource will teach you how to wipe the various Postgres installs off your machine. Please only do it if you know you can!
 
+If you're using another platform, see Prisma's [Data Guide](https://www.prisma.io/docs/guides/database-workflows/setting-up-a-database/postgresql) for detailed instructions on how to get up and running. 
 
-## Create Postgresql User
+## Creating a database
 
-A default PostgresSQL installation always includes the `postgres` superuser. Initially, you must connect to PostgreSQL as the postgres user until you create other users (which are also referred to as roles).
+If everything went well, then Postgres should be running and you should have a few commands at your disposal (namely, `psql`, `createdb`, and `dropdb`). 
 
-To create new roles, follow [this](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04#step-3-%E2%80%94-creating-a-new-role).
+Check that Postgres is running with `brew services` (the `$(whoami)` bit in the code block below is just where your username should appear):
+
+```bash
+$ brew services
+Name       Status  User         Plist
+postgresql started $(whoami)    /Users/$(whoami)/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+```
+
+If it's not started, start it with:
+
+```bash
+brew services start postgresql
+```
+
+Great. Now let's try running the PostgresQL interactive terminal, `psql`:
+
+```bash
+$ psql
+```
+
+You'll probably get an error like:
+
+```bash
+psql: error: FATAL:  database $(whoami) does not exist
+```
+
+This is because `psql` tries to log you into a database of the same name as your user. But if you just installed Postgres, odds are that database doesn't exist. 
+
+Luckily it's super easy to create one using another of the commands you got, `createdb`:
+
+```bash
+$ createdb $(whoami)
+```
+
+Now try:
+
+```
+$ psql
+psql (13.1)
+Type "help" for help.
+
+$(whoami)=#
+```
+
+If it worked, you should see a prompt like the one above&mdash;your username followed by `=#`. You're in the PostgreSQL interactive terminal! While we won't get into `psql`, here's a few the commands you should know: 
+
+- `\q` &mdash; quit (super important!)
+- `\l` &mdash; list databases
+- `\?` &mdash; get a list of commands
+
+If you'd rather not follow any of the advice here and creat another Postgres user instead of a Postgres database, follow [this](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04#step-3-%E2%80%94-creating-a-new-role).
 
 ## Update the Prisma Schema
 
