@@ -1400,8 +1400,8 @@ Creates provider-specific code and configuration for deployment
 
 | Arguments & Options | Description                                                                        |
 | :------------------ | :--------------------------------------------------------------------------------- |
-| `provider`          | Deploy provider to configure. Choices are `netlify`, `vercel`, or `aws_serverless` |
-| `--force, -f`       | Overwrite existing configuration                                                   |
+| `provider`          | Deploy provider to configure. Choices are `netlify`, `vercel`, or `aws-serverless` |
+| `--force, -f`       | Overwrite existing configuration [default: false]         |
 
 ### setup auth
 
