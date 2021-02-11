@@ -49,8 +49,8 @@ yarn rw deploy vercel
 
 
 ```shell
-# Build command for Serverless deploy target
-yarn rw prisma deploy serverless
+# Build command for AWS Lambdas using the https://serverless.com framework
+rw deploy aws serverless --side api
 ```
 
 ### 3. Prisma and Database
