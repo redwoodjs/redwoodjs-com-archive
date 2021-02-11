@@ -39,18 +39,18 @@ For example:
 
 ```shell
 # Build command for Netlify deploy target
-yarn rw prisma deploy netlify
+yarn rw deploy netlify
 ```
 
 ```shell
 # Build command for Vercel deploy target
-yarn rw prisma deploy vercel
+yarn rw deploy vercel
 ```
 
 
 ```shell
-# Build command for Serverless deploy target
-yarn rw prisma deploy serverless
+# Build command for AWS Lambdas using the https://serverless.com framework
+rw deploy aws serverless --side api
 ```
 
 ### 3. Prisma and Database
@@ -67,6 +67,9 @@ datasource DS {
 
 The `url` setting above accesses the database connection string via an environment variable, `DATABASE_URL`. Using env vars is the recommended method for both ease of development process as well as security best practices.
 
+Whenever you make changes to your `schema.prisma`, you must run the following command:
+```shell	
+$ yarn rw prisma migrate dev # creates and applies a new Prisma DB migration	
 ### 4. Environment Variables
 Any environment variables used locally, e.g. in your `env.defaults` or `.env`, must also be added to your hosting provider settings. (See documentation specific to your provider.)
 
