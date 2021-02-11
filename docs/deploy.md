@@ -39,7 +39,7 @@ For example:
 
 ```shell
 # Build command for Netlify deploy target
-yarn rw prisma deploy netlify
+yarn rw deploy netlify
 ```
 
 ```shell
