@@ -60,8 +60,7 @@ model Image {
 Create a migration and update the database:
 
 ```terminal
-yarn rw db save
-yarn rw db up
+yarn rw prisma migrate dev
 ```
 
 To make our lives easier let's scaffold the screens necessary to create/edit/delete an image and we'll modify those to add the uploader:

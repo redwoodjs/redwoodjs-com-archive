@@ -2,9 +2,13 @@
 
 Welcome to Redwood! If you haven't yet, check out the [Redwood README](https://github.com/redwoodjs/redwood/blob/main/README.md) to get a little background on why we created Redwood and the problems it's meant to solve. Redwood brings several existing technologies together for the first time into what we think is the future of database-backed single page applications.
 
-In this tutorial we're going to build a blog engine. In reality a blog is probably not the ideal candidate for a Redwood app: blog articles can be stored in a CMS and statically generated to HTML files and served as flat files from a CDN. But as most developers are familiar with a blog and it uses all of the features we want to demonstrate, we decided to build one anyway.
+In this tutorial we're going to build a blog engine. In reality a blog is probably not the ideal candidate for a Redwood app: blog articles can be stored in a CMS and statically generated to HTML files and served as flat files from a CDN (the classic Jamstack usecase). But as most developers are familiar with a blog and it uses all of the features we want to demonstrate, we decided to build one anyway.
 
 Want to watch this tutorial instead? Start here:
+
+> **Ancient Content Notice**
+>
+> These videos were recorded with an earlier version of Redwood and many commands are now out-of-date. If you really want to build the blog app you'll need to follow along with the text which we keep up-to-date with the latest releases.
 
 <div class="relative pb-9/16">
   <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/tiF9SdM1i7M?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
@@ -32,6 +36,14 @@ This tutorial assumes you are already familiar with a few core concepts:
 
 You could work through this tutorial without knowing anything about these technologies but you may find yourself getting lost in terminology that we don't stop and take the time to explain. It also helps knowing where the line is between what is built into React and what additional features Redwood brings to the table.
 
+### Redwood Versions
+
+You will need to be on v0.25 or greater of Redwood to complete the tutorial. If this is your first time using Redwood then no worries: the latest version will be installed automatically when you create your app skeleton! If you have an existing site created with a version prior to 0.25 you'll need to upgrade. Run this command in the root of your app and follow the prompts:
+
+```bash
+yarn redwood upgrade
+```
+
 ### Node.js and Yarn Versions
 
 During installation, RedwoodJS checks if your system meets version requirements for Node and Yarn:
@@ -39,14 +51,14 @@ During installation, RedwoodJS checks if your system meets version requirements 
 - node: ">=12"
 - yarn: ">=1.15"
 
-👉 **Heads Up:** If your system versions do not meet both requirements, _the installation bootstrap will result in an ERROR._ To check, please run the following from your terminal command line:
+If your system versions do not meet both requirements, _the installation bootstrap will result in an ERROR._ To check, please run the following from your terminal command line:
 
 ```
 node --version
 yarn --version
 ```
 
-Please do upgrade accordingly. Then proceed to the RedwoodJS installation when you're ready!
+Please do upgrade accordingly. Then proceed to the Redwood installation when you're ready!
 
 > **Installing Node and Yarn**
 >
@@ -98,7 +110,7 @@ Let's take a look at the files and directories that were created for us (config 
 ├── api
 │   ├── db
 │   │   ├── schema.prisma
-│   │   └── seeds.js
+│   │   └── seed.js
 │   └── src
 │       ├── functions
 │       │   └── graphql.js
@@ -137,7 +149,7 @@ Within `api` there are two directories:
 - `db` contains the plumbing for the database:
 
   - `schema.prisma` contains the database schema (tables and columns)
-  - `seeds.js` is used to populate your database with any data that needs to exist for your app to run at all (maybe an admin user or site configuration).
+  - `seed.js` is used to populate your database with any data that needs to exist for your app to run at all (maybe an admin user or site configuration).
 
   After we add our first database table there will also be a SQLite database file named `dev.db` and a directory called `migrations` created for us. `migrations` contains the files that act as snapshots of the database schema changing over time.
 
@@ -300,7 +312,7 @@ As a world-class developer you probably saw that copy-and-pasted `<header>` and 
 
 One way to solve the `<header>` dilemma would be to create a `<Header>` component and include it in both `HomePage` and `AboutPage`. That works, but is there a better solution? Ideally there should only be one reference to the `<header>` anywhere in our code.
 
-When you look at these two pages what do they really care about? They have some content they want to display. They really shouldn't have to care what comes before (like a `<header>`) or after (like a `<footer>`). That's exactly what layouts do: they wrap your pages in a component that then renders the page as its child:
+When you look at these two pages what do they really care about? They have some content they want to display. They really shouldn't have to care what comes before (like a `<header>`) or after (like a `<footer>`). That's where layouts come in: they wrap a page in a component that then renders the page as its child. The layout can contain any content that's outside of the page itself. Conceptually, the final rendered document will be structured something like:
 
 <img src="https://user-images.githubusercontent.com/300/70486228-dc874500-1aa5-11ea-81d2-eab69eb96ec0.png" alt="Layouts structure diagram" width="300">
 
@@ -387,7 +399,7 @@ Back to the browser and you should see...nothing different. But that's good, it 
 >
 > You may have noticed some duplication in Redwood's file names. Pages live in a directory called `/pages` and also contain `Page` in their name. Same with Layouts. What's the deal?
 >
-> When you have dozens of files open in your editor it's easy to get lost, especially when you have several files with names that are similar or even the same (they happen to be in different directories). We've found that the extra duplication in the names of files is worth the productivity benefit when scanning through your open tabs.
+> When you have dozens of files open in your editor it's easy to get lost, especially when you have several files with names that are similar or even the same (they happen to be in different directories). Imagine a dozen files named `index.js` and then trying to find the one you're looking for in your open tabs! We've found that the extra duplication in the names of files is worth the productivity benefit when scanning for a specific open file.
 >
 > If you're using the [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) plugin this also helps disambiguate when browsing through your component stack:
 >
@@ -450,6 +462,10 @@ export default AboutPage
 
 Part 2 of the video tutorial picks up here:
 
+> **Ancient Content Notice**
+>
+> These videos were recorded with an earlier version of Redwood and many commands are now out-of-date. If you really want to build the blog app you'll need to follow along with the text which we keep up-to-date with the latest releases.
+
 <div class="relative pb-9/16">
   <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/SP5vbsWf5Yg?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
 </div>
@@ -467,9 +483,9 @@ We need to decide what data we'll need for a blog post. We'll expand on this at 
 - `body` the actual content of the blog post
 - `createdAt` a timestamp of when this record was created
 
-We use [Prisma Client JS](https://github.com/prisma/prisma-client-js) to talk to the database. Prisma has another library called [Migrate](https://github.com/prisma/migrate) that lets us update the database's schema in a predictable way and snapshot each of those changes. Each change is called a _migration_ and Migrate will create one when we make changes to our schema.
+We use [Prisma](https://www.prisma.io/) to talk to the database. Prisma has another library called [Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate) that lets us update the database's schema in a predictable way and snapshot each of those changes. Each change is called a _migration_ and Migrate will create one when we make changes to our schema.
 
-First let's define the data structure for a post in the database. Open up `api/db/schema.prisma` and add the definition of our Post table (remove any "sample" models that are present in the file). Once you're done the entire schema file should look like:
+First let's define the data structure for a post in the database. Open up `api/db/schema.prisma` and add the definition of our Post table (remove any "sample" models that are present in the file, like the `UserExample` model). Once you're done the entire schema file should look like:
 
 ```plaintext{13-18}
 // api/db/schema.prisma
@@ -513,21 +529,17 @@ This says that we want a table called `Post` and it should have:
 
 That was simple. Now we'll want to snapshot this as a migration:
 
-    yarn redwood db save "create posts"
-
-You've named the migration "create posts", and this is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference for future developers.
-
-After the command completes you'll see a new subdirectory created under `api/db/migrations` that has a timestamp and the name you gave the migration. It will contain a couple files inside (a snapshot of what the schema looked like at that point in time in `schema.prisma` and the directives that Prisma Migrate will use to make the change to the database in `steps.json`).
-
-We apply the migration with another command:
-
-    yarn rw db up
+    yarn rw prisma migrate dev
 
 > **`redwood` Shorthand**
 >
-> From now on we'll use the shorter `rw` alias instead of the full `redwood` name.
+> From now on we'll use the shorter `rw` alias instead of the full `redwood` argument.
 
-This will apply the migration (which runs the commands against the database to create the changes we need) which results in creating a new table called `Post` with the fields we defined above.
+You'll be prompted to give this migration a name. Something that describes what it does is ideal, so how about "create posts" (without the quotes, of course). This is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference when looking through old migrations and trying to find when you created or modified something specific.
+
+After the command completes you'll see a new subdirectory created under `api/db/migrations` that has a timestamp and the name you gave the migration. It will contain a single file named `migration.sql` that contains the SQL necessary to bring the database structure up-to-date with whatever `schema.prisma` looked like at the time the migration was created. So you have a single `schema.prisma` file that describes what the database structure should look like right *now* and the migrations trace the history of the changes that took place to get to the current state. It's kind of like version control for your database structure, which can be pretty handy.
+
+In addition to creating the migration file, the above command will also execute the SQL against the database, which "applies" the migration. The final result is a new database table called `Post` with the fields we defined above.
 
 ### Creating a Post Editor
 
@@ -561,12 +573,12 @@ Okay but what if we click "Delete"?
 
 <img src="https://user-images.githubusercontent.com/300/73031339-aea95600-3df0-11ea-9d58-475d9ef43988.png" />
 
-So, Redwood just created all the pages, components and services necessary to perform all CRUD actions on our posts table. No need to open a database GUI or login through a terminal window and write SQL from scratch. Redwood calls these _scaffolds_. Pretty neat, right?
+So, Redwood just created all the pages, components and services necessary to perform all CRUD actions on our posts table. No need to open a database GUI or login through a terminal window and write SQL from scratch. Redwood calls these _scaffolds_.
 
 Here's what happened when we ran that `yarn rw g scaffold post` command:
 
 - Added an _SDL_ file to define several GraphQL queries and mutations in `api/src/graphql/posts.sdl.js`
-- Added a _services_ file in `api/src/services/posts/posts.js` that makes the Prisma Client JS calls to get data in and out of the database
+- Added a _services_ file in `api/src/services/posts/posts.js` that makes the Prisma client calls to get data in and out of the database
 - Created several _pages_ in `web/src/pages`:
   - `EditPostPage` for editing a post
   - `NewPostPage` for creating a new post
@@ -585,7 +597,7 @@ Here's what happened when we ran that `yarn rw g scaffold post` command:
 
 > **Generator Naming Conventions**
 >
-> You'll notice that some of the generated parts have plural names and some have singular. This convention is borrowed from Ruby on Rails which uses a more "human" naming convention: if you're dealing with multiple of something (like the list of all posts) it will be plural. If you're only dealing with a single something (like creating a new post) it will be singular. It sounds natural when speaking, too: "show me a list of all the posts" versus "I'm going to create a new post."
+> You'll notice that some of the generated parts have plural names and some have singular. This convention is borrowed from Ruby on Rails which uses a more "human" naming convention: if you're dealing with multiple of something (like the list of all posts) it will be plural. If you're only dealing with a single something (like creating a new post) it will be singular. It sounds natural when speaking, too: "show me a list of all the posts" and "I'm going to create a new post."
 >
 > As far as the generators are concerned:
 >
@@ -906,10 +918,10 @@ export const schema = gql`
 In this example, Redwood will look in `api/src/services/posts/posts.js` for the following five resolvers:
 
 - `posts()`
-- `post({id})`
-- `createPost({input})`
-- `updatePost({id, input})`
-- `deletePost({id})`
+- `post({ id })`
+- `createPost({ input })`
+- `updatePost({ id, input })`
+- `deletePost({ id })`
 
 To implement these, simply export them from the services file. They will usually get your data from a database, but they can do anything you want, as long as they return the proper types that Apollo expects based on what you defined in `posts.sdl.js`.
 
@@ -1217,9 +1229,13 @@ Let's summarize:
 
 ## Everyone's Favorite Thing to Build: Forms
 
-Wait, don't close your browser! You had to know this was coming eventually, didn't you? And you've probably realized by now we wouldn't even have this section in the tutorial unless Redwood had figured out a way to make forms less soul-sucking than usual. In fact Redwood might even make you _love_ building forms. Well, love is a strong word. _Like_ building forms. _Tolerate_ building them?
+Wait, don't close your browser! You had to know this was coming eventually, didn't you? And you've probably realized by now we wouldn't even have this section in the tutorial unless Redwood had figured out a way to make forms less soul-sucking than usual. In fact Redwood might even make you _love_ building forms. Well, love is a strong word. _Like_ building forms? _Tolerate_ building them?
 
 Part 3 of the video tutorial picks up here:
+
+> **Ancient Content Notice**
+>
+> These videos were recorded with an earlier version of Redwood and many commands are now out-of-date. If you really want to build the blog app you'll need to follow along with the text which we keep up-to-date with the latest releases.
 
 <div class="relative pb-9/16">
   <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/eT7iIy0F8Tk?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
@@ -1787,15 +1803,13 @@ model Contact {
 
 > **Prisma syntax for optional fields**
 >
-> To mark a field as optional (that is, allowing `NULL` as a value) you can suffix the datatype with a question mark, e.g. `name String?`. This will allow `name`'s value to be both `String` or `NULL`.
+> To mark a field as optional (that is, allowing `NULL` as a value) you can suffix the datatype with a question mark, e.g. `name String?`. This will allow `name`'s value to either a `String` or `NULL`.
 
-Next we create a migration file:
+Next we create and apply a migration:
 
-    yarn rw db save create contact
+    yarn rw prisma migrate dev
 
-Finally we execute the migration to run the [DDL](https://en.wikipedia.org/wiki/Data_definition_language) commands to upgrade the database:
-
-    yarn rw db up
+We can name this one something like "create contacts".
 
 Now we'll create the GraphQL interface to access this table. We haven't used this `generate` command yet (although the `scaffold` command did use it behind the scenes):
 
@@ -1905,7 +1919,7 @@ export const createContact = ({ input }) => {
 }
 ```
 
-Thanks to Prisma Client JS it takes very little code to actually save something to the database! This is an asynchronous call but we didn't have to worry about resolving Promises or dealing with `async/await`. Apollo will do that for us!
+Thanks to Prisma it takes very little code to actually save something to the database! This is an asynchronous call but we didn't have to worry about resolving Promises or dealing with `async/await`. Apollo will do that for us!
 
 Before we plug this into the UI, let's take a look at a nifty GUI you get just by running `yarn redwood dev`.
 
@@ -1913,7 +1927,7 @@ Before we plug this into the UI, let's take a look at a nifty GUI you get just b
 
 Often it's nice to experiment and call your API in a more "raw" form before you get too far down the path of implementation only to find out something is missing. Is there a typo in the API layer or the web layer? Let's find out by accessing just the API layer.
 
-When you started development with `yarn redwood dev` you actually started a second process running at the same time. Open a new browser tab and head to http://localhost:8911/graphql This is Prisma's [GraphQL Playground](https://github.com/prisma-labs/graphql-playground), a web-based GUI for GraphQL APIs:
+When you started development with `yarn redwood dev` you actually started a second process running at the same time. Open a new browser tab and head to http://localhost:8911/graphql This is Apollo Server's [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/testing/graphql-playground/), a web-based GUI for GraphQL APIs:
 
 <img src="https://user-images.githubusercontent.com/300/70950852-9b97af00-2016-11ea-9550-b6983ce664e2.png" />
 
@@ -2402,153 +2416,7 @@ Having the admin screens at `/admin` is a reasonable thing to do. Let's update t
 
 Head to http://localhost:8910/admin/posts and our generated scaffold page should come up. Thanks to named routes we don't have to update any of the `<Link>`s that were generated by the scaffolds since the `name`s of the pages didn't change!
 
-> **What about authentication?**
->
-> On the last page we said we were going to set up an admin section **and** put it
-> behind a login. So far, all we've done is updated the routes. Don't worry, we
-> haven't forgotten! We will be setting up authentication in a [future step](/tutorial/authentication).
-
-How about getting this thing out into the real world?
-
-## Deployment
-
-Part 4 of the video tutorial picks up here:
-
-<div class="relative pb-9/16">
-  <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/UpD3HyuZkvY?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
-</div>
-
-The whole reason we started building Redwood was to make full-stack web apps easier to build and deploy on the Jamstack. You've seen what building a Redwood app is like, how about we try deploying one?
-
-We've only got one change to make to the codebase to get it ready for deployment and we've got a setup command to do it for us:
-
-```terminal
-yarn rw setup deploy netlify
-```
-
-This creates a file at `/netlify.toml` which contains the commands and file paths that Netlify needs to know about to build a Redwood app.
-
-Before we continue, make sure your app is fully committed and pushed to GitHub, GitLab, or Bitbucket. We're going to link Netlify directly to our git repo so that a simple push to `main` will re-deploy our site. If you haven't worked on the Jamstack yet you're in for a pleasant surprise!
-
-> **NOTE:** Git initializes with `master`. Don't know how to rename `master` to `main`? If you're pushing to GitHub, you can follow these steps:
->
-> ```plaintext{4,6}
-> git init
-> git add .
-> git commit -m 'First commit'
-> git branch -m main
-> git remote add origin ...
-> git push -u origin main
-> ```
-
-### Vercel (alternative deploy target)
-
-Redwood officially supports multiple hosting providers (with even more on the way). Although this Tutorial continues with a focus on Netlify deployment and authentication with Netlify Identity, you can deploy to [Vercel](https://vercel.com/redwoodjs-core) instead. To do this, first complete the "The Database" section below, but then use this [Vercel deploy walkthrough](https://redwoodjs.com/docs/deploy#redwood-deploy-configuration) in place of the following "Netlify" instructions. **Note**: Netlify Identity, used in upcoming "Authentication" section, won’t work on the Vercel platform.
-
-### The Database
-
-We'll need a database somewhere on the internet to store our data. We've been using SQLite locally, but that's a file-based store meant for single-user. SQLite isn't really suited for the kind of connection and concurrency requirements a production website will require. For this part of this tutorial, we will use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting. We just need to get a database available to the outside world so it can be accessed by our app.
-
-First we'll let Prisma know that we intend to use Postgres in addition to SQLite so it will build client libraries for both. Update the `provider` entry in `schema.prisma`:
-
-```javascript
-provider = ["sqlite", "postgresql"]
-```
-
-> If you are deploying to Netlify and using Prisma version `< 2.11.0`, you will need to add `rhel-openssl-1.0.x` to your `binaryTargets`:
-> ```javascript
-> // api/db/schema.prisma
->
-> generator client {
->   provider      = "prisma-client-js"
->   binaryTargets = ["native", "rhel-openssl-1.0.x"]
-> }
-> ```
-
-If you'd like to develop locally with Postgres, see the
-[Local Postgres Setup](/docs/local-postgres-setup) guide.
-
-> For now, you need to set up your own database, but we are working with various infrastructure providers to make this process simpler and more Jamstacky. Stay tuned for improvements in that regard!
-
-There are several hosting providers where you can quickly start up a Postgres instance:
-
-- [Heroku](https://www.heroku.com/postgres)
-- [Digital Ocean](https://www.digitalocean.com/products/managed-databases)
-- [AWS](https://aws.amazon.com/rds/postgresql/)
-
-We're going to go with Heroku for now because it's a) free and b) easier to get started from scratch than AWS.
-
-Head over to [Heroku](https://signup.heroku.com/) and create an account or log in. Then click that **Create a new app** button:
-
-<img alt="Screen Shot 2020-02-03 at 3 22 36 PM" src="https://user-images.githubusercontent.com/300/73703866-438c3900-46a6-11ea-9a90-bdab2fed8bff.png">
-
-Give it a name like "redwoodblog" if it's available. Go to the **Resources** tab and then click **Find more add-ons** in the **Add-ons** section:
-
-<img alt="Screen Shot 2020-02-03 at 3 23 25 PM" src="https://user-images.githubusercontent.com/300/73703877-4e46ce00-46a6-11ea-87c0-079346f4d9b3.png">
-
-And scroll down to **Heroku Postgres**:
-
-<img alt="Screen Shot 2020-02-03 at 3 23 48 PM" src="https://user-images.githubusercontent.com/300/73703883-556ddc00-46a6-11ea-8777-ee27d2202e0e.png">
-
-Click that and then on the detail page that comes up, click the **Install Heroku Postgres** button that's at the top right. On the next screen tell it you want to connect it to the app you just created, then click **Submit Order Form**:
-
-<img alt="Screen Shot 2020-02-03 at 3 24 15 PM" src="https://user-images.githubusercontent.com/16427929/98684805-e759f200-2366-11eb-8dd5-6f283898ed6f.PNG">
-
-You'll be returned to your app's detail page. You should be on the **Resources** tab and see the Heroku Postgres add-on ready to go:
-
-<img alt="Screen Shot 2020-02-03 at 3 24 43 PM" src="https://user-images.githubusercontent.com/300/73703951-6ae30600-46a6-11ea-8d9b-a900b7af2ac5.png">
-
-Click the **Heroku Postgres** link to get to the detail page, then the **Settings** tab and finally the **View Credentials...** button. We did all the steps above so that we could copy the URI listed at the bottom:
-
-<img alt="Screen Shot 2020-02-03 at 3 25 31 PM" src="https://user-images.githubusercontent.com/300/73703956-70405080-46a6-11ea-81f2-bed99ca4c4cc.png">
-
-It will be really long and scroll off the right side of the page so make sure you copy the whole thing!
-
-### Netlify
-
-Now we're going to [create a Netlify account](https://app.netlify.com/signup) if you don't have one already. Once you've signed up and verified your email done just click the **New site from Git** button at the upper right:
-
-<img src="https://user-images.githubusercontent.com/300/73697486-85f84a80-4693-11ea-922f-0f134a3e9031.png" />
-
-Now just authorize Netlify to connect to your git hosting provider and find your repo. When the deploy settings come up you can leave everything as the defaults and click **Deploy site**.
-
-Netlify will start building your app (click the **Deploying your site** link to watch the logs) and it will say "Site is live", but nothing will work. Why? We haven't told it where to find our database yet.
-
-Go back to the main site page and then to **Site settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Heroku (note the **Key** is "DATABASE_URL"). After pasting the value, append `?connection_limit=1` to the end. The URI will have the following format: `postgres://<user>:<pass>@<url>/<db>?connection_limit=1`.
-
-![Adding ENV var](https://user-images.githubusercontent.com/300/83188236-3e834780-a0e4-11ea-8cfa-790c2e335a92.png)
-
-> **Connection limit**
->
-> When configuring a database, you'll want to append `?connection_limit=1` to the URI. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context.
-
-Make sure to click the **Save** button. Now go over to the **Deploys** tab in the top nav and open the **Trigger deploy** dropdown on the right, then finally choose **Deploy site**:
-
-![Trigger deploy](https://user-images.githubusercontent.com/300/83187760-835aae80-a0e3-11ea-9733-ff54969bba1f.png)
-
-With a little luck (and SCIENCE) it will complete successfully! You can click the **Preview** button at the top of the deploy log page, or go back and click the URL of your Netlify site towards the top:
-
-![Netlify URL](https://user-images.githubusercontent.com/300/83187909-bef57880-a0e3-11ea-97dc-e557248acd3a.png)
-
-Did it work? If you see "Empty" under the About and Contact links then it did! Yay! You're seeing "Empty" because you don't have any posts in your brand new production database so head to `/admin/posts` and create a couple, then go back to the homepage to see them.
-
-> If you view a deploy via the **Preview** button notice that the URL contains a hash of the latest commit. Netlify will create one of these for every push to `main` but will only ever show this exact commit, so if you deploy again and refresh you won't see any changes. The real URL for your site (the one you get from your site's homepage in Netlify) will show the latest deploy. See [branch deploys](#branch-deploys) below for more info.
-
-If the deploy failed, check the log output in Netlify and see if you can make sense of the error. If the deploy was successful but the site doesn't come up, try opening the web inspector and look for errors. Are you sure you pasted the entire Postgres connection string correctly? If you're really, really stuck head over to the [Redwood Community](https://community.redwoodjs.com) and ask for help.
-
-### Branch Deploys
-
-Another neat feature of Netlify is _Branch Deploys_. When you create a branch and push it up to your repo, Netlify will build that branch at a unique URL so that you can test your changes, leaving the main site alone. Once your branch is merged to `main` then a deploy at your main site will run and your changes will show to the world. To enable Branch Deploys go to **Site settings** > **Build & deploy** > **Continuous Deployment** and under the **Deploy contexts** section click **Edit settings** and change **Branch deploys** to "All". You can also enable _Deploy previews_ which will create them for any pull requests against your repo.
-
-![Netlify settings screenshot](https://user-images.githubusercontent.com/30793/90886476-c1016780-e3b2-11ea-851a-3014257484fd.png)
-
-> You also have the ability to "lock" the `main` branch so that deploys do not automatically occur on every push—you need to manually tell Netlify to deploy the latest, either by going to the site or using the [Netlify CLI](https://cli.netlify.com/).
-
-### A Note About DB Connections
-
-In this tutorial, your lambda functions will be connecting directly to the Postgres database. Because Postgres has a limited number of concurrent connections it will accept, this does not scale very well. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. To learn how to do that, see the [Connection Pooling](/docs/connection-pooling) guide.
-
-We are working on making this process much easier, but keep it in mind before you deploy a Redwood app to production and announce it to the world.
+Having the admin at a different path is great, but nothing is stopping someone from just browsing to that new path and messing with our blog posts. How do we keep prying eyes/fingers away?
 
 ## Authentication
 
@@ -2556,15 +2424,15 @@ We are working on making this process much easier, but keep it in mind before yo
 
 But you know Redwood has your back! Login isn't something we have to write from scratch—it's a solved problem and is one less thing we should have to worry about. Today Redwood includes integrations to:
 
-- [Auth0](https://auth0.com/)
 - [Netlify Identity](https://docs.netlify.com/visitor-access/identity/)
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
+- [Auth0](https://auth0.com/)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
 - [Supabase](https://supabase.io/docs/guides/auth)
 - [Ethereum](https://github.com/oneclickdapp/ethereum-auth)
 
-We're going to demo a Netlify Identity integration in this tutorial since we're already deployed there and it's very easy to add to a Netlify site.
+We're going to demo a Netlify Identity integration in this tutorial since we're going to end up deploying there as our last exercise.
 
 > **Authentication vs. Authorization**
 >
@@ -2578,11 +2446,31 @@ We're going to demo a Netlify Identity integration in this tutorial since we're 
 > * **Authentication** deals with determining whether someone is who they say they are, generally by "logging in" with an email and password, or a third party OAuth provider like Google.
 > * **Authorization** is whether a user (who has usually already been authenticated) is allowed to do something they want to do. This generally involves some combination of roles and permission checking before allowing access to a URL or feature of your site.
 >
-> This section of the tutorial focuses on **Authentication** only. We're currently working on integrating a simple and flexible role-based authorization system and once we release it we'll update the tutorial to include a walkthrough!
+> This section of the tutorial focuses on **Authentication** only. See [part 2 of the tutorial](/tutorial2) to learn about Authorization in Redwood!
 
-### Netlify Identity Setup
+### Netlify Setup
 
-Assuming you've been following along, you already have a Netlify account and a site set up. If you'd be so kind, head to the **Identity** tab and click the **Enable Identity** button:
+Before we can enable Netlify Identity we need to setup a new Netlify site with our app. [Netlify](https://netlify.com) is a hosting platform that takes your code from a git repo and then builds and deploys the generated files to their CDN, and provides serverless function endpoints that your frontend can access. To say that again without as many fancy words: it turns the web-side into plain HTML, CSS and JS files and turns the api-side into a real API accessible by both the web-side and the internet in general.
+
+The easiest way to setup a site on Netlify is to simply deploy our site. You don't often hear the terms "simply" and "deploy" together in the same sentence (unless that sentence is "one does not simply deploy code to the internet"), but Netlify actually makes it easy! (Note that the deploy won't complete successfully because we don't have a database for our production app to talk to. But we'll fix that later—for now we just need enough configured in Netlify so that we can enable Identity.)
+
+We've only got one change to make to our codebase to get it ready for deployment and Redwood has a setup command to do it for us:
+
+```terminal
+yarn rw setup deploy netlify
+```
+
+This creates a file at `/netlify.toml` which contains the commands and file paths that Netlify needs to know about to build a Redwood app.
+
+Before we continue, make sure your app is fully committed and pushed to GitHub, GitLab, or Bitbucket. We're going to link Netlify directly to our git repo so that a simple push to `main` will re-deploy our site. If you haven't worked on the Jamstack yet you're in for a pleasant surprise!
+
+You'll need to [create a Netlify account](https://app.netlify.com/signup) if you don't have one already. Once you've signed up and verified your email done just click the **New site from Git** button at the upper right:
+
+<img src="https://user-images.githubusercontent.com/300/73697486-85f84a80-4693-11ea-922f-0f134a3e9031.png" />
+
+Now just authorize Netlify to connect to your git hosting provider and find your repo. When the deploy settings come up you can leave everything as the defaults and click **Deploy site**.
+
+Netlify will start building your app (click the **Deploying your site** link to watch the logs) and it will say "Site is live", but nothing will work. That's okay! Head to the **Identity** tab in Netlify and click the **Enable Identity** button:
 
 ![Netlify Identity screenshot](https://user-images.githubusercontent.com/300/82271191-f5850380-992b-11ea-8061-cb5f601fa50f.png)
 
@@ -2590,24 +2478,15 @@ When the screen refreshes click the **Invite users** button and enter a real ema
 
 ![Netlify invite user screenshot](https://user-images.githubusercontent.com/300/82271302-439a0700-992c-11ea-9d6d-004adef3a385.png)
 
-We'll need to get that email confirmation link soon, but for now let's set up our app for authentication.
+We'll need to get that email confirmation link soon, but in the meantime let's set up our app for authentication.
 
 ### Authentication Setup
 
-There are a couple of places we need to add some code for authentication and lucky for us Redwood can do it automatically with a setup command:
+There are a couple of places we need to add some code for authentication and once again Redwood can do it automatically with a setup command:
 
 ```terminal
 yarn rw setup auth netlify
 ```
-
-The command adds one file and modifies a couple others.
-
-> **Are you on the latest Redwood?**
->
-> For this to work you must be on version `0.7.0` or greater of Redwood. If you
-> don't see any file changes, try
-> [upgrading](/reference/command-line-interface#upgrade) your Redwood packages
-> with `yarn rw upgrade`.
 
 Take a look at the newly created `api/src/lib/auth.js` (usage comments omitted):
 
@@ -2625,7 +2504,6 @@ export const requireAuth = () => {
     throw new AuthenticationError("You don't have permission to do that.")
   }
 }
-
 ```
 
 By default the authentication system will return only the data that the third-party auth handler knows about (that's what's inside the `jwt` object above). For Netlify Identity that's an email address, an optional name and optional array of roles. Usually you'll have your own concept of a user in your local database. You can modify `getCurrentUser` to return that user, rather than the details that the auth system stores. The comments at the top of the file give one example of how you could look up a user based on their email address. We also provide a simple implementation for requiring that a user be authenticated when trying to access a service: `requireAuth()`. It will throw an error that GraphQL knows what to do with if a non-authenticated person tries to get to something they shouldn't.
@@ -2783,7 +2661,7 @@ Before we can log in, remember that confirmation email from Netlify? Go find tha
 
 ![Netlify identity set password](https://user-images.githubusercontent.com/300/82388369-54ab4c80-99ee-11ea-920e-9df10ee0cac2.png)
 
-Once you do that the modal should update and say that you're logged in! It worked! Click the X in the upper right to close the modal.
+Once you do that the modal should update and say that you're logged in! It worked! Click the &times; in the upper right to close the modal.
 
 > We know that invite acceptance flow is less than ideal. The good news is that once you deploy your site again with authentication, future invites will work automatically—the link will go to production which will now have the code needed to launch the modal and let you accept the invite.
 
@@ -2832,7 +2710,7 @@ When you *are* logged in, you should be able to access the admin pages again: ht
 
 > If you start working on another Redwood app that uses Netlify Identity you'll need to manually clear out your Local Storage which is where the site URL is stored that you entered the first time you saw the modal. Local Storage is tied to your domain and port, which by default will be the same for any Redwood app when developing locally. You can clear your Local Storage in Chrome by going to the Web Inspector, the **Application** tab, and then on the left open up **Local Storage** and click on http://localhost:8910. You'll see the keys stored on the right and can delete them all.
 
-One more touch: let's show the email address of the user that's logged in. We can get the `currentUser` from `useAuth()` and it will contain the data that our third party authentication library is storing about the currently logged in user:
+One more finishing touch: let's show the email address of the user that's logged in. We can get the `currentUser` from `useAuth()` and it will contain the data that our third party authentication library is storing about the currently logged in user:
 
 ```javascript{7,27}
 // web/src/layouts/BlogLayout/BlogLayout.js
@@ -2878,9 +2756,106 @@ export default BlogLayout
 >
 > Check out the settings (or [docs](https://docs.netlify.com/visitor-access/identity/)) for Identity over at Netlify for more options, including allowing users to create accounts rather than having to be invited, add third party login buttons for Bitbucket, GitHub, GitLab and Google, receive webhooks when someone logs in, and more!
 
-Believe it or not, that's it! Authentication with Redwood is a breeze and we're just getting started. Expect more magic soon!
+Believe it or not, that's it! Authentication with Redwood is a breeze and we're just getting started. Now let's get this site working in production.
 
-> If you inspect the contents of `currentUser` you'll see it contains an array called `roles`. On the Netlify Identity dashboard you can give your user a collection of roles, which are just strings like "admin" or "guest". Using this array of roles you *could* create a very rudimentary role-based authentication system. Unless you are in dire need of this simple role checking, we recommend waiting for the Redwood solution, coming soon!
+## Deployment
+
+Part 4 of the video tutorial picks up here:
+
+> **Ancient Content Notice**
+>
+> These videos were recorded with an earlier version of Redwood and many commands are now out-of-date. If you really want to build the blog app you'll need to follow along with the text which we keep up-to-date with the latest releases.
+
+<div class="relative pb-9/16">
+  <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/UpD3HyuZkvY?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
+</div>
+
+The whole reason we started building Redwood was to make full-stack web apps easier to build and deploy on the Jamstack. While technically we already deployed in the previous section, it doesn't actually work yet. Let's fix that.
+
+### The Database
+
+We'll need a database somewhere on the internet to store our data. We've been using SQLite locally, but that's a file-based store meant for single-user. SQLite isn't really suited for the kind of connection and concurrency requirements a production website will require. For this part of this tutorial, we will use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting. We just need to get a database available to the outside world so it can be accessed by our app.
+
+First we'll let Prisma know that we intend to use Postgres instead of SQLite. Update the `provider` entry in `schema.prisma`:
+
+```javascript
+provider = "postgresql"
+```
+
+> **!!! Extremely Important Notice You Should Read !!!**
+>
+> Prisma only supports one database provider at a time, and since we can't use SQLite in production and *must* switch the Postgres or MySQL, that means we need to use the same database on our local development system after making this change. See our [Local Postgres Setup](/docs/local-postgres-setup) guide to get you started.
+
+There are several hosting providers where you can quickly start up a Postgres instance:
+
+- [Railway](https://railway.app/)
+- [Heroku](https://www.heroku.com/postgres)
+- [Digital Ocean](https://www.digitalocean.com/products/managed-databases)
+- [AWS](https://aws.amazon.com/rds/postgresql/)
+
+We're going to go with Railway for now because it's a) free and b) ridiculously easy to get started, by far the easiest we've found. You don't even need to create a login! The only limitation is that if you *don't* create an account, your database will be removed after seven days. But unless you *really* procrastinate that should be plenty of time to get through the rest of the tutorial!
+
+Head over to Railway and click **Get Started**:
+
+![image](https://user-images.githubusercontent.com/300/107562787-1fa2e380-6b95-11eb-90ba-02fea7925a05.png)
+
+Now just follow the prompts. First, Cmd+k/Ctrl+k (depending on your OS):
+
+![image](https://user-images.githubusercontent.com/300/107562945-495c0a80-6b95-11eb-9ba8-a294669d6cb4.png)
+
+And now pick **Provision PostgreSQL**:
+
+![image](https://user-images.githubusercontent.com/300/107562989-5c6eda80-6b95-11eb-944e-34b0ad49f4ea.png)
+
+And believe it or not, we're done! Now we just need the connection URL. Click on **PostgreSQL** at the left, and then the **Connect** tab. Copy the Database URL snippet, the one that starts with `postgresql://`:
+
+![image](https://user-images.githubusercontent.com/300/107562577-da7eb180-6b94-11eb-8731-e86a1c7127af.png)
+
+ That's it for the database setup! Now to let Netlify know about it.
+
+### Netlify
+
+Go back to the main site page in Netlify and then to **Site settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Railway (note the **Key** is "DATABASE_URL"). After pasting the value, append `?connection_limit=1` to the end. The URI will have the following format: `postgres://<user>:<pass>@<url>/<db>?connection_limit=1`.
+
+![Adding ENV var](https://user-images.githubusercontent.com/300/83188236-3e834780-a0e4-11ea-8cfa-790c2e335a92.png)
+
+> **Connection limit**
+>
+> When configuring a database, you'll want to append `?connection_limit=1` to the URI. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context.
+
+Make sure to click the **Save** button. Now go over to the **Deploys** tab in the top nav and open the **Trigger deploy** dropdown on the right, then finally choose **Deploy site**:
+
+![Trigger deploy](https://user-images.githubusercontent.com/300/83187760-835aae80-a0e3-11ea-9733-ff54969bba1f.png)
+
+With a little luck (and SCIENCE) it will complete successfully! You can click the **Preview** button at the top of the deploy log page, or go back and click the URL of your Netlify site towards the top:
+
+![Netlify URL](https://user-images.githubusercontent.com/300/83187909-bef57880-a0e3-11ea-97dc-e557248acd3a.png)
+
+Did it work? If you see "Empty" under the About and Contact links then it did! Yay! You're seeing "Empty" because you don't have any posts in your brand new production database so head to `/admin/posts` and create a couple, then go back to the homepage to see them.
+
+> If you view a deploy via the **Preview** button notice that the URL contains a hash of the latest commit. Netlify will create one of these for every push to `main` but will only ever show this exact commit, so if you deploy again and refresh you won't see any changes. The real URL for your site (the one you get from your site's homepage in Netlify) will always show the latest successful deploy. See [Branch Deploys](#branch-deploys) below for more info.
+
+If the deploy failed, check the log output in Netlify and see if you can make sense of the error. If the deploy was successful but the site doesn't come up, try opening the web inspector and look for errors. Are you sure you pasted the entire Postgres connection string correctly? If you're really, really stuck head over to the [Redwood Community](https://community.redwoodjs.com) and ask for help.
+
+### Branch Deploys
+
+Another neat feature of Netlify is _Branch Deploys_. When you create a branch and push it up to your repo, Netlify will build that branch at a unique URL so that you can test your changes, leaving the main site alone. Once your branch is merged to `main` then a deploy at your main site will run and your changes will show to the world. To enable Branch Deploys go to **Site settings** > **Build & deploy** > **Continuous Deployment** and under the **Deploy contexts** section click **Edit settings** and change **Branch deploys** to "All". You can also enable _Deploy previews_ which will create them for any pull requests against your repo.
+
+![Netlify settings screenshot](https://user-images.githubusercontent.com/30793/90886476-c1016780-e3b2-11ea-851a-3014257484fd.png)
+
+> You also have the ability to "lock" the `main` branch so that deploys do not automatically occur on every push—you need to manually tell Netlify to deploy the latest, either by going to the site or using the [Netlify CLI](https://cli.netlify.com/).
+
+### Database Concerns
+
+#### Connections
+
+In this tutorial, your serverless functions will be connecting directly to the Postgres database. Because Postgres has a limited number of concurrent connections it will accept, this does not scale—imagine a flood of traffic to your site which causes a 100x increase in the number of serverless function calls. Netlify (and behind the scenes, AWS) will happily spin up 100+ serverless Lambda instances to handle the traffic. The problem is that each one will open it's own connection to your database, potentially exhausting the number of available connections. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. To learn how to do that, see the [Connection Pooling](/docs/connection-pooling) guide.
+
+#### Security
+
+Your database will need to be open to the world because you never know what IP address a serverless function will have when it runs. You could potentially get the CIDR block for ALL IP addresses that your hosting provider has and only allow connections from that list, but those ranges usually change over time and keeping them in sync is not trivial. As long as you keep your DB username/password secure you should be safe, but we understand this is not the ideal solution.
+
+As this form of full-stack Jamstack gains more prominence we're counting on database providers to provide more robust, secure solutions that address these issues. Our team is working closely with several of them and will hopefully have good news to share in the near future!
 
 ## Wrapping Up
 
@@ -2892,7 +2867,7 @@ As an anonymous Twitter user once mused: "If you enjoy switching between feeling
 
 ### What's Next?
 
-If you're ready for even more Redwood, head to the [Tutorial Part 2](/tutorial2)! We'll look at Storybook and Jest and build a new feature for the blog: comments. Storybook introduces a new way to build components. We'll also add tests and run them with Jest to make sure things keep working as we expect.
+If you're ready for even more Redwood, head to the [Tutorial Part 2](/tutorial2)! We'll look at Storybook and Jest and build a new feature for the blog: comments. Storybook introduces a new way to build components. We'll also add tests and run them with Jest to make sure things keep working as we expect. We cover authorization as well by giving a special role to comment moderators.
 
 Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/docs/local-postgres-setup)? We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
 
