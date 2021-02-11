@@ -44,7 +44,7 @@ yarn rw prisma deploy netlify
 
 ```shell
 # Build command for Vercel deploy target
-yarn rw prisma deploy vercel
+yarn rw deploy vercel
 ```
 
 
