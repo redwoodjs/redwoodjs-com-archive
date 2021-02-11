@@ -4,7 +4,7 @@ RedwoodJS uses a SQLite database by default. While SQLite makes local developmen
 likely going to want to run the same database you use in production locally at some point. And since the odds of that database being Postgres are high, here's how to set up Postgres.
 
 ## Install Postgres
-
+### Mac
 If you're on a Mac, we recommend using Homebrew:
 
 ```bash
@@ -16,6 +16,7 @@ brew install postgres
 > We've been there before. For those of you on a Mac, [this video](https://www.youtube.com/watch?v=1aybOgni7lI) is a great resource on how to wipe the various Postgres installs off your machine so you can get back to a blank slate.
 > Obviously, warning! This resource will teach you how to wipe the various Postgres installs off your machine. Please only do it if you know you can!
 
+### Windows and Other Platforms
 If you're using another platform, see Prisma's [Data Guide](https://www.prisma.io/docs/guides/database-workflows/setting-up-a-database/postgresql) for detailed instructions on how to get up and running. 
 
 ## Creating a database
@@ -138,7 +139,8 @@ yarn rw db save
 
 Both commands will create and migrate the Postgres database you specified in your `.env`.
 
-
+## DB Management Tools
 Here are our recommendations in case you need a tool to manage your databases:
-- [Beekeeper Studio](https://www.beekeeperstudio.io/) (Linux, Mac, Windows - Open Source)
 - [TablePlus](https://tableplus.com/) (Mac, Windows)
+- [Beekeeper Studio](https://www.beekeeperstudio.io/) (Linux, Mac, Windows - Open Source)
+
