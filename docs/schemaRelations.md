@@ -1,149 +1,85 @@
-# Prisma Relations and Redwood's Scaffold Generator
+# Prisma Relations and Redwood's Generators
 
-> When the Scaffold Generator is used on a relational data model, the resulting code will _not_ work without manual modifications. The following explains what is happening and provides a workaround.
+## Many-to-many Relationships
 
-Redwood uses Prisma for handling the database connection, migrations, and queries. You can configure both the database connection and data structure in `api/db/schema.prisma`. (For the full Prisma Schema documentation, [click here](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema).)
+Here are Prisma's docs for creating many-to-many relationships: https://www.prisma.io/docs/concepts/components/prisma-schema/relations#many-to-many-relations A many-to-many relationship is accomplished by creating a "join" or "lookup" table between two other tables. For example, if a **Product** can have many **Tag**s, any given **Tag** can also have many **Product**s that it is attachec to. A database diagram for this relationship could look like:
 
-A typical `schema.prisma` includes many [data models](http://prisma.io/docs/reference/tools-and-interfaces/prisma-schema/models), which map to tables in a relational DB (and will map to collections in MongoDB). To create connections between these models, you'll need to use a powerful Prisma feature called *Relations*. The schema syntax for a Relation is `@relation`.
+```
+┌───────────┐     ┌─────────────────┐      ┌───────────┐
+│  Product  │     │  ProductsOnTag  │      │    Tag    │
+├───────────┤     ├─────────────────┤      ├───────────┤
+│ id        │────<│ productId       │   ┌──│ id        │
+│ title     │     │ tagId           │>──┘  │ name      │
+│ desc      │     └─────────────────┘      └───────────┘
+└───────────┘
+```
 
-Before reading further, you should spend some time looking through the [Prisma Relations documentation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations).
+The `schema.prisma` syntax to create this relationship looks like:
 
-## Support for DB '@relations'
-
-There are two important things to understand about the, ahem, relationship between Prisma Relations and Redwood Scaffold Generators:
-
-1. As long as you're writing your own API Services and GraphQL SDL code, **you can use all Prisma Relations supported features in Redwood**!
-2. Redwood's Scaffold Generator, for example `yarn rw generate scaffold post`, will correctly generate the CRUD files for a data model that includes relations. **However, the generated code for models containing `@relation` will NOT work without manual modifications.**
-
-> Note: the Scaffold generator uses both the SDL and Service generator. And the SDL generator uses the Service generator.
-
-These generators *will* run correctly. However, when you try to use the associated CRUD UI (or your own UI, if applicable), you will encounter errors.
-
-Admittedly, this trips up a lot of people. And we are definitely working on it. But until the generators offer improved support, here's a guide to the manual modifications you'll need to make when using the Scaffold (or SDL or Service) Generator with models containing relations.
-
-## The Problem with Scaffold Code
-
-Redwood supports relationships in SDL files the way you’d expect. For example, you can write queries like this:
-
-```jsx
-posts {
-  id
-  title
-  body
-  user {
-    name
-    email
-  }
+```javascript
+model Product {
+  id       Int    @id @default(autoincrement())
+  title    String
+  desc     String
+  tags     Tag[]
 }
+
+model Tag {
+  id       Int     @id @default(autoincrement())
+  name     String
+  products Product[]
+}
+```
+
+These relationships can be [implict](https://www.prisma.io/docs/concepts/components/prisma-schema/relations#implicit-many-to-many-relations) (as this diagram shows) or [explicit](https://www.prisma.io/docs/concepts/components/prisma-schema/relations#explicit-many-to-many-relations) (explained below). Redwood's SDL generator (which is also used by the scaffold generator) only supports an **explicit** many-to-many relationship when generating with the `--crud` flag. What's up with that?
+
+## CRUD Requires an `@id`
+
+CRUD (Create, Retrieve, Update, Delete) actions in Redwood currently require a single, unique field in order to retrieve, update or delete a record. Generally this is an `id` column. It doesn't have to be named `id`, but needs to be a column denoted with Prisma's `@id` syntax which marks it as a primary key in the database. This field is guaranteed to be unique and so can be used to find one specific record.
+
+Prisma's implicit many-to-many relationship syntax creates a table *without* a column marked as an `@id`. It uses confusingly similar token `@@id` which just creates a unique *index* on the two columns that are foreign keys to the two tables that are being joined. The diagram above shows the result of letting Prisma create an implicit relationship.
+
+Since there's no `id` column here, you can't use the SDL generator with the `--crud` flag. Likewise, you can't use the scaffold generator, which uses the SDL generator (with `--crud`) behind the scenes.
+
+## Supported Table Structure
+
+You can get this working by creating an explicit relationship—defining the table structure yourself:
+
+```javascript
+model Product {
+  id       Int      @id @default(autoincrement())
+  title    String
+  desc     String
+  tags     Tag[]
+}
+
+model Tag {
+  id       Int       @id @default(autoincrement())
+  name     String
+  products Product[]
+}
+
+model ProductsOnTags {
+  id        Int       @id @default(autoincrement())
+  tagId     Int
+  tags      Tag[]     @relation(fields: [tagId], references: [id])
+  productId Int
+  products  Product[] @relation(fields: [productId], references: [id])
+  @@id([tagId, productId])
+}
+```
+
+Which creates a table structure like:
+
+```
+┌───────────┐      ┌──────────────────┐     ┌───────────┐
+│  Product  │      │  ProductsOnTags  │     │    Tag    │
+├───────────┤      ├──────────────────┤     ├───────────┤
+│ id        │──┐   │ id               │  ┌──│ id        │
+│ title     │  └──<│ productId        │  │  │ name      │
+│ desc      │      │ tagId            │>─┘  └───────────┘
+└───────────┘      └──────────────────┘
 
 ```
 
-And the Redwood SDL generator, which calls to the Service generator, will make this work.
-
-But when it comes to relationships between models in `schema.prisma`, **Prisma doesn’t allow you to save the foreign key field on any Scaffolds that you generate**. (There's an [open GitHub Issue](https://github.com/prisma/prisma/issues/2152) about this on the Prisma repo. Maybe give it a nudge with an upvote?)
-
-### Example Schema Using '@relation'
-
-Note the `@relation` on `post.user` below:
-
-```jsx
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
-}
-
-model Post {
-  id     Int     @id @default(autoincrement())
-  title  String  @unique
-  body   String
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int
-}
-
-```
-
-Using Redwood’s generators to build a CRUD scaffold for Post, you can successfully run `yarn rw generate scaffold post`. But when you run `yarn rw dev`, and then try to create a new post and save from the UI, you’ll get an error.
-
-Looking at the Service file the Redwood generator created, `api/src/services/posts/posts.js`, here’s what the mutation looks like to create a new post:
-
-```jsx
-export const createPost = ({ input }) => {
-  return db.post.create({
-    data: input,
-  })
-}
-
-```
-
-And the corresponding `posts.sdl.js`:
-
-```jsx
-  type Post {
-    id: Int!
-    title: String!
-    body: String!
-    user: User!
-    userId: Int!
-  }
-
-```
-
-The issue is with Redwood’s use of `userId`. We are unable to create a new record by using the foreign key of another table. In this case, where `Post` has a `userId` column, we cannot just set the `userId` and save the record.
-
-## Manual Workaround to Scaffold Relational Models
-
-If you would still like to use Redwood’s generators for this type of schema, our very own **[@rob](https://community.redwoodjs.com/u/rob)** has devised a workaround, aka a Handy-Dandy-Hack™. You’ll need to use the following to modify your create and update functions in your Redwood-generated Services by running `input` through this:
-
-```jsx
-const foreignKeyReplacement = (input) => {
-  let output = input
-  const foreignKeys = Object.keys(input).filter((k) => k.match(/Id$/))
-  foreignKeys.forEach((key) => {
-    const modelName = key.replace(/Id$/, '')
-    const value = input[key]
-    delete output[key]
-    output = Object.assign(output, {
-      [modelName]: { connect: { id: value } },
-    })
-  })
-  return output
-}
-
-```
-
-Applied to your own `posts.js`, your code would look like this:
-
-```jsx
-// api/src/services/posts/posts.js
-import { db } from 'src/lib/db'
-
-// super hacky workaround function by @rob 🚀
-const foreignKeyReplacement = (input) => {
-  let output = input
-  const foreignKeys = Object.keys(input).filter((k) => k.match(/Id$/))
-  foreignKeys.forEach((key) => {
-    const modelName = key.replace(/Id$/, '')
-    const value = input[key]
-    delete output[key]
-    output = Object.assign(output, {
-      [modelName]: { connect: { id: value } },
-    })
-  })
-  return output
-}
-
-...
-
-// create Post example using the workaround export const createPost = ({ input }) => {
-  return db.post.create({
-    data: foreignKeyReplacement(input),
-  })
-}
-
-...
-
-```
-
-> This is only a limited example for Post `create`. To fully implement this workaround, you will need to add this to all cases where you used the Generator on a model resulting in Service files with `create` and `update` functions.
+Alomst identical! But now there's an `id` and the SDL/scaffold generators will work as expected. The explicit syntax gives you a couple additional benefits—you can customize the table name and even add more fields. Maybe you want to track which user tagged a product—add a `userId` column to `ProductsOnTags` and now you know.
