@@ -458,13 +458,13 @@ Use `requireAuth()` in your services to check that a user is logged in, whether 
 It checks for a single role:
 
 ```js
-requireAuth({ role: 'editor' })
+requireAuth({ roles: 'editor' })
 ```
 
 or multiple roles:
 
 ```js
-requireAuth({ role: ['admin', 'author', 'publisher'] })
+requireAuth({ roles: ['admin', 'author', 'publisher'] })
 ```
 
 This function should be located in `api/src/lib/auth.js` for your RedwoodJS app (ie, where your `getCurrentUser()` is located).
@@ -486,8 +486,8 @@ This function should be located in `api/src/lib/auth.js` for your RedwoodJS app 
  * @example
  *
  * // checks if currentUser is authenticated and assigned one of the given roles
- * requireAuth({ roles: 'admin' })
- * requireAuth({ roles: 'admin' })
+ * requireAuth({ roles: 'editor' })
+ * requireAuth({ roles: ['admin', 'author', 'publisher'] })
  */
 export const requireAuth = ({ roles } = {}) => {
   if (!context.currentUser) {
