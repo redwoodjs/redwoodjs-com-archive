@@ -1,5 +1,7 @@
 # Prisma Relations and Redwood's Generators
 
+These docs apply to Redwood v0.25 and greater. Previous versions of Redwood had limitations when creating scaffolds for any one-to-many or many-to-many relationships. Most of those have been resolved so you should definitely [upgrade to 0.25(https://community.redwoodjs.com/t/upgrading-to-redwoodjs-v0-25-and-prisma-v2-16-db-upgrades-and-project-code-mods/1811) if at all possible!
+
 ## Many-to-many Relationships
 
 Here are Prisma's docs for creating many-to-many relationships: https://www.prisma.io/docs/concepts/components/prisma-schema/relations#many-to-many-relations A many-to-many relationship is accomplished by creating a "join" or "lookup" table between two other tables. For example, if a **Product** can have many **Tag**s, any given **Tag** can also have many **Product**s that it is attachec to. A database diagram for this relationship could look like:
