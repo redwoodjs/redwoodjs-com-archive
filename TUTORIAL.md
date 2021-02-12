@@ -2,7 +2,7 @@
 
 Welcome to Redwood! If you haven't yet, check out the [Redwood README](https://github.com/redwoodjs/redwood/blob/main/README.md) to get a little background on why we created Redwood and the problems it's meant to solve. Redwood brings several existing technologies together for the first time into what we think is the future of database-backed single page applications.
 
-In this tutorial we're going to build a blog engine. In reality a blog is probably not the ideal candidate for a Redwood app: blog articles can be stored in a CMS and statically generated to HTML files and served as flat files from a CDN (the classic Jamstack usecase). But as most developers are familiar with a blog and it uses all of the features we want to demonstrate, we decided to build one anyway.
+In this tutorial we're going to build a blog engine. In reality a blog is probably not the ideal candidate for a Redwood app: blog articles can be stored in a CMS and statically generated to HTML files and served as flat files from a CDN (the classic Jamstack use case). But as most developers are familiar with a blog and it uses all of the features we want to demonstrate, we decided to build one anyway.
 
 Want to watch this tutorial instead? Start here:
 
@@ -171,7 +171,7 @@ That's it for the backend.
     - `FatalErrorPage.js` will be rendered when there is an uncaught error that can't be recovered from and would otherwise cause our application to really blow up (normally rendering a blank page).
   - `index.css` is a generic place to put your CSS, but there are many options.
   - `index.html` is the standard React starting point for our app.
-  - `index.js` the bootstraping code to get our Redwood app up and running.
+  - `index.js` the bootstrapping code to get our Redwood app up and running.
   - `Routes.js` the route definitions for our app which map a URL to a _Page_.
 - `public` contains assets not used by React components (they will be copied over unmodified to the final app's root directory):
   - `favicon.png` is the icon that goes in a browser tab when your page is open (apps start with the RedwoodJS logo).
@@ -875,7 +875,7 @@ The front-end uses [Apollo Client](https://www.apollographql.com/docs/react/) to
 
 The `*.sdl.js` files in `api/src/graphql` define the GraphQL [Object](https://www.apollographql.com/docs/tutorial/schema/#object-types), [Query](https://www.apollographql.com/docs/tutorial/schema/#the-query-type) and [Mutation](https://www.apollographql.com/docs/tutorial/schema/#the-mutation-type) types and thus the interface of your API.
 
-Normally you would write a [resolver map](https://www.apollographql.com/docs/tutorial/resolvers/#what-is-a-resolver) that contains all your resolvers and tells Apollo how to map them to your SDL. But putting business logic directly in the resolver map would result in a very big file and horrible reusability, so you'd be well advised to extract all the logic out into a library of functions, import them, and call them from the resolver map, remembering to pass all the arguments through. Ugh, that's a lot of effort and boilerplate, and still doesn't result in very good reusabilty.
+Normally you would write a [resolver map](https://www.apollographql.com/docs/tutorial/resolvers/#what-is-a-resolver) that contains all your resolvers and tells Apollo how to map them to your SDL. But putting business logic directly in the resolver map would result in a very big file and horrible reusability, so you'd be well advised to extract all the logic out into a library of functions, import them, and call them from the resolver map, remembering to pass all the arguments through. Ugh, that's a lot of effort and boilerplate, and still doesn't result in very good reusability.
 
 Redwood has a better way! Remember the `api/src/services` directory? Redwood will automatically import and map resolvers from the corresponding **services** file onto your SDL. At the same time, it allows you to write those resolvers in a way that makes them easy to call as regular functions from other resolvers or services. That's a lot of awesomeness to contemplate, so let's show an example.
 
@@ -1852,7 +1852,7 @@ export const schema = gql`
 `
 ```
 
-What's `CreateContactInput` and `UpdateContactInput`? Redwood follows the GraphQL recommendation of using [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) in mutations rather than listing out each and every field that can be set. Any fields required in `schema.prisma` are also required in `CreateContactInput` (you can't create a valid record without them) but nothing is explictly required in `UpdateContactInput`. This is because you could want to update only a single field, or two fields, or all fields. The alternative would be to create separate Input types for every permutation of fields you would want to update. We felt that only having one update input, while maybe not pedantically the absolute **correct** way to create a GraphQL API, was a good compromise for optimal developer experience.
+What's `CreateContactInput` and `UpdateContactInput`? Redwood follows the GraphQL recommendation of using [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) in mutations rather than listing out each and every field that can be set. Any fields required in `schema.prisma` are also required in `CreateContactInput` (you can't create a valid record without them) but nothing is explicitly required in `UpdateContactInput`. This is because you could want to update only a single field, or two fields, or all fields. The alternative would be to create separate Input types for every permutation of fields you would want to update. We felt that only having one update input, while maybe not pedantically the absolute **correct** way to create a GraphQL API, was a good compromise for optimal developer experience.
 
 > Redwood assumes your code won't try to set a value on any field named `id` or `createdAt` so it left those out of the Input types, but if your database allowed either of those to be set manually you can update `CreateContactInput` or `UpdateContactInput` and add them.
 
@@ -2393,7 +2393,7 @@ export default ContactPage
 
 That's it! [React Hook Form](https://react-hook-form.com/) provides a bunch of [functionality](https://react-hook-form.com/api) that `<Form>` doesn't expose. When you want to get to that functionality you can: just call `useForm()` yourself but make sure to pass the returned object (we called it `formMethods`) as a prop to `<Form>` so that the validation and other functionality keeps working.
 
-> You may have noticed that the onBlur form validation stopped working once you started calling `useForm()` yourself. That's because Redwood calls `useForm()` behind the scenes and automaticaly passes it the `validation` prop that you gave to `<Form>`. Redwood is no longer calling `useForm()` for you so if you need some options passed you need to do it manually:
+> You may have noticed that the onBlur form validation stopped working once you started calling `useForm()` yourself. That's because Redwood calls `useForm()` behind the scenes and automatically passes it the `validation` prop that you gave to `<Form>`. Redwood is no longer calling `useForm()` for you so if you need some options passed you need to do it manually:
 >
 > ```javascript
 > const formMethods = useForm({ mode: 'onBlur' })
@@ -2657,7 +2657,7 @@ You need the protocol and domain, not the rest of the path. Paste that into the 
 
 #### Accepting Invites
 
-Before we can log in, remember that confirmation email from Netlify? Go find that and click the **Accept the invite** link. That will bring you to your site live in production, where nothing will happen. But if you look at the URL it will end in something like `#invite_token=6gFSXhugtHCXO5Whlc5V`. Copy that (including the `#`) and appened it to your localhost URL: http://localhost:8910/#invite_token=6gFSXhugtHCXO5Whlc5Vg Hit Enter, then go back into the URL and hit Enter again to get it to actually reload the page. Now the modal will show **Complete your signup** and give you the ability to set your password:
+Before we can log in, remember that confirmation email from Netlify? Go find that and click the **Accept the invite** link. That will bring you to your site live in production, where nothing will happen. But if you look at the URL it will end in something like `#invite_token=6gFSXhugtHCXO5Whlc5V`. Copy that (including the `#`) and append it to your localhost URL: http://localhost:8910/#invite_token=6gFSXhugtHCXO5Whlc5Vg Hit Enter, then go back into the URL and hit Enter again to get it to actually reload the page. Now the modal will show **Complete your signup** and give you the ability to set your password:
 
 ![Netlify identity set password](https://user-images.githubusercontent.com/300/82388369-54ab4c80-99ee-11ea-920e-9df10ee0cac2.png)
 
@@ -2869,7 +2869,7 @@ As an anonymous Twitter user once mused: "If you enjoy switching between feeling
 
 If you're ready for even more Redwood, head to the [Tutorial Part 2](/tutorial2)! We'll look at Storybook and Jest and build a new feature for the blog: comments. Storybook introduces a new way to build components. We'll also add tests and run them with Jest to make sure things keep working as we expect. We cover authorization as well by giving a special role to comment moderators.
 
-Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/docs/local-postgres-setup)? We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
+Want to add some more features to your app? Check out some of our Cookbook recipes like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/docs/local-postgres-setup)? We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
 
 ### Roadmap
 

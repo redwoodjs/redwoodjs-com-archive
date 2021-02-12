@@ -1,6 +1,6 @@
 # Pagination
 
-This tutorial will show you one way to implement pagination in an app built using RedwoodJS. It builds ontop of [the tutorial](https://redwoodjs.com/tutorial) and I'll assume you have a folder with the code from the tutorial that you can continue working on. (If you don't, you can clone this repo: https://github.com/thedavidprice/redwood-tutorial-test)
+This tutorial will show you one way to implement pagination in an app built using RedwoodJS. It builds on top of [the tutorial](https://redwoodjs.com/tutorial) and I'll assume you have a folder with the code from the tutorial that you can continue working on. (If you don't, you can clone this repo: https://github.com/thedavidprice/redwood-tutorial-test)
 
 ![redwoodjs-pagination](https://user-images.githubusercontent.com/30793/94778130-ec6d6e00-03c4-11eb-9fd0-97cbcdf68ec2.png)
 
@@ -174,7 +174,7 @@ export const Success = ({ postPage }) => {
 }
 ```
 
-And there you have it! You have now added pagination to your redwood blog. One techincal limitation to the current implementation is that it doesn't handle too many pages very gracefully. Just imagine what that list of pages would look like if you had 100 pages! It's left as an exercise to the reader to build a more fully featured Pagination component.
+And there you have it! You have now added pagination to your redwood blog. One technical limitation to the current implementation is that it doesn't handle too many pages very gracefully. Just imagine what that list of pages would look like if you had 100 pages! It's left as an exercise to the reader to build a more fully featured Pagination component.
 
 Most of the code in this tutorial was copy/pasted from the ["Hammer Blog" RedwoodJS example](https://github.com/redwoodjs/example-blog)
 

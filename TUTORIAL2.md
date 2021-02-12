@@ -1648,7 +1648,7 @@ Right above the display of existing comments on a blog post is probably where ou
 
 If we put the **CommentForm** in the **Success** component of **CommentsCell** then what happens when there are no comments yet? The **Empty** component renders, which doesn't include the form! So it becomes impossible to add the first comment.
 
-We could copy the **CommentForm** to the **Empty** component as well, but as soon as you find yourself duplcating code like this it can be a hint that you need to rethink something about your design.
+We could copy the **CommentForm** to the **Empty** component as well, but as soon as you find yourself duplicating code like this it can be a hint that you need to rethink something about your design.
 
 Maybe **CommentsCell** should really only be responsible for retrieving and displaying comments. Having it also accept user input seems outside of its primary concern.
 
@@ -2544,7 +2544,7 @@ scenario('deletes a comment', async (scenario) => {
 })
 ```
 
-Our first expectation here checks that we get the deleted comment back from a call to `deleteComment()`. The second expectation make sures that the comment was actually removed from the database: trying to find a comment with that `id` now returns `null`.
+Our first expectation here checks that we get the deleted comment back from a call to `deleteComment()`. The second expectation make sure that the comment was actually removed from the database: trying to find a comment with that `id` now returns `null`.
 
 ### Last Word on Roles
 
@@ -2569,8 +2569,8 @@ Will there be a Part 3 of the tutorial? It's a fact that the best things come in
 
 So until next time, a bit of wisdom to help combat that next bout of every developer's nemesis, imposter syndrome:
 
-<div class="font-serif font-light italic">
-"There is nothing noble in being superior to your fellow man; true nobility is being superior to your former self." — Ernest Hemmingway
+<div class="font-serif italic font-light">
+"There is nothing noble in being superior to your fellow man; true nobility is being superior to your former self." — Ernest Hemingway
 </div>
 
 ### What's Next
