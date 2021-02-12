@@ -520,7 +520,7 @@ yarn rw setup auth nhost
 
 #### Setup
 
-Update your .env file with the following settings which can be found on your project's dashboard.
+Update your .env file with the following setting which can be found on your Nhost project's dashboard.
 
 - `NHOST_BACKEND_URL` with the unique Nhost Backend (Auth & Storage) URL for your project.
 
