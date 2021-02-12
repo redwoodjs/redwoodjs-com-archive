@@ -18,7 +18,7 @@ mockGraphQLQuery('OperationName', (variables, { ctx, req }) => {
 
 ### The operation name
 
-The operation name is used to associate mock-data with a query or mutuation request.
+The operation name is used to associate mock-data with a query or mutation request.
 
 ```
 query UserProfileQuery { /*...*/ }
