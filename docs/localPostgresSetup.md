@@ -73,7 +73,7 @@ If it worked, you should see a prompt like the one above&mdash;your username fol
 - `\l` &mdash; list databases
 - `\?` &mdash; get a list of commands
 
-If you'd rather not follow any of the advice here and creat another Postgres user instead of a Postgres database, follow [this](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04#step-3-%E2%80%94-creating-a-new-role).
+If you'd rather not follow any of the advice here and create another Postgres user instead of a Postgres database, follow [this](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04#step-3-%E2%80%94-creating-a-new-role).
 
 ## Update the Prisma Schema
 
