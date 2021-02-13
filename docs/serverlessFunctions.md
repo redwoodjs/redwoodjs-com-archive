@@ -1,6 +1,11 @@
 # Serverless Functions
+<!-- `redwood.toml`&mdash;`api/src/functions` by default.  -->
 
-Redwood looks for serverless functions in the directory specified by your `redwood.toml`&mdash;`api/src/functions` by default. Each function is mapped to a URI based on its filename. For exmaple, you can find `api/src/functions/graphql.js` at `http://localhost:8911/graphql`.
+> ⚠ **Work in Progress** ⚠️
+>
+> There's more to document here. In the meantime, you can check our [community forum](https://community.redwoodjs.com/search?q=serverless%20functions). Or, if you want to contribute, give [this](https://deploy-preview-566--redwoodjs.netlify.app/docs/contributing#contributing-docs) a read and get in touch with [us](http://127.0.0.1:8080/docs/introduction.html#core-team)! 
+
+Redwood looks for serverless functions in `api/src/functions`. Each function is mapped to a URI based on its filename. For example, you can find `api/src/functions/graphql.js` at `http://localhost:8911/graphql`.
 
 ## Creating Serverless Functions
 
