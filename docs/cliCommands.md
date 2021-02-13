@@ -416,6 +416,8 @@ Deploy to AWS using the selected provider
 yarn redwood deploy aws [provider]
 ```
 
+<br/>
+
 | Options & Arguments  | Description                              |
 | :------------------- | :--------------------------------------- |
 | `provider`           | AWS Deploy provider to configure [choices: "serverless"] [default: "serverless"] |
@@ -428,6 +430,8 @@ Build command for Netlify deploy
 ```
 yarn redwood deploy netlify [provider]
 ```
+
+<br/>
 
 | Options  | Description                              |
 | :------------------- | :--------------------------------------- |
@@ -448,6 +452,8 @@ Build command for Vercel deploy
 ```
 yarn redwood deploy vercel [provider]
 ```
+
+<br/>
 
 | Options  | Description                              |
 | :------------------- | :--------------------------------------- |
