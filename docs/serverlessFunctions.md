@@ -26,12 +26,11 @@ export const handler = async (event, context) => {
     }),
   }
 }
-
 ```
 
 ## The handler
 
-For a lambda function to be a lambda function, it must export a handler that returns a status code. The handler recevies two arguments: `event` and `context`. Whatever it returns is the `response`.
+For a lambda function to be a lambda function, it must export a handler that returns a status code. The handler recevies two arguments: `event` and `context`. Whatever it returns is the `response`, which should include a `statusCode` at the very least.
 
 Note that you can use code in `api/src` in your serverless function, such as importing the `db` from `src/lib/db`.
 
