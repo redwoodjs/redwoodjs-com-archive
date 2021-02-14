@@ -79,20 +79,140 @@ todo
 
 ## Adapting React Query's hooks
 
-todo
+The way React Query's `useQuery` and `useMutation` hooks work, we can't just pass them to the `GrpahQLHooksProvider` as they are. We have to adapt them.
 
-## Invalidating Mutations
+React Query's `useQuery` hook expects a key as it's first argument and the function that actually go gets the data as it's second. 
 
-todo
+> **Wait, React Query's `useQuery` doesn't actually do the data fetching?**
+>
+> You can think of React Query as a server/cache manager, that orchestrates a whole bunch of awesome things.
+> It doesn't come with a function that does the fetching&mdash;you have to provide it with that&mdash;but it will call that function at the right time, like when the data's stale, or might be stale... [todo]
 
-## Bonus
+So we have to decide how we're actually going to make the GraphQL calls. We could just use fetch, and it might be a good exercise to do just that. It would look something like...
 
-todo
+```js
+() => fetch(uri, {
+  method: 'POST',
+  headers: {
+    // ...
+  }
+  body: {
+    query: ...
+    variables: ...
+  }
+})
+```
 
-### useOtherQuery 
+You do it that way, but why bother when there's this library called [graphql-request](https://www.npmjs.com/package/graphql-request) that makes this stuff dead easy?
 
-todo
+## Getting the Operation Name
 
-### persisting 
+If we're not going to give React Query arbitrary keys, we need to derive something unique from the queries we're passing in. There's a few ways we could do this, but the query's operation name is the most obvious choice. Luckily there's a GraphQL helper function that'll help us with that:
 
-todo
+```
+yarn workspace web add graphql
+```
+
+The [JS GraphQL reference implementation](https://github.com/graphql/graphql-js) has a lot of utility functions; the one we want is `getOperationAST`.
+If that sounds technical, that's because it is. Let's break it down by looking at a typical GraphQL query you'll see in a Cell:
+
+```gql
+export const QUERY = gql`
+  query BlogPostsQuery {
+    blogPosts {
+      id
+    }
+  }
+`
+```
+
+There's a lot of anatomical terms for what we're looking at here. There's the operation type (`query`), the operation name (`BlogPostQuery`)... `getOperationAST` parses a GraphQL document in much the same way Babel parses JS&mdash;it gives us back the GraphQL document in a format we can programmatically manipulate.
+
+What we want is `BlogPostQuery`, the operation name. Note that for most documents, the operation name's optional, kind of the way a function name's optional (think anonymous functions). Even the operation type's optional if it's a query:
+
+```gql
+export const QUERY = gql`{
+  blogPosts {
+    id
+  }
+}
+`
+```
+
+This is a nameless operation. It's valid, but it isn't good for what we're about to do here. It's a good practice to name your operations&mdash;Redwood Cells already do this for you.
+
+All right, we need to make a helper function that gets the operation name from a GraphQL document. We'll call it `getOperationName`. Let's quickly run `getOperationASt` on our `QUERY` to see what we're dealing with:
+
+```js
+> getOperationAST(QUERY)
+{
+    "kind": "OperationDefinition",
+    "operation": "query",
+    "name": {
+        "kind": "Name",
+        "value": "BlogPostsQuery"
+    },
+    "variableDefinitions": [],
+    "directives": [],
+    "selectionSet": {
+        "kind": "SelectionSet",
+        "selections": [
+            {
+                "kind": "Field",
+                "name": {
+                    "kind": "Name",
+                    "value": "blogPosts"
+                },
+                "arguments": [],
+                "directives": [],
+                "selectionSet": {
+                    "kind": "SelectionSet",
+                    "selections": [
+                        {
+                            "kind": "Field",
+                            "name": {
+                                "kind": "Name",
+                                "value": "id"
+                            },
+                            "arguments": [],
+                            "directives": []
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}
+```
+
+That's a lot of stuff. That's ok&mdash;what we want's fairly easy to get; it's just `name.value`:
+
+```
+const getOperationName = (QUERY) => getOperationAST(QUERY).name.value
+```
+
+We've got ourselves a key!
+
+## Bonus: Invalidating Mutations
+
+This isn't related to... per se... but if you're using React Query to do your data fetching, it's probably something you should know about since you're going to be using React Query to do you mutations, and not many apps don't have mutations.
+
+The way React Query works, it's via keys. So you have to tell it which key to invalidate. Good thing we made that `getOperationName` function!
+
+[todo]
+
+## Super Bonus: Devtools
+
+React Query comes with it's own [devtools](https://react-query.tanstack.com/devtools). And it's just a react component!
+
+```js
+import { ReactQueryDevtools } from 'react-query/devtools'
+
+// rest of the RedwoodReactQueryProvider...
+  {process.env.NODE_EVN === 'development' && <ReactQueryDevtools>}
+// rest of the RedwoodReactQueryProvider...
+```
+
+From the devtools, you can invalidate queries... cache visibility... the devtools are great for debugging. 
+
+[todo]
