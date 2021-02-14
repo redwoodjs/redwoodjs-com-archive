@@ -75,7 +75,7 @@ const RedwoodApolloProvider = ({ graphQLClientConfig, useAuth, children }) => {
 
 The order is important here: the `GraphQLHooksProvider` uses the `FetchConfigProvider`'s value, so it has to go below it in the tree.
 
-todo
+[todo]
 
 ## Adapting React Query's hooks
 
@@ -103,7 +103,7 @@ So we have to decide how we're actually going to make the GraphQL calls. We coul
 })
 ```
 
-You do it that way, but why bother when there's this library called [graphql-request](https://www.npmjs.com/package/graphql-request) that makes this stuff dead easy?
+You could do it that way, but why bother when there's this library called [graphql-request](https://www.npmjs.com/package/graphql-request) that makes this stuff dead easy?
 
 ## Getting the Operation Name
 
@@ -139,7 +139,7 @@ export const QUERY = gql`{
 `
 ```
 
-This is a nameless operation. It's valid, but it isn't good for what we're about to do here. It's a good practice to name your operations&mdash;Redwood Cells already do this for you.
+This is a nameless operation. It's valid, but it isn't good for what we're about to do. It's a good practice to name your operations&mdash;Redwood Cells already do this for you.
 
 All right, we need to make a helper function that gets the operation name from a GraphQL document. We'll call it `getOperationName`. Let's quickly run `getOperationASt` on our `QUERY` to see what we're dealing with:
 
@@ -195,7 +195,7 @@ We've got ourselves a key!
 
 ## Bonus: Invalidating Mutations
 
-This isn't related to... per se... but if you're using React Query to do your data fetching, it's probably something you should know about since you're going to be using React Query to do you mutations, and not many apps don't have mutations.
+This isn't related to... per se... but if you're using React Query to do your data fetching, it's probably something you should know about since you're going to be using React Query to do your mutations. And not many apps don't have mutations.
 
 The way React Query works, it's via keys. So you have to tell it which key to invalidate. Good thing we made that `getOperationName` function!
 
@@ -203,16 +203,14 @@ The way React Query works, it's via keys. So you have to tell it which key to in
 
 ## Super Bonus: Devtools
 
-React Query comes with it's own [devtools](https://react-query.tanstack.com/devtools). And it's just a react component!
+React Query comes with it's own [devtools](https://react-query.tanstack.com/devtools). And they're just a React component!
 
 ```js
 import { ReactQueryDevtools } from 'react-query/devtools'
 
 // rest of the RedwoodReactQueryProvider...
-  {process.env.NODE_EVN === 'development' && <ReactQueryDevtools>}
+  {process.env.NODE_ENV === 'development' && <ReactQueryDevtools />}
 // rest of the RedwoodReactQueryProvider...
 ```
 
-From the devtools, you can invalidate queries... cache visibility... the devtools are great for debugging. 
-
-[todo]
+From the devtools, you can invalidate queries... get visibility into the cache... the devtools are great for debugging. [todo]
