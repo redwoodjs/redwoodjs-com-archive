@@ -786,7 +786,7 @@ const HomePage = () => {
 export default HomePage
 ```
 
-The browser should actually show an array with a number or two (assuming you created a blog post with our [scaffolding](/tutorial/getting-dynamic#creating-a-post-editor) from earlier). Neat!
+The browser should actually show an array with a number of post items (assuming you created a blog post with our [scaffolding](/tutorial/getting-dynamic#creating-a-post-editor) from earlier). Neat!
 
 <img src="https://user-images.githubusercontent.com/300/73210519-5380a780-40ff-11ea-8639-968507a79b1f.png" />
 
