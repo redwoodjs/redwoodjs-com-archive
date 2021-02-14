@@ -65,9 +65,6 @@ https://github.com/nickcolley/jest-axe
 
 ### The Problem with SPAs
 
-[todo]
-
-
 https://www.youtube.com/watch?v=NKTdNv8JpuM
 
 [todo]
