@@ -81,16 +81,16 @@ https://www.youtube.com/watch?v=NKTdNv8JpuM
 
 [todo]
 
-## A few must-have browser extensions
+## Testing manually
+
+[todo]
+
+### A few must-have browser extensions
 
 - [axe](https://chrome.google.com/webstore/detail/axe-web-accessibility-tes/lhdoppojpmngadmnindnejefpokejbdd)
 - [Accessibility Insights](https://accessibilityinsights.io/docs/en/web/overview/)
 - [ARC Toolkit](https://www.paciellogroup.com/toolkit/)
 - [WAVE Web Accessibility Evaluation Tool](https://wave.webaim.org/extension/)
-
-## Testing manually
-
-[todo]
 
 ### Using a screen reader
 
