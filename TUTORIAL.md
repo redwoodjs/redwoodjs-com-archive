@@ -100,7 +100,7 @@ Now that we have the skeleton of our Redwood app in place, it's a good idea to s
 
     git init
     git add .
-    git commit -m 'First commit'
+    git commit -m "First commit"
 
 ## Redwood File Structure
 
