@@ -200,7 +200,7 @@ In most cases you will want to exclude the design elements and structure of your
 
 ### getByText()
 
-In our **<Article>** component it seems like we really just want to test that the title of the product is rendered. *How* and *what it looks like* aren't really a concern for this test. Let's update the test to just check for the presence of the title itself:
+In our **&lt;Article&gt;** component it seems like we really just want to test that the title of the product is rendered. *How* and *what it looks like* aren't really a concern for this test. Let's update the test to just check for the presence of the title itself:
 
 ```javascript{3,7-8}
 // web/src/components/Article/Article.test.js
@@ -225,7 +225,7 @@ So, the above test in plain English says "if there is any DOM node containing th
 
 Why not use `getByText()` for everything? Because it will raise an error if the text is *not* found in the document. That means if you want to explictly test that some text is NOT present, you can't—you'll always get an error.
 
-Consider an update to our **<Article>** component:
+Consider an update to our **&lt;Article&gt;** component:
 
 ```javascript
 // web/src/components/Article/Article.js
@@ -279,7 +279,7 @@ Here's a cheatsheet from React Testing Library with the various permuations of `
 
 ### Mocking GraphQL Calls
 
-If you are using GraphQL inside of your components you can mock them to return the exact response you want and then focus on the content of the component being correct based on that data. Returning to our **<Article>** component, let's make an update where only the `id` of the article is passed to the component as a prop and then the component itself is responsible for fetching the content from GraphQL:
+If you are using GraphQL inside of your components you can mock them to return the exact response you want and then focus on the content of the component being correct based on that data. Returning to our **&lt;Article&gt;** component, let's make an update where only the `id` of the article is passed to the component as a prop and then the component itself is responsible for fetching the content from GraphQL:
 
 > Normally we recommend using a cell for exactly this functionality, but for the sake of completeness we're showing how to test when doing GraphQL queries the manual way!
 
@@ -344,7 +344,7 @@ describe('Article', () => {
 
 We've imported an additional function at the top `waitFor()` which allows us to test for things that may not be present in the first render of the component. In our case when the component first renders the data hasn't loaded yet, so it will render only "Loading..." which does not include the title of our article. So without `waitFor()` the test will immediately fail. `waitFor()` is smart and waits for subsequent renders or a maximum amount of time before giving up. [Read more about `waitFor()`](https://testing-library.com/docs/dom-testing-library/api-async/#waitfor).
 
-The function that's given as the second argument to `mockGraphQLQuery` will be sent a couple of arguments. The first, and only one we're using here, is `variables` which will contain the variables given to the query when `useQuery` was called. In this test we passed an `id` of `1` to the **<Article>** component when test rendering, so `variables` will contain `{id: 1}`. Using this variable in the callback function to `mockGraphQLQuery` allows us to reference those same variables in the body of our response. Here we're making sure that the returned article's `id` is the same as the one that was requested:
+The function that's given as the second argument to `mockGraphQLQuery` will be sent a couple of arguments. The first, and only one we're using here, is `variables` which will contain the variables given to the query when `useQuery` was called. In this test we passed an `id` of `1` to the **&lt;Article&gt;** component when test rendering, so `variables` will contain `{id: 1}`. Using this variable in the callback function to `mockGraphQLQuery` allows us to reference those same variables in the body of our response. Here we're making sure that the returned article's `id` is the same as the one that was requested:
 
 ```javascript{3}
 return {
