@@ -1,12 +1,12 @@
 # Testing
 
-Testing. For some it's an essential part of their development workflow. For others it's something they know they *should* do, but for whatever reason testing hasn't grabbed their fancy yet. For still others it's something they ignore completely, hoping the whole concept will go away. But tests are here to stay, and maybe Redwood can change some opinions about testing being awesome and fun.
+Testing. For some it's an essential part of their development workflow. For others it's something they know they *should* do, but for whatever reason it hasn't grabbed their fancy yet. For still others it's something they ignore completely, hoping the whole concept will go away. But tests are here to stay, and maybe Redwood can change some opinions about testing being awesome and fun.
 
 ## Introduction to Testing
 
 If you're already familiar with the ins and outs of testing and just want to know how to do it in Redwood, feel free to [skip ahead](#redwood-and-testing). Or, keep reading for a refresher.
 
-The idea of testing is pretty simple: for each "unit" of code you write, you write additional code that exercises that unit and makes sure it works as expected. What's a "unit" of code? That's for you to decide! It could be a class, a single function, or even a single line! In general the smaller the unit of code that you're testing the better—your tests will stay fast and focused on just one thing, which makes them easy to update when you refactor your code. The important thing is that you start *somewhere* and codify your code's functionality in a repeatable, verifyable way.
+The idea of testing is pretty simple: for each "unit" of code you write, you write additional code that exercises that unit and makes sure it works as expected. What's a "unit" of code? That's for you to decide: it could be an entire class, a single function, or even a single line! In general the smaller the unit of code that you're testing, the better. Your tests will stay fast and focused on just one thing, which makes them easy to update when you refactor your code. The important thing is that you start *somewhere* and codify your code's functionality in a repeatable, verifyable way.
 
 ### A Simple Test
 
@@ -77,7 +77,7 @@ Run this test and what happens? (If you previously made a change to `add()` to s
 
 <iframe width="100%" height="300" src="//jsfiddle.net/cannikin/mgy4ja1q/6/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0" class="border"></iframe>
 
-Where did *that* come from? Well, our subject `add()` didn't raise any errors (Javascript doesn't care about the number of arguments passed to a function) and so it tried to add `1` to `undefined`. We didn't think about that! See, testing is already helping us catch edge cases.
+Where did *that* come from? Well, our subject `add()` didn't raise any errors (Javascript doesn't care about the number of arguments passed to a function) and so it tried to add `1` to `undefined`. We didn't think about that! Testing is already helping us catch edge cases.
 
 To respond properly to this case in our test we'll make one slight modification: add another "fail" log message if the code somehow gets past the call to `add(1)` without throwing an error:
 
@@ -169,18 +169,243 @@ Storybook itself doesn't appear to be related to testing at all—it's for build
 
 Storybook can provide a quick way to inspect all visual aspects of your site without the tried-and-true method of having a QA person log in and exercise every possible function on the site. Unfortunately, checking those UI elements is not something that Storybook can automate for you, and so can't be part of a continuous integration system. But it makes it *possible* to do so, even if it currently requires a human touch.
 
-## What to Test
+## Testing Components
+
+Let's start with the things you're probably most familiar with if you'd done any React work (with or without Redwood): components. The simplest test for a component would be matching against the exact HTML that's rendered by React (this doesn't actually work so don't bother trying):
+
+```javascript
+// web/src/components/Article/Article.js
+
+const Article = ({ article }) => {
+  return <article>{ article.title }</article>
+}
+
+// web/src/components/Article/Article.test.js
+import { render } from '@redwoodjs/testing'
+import Article from 'src/components/Article'
+
+describe('Article', () => {
+  it('renders an article', () => {
+    expect(render(<Article article={ title: 'Foobar' } />))
+      .toEqual('<article>Foobar</article>')
+  })
+})
+```
+
+This test (if it worked) would prove that you are indeed rendering an article. But it's also extremely brittle: any change to the component, even adding a `className` attribute for styling, will cause the test to break. That's not ideal, especially when you're just starting out building your components and will constantly be making changes as you improve them.
+
+> Why do we keep saying this test won't work? Because as far as we can tell there's no easy way to simply render to a string. `render` actually returns an object that has several functions for testing different parts of the output. Those are what we'll look into in the next section.
+
+In most cases you will want to exclude the design elements and structure of your components from your test. Then you're free to redesign the component all you want without also having to make the same changes to your test suite. Let's look at some of the functions that React Testing Library provides (they call them "[queries](https://testing-library.com/docs/queries/about/)") that let you check for *parts* of the rendered component, rather than a full string match.
+
+### getByText()
+
+In our **<Article>** component it seems like we really just want to test that the title of the product is rendered. *How* and *what it looks like* aren't really a concern for this test. Let's update the test to just check for the presence of the title itself:
+
+```javascript{3,7-8}
+// web/src/components/Article/Article.test.js
+
+import { render, screen } from '@redwoodjs/testing'
+
+describe('Article', () => {
+  it('renders an article', () => {
+    render(<Article article={ title: 'Foobar' } />)
+    expect(screen.getByText('Foobar')).toBeInTheDocument()
+  })
+})
+```
+
+Note the additional `screen` import. This is a convience helper from React Testing Library (RTL) that automatically puts you in the `document.body` context before any of the following checks.
+
+We can use `getByText()` to find text content anywhere in the rendered DOM nodes. `toBeInTheDocument()` is an [assertion](https://jestjs.io/docs/en/expect) added to Jest by RTL that returns true if the `getByText()` query finds the given text in the document.
+
+So, the above test in plain English says "if there is any DOM node containing the text "Foobar" anywhere in the document, return true."
+
+### queryByText()
+
+Why not use `getByText()` for everything? Because it will raise an error if the text is *not* found in the document. That means if you want to explictly test that some text is NOT present, you can't—you'll always get an error.
+
+Consider an update to our **<Article>** component:
+
+```javascript
+// web/src/components/Article/Article.js
+
+import { Link, routes } from '@redwoodjs/router'
+
+const Article = ({ article, summary }) => {
+  return (
+    <article>
+      <h1>{article.title}</h1>
+      <div>
+        {summary ? article.body.substring(0, 100) + '...' : article.body}
+        {summary && <Link to={routes.article(article.id)}>Read more</Link>}
+      </div>
+    </article>
+  )
+}
+
+export default Article
+```
+
+If we're only displaying the summary of an article then we'll only show the first 100 characters with an ellipsis on the end ("...") and include a link to "Read more" to see the full article. A reasonable test for this component would be that when the `summary` prop is `true` then the "Read more" text should be present on in the component. If `summary` is `false` then it should *not* be present. That's where `queryByText()` comes in (relevant test lines are highlighted):
+
+```javascript{15,19}
+// web/src/components/Article/Article.test.js
+
+import { render, screen } from '@redwoodjs/testing'
+import Article from 'src/components/Article'
+
+describe('Article', () => {
+  const article = { id: 1, title: 'Foobar', body: 'Lorem ipsum...' }
+
+  it('renders the title of an article', () => {
+    render(<Article article={article} />)
+    expect(screen.getByText('Foobar')).toBeInTheDocument()
+  })
+  it('renders a summary version', () => {
+    render(<Article article={article} summary={true} />)
+    expect(screen.getByText('Read more')).toBeInTheDocument()
+  })
+  it('renders a full version', () => {
+    render(<Article article={article} summary={false} />)
+    expect(screen.queryByText('Read more')).not.toBeInTheDocument()
+  })
+})
+```
+
+There are several other node/text types you can query against with RTL including `title`, `role` and `alt` attributes, form labels, placeholder text, and more. If you still can't access the node or text you're looking for there is a fallback attribute you can add to any DOM element and that can always be found: `data-testid` which you can access by `getByTestId`, `queryByTestId` and others.
+
+Here's a cheatsheet from React Testing Library with the various permuations of `getBy`, `queryBy` and siblings: https://testing-library.com/docs/react-testing-library/cheatsheet/
+
+### Mocking GraphQL Calls
+
+If you are using GraphQL inside of your components you can mock them to return the exact response you want and then focus on the content of the component being correct based on that data. Returning to our **<Article>** component, let's make an update where only the `id` of the article is passed to the component as a prop and then the component itself is responsible for fetching the content from GraphQL:
+
+> Normally we recommend using a cell for exactly this functionality, but for the sake of completeness we're showing how to test when doing GraphQL queries the manual way!
+
+```javascript
+// web/src/components/Article/Article.js
+
+import { useQuery } from '@redwoodjs/web'
+
+const GET_ARTICLE = gql`
+  query getArticle($id: Int!) {
+    article(id: $id) {
+      id
+      title
+      body
+    }
+  }
+`
+
+const Article = ({ id }) => {
+  const { data } = useQuery(GET_ARTICLE, { variables: { id } })
+
+  if (data) {
+    return (
+      <article>
+        <h1>{data.article.title}</h1>
+        <div>{data.article.body}</div>
+      </article>
+    )
+  } else {
+    return 'Loading...'
+  }
+}
+
+export default Article
+```
+
+Redwood provides a function `mockGraphQLQuery()` for providing the result of a given named GraphQL. In this case our query is named `getArticle` so we can mock that in our test as follows:
+
+```javascript
+// web/src/components/Article/Article.test.js
+
+import { render, screen, waitFor } from '@redwoodjs/testing'
+import Article from 'src/components/Article'
+
+describe('Article', () => {
+  it('renders the title of an article', async () => {
+    mockGraphQLQuery('getArticle', (variables) => {
+      return {
+        article: {
+          id: variables.id,
+          title: 'Foobar',
+          body: 'Lorem ipsum...',
+        },
+      }
+    })
+
+    render(<Article id={1} />)
+    await waitFor(() => expect(screen.getByText('Foobar')).toBeInTheDocument())
+  })
+})
+```
+
+We've imported an additional function at the top `waitFor()` which allows us to test for things that may not be present in the first render of the component. In our case when the component first renders the data hasn't loaded yet, so it will render only "Loading..." which does not include the title of our article. So without `waitFor()` the test will immediately fail. `waitFor()` is smart and waits for subsequent renders or a maximum amount of time before giving up. [Read more about `waitFor()`](https://testing-library.com/docs/dom-testing-library/api-async/#waitfor).
+
+The function that's given as the second argument to `mockGraphQLQuery` will be sent a couple of arguments. The first, and only one we're using here, is `variables` which will contain the variables given to the query when `useQuery` was called. In this test we passed an `id` of `1` to the **<Article>** component when test rendering, so `variables` will contain `{id: 1}`. Using this variable in the callback function to `mockGraphQLQuery` allows us to reference those same variables in the body of our response. Here we're making sure that the returned article's `id` is the same as the one that was requested:
+
+```javascript{3}
+return {
+  article: {
+    id: variables.id,
+    title: 'Foobar',
+    body: 'Lorem ipsum...',
+  }
+}
+```
+
+Along with `variables` there is a second argument, an object which you can destructure a couple of properties from. One of them is `ctx` which is the context around the GraphQL response. One thing you can do with `ctx` is to simulate your GraphQL call returning an error:
+
+```javascript
+mockGraphQLQuery('getArticle', (variables, { ctx }) => {
+  ctx.error({ message: 'Error' })
+})
+```
+
+You could then test that you show a proper error message in your component:
+
+```javascript{4,8-10,21,26}
+// web/src/components/Article/Article.js
+
+const Article = ({ id }) => {
+  const { data, error } = useQuery(GET_ARTICLE, {
+    variables: { id },
+  })
+
+  if (error) {
+    return <div>Sorry, there was an error</div>
+  }
+
+  if (data) {
+    // ...
+  }
+}
+
+// web/src/components/Article/Article.test.js
+
+it('renders an error message', async () => {
+  mockGraphQLQuery('getArticle', (variables, { ctx }) => {
+    ctx.error({ message: 'Error' })
+  })
+
+  render(<Article id={1} />)
+  await waitFor(() =>
+    expect(screen.getByText('Sorry, there was an error')).toBeInTheDocument()
+  )
+})
+```
+
+Similar to how we mocked GraphQL queries, we can mock mutations as well. Read more about GraphQL mocking in our [Mocking GraphQL requests](/docs/mocking-graphql-requests.html) docs.
+
+## Testing Cells
+
+### Mocks
+
 
 ## Testing Services
 
 ### The Test Database
 
 ### Scenarios
-
-## Testing Cells
-
-### Mocks
-
-## Testing Components
-
-### Mocking GraphQL
