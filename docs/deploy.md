@@ -70,6 +70,8 @@ The `url` setting above accesses the database connection string via an environme
 Whenever you make changes to your `schema.prisma`, you must run the following command:
 ```shell	
 $ yarn rw prisma migrate dev # creates and applies a new Prisma DB migration	
+```
+
 ### 4. Environment Variables
 Any environment variables used locally, e.g. in your `env.defaults` or `.env`, must also be added to your hosting provider settings. (See documentation specific to your provider.)
 
