@@ -1,5 +1,13 @@
 # Connection Pooling
 
+> ⚠ **Work in Progress** ⚠️
+>
+> There's more to document here. In the meantime, you can check our [community forum](https://community.redwoodjs.com/search?q=connection%20pooling) for answers.
+>
+> Want to contribute? Redwood welcomes contributions and loves helping people become contributors.
+> You can edit this doc [here](https://github.com/redwoodjs/redwoodjs.com/blob/main/docs/builds.md). 
+> If you have any questions, just ask for help! We're active on the [forums](https://community.redwoodjs.com/c/contributing/9) and on [discord](https://discord.com/channels/679514959968993311/747258086569541703).
+
 Production Redwood apps should enable connection pooling in order to properly scale with your Serverless functions.
 
 ## Heroku
