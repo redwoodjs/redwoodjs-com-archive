@@ -3,7 +3,11 @@
 
 > ⚠ **Work in Progress** ⚠️
 >
-> There's more to document here. In the meantime, you can check our [community forum](https://community.redwoodjs.com/search?q=serverless%20functions). Or, if you want to contribute, give [this](https://deploy-preview-566--redwoodjs.netlify.app/docs/contributing#contributing-docs) a read and get in touch with [us](http://127.0.0.1:8080/docs/introduction.html#core-team)! 
+> There's more to document here. In the meantime, you can check our [community forum](https://community.redwoodjs.com/search?q=serverless%20functions) for answers.
+>
+> Want to contribute? Redwood welcomes contributions and loves helping people become contributors.
+> You can edit this doc [here](https://github.com/redwoodjs/redwoodjs.com/blob/main/docs/serverlessFunctions.md). 
+> If you have any questions, just ask for help! We're active on the [forums](https://community.redwoodjs.com/c/contributing/9) and on [discord](https://discord.com/channels/679514959968993311/747258086569541703).
 
 Redwood looks for serverless functions in `api/src/functions`. Each function is mapped to a URI based on its filename. For example, you can find `api/src/functions/graphql.js` at `http://localhost:8911/graphql`.
 
