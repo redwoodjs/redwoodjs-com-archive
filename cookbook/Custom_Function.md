@@ -1,10 +1,12 @@
 # Custom Function
 
-You may not have noticed, but when you're making GraphQL calls you're actually calling a [Function](https://docs.netlify.com/functions/overview/) on the API side (not to be confused with a Javascript `function`). Capital F Functions are meant to be deployed to serverless endpoints like AWS Lambda. (We're using Netlify's nomenclature when we call them Functions.)
+You may not have noticed, but when you're making GraphQL calls, you're actually calling a [Function](https://docs.netlify.com/functions/overview/) (not to be confused with a Javascript `function`) on the API side. Capital-F Functions are meant to be deployed to serverless providers like AWS Lambda. (We're using Netlify's nomenclature when we call them Functions.)
+<!-- turn this into an aside where you can expand on it, maybe. > We're using Netlify's nomenclature when we call them Functions. -->
+  
+<!-- as a... could be reworded -->
+Did you know you can create your own Functions that do whatever you want? Normally we recommend that if you have custom behavior, even if it's unrelated to the database, you make it available as a GraphQL field so that your entire application has one, unified API interface. But rules were meant to be broken!
 
-Did you know you can create your own Functions that do whatever you want? Normally we recommend that if you have custom behavior, even if it's unrelated to accessing the database, that you make it available as a GraphQL type so that your entire application has one, unified API interface. But rules were meant to be broken!
-
-How about a custom function that returns the timestamp from the server?
+How about a custom Function that returns the timestamp from the server?
 
 ## Creating a Function
 
@@ -14,15 +16,52 @@ Step one is to actually create the custom Function. Naturally, we have a generat
 yarn rw generate function serverTime
 ```
 
-That will create a shell for you that you can test out right away. Make sure your dev server is running with `yarn rw dev` and point your browser to `http://localhost:8910/.netlify/functions/serverTime`
+That creates a stub you can test out right away. Make sure your dev server is running (`yarn rw dev`), then point your browser to `http://localhost:8910/.redwood/functions/serverTime`.
 
-![serverTime Function output](https://user-images.githubusercontent.com/300/81349715-69462700-9075-11ea-87c0-a8a1c564a1b6.png)
+![serverTime Function output](https://user-images.githubusercontent.com/32992335/107839683-609c2300-6d62-11eb-93d7-ff9c1bfb0ff2.png)
 
-> Since Redwood currently plays nicely with Netlify we use the same proxy path that Netlify does for functions, `/.netlify/functions`. If you are deploying somewhere else you can change this in  `redwood.toml` in the root of your app.
+### Interlude: `apiProxyPath`
+
+The `.redwood/functions` bit in the link you pointed your browser to is what's called the `apiProxyPath`. You can configure it in your `redwood.toml`:
+
+```toml{5}
+# redwood.toml
+
+[web]
+  port = 8910
+  apiProxyPath = "/.redwood/functions"
+```
+
+After you setup a deploy (via `yarn rw setup deploy <provider>`), it'll change to something more appropriate, like `.netlify/functions` in Netlify's case.
+
+<!-- https://community.redwoodjs.com/t/getting-cors-error-while-calling-a-lambda-function/186 -->
+<!-- link to something; maybe even  -->
+But what's an `apiProxyPath`? Well, when you go to deploy, your serverless functions won't be in the same place as your app; they'll be somewhere else. Sending requests to the `apiProxyPath` let's your provider handle the hard work of figuring out where they actually are, and making sure that your app can actually access them. 
+
+If you were to try and fetch `http://localhost:8911/serverTime` from the web side, you'd run into an error you'll get to know quite well: CORS.
+
+#### Interludeception: CORS
+
+Time for an interlude within an interlude, because that's how you'll always feel when it comes to CORS: you were doing something else, and then `No 'Access-Control-Allow-Origin' header is present on the requested resource`. Now you're doing CORS.
+
+If you don't know much about CORS, it's something you probably should know some about at some point. CORS stands for Cross Origin Resource Sharing; in a nutshell, by default, browsers aren't allowed to access resources outside their own domain. So, requests from `localhost:8910` can only access resources at `localhost:8910`. Since all your serverless functions are at `localhost:8911`, doing something like 
+
+```js
+// the `http://` is important!
+const serverTime = await fetch('http://localhost:8911/serverTime')
+```
+
+from the web side would give you an error like:
+
+```
+Access to fetch at 'http://localhost:8911/serverTime' from origin 'http://localhost:8910' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+```
+
+We could set the headers for `serverTime` to allow requests from any origin... but maybe a better idea would be to never request `8911` from `8910` in the first place. Hence the `apiProxyPath`! We're making a request to `8910/.redwood/functions/serverTime`&mdash;still the same domain&mdash;but the [webpack dev-server](https://webpack.js.org/configuration/dev-server/#devserverproxy) proxies them to `localhost:8911/serverTime` for us. 
 
 ## Getting the Time
 
-Let's get the current time and return it in the body of our handler:
+Ok&mdash;back to our custom Function. Let's get the current time and return it in the body of our handler:
 
 ```javascript{6}
 // api/src/functions/serverTime.js
@@ -37,7 +76,7 @@ export const handler = async (event, context) => {
 
 ![Time output screenshot](https://user-images.githubusercontent.com/300/81352089-87faec80-907a-11ea-96f7-bb05345a86d7.png)
 
-> Here we're using a [Chrome extension](https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh) which formats data that could be identified as JSON in a nicer way. In this case the date is wrapped in quotes, which is valid JSON, so the extension kicks in and formats it.
+> Here we're using a [Chrome extension](https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh) that prettifies data that could be identified as JSON. In this case, the date is wrapped in quotes, which is valid JSON, so the extension kicks in.
 
 How about we make sure the response is a JSON object:
 
@@ -55,15 +94,15 @@ export const handler = async (event, context) => {
 
 ![JSON time output screenshot](https://user-images.githubusercontent.com/300/81352131-9fd27080-907a-11ea-8db0-6308a4c48b5f.png)
 
-> Note that Node.js does not yet have ES module support, but we use Babel to transpile during the build phase so you can still use `import` syntax for external packages in your Functions.
+> Note that Node.js doesn't have ES module support (yet), but we use Babel to transpile during the build phase so you can still use `import` syntax for external packages in your Functions.
 
 ### Bonus: Filtering by Request Method
 
-Since you are most definitely an elite hacker you probably noticed that our new endpoint is available via all HTTP methods: **GET**, **POST**, **PATCH**, etc. In the spirit of [REST](https://www.codecademy.com/articles/what-is-rest) this endpoint should really only be accessible via a **GET**.
+Since you are most definitely an elite hacker, you probably noticed that our new endpoint is available via all HTTP methods: **GET**, **POST**, **PATCH**, etc. In the spirit of [REST](https://www.codecademy.com/articles/what-is-rest), this endpoint should really only be accessible via a **GET**.
 
 > Again, because you're an elite hacker you definitely said "excuse me, actually this endpoint should respond to **HEAD** and **OPTIONS** methods as well." Okay fine, but this is meant to be a quick introduction, cut us some slack! Why don't you write a recipe for us and open a PR, smartypants??
 
-If you inspect the `event` argument being sent into `handler` we can get all kinds of juicy details on this request:
+Inspecting the `event` argument being sent to `handler` gets us all kinds of juicy details on this request:
 
 ```javascript{4}
 // api/src/functions/serverTime.js
@@ -105,7 +144,7 @@ Take a look in the terminal window where you're running `yarn rw dev` to see the
 }
 ```
 
-That first entry is what we want, `httpMethod`. Let's check the method and return a 404 if it isn't a **GET**:
+That first entry, `httpMethod`, is what we want. Let's check the method and return a 404 if it isn't a **GET**:
 
 ```javascript{4-6}
 // api/src/functions/serverTime.js
@@ -139,13 +178,10 @@ Connection: keep-alive
 Content-Length: 0
 ```
 
-And just to be sure, let's make that same request with a GET (curl's default method):
+And just to be sure, let's make that same request with a **GET** (curl's default method):
 
 ```terminal
 $ curl http://localhost:8911/serverTime
-```
-
-```
 {"time":"2020-05-07T22:36:12.973Z"}
 ```
 
@@ -153,7 +189,7 @@ $ curl http://localhost:8911/serverTime
 
 ### Super Bonus: Callback Hell
 
-By default Redwood likes the async/await version of Function handlers, but you can also use the callback version. In that case your Function would look something like:
+Redwood uses the async/await version of Function handlers, but you can also use the callback version. In that case your Function would look something like:
 
 ```javascript{3,5,8,12}
 // api/src/functions/serverTime.js
@@ -179,4 +215,4 @@ Trust us, it's probably best to just stick with async/await instead of tampering
 
 ### Conclusion
 
-We hope this gave you enough info to get started with custom functions, and learned a little something about the futility of trying to change the past. Now go out and build something awesome!
+We hope this gave you enough info to get started with custom Functions, and that you learned a little something about the futility of trying to change the past. Now go out and build something awesome!
