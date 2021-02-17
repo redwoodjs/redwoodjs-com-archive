@@ -273,9 +273,13 @@ describe('Article', () => {
 })
 ```
 
-There are several other node/text types you can query against with RTL including `title`, `role` and `alt` attributes, form labels, placeholder text, and more. If you still can't access the node or text you're looking for there is a fallback attribute you can add to any DOM element and that can always be found: `data-testid` which you can access by `getByTestId`, `queryByTestId` and others.
+### Other Test Types
+
+There are several other node/text types you can query against with RTL including `title`, `role` and `alt` attributes, form labels, placeholder text, and more. If you still can't access the node or text you're looking for there is a fallback attribute you can add to any DOM element and that can always be found: `data-testid` which you can access by `getByTestId`, `queryByTestId` and others (but it involves including that attribute in your rendered HTML always, not just when running the test suite).
 
 Here's a cheatsheet from React Testing Library with the various permuations of `getBy`, `queryBy` and siblings: https://testing-library.com/docs/react-testing-library/cheatsheet/
+
+In addition to testing for static things like text and attributes, you can also fire events and check that the DOM responds as expected. Read more about [user-events](https://testing-library.com/docs/ecosystem-user-event), [jest-dom](https://testing-library.com/docs/ecosystem-jest-dom) and more at the [official Testing Library docs site](https://testing-library.com/docs/).
 
 ### Mocking GraphQL Calls
 
@@ -318,10 +322,10 @@ export default Article
 
 Redwood provides a function `mockGraphQLQuery()` for providing the result of a given named GraphQL. In this case our query is named `getArticle` so we can mock that in our test as follows:
 
-```javascript
+```javascript{8-16,19}
 // web/src/components/Article/Article.test.js
 
-import { render, screen, waitFor } from '@redwoodjs/testing'
+import { render, screen } from '@redwoodjs/testing'
 import Article from 'src/components/Article'
 
 describe('Article', () => {
@@ -337,12 +341,14 @@ describe('Article', () => {
     })
 
     render(<Article id={1} />)
-    await waitFor(() => expect(screen.getByText('Foobar')).toBeInTheDocument())
+    expect(await screen.findByText('Foobar')).toBeInTheDocument()
   })
 })
 ```
 
-We've imported an additional function at the top `waitFor()` which allows us to test for things that may not be present in the first render of the component. In our case when the component first renders the data hasn't loaded yet, so it will render only "Loading..." which does not include the title of our article. So without `waitFor()` the test will immediately fail. `waitFor()` is smart and waits for subsequent renders or a maximum amount of time before giving up. [Read more about `waitFor()`](https://testing-library.com/docs/dom-testing-library/api-async/#waitfor).
+We're using a new query here, `findByText()` which allows us to find things that may not be present in the first render of the component. In our case when the component first renders the data hasn't loaded yet, so it will render only "Loading..." which does *not* include the title of our article. So without `findByText()` the test will immediately fail. `findByText()` is smart and waits for subsequent renders or a maximum amount of time before giving up.
+
+Note that you need to make the test function `async` and put an `await` before the `findByText()` call. Read more about `findBy*()` queries and the higher level `waitFor()` [here](https://testing-library.com/docs/dom-testing-library/api-async).
 
 The function that's given as the second argument to `mockGraphQLQuery` will be sent a couple of arguments. The first, and only one we're using here, is `variables` which will contain the variables given to the query when `useQuery` was called. In this test we passed an `id` of `1` to the **&lt;Article&gt;** component when test rendering, so `variables` will contain `{id: 1}`. Using this variable in the callback function to `mockGraphQLQuery` allows us to reference those same variables in the body of our response. Here we're making sure that the returned article's `id` is the same as the one that was requested:
 
@@ -356,7 +362,7 @@ return {
 }
 ```
 
-Along with `variables` there is a second argument, an object which you can destructure a couple of properties from. One of them is `ctx` which is the context around the GraphQL response. One thing you can do with `ctx` is to simulate your GraphQL call returning an error:
+Along with `variables` there is a second argument: an object which you can destructure a couple of properties from. One of them is `ctx` which is the context around the GraphQL response. One thing you can do with `ctx` is to simulate your GraphQL call returning an error:
 
 ```javascript
 mockGraphQLQuery('getArticle', (variables, { ctx }) => {
@@ -391,18 +397,407 @@ it('renders an error message', async () => {
   })
 
   render(<Article id={1} />)
-  await waitFor(() =>
-    expect(screen.getByText('Sorry, there was an error')).toBeInTheDocument()
-  )
+  expect(await screen.findByText('Sorry, there was an error')).toBeInTheDocument()
 })
 ```
 
 Similar to how we mocked GraphQL queries, we can mock mutations as well. Read more about GraphQL mocking in our [Mocking GraphQL requests](/docs/mocking-graphql-requests.html) docs.
 
+### Mocking currentUser
+
+Most applications will eventually add [Authentication/Authorization](https://redwoodjs.com/docs/authentication) to the mix. How do we test that a component behaves a certain way when someone is logged in, or has a certain role?
+
+Consider the following component (that happens to be a page) which displays a "welcome" message if the user is logged in, and a button to log in if they aren't:
+
+```javascript
+// web/src/pages/HomePage/HomePage.js
+
+import { useAuth } from '@redwoodjs/auth'
+
+const HomePage = () => {
+  const { isAuthenticated, currentUser, logIn } = useAuth()
+
+  return (
+    <>
+      <header>
+        { isAuthenticated && <h1>Welcome back {currentUser.name}</h1> }
+      </header>
+      <main>
+        { !isAuthenticated && <button onClick={logIn}>Login</button> }
+      </main>
+    </>
+  )
+}
+```
+
+If we didn't do anything special, there would be no user logged in and we could only ever test the not-logged-in state:
+
+```javascript
+// web/src/pages/HomePage/HomePage.test.js
+
+import { render, screen } from '@redwoodjs/testing'
+import HomePage from './HomePage'
+
+describe('HomePage', () => {
+  it('renders a login button', () => {
+    render(<HomePage />)
+    expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument()
+  })
+})
+```
+
+> `getByRole()` allows you to look up elements by their role, which is an ARIA element that assists in accessiblity features. Many HTML elements have a [default role](https://www.w3.org/TR/html-aria/#docconformance) (including `<button>`) but you can also fine it yourself with a `role` attribute.
+
+This test is a little more explicit in that it expects an actual `<button>` element to exist and that it's label (name) be "Login". Being explicit with something as important as the login button can be a good idea, especially if you want to be sure that your site is friendly to screenreaders or another assitive browsing devices.
+
+Now how do we test that when a user *is* logged in, it outputs a message welcoming them, and that the button is *not* present? Similar to `mockGraphQLQuery()` Redwood also provides a `mockCurrentUser()` which tells Redwood what to return when the `getCurrentUser()` function of `api/src/lib/auth.js` is invoked:
+
+```javascript
+// web/src/pages/HomePage/HomePage.test.js
+
+import { render, screen, waitFor } from '@redwoodjs/testing'
+import HomePage from './HomePage'
+
+describe('HomePage', () => {
+  it('renders a login button when logged out', () => {
+    render(<HomePage />)
+    expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument()
+  })
+
+  it('does not render a login button when logged in', async () => {
+    mockCurrentUser({ name: 'Rob' })
+    render(<HomePage />)
+    await waitFor(() => {
+      expect(
+        screen.queryByRole('button', { name: 'Login' })
+      ).not.toBeInTheDocument()
+    })
+  })
+
+  it('renders a welcome message when logged in', async () => {
+    mockCurrentUser({ name: 'Rob' })
+    render(<HomePage />)
+    expect(await screen.findByText('Welcome back Rob')).toBeInTheDocument()
+  })
+})
+```
+
+Here we call `mockCurrentUser()` before the `render()` call. Right now our code only references the `name` of the current user, but you would want this object to include everything a real user contains, maybe an `email` and an array of `roles`. In fact, by including a list of `roles`, you are also mocking out calls to `hasRole()` in your components so that they respond correctly as to whether `currentUser` has an expected role or not.
+
+We also introduced a new function, `waitFor()` which will wait for render update before passing/failing the expectation. Although `findByRole()` will wait for an update, it will raise an error if the element is not found (similar to `getByRole()`). So here we had to switch to `queryByRole()` but that version isn't async, so we added `waitFor()` to get the async behavior back.
+
+You may have noticed above that we created two tests, one for checking the button and one for checking the "welcome" message. This is a best practice in testing: keep your tests as small as possible and only testing one thing each. If you find that you're using the word "and" in the name of your test (like "does not render a login button *and* renders a welcome message") that's a sign that your test is doing too much.
+
+We had to duplicate our `mockCurrentUser()` call and duplication is usually another sign that things can be refactored. In Jest you can nest `describe` blocks and include setup that is shared by the members of that block:
+
+```javascript
+describe('HomePage', () => {
+  describe('logged out', () => {
+    it('renders a login button when logged out', () => {
+      render(<HomePage />)
+      expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument()
+    })
+  })
+
+  describe('log in', () => {
+    beforeEach(() => {
+      mockCurrentUser({ name: 'Rob' })
+    })
+
+    it('does not render a login button when logged in', async () => {
+      render(<HomePage />)
+      await waitFor(() => {
+        expect(
+          screen.queryByRole('button', { name: 'Login' })
+        ).not.toBeInTheDocument()
+      })
+    })
+
+    it('renders a welcome message when logged in', async () => {
+      render(<HomePage />)
+      expect(await screen.findByText('Welcome back Rob')).toBeInTheDocument()
+    })
+  })
+})
+```
+
+However, nest with caution: the more deeply nested your tests are the harder it is to read through the file and figure out what's in scope and what's not by the time your actual test is invoked. In our test above, if you just focused on the last test, you would have no idea that `currentUser` is being mocked. Imagine a test file with dozens of tests and it becomes a chore to scroll through and mentally keep track of what variables are in scope as you look for nested `beforeEach()` blocks.
+
+Some schools of thought say you should keep your test files flat (that is, no nesting) which trades ease of readibility and refactoring for duplication: each test is completely self contained and you know you can rely on just the code inside that test to determine what's in scope. It makes future test updates much easier. For what it's worth, your humble author endorses this view!
+
+## Testing Pages & Layouts
+
+Pages and Layouts are just regular components so all the same techniques apply!
+
 ## Testing Cells
 
-### Mocks
+Testing cells is very similar to testing components: something is rendered to the DOM and you generally want to make sure that certain expected elements are present.
 
+Two situations make testing cells unique:
+
+1. A single cell can export up to four separate components
+2. There will always be a GraphQL query taking place
+
+The first situation is really no different than regular component testing, you just test more than one component in your test. For example:
+
+```javascript
+// web/src/components/ArticleCell/ArticleCell.js
+
+import Article from 'src/components/Article'
+
+export const QUERY = gql`
+  query GetArticle($id: Int!) {
+    article(id: $id) {
+      id
+      title
+      body
+    }
+  }
+`
+
+export const Loading = () => <div>Loading...</div>
+
+export const Empty = () => <div>Empty</div>
+
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
+
+export const Success = ({ article }) => {
+  return <Article article={article} />
+}
+```
+
+Here we're exporting four components and if you created this cell with the [cell generator](https://redwoodjs.com/docs/cli-commands.html#cell) then you'll already have four tests that make sure that each component renders without errors:
+
+```javascript
+// web/src/components/ArticleCell/ArticleCell.test.js
+
+import { render, screen } from '@redwoodjs/testing'
+import { Loading, Empty, Failure, Success } from './ArticleCell'
+import { standard } from './ArticleCell.mock'
+
+describe('ArticleCell', () => {
+  it('renders Loading successfully', () => {
+    expect(() => {
+      render(<Loading />)
+    }).not.toThrow()
+  })
+
+  it('renders Empty successfully', async () => {
+    expect(() => {
+      render(<Empty />)
+    }).not.toThrow()
+  })
+
+  it('renders Failure successfully', async () => {
+    expect(() => {
+      render(<Failure error={new Error('Oh no')} />)
+    }).not.toThrow()
+  })
+
+  it('renders Success successfully', async () => {
+    expect(() => {
+      render(<Success article={standard().article} />)
+    }).not.toThrow()
+  })
+})
+```
+
+You might think that "rendering without errors" is a pretty lame test but this is actually a great start. In React something usually renders successfully or fails spectacularly, so here we're making sure that there are no obvious issues with each component.
+
+You can expand on these tests by checking for certain text in each component is present, just as you would with a regular component test. But, if you're paying close attention you may have noticed something amiss: a cell runs a GraphQL query before rendering the **&lt;Success&gt;** component, but there's no `mockGraphQLQuery()` present in this test. How does that work? Enter **Cell Mocks**.
+
+### Cell Mocks
+
+To save you from having to write a custom `mockGraphQLQuery()` for each cell test, Redwood will do that for you. You just define the data that you want returned by the GraphQL queries, export the data from functions in a separate "mocks" file, and then tell each test which mock function's data you want to use.
+
+Again, if you used the cell generator, you'll get a `mocks.js` file along with the cell component and the test file:
+
+```javascript
+// web/src/components/ArticleCell.mocks.js
+
+export const standard = () => ({
+  article: {
+    id: 1,
+    title: 'Foobar',
+    body: 'Lorem ipsum...'
+  }
+})
+```
+
+Each mock will start with a `standard()` function which has special significance (more on that later). The return of this function is the data you want to be returned from the GraphQL `QUERY` defined at the top of your cell.
+
+> Something to note is that the structure of the data returned by your `QUERY` and the structure of the object returned by the mock is in no way required to be identical as far as Redwood is concerned. You could be querying for an `article` but have the mock return an `animal` and the test will happily pass. Redwood just intercepts the GraphQL query and returns the mock data. This is something to keep in mind if you make major changes to your `QUERY`—be sure to make similar changes to your returned mock data or you could get falsely passing tests!
+
+Once you start testing more scenarios you can add custom mocks functions with different names for use in your tests. For example, maybe you have a case where an article has no body, only a title, and you want to be sure that your component still renders correctly. You could create an additional mock that simulates this condition:
+
+```javascript
+// web/src/components/ArticleCell.mocks.js
+
+export const standard = () => ({
+  article: {
+    id: 1,
+    title: 'Foobar',
+    body: 'Lorem ipsum...'
+  }
+})
+
+export const missingBody = {
+  article: {
+    id: 2,
+    title: 'Barbaz',
+    body: null
+  }
+}
+```
+
+And then you just reference that new mock in your test:
+
+```javascript
+// web/src/components/ArticleCell/ArticleCell.test.js
+
+import { render, screen } from '@redwoodjs/testing'
+import { Loading, Empty, Failure, Success } from './ArticleCell'
+import { standard, missingBody } from './ArticleCell.mock'
+
+describe('ArticleCell', () => {
+  /// other tests...
+
+  it('Success renders successfully', async () => {
+    expect(() => {
+      render(<Success article={standard().article} />)
+    }).not.toThrow()
+  })
+
+
+  it('Success renders successfully without a body', async () => {
+    expect(() => {
+      render(<Success article={missingBody.article} />)
+    }).not.toThrow()
+  })
+})
+```
+
+Note that this second mock simply returns an object instead of a function. In the simplest case all you need your mock to return is an object. But there are cases where you may want to include logic in your mock, and in these cases you'll appreciate the function container. Especially in the following scenario...
+
+### Testing Components That Include Cells and the `standard()` Mock
+
+Consider the case where you have a page which renders a cell inside of it. You write a test for the page (using regular component testing techniques mentioned above). But if the page includes a cell, and a cell wants to run a GraphQL query, what happens when the page is rendered?
+
+This is where the specially named `standard()` mock comes into play: the GraphQL query in the cell will be intercepted and the response will be *the content of the `standard()` mock*. This means that no matter how deeply nested your component/cell structure becomes, you can count on every cell in that stack rendering in a predictiable way.
+
+And this is where `standard()` being a function becomes important. The GraphQL call is intercepted behind the scenes with the same `mockGraphQLQuery()` function we learned about [earlier](#mocking-graphql). And since it's using that same function, the second argument (the function which runs to return the mocked data) recieves the same arguments (`variables` and an object with keys like `ctx`).
+
+So, all of that is to say that when `standard()` is called it will receive the variables and context that goes along with every GraphQL query, and you can make use of that data in the `standard()` mock. So that means it's possible to, for example, look at the `variables` that were passed in and conditionally return a different mock.
+
+Perhaps you have a products page that renders either in stock or out of stock products. You could simulate one product that's in stock (has an `inventory > 0` and one that's out by checking for the id and returning in stock items for even numbered product ids and out of stock items for odd numbered:
+
+```javascript
+// web/src/components/ProductCell/ProductCell.mock.js
+
+export const standard = (variables) => {
+  if (variables.status === 'instock') {
+    return {
+      products: [
+        {
+          id: variables.id,
+          name: 'T-shirt',
+          inventory: 100
+        }
+      ]
+    }
+  } else {
+    return {
+      products: [
+        {
+          id: variables.id,
+          title: 'Hat',
+          inventory: 0
+        }
+      ]
+    }
+  }
+})
+```
+
+Assuming you had a **&lt;ProductPage&gt;** component:
+
+```javascript
+// web/src/components/ProductCell/ProductCell.mock.js
+
+import ProductCell from 'src/components/ProductCell'
+
+const ProductPage = ({ status }) => {
+  return {
+    <div>
+      <h1>{ status === 'instock' ? 'In Stock' : 'Out of Stock' }</h1>
+      <ProductsCell status={status} />
+    </div>
+  }
+}
+```
+
+Which, in your page test, would let you do something like:
+
+```javascript
+// web/src/pages/ProductPage/ProductPage.test.js
+
+import { render, screen } from '@redwoodjs/testing'
+import ArticleCell from 'src/components/ArticleCell'
+
+describe('ProductPage', () => {
+  it('renders in stock products', () => {
+    render(<ProductPage status='instock' />)
+    expect(screen.getByText('In Stock')).toBeInTheDocument()
+  })
+
+  it('renders out of stock products', async () => {
+    render(<ProductPage status='outofstock' />)
+    expect(screen.getByText('Out of Stock')).toBeInTheDocument()
+  })
+})
+```
+
+Be aware that if you do this, and continue to use the `standard()` mock in your regular cell tests, you'll either need to start passing in `variables` yourself:
+
+```javascript{8}
+// web/src/components/ArticleCell/ArticleCell.test.js
+
+describe('ArticleCell', () => {
+  /// other tests...
+
+  test('Success renders successfully', async () => {
+    expect(() => {
+      render(<Success article={standard({ id: 1 }).article} />)
+    }).not.toThrow()
+  })
+})
+```
+
+Or conditionally check that `variables` exists at all before basing any logic on them:
+
+```javascript{4,15}
+// web/src/components/ArticleCell/ArticleCell.mock.js
+
+export const standard = (variables) => {
+  if (variables && variables.id % 2 === 0) {
+    return {
+      article: {
+        id: variables.id,
+        title: 'Even article',
+        body: 'Lorem ipsum...'
+      }
+    }
+  } else {
+    return {
+      article: {
+        id: variables?.id || 1,
+        title: 'Odd article',
+        body: 'Dolar sit amet...'
+      }
+    }
+  }
+})
+```
 
 ## Testing Services
 
