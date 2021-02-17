@@ -223,7 +223,7 @@ So, the above test in plain English says "if there is any DOM node containing th
 
 ### queryByText()
 
-Why not use `getByText()` for everything? Because it will raise an error if the text is *not* found in the document. That means if you want to explictly test that some text is NOT present, you can't—you'll always get an error.
+Why not use `getByText()` for everything? Because it will raise an error if the text is *not* found in the document. That means if you want to explictly test that some text is *not* present, you can't—you'll always get an error.
 
 Consider an update to our **&lt;Article&gt;** component:
 
@@ -272,6 +272,50 @@ describe('Article', () => {
   })
 })
 ```
+
+### getByRole() / queryByRole()
+
+`getByRole()` allows you to look up elements by their "role", which is an ARIA element that assists in accessiblity features. Many HTML elements have a [default role](https://www.w3.org/TR/html-aria/#docconformance) (including `<button>` and `<a>`) but you can also define it yourself with a `role` attribute on an element.
+
+Sometimes it may not be enough to say "this text must be on the page." You may to test that an actual *link* is present on the page. Maybe you have a list of user's names and each name should be a link to a detail page. We could test that like so:
+
+```javascript
+it('renders a link with a name', () => {
+  render(<List data={[{ name: 'Rob' }, { name: 'Tom' }]} />)
+  expect(screen.getByRole('link', { name: 'Rob' })).toBeInTheDocument()
+  expect(screen.getByRole('link', { name: 'Tom' })).toBeInTheDocument()
+})
+```
+
+`getByRole()` expects the role (`<a>` elements have a default role of `link`) and then an object with options, one of which is `name` which refers to the text content inside the element. Check out [the docs for the `*ByRole` queries](https://testing-library.com/docs/queries/byrole).
+
+If we wanted to eliminate some duplication (and make it easy to expand or change the names in the future):
+
+```javascript
+it('renders a link with a name', () => {
+  const data = [{ name: 'Rob' }, { name: 'Tom' }]
+
+  render(<List data={data} />)
+  data.forEach((datum) => {
+    expect(screen.getByRole('link', { name: data.name })).toBeInTheDocument()
+  })
+})
+```
+
+But what if we wanted to check on the `href` of the link itself to be sure it's correct? In that case we can capture the `screen.getByRole()` return and run expectations on that as well (the `forEach()` loop has been removed here for simplicity):
+
+```javascript{2,6-8}
+import { routes } from '@redwoodjs/router'
+
+it('renders a link with a name', () => {
+  render(<List data={[{ id: 1, name: 'Rob' }]} />)
+  const element = screen.getByRole('link', { name: data.name })
+  expect(element).toBeInTheDocument()
+  expect(element).toHaveAttribute('href', routes.user({ id: data.id }))
+})
+```
+
+The full list of available matchers don't seem to have nice docs on the Testing Library site, but you can find them in the [README](https://github.com/testing-library/jest-dom) inside the main repo.
 
 ### Other Test Types
 
@@ -445,8 +489,6 @@ describe('HomePage', () => {
   })
 })
 ```
-
-> `getByRole()` allows you to look up elements by their role, which is an ARIA element that assists in accessiblity features. Many HTML elements have a [default role](https://www.w3.org/TR/html-aria/#docconformance) (including `<button>`) but you can also fine it yourself with a `role` attribute.
 
 This test is a little more explicit in that it expects an actual `<button>` element to exist and that it's label (name) be "Login". Being explicit with something as important as the login button can be a good idea, especially if you want to be sure that your site is friendly to screenreaders or another assitive browsing devices.
 
