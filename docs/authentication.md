@@ -539,14 +539,10 @@ Depending on the credentials provided:
 
 For the docs on Authentication, see: <https://docs.nhost.io/auth>
 
-If you are also using Nhost as your GraphQL API server, you will need to set `skipFetchCurrentUser` when creating the Nhost client, as follows:
+If you are also using Nhost as your GraphQL API server, you will need to pass `skipFetchCurrentUser` as a prop to `AuthProvider` , as follows:
 
 ```js
-const nhostClient = createClient({
-  baseURL: 'https://backend-REPLACE.nhost.app',
-  autoLogin: false,
-  skipFetchCurrentUser: true, 
-})
+<AuthProvider client={nhost} type="nhost" skipFetchCurrentUser>
 ```
 
 This avoids having an additional request to fetch the current user which is meant to work with Apollo Server and Prisma.
