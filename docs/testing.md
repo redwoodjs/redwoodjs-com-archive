@@ -169,6 +169,31 @@ Storybook itself doesn't appear to be related to testing at all—it's for build
 
 Storybook can provide a quick way to inspect all visual aspects of your site without the tried-and-true method of having a QA person log in and exercise every possible function on the site. Unfortunately, checking those UI elements is not something that Storybook can automate for you, and so can't be part of a continuous integration system. But it makes it *possible* to do so, even if it currently requires a human touch.
 
+## Test Commands
+
+To run your entire suite you can use a single command:
+
+```terminal
+yarn rw test
+```
+
+This will start Jest in "watch" mode which will continually run and monitor the file system for changes. If you change a test or the component that's being tested, Jest will re-run any associated test file. This is handy when you're spending the afternoon writing tests and always to verify the the code you're adding.
+
+To start the process without watching, add the `--no-watch` flag:
+
+```terminal
+yarn rw test --no-watch
+```
+
+This one is handy before committing some changes to be sure you didn't inadvertantly break something you didn't expect, or before a deploy to production.
+
+You can run only the web-side or api-side tests by including the side as another argument to the command:
+
+```terminal
+yarn rw test web
+yarn rw test api
+```
+
 ## Testing Components
 
 Let's start with the things you're probably most familiar with if you'd done any React work (with or without Redwood): components. The simplest test for a component would be matching against the exact HTML that's rendered by React (this doesn't actually work so don't bother trying):
@@ -315,13 +340,13 @@ it('renders a link with a name', () => {
 })
 ```
 
-The full list of available matchers don't seem to have nice docs on the Testing Library site, but you can find them in the [README](https://github.com/testing-library/jest-dom) inside the main repo.
+### Other Queries/Matchers
 
-### Other Test Types
-
-There are several other node/text types you can query against with RTL including `title`, `role` and `alt` attributes, form labels, placeholder text, and more. If you still can't access the node or text you're looking for there is a fallback attribute you can add to any DOM element and that can always be found: `data-testid` which you can access by `getByTestId`, `queryByTestId` and others (but it involves including that attribute in your rendered HTML always, not just when running the test suite).
+There are several other node/text types you can query against with React Testing Library including `title`, `role` and `alt` attributes, form labels, placeholder text, and more. If you still can't access the node or text you're looking for there is a fallback attribute you can add to any DOM element and that can always be found: `data-testid` which you can access by `getByTestId`, `queryByTestId` and others (but it involves including that attribute in your rendered HTML always, not just when running the test suite).
 
 Here's a cheatsheet from React Testing Library with the various permuations of `getBy`, `queryBy` and siblings: https://testing-library.com/docs/react-testing-library/cheatsheet/
+
+The full list of available matchers like `toBeInTheDocument()` and `toHaveAttribute()` don't seem to have nice docs on the Testing Library site, but you can find them in the [README](https://github.com/testing-library/jest-dom) inside the main repo.
 
 In addition to testing for static things like text and attributes, you can also fire events and check that the DOM responds as expected. Read more about [user-events](https://testing-library.com/docs/ecosystem-user-event), [jest-dom](https://testing-library.com/docs/ecosystem-jest-dom) and more at the [official Testing Library docs site](https://testing-library.com/docs/).
 
@@ -524,11 +549,37 @@ describe('HomePage', () => {
 })
 ```
 
-Here we call `mockCurrentUser()` before the `render()` call. Right now our code only references the `name` of the current user, but you would want this object to include everything a real user contains, maybe an `email` and an array of `roles`. In fact, by including a list of `roles`, you are also mocking out calls to `hasRole()` in your components so that they respond correctly as to whether `currentUser` has an expected role or not.
+Here we call `mockCurrentUser()` before the `render()` call. Right now our code only references the `name` of the current user, but you would want this object to include everything a real user contains, maybe an `email` and an array of `roles`.
 
-We also introduced a new function, `waitFor()` which will wait for render update before passing/failing the expectation. Although `findByRole()` will wait for an update, it will raise an error if the element is not found (similar to `getByRole()`). So here we had to switch to `queryByRole()` but that version isn't async, so we added `waitFor()` to get the async behavior back.
+> By including a list of `roles`, you are also mocking out calls to `hasRole()` in your components so that they respond correctly as to whether `currentUser` has an expected role or not.
+>
+> Given a component that does something like this:
+>
+> ```javascript
+> const { currentUser, hasRole } = useAuth()
+>
+> return (
+>   { hasRole('admin') && <button onClick={deleteUser}>Delete User</button> }
+> )
+> ```
+>
+> You can test both cases (user does and does not have the "admin" role) with two separate mocks:
+>
+> ```javascript
+> mockCurrentUser({ roles: ['admin'] })
+>
+> mockCurrentUser({ roles: [] })
+> ```
+>
+> That's it!
 
-You may have noticed above that we created two tests, one for checking the button and one for checking the "welcome" message. This is a best practice in testing: keep your tests as small as possible and only testing one thing each. If you find that you're using the word "and" in the name of your test (like "does not render a login button *and* renders a welcome message") that's a sign that your test is doing too much.
+We introduced a new function, `waitFor()` which will wait for a render update before passing/failing the expectation. Although `findByRole()` will wait for an update, it will raise an error if the element is not found (similar to `getByRole()`). So here we had to switch to `queryByRole()`, but that version isn't async, so we added `waitFor()` to get the async behavior back.
+
+> Figuring out which assertions need to be async and which ones don't can be frustrating, we know. If you get a failing test when using `screen` you'll see the output of the DOM dumped along with the failure message, which helps find what went wrong. You can see exactly what the test saw (or didn't see) in the DOM at the time of the failure.
+>
+> If you see some text rendering that you're sure shouldn't be there (because maybe you have a conditional around whether or not to display it) this is a good indication that the test isn't waiting for a render update that would cause that conditional to render the opposite output. Change to a `findBy*` query or wrap the `expect()` in a `waitFor()` and you should be good to go!
+
+You may have noticed above that we created two tests, one for checking the button and one for checking the "welcome" message. This is a best practice in testing: keep your tests as small as possible by only testing one "thing" in each. If you find that you're using the word "and" in the name of your test (like "does not render a login button *and* renders a welcome message") that's a sign that your test is doing too much.
 
 We had to duplicate our `mockCurrentUser()` call and duplication is usually another sign that things can be refactored. In Jest you can nest `describe` blocks and include setup that is shared by the members of that block:
 
@@ -544,10 +595,10 @@ describe('HomePage', () => {
   describe('log in', () => {
     beforeEach(() => {
       mockCurrentUser({ name: 'Rob' })
+      render(<HomePage />)
     })
 
     it('does not render a login button when logged in', async () => {
-      render(<HomePage />)
       await waitFor(() => {
         expect(
           screen.queryByRole('button', { name: 'Login' })
@@ -556,16 +607,15 @@ describe('HomePage', () => {
     })
 
     it('renders a welcome message when logged in', async () => {
-      render(<HomePage />)
       expect(await screen.findByText('Welcome back Rob')).toBeInTheDocument()
     })
   })
 })
 ```
 
-However, nest with caution: the more deeply nested your tests are the harder it is to read through the file and figure out what's in scope and what's not by the time your actual test is invoked. In our test above, if you just focused on the last test, you would have no idea that `currentUser` is being mocked. Imagine a test file with dozens of tests and it becomes a chore to scroll through and mentally keep track of what variables are in scope as you look for nested `beforeEach()` blocks.
+While the primoridal developer inside of you probably breathed a sign of relief seeing this refactor, heed this warning: the more deeply nested your tests become, the harder it is to read through the file and figure out what's in scope and what's not by the time your actual test is invoked. In our test above, if you just focused on the last test, you would have no idea that `currentUser` is being mocked. Imagine a test file with dozens of tests and multiple levels of nested `describe`s and it becomes a chore to scroll through and mentally keep track of what variables are in scope as you look for nested `beforeEach()` blocks.
 
-Some schools of thought say you should keep your test files flat (that is, no nesting) which trades ease of readibility and refactoring for duplication: each test is completely self contained and you know you can rely on just the code inside that test to determine what's in scope. It makes future test updates much easier. For what it's worth, your humble author endorses this view!
+Some schools of thought say you should keep your test files flat (that is, no nesting) which trades ease of readibility for duplication: each test is completely self contained and you know you can rely on just the code inside that test to determine what's in scope. It makes future test modifications  easier because each test only relies on the code inside of itself. You may get nervous thinking about changing 10 identical instances of `mockCurrentUser()` but that kind of thing is exactly what your IDE is good at! For what it's worth, your humble author endorses the flat tests theory.
 
 ## Testing Pages & Layouts
 
@@ -646,22 +696,20 @@ describe('ArticleCell', () => {
 
 You might think that "rendering without errors" is a pretty lame test but this is actually a great start. In React something usually renders successfully or fails spectacularly, so here we're making sure that there are no obvious issues with each component.
 
-You can expand on these tests by checking for certain text in each component is present, just as you would with a regular component test. But, if you're paying close attention you may have noticed something amiss: a cell runs a GraphQL query before rendering the **&lt;Success&gt;** component, but there's no `mockGraphQLQuery()` present in this test. How does that work? Enter **Cell Mocks**.
+You can expand on these tests by checking for certain text in each component is present, just as you would with a regular component test.
+
+When the **&lt;Success&gt;** component is tested, what's this `standard()` function?
 
 ### Cell Mocks
 
-To save you from having to write a custom `mockGraphQLQuery()` for each cell test, Redwood will do that for you. You just define the data that you want returned by the GraphQL queries, export the data from functions in a separate "mocks" file, and then tell each test which mock function's data you want to use.
-
-Again, if you used the cell generator, you'll get a `mocks.js` file along with the cell component and the test file:
+If you used the cell generator, you'll get a `mocks.js` file along with the cell component and the test file:
 
 ```javascript
 // web/src/components/ArticleCell.mocks.js
 
 export const standard = () => ({
   article: {
-    id: 1,
-    title: 'Foobar',
-    body: 'Lorem ipsum...'
+    id: 42,
   }
 })
 ```
@@ -670,7 +718,9 @@ Each mock will start with a `standard()` function which has special significance
 
 > Something to note is that the structure of the data returned by your `QUERY` and the structure of the object returned by the mock is in no way required to be identical as far as Redwood is concerned. You could be querying for an `article` but have the mock return an `animal` and the test will happily pass. Redwood just intercepts the GraphQL query and returns the mock data. This is something to keep in mind if you make major changes to your `QUERY`—be sure to make similar changes to your returned mock data or you could get falsely passing tests!
 
-Once you start testing more scenarios you can add custom mocks functions with different names for use in your tests. For example, maybe you have a case where an article has no body, only a title, and you want to be sure that your component still renders correctly. You could create an additional mock that simulates this condition:
+Why not just include this data inline in the test? We're about to reveal the answer in the next section, but before we do just a little more info about working with these `mocks.js` file...
+
+Once you start testing more scenarios you can add custom mocks with different names for use in your tests. For example, maybe you have a case where an article has no body, only a title, and you want to be sure that your component still renders correctly. You could create an additional mock that simulates this condition:
 
 ```javascript
 // web/src/components/ArticleCell.mocks.js
@@ -727,36 +777,24 @@ Consider the case where you have a page which renders a cell inside of it. You w
 
 This is where the specially named `standard()` mock comes into play: the GraphQL query in the cell will be intercepted and the response will be *the content of the `standard()` mock*. This means that no matter how deeply nested your component/cell structure becomes, you can count on every cell in that stack rendering in a predictiable way.
 
-And this is where `standard()` being a function becomes important. The GraphQL call is intercepted behind the scenes with the same `mockGraphQLQuery()` function we learned about [earlier](#mocking-graphql). And since it's using that same function, the second argument (the function which runs to return the mocked data) recieves the same arguments (`variables` and an object with keys like `ctx`).
+And this is where `standard()` being a function becomes important. The GraphQL call is intercepted behind the scenes with the same `mockGraphQLQuery()` function we learned about [earlier](#mocking-graphql). And since it's using that same function, the second argument (the function which runs to return the mocked data) receives the same arguments (`variables` and an object with keys like `ctx`).
 
-So, all of that is to say that when `standard()` is called it will receive the variables and context that goes along with every GraphQL query, and you can make use of that data in the `standard()` mock. So that means it's possible to, for example, look at the `variables` that were passed in and conditionally return a different mock.
+So, all of that is to say that when `standard()` is called it will receive the variables and context that goes along with every GraphQL query, and you can make use of that data in the `standard()` mock. So that means it's possible to, for example, look at the `variables` that were passed in and conditionally return a different object.
 
-Perhaps you have a products page that renders either in stock or out of stock products. You could simulate one product that's in stock (has an `inventory > 0` and one that's out by checking for the id and returning in stock items for even numbered product ids and out of stock items for odd numbered:
+Perhaps you have a products page that renders either in stock or out of stock products. You could simulate one product that's in stock and one that's out by checking for the id and returning in stock items for even numbered product ids and out of stock items for odd numbered:
 
 ```javascript
 // web/src/components/ProductCell/ProductCell.mock.js
 
 export const standard = (variables) => {
-  if (variables.status === 'instock') {
-    return {
-      products: [
-        {
-          id: variables.id,
-          name: 'T-shirt',
-          inventory: 100
-        }
-      ]
-    }
-  } else {
-    return {
-      products: [
-        {
-          id: variables.id,
-          title: 'Hat',
-          inventory: 0
-        }
-      ]
-    }
+  return {
+    products: [
+      {
+        id: variables.id,
+        name: 'T-shirt',
+        inventory: variables.status === 'instock' ? 100 : 0
+      }
+    ]
   }
 })
 ```
@@ -806,10 +844,9 @@ Be aware that if you do this, and continue to use the `standard()` mock in your 
 
 describe('ArticleCell', () => {
   /// other tests...
-
   test('Success renders successfully', async () => {
     expect(() => {
-      render(<Success article={standard({ id: 1 }).article} />)
+      render(<Success article={standard({ status: 'instock' }).article} />)
     }).not.toThrow()
   })
 })
@@ -821,27 +858,23 @@ Or conditionally check that `variables` exists at all before basing any logic on
 // web/src/components/ArticleCell/ArticleCell.mock.js
 
 export const standard = (variables) => {
-  if (variables && variables.id % 2 === 0) {
-    return {
-      article: {
-        id: variables.id,
-        title: 'Even article',
-        body: 'Lorem ipsum...'
-      }
-    }
-  } else {
-    return {
-      article: {
-        id: variables?.id || 1,
-        title: 'Odd article',
-        body: 'Dolar sit amet...'
-      }
+  return {
+    product: {
+      id: variables?.id || 1,
+      name: 'T-shirt',
+      inventory: variables && variables.status === 'instock' ? 100 : 0
     }
   }
 })
 ```
 
 ## Testing Services
+
+Until now we've only tested things on the web-side of our app. When we want test the api-side that means testing our services.
+
+In some ways testing a service feels more "concrete" than testing components—services deal with hard data coming out of a database or third party API, while components deal with messy things like language, layout and even design elements.
+
+Services will usually contain most of your business logic which is important to verify for correctness—crediting or debiting the wrong account number on the services side could end your business!
 
 ### The Test Database
 
