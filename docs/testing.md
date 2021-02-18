@@ -878,4 +878,69 @@ Services will usually contain most of your business logic which is important to 
 
 ### The Test Database
 
+To simplify service testing, Redwood creates a test database that it will execute queries against rather than mess with your development database. By default this database will be located at the location defined by a `TEST_DATABASE_URL` environment variable and will fall back to `.redwood/test.db` if that var does not exist.
+
+If you're using Postgres or MySQL locally you'll want to set that env var to your connection string for a test database in those services.
+
+> Does anyone else find it confusing that the software itself is called a "database", but the container that actually holds your data is also called a "database," and you can have multiple databases (containers) within one instance of a database (software)?
+
+When you start your test suite you may have noticed some output from Prisma talking about migrating the database. Redwood will automatically run `yarn rw prisma migrate dev` against your test database to make sure it's up-to-date.
+
+### Writing Service Tests
+
+A service test can be just as simple as a component test:
+
+```javascript
+// api/src/services/users/users.js
+export const createUser = ({ input }) => {
+  return db.user.create({ data: input })
+}
+
+// api/src/services/users/users.test.js
+import { user } from './users'
+
+describe('users service', () => {
+  it('creates a user', async () => {
+    const user = await createUser({ name: 'David' })
+    expect(user.id).not.toBeNull()
+    expect(user.name).toEqual('David')
+  })
+})
+```
+
+This test creates a user and then verifies that it now has an `id` and that the name is what we sent in as the `input`. Note the use of `async`/`await`: although the service itself doesn't use `async`/`await`, when the service is invoked as a GraphQL resolver, the GraphQL provider sees that it's a Promise and waits for it to resolve before returning the response. We don't have that middleman here in the test suite so we need to `await` manually.
+
+Did a user really get created somewhere? Yes, in the test database!
+
+> In theory, it would be possible to mock out the calls to `db` to avoid talking to the database completely, but we felt that the juice wouldn't be worth the squeeze—you will end up mocking tons of functionality that is also under active development (Prisma) and you'd constantly be chasing your tail trying to keep up. So we give devs a real database to access and remove a whole class of frustrating bugs and false test passes/failures because of out-of-date mocks.
+
+What about testing code that retrieves a record from the database? Easy, just pre-seed the data into the database first, then test the retrieval. **Seeding** refers to setting some data in the database that some other code requires to be present to get its job done. In a production deployment this could be a list of pre-set tags that users can apply to forum posts. In our tests it refers to data that needs to be present for our *actual* test to use.
+
+In the following code, the "David" user is the seed. What we're actually testing is the `users()` and `user()` functions. We verify that the data returned by them matches the structure and content of the seed:
+
+```javascript
+it('retrieves all users', async () => {
+  const data = await createUser({ name: 'David' })
+
+  const foundUsers = await users({ id: data.id })
+  expect(foundUsers.length).toEqual(1)
+  expect(foundUsers[0].name).toEqual(data.name)
+})
+
+it('retrieves a single user', async () => {
+  const data = await createUser({ name: 'David' })
+
+  const foundUser = await user({ id: data.id })
+  expect(user.id).toEqual(data.id)
+  expect(user.name).toEqual(data.name)
+})
+```
+
+Notice that the string "David" only appears once (in the seed) and the expectations are comparing against values in `data`, not the raw strings again. This is a best practice and makes it easy to update your test data in one place and have the expectations continue to pass without edits.
+
+Did your spidey sense tingle when you saw that exact same seed duplicated in each test? We probably have other tests that check that a user is editable and deletable, both of which would require the same seed again! Even more tingles! When there's obvious duplication like this you should know by now that Redwood is going to try and remove it.
+
 ### Scenarios
+
+Redwood created the concept of "scenarios" to cover this exact case. A scenario is a set of seed data that you can count on existing at the start of your test and removed again at the end. This means that each test lives in isolation, starts with the exact same database state as every other one, and any changes you make are only around for the length of that one test, they won't cause side-effects in any other.
+
