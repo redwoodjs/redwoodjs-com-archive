@@ -136,7 +136,7 @@ yarn rw dataMigrate <command>
 | Command   | Description                                                                                 |
 | :-------- | :------------------------------------------------------------------------------------------ |
 | `install` | Appends `DataMigration` model to `schema.prisma`, creates `api/db/dataMigrations` directory |
-| `up`      | Executes oustanding data migrations                                                         |
+| `up`      | Executes outstanding data migrations                                                         |
 
 ### install
 
@@ -1005,7 +1005,7 @@ yarn rw generate sdl <model>
 
 The sdl will inspect your `schema.prisma` and will do its best with relations. Schema to generators isn't one-to-one yet (and might never be).
 
-<!-- See limited genreator support for relations
+<!-- See limited generator support for relations
 https://community.redwoodjs.com/t/prisma-beta-2-and-rwjs-limited-generator-support-for-relations-with-workarounds/361 -->
 
 | Arguments & Options  | Description                   |
@@ -1338,7 +1338,7 @@ yarn rw prisma migrate <command>
 
 As a database toolkit, Prisma strives to be as holistic as possible. Prisma Migrate lets you use Prisma schema to make changes to your database declaratively, all while keeping things deterministic and fully customizable by generating the migration steps in a simple, familiar format: SQL. 
 
-Since migrate generates plain SQL files, you can edit those SQL files before applying the migration using `yarn rw prisma migrate --create-only`. This creates the migration based on the changes in the Prisma schema, but doesn't apply it, giving you the chance to go in and make any modificaitons you want. [Daniel Norman's tour of Prisma Migrate](https://www.youtube.com/watch?v=0LKhksstrfg) demonstrates this and more to great effect.
+Since migrate generates plain SQL files, you can edit those SQL files before applying the migration using `yarn rw prisma migrate --create-only`. This creates the migration based on the changes in the Prisma schema, but doesn't apply it, giving you the chance to go in and make any modifications you want. [Daniel Norman's tour of Prisma Migrate](https://www.youtube.com/watch?v=0LKhksstrfg) demonstrates this and more to great effect.
 
 Prisma Migrate has separate commands for applying migrations based on whether you're in dev or in production. The Prisma [Migration flows](https://www.prisma.io/docs/concepts/components/prisma-migrate/prisma-migrate-flows) goes over the difference between these workflows in more detail.
 
