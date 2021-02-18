@@ -22,7 +22,7 @@ There's four altogether:
 
 ### webpack.common.js
 
-This is the base config; it merges with the development and production configs, configures options commmon to both, and merges the user-defined config along the way.
+This is the base config; it merges with the development and production configs, configures options common to both, and merges the user-defined config along the way.
 
 This is where the bulk of the configuration happens. Since we distinguish between a development and production configs, we [do as the docs say](https://webpack.js.org/configuration/configuration-types/#exporting-a-function) and export a function. 
 

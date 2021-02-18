@@ -119,7 +119,7 @@ Redwood's component-development workflow starts with Storybook. Being able to de
 
 <span id="status-3" class="font-mono">Making it happen</span>
 
-Using Redwood's Structure package, we can use the same logic to power both an IDE (e.g. Jamstack IDE) and Redwood itself. Redwood Structure's most common use-case is getting the diagnostics of a complete Redwood project, but being able to programatically talk about a Redwood project like an AST moves many other amazing things we can't anticipate into the adjacent possible.
+Using Redwood's Structure package, we can use the same logic to power both an IDE (e.g. Jamstack IDE) and Redwood itself. Redwood Structure's most common use-case is getting the diagnostics of a complete Redwood project, but being able to programmatically talk about a Redwood project like an AST moves many other amazing things we can't anticipate into the adjacent possible.
 
 [Structure • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/12)
 
