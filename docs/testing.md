@@ -897,13 +897,13 @@ export const createUser = ({ input }) => {
 }
 
 // api/src/services/users/users.test.js
-import { user } from './users'
+import { createUser } from './users'
 
 describe('users service', () => {
   it('creates a user', async () => {
-    const user = await createUser({ name: 'David' })
-    expect(user.id).not.toBeNull()
-    expect(user.name).toEqual('David')
+    const record = await createUser({ name: 'David' })
+    expect(record.id).not.toBeNull()
+    expect(record.name).toEqual('David')
   })
 })
 ```
@@ -921,18 +921,15 @@ In the following code, the "David" user is the seed. What we're actually testing
 ```javascript
 it('retrieves all users', async () => {
   const data = await createUser({ name: 'David' })
-
-  const foundUsers = await users({ id: data.id })
-  expect(foundUsers.length).toEqual(1)
-  expect(foundUsers[0].name).toEqual(data.name)
+  const list = await users({ id: data.id })
+  expect(list.length).toEqual(1)
 })
 
 it('retrieves a single user', async () => {
   const data = await createUser({ name: 'David' })
-
-  const foundUser = await user({ id: data.id })
-  expect(user.id).toEqual(data.id)
-  expect(user.name).toEqual(data.name)
+  const record = await user({ id: data.id })
+  expect(record.id).toEqual(data.id)
+  expect(record.name).toEqual(data.name)
 })
 ```
 
@@ -942,5 +939,177 @@ Did your spidey sense tingle when you saw that exact same seed duplicated in eac
 
 ### Scenarios
 
-Redwood created the concept of "scenarios" to cover this exact case. A scenario is a set of seed data that you can count on existing at the start of your test and removed again at the end. This means that each test lives in isolation, starts with the exact same database state as every other one, and any changes you make are only around for the length of that one test, they won't cause side-effects in any other.
+Redwood created the concept of "scenarios" to cover this common case. A scenario is a set of seed data that you can count on existing at the start of your test and removed again at the end. This means that each test lives in isolation, starts with the exact same database state as every other one, and any changes you make are only around for the length of that one test, they won't cause side-effects in any other.
 
+When you use any of the generators that create a service (scaffold, sdl or service) you'll get a `scenarios.js` file alongside the service and test files:
+
+```javascript
+export const standard = defineScenario({
+  user: {
+    one: {
+      name: 'String',
+    },
+    two: {
+      name: 'String',
+    }
+  },
+})
+```
+
+This scenario creates two user records. The generator can't determine the intent of your fields, it can only tell the datatypes, so strings get prefilled with just 'String'. What's up with the `one` and `two` keys? Those are friendly names you can use to reference your scenario data in your test.
+
+Let's look at a better example. We'll update the scenario with some additional data and give them a more distinctive name:
+
+```javascript
+export const standard = defineScenario({
+  user: {
+    anthony: {
+      name: 'Anthony Campolo',
+      email: 'anthony@redwoodjs.com'
+    },
+    dom: {
+      name: 'Dom Saadi',
+      email: 'dom@redwoodjs.com'
+    }
+  },
+})
+```
+
+Note that even though we are creating two users we don't use array syntax and instead just pass several objects. Why will become clear in a moment.
+
+Now in our test we replace the `it()` function with `scenario()`:
+
+```javascript
+scenario('retrieves all users', async (scenario) => {
+  const list = await users()
+  expect(list.length).toEqual(Object.keys(scenario.user).length)
+})
+
+scenario('retrieves a single user', async (scenario) => {
+  const record = await user({ id: scenario.user.dom.id })
+  expect(record.id).toEqual(scenario.user.dom.id)
+})
+```
+
+The `scenario` argument passed to the function contains the scenario data *after being inserted into the database* which means it now contains the real `id` that the database assigned the record. Any other fields that contain a database default value will be populated, included DateTime fields like `createdAt`. We can reference individual model records by name, like `scenario.user.dom`. This is why scenario records aren't created with array syntax: otherwise we'd be referencing them with syntax like `scenario.user[1]`. Yuck.
+
+#### Named Scenarios
+
+You may have noticed that the scenario we used was once again named `standard`. This means it's once again the "default" scenario if you don't specify a different name. This implies that you can create more than one scenario and somehow use it in your tests. And you can:
+
+```javascript
+export const standard = defineScenario({
+  user: {
+    anthony: {
+      name: 'Anthony Campolo',
+      email: 'anthony@redwoodjs.com'
+    },
+    dom: {
+      name: 'Dom Saadi',
+      email: 'dom@redwoodjs.com'
+    }
+  },
+})
+
+export const incomplete = defineScneario({
+  user: {
+    david: {
+      name: 'David Thyresson',
+      email: 'dt@redwoodjs.com'
+    },
+    forrest: {
+      name: '',
+      email: 'forrest@redwoodjs.com'
+    }
+  }
+})
+```
+
+```javascript
+scenario('incomplete', 'retrieves only incomplete users', async (scenario) => {
+  const list = await users({ complete: false })
+  expect(list).toMatchObject([scenario.user.forrest])
+})
+```
+
+The name of the scenario you want to use is passed as the *first* argument to `scenario()` and now those will be the only records present in the database at the time the test to run. Assume that the `users()` function contains some logic to determine whether a user record is "complete" or not. If you pass `{ complete: false }` then it should return only those that it determines are not complete, which in this case includes users who have not entered their name yet. We seed the database with the scenario where one user is complete and one is not, then check that the return of `users()` only contains the user without the name.
+
+#### Multiple Models
+
+You're not limited to only creating a single model type in your scenario, you can populate every table in the database if you want.
+
+```javascript
+export const standard = defineScenario({
+  product: {
+    shirt: {
+      name: 'T-shirt',
+      inventory: 5
+    }
+  },
+  order: {
+    first: {
+      poNumber: 'ABC12345'
+    }
+  },
+  paymentMethod: {
+    credit: {
+      type: 'Visa',
+      last4: 1234
+    }
+  }
+})
+```
+
+And you reference all of these on your `scenario` object as you would expect
+
+```javascript
+scenario.product.shirt
+scenario.order.first
+scenario.paymentMethod.credit
+```
+
+#### Relationships
+
+What if your models have relationships to each other? For example, a blog **Comment** has a parent **Post**. Scenarios are passed off to Prisma's [create](https://www.prisma.io/docs/concepts/components/prisma-client/crud#create) function, which includes the ability to create nested relationship records simultaneously:
+
+```javascript
+export const standard = defineScenario({
+  comment: {
+    first: {
+      name: 'Tobbe',
+      body: 'But it uses some letters twice'
+      post: {
+        create: {
+          title: 'Every Letter',
+          body: 'The quick brown fox jumped over the lazy dog.'
+        }
+      }
+    }
+  }
+})
+```
+
+Now you'll have both the comment and the post it's associated to in the database and available to your tests. For example, to test that you are able to create a second comment on this post:
+
+```javascript
+scenario('creates a second comment', async (scenario) => {
+  const comment = await createComment({
+    input: {
+      name: 'Billy Bob',
+      body: "A tree's bark is worse than its bite",
+      postId: scenario.comment.jane.postId,
+    },
+  })
+
+  const list = await comments({ postId: scenario.comment.jane.postId })
+  expect(list.length).toEqual(Object.keys(scenario.comment).length + 1)
+})
+```
+
+`postId` is created by Prisma after creating the nested `post` model and associating it back to the `comment`.
+
+Why check against `Object.keys(scenario.comment).length + 1` and not just `2`? Because if we ever update the scenario to add more records (maybe to support another test) this test will keep working because it only assumes what *it itself* did: add one comment to existing count of comments in the scenario.
+
+## Wrapping Up
+
+So that's the world of testing according to Redwood. Did we miss anything? Can we make it even more awesome! Stop by [the community](https://community.redwoodjs.com) and ask questions, or if you've some way to make this doc even better then [open a PR](https://github.com/redwoodjs/redwood/pulls). Now go out and create (and test!) something amazing!
