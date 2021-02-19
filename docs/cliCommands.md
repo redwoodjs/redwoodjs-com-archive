@@ -133,10 +133,10 @@ yarn rw dataMigrate <command>
 
 <br/>
 
-| Command   | Description                                                                                     |
-| :-------- | :---------------------------------------------------------------------------------------------- |
-| `install` | Appends `DataMigration` model to `schema.prisma`, creates `api/db/dataMigrations` directory     |
-| `up`      | Executes oustanding data migrations                                                             |
+| Command   | Description                                                                                 |
+| :-------- | :------------------------------------------------------------------------------------------ |
+| `install` | Appends `DataMigration` model to `schema.prisma`, creates `api/db/dataMigrations` directory |
+| `up`      | Executes outstanding data migrations                                                         |
 
 ### install
 
@@ -162,27 +162,35 @@ yarn rw dataMigrate up
 
 Database tools.
 
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+
+
 ```
 yarn rw db <command>
 ```
 
 <br/>
 
-| Command            | Description                                                                                               |
-| :----------------- | :-------------------------------------------------------------------------------------------------------- |
-| `down [decrement]` | Migrate your database down                                                                                |
-| `generate`         | Generate the Prisma client                                                                                |
-| `introspect`       | Introspect your database and generate models in `./api/db/schema.prisma`, overwriting existing models     |
-| `save [name..]`    | Create a new migration                                                                                    |
-| `seed`             | Seed your database with test data                                                                         |
-| `studio`           | Start Prisma Studio                                                                                       |
-| `up [increment]`   | Generate the Prisma client and apply migrations                                                           |
+<!-- new command? link? deprecated b4... -->
+| Command            | Description                                                                                           |
+| :----------------- | :---------------------------------------------------------------------------------------------------- |
+| `down [decrement]` | Migrate your database down                                                                            |
+| `generate`         | Generate the Prisma client                                                                            |
+| `introspect`       | Introspect your database and generate models in `./api/db/schema.prisma`, overwriting existing models |
+| `save [name..]`    | Create a new migration                                                                                |
+| `seed`             | Seed your database with test data                                                                     |
+| `studio`           | Start Prisma Studio                                                                                   |
+| `up [increment]`   | Generate the Prisma client and apply migrations                                                       |
 
 ### down
 
 Migrate your database down.
 
-> **WARNING:** Prisma's migration functionality is currently experimental.
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
 yarn rw db down [decrement]
@@ -216,6 +224,10 @@ we could get to `20200518160457-create-users` by running:
 
 Generate the Prisma client.
 
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+
 ```terminal
 yarn rw db generate
 ```
@@ -227,6 +239,10 @@ This means that `yarn rw db generate` needs to be run after every change to your
 
 Introspect your database and generate models in `./api/db/schema.prisma`, overwriting existing models.
 
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+
 ```terminal
 yarn rw db introspect
 ```
@@ -235,7 +251,9 @@ yarn rw db introspect
 
 Create a new migration.
 
-> **WARNING:** Prisma's migration functionality is currently experimental.
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
 yarn rw db save [name..]
@@ -271,6 +289,10 @@ api/db/migrations
 
 Seed your database with test data.
 
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+
 ```terminal
 yarn rw db seed
 ```
@@ -281,6 +303,10 @@ Runs `seed.js` in `./api/db`. `seed.js` instantiates the Prisma client and provi
 
 Start <a href="https://github.com/prisma/studio">Prisma Studio</a>, a visual editor for your database.
 
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+
 ```terminal
 yarn rw db studio
 ```
@@ -289,7 +315,9 @@ yarn rw db studio
 
 Generate the Prisma client and apply migrations.
 
-> **WARNING:** Prisma's migration functionality is currently experimental.
+> **WARNING**
+>
+> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
 yarn rw db up [increment]
@@ -362,17 +390,82 @@ Using `--forward` (alias `--fwd`), you can pass one or more Webpack DevServer co
 
 ## deploy
 
-Deploy your redwood project.
+Deploy your redwood project to a hosting provider target. 
+
+For Jamstack hosting providers like Netlify and Vercel, the deploy command runs the set of steps to build, apply production DB changes, and apply data migrations. In this context, it is often referred to as a Build Command.
+
+For hosting providers like AWS, this command runs the steps to both build your project _and_ deploy it to AWS.
 
 ```
-yarn rw deploy <command>
+yarn redwood deploy <target>
 ```
 
 <br/>
 
-| Command              | Description                                                                     |
-| :------------------- | :------------------------------------------------------------------------------ |
-| `api <provider>`     | Deploy the API using the selected provider [choices: "aws_serverless"]          |
+| Commands          | Description                                                            |
+| :--------------- | :--------------------------------------------------------------------- |
+| `aws <provider>` | Deploy to AWS using the selected provider [choices: "serverless"] |
+| `netlify [...commands]` | Build command for Netlify deploy |
+| `vercel [...commands]` | Build command for Vercel deploy |
+
+### aws
+
+Deploy to AWS using the selected provider
+
+```
+yarn redwood deploy aws [provider]
+```
+
+<br/>
+
+| Options & Arguments  | Description                              |
+| :------------------- | :--------------------------------------- |
+| `provider`           | AWS Deploy provider to configure [choices: "serverless"] [default: "serverless"] |
+| `--side     `        | which Side(s)to deploy [choices: "api"] [default: "api"]  |
+
+### netlify
+
+Build command for Netlify deploy
+
+```
+yarn redwood deploy netlify [provider]
+```
+
+<br/>
+
+| Options  | Description                              |
+| :------------------- | :--------------------------------------- |
+| `--build`           | Build for production [default: "true"] |
+| `--prisma`        | Apply database migrations [default: "true"]  |
+| `--data-migrate, --dm` | wMigrate the data in your database [default: "true"]  |
+
+**Example**
+The following command will build, apply Prisma DB migrations, and skip data migrations.
+```
+yarn redwood deploy netlify --no-data-migrate
+```
+
+### vercel
+
+Build command for Vercel deploy
+
+```
+yarn redwood deploy vercel [provider]
+```
+
+<br/>
+
+| Options  | Description                              |
+| :------------------- | :--------------------------------------- |
+| `--build`           | Build for production [default: "true"] |
+| `--prisma`        | Apply database migrations [default: "true"]  |
+| `--data-migrate, --dm` | wMigrate the data in your database [default: "true"]  |
+
+**Example**
+The following command will build, apply Prisma DB migrations, and skip data migrations.
+```
+yarn redwood deploy vercel --no-data-migrate
+```
 
 ## destroy (alias d)
 
@@ -706,13 +799,13 @@ from `name` and the route parameter, if specified, will be added to the end.
 
 This also updates `Routes.js` in `./web/src`.
 
-| Arguments & Options | Description                               |
-| :------------------ | :---------------------------------------- |
-| `name`              | Name of the page                          |
-| `path`              | URL path to the page. Defaults to `name`  |
-| `--force, -f`       | Overwrite existing files                  |
-| `--tests`            | Generate test files [default: true]      |
-| `--stories`          | Generate Storybook files [default: true] |
+| Arguments & Options | Description                              |
+| :------------------ | :--------------------------------------- |
+| `name`              | Name of the page                         |
+| `path`              | URL path to the page. Defaults to `name` |
+| `--force, -f`       | Overwrite existing files                 |
+| `--tests`           | Generate test files [default: true]      |
+| `--stories`         | Generate Storybook files [default: true] |
 
 **Destroying**
 
@@ -912,7 +1005,7 @@ yarn rw generate sdl <model>
 
 The sdl will inspect your `schema.prisma` and will do its best with relations. Schema to generators isn't one-to-one yet (and might never be).
 
-<!-- See limited genreator support for relations
+<!-- See limited generator support for relations
 https://community.redwoodjs.com/t/prisma-beta-2-and-rwjs-limited-generator-support-for-relations-with-workarounds/361 -->
 
 | Arguments & Options  | Description                   |
@@ -1146,6 +1239,139 @@ Open your project in your browser.
 yarn rw open
 ```
 
+## prisma
+
+Run Prisma CLI with experimental features.
+
+```
+yarn rw prisma
+```
+
+Redwood's `prisma` command is a lightweight wrapper around the Prisma CLI. It's the primary way you interact with your database.
+
+> **What do you mean it's a lightweight wrapper?**
+>
+> By lightweight wrapper, we mean that we're handling some flags under the hood for you.
+> You can use the Prisma CLI directly (`yarn prisma`), but letting Redwood act as a proxy (`yarn redwood prisma`) saves you a lot of keystrokes. 
+> For example, Redwood adds the `--preview-feature` and `--schema=api/db/schema.prisma` flags automatically.
+>
+> If you want to know exactly what `yarn redwood prisma <command>` runs, which flags it's passing, etc., it's right at the top:
+>
+> ```sh{3}
+> $ yarn rw prisma introspect
+> yarn run v1.22.10
+> $ ~/redwood-app/node_modules/.bin/rw prisma introspect
+> Running prisma cli:
+> yarn prisma introspect --schema "~/redwood-app/api/db/schema.prisma"
+> ...
+> ```
+
+Since `yarn rw prisma` is just an entry point into all the database commands that the Prisma CLI has to offer, we won't try to provide an exhaustive reference of everything you can do with it here. Instead what we'll do is focus on some of the most common commands; those that you'll be running on a regular basis, and how they fit into Redwood's workflows.
+
+For the complete list of commands, see the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference). It's the authority. 
+
+Along with the CLI reference, bookmark Prisma's [Migration Flows](https://www.prisma.io/docs/concepts/components/prisma-migrate/prisma-migrate-flows) doc&mdash;it'll prove to be an invaluable resource for understanding `yarn rw prisma migrate`.
+
+| Command             | Description                                                  |
+| :------------------ | :----------------------------------------------------------- |
+| `db <command>`      | Manage your database schema and lifecycle during development |
+| `generate`          | Generate artifacts (e.g. Prisma Client)                      |
+| `migrate <command>` | Update the database schema with migrations                   |
+
+### db
+
+Manage your database schema and lifecycle during development.
+
+```
+yarn rw prisma db <command>
+```
+
+The `prisma db` namespace contains commands that operate directly against the database.
+
+#### push
+
+Push the state from your Prisma schema to your database.
+
+> 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#db-push).
+
+```
+yarn rw prisma db push 
+```
+
+This is your go-to command for prototyping changes to your Prisma schema (`schema.prisma`).
+Prior to to `yarn rw prisma db push`, there wasn't a great way to try out changes to your Prisma schema without creating a migration.
+This command fills the void by "pushing" your `schema.prisma` file to your database without creating a migration. You don't even have to run `yarn rw prisma generate` afterward&mdash;it's all taken care of for you, making it ideal for iterative development.
+
+#### seed
+
+Seed your database.
+
+> 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#db-seed-preview).
+
+```
+yarn rw prisma db seed
+```
+
+This command seeds your database by running your project's `seed.js` file (in `api/db`). Note that having a great seed might not be all that important at the start, but as soon as you start collaborating with others, it becomes vital.
+
+Prisma's got some great resources on this command. You can [code along with Ryan Chenkie](https://www.youtube.com/watch?v=2LwTUIqjbPo), and learn how libraries like [faker](https://www.npmjs.com/package/faker) can help you create a large, realistic database fast, especially in tandem with Prisma's [createMany](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany-preview). And Prisma's got a great [seeding guide](https://www.prisma.io/docs/guides/prisma-guides/seed-database) that covers both the concepts and the nuts and bolts.
+
+<!-- ### generate -->
+
+<!-- Generate artifacts (e.g. Prisma Client). -->
+
+<!-- > 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#generate). -->
+
+<!-- ``` -->
+<!-- yarn rw prisma generate -->
+<!-- ``` -->
+
+### migrate
+
+Update the database schema with migrations.
+
+> 👉 Quick link to the [Prisma Concepts](https://www.prisma.io/docs/concepts/components/prisma-migrate).
+
+```
+yarn rw prisma migrate <command>
+```
+
+As a database toolkit, Prisma strives to be as holistic as possible. Prisma Migrate lets you use Prisma schema to make changes to your database declaratively, all while keeping things deterministic and fully customizable by generating the migration steps in a simple, familiar format: SQL. 
+
+Since migrate generates plain SQL files, you can edit those SQL files before applying the migration using `yarn rw prisma migrate --create-only`. This creates the migration based on the changes in the Prisma schema, but doesn't apply it, giving you the chance to go in and make any modifications you want. [Daniel Norman's tour of Prisma Migrate](https://www.youtube.com/watch?v=0LKhksstrfg) demonstrates this and more to great effect.
+
+Prisma Migrate has separate commands for applying migrations based on whether you're in dev or in production. The Prisma [Migration flows](https://www.prisma.io/docs/concepts/components/prisma-migrate/prisma-migrate-flows) goes over the difference between these workflows in more detail.
+
+#### dev
+
+Create a migration from changes in Prisma schema, apply it to the database, trigger generators (e.g. Prisma Client).
+
+> 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#migrate-dev).
+
+```
+yarn rw prisma migrate dev
+```
+
+<!-- #### reset -->
+
+<!-- Reset your database and apply all migrations, all data will be lost. -->
+
+<!-- > 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#migrate-reset). -->
+
+<!-- ``` -->
+<!-- yarn rw prisma migrate reset -->
+<!-- ``` -->
+
+#### deploy
+
+Apply pending migrations to update the database schema in production/staging.
+
+> 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#migrate-deploy).
+
+```
+yarn rw prisma migrate deploy
+```
+
 ## redwood-tools (alias rwt)
 
 Redwood's companion CLI development tool. You'll be using this if you're contributing to Redwood. See [Contributing](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#cli-reference-redwood-tools) in the Redwood repo.
@@ -1180,8 +1406,8 @@ Creates provider-specific code and configuration for deployment
 
 | Arguments & Options | Description                                                                        |
 | :------------------ | :--------------------------------------------------------------------------------- |
-| `provider`          | Deploy provider to configure. Choices are `netlify`, `vercel`, or `aws_serverless` |
-| `--force, -f`       | Overwrite existing configuration                                                   |
+| `provider`          | Deploy provider to configure. Choices are `netlify`, `vercel`, or `aws-serverless` |
+| `--force, -f`       | Overwrite existing configuration [default: false]         |
 
 ### setup auth
 
@@ -1218,11 +1444,11 @@ yarn rw storybook
 
 RedwoodJS supports Storybook by creating stories when generating cells, components, layouts and pages. You can then use these to describe how to render that UI component with representative data.
 
-| Arguments & Options | Description                                      |
-| :------------------ | :----------------------------------------------- |
-| `--open`            | Open Storybook in your browser on start          |
-| `--build`           | Build Storybook                                  |
-| `--port`            | Which port to run Storybook on (defaults to 7910)|
+| Arguments & Options | Description                                       |
+| :------------------ | :------------------------------------------------ |
+| `--open`            | Open Storybook in your browser on start           |
+| `--build`           | Build Storybook                                   |
+| `--port`            | Which port to run Storybook on (defaults to 7910) |
 
 ## test
 
@@ -1234,15 +1460,15 @@ yarn rw test [side..]
 
 <br/>
 
-| Arguments & Options | Description                                                                                                                                    |
-| :------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------- |
-| `side`              | Which side(s) to test. Choices are `api, web`. Defaults to "watch mode"                                                                        |
-| `--help`            | Show help                                                                                                                                      |
-| `--version`         | Show version number                                                                                                                            |
+| Arguments & Options | Description                                                                                                                                                    |
+| :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `side`              | Which side(s) to test. Choices are `api, web`. Defaults to "watch mode"                                                                                        |
+| `--help`            | Show help                                                                                                                                                      |
+| `--version`         | Show version number                                                                                                                                            |
 | `--watch`           | Run tests related to changed files based on hg/git (uncommitted files). Specify the name or path to a file to focus on a specific set of tests [default: true] |
-| `--watchAll`        | Run all tests                                                                                                                                  |
-| `--collectCoverage` | Show test coverage summary and output info to `coverage` directory in project root. See this directory for an .html coverage report            |
-| `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                 |
+| `--watchAll`        | Run all tests                                                                                                                                                  |
+| `--collectCoverage` | Show test coverage summary and output info to `coverage` directory in project root. See this directory for an .html coverage report                            |
+| `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                                 |
 
 ## upgrade
 
@@ -1258,11 +1484,11 @@ Besides upgrading to a new stable release, you can use this command to upgrade t
 
 A canary release is published to npm every time a PR is merged to the `main` branch, and when we're getting close to a new release, we publish release candidates.
 
-| Option          | Description                                                                                                                         |
-| :-------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
-| `--dry-run, -d` | Check for outdated packages without upgrading |
-| `--tag, -t`     | Choices are "canary", "rc", or a specific version (e.g. "0.19.3"). WARNING: Unstable releases in the case of "canary" and "rc", which will force upgrade packages to the most recent release of the specified tag.  |
-| `--pr` | Installs packages for the given PR |
+| Option          | Description                                                                                                                                                                                                        |
+| :-------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--dry-run, -d` | Check for outdated packages without upgrading                                                                                                                                                                      |
+| `--tag, -t`     | Choices are "canary", "rc", or a specific version (e.g. "0.19.3"). WARNING: Unstable releases in the case of "canary" and "rc", which will force upgrade packages to the most recent release of the specified tag. |
+| `--pr`          | Installs packages for the given PR                                                                                                                                                                                 |
 
 **Example**
 

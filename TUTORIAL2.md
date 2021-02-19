@@ -12,7 +12,7 @@ Why "Redwood's Revenge"? Because all great sequels have "Revenge" in their title
 
 ## Prerequisites
 
-You'll need to be on at least Redwood v0.23.0 to make it through this tutorial.
+You'll need to be on at least Redwood v0.25 to make it through this tutorial.
 
 We highly recommend going through the first tutorial or at least have built a slightly complex Redwood app on your own. You've hopefully got experience with:
 
@@ -21,9 +21,9 @@ We highly recommend going through the first tutorial or at least have built a sl
 * GraphQL & SDLs
 * Services
 
-If you've been through the first part of the tutorial, you can continue pick up where you left off and continue here with part 2. Or, you can start from an [example repo](https://github.com/redwoodjs/redwood-tutorial) that picks up at the end of part 1, but already has additional styling and a starting test suite.
+If you've been through the first part of the tutorial, you can pick up where you left off and continue here with part 2. Or, you can start from an [example repo](https://github.com/redwoodjs/redwood-tutorial) that picks up at the end of part 1, but already has additional styling and a starting test suite.
 
-### Using Your Own Rep
+### Using Your Own Repo
 
 If you want to use the same CSS classes we use in the following examples you'll need to add Tailwind to your repo:
 
@@ -35,42 +35,56 @@ However, none of the screenshots below will come anywhere close to what you're s
 
 You'll also be missing out on a good starting test suite that we've added to the [example repo](https://github.com/redwoodjs/redwood-tutorial).
 
-### Using the Example Repo
+If you deployed Part 1 to a service like Netlify, you would have changed database provider in `schema.prisma` to `postgres` or `mysql`. If that's the case then make sure your local development environment has changed over as well. Check out the [Local Postgres Setup](/docs/local-postgres-setup) for assistance.
 
-If you haven't been through the first tutorial, or maybe you went through it on an older version of Redwood (anything pre-0.23.0) you can clone [this repo](https://github.com/redwoodjs/redwood-tutorial) which contains everything built in part 1 and also adds a little styling so it isn't quite so...tough to look at. Don't get us wrong, what we built in Part I had a great personality! We just gave it some hipper clothes and a nice haircut. We used [TailwindCSS](https://tailwindcss.com) to style things up and added a `<div>` or two to give us some additional hooks to hang styling on.
+Once you're ready, start up the dev server:
 
-```terminal
-git clone https://github.com/redwoodjs/redwood-tutorial
-cd redwood-tutorial
-yarn install
-yarn rw db up
-yarn rw db seed
+```bash
 yarn rw dev
 ```
 
-That'll check out the repo, install all the dependencies, create your local database and fill it with a few blog posts, and finally start up the dev server. Your browser should open to a fresh new blog app:
+### Using the Example Repo
+
+If you haven't been through the first tutorial, or maybe you went through it on an older version of Redwood (anything pre-0.25) you can clone [this repo](https://github.com/redwoodjs/redwood-tutorial) which contains everything built in part 1 and also adds a little styling so it isn't quite so...tough to look at. Don't get us wrong, what we built in Part I had a great personality! We just gave it some hipper clothes and a nice haircut. We used [TailwindCSS](https://tailwindcss.com) to style things up and added a `<div>` or two to give us some additional hooks to hang styling on.
+
+```bash
+git clone https://github.com/redwoodjs/redwood-tutorial
+cd redwood-tutorial
+yarn install
+yarn rw prisma migrate dev
+yarn rw prisma db seed
+yarn rw dev
+```
+
+That'll check out the repo, install all the dependencies, create your local database and fill it with a few blog posts, and finally start up the dev server.
+
+### Startup
+
+Your browser should open to a fresh new blog app:
 
 ![image](https://user-images.githubusercontent.com/300/101423176-54e93780-38ad-11eb-9230-ba8557764eb4.png)
 
 Let's run the test suite to make sure everything is working as expected (you can stop the dev server or run the command in a second terminal window):
 
-```terminal
+```bash
 yarn rw test
 ```
 
-This command starts a persistent process which watches for file changes and automatically runs any tests associated with the changed file(s) (changing a component *or* its tests will trigger a test run).
+The `test` command starts a persistent process which watches for file changes and automatically runs any tests associated with the changed file(s) (changing a component *or* its tests will trigger a test run).
 
 Since we just started the suite, and we haven't changed any files yet, it may not actually run any tests at all. Hit `a` to tell it run **a**ll tests and we should get a passing suite:
 
 ![image](https://user-images.githubusercontent.com/300/96655360-21991c00-12f2-11eb-9394-c34c39b69f01.png)
 
-More on testing later, but for now just know that this is always what we want to aim for—all green in that left column! In fact best practices tell us you should not even commit any code unless the test suite passes locally. Not everyone adheres to this quite as strictly as others...*&lt;cough, cough&gt;*
+If you started with your own repo from Part 1 you may see some failures here. Another reason to start with the [example repo](#using-the-example-repo).
+
+More on testing later, but for now just know that this is always what we want to aim for—all green in that left column. In fact best practices tell us you should not even commit any code unless the test suite passes locally. Not everyone adheres to this quite as strictly as others...*&lt;cough, cough&gt;*
 
 ## Introduction to Storybook
 
 Let's see what this Storybook thing is all about. Run this command to start up the Storybook server (again, you can cancel the test runner and run this in the same session, or start a new one):
 
-```terminal
+```bash
 yarn rw storybook
 ```
 
@@ -123,7 +137,7 @@ export default { title: 'Components/BlogPost' }
 
 You import the component you want to use and then all of the named exports in the file will be a single "story" as displayed in Storybook. In this case the generator named it "generated" which shows as the "Generated" story in the tree view:
 
-```terminal
+```bash
 Components
 └── BlogPost
     └── Generated
@@ -255,7 +269,7 @@ So if Storybook is the first phase of creating/updating a component, phase two m
 
 First let's run the existing suite to see if we broke anything:
 
-```terminal
+```bash
 yarn rw test
 ```
 
@@ -504,7 +518,7 @@ Which order we build them in is up to us. To ease into things, let's start with 
 
 Let's create a component for the display of a single comment. First up, the generator:
 
-```terminal
+```bash
 yarn rw g component Comment
 ```
 
@@ -690,7 +704,7 @@ Let's think about where our comments are being displayed. Probably not on the ho
 
 Let's generate a **CommentsCell**:
 
-```terminal
+```bash
 yarn rw g cell Comments
 ```
 
@@ -1024,7 +1038,7 @@ Unfortunately, even with all of this flexibility there's still no such thing as 
 If you went through the first part of the tutorial you should be somewhat familiar with this flow:
 
 1. Add a model to `schema.prisma`
-2. Run a couple of `yarn rw db` commands to migrate the database
+2. Run a `yarn rw prisma migrate dev` commands to create a migration and apply it to the database
 3. Generate an SDL and service
 
 ### Adding the Comment model
@@ -1105,10 +1119,11 @@ db.post.findUnique({ where: { id: 1 }}).comments()
 
 This one is easy enough: we'll create a new migration with a name and then run it:
 
-```terminal
-yarn rw db save create comments
-yarn rw db up
+```bash
+yarn rw prisma migrate dev
 ```
+
+When prompted, give this one a name something like "create comments".
 
 > You'll need to restart the test suite runner at this point if it's still running. Redwood creates a second, test database for you to run your tests against (it is at `.redwood/test.db` by default). The database migrations are run against that test database whenever the test suite is **started**, not while it's running, so you'll need to restart it to test against the new database structure.
 
@@ -1116,7 +1131,7 @@ yarn rw db up
 
 Next we'll create the SDL (that defines the GraphQL interface) and a service (to get the records out of the database) with a generator call:
 
-```terminal
+```bash
 yarn rw g sdl comment
 ```
 
@@ -1417,13 +1432,13 @@ Okay, our comments service is feeling pretty solid now that we have our tests in
 
 Let's generate a form and then we'll build it out and integrate it via Storybook, then add some tests:
 
-```terminal
+```bash
 yarn rw g component CommentForm
 ```
 
 And startup Storybook again if it isn't still running:
 
-```terminal
+```bash
 yarn rw storybook
 ```
 
@@ -1633,7 +1648,7 @@ Right above the display of existing comments on a blog post is probably where ou
 
 If we put the **CommentForm** in the **Success** component of **CommentsCell** then what happens when there are no comments yet? The **Empty** component renders, which doesn't include the form! So it becomes impossible to add the first comment.
 
-We could copy the **CommentForm** to the **Empty** component as well, but as soon as you find yourself duplcating code like this it can be a hint that you need to rethink something about your design.
+We could copy the **CommentForm** to the **Empty** component as well, but as soon as you find yourself duplicating code like this it can be a hint that you need to rethink something about your design.
 
 Maybe **CommentsCell** should really only be responsible for retrieving and displaying comments. Having it also accept user input seems outside of its primary concern.
 
@@ -1853,13 +1868,13 @@ It would be nice if we could try out sending some arguments to our Prisma calls 
 
 That's where the Redwood Console comes in! In a new terminal instance, try this:
 
-```terminal
+```bash
 yarn rw console
 ```
 
 You'll see a standard Node console but with most of Redwood's internals already imported and ready to go! Most importantly, that includes the database. Try it out:
 
-```terminal
+```bash
 > db.comment.findMany()
 [
   {
@@ -1883,7 +1898,7 @@ You'll see a standard Node console but with most of Redwood's internals already 
 
 Let's try the syntax that will allow us to only get comments for a given `postId`:
 
-```terminal
+```bash
 > db.comment.findMany({ where: { postId: 1 }})
 [
   {
@@ -1907,14 +1922,14 @@ Well it worked, but the list is exactly the same. That's because we've only adde
 
 We'll need the `id` of another post. Make sure you have at least two (create one through the admin if you need to). We can get a list of all the existing posts and copy the `id`:
 
-```terminal
+```bash
 > db.post.findMany({ select: { id: true } })
 [ { id: 1 }, { id: 2 }, { id: 3 } ]
 ```
 
 Okay, now let's create a comment for that second post via the console:
 
-```terminal
+```bash
 > db.comment.create({ data: { name: 'Peter', body: 'I also like leaving comments', postId: 2 } })
 {
   id: 3,
@@ -1927,7 +1942,7 @@ Okay, now let's create a comment for that second post via the console:
 
 Now we'll try our comment query again, once with each `postId`:
 
-```terminal
+```bash
 > db.comment.findMany({ where: { postId: 1 }})
 [
   {
@@ -1984,7 +1999,7 @@ Try running the test suite (or if it's already running take a peek at that termi
 >
 > There are no hard and fast rules here, but generally the farther down you put your business logic (the code that deals with moving and manipulating data) the easier it will be to build and maintain your application. Redwood encourages you to put your business logic in services since they're "closest" to the data and behind the GraphQL interface.
 
- Open up the **comments** service test and let's update it expect the `postId` argument to be passed to the `comments()` function like we tested out in the console:
+Open up the **comments** service test and let's update it expect the `postId` argument to be passed to the `comments()` function like we tested out in the console:
 
 ```javascript{4}
 // api/src/services/comments/comments.test.js
@@ -2355,7 +2370,7 @@ export const QUERY = gql`
 `
 ```
 
-Click "Delete" (as a moderator) and the comment should be removed!
+Click **Delete** (as a moderator) and the comment should be removed!
 
 Ideally we'd have both versions of this component (with and without the "Delete" button) present in Storybook so we can iterate on the design. But there's no such thing as "logging in" in Storybook and our code depends on being logged in so we can check our roles...how will that work?
 
@@ -2529,7 +2544,7 @@ scenario('deletes a comment', async (scenario) => {
 })
 ```
 
-Our first expectation here checks that we get the deleted comment back from a call to `deleteComment()`. The second expectation make sures that the comment was actually removed from the database: trying to find a comment with that `id` now returns `null`.
+Our first expectation here checks that we get the deleted comment back from a call to `deleteComment()`. The second expectation make sure that the comment was actually removed from the database: trying to find a comment with that `id` now returns `null`.
 
 ### Last Word on Roles
 
@@ -2548,14 +2563,14 @@ Managing roles can be a tricky thing to get right. Spend a little time up front 
 
 You made it! Again! In Part 1 of the tutorial we learned about a lot of features that make it easier to create functionality for your users—cells, forms, scaffolding, and more. In Part 2 we learned more about the features that make life easier for us, the developers: Storybook and testing.
 
-Testing is like wearing a seat belt: 99% of the time you don't see any benefit, but that other 1% of the time you're *really* glad you were wearing it. The first time your build stops and prevents some production-crashing bug from going live you'll know that all those hours you spent writing tests were worth it. Getting into the habit of writing tests along with your user-facing code is the greatest gift you can give your future developer self (that, and writing good comments!).
+Testing is like wearing a seat belt: 99% of the time may not see any direct benefits, but that other 1% of the time you're *really* glad you were wearing it. The first time your build stops and prevents some production-crashing bug from going live you'll know that all those hours you spent writing tests were worth it. Getting into the habit of writing tests along with your user-facing code is the greatest gift you can give your future developer self (that, and writing good comments!).
 
 Will there be a Part 3 of the tutorial? It's a fact that the best things come in threes: Lord of the Rings movies, sides of a triangle, and Super Mario Bros. games on the NES. We've spent a lot of time getting our features working but not much time with optimization and polish. [Premature optimization is the root of all evil](http://wiki.c2.com/?PrematureOptimization), but once your site is live and you've got real users on it you'll get a sense of what could be faster, prettier or more efficient. That's when time spent optimizing can pay huge dividends. But, discovering the techniques and best practices for those optimizations...that's a whole different story. The kind of story that Redwood loves to help you write!
 
 So until next time, a bit of wisdom to help combat that next bout of every developer's nemesis, imposter syndrome:
 
-<div class="font-serif font-light italic">
-"There is nothing noble in being superior to your fellow man; true nobility is being superior to your former self." — Ernest Hemmingway
+<div class="font-serif italic font-light">
+"There is nothing noble in being superior to your fellow man; true nobility is being superior to your former self." — Ernest Hemingway
 </div>
 
 ### What's Next

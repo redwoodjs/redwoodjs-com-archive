@@ -22,9 +22,9 @@ The following will show all the available commands in the Redwood CLI (note: rw 
 yarn rw --help
 ```
 
-Some commands, like [db](https://redwoodjs.com/docs/cli-commands#db), have a lot of options. You can dig further into a specific command by adding `--help` to the command like so:
+Some commands, like [prisma](https://redwoodjs.com/docs/cli-commands#db), have a lot of options. You can dig further into a specific command by adding `--help` to the command like so:
 ```
-yarn rw db --help
+yarn rw prisma --help
 ```
 
 Take a visit to the [CLI Doc](https://redwoodjs.com/docs/cli-commands.html) to see detailed information on all commands and options.
@@ -43,17 +43,15 @@ model UserExample {
 }
 ```
 
-With only three commands, Redwood will create everything we need for our CRUD operations:
+With only two commands, Redwood will create everything we need for our CRUD operations:
 ```
-yarn rw db save
-yarn rw db up
+yarn rw prisma migrate dev
 yarn rw generate scaffold UserExample
 ```
 
 What exactly just happened? Glad you asked.
 
-- `yarn rw db save` creates a snapshot of our UserExample model for our migration
-- `yarn rw db up` applies the migration and creates a new table in our database called `UserExample`
+- `yarn rw prisma migrate dev` creates and applies a snapshot of our UserExample model for our migration, creating a new table in our database called `UserExample`
 - `yarn rw generate scaffold UserExample` tells Redwood to create the necessary Pages, SDL, and Services for the given Model 
 
 Just like that, we are done. No seriously. Visit http://localhost:8910/user-examples to see for yourself. 
