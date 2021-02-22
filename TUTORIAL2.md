@@ -583,7 +583,7 @@ Let's add a little bit of styling and date conversion to get this **Comment** co
 
 const formattedDate = (datetime) => {
   const parsedDate = new Date(datetime)
-  const month = parsedDate.toLocaleString('default', { month: 'long' })
+  const month = parsedDate.toLocaleString('en-US', { month: 'long' })
   return `${parsedDate.getDate()} ${month} ${parsedDate.getFullYear()}`
 }
 
@@ -2241,7 +2241,7 @@ import { useAuth } from '@redwoodjs/auth'
 
 const formattedDate = (datetime) => {
   const parsedDate = new Date(datetime)
-  const month = parsedDate.toLocaleString('default', { month: 'long' })
+  const month = parsedDate.toLocaleString('en-US', { month: 'long' })
   return `${parsedDate.getDate()} ${month} ${parsedDate.getFullYear()}`
 }
 
@@ -2295,7 +2295,7 @@ import { QUERY as CommentsQuery } from 'src/components/CommentsCell'
 
 const formattedDate = (datetime) => {
   const parsedDate = new Date(datetime)
-  const month = parsedDate.toLocaleString('default', { month: 'long' })
+  const month = parsedDate.toLocaleString('en-US', { month: 'long' })
   return `${parsedDate.getDate()} ${month} ${parsedDate.getFullYear()}`
 }
 
