@@ -514,7 +514,7 @@ it('renders an error message', async () => {
 
 Similar to how we mocked GraphQL queries, we can mock mutations as well. Read more about GraphQL mocking in our [Mocking GraphQL requests](/docs/mocking-graphql-requests.html) docs.
 
-### Mocking currentUser
+### Mocking Auth
 
 Most applications will eventually add [Authentication/Authorization](https://redwoodjs.com/docs/authentication) to the mix. How do we test that a component behaves a certain way when someone is logged in, or has a certain role?
 
@@ -552,6 +552,7 @@ import HomePage from './HomePage'
 describe('HomePage', () => {
   it('renders a login button', () => {
     render(<HomePage />)
+
     expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument()
   })
 })
@@ -559,7 +560,9 @@ describe('HomePage', () => {
 
 This test is a little more explicit in that it expects an actual `<button>` element to exist and that it's label (name) be "Login". Being explicit with something as important as the login button can be a good idea, especially if you want to be sure that your site is friendly to screenreaders or another assitive browsing devices.
 
-Now how do we test that when a user *is* logged in, it outputs a message welcoming them, and that the button is *not* present? Similar to `mockGraphQLQuery()` Redwood also provides a `mockCurrentUser()` which tells Redwood what to return when the `getCurrentUser()` function of `api/src/lib/auth.js` is invoked:
+#### mockCurrentUser()
+
+How do we test that when a user *is* logged in, it outputs a message welcoming them, and that the button is *not* present? Similar to `mockGraphQLQuery()` Redwood also provides a `mockCurrentUser()` which tells Redwood what to return when the `getCurrentUser()` function of `api/src/lib/auth.js` is invoked:
 
 ```javascript
 // web/src/pages/HomePage/HomePage.test.js
@@ -570,12 +573,15 @@ import HomePage from './HomePage'
 describe('HomePage', () => {
   it('renders a login button when logged out', () => {
     render(<HomePage />)
+
     expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument()
   })
 
   it('does not render a login button when logged in', async () => {
     mockCurrentUser({ name: 'Rob' })
+
     render(<HomePage />)
+
     await waitFor(() => {
       expect(
         screen.queryByRole('button', { name: 'Login' })
@@ -585,35 +591,15 @@ describe('HomePage', () => {
 
   it('renders a welcome message when logged in', async () => {
     mockCurrentUser({ name: 'Rob' })
+
     render(<HomePage />)
+
     expect(await screen.findByText('Welcome back Rob')).toBeInTheDocument()
   })
 })
 ```
 
 Here we call `mockCurrentUser()` before the `render()` call. Right now our code only references the `name` of the current user, but you would want this object to include everything a real user contains, maybe an `email` and an array of `roles`.
-
-> By including a list of `roles`, you are also mocking out calls to `hasRole()` in your components so that they respond correctly as to whether `currentUser` has an expected role or not.
->
-> Given a component that does something like this:
->
-> ```javascript
-> const { currentUser, hasRole } = useAuth()
->
-> return (
->   { hasRole('admin') && <button onClick={deleteUser}>Delete User</button> }
-> )
-> ```
->
-> You can test both cases (user does and does not have the "admin" role) with two separate mocks:
->
-> ```javascript
-> mockCurrentUser({ roles: ['admin'] })
->
-> mockCurrentUser({ roles: [] })
-> ```
->
-> That's it!
 
 We introduced a new function, `waitFor()` which will wait for a render update before passing/failing the expectation. Although `findByRole()` will wait for an update, it will raise an error if the element is not found (similar to `getByRole()`). So here we had to switch to `queryByRole()`, but that version isn't async, so we added `waitFor()` to get the async behavior back.
 
@@ -623,13 +609,39 @@ We introduced a new function, `waitFor()` which will wait for a render update be
 
 You may have noticed above that we created two tests, one for checking the button and one for checking the "welcome" message. This is a best practice in testing: keep your tests as small as possible by only testing one "thing" in each. If you find that you're using the word "and" in the name of your test (like "does not render a login button *and* renders a welcome message") that's a sign that your test is doing too much.
 
-We had to duplicate our `mockCurrentUser()` call and duplication is usually another sign that things can be refactored. In Jest you can nest `describe` blocks and include setup that is shared by the members of that block:
+#### Mocking Roles
+
+By including a list of `roles` in the object returned from `mockCurrentUser()` you are also mocking out calls to `hasRole()` in your components so that they respond correctly as to whether `currentUser` has an expected role or not.
+
+Given a component that does something like this:
+
+```javascript
+const { currentUser, hasRole } = useAuth()
+
+return (
+  { hasRole('admin') && <button onClick={deleteUser}>Delete User</button> }
+)
+```
+
+You can test both cases (user does and does not have the "admin" role) with two separate mocks:
+
+```javascript
+mockCurrentUser({ roles: ['admin'] })
+mockCurrentUser({ roles: [] })
+```
+
+That's it!
+
+### Handling Duplication
+
+We had to duplicate the `mockCurrentUser()` call and duplication is usually another sign that things can be refactored. In Jest you can nest `describe` blocks and include setup that is shared by the members of that block:
 
 ```javascript
 describe('HomePage', () => {
   describe('logged out', () => {
     it('renders a login button when logged out', () => {
       render(<HomePage />)
+
       expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument()
     })
   })
@@ -637,6 +649,7 @@ describe('HomePage', () => {
   describe('log in', () => {
     beforeEach(() => {
       mockCurrentUser({ name: 'Rob' })
+
       render(<HomePage />)
     })
 
@@ -657,7 +670,9 @@ describe('HomePage', () => {
 
 While the primoridal developer inside of you probably breathed a sign of relief seeing this refactor, heed this warning: the more deeply nested your tests become, the harder it is to read through the file and figure out what's in scope and what's not by the time your actual test is invoked. In our test above, if you just focused on the last test, you would have no idea that `currentUser` is being mocked. Imagine a test file with dozens of tests and multiple levels of nested `describe`s and it becomes a chore to scroll through and mentally keep track of what variables are in scope as you look for nested `beforeEach()` blocks.
 
-Some schools of thought say you should keep your test files flat (that is, no nesting) which trades ease of readibility for duplication: each test is completely self contained and you know you can rely on just the code inside that test to determine what's in scope. It makes future test modifications  easier because each test only relies on the code inside of itself. You may get nervous thinking about changing 10 identical instances of `mockCurrentUser()` but that kind of thing is exactly what your IDE is good at! For what it's worth, your humble author endorses the flat tests theory.
+Some schools of thought say you should keep your test files flat (that is, no nesting) which trades ease of readibility for duplication: when flat, each test is completely self contained and you know you can rely on just the code inside that test to determine what's in scope. It makes future test modifications easier because each test only relies on the code inside of itself. You may get nervous thinking about changing 10 identical instances of `mockCurrentUser()` but that kind of thing is exactly what your IDE is good at!
+
+> For what it's worth, your humble author endorses the flat tests style.
 
 ## Testing Pages & Layouts
 
