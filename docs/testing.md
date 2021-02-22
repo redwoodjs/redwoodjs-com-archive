@@ -154,17 +154,17 @@ Are you convinced? Let's keep going and see what Redwood brings to the table.
 
 Redwood relies on several packages to do the heavy lifting, but many are wrapped in Redwood's own functionality which makes them even better suited to their individual jobs:
 
-* Jest
-* React Testing Library
-* Mock Service Worker (MSW)
+* [Jest](https://jestjs.io/)
+* [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+* [Mock Service Worker](https://mswjs.io/) or **msw** for short.
 
-Redwood Generators get your test suite bootstrapped. Redwood also includes Storybook, which isn't technically a test suite, but can help in other ways.
+Redwood Generators get your test suite bootstrapped. Redwood also includes [Storybook](https://storybook.js.org/), which isn't technically a test suite, but can help in other ways.
 
 Let's explore each one and how they're integrated with Redwood.
 
 ### Jest
 
-[Jest](https://jestjs.io/) is the test runner that Redwood uses. By default, starting Jest will start a watch process that monitors your files for changes and re-runs the test(s) that are affected by that changed file (either the test itself, or the subject under test).
+[Jest](https://jestjs.io/) is the test runner that Redwood uses. By default, starting Jest via `yarn rw test` will start a watch process that monitors your files for changes and re-runs the test(s) that are affected by that changed file (either the test itself, or the subject under test).
 
 ### React Testing Library
 
@@ -172,17 +172,17 @@ Let's explore each one and how they're integrated with Redwood.
 
 ### Mock Service Worker
 
-Mock Service Worker (MSW) lets you simulate the response from API calls, among other things. This comes into play with Redwood where the web-side is constantly calling to the api-side in the form of GraphQL. Rather than make actual GraphQL calls, which would slow down the test suite and put a bunch of unrelated code under test, Redwood makes use of MSW to intercept GraphQL calls and return a canned response, which you include in your test.
-
-### Redwood Generators
-
-Redwood's generators will include test files for basic functionality automatically with any components, pages, cells, or services you generate. These will test very basic functionality, but they're a solid foundation and will not automatically break as soon as you start building out custom features.
+Mock Service Worker (msw) lets you simulate the response from API calls, among other things. This comes into play with Redwood where the web-side is constantly calling to the api-side in the form of GraphQL. Rather than make actual GraphQL calls, which would slow down the test suite and put a bunch of unrelated code under test, Redwood makes use of MSW to intercept GraphQL calls and return a canned response, which you include in your test.
 
 ### Storybook
 
 Storybook itself doesn't appear to be related to testing at all—it's for building and styling components in isolation from your main application. But it can serve as a sanity check for an overlooked part of testing: the user interface. Your tests will only be as good as you write them, and testing things like the alignment of text on the page, the inclusion of images, or animation can be very difficult without investing huge amounts of time and effort. These tests are also very brittle since, depending on how they are written, can break without any code changes at all! Imagine an integration with a CMS that allows a marketing person to make text/style changes. These changes will probably not be covered in your test suite, but could make your site unusable depending on how bad they are.
 
 Storybook can provide a quick way to inspect all visual aspects of your site without the tried-and-true method of having a QA person log in and exercise every possible function on the site. Unfortunately, checking those UI elements is not something that Storybook can automate for you, and so can't be part of a continuous integration system. But it makes it *possible* to do so, even if it currently requires a human touch.
+
+### Redwood Generators
+
+Redwood's generators will include test files for basic functionality automatically with any components, pages, cells, or services you generate. These will test very basic functionality, but they're a solid foundation and will not automatically break as soon as you start building out custom features.
 
 ## Test Commands
 
@@ -192,7 +192,7 @@ To run your entire suite you can use a single command:
 yarn rw test
 ```
 
-This will start Jest in "watch" mode which will continually run and monitor the file system for changes. If you change a test or the component that's being tested, Jest will re-run any associated test file. This is handy when you're spending the afternoon writing tests and always to verify the the code you're adding.
+This will start Jest in "watch" mode which will continually run and monitor the file system for changes. If you change a test or the component that's being tested, Jest will re-run any associated test file. This is handy when you're spending the afternoon writing tests and always to verify the the code you're adding without swapping back and forth to a terminal and pressing `↑` `Enter` to run the last command again.
 
 To start the process without watching, add the `--no-watch` flag:
 
@@ -202,7 +202,7 @@ yarn rw test --no-watch
 
 This one is handy before committing some changes to be sure you didn't inadvertantly break something you didn't expect, or before a deploy to production.
 
-You can run only the web-side or api-side tests by including the side as another argument to the command:
+You can run only the web- or api-side test suites by including the side as another argument to the command:
 
 ```terminal
 yarn rw test web
@@ -236,13 +236,15 @@ This test (if it worked) would prove that you are indeed rendering an article. B
 
 > Why do we keep saying this test won't work? Because as far as we can tell there's no easy way to simply render to a string. `render` actually returns an object that has several functions for testing different parts of the output. Those are what we'll look into in the next section.
 
+### Queries
+
 In most cases you will want to exclude the design elements and structure of your components from your test. Then you're free to redesign the component all you want without also having to make the same changes to your test suite. Let's look at some of the functions that React Testing Library provides (they call them "[queries](https://testing-library.com/docs/queries/about/)") that let you check for *parts* of the rendered component, rather than a full string match.
 
-### getByText()
+#### getByText()
 
 In our **&lt;Article&gt;** component it seems like we really just want to test that the title of the product is rendered. *How* and *what it looks like* aren't really a concern for this test. Let's update the test to just check for the presence of the title itself:
 
-```javascript{3,7-8}
+```javascript{3,7-9}
 // web/src/components/Article/Article.test.js
 
 import { render, screen } from '@redwoodjs/testing'
@@ -250,18 +252,19 @@ import { render, screen } from '@redwoodjs/testing'
 describe('Article', () => {
   it('renders an article', () => {
     render(<Article article={ title: 'Foobar' } />)
+
     expect(screen.getByText('Foobar')).toBeInTheDocument()
   })
 })
 ```
 
-Note the additional `screen` import. This is a convience helper from React Testing Library (RTL) that automatically puts you in the `document.body` context before any of the following checks.
+Note the additional `screen` import. This is a convenience helper from React Testing Library that automatically puts you in the `document.body` context before any of the following checks.
 
-We can use `getByText()` to find text content anywhere in the rendered DOM nodes. `toBeInTheDocument()` is an [assertion](https://jestjs.io/docs/en/expect) added to Jest by RTL that returns true if the `getByText()` query finds the given text in the document.
+We can use `getByText()` to find text content anywhere in the rendered DOM nodes. `toBeInTheDocument()` is a [matcher](https://jestjs.io/docs/en/expect) added to Jest by React Testing Library that returns true if the `getByText()` query finds the given text in the document.
 
-So, the above test in plain English says "if there is any DOM node containing the text "Foobar" anywhere in the document, return true."
+So, the above test in plain English says "if there is any DOM node containing the text 'Foobar' anywhere in the document, return true."
 
-### queryByText()
+#### queryByText()
 
 Why not use `getByText()` for everything? Because it will raise an error if the text is *not* found in the document. That means if you want to explictly test that some text is *not* present, you can't—you'll always get an error.
 
@@ -289,7 +292,7 @@ export default Article
 
 If we're only displaying the summary of an article then we'll only show the first 100 characters with an ellipsis on the end ("...") and include a link to "Read more" to see the full article. A reasonable test for this component would be that when the `summary` prop is `true` then the "Read more" text should be present on in the component. If `summary` is `false` then it should *not* be present. That's where `queryByText()` comes in (relevant test lines are highlighted):
 
-```javascript{15,19}
+```javascript{18,24}
 // web/src/components/Article/Article.test.js
 
 import { render, screen } from '@redwoodjs/testing'
@@ -300,28 +303,34 @@ describe('Article', () => {
 
   it('renders the title of an article', () => {
     render(<Article article={article} />)
+
     expect(screen.getByText('Foobar')).toBeInTheDocument()
   })
+
   it('renders a summary version', () => {
     render(<Article article={article} summary={true} />)
+
     expect(screen.getByText('Read more')).toBeInTheDocument()
   })
+
   it('renders a full version', () => {
     render(<Article article={article} summary={false} />)
+
     expect(screen.queryByText('Read more')).not.toBeInTheDocument()
   })
 })
 ```
 
-### getByRole() / queryByRole()
+#### getByRole() / queryByRole()
 
-`getByRole()` allows you to look up elements by their "role", which is an ARIA element that assists in accessiblity features. Many HTML elements have a [default role](https://www.w3.org/TR/html-aria/#docconformance) (including `<button>` and `<a>`) but you can also define it yourself with a `role` attribute on an element.
+`getByRole()` allows you to look up elements by their "role", which is an ARIA element that assists in accessiblity features. Many HTML elements have a [default role](https://www.w3.org/TR/html-aria/#docconformance) (including `<button>` and `<a>`) but you can also define one yourself with a `role` attribute on an element.
 
-Sometimes it may not be enough to say "this text must be on the page." You may to test that an actual *link* is present on the page. Maybe you have a list of user's names and each name should be a link to a detail page. We could test that like so:
+Sometimes it may not be enough to say "this text must be on the page." You may want to test that an actual *link* is present on the page. Maybe you have a list of user's names and each name should be a link to a detail page. We could test that like so:
 
 ```javascript
 it('renders a link with a name', () => {
   render(<List data={[{ name: 'Rob' }, { name: 'Tom' }]} />)
+
   expect(screen.getByRole('link', { name: 'Rob' })).toBeInTheDocument()
   expect(screen.getByRole('link', { name: 'Tom' })).toBeInTheDocument()
 })
@@ -336,6 +345,7 @@ it('renders a link with a name', () => {
   const data = [{ name: 'Rob' }, { name: 'Tom' }]
 
   render(<List data={data} />)
+
   data.forEach((datum) => {
     expect(screen.getByRole('link', { name: data.name })).toBeInTheDocument()
   })
@@ -349,13 +359,24 @@ import { routes } from '@redwoodjs/router'
 
 it('renders a link with a name', () => {
   render(<List data={[{ id: 1, name: 'Rob' }]} />)
+
   const element = screen.getByRole('link', { name: data.name })
   expect(element).toBeInTheDocument()
   expect(element).toHaveAttribute('href', routes.user({ id: data.id }))
 })
 ```
 
-### Other Queries/Matchers
+> **Why so many empty lines in the middle of the test?**
+>
+> You may have noticed a pattern of steps begin to emerge in your tests:
+>
+> 1. Set variables or otherwise prepare some code
+> 2. `render` or execute the function under test
+> 3. `expect`s to verify output
+>
+> Most tests will contain at least the last two, but sometimes all three of these parts, and in some communities it's become standard to include a newline between each "section". Remember the acronym SEA: setup, execute, assert.
+
+#### Other Queries/Matchers
 
 There are several other node/text types you can query against with React Testing Library including `title`, `role` and `alt` attributes, form labels, placeholder text, and more. If you still can't access the node or text you're looking for there is a fallback attribute you can add to any DOM element and that can always be found: `data-testid` which you can access by `getByTestId`, `queryByTestId` and others (but it involves including that attribute in your rendered HTML always, not just when running the test suite).
 
@@ -404,9 +425,11 @@ const Article = ({ id }) => {
 export default Article
 ```
 
-Redwood provides a function `mockGraphQLQuery()` for providing the result of a given named GraphQL. In this case our query is named `getArticle` so we can mock that in our test as follows:
+#### mockGraphQLQuery()
 
-```javascript{8-16,19}
+Redwood provides a test function `mockGraphQLQuery()` for providing the result of a given named GraphQL. In this case our query is named `getArticle` and we can mock that in our test as follows:
+
+```javascript{8-16,20}
 // web/src/components/Article/Article.test.js
 
 import { render, screen } from '@redwoodjs/testing'
@@ -420,17 +443,18 @@ describe('Article', () => {
           id: variables.id,
           title: 'Foobar',
           body: 'Lorem ipsum...',
-        },
+        }
       }
     })
 
     render(<Article id={1} />)
+
     expect(await screen.findByText('Foobar')).toBeInTheDocument()
   })
 })
 ```
 
-We're using a new query here, `findByText()` which allows us to find things that may not be present in the first render of the component. In our case when the component first renders the data hasn't loaded yet, so it will render only "Loading..." which does *not* include the title of our article. So without `findByText()` the test will immediately fail. `findByText()` is smart and waits for subsequent renders or a maximum amount of time before giving up.
+We're using a new query here, `findByText()` which allows us to find things that may not be present in the first render of the component. In our case when the component first renders the data hasn't loaded yet, so it will render only "Loading..." which does *not* include the title of our article. Without `findByText()` the test will immediately fail. `findByText()` is smart and waits for subsequent renders or a maximum amount of time before giving up.
 
 Note that you need to make the test function `async` and put an `await` before the `findByText()` call. Read more about `findBy*()` queries and the higher level `waitFor()` [here](https://testing-library.com/docs/dom-testing-library/api-async).
 
@@ -456,7 +480,7 @@ mockGraphQLQuery('getArticle', (variables, { ctx }) => {
 
 You could then test that you show a proper error message in your component:
 
-```javascript{4,8-10,21,26}
+```javascript{4,8-10,21,27}
 // web/src/components/Article/Article.js
 
 const Article = ({ id }) => {
@@ -481,9 +505,12 @@ it('renders an error message', async () => {
   })
 
   render(<Article id={1} />)
+
   expect(await screen.findByText('Sorry, there was an error')).toBeInTheDocument()
 })
 ```
+
+#### mockGraphQLMutation()
 
 Similar to how we mocked GraphQL queries, we can mock mutations as well. Read more about GraphQL mocking in our [Mocking GraphQL requests](/docs/mocking-graphql-requests.html) docs.
 
