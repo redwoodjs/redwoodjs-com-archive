@@ -704,7 +704,7 @@ export const Success = ({ blogPosts }) => {
 }
 ```
 
-> **Indicating Multiplicity to the Cell Generator**
+> **Naming Conventions**
 >
 > When generating a cell you can use any case you'd like and Redwood will do the right thing when it comes to naming. These will all create the same filename (`web/src/components/BlogPostsCell/BlogPostsCell.js`):
 >
@@ -719,7 +719,7 @@ export const Success = ({ blogPosts }) => {
 
 To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case the query is called `blogPosts`:
 
-```javascript
+```javascript{5}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
@@ -729,16 +729,6 @@ export const QUERY = gql`
     }
   }
 `
-
-export const Loading = () => <div>Loading...</div>
-
-export const Empty = () => <div>Empty</div>
-
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
-
-export const Success = ({ posts }) => {
-  return JSON.stringify(posts)
-}
 ```
 
 However, this is not a valid query name for our existing Posts SDL (`src/graphql/posts.sdl.js`) and Service (`src/services/posts/posts.js`). (To see where these files come from, go back to the [Creating a Post Editor section](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor) in the *Getting Dynamic* part.)
