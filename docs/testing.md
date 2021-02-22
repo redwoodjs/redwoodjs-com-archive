@@ -18,7 +18,7 @@ const add = (a, b) => {
 }
 ```
 
-You test this code by writing another piece of code which usually lives in a separate file and can be run in isolation, just including the functionality from the real codebase that you need in order to test it. For our examples here we'll put the code and its test side-by-side so that everything can be run at once. Our first test will call the `add()` function and make sure that what it does indeed add two numbers together as expected:
+You test this code by writing another piece of code which usually lives in a separate file and can be run in isolation, just including the functionality from the real codebase that you need in order for the test to run. For our examples here we'll put the code and its test side-by-side so that everything can be run at once. Our first test will call the `add()` function and make sure that it does indeed add two numbers together:
 
 ```javascript{5-9}
 const add = (a, b) => {
@@ -36,11 +36,11 @@ Pretty simple, right? The secret is that this simple check *is the basis of all 
 
 ### Running a Test
 
-You can [run that code with Node](https://nodejs.dev/learn/run-nodejs-scripts-from-the-command-line) or just copy/paste it into the [web console of a browser](https://developers.google.com/web/tools/chrome-devtools/console/javascript). You can also run it in a dedicated web development environment like JSFiddle. Switch to the **Javascript** tab to see the code:
+You can [run that code with Node](https://nodejs.dev/learn/run-nodejs-scripts-from-the-command-line) or just copy/paste it into the [web console of a browser](https://developers.google.com/web/tools/chrome-devtools/console/javascript). You can also run it in a dedicated web development environment like JSFiddle. Switch to the **Javascript** tab below to see the code:
 
 <iframe width="100%" height="300" src="//jsfiddle.net/cannikin/mgy4ja1q/2/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0" class="border"></iframe>
 
-(Note that you'll see `document.write()` in the JSFiddle examples instead of `console.log` so that you can actually see something in the **Result** tab, which is HTML output.)
+> Note that you'll see `document.write()` in the JSFiddle examples instead of `console.log` so that you can actually see something in the **Result** tab, which is HTML output.
 
 You should see a "pass" written to the output. To verify that our test is working as expect, try changing the `+` in the `add()` function to a `-` (effectively turning it into a `subtract()` function) and run the test again. Now you should see "fail".
 
@@ -52,18 +52,19 @@ Let's get to some terminology:
 * The specific check that `add(1, 1) === 2` is known as an "assertion"
 * The `add()` function itself is the "subject" of the test, or the code that is "under test"
 * The value you expect to get (in our example, that's the number `2`) is sometimes called the "expected value"
-* The value you actually get back (whatever the output of `add(1, 1)` is) is sometimes called the "actual value"
+* The value you actually get back (whatever the output of `add(1, 1)` is) is sometimes called the "actual" or "received value"
 * The file that contains the test is a "test file"
 * Mutliple test files, all run together, is known as a "test suite"
 * You'll generally run your test files and suites by another piece of software: in the case of Redwood that's Jest, and it's known as a "test runner"
+* The amount of code you have that is exercised by tests is referred to as "coverage" and is usually reported as a percentage. If every single line of code is touched as a result of running your test suite then you have 100% coverage!
 
 This is the basic idea behind all tests you will write: add some new code, and add another piece of code that uses the first and verifies that the result is what you expect.
 
 Tests can also help drive new development. For example, what happens to our `add()` function if you leave out one of the arguments? We can drive these changes by writing a test of what we *want* to happen, and then modify the code that's being tested (the subject) to make it satisy the assertion(s) in a test.
 
-### Errors
+### Expecting Errors
 
-So, what does happens if we leave off an argument when calling `add()`? Well, what do we *want* to happen? We'll answer that question by writing a test for what we expect. For this example let's have it throw an error. We'll write the test first that expects the error:
+So, what happens if we leave off an argument when calling `add()`? Well, what do we *want* to happen? We'll answer that question by writing a test for what we expect. For this example let's have it throw an error. We'll write the test first that expects the error:
 
 ```javascript
 try {
@@ -77,15 +78,17 @@ try {
 }
 ```
 
-This is interesting because we actually *expect* an error to be thrown, but we don't want that error to stop the test suite in it's tracks—we want the error raises, we just want to make sure it's exactly what we expect it to be! So we'll surround the code that is going to error in a try/catch block and inspect the message on the error. If it's what we want, then the test actually passes.
+This is interesting because we actually *expect* an error to be thrown, but we don't want that error to stop the test suite in it's tracks—we want the error to be raised, we just want to make sure it's exactly what we expect it to be! So we'll surround the code that is going to error in a try/catch block and inspect the message on the error. If it's what we want, then the test actually passes.
+
+> Remember: we're testing what we *want* to happen. Usually you think of errors as being "bad" but this case we *want* the code to throw an error, so if it does, that's actually good! Raising an error passes the test, not raising the error (or raising the wrong error) is a failure.
 
 Run this test and what happens? (If you previously made a change to `add()` to see the test fail, change it back now):
 
 <iframe width="100%" height="300" src="//jsfiddle.net/cannikin/mgy4ja1q/6/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0" class="border"></iframe>
 
-Where did *that* come from? Well, our subject `add()` didn't raise any errors (Javascript doesn't care about the number of arguments passed to a function) and so it tried to add `1` to `undefined`. We didn't think about that! Testing is already helping us catch edge cases.
+Where did *that* come from? Well, our subject `add()` didn't raise any errors (Javascript doesn't care about the number of arguments passed to a function) and so it tried to add `1` to `undefined`, and that's Not A Number. We didn't think about that! Testing is already helping us catch edge cases.
 
-To respond properly to this case in our test we'll make one slight modification: add another "fail" log message if the code somehow gets past the call to `add(1)` without throwing an error:
+To respond properly to this case in our test we'll make one slight modification: add another "fail" log message if the code somehow gets past the call to `add(1)` *without* throwing an error:
 
 ```javascript{3,8}
 try {
@@ -104,7 +107,7 @@ Here we added a litle more information to the "fail" messages so we know which o
 
 <iframe width="100%" height="300" src="//jsfiddle.net/cannikin/mgy4ja1q/7/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0" class="border"></iframe>
 
-Now we'll update `add()` to behave as we expect: by throwing an error if less than two arguments are passed.
+Now we'll actually update `add()` to behave as we expect: by throwing an error if less than two arguments are passed.
 
 ```javascript
 const add = (...nums) => {
@@ -119,6 +122,10 @@ Javascript doesn't have a simple way to check how many arguments were passed to 
 
 <iframe width="100%" height="300" src="//jsfiddle.net/cannikin/mgy4ja1q/10/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0" class="border"></iframe>
 
+We've covered passing too few arguments, what if we pass too many? We'll leave writing that test as homework, but you should have everything you need, and you won't even need any changes to the `add()` function to make it work!
+
+### Our Test Runner Compared to Jest
+
 Our tests are a little verbose (10 lines of code to test that the right number of arguments were sent in). Luckily, the test runner that Redwood uses, Jest, provides a simpler syntax for the same assertions. Here's the complete test file, but using Jest's provided helpers:
 
 ```javascript
@@ -127,13 +134,15 @@ describe('add()', () => {
     expect(add(1, 1)).toEqual(2)
   })
 
-  it('throws an error on incorrect argument count', () => {
+  it('throws an error for too few arguments', () => {
     expect(add(1)).toThrow('add requires 2 arguments')
   })
 })
 ```
 
-Jest lets us be very clear about our subject in the first argument to the `describe()` function, letting us know what we're testing. Likewise, each test is given a descriptive name as the first argument to the `it()` functions ("it" being the subject under test). Functions like `expect()` and `toEqual()` make it clear what values we expect to receive when running the test suite. If the expectation fails, Jest will indicate that in the output letting us know the name of the test that failed and what went wrong (the expected and actual values didn't match, or an error was thrown that we didn't expect).
+Jest lets us be very clear about our subject in the first argument to the `describe()` function, letting us know what we're testing. Note that it's just a string and doesn't have to be exactly the same as the function/class you're testing but usually is for clarity.
+
+Likewise, each test is given a descriptive name as the first argument to the `it()` functions ("it" being the subject under test). Functions like `expect()` and `toEqual()` make it clear what values we expect to receive when running the test suite. If the expectation fails, Jest will indicate that in the output letting us know the name of the test that failed and what went wrong (the expected and actual values didn't match, or an error was thrown that we didn't expect).
 
 Jest also has a nicer output than our cobbled together test runner using `console.log`:
 
