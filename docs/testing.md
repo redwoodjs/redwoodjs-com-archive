@@ -685,7 +685,7 @@ Testing cells is very similar to testing components: something is rendered to th
 Two situations make testing cells unique:
 
 1. A single cell can export up to four separate components
-2. There will always be a GraphQL query taking place
+2. There will be a GraphQL query taking place
 
 The first situation is really no different than regular component testing, you just test more than one component in your test. For example:
 
@@ -755,9 +755,9 @@ You might think that "rendering without errors" is a pretty lame test but this i
 
 You can expand on these tests by checking for certain text in each component is present, just as you would with a regular component test.
 
-When the **&lt;Success&gt;** component is tested, what's this `standard()` function?
-
 ### Cell Mocks
+
+When the **&lt;Success&gt;** component is tested, what's this `standard()` function that's passed as the `article` prop?
 
 If you used the cell generator, you'll get a `mocks.js` file along with the cell component and the test file:
 
@@ -828,7 +828,7 @@ describe('ArticleCell', () => {
 
 Note that this second mock simply returns an object instead of a function. In the simplest case all you need your mock to return is an object. But there are cases where you may want to include logic in your mock, and in these cases you'll appreciate the function container. Especially in the following scenario...
 
-### Testing Components That Include Cells and the `standard()` Mock
+### Testing Components That Include Cells
 
 Consider the case where you have a page which renders a cell inside of it. You write a test for the page (using regular component testing techniques mentioned above). But if the page includes a cell, and a cell wants to run a GraphQL query, what happens when the page is rendered?
 
@@ -836,9 +836,9 @@ This is where the specially named `standard()` mock comes into play: the GraphQL
 
 And this is where `standard()` being a function becomes important. The GraphQL call is intercepted behind the scenes with the same `mockGraphQLQuery()` function we learned about [earlier](#mocking-graphql). And since it's using that same function, the second argument (the function which runs to return the mocked data) receives the same arguments (`variables` and an object with keys like `ctx`).
 
-So, all of that is to say that when `standard()` is called it will receive the variables and context that goes along with every GraphQL query, and you can make use of that data in the `standard()` mock. So that means it's possible to, for example, look at the `variables` that were passed in and conditionally return a different object.
+So, all of that is to say that when `standard()` is called it will receive the variables and context that goes along with every GraphQL query, and you can make use of that data in the `standard()` mock. That means it's possible to, for example, look at the `variables` that were passed in and conditionally return a different object.
 
-Perhaps you have a products page that renders either in stock or out of stock products. You could simulate one product that's in stock and one that's out by checking for the id and returning in stock items for even numbered product ids and out of stock items for odd numbered:
+Perhaps you have a products page that renders either in stock or out of stock products. You could inspect the `status` that's passed into via `variables.status` and return a different inventory count depending on whether the calling code wants in-stock or out-of-stock items:
 
 ```javascript
 // web/src/components/ProductCell/ProductCell.mock.js
@@ -884,11 +884,13 @@ import ArticleCell from 'src/components/ArticleCell'
 describe('ProductPage', () => {
   it('renders in stock products', () => {
     render(<ProductPage status='instock' />)
+
     expect(screen.getByText('In Stock')).toBeInTheDocument()
   })
 
   it('renders out of stock products', async () => {
     render(<ProductPage status='outofstock' />)
+
     expect(screen.getByText('Out of Stock')).toBeInTheDocument()
   })
 })
@@ -927,11 +929,11 @@ export const standard = (variables) => {
 
 ## Testing Services
 
-Until now we've only tested things on the web-side of our app. When we want test the api-side that means testing our services.
+Until now we've only tested things on the web-side of our app. When we test the api-side that means testing our services.
 
 In some ways testing a service feels more "concrete" than testing components—services deal with hard data coming out of a database or third party API, while components deal with messy things like language, layout and even design elements.
 
-Services will usually contain most of your business logic which is important to verify for correctness—crediting or debiting the wrong account number on the services side could end your business!
+Services will usually contain most of your business logic which is important to verify for correctness—crediting or debiting the wrong account number on the services side could put a swift end to your business!
 
 ### The Test Database
 
@@ -959,6 +961,7 @@ import { createUser } from './users'
 describe('users service', () => {
   it('creates a user', async () => {
     const record = await createUser({ name: 'David' })
+
     expect(record.id).not.toBeNull()
     expect(record.name).toEqual('David')
   })
@@ -967,9 +970,11 @@ describe('users service', () => {
 
 This test creates a user and then verifies that it now has an `id` and that the name is what we sent in as the `input`. Note the use of `async`/`await`: although the service itself doesn't use `async`/`await`, when the service is invoked as a GraphQL resolver, the GraphQL provider sees that it's a Promise and waits for it to resolve before returning the response. We don't have that middleman here in the test suite so we need to `await` manually.
 
-Did a user really get created somewhere? Yes, in the test database!
+Did a user really get created somewhere? Yes: in the test database!
 
 > In theory, it would be possible to mock out the calls to `db` to avoid talking to the database completely, but we felt that the juice wouldn't be worth the squeeze—you will end up mocking tons of functionality that is also under active development (Prisma) and you'd constantly be chasing your tail trying to keep up. So we give devs a real database to access and remove a whole class of frustrating bugs and false test passes/failures because of out-of-date mocks.
+
+### Database Seeding
 
 What about testing code that retrieves a record from the database? Easy, just pre-seed the data into the database first, then test the retrieval. **Seeding** refers to setting some data in the database that some other code requires to be present to get its job done. In a production deployment this could be a list of pre-set tags that users can apply to forum posts. In our tests it refers to data that needs to be present for our *actual* test to use.
 
@@ -978,13 +983,17 @@ In the following code, the "David" user is the seed. What we're actually testing
 ```javascript
 it('retrieves all users', async () => {
   const data = await createUser({ name: 'David' })
+
   const list = await users({ id: data.id })
+
   expect(list.length).toEqual(1)
 })
 
 it('retrieves a single user', async () => {
   const data = await createUser({ name: 'David' })
+
   const record = await user({ id: data.id })
+
   expect(record.id).toEqual(data.id)
   expect(record.name).toEqual(data.name)
 })
@@ -1039,11 +1048,13 @@ Now in our test we replace the `it()` function with `scenario()`:
 ```javascript
 scenario('retrieves all users', async (scenario) => {
   const list = await users()
+
   expect(list.length).toEqual(Object.keys(scenario.user).length)
 })
 
 scenario('retrieves a single user', async (scenario) => {
   const record = await user({ id: scenario.user.dom.id })
+
   expect(record.id).toEqual(scenario.user.dom.id)
 })
 ```
@@ -1052,7 +1063,7 @@ The `scenario` argument passed to the function contains the scenario data *after
 
 #### Named Scenarios
 
-You may have noticed that the scenario we used was once again named `standard`. This means it's once again the "default" scenario if you don't specify a different name. This implies that you can create more than one scenario and somehow use it in your tests. And you can:
+You may have noticed that the scenario we used was once again named `standard`. This means it's the "default" scenario if you don't specify a different name. This implies that you can create more than one scenario and somehow use it in your tests. And you can:
 
 ```javascript
 export const standard = defineScenario({
@@ -1159,6 +1170,7 @@ scenario('creates a second comment', async (scenario) => {
   })
 
   const list = await comments({ postId: scenario.comment.jane.postId })
+
   expect(list.length).toEqual(Object.keys(scenario.comment).length + 1)
 })
 ```
@@ -1167,6 +1179,21 @@ scenario('creates a second comment', async (scenario) => {
 
 Why check against `Object.keys(scenario.comment).length + 1` and not just `2`? Because if we ever update the scenario to add more records (maybe to support another test) this test will keep working because it only assumes what *it itself* did: add one comment to existing count of comments in the scenario.
 
+#### Which Scenarios Are Seeded?
+
+Only the scenarios named for your test are included at the time the test is run. This means that if you have:
+
+* `posts.test.js`
+* `posts.scenarios.js`
+* `comments.test.js`
+* `comments.scenarios.js`
+
+Only the posts scenarios will be present in the database when running the `posts.test.js` and only comments scenarios will be present when running `comments.test.js`. And within those scenarios, only the `standard` scenario will be loaded for each test unless you specify a different named scenario to use instead.
+
+During the run of any single test, there is only every one scenario's worth of data present in the database: users.standard *or* users.incomplete.
+
 ## Wrapping Up
 
-So that's the world of testing according to Redwood. Did we miss anything? Can we make it even more awesome! Stop by [the community](https://community.redwoodjs.com) and ask questions, or if you've some way to make this doc even better then [open a PR](https://github.com/redwoodjs/redwood/pulls). Now go out and create (and test!) something amazing!
+So that's the world of testing according to Redwood. Did we miss anything? Can we make it even more awesome? Stop by [the community](https://community.redwoodjs.com) and ask questions, or if you've thought of a way to make this doc even better then [open a PR](https://github.com/redwoodjs/redwood/pulls).
+
+Now go out and create (and test!) something amazing!
