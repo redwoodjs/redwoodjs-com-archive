@@ -36,9 +36,9 @@ model DataMigration {
 }
 ```
 
-The install script also ran `yarn rw db save` automatically so you have a DB migration ready to go. You just need to run the `up` command to apply it:
+The install script also ran `yarn rw prisma migrate dev --create-only` automatically so you have a DB migration ready to go. You just need to run the `prisma migrate dev` command to apply it:
 
-    yarn rw db up
+    yarn rw prisma migrate dev
 
 ## Creating a New Data Migration
 

@@ -141,7 +141,7 @@ yarn rw dataMigrate <command>
 ### install
 
 - Appends a `DataMigration` model to `schema.prisma` for tracking which data migrations have already run.
-- Creates a DB migration using `yarn rw db save 'create data migrations`.
+- Creates a DB migration using `yarn rw prisma migrate dev --create-only create_data_migrations`.
 - Creates `api/db/dataMigrations` directory to contain data migration scripts
 
 ```terminal
