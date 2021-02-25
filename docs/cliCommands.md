@@ -1416,7 +1416,7 @@ See [Authentication](https://redwoodjs.com/docs/authentication).
 
 ### setup custom-index
 
-Setup an `index.js` file so you can customize how Redwood web is mounted in your browser.
+Setup an `index.js` file in `web/src` so you can customize how your Redwood App mounts to the DOM.
 
 ```
 yarn rw setup custom-index
@@ -1430,7 +1430,7 @@ Redwood automatically mounts your `<App />` to the DOM, but if you want to custo
 
 **Usage**
 
-See [Custom Entry](https://redwoodjs.com/docs/custom-entry).
+See [Custom Index](https://redwoodjs.com/docs/custom-index).
 
 ### setup deploy (config)
 
