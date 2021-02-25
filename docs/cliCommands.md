@@ -1388,26 +1388,12 @@ yarn rw setup <command>
 
 | Commands   | Description                                                            |
 | :--------- | :--------------------------------------------------------------------- |
-| `auth`     | Setup  auth configuration for a provider                               |
+| `auth`     | Setup auth configuration for a provider                               |
+| `custom-entry`     | Setup a custom entry.js file, so you can customise how Redwood web is mounted in your browser |
 | `deploy`   | Setup a deployment configuration for  a provider                       |
 | `i18n`     | Setup i18n                                                             |
 | `tailwind` | Setup tailwindcss and PostCSS                                          |
 | `webpack`  | Setup webpack config file in your project so you can add custom config |
-
-### setup deploy (config)
-
-Setup a deployment configuration.
-
-```
-yarn rw setup deploy <provider>
-```
-
-Creates provider-specific code and configuration for deployment
-
-| Arguments & Options | Description                                                                        |
-| :------------------ | :--------------------------------------------------------------------------------- |
-| `provider`          | Deploy provider to configure. Choices are `netlify`, `vercel`, or `aws-serverless` |
-| `--force, -f`       | Overwrite existing configuration [default: false]         |
 
 ### setup auth
 
@@ -1427,6 +1413,39 @@ You can get authentication out-of-the-box with generators. Right now we support 
 **Usage**
 
 See [Authentication](https://redwoodjs.com/docs/authentication).
+
+### setup custom-index
+
+Setup an `index.js` file in `web/src` so you can customize how your Redwood App mounts to the DOM.
+
+```
+yarn rw setup custom-index
+```
+
+Redwood automatically mounts your `<App />` to the DOM, but if you want to customize how that happens, you can use this setup command to generate a file where you can do that in.
+
+| Arguments & Options | Description                                                                                      |
+| :------------------ | :----------------------------------------------------------------------------------------------- |
+| `--force, -f`       | Overwrite existing files                                                                         |
+
+**Usage**
+
+See [Custom Index](https://redwoodjs.com/docs/custom-index).
+
+### setup deploy (config)
+
+Setup a deployment configuration.
+
+```
+yarn rw setup deploy <provider>
+```
+
+Creates provider-specific code and configuration for deployment.
+
+| Arguments & Options | Description                                                                        |
+| :------------------ | :--------------------------------------------------------------------------------- |
+| `provider`          | Deploy provider to configure. Choices are `netlify`, `vercel`, or `aws-serverless` |
+| `--force, -f`       | Overwrite existing configuration [default: false]         |
 
 ## storybook
 
