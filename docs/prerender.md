@@ -2,7 +2,7 @@
 
 Some of your pages don't have dynamic content; it'd be great if you could render them ahead of time, making for a faster experience for your end users.
 
-We thought a lot about what the developer experience should be for route-based prerendering. The result is one of the smallest APIs imagineable!
+We thought a lot about what the developer experience should be for route-based prerendering. The result is one of the smallest APIs imaginable!
 
 > **How's Prerendering different from SSR/SSG/SWR/ISSG/...?**
 >
