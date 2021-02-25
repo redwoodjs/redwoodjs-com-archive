@@ -671,10 +671,12 @@ yarn rw generate function <name>
 
 Not to be confused with Javascript functions, Capital-F Functions are meant to be deployed to serverless endpoints like AWS Lambda.
 
-| Arguments & Options | Description              |
-| :------------------ | :----------------------- |
-| `name`              | Name of the function     |
-| `--force, -f`       | Overwrite existing files |
+| Arguments & Options        | Description                               |
+| :------------------------- | :---------------------------------------- |
+| `name`                     | Name of the function                      |
+| `--force, -f`              | Overwrite existing files                  |
+| `--javascript, --js`       | Generate JavaScript files [default: true] |
+| `--typescript, --ts`       | Generate TypeScript files                 |
 
 **Usage**
 
