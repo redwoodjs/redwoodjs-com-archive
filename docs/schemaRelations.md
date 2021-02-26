@@ -72,7 +72,7 @@ model ProductsOnTags {
   tags      Tag[]     @relation(fields: [tagId], references: [id])
   productId Int
   products  Product[] @relation(fields: [productId], references: [id])
-  @@id([tagId, productId])
+  @@unique([tagId, productId])
 }
 ```
 
