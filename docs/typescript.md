@@ -61,7 +61,7 @@ Create a `./web/tsconfig.json` file:
     "typeRoots": ["../.redwood"],
     "types": []
   },
-  "include": ["src"]
+  "include": ["src", "../.redwood/globals"]
 }
 ```
 
