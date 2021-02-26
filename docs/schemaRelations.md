@@ -50,6 +50,8 @@ Since there's no `id` column here, you can't use the SDL generator with the `--c
 
 ## Supported Table Structure
 
+To support both CRUD actions and to remain consistent with Prisma's m-n-relationships, a combination of [`@id`](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#id) and [`@@unique`](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#unique-1) can be used. With this, `@id` is used to create a primary key on the lookup-table and `@@unique` is used to maintain its unique index, which was previously accomplished by the primary key created with `@@id`.
+
 You can get this working by creating an explicit relationship—defining the table structure yourself:
 
 ```javascript
