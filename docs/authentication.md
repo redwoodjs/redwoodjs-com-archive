@@ -10,6 +10,7 @@
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
 - [Ethereum](https://github.com/oneclickdapp/ethereum-auth)
 - [Supabase](https://supabase.io/docs/guides/auth)
+- [Nhost](https://docs.nhost.io/auth)
 - Custom
 - [Contribute one](https://github.com/redwoodjs/redwood/tree/main/packages/auth), it's SuperEasy™!
 
@@ -503,6 +504,48 @@ yarn rw setup auth ethereum
 
 To complete setup, you'll also need to update your `api` server manually. See https://github.com/oneclickdapp/ethereum-auth for instructions.
 
++++
+
+### Nhost
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw setup auth nhost
+```
+
+#### Setup
+
+Update your .env file with the following setting which can be found on your Nhost project's dashboard.
+
+- `NHOST_BACKEND_URL` with the unique Nhost Backend (Auth & Storage) URL for your project.
+
+#### Usage
+
+Nhost supports the following methods: 
+
+* email/password
+* OAuth (via GitHub, Google, Facebook, or Linkedin).
+
+Depending on the credentials provided:
+
+* A user can sign in either via email or a supported OAuth provider.
+* A user can sign up via email and password. For OAuth simply sign in and the user account will be created if it does not exist.
+* Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to the project's Settings -> Sign-In Methods page at `console.nhost.io`.
+
+For the docs on Authentication, see: <https://docs.nhost.io/auth>
+
+If you are also using Nhost as your GraphQL API server, you will need to pass `skipFetchCurrentUser` as a prop to `AuthProvider` , as follows:
+
+```js
+<AuthProvider client={nhost} type="nhost" skipFetchCurrentUser>
+```
+
+This avoids having an additional request to fetch the current user which is meant to work with Apollo Server and Prisma.
 +++
 
 ### Custom
