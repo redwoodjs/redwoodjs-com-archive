@@ -1389,7 +1389,7 @@ yarn rw setup <command>
 | Commands   | Description                                                            |
 | :--------- | :--------------------------------------------------------------------- |
 | `auth`     | Setup auth configuration for a provider                               |
-| `custom-entry`     | Setup a custom entry.js file, so you can customize how Redwood web is mounted in your browser |
+| `custom-web-index`     | Setup an `index.js` file, so you can customize how Redwood web is mounted in your browser |
 | `deploy`   | Setup a deployment configuration for  a provider                       |
 | `i18n`     | Setup i18n                                                             |
 | `tailwind` | Setup tailwindcss and PostCSS                                          |
