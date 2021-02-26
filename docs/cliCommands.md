@@ -1414,12 +1414,12 @@ You can get authentication out-of-the-box with generators. Right now we support 
 
 See [Authentication](https://redwoodjs.com/docs/authentication).
 
-### setup custom-index
+### setup custom-web-index
 
 Setup an `index.js` file in `web/src` so you can customize how your Redwood App mounts to the DOM.
 
 ```
-yarn rw setup custom-index
+yarn rw setup custom-web-index
 ```
 
 Redwood automatically mounts your `<App />` to the DOM, but if you want to customize how that happens, you can use this setup command to generate a file where you can do that in.
@@ -1430,7 +1430,7 @@ Redwood automatically mounts your `<App />` to the DOM, but if you want to custo
 
 **Usage**
 
-See [Custom Index](https://redwoodjs.com/docs/custom-index).
+See [Custom Web Index](https://redwoodjs.com/docs/custom-web-index).
 
 ### setup deploy (config)
 
