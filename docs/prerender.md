@@ -118,7 +118,7 @@ import { useIsBrowser } from '@redwoodjs/prerender/browserUtils'
 const ComponentUsingAnExternalLibrary = () => {
   const browser = useIsBrowser()
 
-  // if `browser` evaluates to false, this won't be included 
+  // if `browser` evaluates to false, this won't be included
 	if (browser) {
 		loadMyLargeExternalLibrary()
   }
@@ -133,7 +133,7 @@ const ComponentUsingAnExternalLibrary = () => {
 If you just want to debug your app, or check for possible prerendering errors, after you've built it, you can run this command:
 
 ```terminal
-yarn rw prerender --dryrun
+yarn rw prerender --dry-run
 ```
 
 Since we just shipped this in v0.26, we're actively looking for feedback! Do let us know if: everything built ok? you encountered specific libraries that you were using that didn’t work?
