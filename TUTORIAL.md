@@ -128,7 +128,7 @@ Let's take a look at the files and directories that were created for us (config 
         ├── components
         ├── index.css
         ├── index.html
-        ├── index.js
+        ├── App.js
         ├── layouts
         └── pages
             ├── FatalErrorPage
@@ -171,12 +171,18 @@ That's it for the backend.
     - `FatalErrorPage.js` will be rendered when there is an uncaught error that can't be recovered from and would otherwise cause our application to really blow up (normally rendering a blank page).
   - `index.css` is a generic place to put your CSS, but there are many options.
   - `index.html` is the standard React starting point for our app.
-  - `index.js` the bootstrapping code to get our Redwood app up and running.
+  - `App.js` the application component that wraps your entire app
   - `Routes.js` the route definitions for our app which map a URL to a _Page_.
 - `public` contains assets not used by React components (they will be copied over unmodified to the final app's root directory):
   - `favicon.png` is the icon that goes in a browser tab when your page is open (apps start with the RedwoodJS logo).
   - `robots.txt` can be used to control what web indexers are [allowed to do](https://www.robotstxt.org/robotstxt.html).
   - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can also [read this README.md file on GitHub](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
+
+> Note that there's no `web/src/index.js` where you'll see a traditional `React.render(<App />)`. Redwood handles this internally for you, but if you need to get inside of that process somewhere to add custom code, you can generate the `index.js` file with the following command:
+>
+>     yarn redwood setup custom-web-index
+>
+> Redwood will then use that `index.js` instead of it's internal version!
 
 ## Our First Page
 
@@ -2500,7 +2506,7 @@ By default the authentication system will return only the data that the third-pa
 
 The files that were modified by the generator are:
 
-* `web/src/index.js`—wraps the router in `<AuthProvider>` which makes the routes themselves authentication aware, and gives us access to a `useAuth()` hook that returns several functions for logging users in and out, checking their current logged-inness, and more.
+* `web/src/App.js`—wraps the router in `<AuthProvider>` which makes the routes themselves authentication aware, and gives us access to a `useAuth()` hook that returns several functions for logging users in and out, checking their current logged-inness, and more.
 * `api/src/functions/graphql.js`—makes `currentUser` available to the api side so that you can check whether a user is allowed to do something on the backend. If you add an implementation to `getCurrentUser()` in `api/src/lib/auth.js` then that is what will be returned by `currentUser`, otherwise it will return just the details the auth system has for the user. If they're not logged in at all then `currentUser` will be `null`.
 
 We'll hook up both the web and api sides below to make sure a user is only doing things they're allowed to do.
