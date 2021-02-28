@@ -491,7 +491,7 @@ We need to decide what data we'll need for a blog post. We'll expand on this at 
 
 We use [Prisma](https://www.prisma.io/) to talk to the database. Prisma has another library called [Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate) that lets us update the database's schema in a predictable way and snapshot each of those changes. Each change is called a _migration_ and Migrate will create one when we make changes to our schema.
 
-First let's define the data structure for a post in the database. Open up `api/db/schema.prisma` and add the definition of our Post table (remove any "sample" models that are present in the file, like the `UserExample` model). Once you're done the entire schema file should look like:
+First let's define the data structure for a post in the database. Open up `api/db/schema.prisma` and verify that the schema file has the following content
 
 ```plaintext{13-18}
 // api/db/schema.prisma
