@@ -31,7 +31,7 @@ Create a `./api/tsconfig.json` file:
     "paths": {
       "src/*": ["./src/*"]
     },
-    "typeRoots": ["../.redwood"],
+    "typeRoots": ["../node_modules/@types", "../.redwood"],
     "types": []
   },
   "include": ["src"]
@@ -58,7 +58,7 @@ Create a `./web/tsconfig.json` file:
     "paths": {
       "src/*": ["./src/*"]
     },
-    "typeRoots": ["../.redwood"],
+    "typeRoots": ["../node_modules/@types", "../.redwood"],
     "types": []
   },
   "include": ["src", "../.redwood/globals"]
