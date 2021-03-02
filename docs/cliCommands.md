@@ -363,13 +363,13 @@ yarn redwood dev [side..]
 | Argument           | Description                                                                                                                          |
 | :----------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
 | `side`             | Which dev server(s) to start. Choices are `api` and `web`. Defaults to `api` and `web`                                               |
-| `--forward, --fwd` | String of one or more [Webpack DevServer](https://webpack.js.org/configuration/dev-server/) config options. See example usage below. |
+| `--forward, --fwd` | String of one or more Webpack Dev Server config options. See example usage below. See the [Redwood Webpack Doc](https://redwoodjs.com/docs/webpack-configuration#webpack-dev-server) for more details and examples. |
 
 **Usage**
 
 If you're only working on your sdl and services, you can run just the api server to get GraphQL Playground on port 8911:
 
-```plaintext{10}
+```bash
 ~/redwood-app$ yarn rw dev api
 yarn run v1.22.4
 $ /redwood-app/node_modules/.bin/rw dev api
@@ -382,11 +382,18 @@ $ /redwood-app/node_modules/.bin/dev-server
 15:04:51 api | ► http://localhost:8911/graphql/
 ```
 
-Using `--forward` (alias `--fwd`), you can pass one or more Webpack DevServer config options. The following will run the dev server, set the port to `1234`, and disable automatic browser opening.
+Using `--forward` (alias `--fwd`), you can pass one or more Webpack Dev Server [config options](https://webpack.js.org/configuration/dev-server/). The following will run the dev server, set the port to `1234`, and disable automatic browser opening.
 
-```plaintext{10}
+```bash
 ~/redwood-app$ yarn rw dev --fwd="--port=1234 --open=false"
 ```
+
+You may need to access your dev application from a different host. To resolve the “Invalid Host Header” message, run the following:
+```bash
+~/redwood-app$ yarn rw dev --fwd="--disable-host-check"
+```
+
+For the full list of Webpack Dev Server settings, see [this documentation](https://webpack.js.org/configuration/dev-server/).
 
 ## deploy
 
