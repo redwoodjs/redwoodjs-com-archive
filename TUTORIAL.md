@@ -828,6 +828,8 @@ Now we're in the realm of good ol' React components, so just build out the `Succ
 ```javascript{4-12}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
+// QUERY, Loading, Empty and Failure definitions...
+
 export const Success = ({ posts }) => {
   return posts.map((post) => (
     <article key={post.id}>
@@ -1190,7 +1192,7 @@ And update `BlogPostsCell` and `BlogPostCell` to use this new component instead:
 
 import BlogPost from 'src/components/BlogPost'
 
-// Loading, Empty, Failure...
+// QUERY, Loading, Empty and Failure definitions...
 
 export const Success = ({ posts }) => {
   return posts.map((post) => <BlogPost key={post.id} post={post} />)
@@ -1202,7 +1204,7 @@ export const Success = ({ posts }) => {
 
 import BlogPost from 'src/components/BlogPost'
 
-// Loading, Empty, Failure...
+// QUERY, Loading, Empty and Failure definitions...
 
 export const Success = ({ post }) => {
   return <BlogPost post={post} />
