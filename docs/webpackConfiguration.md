@@ -270,7 +270,7 @@ This will run your application's Web client on port `1234` and disable automatic
 #### Example: Allow External Host Access
 If you're running Redwood in dev mode and try to test your application from an external source (i.e. outside your network), you'll get “Invalid Host Header”.  To enable this workflow, you can run the following:
 ```bash
-yarn rw dev --fwd="--disable-host-check --host 0.0.0.0 --public example.company.com"
+yarn rw dev --forward="--disable-host-check --host 0.0.0.0 --public example.company.com"
 ```
 
 This runs the application and forwards to `example.company.com`.
