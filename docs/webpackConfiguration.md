@@ -255,7 +255,7 @@ yarn add -D sass-loader sass
 Redwood is using [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/) for local development. When you run `yarn rw dev`, things like [Web Port](https://webpack.js.org/configuration/dev-server/#devserverport) and [API Proxy Path](https://webpack.js.org/configuration/dev-server/#devserverproxy) are used for Dev Server settings. You can see all the settings used for Redwood dev here [webpack.development.js#L12-L32](https://github.com/redwoodjs/redwood/blob/49c3afecc210709641dd340b974c86251ed207dc/packages/core/config/webpack.development.js#L12-L32)
 
 ### Pass settings with `--forward`
-It's possible to override Dev Server config with a file. However, it's often simpler to pass the option with the `yarn rw dev` command using the `--forward` flag. See the [Redwood CLI Doc](https://redwoodjs.com/docs/cli-commands#dev) for Dev command help and examples.
+While it's possible to override Dev Server config with a file, it's often simpler to pass options with the `yarn rw dev` command using the `--forward` flag. See the [Redwood CLI Doc](https://redwoodjs.com/docs/cli-commands#dev) for help and examples.
 
 > For the full list of Webpack Dev Server options, [see this document](https://webpack.js.org/configuration/dev-server/).
 
@@ -274,4 +274,3 @@ yarn rw dev --fwd="--disable-host-check --host 0.0.0.0 --public example.company.
 ```
 
 This runs the application and forwards to `example.company.com`.
-
