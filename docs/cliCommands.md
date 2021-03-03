@@ -388,7 +388,7 @@ Using `--forward` (alias `--fwd`), you can pass one or more Webpack Dev Server [
 ~/redwood-app$ yarn rw dev --fwd="--port=1234 --open=false"
 ```
 
-You may need to access your dev application from a different host. To resolve the “Invalid Host Header” message, run the following:
+You may need to access your dev application from a different host, like your mobile device. To resolve the “Invalid Host Header” message, run the following:
 ```bash
 ~/redwood-app$ yarn rw dev --fwd="--disable-host-check"
 ```
