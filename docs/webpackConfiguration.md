@@ -262,7 +262,7 @@ While it's possible to override Dev Server config with a file, it's often simple
 #### Example: Set Port and Disable Browser Opening
 You can override `redwood.toml` settings:
 ```bash
-yarn rw dev --fwd="--port=1234 --open=false"
+yarn rw dev --forward="--port=1234 --open=false"
 ```
 
 This will run your application's Web client on port `1234` and disable automatic browser window openning. 
