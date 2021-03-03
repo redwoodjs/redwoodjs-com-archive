@@ -42,13 +42,17 @@ These relationships can be [implicit](https://www.prisma.io/docs/concepts/compon
 
 ## CRUD Requires an `@id`
 
-CRUD (Create, Retrieve, Update, Delete) actions in Redwood currently require a single, unique field in order to retrieve, update or delete a record. Generally this is an `id` column. It doesn't have to be named `id`, but needs to be a column denoted with Prisma's `@id` syntax which marks it as a primary key in the database. This field is guaranteed to be unique and so can be used to find one specific record.
+CRUD (Create, Retrieve, Update, Delete) actions in Redwood currently require a single, unique field in order to retrieve, update or delete a record. This field must be denoted with Prisma's [`@id`](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#id) attribute, marking it as the tables's primary key. This field is guaranteed to be unique and so can be used to find a specific record.
 
-Prisma's implicit many-to-many relationship syntax creates a table _without_ a column marked as an `@id`. It uses confusingly similar token `@@id` which just creates a unique _index_ on the two columns that are foreign keys to the two tables that are being joined. The diagram above shows the result of letting Prisma create an implicit relationship.
+Prisma's implicit many-to-many relationships create a table _without_ a single field marked with the `@id` attribute. Instead, it uses a similar attribute: [`@@id`](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#id-1) to define a *multi-field ID*. This multi-field ID will become the tables's primary key. The diagram above shows the result of letting Prisma create an implicit relationship.
 
-Since there's no `id` column here, you can't use the SDL generator with the `--crud` flag. Likewise, you can't use the scaffold generator, which uses the SDL generator (with `--crud`) behind the scenes.
+Since there's no single `@id` field in implicit many-to-many relationships, you can't use the SDL generator with the `--crud` flag. Likewise, you can't use the scaffold generator, which uses the SDL generator (with `--crud`) behind the scenes.
 
 ## Supported Table Structure
+
+To support both CRUD actions and to remain consistent with Prisma's many-to-many relationships, a combination of the `@id` and [`@@unique`](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#unique-1) attributes can be used. With this, `@id` is used to create a primary key on the lookup-table; and `@@unique` is used to maintain the table's unique index, which was previously accomplished by the primary key created with `@@id`.
+
+> Removing `@@unique` would let a specific **Product** refrence a particular **Tag** more than a single time.
 
 You can get this working by creating an explicit relationship—defining the table structure yourself:
 
@@ -72,7 +76,7 @@ model ProductsOnTags {
   tags      Tag[]     @relation(fields: [tagId], references: [id])
   productId Int
   products  Product[] @relation(fields: [productId], references: [id])
-  @@id([tagId, productId])
+  @@unique([tagId, productId])
 }
 ```
 
