@@ -268,7 +268,7 @@ yarn rw dev --forward="--port=1234 --open=false"
 This will run your application's Web client on port `1234` and disable automatic browser window openning. 
 
 #### Example: Allow External Host Access
-If you are runing Redwood in dev mode and would like to test your application from an external source (outside your network), you will get “Invalid Host Header”.  To enable this process, you can run the following:
+If you're running Redwood in dev mode and try to test your application from an external source (i.e. outside your network), you'll get “Invalid Host Header”.  To enable this workflow, you can run the following:
 ```bash
 yarn rw dev --fwd="--disable-host-check --host 0.0.0.0 --public example.company.com"
 ```
