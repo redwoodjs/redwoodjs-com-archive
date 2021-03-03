@@ -4,13 +4,13 @@ GraphQL is a fundamental part of Redwood. Having said that, you can get going wi
 
 The good thing is that, besides taking care of the annoying stuff for you (namely, mapping your resolvers, which gets annoying fast if you do it yourself!), there's not many gotchas with GraphQL in Redwood. GraphQL is GraphQL. The only Redwood-specific thing you should really be aware of is [resolver args](#redwoods-resolver-args).
 
-Since there's two parts to GraphQL in Redwood, the client and the server, we've divided this doc up that way. By default, Redwood uses Apollo for both: [Apollo Client](https://www.apollographql.com/docs/react/) for the client and [Apollo Server](https://www.apollographql.com/docs/apollo-server/) for the server, though you can swap Apollo Client out for something else if you want. Apollo Server, not so much, but you really shouldn't have to do that unless you want to be on the bleeding edge of the GraphQL spec, in which case, why are you reading this doc anyway? Contribute a PR instead!
+Since there's two parts to GraphQL in Redwood, the client and the server, we've divided this doc up that way. By default, Redwood uses Apollo for both: [Apollo Client](https://www.apollographql.com/docs/react/) for the client and [Apollo Server](https://www.apollographql.com/docs/apollo-server/) for the server, though you can swap Apollo Client out for something else if you want. Apollo Server, not so much, but you really shouldn't have to do that unless you want to be on the bleeding edge of the [GraphQL spec](https://spec.graphql.org/), in which case, why are you reading this doc anyway? Contribute a PR instead!
 
 ## Client-side
 
 ### RedwoodApolloProvider
 
-By default, Redwood Apps come configured with the `RedwoodApolloProvider`. As you can tell from the name, this Provider wraps [ApolloProvider](https://www.apollographql.com/docs/react/api/react/hooks/#the-apolloprovider-component). Ommitting a few things, this is what you'll normally see in Redwood Apps:
+By default, Redwood Apps come ready-to-query with the `RedwoodApolloProvider`. As you can tell from the name, this Provider wraps [ApolloProvider](https://www.apollographql.com/docs/react/api/react/hooks/#the-apolloprovider-component). Ommitting a few things, this is what you'll normally see in Redwood Apps:
 
 ```js
 // web/src/App.js
@@ -28,7 +28,7 @@ const App = () => (
 // ...
 ```
 
-You can then use Apollo's `useQuery` and `useMutation` hooks by importing them from `@redwoodjs/web`:
+You can use Apollo's `useQuery` and `useMutation` hooks by importing them from `@redwoodjs/web`, though if you're using `useQuery`, we recommend that you use a [Cell](https://redwoodjs.com/docs/cells):
 
 ```js
 // web/src/components/MutateButton.js
@@ -50,7 +50,7 @@ const MutateButton = () => {
 }
 ```
 
-Note that you're free to use any of Apollo's other hooks, you'll just have to import them from `@apollo/client` instead. In particular, these two hooks might interest you:
+Note that you're free to use any of Apollo's other hooks, you'll just have to import them from `@apollo/client` instead. In particular, these two hooks might come in handy:
 
 |Hook|Description|
 |:---|:---|
@@ -82,8 +82,6 @@ Let's walk through an example. Say our sdl looks like this:
 ```javascript
 // api/src/graphql/user.sdl.js
 
-import gql from 'graphql-tag'
-
 export const schema = gql`
   type User {
     id: Int!
@@ -97,7 +95,7 @@ export const schema = gql`
 `
 ```
 
-So we have a User model in our schema.prisma that looks like this:
+So we have a User model in our `schema.prisma` that looks like this:
 
 ```javascript
 model User {
@@ -122,9 +120,9 @@ export const users = () => {
 Which begs the question: where are the resolvers for the User fields&mdash;`id`, `email`, and `name`?
 All we have is the resolver for the Query field, `users`.
 
-As we just mentioned, Apollo defines them for you. And since the `root` argument for `id`, `email`, and `name` has a property with each resolvers' exact name (i.e. `root.id`, `root.email`, `root.name`), it'll return the property's value, instead of just returning `undefined`, which is what Apollo would do if `root` didn't have properties with each resolvers' exact name.
+As we just mentioned, Apollo defines them for you. And since the `root` argument for `id`, `email`, and `name` has a property with each resolvers' exact name (i.e. `root.id`, `root.email`, `root.name`), it'll return the property's value (instead of returning `undefined`, which is what Apollo would do if that weren't the case).
 
-But, if you wanted to be all explicit about it, this is what it would look like:
+But, if you wanted to be explicit about it, this is what it would look like:
 
 ```javascript
 // api/src/services/user/user.js
@@ -142,7 +140,7 @@ export const Users = {
 }
 ```
 
-The terminological way of saying this is, to create a resolver for a field on a type, in the service, export an object with the same name as the type that has a property with the same name as the field.
+The terminological way of saying this is, to create a resolver for a field on a type, in the Service, export an object with the same name as the type that has a property with the same name as the field.
 
 Sometimes you want to do this since you can do things like add completely custom fields this way:
 
@@ -168,7 +166,7 @@ Here's an example to make things clear:
 
 ```javascript
 export const Post = {
-  user: (args, { root, context, info }) => db.post.findOne({ where: { id: root.id } }).user()
+  user: (args, { root, context, info }) => db.post.findUnique({ where: { id: root.id } }).user()
 }
 ```
 
@@ -177,13 +175,13 @@ Of the four, you'll see `args` and `root` being used a lot.
 |Argument|Description|
 |:---|:---|
 |`args`|The arguments provided to the field in the GraphQL query|
-|`root`|The previous object|
+|`root`|The previous return in the resolver chain|
 |`context`|Holds important contextual information, like the currently logged in user|
 |`info`|Holds field-specific information relevant to the current query as well as the schema details|
 
 > **There's so many terms!**
 >
-> Right? To keep your head from spinning, keep in mind that everybody tends to rename `obj` to something else: Redwood calls it `root`, Apollo calls it `parent`. `obj` isn't exactly the most descriptive name in the world.
+> Half the battle here is really just coming to terms. To keep your head from spinning, keep in mind that everybody tends to rename `obj` to something else: Redwood calls it `root`, Apollo calls it `parent`. `obj` isn't exactly the most descriptive name in the world.
 
 ### Context
 
@@ -195,9 +193,9 @@ import { context } from '@redwoodjs/api
 
 ### The Root Schema
 
-Did you know that you can query `redwood`? Try it in the GraphQL Playground (you can find the GraphQL Playground at `localhost:8911/graphql` when your dev server is running&mdash;`yarn rw dev api`):
+Did you know that you can query `redwood`? Try it in the GraphQL Playground (you can find the GraphQL Playground at http://localhost:8911/graphql when your dev server is running&mdash;`yarn rw dev api`):
 
-```js
+```gql
 query {
   redwood {
     version
