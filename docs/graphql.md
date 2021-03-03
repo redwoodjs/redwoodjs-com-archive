@@ -1,14 +1,77 @@
-# GraphQL According to Redwood
+# GraphQL 
 
-[todo]
+GraphQL is a fundamental part of Redwood. Having said that, you can get going without knowing anything about it, and can actually get quite far without ever having to read [the docs](https://graphql.org/learn/). But to master Redwood, you'll need to have more than just a vague notion of what GraphQL is; you'll have to really grok it.
 
-Besides taking care of the annoying stuff for you (namely, mapping your resolvers) there's not too many gotchas with GraphQL in Redwood. GraphQL is GraphQL. The only Redwood-specific thing you should really be aware of is [resolver args](#redwoods-resolver-args).
+The good thing is that, besides taking care of the annoying stuff for you (namely, mapping your resolvers, which gets annoying fast if you do it yourself!), there's not many gotchas with GraphQL in Redwood. GraphQL is GraphQL. The only Redwood-specific thing you should really be aware of is [resolver args](#redwoods-resolver-args).
 
-Also note that Redwood uses Apollo Client and Server, so you'll want to be fairly familiar with both of them, although we'll try to go over a few of the trickier topics here.
+Since there's two parts to GraphQL in Redwood, the client and the server, we've divided this doc up that way. By default, Redwood uses Apollo for both: [Apollo Client](https://www.apollographql.com/docs/react/) for the client and [Apollo Server](https://www.apollographql.com/docs/apollo-server/) for the server, though you can swap Apollo Client out for something else if you want. Apollo Server, not so much, but you really shouldn't have to do that unless you want to be on the bleeding edge of the GraphQL spec, in which case, why are you reading this doc anyway? Contribute a PR instead!
 
-## Understanding Default Resolvers
+## Client-side
 
-[todo]
+### RedwoodApolloProvider
+
+By default, Redwood Apps come configured with the `RedwoodApolloProvider`. As you can tell from the name, this Provider wraps [ApolloProvider](https://www.apollographql.com/docs/react/api/react/hooks/#the-apolloprovider-component). Ommitting a few things, this is what you'll normally see in Redwood Apps:
+
+```js
+// web/src/App.js
+
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
+// ...
+
+const App = () => (
+  <RedwoodApolloProvider>
+    <Routes />
+  </RedwoodApolloProvider>
+)
+
+// ...
+```
+
+You can then use Apollo's `useQuery` and `useMutation` hooks by importing them from `@redwoodjs/web`:
+
+```js
+// web/src/components/MutateButton.js
+
+import { useMutation } from '@redwoodjs/web'
+
+const MUTATION = `
+  # your mutation...
+`
+
+const MutateButton = () => {
+  const [mutate] = useMutation(MUTATION)
+
+  return (
+    <button onClick={() => mutate({ ... })}>
+      Click to mutate
+    </button>
+  )
+}
+```
+
+Note that you're free to use any of Apollo's other hooks, you'll just have to import them from `@apollo/client` instead. In particular, these two hooks might interest you:
+
+|Hook|Description|
+|:---|:---|
+|[useLazyQuery](https://www.apollographql.com/docs/react/api/react/hooks/#uselazyquery)|Execute queries in response to events other than component rendering|
+|[useApolloClient](https://www.apollographql.com/docs/react/api/react/hooks/#useapolloclient)|Access your instance of `ApolloClient`|
+
+### Swapping out the RedwoodApolloProvider
+
+As long as you're willing to do a bit of configuring yourself, you can swap out `RedwoodApolloProvider` with your GraphQL Client of choice. You'll just have to get to know a bit of the make up of the [RedwoodApolloProvider](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/apollo/index.tsx#L71-L84); it's actually composed of a few more Providers and hooks:
+
+- `FetchConfigProvider`
+- `useFetchConfig`
+- `GraphQLHooksProvider`
+
+For an example of configuring your own GraphQL Client, see the [redwoodjs-react-query-provider](https://www.npmjs.com/package/redwoodjs-react-query-provider). If you were thinking about using [react-query](https://react-query.tanstack.com/), you can also just go ahead and install it! 
+
+Note that if you don't import `RedwoodApolloProvider`, it won't be included in your bundle, dropping your bundle size quite a lot!
+
+## Server-side
+
+### Understanding Default Resolvers
 
 According to the spec, for every field in your sdl, there has to be a resolver in your Services. But you'll usually see fewer resolvers in your Services than you technically should. And that's because if you don't define a resolver, [Apollo Server will](https://www.apollographql.com/docs/apollo-server/data/resolvers/#default-resolvers).
 
@@ -34,15 +97,15 @@ export const schema = gql`
 `
 ```
 
-> So we have a User model in our schema.prisma that looks like this:
->
-> ```javascript
-> model User {
->   id    Int     @id @default(autoincrement())
->   email String  @unique
->   name  String?
-> }
-> ```
+So we have a User model in our schema.prisma that looks like this:
+
+```javascript
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+}
+```
 
 If you create your Services for this model using Redwood's generator (`yarn rw g services user`), your Services will look like this:
 
@@ -61,45 +124,68 @@ All we have is the resolver for the Query field, `users`.
 
 As we just mentioned, Apollo defines them for you. And since the `root` argument for `id`, `email`, and `name` has a property with each resolvers' exact name (i.e. `root.id`, `root.email`, `root.name`), it'll return the property's value, instead of just returning `undefined`, which is what Apollo would do if `root` didn't have properties with each resolvers' exact name.
 
-> So it's kind of misleading to say Apollo defines it for you, as if it was taking care of all your problems. The matter of fact is Apollo will always define it for you, but if it can't figure it out, it'll just return `undefined`. Thanks Apollo?
+But, if you wanted to be all explicit about it, this is what it would look like:
 
-But, if you wanted to be explicit about it, this is what it would look like:
-
-<!-- TODO -->
-<!-- Or | null? -->
 ```javascript
 // api/src/services/user/user.js
+
 import { db } from 'src/lib/db'
 
 export const users = () => {
   return db.user.findMany()
 }
 
-export const Users = () => {
-  id: (_obj, { root }) => root.id
-  email: (_obj, { root }) => root.email
-  name: (_obj, { root }) => root.name
+export const Users = {
+  id: (_args, { root }) => root.id,
+  email: (_args, { root }) => root.email,
+  name: (_args, { root }) => root.name,
 }
 ```
 
-## Redwood's Resolver Args
+The terminological way of saying this is, to create a resolver for a field on a type, in the service, export an object with the same name as the type that has a property with the same name as the field.
 
-[todo]
+Sometimes you want to do this since you can do things like add completely custom fields this way:
 
-[According to the spec](https://graphql.org/learn/execution/#root-fields-resolvers), resolvers take four arguments: `args`, `parent`, `context`, and `info`. In Redwood apps, resolvers do take these four arguments, but the way they're named and structured is slightly different. `parent` is named `root` (all the rest keep their names), and `root`, `context`, and `info` are wrapped into an object:
+```js{5}
+export const Users = {
+  id: (_args, { root }) => root.id,
+  email: (_args, { root }) => root.email,
+  name: (_args, { root }) => root.name,
+  age: (_args, { root }) => new Date().getFullYear() - root.birthDate.getFullYear()
+}
+```
+
+<!-- Source: https://community.redwoodjs.com/t/how-to-create-field-resolver/195/7 -->
+
+### Redwood's Resolver Args
+
+[According to the spec](https://graphql.org/learn/execution/#root-fields-resolvers), resolvers take four arguments: `args`, `obj`, `context`, and `info`. In Redwood, resolvers do take these four arguments, but what they're named and how they're passed to resolvers is slightly different:
+- `args` is passed as the first argument
+- `obj` is named `root` (all the rest keep their names)
+- `root`, `context`, and `info` are wrapped into an object; this object is passed as the second argument
+
+Here's an example to make things clear:
 
 ```javascript
 export const Post = {
-  user: (_obj, { root }) => db.post.findOne({ where: { id: root.id } }).user(),
+  user: (args, { root, context, info }) => db.post.findOne({ where: { id: root.id } }).user()
 }
 ```
 
-Since args has to be the first argument passed (you know, JS), you can call it anything you want.
-So, when Redwood's not using it, you'll often see it called `_obj`, as in the example above.
+Of the four, you'll see `args` and `root` being used a lot.
 
-## Context
+|Argument|Description|
+|:---|:---|
+|`args`|The arguments provided to the field in the GraphQL query|
+|`root`|The previous object|
+|`context`|Holds important contextual information, like the currently logged in user|
+|`info`|Holds field-specific information relevant to the current query as well as the schema details|
 
-[todo]
+> **There's so many terms!**
+>
+> Right? To keep your head from spinning, keep in mind that everybody tends to rename `obj` to something else: Redwood calls it `root`, Apollo calls it `parent`. `obj` isn't exactly the most descriptive name in the world.
+
+### Context
 
 In Redwood, the `context` object that's passed to resolvers is actually available to all your Services, whether or not they're serving as resolvers. Just import it from `@redwoodjs/api`:
 
@@ -107,40 +193,11 @@ In Redwood, the `context` object that's passed to resolvers is actually availabl
 import { context } from '@redwoodjs/api
 ```
 
-<!-- TODO -->
-<!-- Context and auth? -->
+### The Root Schema
 
-## Redwood's Automatic Resolver Mapping
+Did you know that you can query `redwood`? Try it in the GraphQL Playground (you can find the GraphQL Playground at `localhost:8911/graphql` when your dev server is running&mdash;`yarn rw dev api`):
 
-[todo]
-
-To create a resolver for a field on a type, in your service, export an object with the same name as your type that has a property with the same name as your field:
-
-```javascript
-// api/src/services/person/person.js
-
-export const Person = {
-    age: (_args, { root }) {
-      return new Date().getFullYear() - root.birthDate.getFullYear();
-    },
-}
-```
-
-Source: https://community.redwoodjs.com/t/how-to-create-field-resolver/195/7
-
-<!-- TODO -->
-<!-- If services use any of the resolver args, then they can't be used inside other services? -->
-<!-- But then again, the way they're called w/ resolver args, it's "what a service would expect"... -->
-
-## Redwood's Root Schema
-
-[todo]
-
-[Redwood's root schema](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/makeMergedSchema/rootSchema.ts#L14-L29).
-
-Did you know you `redwood` is a valid query? Try it in GraphiQL (`yarn rw dev api` and make your way to localhost:8911/graphql)
-
-```javascript
+```js
 query {
   redwood {
     version
@@ -149,19 +206,30 @@ query {
 }
 ```
 
-The root schema is where currentUser is defined. Here is [how it's resolved](https://github.com/redwoodjs/redwood/blob/34a6444432b409774d54be17789a7109add9709a/packages/api/src/makeMergedSchema/rootSchema.ts#L40-L42):
+How is this possible? Via Redwood's [root schema](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/makeMergedSchema/rootSchema.ts#L22-L38). The root schema is where things like currentUser are defined.
 
-```javascript
-currentUser: (_args: any, context: Context) => {
-  return context?.currentUser
-}
-```
+Now that you've seen the sdl, be sure to check out [the resolvers](https://github.com/redwoodjs/redwood/blob/34a6444432b409774d54be17789a7109add9709a/packages/api/src/makeMergedSchema/rootSchema.ts#L31-L45).
 
-## Why Doesn't Redwood Use Something Like Nexus?
+<!-- ### The query workflow
 
-[todo]
+The GraphQL Playground's nice, but if you're a power user, you'll want to be using something a little more dedicated and always on; where you can save things like environments...
 
-[Tom's response in the forum](https://community.redwoodjs.com/t/anyone-playing-around-with-nexus-js/360/5): We started with Nexus, but ended up pulling it out because we felt like it was too much of an abstraction over the SDL. It’s so nice being able to just read the raw SDL to see what the GraphQL API is.
+<div class="relative pb-9/16">
+  <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/watch?v=SU4g9_K0H1c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
+</div>
+
+- todo
+- link to claire's video
+- dt has some thoughts on this
+- insomnia -->
+
+## FAQ
+
+### Why Doesn't Redwood Use Something Like Nexus?
+
+This might be one of our most frequently asked questions of all time. Here's [Tom's response in the forum](https://community.redwoodjs.com/t/anyone-playing-around-with-nexus-js/360/5): 
+
+> We started with Nexus, but ended up pulling it out because we felt like it was too much of an abstraction over the SDL. It’s so nice being able to just read the raw SDL to see what the GraphQL API is.
 
 <!-- TODO -->
 <!-- This https://community.redwoodjs.com/t/how-to-add-resolvetype-resolver-for-interfaces/432/7 -->
