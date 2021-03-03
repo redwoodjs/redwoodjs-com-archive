@@ -252,7 +252,7 @@ yarn add -D sass-loader sass
 ```
 
 ## Webpack Dev Server
-Redwood is using [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/) for local development. When you run `yarn rw dev`, things like [Web Port](https://webpack.js.org/configuration/dev-server/#devserverport) and [API Proxy Path](https://webpack.js.org/configuration/dev-server/#devserverproxy) are used for Dev Server settings. You can see all the settings used for Redwood dev here [webpack.development.js#L12-L32](https://github.com/redwoodjs/redwood/blob/49c3afecc210709641dd340b974c86251ed207dc/packages/core/config/webpack.development.js#L12-L32)
+Redwood uses [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/) for local development. When you run `yarn rw dev`, toml keys in your `redwood.toml`'s `[web]` table, like `port` and `apiProxyPath`, are used as Dev Server settings, in this case, [devServer.port](https://webpack.js.org/configuration/dev-server/#devserverport) and [devServer.proxy](https://webpack.js.org/configuration/dev-server/#devserverproxy) respectively. You can see all the settings used for Redwood dev in [webpack.development.js#L12-L32](https://github.com/redwoodjs/redwood/blob/49c3afecc210709641dd340b974c86251ed207dc/packages/core/config/webpack.development.js#L12-L32)
 
 ### Pass settings with `--forward`
 While it's possible to override Dev Server config with a file, it's often simpler to pass options with the `yarn rw dev` command using the `--forward` flag. See the [Redwood CLI Doc](https://redwoodjs.com/docs/cli-commands#dev) for help and examples.
