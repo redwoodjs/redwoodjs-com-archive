@@ -1265,11 +1265,11 @@ Redwood's `prisma` command is a lightweight wrapper around the Prisma CLI. It's 
 > If you want to know exactly what `yarn redwood prisma <command>` runs, which flags it's passing, etc., it's right at the top:
 >
 > ```sh{3}
-> $ yarn rw prisma introspect
+> $ yarn rw prisma pull
 > yarn run v1.22.10
-> $ ~/redwood-app/node_modules/.bin/rw prisma introspect
+> $ ~/redwood-app/node_modules/.bin/rw prisma pull
 > Running prisma cli:
-> yarn prisma introspect --schema "~/redwood-app/api/db/schema.prisma"
+> yarn prisma pull --schema "~/redwood-app/api/db/schema.prisma"
 > ...
 > ```
 
@@ -1294,6 +1294,21 @@ yarn rw prisma db <command>
 ```
 
 The `prisma db` namespace contains commands that operate directly against the database.
+
+#### pull
+
+The `pull` command (formerly `introspect`) connects to your database and adds models to your schema that reflect the current database schema.
+
+Note that Prisma 2.10.0 introduced prisma the db push command that enables developers to update their database schema from a Prisma schema file without using migrations.
+
+For the "opposite" motion (i.e., updating the Prisma schema from an existing database schema), use `prisma db pull`.
+
+> 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference/#introspect).
+
+
+```
+yarn rw prisma db pull 
+```
 
 #### push
 
