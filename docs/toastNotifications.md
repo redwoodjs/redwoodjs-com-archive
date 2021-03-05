@@ -8,7 +8,7 @@ Redwood supports these notfications out of the box thanks to the [react-hot-toas
 
 ## Usage
 
-This doc will not cover everything you can do with toasts, and the [react-hot-toast docs](https://react-hot-toast.com/docs) are very throurgh. But here are a couple of common use cases.
+This doc will not cover everything you can do with toasts, and the [react-hot-toast docs](https://react-hot-toast.com/docs) are very thorough. But here are a couple of common use cases.
 
 ### Displaying a Toast
 
