@@ -51,7 +51,7 @@ Sometimes you need more fine-grained control over whether something gets prerend
 - `useIsBrowser`
 - `isBrowser`
 
-> **Headsup!**
+> **Heads-up!**
 >
 > If you're pre-rendering a page that uses a third-party library, make it's "universal". If it's not, try calling the library after doing a browser check using one of the utils above.
 >

@@ -2034,7 +2034,7 @@ scenario('returns all comments for a single post from the database', async (scen
 })
 ```
 
-Okay, open up the actual `comments.js` service and we'll update it to accept the `postId` arugment and use it as an option to `findMany()`:
+Okay, open up the actual `comments.js` service and we'll update it to accept the `postId` argument and use it as an option to `findMany()`:
 
 ```javascript{3,4}
 // api/src/services/comments/comments.js

@@ -59,7 +59,7 @@ yarn rw build --stats
 
 Note that this'll skip building the api side.
 
-This config uses [Webpack Bundle Analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). When it finishes, it'll launch an interactive zoomable, treemap in your browser to examine the contents of all your bundles.
+This config uses [Webpack Bundle Analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). When it finishes, it'll launch an interactive zoomable, _treemap_ in your browser to examine the contents of all your bundles.
 
 ### Supported Extensions and Loaders
 
@@ -265,7 +265,7 @@ You can override `redwood.toml` settings:
 yarn rw dev --forward="--port=1234 --open=false"
 ```
 
-This will run your application's Web client on port `1234` and disable automatic browser window openning. 
+This will run your application's Web client on port `1234` and disable automatic browser window opening. 
 
 #### Example: Allow External Host Access
 If you're running Redwood in dev mode and try to test your application from an external source (i.e. outside your network), you'll get “Invalid Host Header”.  To enable this workflow, you can run the following:
