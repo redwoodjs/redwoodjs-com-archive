@@ -52,7 +52,7 @@ Since there's no single `@id` field in implicit many-to-many relationships, you 
 
 To support both CRUD actions and to remain consistent with Prisma's many-to-many relationships, a combination of the `@id` and [`@@unique`](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#unique-1) attributes can be used. With this, `@id` is used to create a primary key on the lookup-table; and `@@unique` is used to maintain the table's unique index, which was previously accomplished by the primary key created with `@@id`.
 
-> Removing `@@unique` would let a specific **Product** refrence a particular **Tag** more than a single time.
+> Removing `@@unique` would let a specific **Product** reference a particular **Tag** more than a single time.
 
 You can get this working by creating an explicit relationship—defining the table structure yourself:
 

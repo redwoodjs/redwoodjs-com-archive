@@ -10,7 +10,7 @@ Since there's two parts to GraphQL in Redwood, the client and the server, we've 
 
 ### RedwoodApolloProvider
 
-By default, Redwood Apps come ready-to-query with the `RedwoodApolloProvider`. As you can tell from the name, this Provider wraps [ApolloProvider](https://www.apollographql.com/docs/react/api/react/hooks/#the-apolloprovider-component). Ommitting a few things, this is what you'll normally see in Redwood Apps:
+By default, Redwood Apps come ready-to-query with the `RedwoodApolloProvider`. As you can tell from the name, this Provider wraps [ApolloProvider](https://www.apollographql.com/docs/react/api/react/hooks/#the-apolloprovider-component). Omitting a few things, this is what you'll normally see in Redwood Apps:
 
 ```js
 // web/src/App.js
