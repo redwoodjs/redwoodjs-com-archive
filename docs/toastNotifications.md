@@ -54,7 +54,7 @@ See the [official Toaster docs](https://react-hot-toast.com/docs/toaster) for mo
 To show a toast message, just include a call to the `toast` object:
 
 ```javascript
-import { toast } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/toast'
 
 const UserForm = () => {
   onSubmit: () => {
