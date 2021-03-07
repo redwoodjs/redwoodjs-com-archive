@@ -15,7 +15,7 @@ This doc will not cover everything you can do with toasts, and the [react-hot-to
 Wherever you want your notifications to be output, include the **&lt;Toaster&gt;** component:
 
 ```javsacript
-import { Toaster } from '@redwoodjs/web'
+import { Toaster } from '@redwoodjs/web/toast'
 
 const HomePage = () => {
   return (
