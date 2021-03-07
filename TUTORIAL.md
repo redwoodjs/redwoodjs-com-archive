@@ -466,6 +466,7 @@ export default AboutPage
 
 ## Getting Dynamic
 
+***The sentence below seems unnecessary and incorrect (no part 2 anywhere)
 Part 2 of the video tutorial picks up here:
 
 > **Ancient Content Notice**
