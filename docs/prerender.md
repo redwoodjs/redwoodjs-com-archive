@@ -7,6 +7,7 @@ We thought a lot about what the developer experience should be for route-based p
 > **How's Prerendering different from SSR/SSG/SWR/ISSG/...?**
 >
 > As Danny said in his [Prerender demo](https://www.youtube.com/watch?v=iorKyMlASZc&t=2844s) at our Community Meetup, the thing all of these have in common is that they render your markup in a Node.js context to produce HTML. The difference is when and how often.
+
 <!-- [This comment](https://community.redwoodjs.com/t/prerender-proposal/849/12) on our Community forum. -->
 
 ## Prerendering a Page
@@ -23,6 +24,17 @@ Then run `yarn rw build` and enjoy the performance boost!
 
 <!-- this doesn't render... -->
 <!-- ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b2c2aa27-3b2b-4ab7-b514-6ebc963d5312/2021-02-19_20.24.00.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b2c2aa27-3b2b-4ab7-b514-6ebc963d5312/2021-02-19_20.24.00.gif) -->
+
+### Not found page
+
+You can also prerender your not found page a.k.a 404 page. Just add, you guessed it, the prerender prop:
+
+```diff
+-      <Route notfound page={NotFoundPage} />
++      <Route notfound page={NotFoundPage} prerender/>
+```
+
+There's no need to specify a path, this will prerender your NotFoundPage to 404.html in your dist folder.
 
 ## Cells, Private Routes, and Dynamic URLs
 
@@ -55,26 +67,26 @@ Sometimes you need more fine-grained control over whether something gets prerend
 >
 > If you're pre-rendering a page that uses a third-party library, make it's "universal". If it's not, try calling the library after doing a browser check using one of the utils above.
 >
-> Look for these key words when choosing a library: *universal module, SSR compatible, server compatible*&mdash;all these indicate that the library also works in node.js.
+> Look for these key words when choosing a library: _universal module, SSR compatible, server compatible_&mdash;all these indicate that the library also works in node.js.
 
 ### `<BrowserOnly/>` component
 
 This higher-order component is great for JSX:
 
-```js{5-7}
+```jsx
 import { BrowserOnly } from '@redwoodjs/prerender/browserUtils'
 
 const MyFancyComponent = () => {
-	<h2>👋🏾 I render on both the server and the browser</h2>
-	<BrowserOnly>
-	  <h2>🙋‍♀️ I only render on the browser</h2>
-	</BrowserOnly>
+  <h2>👋🏾 I render on both the server and the browser</h2>
+  <BrowserOnly>
+    <h2>🙋‍♀️ I only render on the browser</h2>
+  </BrowserOnly>
 }
 ```
 
 ### `useIsBrowser` hook
 
-If you prefer hooks, you can use the `useIsBrwoser` hook:
+If you prefer hooks, you can use the `useIsBrowser` hook:
 
 ```jsx
 import { useIsBrowser } from '@redwoodjs/prerender/browserUtils'
@@ -86,11 +98,7 @@ const MySpecialComponent = () => {
     <div className="my-4 p-5 rounded-lg border-gray-200 border">
       <h1 className="text-xl font-bold">Render info:</h1>
 
-      {browser ? (
-        <h2 className="text-green-500">Browser</h2>
-      ) : (
-        <h2 className="text-red-500">Prerendered</h2>
-      )}
+      {browser ? <h2 className="text-green-500">Browser</h2> : <h2 className="text-red-500">Prerendered</h2>}
     </div>
   )
 }
@@ -119,8 +127,8 @@ const ComponentUsingAnExternalLibrary = () => {
   const browser = useIsBrowser()
 
   // if `browser` evaluates to false, this won't be included
-	if (browser) {
-		loadMyLargeExternalLibrary()
+  if (browser) {
+    loadMyLargeExternalLibrary()
   }
 
   return (
@@ -141,6 +149,7 @@ Since we just shipped this in v0.26, we're actively looking for feedback! Do let
 ## Images and Assets
 
 <!-- should name it... -->
+
 Images and assets continue to work the way they used to. For more, see [this doc](https://redwoodjs.com/docs/assets-and-files).
 
 Note that there's a subtlety in how SVGs are handled. Importing an SVG and using it in a component works great:
@@ -165,14 +174,33 @@ export default Logo
 // ✅ use this instead.
 import Logo from './Logo.svg'
 
-const LogoComponent = () => <Logo/>
+const LogoComponent = () => <Logo />
 
 export default LogoComponent
 ```
 
 ## Configuring redirects
 
-Using Netlify as an example, if all your pages are prerendered, you can remove the "redirect all" from your `netlify.toml`. You can also add a 404 redirect if you want:
+Using Netlify as an example, if all your pages are prerendered, you can remove the "redirect all" from your `netlify.toml`.
+
+<details>
+<summary>If you prerender your `notFoundPage`
+</summary>
+
+You can remove the default redirect to index in your netlify.toml. This means the browser will accurately receive 404 statuses when navigating to a route that doesn't exist
+
+```diff
+[[redirects]]
+- from = "/*"
+- to = "/index.html"
+- status = 200
+```
+
+</details>
+
+<details>
+<summary>If you don't prerender your 404s</summary>
+You can add a 404 redirect if you want:
 
 ```diff
 [[redirects]]
@@ -181,6 +209,8 @@ Using Netlify as an example, if all your pages are prerendered, you can remove t
 - status = 200
 + status = 404
 ```
+
+</details>
 
 ## Flash after page load
 
@@ -195,8 +225,8 @@ import HomePage from 'src/pages/HomePage'
 const Routes = () => {
   return (
     <Router>
-      <Route path="/" page={HomePage} name="hello" prerender/>
-      <Route path="/about" page={AboutPage} name="hello"/>
+      <Route path="/" page={HomePage} name="hello" prerender />
+      <Route path="/about" page={AboutPage} name="hello" />
       <Route notfound page={NotFoundPage} />
     </Router>
   )
