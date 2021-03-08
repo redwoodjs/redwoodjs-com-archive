@@ -6,7 +6,7 @@ We thought a lot about what the developer experience should be for route-based p
 
 > **How's Prerendering different from SSR/SSG/SWR/ISSG/...?**
 >
-> As Danny said in his [Prerender demo](https://www.youtube.com/watch?v=iorKyMlASZc&t=2844s) at our Community Meetup, the thing all of these have in common is that they render your markup in a Node.js context to produce HTML. The difference is when and how often.
+> As Danny said in his [Prerender demo](https://www.youtube.com/watch?v=iorKyMlASZc&t=2844s) at our Community Meetup, the thing all of these have in common is that they render your markup in a Node.js context to produce HTML. The difference is when (build or runtime) and how often.
 
 <!-- [This comment](https://community.redwoodjs.com/t/prerender-proposal/849/12) on our Community forum. -->
 
@@ -181,7 +181,7 @@ export default LogoComponent
 
 ## Configuring redirects
 
-Using Netlify as an example, if all your pages are prerendered, you can remove the "redirect all" from your `netlify.toml`.
+Depending on what pages you're prerendering you may want to change your redirect settings. Using Netlify as an example:
 
 <details>
 <summary>If you prerender your `notFoundPage`
@@ -199,7 +199,7 @@ You can remove the default redirect to index in your netlify.toml. This means th
 </details>
 
 <details>
-<summary>If you don't prerender your 404s</summary>
+<summary>If you don't prerender your 404s, but have prerendered all your other pages</summary>
 You can add a 404 redirect if you want:
 
 ```diff
