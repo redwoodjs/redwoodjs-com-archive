@@ -27,14 +27,14 @@ Then run `yarn rw build` and enjoy the performance boost!
 
 ### Not found page
 
-You can also prerender your not found page a.k.a 404 page. Just add, you guessed it, the prerender prop:
+You can also prerender your not found page (a.k.a your 404 page). Just add—you guessed it—the prerender prop:
 
 ```diff
 -      <Route notfound page={NotFoundPage} />
 +      <Route notfound page={NotFoundPage} prerender/>
 ```
 
-There's no need to specify a path, this will prerender your NotFoundPage to 404.html in your dist folder.
+This will prerender your NotFoundPage to 404.html in your dist folder. Note that there's no need to specify a path.
 
 ## Cells, Private Routes, and Dynamic URLs
 
@@ -181,13 +181,13 @@ export default LogoComponent
 
 ## Configuring redirects
 
-Depending on what pages you're prerendering you may want to change your redirect settings. Using Netlify as an example:
+Depending on what pages you're prerendering, you may want to change your redirect settings. Using Netlify as an example:
 
 <details>
 <summary>If you prerender your `notFoundPage`
 </summary>
 
-You can remove the default redirect to index in your netlify.toml. This means the browser will accurately receive 404 statuses when navigating to a route that doesn't exist
+You can remove the default redirect to index in your netlify.toml. This means the browser will accurately receive 404 statuses when navigating to a route that doesn't exist:
 
 ```diff
 [[redirects]]
@@ -199,7 +199,8 @@ You can remove the default redirect to index in your netlify.toml. This means th
 </details>
 
 <details>
-<summary>If you don't prerender your 404s, but have prerendered all your other pages</summary>
+
+<summary>If you don't prerender your 404s, but prerender all your other pages</summary>
 You can add a 404 redirect if you want:
 
 ```diff
