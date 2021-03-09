@@ -136,7 +136,8 @@ yarn redwood prisma migrate dev
 If you've already created migrations using SQLite, e.g. you have a migrations directory at `api/db/migrations`, follow this two-step process.
 
 #### 1. Remove existing migrations
-**For Linux and Mac OS**
+**For Linux and Mac OS**  
+From your project root directory, run either command corresponding to your OS.
 ```bash
 rm -rf api/db/migrations
 ```
