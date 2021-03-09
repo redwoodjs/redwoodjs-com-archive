@@ -143,7 +143,7 @@ rm -rf api/db/migrations
 
 **For Windows OS**
 ```bash
-rmdir /S api\db\migrations
+rmdir /s api\db\migrations
 ```
 
 > Note: depending on your project configuration, your migrations may instead be located in `api/prisma/migrations`
@@ -158,4 +158,3 @@ yarn redwood prisma migrate dev
 Here are our recommendations in case you need a tool to manage your databases:
 - [TablePlus](https://tableplus.com/) (Mac, Windows)
 - [Beekeeper Studio](https://www.beekeeperstudio.io/) (Linux, Mac, Windows - Open Source)
-
