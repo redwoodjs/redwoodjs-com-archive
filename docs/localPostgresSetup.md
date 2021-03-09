@@ -125,19 +125,34 @@ The following components make up the base URL of your database, they are always 
 | Database | `DATABASE` | Name of the database you want to use, e.g. `redwoodblog_dev` |
 
 ## Migrations
-If you've already created migrations using SQLite, you just need to run migrations again:
+Migrations are snapshots of your DB structure, which, when applied, manage the structure of both your local development DB and your production DB.
 
+To create and apply a migration to the Postgres database specified in your `.env`, run the _migrate_ command. (Did this return an error? If so, see "Migrate from SQLite..." below.):
 ```bash
-yarn rw db up
+yarn redwood prisma migrate dev
 ```
 
-If you haven't created migrations yet, use `save`:
+### Migrate from SQLite to Postgres
+If you've already created migrations using SQLite, e.g. you have a migrations directory at `api/db/migrations`, follow this two-step process.
 
+#### 1. Remove existing migrations
+**For Linux and Mac OS**
 ```bash
-yarn rw db save
+rm -rf api/db/migrations
 ```
 
-Both commands will create and migrate the Postgres database you specified in your `.env`.
+**For Windows OS**
+```bash
+rmdir /S api\db\migrations
+```
+
+> Note: depending on your project configuration, your migrations may instead be located in `api/prisma/migrations`
+
+#### 2. Create a new migration
+Run this command to create and apply a new migration to your local Postgres DB:
+```bash
+yarn redwood prisma migrate dev
+```
 
 ## DB Management Tools
 Here are our recommendations in case you need a tool to manage your databases:
