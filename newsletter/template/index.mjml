@@ -13,38 +13,254 @@
     <!-- header -->
     <mj-include path="./header.mjml" />
 
-    <!-- highlights -->
+    <!-- letter -->
     <mj-section>
       <mj-column>
-        <mj-text align="center">
-          <h2>Highlights</h2>
+        <mj-text 
+          align="left"
+          color="#1a202c"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          line-height="1.5"
+        >
+          <p style="font-size: 16px; font-weight: bold">Hey,</p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
         </mj-text>
       </mj-column>
     </mj-section>
 
-    <!-- snippets -->
     <mj-section>
       <mj-column>
-        <mj-text align="center">
-          <h2>Snippets</h2>
-        </mj-text>
-      </mj-column>
-    </mj-section>
-
-    <!-- made with redwood -->
-    <mj-section>
-      <mj-column>
-        <mj-text align="center">
-          <h2>Made with Redwood</h2>
-        </mj-text>
+        <mj-divider border-color="#eaeaea" border-width="1px" />
       </mj-column>
     </mj-section>
 
     <!-- upcoming -->
     <mj-section>
       <mj-column>
-        <mj-text align="center">
-          <h2>Upcoming</h2>
+        <mj-text 
+          align="center" 
+          color="#bf4722"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          font-size="40px"
+          font-weight="bold"
+        >
+          Upcoming
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="left"
+          color="#1a202c"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          line-height="1.5"
+        >
+          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="left"
+          color="#1a202c"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          line-height="1.5"
+        >
+          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-divider border-color="#eaeaea" border-width="1px" />
+      </mj-column>
+    </mj-section>
+
+    <!-- highlights -->
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="center" 
+          color="#bf4722"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          font-size="40px"
+          font-weight="bold"
+        >
+          Highlights
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="left"
+          color="#1a202c"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          line-height="1.5"
+        >
+          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="left"
+          color="#1a202c"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          line-height="1.5"
+        >
+          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="left"
+          color="#1a202c"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          line-height="1.5"
+        >
+          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="left"
+          color="#1a202c"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          line-height="1.5"
+        >
+          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-divider border-color="#eaeaea" border-width="1px" />
+      </mj-column>
+    </mj-section>
+
+    <!-- snippets -->
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="center" 
+          color="#bf4722"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          font-size="40px"
+          font-weight="bold"
+        >
+          Snippets
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="left"
+          color="#1a202c"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          line-height="1.5"
+        >
+          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="left"
+          color="#1a202c"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          line-height="1.5"
+        >
+          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="left"
+          color="#1a202c"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          line-height="1.5"
+        >
+          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="left"
+          color="#1a202c"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          line-height="1.5"
+        >
+          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-divider border-color="#eaeaea" border-width="1px" />
+      </mj-column>
+    </mj-section>
+
+    <!-- made with redwood -->
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="center" 
+          color="#bf4722"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          font-size="40px"
+          font-weight="bold"
+        >
+          Made with Redwood
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text 
+          align="left"
+          color="#1a202c"
+          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          line-height="1.5"
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
         </mj-text>
       </mj-column>
     </mj-section>
