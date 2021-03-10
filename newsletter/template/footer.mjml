@@ -1,0 +1,15 @@
+<mj-section background-color="#bf4722">
+
+  <!-- social -->
+
+  <mj-column>
+    <mj-text color="#ffffff">
+      Copyright © 2021 RedwoodJS, All rights reserved.
+    </mj-text>
+    <mj-text color="#ffffff">
+      Want to change how you receive these emails?
+You can update your preferences or unsubscribe from this list.
+    </mj-text>
+  </mj-column>
+
+</mj-section>
