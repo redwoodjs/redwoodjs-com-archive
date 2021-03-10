@@ -1,7 +1,26 @@
+<!-- social -->
 <mj-section background-color="#bf4722">
+  <mj-column>
+    <mj-social>
+      <mj-social-element name="twitter" href="http://www.twitter.com/redwoodjs" />
+      <!-- custom social element -->
+      <!-- https://documentation.mjml.io/#mj-social -->
+      <!-- in mailchimp, this was a link to our website -->
+      <mj-social-element href="https://redwoodjs.com" background-color="#FF00FF" src="path-to-your-icon" />
+      <mj-social-element name="github" href="https://github.com/redwoodjs" />
+    </mj-social>
+  </mj-column>
+</mj-section>
 
-  <!-- social -->
+<!-- divider -->
+<mj-section background-color="#bf4722">
+  <mj-column>
+    <mj-divider border-width="1px" border-color="#ffffff" />
+  </mj-column>
+</mj-section>
 
+<!-- etc -->
+<mj-section background-color="#bf4722">
   <mj-column>
     <mj-text color="#ffffff">
       Copyright © 2021 RedwoodJS, All rights reserved.
@@ -11,5 +30,4 @@
 You can update your preferences or unsubscribe from this list.
     </mj-text>
   </mj-column>
-
 </mj-section>

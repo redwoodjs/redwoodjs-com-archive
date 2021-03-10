@@ -13,19 +13,40 @@
     <!-- header -->
     <mj-include path="./header.mjml" />
 
-    <!-- body -->
+    <!-- highlights -->
     <mj-section>
-
       <mj-column>
         <mj-text align="center">
-          <h2>Redwood Rocks!</h2>
+          <h2>Highlights</h2>
         </mj-text>
       </mj-column>
+    </mj-section>
 
+    <!-- snippets -->
+    <mj-section>
       <mj-column>
-        <mj-image width="200" src="http://placehold.it/200x200"></mj-image>
+        <mj-text align="center">
+          <h2>Snippets</h2>
+        </mj-text>
       </mj-column>
+    </mj-section>
 
+    <!-- made with redwood -->
+    <mj-section>
+      <mj-column>
+        <mj-text align="center">
+          <h2>Made with Redwood</h2>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- upcoming -->
+    <mj-section>
+      <mj-column>
+        <mj-text align="center">
+          <h2>Upcoming</h2>
+        </mj-text>
+      </mj-column>
     </mj-section>
 
     <!-- footer -->
