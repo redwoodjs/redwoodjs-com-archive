@@ -1,5 +1,7 @@
 # Toast Notifications
 
+> Deprecation Warning: In RedwoodJS v0.27, the custom Flash Messaging was replaced with React Hot Toast. Flash, implemented with `import { useFlash } from '@redwoodjs/web'` will be deprecated in Redwood v1. If you are currently using `<Flash />` and `useFlash`, you can update your app [via these instructions](https://community.redwoodjs.com/t/redwood-flash-is-being-replaced-with-react-hot-toast-how-to-update-your-project-v0-27-0/1921).
+
 Did you know that those little popup notifications that you sometimes see at the top of pages after you've performed an action are affectionately known as "toast" notifications? Because they pop up like a piece of toast from a toaster!
 
 ![Example Toast Animation](https://user-images.githubusercontent.com/300/110032806-71024680-7ced-11eb-8d69-7f462929815e.gif)
