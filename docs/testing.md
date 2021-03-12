@@ -1,14 +1,14 @@
 # Testing
 
-Testing. For some it's an essential part of their development workflow. For others it's something they know they *should* do, but for whatever reason it hasn't struck their fancy yet. For still others it's something they ignore completely, hoping the whole concept will go away. But tests are here to stay, and maybe Redwood can change some opinions about testing being awesome and fun.
+Testing. For some it's an essential part of their development workflow. For others it's something they know they *should* do, but for whatever reason it hasn't struck their fancy yet. For others still it's something they ignore completely, hoping the whole concept will go away. But tests are here to stay, and maybe Redwood can change some opinions about testing being awesome and fun.
 
 ## Introduction to Testing
 
-If you're already familiar with the ins and outs of testing and just want to know how to do it in Redwood, feel free to [skip ahead](#redwood-and-testing). Or, keep reading for a refresher. In the following section we'll build a simple test runner from scratch to help clarify the concepts of testing in our minds.
+If you're already familiar with the ins and outs of testing and just want to know how to do it in Redwood, feel free to [skip ahead](#redwood-and-testing). Or, keep reading for a refresher. In the following section, we'll build a simple test runner from scratch to help clarify the concepts of testing in our minds.
 
 ## Building a Test Runner
 
-The idea of testing is pretty simple: for each "unit" of code you write, you write additional code that exercises that unit and makes sure it works as expected. What's a "unit" of code? That's for you to decide: it could be an entire class, a single function, or even a single line! In general the smaller the unit of code that you're testing, the better. Your tests will stay fast and focused on just one thing, which makes them easy to update when you refactor your code. The important thing is that you start *somewhere* and codify your code's functionality in a repeatable, verifyable way.
+The idea of testing is pretty simple: for each "unit" of code you write, you write additional code that exercises that unit and makes sure it works as expected. What's a "unit" of code? That's for you to decide: it could be an entire class, a single function, or even a single line! In general, the smaller the unit, the better. Your tests will stay fast and focused on just one thing, which makes them easy to update when you refactor. The important thing is that you start *somewhere* and codify your code's functionality in a repeatable, verifyable way.
 
 Let's say we write a function that adds two numbers together:
 
@@ -18,7 +18,7 @@ const add = (a, b) => {
 }
 ```
 
-You test this code by writing another piece of code which usually lives in a separate file and can be run in isolation, just including the functionality from the real codebase that you need in order for the test to run. For our examples here we'll put the code and its test side-by-side so that everything can be run at once. Our first test will call the `add()` function and make sure that it does indeed add two numbers together:
+You test this code by writing another piece of code (which usually lives in a separate file and can be run in isolation), just including the functionality from the real codebase that you need for the test to run. For our examples here we'll put the code and its test side-by-side so that everything can be run at once. Our first test will call the `add()` function and make sure that it does indeed add two numbers together:
 
 ```javascript{5-9}
 const add = (a, b) => {
@@ -40,9 +40,9 @@ You can [run that code with Node](https://nodejs.dev/learn/run-nodejs-scripts-fr
 
 <iframe width="100%" height="300" src="//jsfiddle.net/cannikin/mgy4ja1q/2/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0" class="border"></iframe>
 
-> Note that you'll see `document.write()` in the JSFiddle examples instead of `console.log` so that you can actually see something in the **Result** tab, which is HTML output.
+> Note that you'll see `document.write()` in the JSFiddle examples instead of `console.log`; this is just so that you can actually see something in the **Result** tab, which is HTML output.
 
-You should see a "pass" written to the output. To verify that our test is working as expect, try changing the `+` in the `add()` function to a `-` (effectively turning it into a `subtract()` function) and run the test again. Now you should see "fail".
+You should see "pass" written to the output. To verify that our test is working as expected, try changing the `+` in the `add()` function to a `-` (effectively turning it into a `subtract()` function) and run the test again. Now you should see "fail".
 
 ### Terminology
 
@@ -52,19 +52,19 @@ Let's get to some terminology:
 * The specific check that `add(1, 1) === 2` is known as an "assertion"
 * The `add()` function itself is the "subject" of the test, or the code that is "under test"
 * The value you expect to get (in our example, that's the number `2`) is sometimes called the "expected value"
-* The value you actually get back (whatever the output of `add(1, 1)` is) is sometimes called the "actual" or "received value"
+* The value you actually get (whatever the output of `add(1, 1)` is) is sometimes called the "actual" or "received value"
 * The file that contains the test is a "test file"
 * Mutliple test files, all run together, is known as a "test suite"
-* You'll generally run your test files and suites by another piece of software: in the case of Redwood that's Jest, and it's known as a "test runner"
+* You'll generally run your test files and suites with another piece of software. In Redwood that's Jest, and it's known as a "test runner"
 * The amount of code you have that is exercised by tests is referred to as "coverage" and is usually reported as a percentage. If every single line of code is touched as a result of running your test suite then you have 100% coverage!
 
-This is the basic idea behind all tests you will write: add some new code, and add another piece of code that uses the first and verifies that the result is what you expect.
+This is the basic idea behind all the tests you'll write: when you add code, you'll add another piece of code that uses the first and verifies that the result is what you expect.
 
-Tests can also help drive new development. For example, what happens to our `add()` function if you leave out one of the arguments? We can drive these changes by writing a test of what we *want* to happen, and then modify the code that's being tested (the subject) to make it satisy the assertion(s) in a test.
+Tests can also help drive new development. For example, what happens to our `add()` function if you leave out one of the arguments? We can drive these changes by writing a test of what we *want* to happen, and then modify the code that's being tested (the subject) to make it satisfy the assertion(s).
 
 ### Expecting Errors
 
-So, what happens if we leave off an argument when calling `add()`? Well, what do we *want* to happen? We'll answer that question by writing a test for what we expect. For this example let's have it throw an error. We'll write the test first that expects the error:
+So, what does happen if we leave off an argument when calling `add()`? Well, what do we *want* to happen? We'll answer that question by writing a test for what we expect. For this example let's have it throw an error. We'll write the test first that expects the error:
 
 ```javascript
 try {
@@ -78,9 +78,9 @@ try {
 }
 ```
 
-This is interesting because we actually *expect* an error to be thrown, but we don't want that error to stop the test suite in it's tracks—we want the error to be raised, we just want to make sure it's exactly what we expect it to be! So we'll surround the code that is going to error in a try/catch block and inspect the message on the error. If it's what we want, then the test actually passes.
+This is interesting because we actually *expect* an error to be thrown, but we don't want that error to stop the test suite in it's tracks—we want the error to be raised, we just want to make sure it's exactly what we expect it to be! So we'll surround the code that's going to error in a try/catch block and inspect the error message. If it's what we want, then the test actually passes.
 
-> Remember: we're testing what we *want* to happen. Usually you think of errors as being "bad" but this case we *want* the code to throw an error, so if it does, that's actually good! Raising an error passes the test, not raising the error (or raising the wrong error) is a failure.
+> Remember: we're testing for what we *want* to happen. Usually you think of errors as being "bad" but in this case we *want* the code to throw an error, so if it does, that's actually good! Raising an error passes the test, not raising the error (or raising the wrong error) is a failure.
 
 Run this test and what happens? (If you previously made a change to `add()` to see the test fail, change it back now):
 
@@ -88,7 +88,7 @@ Run this test and what happens? (If you previously made a change to `add()` to s
 
 Where did *that* come from? Well, our subject `add()` didn't raise any errors (Javascript doesn't care about the number of arguments passed to a function) and so it tried to add `1` to `undefined`, and that's Not A Number. We didn't think about that! Testing is already helping us catch edge cases.
 
-To respond properly to this case in our test we'll make one slight modification: add another "fail" log message if the code somehow gets past the call to `add(1)` *without* throwing an error:
+To respond properly to this case we'll make one slight modification: add another "fail" log message if the code somehow gets past the call to `add(1)` *without* throwing an error:
 
 ```javascript{3,8}
 try {
@@ -103,7 +103,7 @@ try {
 }
 ```
 
-Here we added a litle more information to the "fail" messages so we know which one we encountered. Try running that code again and you should see "fail: no error thrown" in the console.
+We also added a little more information to the "fail" messages so we know which one we encountered. Try running that code again and you should see "fail: no error thrown" in the console.
 
 <iframe width="100%" height="300" src="//jsfiddle.net/cannikin/mgy4ja1q/7/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0" class="border"></iframe>
 
@@ -126,7 +126,7 @@ We've covered passing too few arguments, what if we pass too many? We'll leave w
 
 ### Our Test Runner Compared to Jest
 
-Our tests are a little verbose (10 lines of code to test that the right number of arguments were sent in). Luckily, the test runner that Redwood uses, Jest, provides a simpler syntax for the same assertions. Here's the complete test file, but using Jest's provided helpers:
+Our tests are a little verbose (10 lines of code to test that the right number of arguments were passed). Luckily, the test runner that Redwood uses, Jest, provides a simpler syntax for the same assertions. Here's the complete test file, but using Jest's provided helpers:
 
 ```javascript
 describe('add()', () => {
@@ -140,11 +140,11 @@ describe('add()', () => {
 })
 ```
 
-Jest lets us be very clear about our subject in the first argument to the `describe()` function, letting us know what we're testing. Note that it's just a string and doesn't have to be exactly the same as the function/class you're testing but usually is for clarity.
+Jest lets us be very clear about our subject in the first argument to the `describe()` function, letting us know what we're testing. Note that it's just a string and doesn't have to be exactly the same as the function/class you're testing (but usually is for clarity).
 
 Likewise, each test is given a descriptive name as the first argument to the `it()` functions ("it" being the subject under test). Functions like `expect()` and `toEqual()` make it clear what values we expect to receive when running the test suite. If the expectation fails, Jest will indicate that in the output letting us know the name of the test that failed and what went wrong (the expected and actual values didn't match, or an error was thrown that we didn't expect).
 
-Jest also has a nicer output than our cobbled together test runner using `console.log`:
+Jest also has a nicer output than our cobbled-together test runner using `console.log`:
 
 ![image](https://user-images.githubusercontent.com/300/105783200-c6974680-5f2a-11eb-98af-d1884ecf2f99.png)
 
@@ -164,35 +164,35 @@ Let's explore each one and how they're integrated with Redwood.
 
 ### Jest
 
-[Jest](https://jestjs.io/) is the test runner that Redwood uses. By default, starting Jest via `yarn rw test` will start a watch process that monitors your files for changes and re-runs the test(s) that are affected by that changed file (either the test itself, or the subject under test).
+[Jest](https://jestjs.io/) is Redwood's test runner. By default, starting Jest via `yarn rw test` will start a watch process that monitors your files for changes and re-runs the test(s) that are affected by that changed file (either the test itself, or the subject under test).
 
 ### React Testing Library
 
-[React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) is an extension of [DOM Testing Library](https://testing-library.com/docs/dom-testing-library/intro), adding functionality specifically for React. Using React Testing Library will let us render a single component in isolation and test that, for example, expected text is present or a certain HTML structure has been built.
+[React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) is an extension of [DOM Testing Library](https://testing-library.com/docs/dom-testing-library/intro), adding functionality specifically for React. React Testing Library lets us render a single component in isolation and test that expected text is present or a certain HTML structure has been built.
 
 ### Mock Service Worker
 
-Mock Service Worker (msw) lets you simulate the response from API calls, among other things. This comes into play with Redwood where the web-side is constantly calling to the api-side in the form of GraphQL. Rather than make actual GraphQL calls, which would slow down the test suite and put a bunch of unrelated code under test, Redwood makes use of MSW to intercept GraphQL calls and return a canned response, which you include in your test.
+Among other things, Mock Service Worker (msw) lets you simulate the response from API calls. Where this comes into play with Redwood is how the web-side constantly calls to the api-side using GraphQL: rather than make actual GraphQL calls, which would slow down the test suite and put a bunch of unrelated code under test, Redwood uses MSW to intercept GraphQL calls and return a canned response, which you include in your test.
 
 ### Storybook
 
-Storybook itself doesn't appear to be related to testing at all—it's for building and styling components in isolation from your main application. But it can serve as a sanity check for an overlooked part of testing: the user interface. Your tests will only be as good as you write them, and testing things like the alignment of text on the page, the inclusion of images, or animation can be very difficult without investing huge amounts of time and effort. These tests are also very brittle since, depending on how they are written, can break without any code changes at all! Imagine an integration with a CMS that allows a marketing person to make text/style changes. These changes will probably not be covered in your test suite, but could make your site unusable depending on how bad they are.
+Storybook itself doesn't appear to be related to testing at all—it's for building and styling components in isolation from your main application—but it can serve as a sanity check for an overlooked part of testing: the user interface. Your tests will only be as good as you write them, and testing things like the alignment of text on the page, the inclusion of images, or animation can be very difficult without investing huge amounts of time and effort. These tests are also very brittle since, depending on how they're written, they can break without any code changes at all! Imagine an integration with a CMS that allows a marketing person to make text/style changes. These changes will probably not be covered by your test suite, but could make your site unusable depending on how bad they are.
 
-Storybook can provide a quick way to inspect all visual aspects of your site without the tried-and-true method of having a QA person log in and exercise every possible function on the site. Unfortunately, checking those UI elements is not something that Storybook can automate for you, and so can't be part of a continuous integration system. But it makes it *possible* to do so, even if it currently requires a human touch.
+Storybook can provide a quick way to inspect all visual aspects of your site without the tried-and-true method of having a QA person log in and exercise every possible function. Unfortunately, checking those UI elements is not something that Storybook can automate for you, and so can't be part of a continuous integration system. But it makes it *possible* to do so, even if it currently requires a human touch.
 
 ### Redwood Generators
 
-Redwood's generators will include test files for basic functionality automatically with any components, pages, cells, or services you generate. These will test very basic functionality, but they're a solid foundation and will not automatically break as soon as you start building out custom features.
+Redwood's generators will include test files for basic functionality automatically with any Components, Pages, Cells, or Services you generate. These will test very basic functionality, but they're a solid foundation and will not automatically break as soon as you start building out custom features.
 
 ## Test Commands
 
-To run your entire suite you can use a single command:
+You can use a single command to run your entire suite :
 
 ```terminal
 yarn rw test
 ```
 
-This will start Jest in "watch" mode which will continually run and monitor the file system for changes. If you change a test or the component that's being tested, Jest will re-run any associated test file. This is handy when you're spending the afternoon writing tests and always to verify the the code you're adding without swapping back and forth to a terminal and pressing `↑` `Enter` to run the last command again.
+This will start Jest in "watch" mode which will continually run and monitor the file system for changes. If you change a test or the component that's being tested, Jest will re-run any associated test file. This is handy when you're spending the afternoon writing tests and always want to verify the code you're adding without swapping back and forth to a terminal and pressing `↑` `Enter` to run the last command again.
 
 To start the process without watching, add the `--no-watch` flag:
 
@@ -211,7 +211,7 @@ yarn rw test api
 
 ## Testing Components
 
-Let's start with the things you're probably most familiar with if you'd done any React work (with or without Redwood): components. The simplest test for a component would be matching against the exact HTML that's rendered by React (this doesn't actually work so don't bother trying):
+Let's start with the things you're probably most familiar with if you've done any React work (with or without Redwood): components. The simplest test for a component would be matching against the exact HTML that's rendered by React (this doesn't actually work so don't bother trying):
 
 ```javascript
 // web/src/components/Article/Article.js
@@ -221,6 +221,7 @@ const Article = ({ article }) => {
 }
 
 // web/src/components/Article/Article.test.js
+
 import { render } from '@redwoodjs/testing'
 import Article from 'src/components/Article'
 
@@ -290,7 +291,7 @@ const Article = ({ article, summary }) => {
 export default Article
 ```
 
-If we're only displaying the summary of an article then we'll only show the first 100 characters with an ellipsis on the end ("...") and include a link to "Read more" to see the full article. A reasonable test for this component would be that when the `summary` prop is `true` then the "Read more" text should be present on in the component. If `summary` is `false` then it should *not* be present. That's where `queryByText()` comes in (relevant test lines are highlighted):
+If we're only displaying the summary of an article then we'll only show the first 100 characters with an ellipsis on the end ("...") and include a link to "Read more" to see the full article. A reasonable test for this component would be that when the `summary` prop is `true` then the "Read more" text should be present. If `summary` is `false` then it should *not* be present. That's where `queryByText()` comes in (relevant test lines are highlighted):
 
 ```javascript{18,24}
 // web/src/components/Article/Article.test.js
@@ -325,7 +326,7 @@ describe('Article', () => {
 
 `getByRole()` allows you to look up elements by their "role", which is an ARIA element that assists in accessiblity features. Many HTML elements have a [default role](https://www.w3.org/TR/html-aria/#docconformance) (including `<button>` and `<a>`) but you can also define one yourself with a `role` attribute on an element.
 
-Sometimes it may not be enough to say "this text must be on the page." You may want to test that an actual *link* is present on the page. Maybe you have a list of user's names and each name should be a link to a detail page. We could test that like so:
+Sometimes it may not be enough to say "this text must be on the page." You may want to test that an actual *link* is present on the page. Maybe you have a list of users' names and each name should be a link to a detail page. We could test that like so:
 
 ```javascript
 it('renders a link with a name', () => {
@@ -352,7 +353,7 @@ it('renders a link with a name', () => {
 })
 ```
 
-But what if we wanted to check on the `href` of the link itself to be sure it's correct? In that case we can capture the `screen.getByRole()` return and run expectations on that as well (the `forEach()` loop has been removed here for simplicity):
+But what if we wanted to check the `href` of the link itself to be sure it's correct? In that case we can capture the `screen.getByRole()` return and run expectations on that as well (the `forEach()` loop has been removed here for simplicity):
 
 ```javascript{2,6-8}
 import { routes } from '@redwoodjs/router'
@@ -378,7 +379,7 @@ it('renders a link with a name', () => {
 
 #### Other Queries/Matchers
 
-There are several other node/text types you can query against with React Testing Library including `title`, `role` and `alt` attributes, form labels, placeholder text, and more. If you still can't access the node or text you're looking for there is a fallback attribute you can add to any DOM element and that can always be found: `data-testid` which you can access by `getByTestId`, `queryByTestId` and others (but it involves including that attribute in your rendered HTML always, not just when running the test suite).
+There are several other node/text types you can query against with React Testing Library, including `title`, `role` and `alt` attributes, form labels, placeholder text, and more. If you still can't access the node or text you're looking for there's a fallback attribute you can add to any DOM element that can always be found: `data-testid` which you can access using `getByTestId`, `queryByTestId` and others (but it involves including that attribute in your rendered HTML always, not just when running the test suite).
 
 Here's a cheatsheet from React Testing Library with the various permuations of `getBy`, `queryBy` and siblings: https://testing-library.com/docs/react-testing-library/cheatsheet/
 
@@ -388,7 +389,7 @@ In addition to testing for static things like text and attributes, you can also 
 
 ### Mocking GraphQL Calls
 
-If you are using GraphQL inside of your components you can mock them to return the exact response you want and then focus on the content of the component being correct based on that data. Returning to our **&lt;Article&gt;** component, let's make an update where only the `id` of the article is passed to the component as a prop and then the component itself is responsible for fetching the content from GraphQL:
+If you're using GraphQL inside your components, you can mock them to return the exact response you want and then focus on the content of the component being correct based on that data. Returning to our **&lt;Article&gt;** component, let's make an update where only the `id` of the article is passed to the component as a prop and then the component itself is responsible for fetching the content from GraphQL:
 
 > Normally we recommend using a cell for exactly this functionality, but for the sake of completeness we're showing how to test when doing GraphQL queries the manual way!
 
@@ -427,7 +428,7 @@ export default Article
 
 #### mockGraphQLQuery()
 
-Redwood provides a test function `mockGraphQLQuery()` for providing the result of a given named GraphQL. In this case our query is named `getArticle` and we can mock that in our test as follows:
+Redwood provides the test function `mockGraphQLQuery()` for providing the result of a given named GraphQL. In this case our query is named `getArticle` and we can mock that in our test as follows:
 
 ```javascript{8-16,20}
 // web/src/components/Article/Article.test.js
@@ -454,11 +455,11 @@ describe('Article', () => {
 })
 ```
 
-We're using a new query here, `findByText()` which allows us to find things that may not be present in the first render of the component. In our case when the component first renders the data hasn't loaded yet, so it will render only "Loading..." which does *not* include the title of our article. Without `findByText()` the test will immediately fail. `findByText()` is smart and waits for subsequent renders or a maximum amount of time before giving up.
+We're using a new query here, `findByText()`, which allows us to find things that may not be present in the first render of the component. In our case, when the component first renders, the data hasn't loaded yet, so it will render only "Loading..." which does *not* include the title of our article. Without it the test would immediately fail, but `findByText()` is smart and waits for subsequent renders or a maximum amount of time before giving up.
 
-Note that you need to make the test function `async` and put an `await` before the `findByText()` call. Read more about `findBy*()` queries and the higher level `waitFor()` [here](https://testing-library.com/docs/dom-testing-library/api-async).
+Note that you need to make the test function `async` and put an `await` before the `findByText()` call. Read more about `findBy*()` queries and the higher level `waitFor()` utility [here](https://testing-library.com/docs/dom-testing-library/api-async).
 
-The function that's given as the second argument to `mockGraphQLQuery` will be sent a couple of arguments. The first, and only one we're using here, is `variables` which will contain the variables given to the query when `useQuery` was called. In this test we passed an `id` of `1` to the **&lt;Article&gt;** component when test rendering, so `variables` will contain `{id: 1}`. Using this variable in the callback function to `mockGraphQLQuery` allows us to reference those same variables in the body of our response. Here we're making sure that the returned article's `id` is the same as the one that was requested:
+The function that's given as the second argument to `mockGraphQLQuery` will be sent a couple of arguments. The first&mdash;and only one we're using here&mdash;is `variables` which will contain the variables given to the query when `useQuery` was called. In this test we passed an `id` of `1` to the **&lt;Article&gt;** component when test rendering, so `variables` will contain `{id: 1}`. Using this variable in the callback function to `mockGraphQLQuery` allows us to reference those same variables in the body of our response. Here we're making sure that the returned article's `id` is the same as the one that was requested:
 
 ```javascript{3}
 return {
@@ -470,7 +471,7 @@ return {
 }
 ```
 
-Along with `variables` there is a second argument: an object which you can destructure a couple of properties from. One of them is `ctx` which is the context around the GraphQL response. One thing you can do with `ctx` is to simulate your GraphQL call returning an error:
+Along with `variables` there is a second argument: an object which you can destructure a couple of properties from. One of them is `ctx` which is the context around the GraphQL response. One thing you can do with `ctx` is simulate your GraphQL call returning an error:
 
 ```javascript
 mockGraphQLQuery('getArticle', (variables, { ctx }) => {
@@ -601,7 +602,7 @@ describe('HomePage', () => {
 
 Here we call `mockCurrentUser()` before the `render()` call. Right now our code only references the `name` of the current user, but you would want this object to include everything a real user contains, maybe an `email` and an array of `roles`.
 
-We introduced a new function, `waitFor()` which will wait for a render update before passing/failing the expectation. Although `findByRole()` will wait for an update, it will raise an error if the element is not found (similar to `getByRole()`). So here we had to switch to `queryByRole()`, but that version isn't async, so we added `waitFor()` to get the async behavior back.
+We introduced `waitFor()` which waits for a render update before passing/failing the expectation. Although `findByRole()` will wait for an update, it will raise an error if the element is not found (similar to `getByRole()`). So here we had to switch to `queryByRole()`, but that version isn't async, so we added `waitFor()` to get the async behavior back.
 
 > Figuring out which assertions need to be async and which ones don't can be frustrating, we know. If you get a failing test when using `screen` you'll see the output of the DOM dumped along with the failure message, which helps find what went wrong. You can see exactly what the test saw (or didn't see) in the DOM at the time of the failure.
 >
@@ -668,7 +669,7 @@ describe('HomePage', () => {
 })
 ```
 
-While the primoridal developer inside of you probably breathed a sign of relief seeing this refactor, heed this warning: the more deeply nested your tests become, the harder it is to read through the file and figure out what's in scope and what's not by the time your actual test is invoked. In our test above, if you just focused on the last test, you would have no idea that `currentUser` is being mocked. Imagine a test file with dozens of tests and multiple levels of nested `describe`s and it becomes a chore to scroll through and mentally keep track of what variables are in scope as you look for nested `beforeEach()` blocks.
+While the primoridal developer inside of you probably breathed a sign of relief seeing this refactor, heed this warning: the more deeply nested your tests become, the harder it is to read through the file and figure out what's in scope and what's not by the time your actual test is invoked. In our test above, if you just focused on the last test, you would have no idea that `currentUser` is being mocked. Imagine a test file with dozens of tests and multiple levels of nested `describe`s&mdash;it becomes a chore to scroll through and mentally keep track of what variables are in scope as you look for nested `beforeEach()` blocks.
 
 Some schools of thought say you should keep your test files flat (that is, no nesting) which trades ease of readibility for duplication: when flat, each test is completely self contained and you know you can rely on just the code inside that test to determine what's in scope. It makes future test modifications easier because each test only relies on the code inside of itself. You may get nervous thinking about changing 10 identical instances of `mockCurrentUser()` but that kind of thing is exactly what your IDE is good at!
 
@@ -680,14 +681,14 @@ Pages and Layouts are just regular components so all the same techniques apply!
 
 ## Testing Cells
 
-Testing cells is very similar to testing components: something is rendered to the DOM and you generally want to make sure that certain expected elements are present.
+Testing Cells is very similar to testing components: something is rendered to the DOM and you generally want to make sure that certain expected elements are present.
 
-Two situations make testing cells unique:
+Two situations make testing Cells unique:
 
-1. A single cell can export up to four separate components
-2. There will be a GraphQL query taking place
+1. A single Cell can export up to four separate components
+2. There's a GraphQL query taking place
 
-The first situation is really no different than regular component testing, you just test more than one component in your test. For example:
+The first situation is really no different than regular component testing: you just test more than one component in your test. For example:
 
 ```javascript
 // web/src/components/ArticleCell/ArticleCell.js
@@ -715,7 +716,7 @@ export const Success = ({ article }) => {
 }
 ```
 
-Here we're exporting four components and if you created this cell with the [cell generator](https://redwoodjs.com/docs/cli-commands.html#cell) then you'll already have four tests that make sure that each component renders without errors:
+Here we're exporting four components and if you created this Cell with the [Cell generator](https://redwoodjs.com/docs/cli-commands.html#cell) then you'll already have four tests that make sure that each component renders without errors:
 
 ```javascript
 // web/src/components/ArticleCell/ArticleCell.test.js
@@ -751,15 +752,15 @@ describe('ArticleCell', () => {
 })
 ```
 
-You might think that "rendering without errors" is a pretty lame test but this is actually a great start. In React something usually renders successfully or fails spectacularly, so here we're making sure that there are no obvious issues with each component.
+You might think that "rendering without errors" is a pretty lame test, but it's actually a great start. In React something usually renders successfully or fails spectacularly, so here we're making sure that there are no obvious issues with each component.
 
-You can expand on these tests by checking for certain text in each component is present, just as you would with a regular component test.
+You can expand on these tests just as you would with a regular component test: by checking that certain text in each component is present.
 
 ### Cell Mocks
 
 When the **&lt;Success&gt;** component is tested, what's this `standard()` function that's passed as the `article` prop?
 
-If you used the cell generator, you'll get a `mocks.js` file along with the cell component and the test file:
+If you used the Cell generator, you'll get a `mocks.js` file along with the cell component and the test file:
 
 ```javascript
 // web/src/components/ArticleCell.mocks.js
@@ -929,25 +930,25 @@ export const standard = (variables) => {
 
 ## Testing Services
 
-Until now we've only tested things on the web-side of our app. When we test the api-side that means testing our services.
+Until now we've only tested things on the web-side of our app. When we test the api-side that means testing our Services.
 
-In some ways testing a service feels more "concrete" than testing components—services deal with hard data coming out of a database or third party API, while components deal with messy things like language, layout and even design elements.
+In some ways testing a Service feels more "concrete" than testing components—Services deal with hard data coming out of a database or third party API, while components deal with messy things like language, layout, and even design elements.
 
-Services will usually contain most of your business logic which is important to verify for correctness—crediting or debiting the wrong account number on the services side could put a swift end to your business!
+Services will usually contain most of your business logic which is important to verify for correctness—crediting or debiting the wrong account number on the Services side could put a swift end to your business!
 
 ### The Test Database
 
-To simplify service testing, Redwood creates a test database that it will execute queries against rather than mess with your development database. By default this database will be located at the location defined by a `TEST_DATABASE_URL` environment variable and will fall back to `.redwood/test.db` if that var does not exist.
+To simplify Service testing, rather than mess with your development database, Redwood creates a test database that it executes queries against. By default this database will be located at the location defined by a `TEST_DATABASE_URL` environment variable and will fall back to `.redwood/test.db` if that var does not exist.
 
 If you're using Postgres or MySQL locally you'll want to set that env var to your connection string for a test database in those services.
 
 > Does anyone else find it confusing that the software itself is called a "database", but the container that actually holds your data is also called a "database," and you can have multiple databases (containers) within one instance of a database (software)?
 
-When you start your test suite you may have noticed some output from Prisma talking about migrating the database. Redwood will automatically run `yarn rw prisma migrate dev` against your test database to make sure it's up-to-date.
+When you start your test suite you may notice some output from Prisma talking about migrating the database. Redwood will automatically run `yarn rw prisma migrate dev` against your test database to make sure it's up-to-date.
 
 ### Writing Service Tests
 
-A service test can be just as simple as a component test:
+A Service test can be just as simple as a component test:
 
 ```javascript
 // api/src/services/users/users.js
@@ -1188,12 +1189,12 @@ Only the scenarios named for your test are included at the time the test is run.
 * `comments.test.js`
 * `comments.scenarios.js`
 
-Only the posts scenarios will be present in the database when running the `posts.test.js` and only comments scenarios will be present when running `comments.test.js`. And within those scenarios, only the `standard` scenario will be loaded for each test unless you specify a different named scenario to use instead.
+Only the posts scenarios will be present in the database when running the `posts.test.js` and only comments scenarios will be present when running `comments.test.js`. And within those scenarios, only the `standard` scenario will be loaded for each test unless you specify a differently named scenario to use instead.
 
 During the run of any single test, there is only every one scenario's worth of data present in the database: users.standard *or* users.incomplete.
 
 ## Wrapping Up
 
-So that's the world of testing according to Redwood. Did we miss anything? Can we make it even more awesome? Stop by [the community](https://community.redwoodjs.com) and ask questions, or if you've thought of a way to make this doc even better then [open a PR](https://github.com/redwoodjs/redwood/pulls).
+So that's the world of testing according to Redwood. Did we miss anything? Can we make it even more awesome? Stop by [the community](https://community.redwoodjs.com) and ask questions, or if you've thought of a way to make this doc even better then [open a PR](https://github.com/redwoodjs/redwoodjs.com/pulls).
 
 Now go out and create (and test!) something amazing!
