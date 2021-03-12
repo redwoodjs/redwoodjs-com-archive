@@ -14,7 +14,7 @@ Currently, these are the officially supported deploy targets:
 
 Redwood has a CLI generator that adds the code and configuration required by the specified provider (see the [CLI Doc](https://redwoodjs.com/docs/cli-commands#deploy-config) for more information):
 ```shell
-yarn rw generate deploy <provider>
+yarn rw setup deploy <provider>
 ```
 
 There are examples of deploying Redwood on other providers such as Google Cloud and direct to AWS. You can find more information by searching the [GitHub Issues](https://github.com/redwoodjs/redwood/issues) and [Forums](https://community.redwoodjs.com).
@@ -26,34 +26,51 @@ Deploying Redwood requires setup for the following four categories.
 ### 1. Host Specific Configuration
 Each hosting provider has different requirements for how (and where) the deployment is configured. Sometimes you'll need to add code to your repository, configure settings in a dashboard, or both. You'll need to read the provider specific documentation.
 
-The most important Redwood configuration is to set the `apiProxyPath` in your `redwood.toml` This sets the API path for your serverless functions specific to your hosting provider. 
+The most important Redwood configuration is to set the `apiProxyPath` in your `redwood.toml` This sets the API path for your serverless functions specific to your hosting provider.
 
 ### 2. Build Command
-The build command is used to prepare the Web and API for deployment. Additionally, other actions can be run during build such as database migrations. This is the current default Redwood build command:
+The build command is used to prepare the Web and API for deployment. Additionally, other actions can be run during build such as database migrations. The Redwood build command must specify one of the supported hosting providers (aka `target`):
+
 ```shell
-yarn rw build && yarn rw db up --no-db-client --auto-approve && yarn rw dataMigrate up
+yarn rw prisma deploy <target>
+```
+
+For example:
+
+```shell
+# Build command for Netlify deploy target
+yarn rw deploy netlify
+```
+
+```shell
+# Build command for Vercel deploy target
+yarn rw deploy vercel
+```
+
+
+```shell
+# Build command for AWS Lambdas using the https://serverless.com framework
+yarn rw deploy aws serverless --side api
 ```
 
 ### 3. Prisma and Database
-Redwood uses Prisma for managing database access and migrations. The settings in `api/db/schema.prisma` must include the correct deployment database, e.g. postgresql, and the database connection string.
+Redwood uses Prisma for managing database access and migrations. The settings in `api/prisma/schema.prisma` must include the correct deployment database, e.g. postgresql, and the database connection string.
 
-It is possible to use a different database type for local development and production. To do this, you need to use the Prisma dynamic provider syntax. For example, to use SQLite locally and PostgreSQL in production, include this in your `schema.prisma`:
+To use PostgreSQL in production, include this in your `schema.prisma`:
+
 ```javascript
 datasource DS {
-  provider = ["sqlite", "postgresql"]
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 ```
 
 The `url` setting above accesses the database connection string via an environment variable, `DATABASE_URL`. Using env vars is the recommended method for both ease of development process as well as security best practices.
 
-Whenever you make changes to your `schema.prisma`, you must run the following commands:  
-```shell
-$ yarn rw db save # creates a new Prisma DB migration
-$ yarn rw db up # applies the new migration to your local DB 
+Whenever you make changes to your `schema.prisma`, you must run the following command:
+```shell	
+$ yarn rw prisma migrate dev # creates and applies a new Prisma DB migration	
 ```
-
-_Don't forget to save, commit, and push any changes prior to deploying!_
 
 ### 4. Environment Variables
 Any environment variables used locally, e.g. in your `env.defaults` or `.env`, must also be added to your hosting provider settings. (See documentation specific to your provider.)
@@ -67,7 +84,7 @@ Additionally, if your application uses env vars on the Web Side, you must config
 If you simply want to experience the Netlify deployment process without a database and/or adding custom code, you can do the following:
 1. create a new redwood project: `yarn create redwood-app ./netlify-deploy`
 2. after your "netlify-deploy" project installation is complete, init git, commit, and add it as a new repo to GitHub, BitBucket, or GitLab
-3. run the command `yarn rw generate deploy netlify` and commit and push changes
+3. run the command `yarn rw setup deploy netlify` and commit and push changes
 4. use the Netlify [Quick Start](https://app.netlify.com/signup) to deploy
 
 ### Netlify Complete Deploy Walkthrough
@@ -81,7 +98,7 @@ For the complete deployment process on Netlify, see the [Tutorial Deployment sec
 If you simply want to experience the Vercel deployment process without a database and/or adding custom code, you can do the following:
 1. create a new redwood project: `yarn create redwood-app ./vercel-deploy`
 2. after your "vercel-deploy" project installation is complete, init git, commit, and add it as a new repo to GitHub, BitBucket, or GitLab
-3. run the command `yarn rw generate deploy vercel` and commit and push changes
+3. run the command `yarn rw setup deploy vercel` and commit and push changes
 4. use the Vercel [Quick Start](https://vercel.com/#get-started) to deploy
 
 _If you choose this quick deploy experience, the following steps do not apply._
@@ -99,12 +116,12 @@ Complete the following two steps. Then save, commit, and push your changes.
 #### Step 1. Serverless Functions Path
 Run the following CLI Command:
 ```shell
-yarn rw generate deploy vercel
+yarn rw setup deploy vercel
 ```
 
 This updates your `redwood.toml` file, setting `apiProxyPath = "/api"`:
 
-#### Step 2. Database Settings  
+#### Step 2. Database Settings
 Follow the steps in the [Prisma and Database](#3-prisma-and-database) section above. _(Skip this step if your project does not require a database.)_
 
 ### Vercel Initial Setup and Configuration
@@ -118,7 +135,7 @@ Next, select the provider where your repo is hosted: GitHub, GitLab, or Bitbucke
 You'll then need to provide permissions for Vercel to access the repo on your hosting provider.
 
 ### Import and Deploy your Project
-Vercel will recognize your repo as a Redwood project and take care of most configuration heavy lifting. You should see the following options and, most importantly, the "Framework Preset" showing RedwoodJS. 
+Vercel will recognize your repo as a Redwood project and take care of most configuration heavy lifting. You should see the following options and, most importantly, the "Framework Preset" showing RedwoodJS.
 
 <img src="https://user-images.githubusercontent.com/2951/90486275-9337cc80-e0ed-11ea-9af3-fd9613c1256b.png" />
 
@@ -144,6 +161,6 @@ From now on, each time you push code to your git repo, Vercel will automatically
 ## AWS Serverless Deploy
 >The following instructions assume you have read the [General Deployment Setup](#general-deployment-setup) section above.
 
-Deploying via AWS Serverless assumes that you have setup the [credentials](https://www.serverless.com/framework/docs/providers/aws/guide/credentials/) for the Serverless Framework on your computer. In order to setup your Redwood project to use AWS Serverless run: `yarn rw generate deploy aws_serverless`
+Deploying via AWS Serverless assumes that you have setup the [credentials](https://www.serverless.com/framework/docs/providers/aws/guide/credentials/) for the Serverless Framework on your computer. In order to setup your Redwood project to use AWS Serverless run: `yarn rw setup deploy aws-serverless`
 
-Once that's complete you can invoke a deployment via: `yarn rw deploy api aws_serverless`. This command will take care of building, packaging, and shipping your AWS Serverless functions.
+Once that's complete you can invoke a deployment via: `yarn rw deploy aws`. This command will take care of building, packaging, and shipping your AWS Serverless functions.

@@ -38,6 +38,17 @@
     Turbolinks-Location = "/docs/introduction"
 
 [[redirects]]
+  from = "/docs/flash-messaging-bus"
+  to = "/docs/toast-notifications"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/docs/toast-notifications"
+  [headers.values]
+    Turbolinks-Location = "/docs/toast-notifications"
+
+[[redirects]]
   from = "/tutorial"
   to = "/tutorial/welcome-to-redwood"
   status = 301

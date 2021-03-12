@@ -319,7 +319,7 @@ export const schema = gql`
 `
 ```
 
-This data structure returns just the data we care about, and we can even pre-format it on the server (convert kelvin to fahrenheit and get the icon URL). We have a Query type `getWeather` that accepts the zip code (note that it's a `String` because it could start with a `0`) and returns our `Weather` type defined above.
+This data structure returns just the data we care about, and we can even pre-format it on the server (convert Kelvin to Fahrenheit and get the icon URL). We have a Query type `getWeather` that accepts the zip code (note that it's a `String` because it could start with a `0`) and returns our `Weather` type defined above.
 
 ### The Service
 

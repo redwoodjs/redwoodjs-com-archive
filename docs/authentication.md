@@ -10,6 +10,7 @@
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
 - [Ethereum](https://github.com/oneclickdapp/ethereum-auth)
 - [Supabase](https://supabase.io/docs/guides/auth)
+- [Nhost](https://docs.nhost.io/auth)
 - Custom
 - [Contribute one](https://github.com/redwoodjs/redwood/tree/main/packages/auth), it's SuperEasy™!
 
@@ -28,7 +29,7 @@ You will need to instantiate your authentication client and pass it to the `<Aut
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth netlify
+yarn rw setup auth netlify
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -53,9 +54,9 @@ netlifyIdentity.init()
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={netlifyIdentity} type="netlify">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
@@ -77,7 +78,7 @@ See the Netlify Identity information within this doc's [Auth Provider Specific I
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth goTrue
+yarn rw setup auth goTrue
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -113,9 +114,9 @@ const goTrue = new GoTrue({
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={goTrue} type="goTrue">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
@@ -133,7 +134,7 @@ ReactDOM.render(
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth auth0
+yarn rw setup auth auth0
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -167,9 +168,9 @@ const auth0 = new Auth0Client({
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={auth0} type="auth0">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
@@ -228,7 +229,7 @@ See the Auth0 information within this doc's [Auth Provider Specific Integration]
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth azureActiveDirectory
+yarn rw setup auth azureActiveDirectory
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -240,11 +241,7 @@ yarn add msal
 
 #### Setup
 
-To get your application credentials, create an [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application (client) ID_ and the _Directory (tenant) ID_.
-
-##### Supported account types
-
-In most cases you want to choose _Accounts in this organizational directory only (Single tenant)_, as this will allow only users in your Azure Active Directory tenant to login to your application. If you want to enable Microsoft accounts to be able to login, choose the bottom alternative.
+To get your application credentials, create an [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application ID_ (client), and the _Directory ID_ (tenant).
 
 ##### Redirect URIs
 
@@ -254,7 +251,7 @@ Enter allowed redirect urls for the integrations, e.g. `http://localhost:8910`. 
 
 Under the _Authentication_ tab, tick `ID tokens`.
 
-This allows an application to request a token directly from the authorization endpoint. Checking Access tokens and ID tokens is recommended only if the application has a single-page architecture (SPA). [Learn more about the implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps)
+This allows an application to request a token directly from the authorization endpoint. Checking Access tokens and ID tokens is recommended only if the application has a single-page architecture (SPA). [Learn more about implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps).
 
 #### Authority
 
@@ -277,9 +274,9 @@ const azureActiveDirectoryClient = new UserAgentApplication({
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={azureActiveDirectoryClient} type="azureActiveDirectory">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
@@ -290,9 +287,29 @@ ReactDOM.render(
 
 To setup your App Registration with custom roles and have them exposed via the `roles` claim, follow [this documentation](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
 
-#### Login and Logout Options
+#### Login Options
 
-When using the Azure Active Directory client, `login` take `options` that can be used to override the client config. See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/loginPopup.html) or see [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors).
+Options in method `logIn(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html) and is a good place to pass in optional [scopes](https://docs.microsoft.com/en-us/graph/permissions-reference#user-permissions) to be authorized. By default, MSAL sets `scopes` to [/.default](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#the-default-scope) which is built in for every application that refers to the static list of permissions configured on the application registration. Furthermore, MSAL will add `openid` and `profile` to all requests. In example below we explicit include `User.Read.All` to the login scope.
+
+```js
+await logIn({
+  scopes: ['User.Read.All'], // becomes ['openid', 'profile', 'User.Read.All']
+})
+```
+
+See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/loginPopup.html), [UserAgentApplication class ](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors) and [Scopes Behavior](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-core/docs/scopes.md#scopes-behavior) for more documentation.
+
+#### getToken Options
+
+Options in method `getToken(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html). By default, `getToken` will be called with scope `['openid', 'profile']`. As Azure Active Directory apply [incremental consent](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md#dynamic-scopes-and-incremental-consent), we can extend the permissions from the login example by including another scope, for example `Mail.Read`.
+
+```js
+await getToken({
+  scopes: ['Mail.Read'], // becomes ['openid', 'profile', 'User.Read.All', 'Mail.Read']
+})
+```
+
+See [acquireTokenSilent](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/acquireTokenSilent.html), [Resources and Scopes](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md#resources-and-scopes) or [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors) for more documentation.
 
 +++
 
@@ -305,7 +322,7 @@ When using the Azure Active Directory client, `login` take `options` that can be
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth magicLink
+yarn rw setup auth magicLink
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -330,9 +347,9 @@ const m = new Magic(process.env.MAGICLINK_PUBLIC)
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={m} type="magicLink">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
@@ -353,7 +370,7 @@ See the Magic.Link information within this doc's [Auth Provider Specific Integra
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth firebase
+yarn rw setup auth firebase
 ```
 
 #### Setup
@@ -385,9 +402,9 @@ const firebaseClient = ((config) => {
 ReactDOM.render(
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={firebaseClient} type="firebase">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
   </FatalErrorBoundary>,
   document.getElementById('redwood-app')
@@ -435,20 +452,39 @@ See the Firebase information within this doc's [Auth Provider Specific Integrati
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth supabase
+yarn rw setup auth supabase
 ```
 
 #### Setup
 
 Update your .env file with the following settings supplied when you created your new Supabase project:
 
-* `SUPABASE_URL` with the unique Supabase URL for your project
-* `SUPABASE_KEY` with the unique Supabase Key that identifies which API KEY to use
-* `SUPABASE_JWT_SECRET` with the secret used to sign and verify the JSON Web Token (JWT)
+- `SUPABASE_URL` with the unique Supabase URL for your project
+- `SUPABASE_KEY` with the unique Supabase Key that identifies which API KEY to use
+- `SUPABASE_JWT_SECRET` with the secret used to sign and verify the JSON Web Token (JWT)
 
 You can find these values in your project's dashboard under Settings -> API.
 
 For full client docs, see: <https://supabase.io/docs/library/getting-started#reference>
+
+#### Usage
+
+Supabase supports several signin methods: 
+
+* email/password
+* passwordless via emailed magiclink
+* OAuth (via Azure Active Directory, Bitbucket, Facebook, GitHub, GitLab, or Google).
+
+Depending on the credentials provided:
+
+* A user can sign up either via email or a supported OAuth provider: `'azure' | 'bitbucket' | 'facebook' | 'github' | 'gitlab' | 'google'`
+* If you provide email without a password, the user will be sent a magic link.
+* The magic link's destination URL is determined by the SITE_URL config variable. To change this, you can go to Authentication -> Settings on `app.supabase.io` for your project.
+* Specifying an OAuth provider (such as Bitbucket, GitHub, GitLab, or Google) will open the browser to the relevant login page
+* Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to Authentication -> Settings on `app.supabase.io` for your project.
+
+For full Sign In docs, see: <https://supabase.io/docs/client/auth-signin>
+
 
 +++
 
@@ -461,13 +497,55 @@ For full client docs, see: <https://supabase.io/docs/library/getting-started#ref
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth ethereum
+yarn rw setup auth ethereum
 ```
 
 #### Setup
 
 To complete setup, you'll also need to update your `api` server manually. See https://github.com/oneclickdapp/ethereum-auth for instructions.
 
++++
+
+### Nhost
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw setup auth nhost
+```
+
+#### Setup
+
+Update your .env file with the following setting which can be found on your Nhost project's dashboard.
+
+- `NHOST_BACKEND_URL` with the unique Nhost Backend (Auth & Storage) URL for your project.
+
+#### Usage
+
+Nhost supports the following methods: 
+
+* email/password
+* OAuth (via GitHub, Google, Facebook, or Linkedin).
+
+Depending on the credentials provided:
+
+* A user can sign in either via email or a supported OAuth provider.
+* A user can sign up via email and password. For OAuth simply sign in and the user account will be created if it does not exist.
+* Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to the project's Settings -> Sign-In Methods page at `console.nhost.io`.
+
+For the docs on Authentication, see: <https://docs.nhost.io/auth>
+
+If you are also using Nhost as your GraphQL API server, you will need to pass `skipFetchCurrentUser` as a prop to `AuthProvider` , as follows:
+
+```js
+<AuthProvider client={nhost} type="nhost" skipFetchCurrentUser>
+```
+
+This avoids having an additional request to fetch the current user which is meant to work with Apollo Server and Prisma.
 +++
 
 ### Custom
@@ -479,7 +557,7 @@ To complete setup, you'll also need to update your `api` server manually. See ht
 The following CLI command (not implemented, see https://github.com/redwoodjs/redwood/issues/1585) will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth custom
+yarn rw setup auth custom
 ```
 
 #### Setup

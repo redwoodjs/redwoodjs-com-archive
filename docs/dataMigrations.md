@@ -36,9 +36,9 @@ model DataMigration {
 }
 ```
 
-The install script also ran `yarn rw db save` automatically so you have a DB migration ready to go. You just need to run the `up` command to apply it:
+The install script also ran `yarn rw prisma migrate dev --create-only` automatically so you have a DB migration ready to go. You just need to run the `prisma migrate dev` command to apply it:
 
-    yarn rw db up
+    yarn rw prisma migrate dev
 
 ## Creating a New Data Migration
 
@@ -64,7 +64,7 @@ export default async ({ db }) => {
 
 > **Why such a long name?**
 >
-> So that if mutliple developers are creating data migrations, the chances of them creating one with the exact same filename is essentially zero, and they will all run in a predictable order—oldest to newest.
+> So that if multiple developers are creating data migrations, the chances of them creating one with the exact same filename is essentially zero, and they will all run in a predictable order—oldest to newest.
 
 Now it's up to you to define your data migration. In our user/preference example, it may look something like:
 
@@ -102,7 +102,7 @@ This loops through each existing `User` and creates a new `Preference` record co
 >
 > When going to production, you would need to run this as two separate deploys to ensure no data is lost.
 >
-> The reason is that all DB migrations are run and *then* all data migrations. So if you had two DB migrations (one to create `Preference` and one to drop the uneeded columns from `User`) they would both run before the Data Migration, so the columns containing the preferences are gone before the data migration gets a chance to copy them over!
+> The reason is that all DB migrations are run and *then* all data migrations. So if you had two DB migrations (one to create `Preference` and one to drop the unneeded columns from `User`) they would both run before the Data Migration, so the columns containing the preferences are gone before the data migration gets a chance to copy them over!
 >
 > **Remember**: Any destructive action on the database (removing a table or column especially) needs to be a two step process to avoid data loss.
 

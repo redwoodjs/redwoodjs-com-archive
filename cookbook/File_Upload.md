@@ -60,8 +60,7 @@ model Image {
 Create a migration and update the database:
 
 ```terminal
-yarn rw db save
-yarn rw db up
+yarn rw prisma migrate dev
 ```
 
 To make our lives easier let's scaffold the screens necessary to create/edit/delete an image and we'll modify those to add the uploader:
@@ -493,7 +492,7 @@ Now let's just add the ability to bring back the uploader if you decide you want
 
 We're borrowing the styles from the submit button and made sure the image has both a top and bottom margin so it doesn't crash into the new button.
 
-## The Wrapup
+## The Wrap-up
 
 Files uploaded! There's plenty of ways to integrate a file picker and this is just one, but we think it's simple, yet flexible. We use the same technique on the [example-blog](https://github.com/redwoodjs/example-blog).
 
