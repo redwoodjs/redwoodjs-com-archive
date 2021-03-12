@@ -8,7 +8,7 @@ If you're already familiar with the ins and outs of testing and just want to kno
 
 ## Building a Test Runner
 
-The idea of testing is pretty simple: for each "unit" of code you write, you write additional code that exercises that unit and makes sure it works as expected. What's a "unit" of code? That's for you to decide: it could be an entire class, a single function, or even a single line! In general, the smaller the unit, the better. Your tests will stay fast and focused on just one thing, which makes them easy to update when you refactor. The important thing is that you start *somewhere* and codify your code's functionality in a repeatable, verifyable way.
+The idea of testing is pretty simple: for each "unit" of code you write, you write additional code that exercises that unit and makes sure it works as expected. What's a "unit" of code? That's for you to decide: it could be an entire class, a single function, or even a single line! In general, the smaller the unit, the better. Your tests will stay fast and focused on just one thing, which makes them easy to update when you refactor. The important thing is that you start *somewhere* and codify your code's functionality in a repeatable, verifiable way.
 
 Let's say we write a function that adds two numbers together:
 
@@ -54,7 +54,7 @@ Let's get to some terminology:
 * The value you expect to get (in our example, that's the number `2`) is sometimes called the **expected value**
 * The value you actually get (whatever the output of `add(1, 1)` is) is sometimes called the **actual** or **received value**
 * The file that contains the test is a **test file**
-* Mutliple test files, all run together, is known as a **test suite**
+* Multiple test files, all run together, is known as a **test suite**
 * You'll generally run your test files and suites with another piece of software. In Redwood that's Jest, and it's known as a **test runner**
 * The amount of code you have that is exercised by tests is referred to as **coverage** and is usually reported as a percentage. If every single line of code is touched as a result of running your test suite then you have 100% coverage!
 
@@ -200,7 +200,7 @@ To start the process without watching, add the `--no-watch` flag:
 yarn rw test --no-watch
 ```
 
-This one is handy before committing some changes to be sure you didn't inadvertantly break something you didn't expect, or before a deploy to production.
+This one is handy before committing some changes to be sure you didn't inadvertently break something you didn't expect, or before a deploy to production.
 
 You can run only the web- or api-side test suites by including the side as another argument to the command:
 
@@ -267,7 +267,7 @@ So, the above test in plain English says "if there is any DOM node containing th
 
 #### queryByText()
 
-Why not use `getByText()` for everything? Because it will raise an error if the text is *not* found in the document. That means if you want to explictly test that some text is *not* present, you can't—you'll always get an error.
+Why not use `getByText()` for everything? Because it will raise an error if the text is *not* found in the document. That means if you want to explicitly test that some text is *not* present, you can't—you'll always get an error.
 
 Consider an update to our **&lt;Article&gt;** component:
 
@@ -324,7 +324,7 @@ describe('Article', () => {
 
 #### getByRole() / queryByRole()
 
-`getByRole()` allows you to look up elements by their "role", which is an ARIA element that assists in accessiblity features. Many HTML elements have a [default role](https://www.w3.org/TR/html-aria/#docconformance) (including `<button>` and `<a>`) but you can also define one yourself with a `role` attribute on an element.
+`getByRole()` allows you to look up elements by their "role", which is an ARIA element that assists in accessibility features. Many HTML elements have a [default role](https://www.w3.org/TR/html-aria/#docconformance) (including `<button>` and `<a>`) but you can also define one yourself with a `role` attribute on an element.
 
 Sometimes it may not be enough to say "this text must be on the page." You may want to test that an actual *link* is present on the page. Maybe you have a list of users' names and each name should be a link to a detail page. We could test that like so:
 
@@ -381,7 +381,7 @@ it('renders a link with a name', () => {
 
 There are several other node/text types you can query against with React Testing Library, including `title`, `role` and `alt` attributes, form labels, placeholder text, and more. If you still can't access the node or text you're looking for there's a fallback attribute you can add to any DOM element that can always be found: `data-testid` which you can access using `getByTestId`, `queryByTestId` and others (but it involves including that attribute in your rendered HTML always, not just when running the test suite).
 
-Here's a cheatsheet from React Testing Library with the various permuations of `getBy`, `queryBy` and siblings: https://testing-library.com/docs/react-testing-library/cheatsheet/
+Here's a cheatsheet from React Testing Library with the various permutations of `getBy`, `queryBy` and siblings: https://testing-library.com/docs/react-testing-library/cheatsheet/
 
 The full list of available matchers like `toBeInTheDocument()` and `toHaveAttribute()` don't seem to have nice docs on the Testing Library site, but you can find them in the [README](https://github.com/testing-library/jest-dom) inside the main repo.
 
@@ -559,7 +559,7 @@ describe('HomePage', () => {
 })
 ```
 
-This test is a little more explicit in that it expects an actual `<button>` element to exist and that it's label (name) be "Login". Being explicit with something as important as the login button can be a good idea, especially if you want to be sure that your site is friendly to screenreaders or another assitive browsing devices.
+This test is a little more explicit in that it expects an actual `<button>` element to exist and that it's label (name) be "Login". Being explicit with something as important as the login button can be a good idea, especially if you want to be sure that your site is friendly to screen-readers or another assistive browsing devices.
 
 #### mockCurrentUser()
 
@@ -669,9 +669,9 @@ describe('HomePage', () => {
 })
 ```
 
-While the primoridal developer inside of you probably breathed a sign of relief seeing this refactor, heed this warning: the more deeply nested your tests become, the harder it is to read through the file and figure out what's in scope and what's not by the time your actual test is invoked. In our test above, if you just focused on the last test, you would have no idea that `currentUser` is being mocked. Imagine a test file with dozens of tests and multiple levels of nested `describe`s&mdash;it becomes a chore to scroll through and mentally keep track of what variables are in scope as you look for nested `beforeEach()` blocks.
+While the primordial developer inside of you probably breathed a sign of relief seeing this refactor, heed this warning: the more deeply nested your tests become, the harder it is to read through the file and figure out what's in scope and what's not by the time your actual test is invoked. In our test above, if you just focused on the last test, you would have no idea that `currentUser` is being mocked. Imagine a test file with dozens of tests and multiple levels of nested `describe`s&mdash;it becomes a chore to scroll through and mentally keep track of what variables are in scope as you look for nested `beforeEach()` blocks.
 
-Some schools of thought say you should keep your test files flat (that is, no nesting) which trades ease of readibility for duplication: when flat, each test is completely self contained and you know you can rely on just the code inside that test to determine what's in scope. It makes future test modifications easier because each test only relies on the code inside of itself. You may get nervous thinking about changing 10 identical instances of `mockCurrentUser()` but that kind of thing is exactly what your IDE is good at!
+Some schools of thought say you should keep your test files flat (that is, no nesting) which trades ease of readability for duplication: when flat, each test is completely self contained and you know you can rely on just the code inside that test to determine what's in scope. It makes future test modifications easier because each test only relies on the code inside of itself. You may get nervous thinking about changing 10 identical instances of `mockCurrentUser()` but that kind of thing is exactly what your IDE is good at!
 
 > For what it's worth, your humble author endorses the flat tests style.
 
@@ -833,7 +833,7 @@ Note that this second mock simply returns an object instead of a function. In th
 
 Consider the case where you have a page which renders a cell inside of it. You write a test for the page (using regular component testing techniques mentioned above). But if the page includes a cell, and a cell wants to run a GraphQL query, what happens when the page is rendered?
 
-This is where the specially named `standard()` mock comes into play: the GraphQL query in the cell will be intercepted and the response will be *the content of the `standard()` mock*. This means that no matter how deeply nested your component/cell structure becomes, you can count on every cell in that stack rendering in a predictiable way.
+This is where the specially named `standard()` mock comes into play: the GraphQL query in the cell will be intercepted and the response will be *the content of the `standard()` mock*. This means that no matter how deeply nested your component/cell structure becomes, you can count on every cell in that stack rendering in a predictable way.
 
 And this is where `standard()` being a function becomes important. The GraphQL call is intercepted behind the scenes with the same `mockGraphQLQuery()` function we learned about [earlier](#mocking-graphql). And since it's using that same function, the second argument (the function which runs to return the mocked data) receives the same arguments (`variables` and an object with keys like `ctx`).
 
