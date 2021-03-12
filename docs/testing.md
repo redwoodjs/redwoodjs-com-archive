@@ -48,15 +48,15 @@ You should see "pass" written to the output. To verify that our test is working 
 
 Let's get to some terminology:
 
-* The entire code block that checks the functionality of `add()` is what's considered a single "test"
-* The specific check that `add(1, 1) === 2` is known as an "assertion"
-* The `add()` function itself is the "subject" of the test, or the code that is "under test"
-* The value you expect to get (in our example, that's the number `2`) is sometimes called the "expected value"
-* The value you actually get (whatever the output of `add(1, 1)` is) is sometimes called the "actual" or "received value"
-* The file that contains the test is a "test file"
-* Mutliple test files, all run together, is known as a "test suite"
-* You'll generally run your test files and suites with another piece of software. In Redwood that's Jest, and it's known as a "test runner"
-* The amount of code you have that is exercised by tests is referred to as "coverage" and is usually reported as a percentage. If every single line of code is touched as a result of running your test suite then you have 100% coverage!
+* The entire code block that checks the functionality of `add()` is what's considered a single **test**
+* The specific check that `add(1, 1) === 2` is known as an **assertion**
+* The `add()` function itself is the **subject** of the test, or the code that is **under test**
+* The value you expect to get (in our example, that's the number `2`) is sometimes called the **expected value**
+* The value you actually get (whatever the output of `add(1, 1)` is) is sometimes called the **actual** or **received value**
+* The file that contains the test is a **test file**
+* Mutliple test files, all run together, is known as a **test suite**
+* You'll generally run your test files and suites with another piece of software. In Redwood that's Jest, and it's known as a **test runner**
+* The amount of code you have that is exercised by tests is referred to as **coverage** and is usually reported as a percentage. If every single line of code is touched as a result of running your test suite then you have 100% coverage!
 
 This is the basic idea behind all the tests you'll write: when you add code, you'll add another piece of code that uses the first and verifies that the result is what you expect.
 
