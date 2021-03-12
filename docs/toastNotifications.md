@@ -6,7 +6,7 @@ Did you know that those little popup notifications that you sometimes see at the
 
 ![Example Toast Animation](https://user-images.githubusercontent.com/300/110032806-71024680-7ced-11eb-8d69-7f462929815e.gif)
 
-Redwood supports these notfications out of the box thanks to the [react-hot-toast](https://react-hot-toast.com/) package.
+Redwood supports these notifications out of the box thanks to the [react-hot-toast](https://react-hot-toast.com/) package.
 
 ## Usage
 
