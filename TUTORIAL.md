@@ -1325,7 +1325,7 @@ input.error, textarea.error {
 }
 ```
 
-For now we won't be talking to the database in our Contact form so we won't create a cell. Let's create the form right on the page. Redwood forms start with the...wait for it...`<Form>` tag:
+We won't be retrieving records from the database in our Contact form so we won't create a cell. Let's create the form right on the page. Redwood forms start with the...wait for it...`<Form>` tag:
 
 ```javascript{3,9}
 // web/src/pages/ContactPage/ContactPage.js
