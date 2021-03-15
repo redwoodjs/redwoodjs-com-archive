@@ -188,6 +188,7 @@ to = "/cookbook/gotrue-auth"
   to = "https://learn.redwoodjs.com/docs/tutorial/redwood-file-structure"
   status = 301
   force = true
+
 [[redirects]]
   from = "/tutorial/our-first-page"
   to = "https://learn.redwoodjs.com/docs/tutorial/our-first-page"
