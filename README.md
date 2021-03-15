@@ -2,7 +2,7 @@
 
 This is the repo for https://redwoodjs.com
 
-The content for the tutorial is pulled from TUTORIAL.md in this repo.
+The content for the tutorials are managed along with localization over at [learn.redwoodjs.com](https://github.com/redwoodjs/learn.redwoodjs.com).
 
 Other documentation is pulled from various READMEs in the main [redwoodjs/redwood](https://github.com/redwoodjs/redwood) repo (see `lib/build.js`, the `SECTIONS` constant).
 
