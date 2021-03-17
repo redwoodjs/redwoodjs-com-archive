@@ -56,3 +56,21 @@ code.javascript, code.bash {
 
   See https://tailwindcss.com/docs/adding-new-utilities for creating new Tailwind utilities
 */
+
+.hero {
+  position: relative
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #682712;
+  background-image: url('/images/logo-outline.svg'), linear-gradient(#682712, #84331b);
+  background-size: cover;
+  background-position: 50% 50%;
+  z-index: -1
+}
