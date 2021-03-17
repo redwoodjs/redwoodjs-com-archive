@@ -26,6 +26,13 @@
 [context.branch-deploy]
   environment = { NODE_ENV = "production" }
 
+# Make docs site show up at /abc
+[[redirects]]
+  from = "/abc"
+  to = "https://learn-redwood.netlify.app/:splat"
+  status = 200
+  force = false
+
 [[redirects]]
   from = "/docs"
   to = "/docs/introduction"
@@ -278,7 +285,7 @@ to = "/cookbook/gotrue-auth"
   to = "https://learn.redwoodjs.com/docs/tutorial2/prerequisites"
   status = 301
   force = true
-  
+
 [[redirects]]
   from = "/tutorial2/introduction-to-storybook"
   to = "https://learn.redwoodjs.com/docs/tutorial2/introduction-to-storybook"
