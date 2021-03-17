@@ -21,39 +21,39 @@
   compress = true
 
 [context.production]
-  environment = { NODE_ENV = "production"}
+  environment = { NODE_ENV = "production", NODE_VERSION = "14" }
 
 [context.branch-deploy]
-  environment = { NODE_ENV = "production" }
+  environment = { NODE_ENV = "production", NODE_VERSION = "14" }
 
 # Make docs site show up at /abc
 [[redirects]]
-  from = "/abc"
+  from = "/docs"
   to = "https://learn-redwood.netlify.app/:splat"
   status = 200
   force = false
 
-[[redirects]]
-  from = "/docs"
-  to = "/docs/introduction"
-  status = 301
-  force = true
+# [[redirects]]
+#   from = "/docs"
+#   to = "/docs/introduction"
+#   status = 301
+#   force = true
 
-[[headers]]
-  for = "/docs/introduction"
-  [headers.values]
-    Turbolinks-Location = "/docs/introduction"
+# [[headers]]
+#   for = "/docs/introduction"
+#   [headers.values]
+#     Turbolinks-Location = "/docs/introduction"
 
-[[redirects]]
-  from = "/docs/flash-messaging-bus"
-  to = "/docs/toast-notifications"
-  status = 301
-  force = true
+# [[redirects]]
+#   from = "/docs/flash-messaging-bus"
+#   to = "/docs/toast-notifications"
+#   status = 301
+#   force = true
 
-[[headers]]
-  for = "/docs/toast-notifications"
-  [headers.values]
-    Turbolinks-Location = "/docs/toast-notifications"
+# [[headers]]
+#   for = "/docs/toast-notifications"
+#   [headers.values]
+#     Turbolinks-Location = "/docs/toast-notifications"
 
 [[redirects]]
   from = "/cookbook"
