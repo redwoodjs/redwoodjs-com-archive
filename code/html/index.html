@@ -76,7 +76,7 @@
       </a>
       <p class="text-sm mt-1">The Redwood logo on shirts, hats and more!</p>
     </header>
-    <a href="https://shop.redwoodjs.com" class="block mt-4 text-center text-2xl bg-red-700 hover:bg-red-600 transition duration-200 py-3 rounded text-red-100">The Redwood Shop &rarr;</a>
+    <a href="https://shop.redwoodjs.com" class="block mt-4 text-center text-2xl tracking-tight text-red-100 bg-red-700 hover:bg-red-600 transition duration-200 py-3 rounded">The Redwood Shop &rarr;</a>
   </div>
 
   <div class="md:w-1/3 md:pl-12 mt-8 md:mt-0">
@@ -105,8 +105,8 @@
   <div class="flex flex-col md:flex-row lg:flex-col justify-between lg:w-1/3 text-center px-4">
     <img src="/images/icon-edge.svg" class="block w-40 mx-auto" />
     <div class="ml-0 md:ml-8 lg:ml-0 text-center md:text-left lg:text-center w-full">
-      <h2 class="text-2xl font-semibold mt-2 py-2 bg-red-800 text-red-200 rounded">Edge-ready</h2>
-      <p class="lg:mt-4 px-2">
+      <h2 class="text-2xl font-bold mt-2 py-2 bg-red-800 text-red-200 tracking-tight rounded">Edge–ready</h2>
+      <p class="lg:mt-4 px-2 text-red-800">
         Redwood is designed to be deployable completely to the
         <span class="whitespace-no-wrap">Edge—</span>CDNs and serverless functions distributed everywhere. (Databases
         coming soon!)
@@ -118,12 +118,11 @@
   <div class="flex flex-col md:flex-row lg:flex-col justify-between lg:w-1/3 text-center px-4 mt-8 md:mt-4 lg:mt-0">
     <img src="/images/icon-organization.svg" class="block w-40 mx-auto" />
     <div class="ml-0 md:ml-8 lg:ml-0 text-center md:text-left lg:text-center w-full">
-      <h2 class="text-2xl font-semibold mt-2 py-2 bg-red-700 text-red-200 rounded">
+      <h2 class="text-2xl font-bold mt-2 py-2 bg-red-700 text-red-200 tracking-tight rounded">
         Code Organization
       </h2>
-      <p class="lg:mt-4 px-2">
-        Redwood has a pre-defined place for all your
-        <span class="whitespace-no-wrap">code—</span> front-end and back-end. Components, layouts, pages, GraphQL, and
+      <p class="lg:mt-4 px-2 text-red-800">
+        Redwood has a pre-defined place for all your code, front-end and back-end. Components, layouts, pages, GraphQL, and
         services: they all have a home.
       </p>
     </div>
@@ -134,13 +133,13 @@
   >
     <img src="/images/icon-code.svg" class="block w-40 mx-auto" />
     <div class="ml-0 md:ml-8 lg:ml-0 text-center md:text-left lg:text-center w-full">
-      <h2 class="text-2xl font-semibold mt-2 py-2 bg-red-600 text-red-200 rounded">
+      <h2 class="text-2xl font-bold mt-2 py-2 bg-red-600 text-red-200 tracking-tight rounded">
         Developer Experience
       </h2>
-      <p class="lg:mt-4 px-2">
+      <p class="lg:mt-4 px-2 text-red-800">
         Redwood apps are as declarative as possible; we eliminate most boilerplate; zero-config code
         splitting...everything
-        <span class="whitespace-no-wrap">Just Works&trade;.</span>
+        <span class="whitespace-no-wrap">just works</span>.
       </p>
     </div>
   </div>
@@ -148,20 +147,20 @@
 
 <!-- Code samples -->
 
-<section class="md:flex mt-12 pt-12 border-t border-red-200">
+<section class="md:flex mt-12 pt-12 max-w-screen-lg mx-auto">
   <div class="md:w-2/5 pr-4">
-    <h3 class="text-lg font-semibold">How it's Organized</h3>
-    <p class="my-2 text-sm">
-      Redwood places both the frontend and backend code in a single monorepo.
+    <h3 class="text-2xl text-red-700 font-bold tracking-tight">How it's Organized</h3>
+    <p class="my-3">
+      Redwood places both the frontend and backend code in a <span class="whitespace-nowrap">single monorepo.</span>
     </p>
-    <p class="my-2 text-sm">
+    <p class="my-3">
       <code class="text-red-700 bg-red-200 py-half px-1 rounded text-xs">/web</code>
-      contains the frontend and is served as static files through a CDN (and automatically code-split for you).
+      contains the frontend and is served as static files through a CDN (and automatically code-split <span class="whitespace-nowrap">for you).</span>
     </p>
-    <p class="my-2 text-sm">
+    <p class="my-3">
       <code class="text-red-700 bg-red-200 py-half px-1 rounded text-xs">/api</code>
       contains the backend serverless functions (a GraphQL API by default) that your frontend will call when it needs
-      some dynamic data.
+      some <span class="whitespace-nowrap">dynamic data.</span>
     </p>
   </div>
   <div class="md:w-3/5 md:pl-4 mt-4 md:mt-0">
@@ -169,54 +168,66 @@
   </div>
 </section>
 
-<section class="md:flex mt-12 pt-12 border-t border-red-200">
-  <div class="md:w-2/5 pr-4">
-    <h3 class="text-lg font-semibold">Routing</h3>
-    <p class="my-2 text-sm">
-      Redwood features its own router that brings some awesome innovation to this often overlooked (but important)
-      part of your app.
-      <strong>Named routes</strong> let you reference a route by a name you define,
-      <strong>route param types</strong> take care of coercing values based on data type or custom functions, and
-      more.
-    </p>
-  </div>
-  <div class="md:w-3/5 md:pl-4 mt-4 md:mt-0">
-    <pre><code class="javascript" data-target="application.code">// web/src/Routes.js
+<div class="flex w-36 mx-auto">
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+</div>
+
+<section class="md:flex mt-24 max-w-screen-lg mx-auto">
+  <div class="md:w-3/5 md:pr-4 mt-4 md:mt-0">
+    <pre class="border border-red-200 rounded-lg"><code class="javascript" data-target="application.code">// web/src/Routes.js
 import { Router, Route } from '@redwoodjs/router'
 const Routes = () => {
-return (
-  &lt;Router&gt;
-    &lt;Route path="/" page={HomePage} name="home" /&gt;
-    &lt;Route path="/users/{type}" page={UsersPage} name="users" /&gt;
-  &lt;/Router&gt;
-)
+  return (
+    &lt;Router&gt;
+      &lt;Route path="/" page={HomePage} name="home" /&gt;
+      &lt;Route path="/users/{type}" page={UsersPage} name="users" /&gt;
+    &lt;/Router&gt;
+  )
 }
 
 // web/src/components/Admin/Admin.js
 import { Link, routes } from '@redwoodjs/router'
 const Admin = () => {
-return (
-  &lt;h1&gt;&lt;Link to={routes.home()}&gt;My CRM&lt;/Link&gt;&lt;/h1&gt;
-  &lt;Link to={routes.users({type: "admin"})}&gt;View Admins&lt;/Link&gt;
-)
+  return (
+    &lt;h1&gt;&lt;Link to={routes.home()}&gt;My CRM&lt;/Link&gt;&lt;/h1&gt;
+    &lt;Link to={routes.users({type: "admin"})}&gt;View Admins&lt;/Link&gt;
+  )
 }</code></pre>
+  </div>
+
+  <div class="md:w-2/5 pl-4">
+    <h3 class="text-2xl text-red-700 font-bold tracking-tight">Routing</h3>
+    <p class="my-3">
+      Redwood features its own router that brings some awesome innovation to this often overlooked (but important)
+      part of <span class="whitespace-nowrap">your app.</span>
+      <strong>Named routes</strong> let you reference a route by a name you define,
+      <strong>route param types</strong> take care of coercing values based on data type or custom functions, <span class="whitespace-nowrap">and more.</span>
+    </p>
   </div>
 </section>
 
-<section class="md:flex mt-12 pt-12 border-t border-red-200">
-  <div class="md:w-2/5 pr-4">
-    <h3 class="text-lg font-semibold">Cells</h3>
-    <p class="my-2 text-sm">
+<div class="flex w-36 mx-auto">
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+</div>
+
+<section class="md:flex mt-24 max-w-screen-lg mx-auto">
+  <div class="md:w-2/5 pr-4 text-right">
+    <h3 class="text-2xl text-red-700 font-bold tracking-tight">Cells</h3>
+    <p class="my-3">
       The sequence of retrieving data from an API, showing a loading placeholder, and then displaying the result is so
-      common that Redwood codifies it into a declarative code pattern, resulting in simple and readable code!
+      common that Redwood codifies it into a declarative code pattern, resulting in simple and <span class="whitespace-nowrap">readable code!</span>
     </p>
-    <p class="my-2 text-sm">
+    <p class="my-3">
       We call them <strong>cells</strong> and they contain the GraphQL query, loading, empty, error, and success
-      states, each one rendering itself automatically depending on what state your cell is in.
+      states, each one rendering itself automatically depending on what state your cell <span class="whitespace-nowrap">is in.</span>
     </p>
   </div>
   <div class="md:w-3/5 md:pl-4 mt-4 md:mt-0">
-    <pre><code class="javascript" data-target="application.code">// web/src/components/UsersCell/UsersCell.js
+    <pre class="border border-red-200 rounded-lg"><code class="javascript" data-target="application.code">// web/src/components/UsersCell/UsersCell.js
 export const QUERY = gql`
 query USERS {
   users {
@@ -229,81 +240,91 @@ export const Loading = () => &lt;div&gt;Loading users...&lt;/div&gt;
 export const Empty = () => &lt;div&gt;No users yet!&lt;/div&gt;
 export const Failure = ({ message }) => &lt;div&gt;Error: {message}&lt;/div&gt;
 export const Success = ({ users }) => {
-return (
-  &lt;ul&gt;
-    { users.map(user => (
-      &lt;li&gt;{user.id} | {user.name}&lt;/li&gt;
-    ))}
-  &lt;/ul&gt;
-)
+  return (
+    &lt;ul&gt;
+      { users.map(user => (
+        &lt;li&gt;{user.id} | {user.name}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  )
 }</code></pre>
   </div>
 </section>
 
-<section class="md:flex mt-12 pt-12 border-t border-red-200">
-  <div class="md:w-2/5 pr-4">
-    <h3 class="text-lg font-semibold">Services</h3>
-    <p class="my-2 text-sm">
-      Redwood puts all your business logic in one place—<strong>Services</strong>. These can be used by your GraphQL
-      API or any other place in your backend code. Redwood does all of the annoying stuff for you.
-    </p>
-    <p></p>
-    <p class="my-2 text-sm">
-      Check out how easy it is to create and consume a GraphQL endpoint (we didn't even omit any other
-      <code class="bg-red-200 text-red-600 font-mono text-sm px-1 py-half rounded">import</code>
-      statements or cheat to get the code smaller, honest!):
-    </p>
-  </div>
-  <div class="md:w-3/5 md:pl-4 mt-4 md:mt-0">
-    <pre><code class="javascript" data-target="application.code">// api/src/graphql/users.sdl.js
+<div class="flex w-36 mx-auto">
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+</div>
+
+<section class="md:flex mt-24 max-w-screen-lg mx-auto">
+  <div class="md:w-3/5 md:pr-4 mt-4 md:mt-0">
+    <pre class="border border-red-200 rounded-lg"><code class="javascript" data-target="application.code">// api/src/graphql/users.sdl.js
 export const schema = gql`
-type User {
-  id: Int!
-  name: String!
-}
-type Query {
-  users: [User]
-}
+  type User {
+    id: Int!
+    name: String!
+  }
+  type Query {
+    users: [User]
+  }
 `
 
 // api/src/services/users/users.js
 import { db } from 'src/lib/db'
 
-export const users = () => {
-return db.user.findMany()
-}
+export const users = () => db.user.findMany()
 
 // web/src/components/UsersCell/UsersCell.js
 export const QUERY = gql`
-query USERS {
-  users {
-    id
-    name
+  query USERS {
+    users {
+      id
+      name
+    }
   }
-}
 `
 export const Success = ({ users }) => {
-return JSON.stringify(users)
+  return JSON.stringify(users)
 }</code></pre>
+  </div>
+  <div class="md:w-2/5 pl-4">
+    <h3 class="text-2xl text-red-700 font-bold tracking-tight">Services</h3>
+    <p class="my-3">
+      Redwood puts all your business logic in one place—<strong>Services</strong>. These can be used by your GraphQL
+      API or any other place in your backend code. Redwood does all of the annoying stuff <span class="whitespace-nowrap">for you.</span>
+    </p>
+    <p></p>
+    <p class="my-3">
+      Check out how easy it is to create and consume a GraphQL endpoint (we didn't even omit any other
+      <code class="bg-red-200 text-red-600 font-mono text-sm px-1 py-half rounded">import</code>
+      statements or cheat to get the code smaller, <span class="whitespace-nowrap">honest!).</span>
+    </p>
   </div>
 </section>
 
-<section class="md:flex mt-12 pt-12 border-t border-red-200">
-  <div class="md:w-2/5 pr-4">
-    <h3 class="text-lg font-semibold">Generators</h3>
-    <p class="my-2 text-sm">
+<div class="flex w-36 mx-auto">
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+</div>
+
+<section class="md:flex mt-24 max-w-screen-lg mx-auto">
+  <div class="md:w-2/5 pr-4 text-right">
+    <h3 class="text-2xl text-red-700 font-bold tracking-tight">Generators</h3>
+    <p class="my-3">
       Even with a relentless elimination of boilerplate, Redwood files still need a bit of code to get you started,
-      and need to be created in the right directories. No problem, let a computer do that for you!
+      and need to be created in the right directories. No problem, let a computer do that <span class="whitespace-nowrap">for you!</span>
     </p>
-    <p class="my-2 text-sm">
+    <p class="my-3">
       Redwood contains several <strong>generators</strong> which create the shell of cells, pages, layouts, services,
       and more. We even have a <strong>scaffold</strong> generator which will create all the pages necessary to run
-      end-to-end CRUD operations on a database table.
+      end-to-end CRUD operations on a <span class="whitespace-nowrap">database table.</span>
     </p>
   </div>
   <div class="md:w-3/5 md:pl-4 mt-4 md:mt-0">
-    <pre><code class="bash" data-target="application.code"># Create a cell for Users
-$ yarn rw generate cell Users
+    <pre class="border border-red-200 rounded-lg"><code class="bash" data-target="application.code"># Create a cell for Users
+$ yarn rw generate cell User
 
 # Create a layout named Admin
 $ yarn rw generate layout Admin
@@ -322,37 +343,43 @@ $ yarn rw generate scaffold User</code></pre>
   </div>
 </section>
 
-<section class="md:flex mt-12 pt-12 border-t border-red-200">
-  <div class="md:w-2/5 pr-4">
-    <h3 class="text-lg font-semibold">Forms</h3>
-    <p class="my-2 text-sm">
-      Working with forms is notoriously annoying in React apps. Redwood removes the complexity and gives you the
-      freedom to work with regular HTML inputs, but sprinkled with a bit of validation and error handling. Show client
-      and server-side errors automatically and style them like any other React component.
-    </p>
-  </div>
-  <div class="md:w-3/5 md:pl-4 mt-4 md:mt-0">
-    <pre><code class="javascript" data-target="application.code">// web/src/components/Comment/Comment.js
+<div class="flex w-36 mx-auto">
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+  <img src="/images/logo.svg" class="mt-24 w-8 mx-auto" />
+</div>
+
+<section class="md:flex mt-24 max-w-screen-lg mx-auto">
+  <div class="md:w-3/5 md:pr-4 mt-4 md:mt-0">
+    <pre class="border border-red-200 rounded-lg"><code class="javascript" data-target="application.code">// web/src/components/Comment/Comment.js
 import { Form, Label, TextAreaField, FieldError, Submit } from "@redwoodjs/web"
 
 export const Comment = () => {
-const onSubmit = (data) => {
-  console.info(`Submitted: ${data}`)
-}
-return (
-  &lt;Form onSubmit={onSubmit}&gt;
-    &lt;Label name="comment" errorStyle={{ color: "red" }} /&gt;
-    &lt;TextAreaField
-      name="comment"
-      errorStyle={{ borderColor: "red" }}
-      validation={{ required: true }}
-    /&gt;
-    &lt;FieldError name="comment" errorStyle={{ color: "red" }} /&gt;
-    &lt;Submit&gt;Send&lt;/Submit&gt;
-  &lt;/Form&gt;
-)
+  const onSubmit = (data) => {
+    console.info(`Submitted: ${data}`)
+  }
+  return (
+    &lt;Form onSubmit={onSubmit}&gt;
+      &lt;Label name="comment" errorStyle={{ color: "red" }} /&gt;
+      &lt;TextAreaField
+        name="comment"
+        errorStyle={{ borderColor: "red" }}
+        validation={{ required: true }}
+      /&gt;
+      &lt;FieldError name="comment" errorStyle={{ color: "red" }} /&gt;
+      &lt;Submit&gt;Send&lt;/Submit&gt;
+    &lt;/Form&gt;
+  )
 }
     </code></pre>
+  </div>
+  <div class="md:w-2/5 pl-4 text">
+    <h3 class="text-2xl text-red-700 font-bold tracking-tight">Forms</h3>
+    <p class="my-2">
+      Working with forms is notoriously annoying in React apps. Redwood removes the complexity and gives you the
+      freedom to work with regular HTML inputs, but sprinkled with a bit of validation and error handling. Show client
+      and server-side errors automatically and style them like any other <span class="whitespace-nowrap">React component.</span>
+    </p>
   </div>
 </section>
 
