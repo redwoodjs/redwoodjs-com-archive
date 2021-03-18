@@ -106,7 +106,7 @@ web/src/Routes.js:17:19: error (INVALID_ROUTE_PATH_SYNTAX): Error: Route path co
 
 Launch an interactive Redwood shell (experimental):
 - This has not yet been tested on Windows.
-- The Prisma Client must be generated _prior_ to running this command, e.g. `yarn rw db up`. This is a known issue.
+- The Prisma Client must be generated _prior_ to running this command, e.g. `yarn rw prisma generate`. This is a known issue.
 
 ```
 yarn rw console
@@ -1265,11 +1265,11 @@ Redwood's `prisma` command is a lightweight wrapper around the Prisma CLI. It's 
 > If you want to know exactly what `yarn redwood prisma <command>` runs, which flags it's passing, etc., it's right at the top:
 >
 > ```sh{3}
-> $ yarn rw prisma introspect
+> $ yarn redwood prisma migrate dev
 > yarn run v1.22.10
-> $ ~/redwood-app/node_modules/.bin/rw prisma introspect
+> $ ~/redwood-app/node_modules/.bin/redwood prisma migrate dev
 > Running prisma cli:
-> yarn prisma introspect --schema "~/redwood-app/api/db/schema.prisma"
+> yarn prisma migrate dev --schema "~/redwood-app/api/db/schema.prisma"
 > ...
 > ```
 
@@ -1294,6 +1294,20 @@ yarn rw prisma db <command>
 ```
 
 The `prisma db` namespace contains commands that operate directly against the database.
+
+#### pull
+
+Pull the schema from an existing database, updating the Prisma schema.
+
+> 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#db-pull).
+
+```
+yarn rw prisma db pull 
+```
+
+This command, formerly `introspect`, connects to your database and adds Prisma models to your Prisma schema that reflect the current database schema.
+
+> Warning: The command will overwrite the current schema.prisma file with the new schema. Any manual changes or customization will be lost. Be sure to back up your current schema.prisma file before running introspect if it contains important modifications.
 
 #### push
 
