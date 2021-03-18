@@ -14,12 +14,12 @@ This document covers the `redwood` command . For `redwood-tools`, see [Contribut
 We use [yargs](http://yargs.js.org/) and borrow its syntax here:
 
 ```
-yarn rw generate page <name> [path] --option
+yarn redwood generate page <name> [path] --option
 ```
 
 </br>
 
-- `rw g page` is the command.
+- `redwood g page` is the command.
 - `<name>` and `[path]` are positional arguments.
   - `<>` denotes a required argument.
   - `[]` denotes an optional argument.
@@ -30,7 +30,7 @@ Every argument and option has a type. Here `<name>` and `[path]` are strings and
 You'll also sometimes see arguments with trailing `..` like:
 
 ```
-yarn rw build [side..]
+yarn redwood build [side..]
 ```
 
 The `..` operator indicates that the argument accepts an array of values. See [Variadic Positional Arguments](https://github.com/yargs/yargs/blob/master/docs/advanced.md#variadic-positional-arguments).
@@ -40,7 +40,7 @@ The `..` operator indicates that the argument accepts an array of values. See [V
 Build for production.
 
 ```terminal
-yarn rw build [side..]
+yarn redwood build [side..]
 ```
 
 We use Babel to transpile the api side into `./api/dist` and Webpack to package the web side into `./web/dist`.
@@ -57,12 +57,12 @@ See [Builds](https://redwoodjs.com/docs/builds).
 
 **Example**
 
-Running `yarn rw build` without any arguments generates the Prisma client and builds both sides of your project:
+Running `yarn redwood build` without any arguments generates the Prisma client and builds both sides of your project:
 
 ```terminal
-~/redwood-app$ yarn rw build
+~/redwood-app$ yarn redwood build
 yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw build
+$ /redwood-app/node_modules/.bin/redwood build
   ✔ Generating the Prisma client...
   ✔ Building "api"...
   ✔ Building "web"...
@@ -87,13 +87,13 @@ Files are output to each side's `dist` directory:
 Get structural diagnostics for a Redwood project (experimental).
 
 ```
-yarn rw check
+yarn redwood check
 ```
 
 **Example**
 
 ```terminal
-~/redwood-app$ yarn rw check
+~/redwood-app$ yarn redwood check
 yarn run v1.22.4
 web/src/Routes.js:14:5: error: You must specify a 'notfound' page
 web/src/Routes.js:14:19: error: Duplicate Path
@@ -106,10 +106,10 @@ web/src/Routes.js:17:19: error (INVALID_ROUTE_PATH_SYNTAX): Error: Route path co
 
 Launch an interactive Redwood shell (experimental):
 - This has not yet been tested on Windows.
-- The Prisma Client must be generated _prior_ to running this command, e.g. `yarn rw prisma generate`. This is a known issue.
+- The Prisma Client must be generated _prior_ to running this command, e.g. `yarn redwood prisma generate`. This is a known issue.
 
 ```
-yarn rw console
+yarn redwood console
 ```
 
 Right now, you can only use the Redwood console to interact with your database:
@@ -117,7 +117,7 @@ Right now, you can only use the Redwood console to interact with your database:
 **Example**
 
 ```terminal
-~/redwood-app$ yarn rw console
+~/redwood-app$ yarn redwood console
 yarn run v1.22.4
 > await db.user.findMany()
 > [ { id: 1, email: 'tom@redwoodjs.com', name: 'Tom'  } ]
@@ -128,7 +128,7 @@ yarn run v1.22.4
 Data migration tools.
 
 ```
-yarn rw dataMigrate <command>
+yarn redwood dataMigrate <command>
 ```
 
 <br/>
@@ -141,11 +141,11 @@ yarn rw dataMigrate <command>
 ### install
 
 - Appends a `DataMigration` model to `schema.prisma` for tracking which data migrations have already run.
-- Creates a DB migration using `yarn rw prisma migrate dev --create-only create_data_migrations`.
+- Creates a DB migration using `yarn redwood prisma migrate dev --create-only create_data_migrations`.
 - Creates `api/db/dataMigrations` directory to contain data migration scripts
 
 ```terminal
-yarn rw dataMigrate install
+yarn redwood dataMigrate install
 ```
 
 ### up
@@ -155,7 +155,7 @@ Executes outstanding data migrations against the database. Compares the list of 
 If an error occurs during script execution, any remaining scripts are skipped and console output will let you know the error and how many subsequent scripts were skipped.
 
 ```terminal
-yarn rw dataMigrate up
+yarn redwood dataMigrate up
 ```
 
 ## db
@@ -164,11 +164,11 @@ Database tools.
 
 > **WARNING**
 >
-> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+> As of `v0.25`, `yarn redwood db <command>` has been deprecated in favor of `yarn redwood prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 
 ```
-yarn rw db <command>
+yarn redwood db <command>
 ```
 
 <br/>
@@ -190,10 +190,10 @@ Migrate your database down.
 
 > **WARNING**
 >
-> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+> As of `v0.25`, `yarn redwood db <command>` has been deprecated in favor of `yarn redwood prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
-yarn rw db down [decrement]
+yarn redwood db down [decrement]
 ```
 
 <br/>
@@ -217,7 +217,7 @@ api/db/migrations/
 we could get to `20200518160457-create-users` by running:
 
 ```terminal
-~/redwood-app$ yarn rw db down 2
+~/redwood-app$ yarn redwood db down 2
 ```
 
 ### generate
@@ -226,25 +226,25 @@ Generate the Prisma client.
 
 > **WARNING**
 >
-> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+> As of `v0.25`, `yarn redwood db <command>` has been deprecated in favor of `yarn redwood prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
-yarn rw db generate
+yarn redwood db generate
 ```
 
 The Prisma client is auto-generated and tailored to your `schema.prisma`.
-This means that `yarn rw db generate` needs to be run after every change to your `schema.prisma` for your Prisma client to be up to date. But you usually won't have to do this manually as other Redwood commands run this behind the scenes.
+This means that `yarn redwood db generate` needs to be run after every change to your `schema.prisma` for your Prisma client to be up to date. But you usually won't have to do this manually as other Redwood commands run this behind the scenes.
 
 ### introspect
 
-Introspect your database and generate models in `./api/db/schema.prisma`, overwriting existing models.
+Introspect your database and generate models in `./api/db/schema.prisma`, overedwoodriting existing models.
 
 > **WARNING**
 >
-> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+> As of `v0.25`, `yarn redwood db <command>` has been deprecated in favor of `yarn redwood prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
-yarn rw db introspect
+yarn redwood db introspect
 ```
 
 ### save
@@ -253,10 +253,10 @@ Create a new migration.
 
 > **WARNING**
 >
-> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+> As of `v0.25`, `yarn redwood db <command>` has been deprecated in favor of `yarn redwood prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
-yarn rw db save [name..]
+yarn redwood db save [name..]
 ```
 
 A migration defines the steps necessary to update your current schema.
@@ -265,7 +265,7 @@ A migration defines the steps necessary to update your current schema.
 | :------- | :-------------------- |
 | `name`   | Name of the migration |
 
-Running `yarn rw db save` generates the following directories and files as necessary:
+Running `yarn redwood db save` generates the following directories and files as necessary:
 
 ```terminal
 api/db/migrations
@@ -279,7 +279,7 @@ api/db/migrations
 <br/>
 
 - `migrations`: A directory to store migrations.
-- `migrations/<migration>`: A directory for a specific migration. The name (`<migration>`) is composed of a timestamp of when it was created and the name given during `yarn rw db save`.
+- `migrations/<migration>`: A directory for a specific migration. The name (`<migration>`) is composed of a timestamp of when it was created and the name given during `yarn redwood db save`.
 - `migrations/<migration>/README.md`: A human-readable description of the migration, including metadata like when the migration was created and by who, a list of the actual migration changes, and a diff of the changes made to `schema.prisma`.
 - `migrations/<migration>/schema.prisma`: The schema that will be created if the migration is applied.
 - `migrations/<migration>/steps.json`: An alternate representation of the migration steps that will be applied.
@@ -291,10 +291,10 @@ Seed your database with test data.
 
 > **WARNING**
 >
-> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+> As of `v0.25`, `yarn redwood db <command>` has been deprecated in favor of `yarn redwood prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
-yarn rw db seed
+yarn redwood db seed
 ```
 
 Runs `seed.js` in `./api/db`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/db/seeds.js).
@@ -305,10 +305,10 @@ Start <a href="https://github.com/prisma/studio">Prisma Studio</a>, a visual edi
 
 > **WARNING**
 >
-> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+> As of `v0.25`, `yarn redwood db <command>` has been deprecated in favor of `yarn redwood prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
-yarn rw db studio
+yarn redwood db studio
 ```
 
 ### up
@@ -317,10 +317,10 @@ Generate the Prisma client and apply migrations.
 
 > **WARNING**
 >
-> As of `v0.25`, `yarn rw db <command>` has been deprecated in favor of `yarn rw prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
+> As of `v0.25`, `yarn redwood db <command>` has been deprecated in favor of `yarn redwood prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
-yarn rw db up [increment]
+yarn redwood db up [increment]
 ```
 
 <br/>
@@ -347,7 +347,7 @@ api/db/migrations/
 we could get to `20200518160811-add-posts` by running:
 
 ```terminal
-~/redwood-app$ yarn rw db up 2
+~/redwood-app$ yarn redwood db up 2
 ```
 
 ## dev
@@ -358,7 +358,7 @@ Start development servers for api and web.
 yarn redwood dev [side..]
 ```
 
-`yarn rw dev api` starts the Redwood dev server and `yarn rw dev web` starts the Webpack dev server with Redwood's config.
+`yarn redwood dev api` starts the Redwood dev server and `yarn redwood dev web` starts the Webpack dev server with Redwood's config.
 
 | Argument           | Description                                                                                                                          |
 | :----------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
@@ -370,9 +370,9 @@ yarn redwood dev [side..]
 If you're only working on your sdl and services, you can run just the api server to get GraphQL Playground on port 8911:
 
 ```bash
-~/redwood-app$ yarn rw dev api
+~/redwood-app$ yarn redwood dev api
 yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw dev api
+$ /redwood-app/node_modules/.bin/redwood dev api
 $ /redwood-app/node_modules/.bin/dev-server
 15:04:51 api | Listening on http://localhost:8911
 15:04:51 api | Watching /home/dominic/projects/redwood/redwood-app/api
@@ -385,12 +385,12 @@ $ /redwood-app/node_modules/.bin/dev-server
 Using `--forward` (alias `--fwd`), you can pass one or more Webpack Dev Server [config options](https://webpack.js.org/configuration/dev-server/). The following will run the dev server, set the port to `1234`, and disable automatic browser opening.
 
 ```bash
-~/redwood-app$ yarn rw dev --fwd="--port=1234 --open=false"
+~/redwood-app$ yarn redwood dev --fwd="--port=1234 --open=false"
 ```
 
 You may need to access your dev application from a different host, like your mobile device. To resolve the “Invalid Host Header” message, run the following:
 ```bash
-~/redwood-app$ yarn rw dev --fwd="--disable-host-check"
+~/redwood-app$ yarn redwood dev --fwd="--disable-host-check"
 ```
 
 For the full list of Webpack Dev Server settings, see [this documentation](https://webpack.js.org/configuration/dev-server/).
@@ -479,7 +479,7 @@ yarn redwood deploy vercel --no-data-migrate
 Rollback changes made by the generate command.
 
 ```
-yarn rw d <type>
+yarn redwood d <type>
 ```
 
 <br/>
@@ -500,7 +500,7 @@ yarn rw d <type>
 Save time by generating boilerplate code.
 
 ```
-yarn rw generate <type>
+yarn redwood generate <type>
 ```
 
 Some generators require that their argument be a model in your `schema.prisma`. When they do, their argument is named `<model>`.
@@ -521,14 +521,14 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 
 **Undoing a Generator with a Destroyer**
 
-Most generate commands (i.e., everything but `yarn rw generate dataMigration`) can be undone by their corresponding destroy command. For example, `yarn rw generate cell` can be undone with `yarn rw d cell`.
+Most generate commands (i.e., everything but `yarn redwood generate dataMigration`) can be undone by their corresponding destroy command. For example, `yarn redwood generate cell` can be undone with `yarn redwood d cell`.
 
 ### cell
 
 Generate a cell component.
 
 ```terminal
-yarn rw generate cell <name>
+yarn redwood generate cell <name>
 ```
 
 Cells are signature to Redwood. We think they provide a simpler and more declarative approach to data fetching.
@@ -549,7 +549,7 @@ See the [Cells](https://redwoodjs.com/tutorial/cells) section of the Tutorial.
 **Destroying**
 
 ```
-yarn rw d cell <name>
+yarn redwood d cell <name>
 ```
 
 **Example**
@@ -557,9 +557,9 @@ yarn rw d cell <name>
 Generating a user cell:
 
 ```terminal
-~/redwood-app$ yarn rw generate cell user
+~/redwood-app$ yarn redwood generate cell user
 yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw g cell user
+$ /redwood-app/node_modules/.bin/redwood g cell user
   ✔ Generating cell files...
     ✔ Writing `./web/src/components/UserCell/UserCell.test.js`...
     ✔ Writing `./web/src/components/UserCell/UserCell.js`...
@@ -595,7 +595,7 @@ export const Success = ({ user }) => {
 Generate a component.
 
 ```terminal
-yarn rw generate component <name>
+yarn redwood generate component <name>
 ```
 
 Redwood loves function components and makes extensive use of React Hooks, which are only enabled in function components.
@@ -612,7 +612,7 @@ Redwood loves function components and makes extensive use of React Hooks, which 
 **Destroying**
 
 ```
-yarn rw d component <name>
+yarn redwood d component <name>
 ```
 
 **Example**
@@ -620,9 +620,9 @@ yarn rw d component <name>
 Generating a user component:
 
 ```terminal
-~/redwood-app$ yarn rw generate component user
+~/redwood-app$ yarn redwood generate component user
 yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw g component user
+$ /redwood-app/node_modules/.bin/redwood g component user
   ✔ Generating component files...
     ✔ Writing `./web/src/components/User/User.test.js`...
     ✔ Writing `./web/src/components/User/User.js`...
@@ -651,7 +651,7 @@ export default User
 Generate a data migration script.
 
 ```
-yarn rw generate dataMigration <name>
+yarn redwood generate dataMigration <name>
 ```
 
 Creates a data migration script in `api/db/dataMigrations`.
@@ -673,7 +673,7 @@ See the [Deploy](/docs/deploy) docs.
 Generate a Function.
 
 ```
-yarn rw generate function <name>
+yarn redwood generate function <name>
 ```
 
 Not to be confused with Javascript functions, Capital-F Functions are meant to be deployed to serverless endpoints like AWS Lambda.
@@ -690,7 +690,7 @@ See the [Custom Function](https://redwoodjs.com/cookbook/custom-function) recipe
 **Destroying**
 
 ```
-yarn rw d function <name>
+yarn redwood d function <name>
 ```
 
 **Example**
@@ -698,9 +698,9 @@ yarn rw d function <name>
 Generating a user function:
 
 ```terminal
-~/redwood-app$ yarn rw generate function user
+~/redwood-app$ yarn redwood generate function user
 yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw g function user
+$ /redwood-app/node_modules/.bin/redwood g function user
   ✔ Generating function files...
     ✔ Writing `./api/src/functions/user.js`...
 Done in 16.04s.
@@ -719,12 +719,12 @@ export const handler = async (event, context) => {
 }
 ```
 
-Now if we run `yarn rw dev api`:
+Now if we run `yarn redwood dev api`:
 
 ```plaintext{11}
-~/redwood-app$ yarn rw dev api
+~/redwood-app$ yarn redwood dev api
 yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw dev api
+$ /redwood-app/node_modules/.bin/redwood dev api
 $ /redwood-app/node_modules/.bin/dev-server
 17:21:49 api | Listening on http://localhost:8911
 17:21:49 api | Watching /home/dominic/projects/redwood/redwood-app/api
@@ -740,7 +740,7 @@ $ /redwood-app/node_modules/.bin/dev-server
 Generate a layout component.
 
 ```terminal
-yarn rw generate layout <name>
+yarn redwood generate layout <name>
 ```
 
 Layouts wrap pages and help you stay DRY.
@@ -761,7 +761,7 @@ See the [Layouts](https://redwoodjs.com/tutorial/layouts) section of the tutoria
 **Destroying**
 
 ```
-yarn rw d layout <name>
+yarn redwood d layout <name>
 ```
 
 **Example**
@@ -769,9 +769,9 @@ yarn rw d layout <name>
 Generating a user layout:
 
 ```terminal
-~/redwood-app$ yarn rw generate layout user
+~/redwood-app$ yarn redwood generate layout user
 yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw g layout user
+$ /redwood-app/node_modules/.bin/redwood g layout user
   ✔ Generating layout files...
     ✔ Writing `./web/src/layouts/UserLayout/UserLayout.test.js`...
     ✔ Writing `./web/src/layouts/UserLayout/UserLayout.js`...
@@ -795,7 +795,7 @@ export default UserLayout
 Generates a page component and updates the routes.
 
 ```terminal
-yarn rw generate page <name> [path]
+yarn redwood generate page <name> [path]
 ```
 
 `path` can include a route parameter which will be passed to the generated
@@ -817,7 +817,7 @@ This also updates `Routes.js` in `./web/src`.
 **Destroying**
 
 ```
-yarn rw d page <name> [path]
+yarn redwood d page <name> [path]
 ```
 
 **Examples**
@@ -825,9 +825,9 @@ yarn rw d page <name> [path]
 Generating a home page:
 
 ```plaintext
-~/redwood-app$ yarn rw generate page home /
+~/redwood-app$ yarn redwood generate page home /
 yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw g page home /
+$ /redwood-app/node_modules/.bin/redwood g page home /
   ✔ Generating page files...
     ✔ Writing `./web/src/pages/HomePage/HomePage.test.js`...
     ✔ Writing `./web/src/pages/HomePage/HomePage.js`...
@@ -870,9 +870,9 @@ const Routes = () => {
 Generating a page to show quotes:
 
 ```plaintext
-~/redwood-app$ yarn rw generate page quote {id}
+~/redwood-app$ yarn redwood generate page quote {id}
 yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw g page quote {id}
+$ /redwood-app/node_modules/.bin/redwood g page quote {id}
   ✔ Generating page files...
     ✔ Writing `./web/src/pages/QuotePage/QuotePage.stories.js`...
     ✔ Writing `./web/src/pages/QuotePage/QuotePage.test.js`...
@@ -925,7 +925,7 @@ const Routes = () => {
 Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts `<path/model>`.
 
 ```terminal
-yarn rw generate scaffold <model>
+yarn redwood generate scaffold <model>
 ```
 
 A scaffold quickly creates a CRUD for a model by generating the following files and corresponding routes:
@@ -941,7 +941,7 @@ The content of the generated components is different from what you'd get by runn
 
 | Arguments & Options  | Description                                                                                                                                                    |
 | :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `model`              | Model to scaffold. You can also use `<path/model>` to nest files by type at the given path directory (or directories). For example, `rw g scaffold admin/post` |
+| `model`              | Model to scaffold. You can also use `<path/model>` to nest files by type at the given path directory (or directories). For example, `redwood g scaffold admin/post` |
 | `--force, -f`        | Overwrite existing files                                                                                                                                       |
 | `--javascript, --js` | Generate JavaScript files                                                                                                                                      |
 | `--typescript, --ts` | Generate TypeScript files                                                                                                                                      |
@@ -950,12 +950,12 @@ The content of the generated components is different from what you'd get by runn
 
 See [Creating a Post Editor](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor).
 
-You can namespace your scaffolds by providing `<path/model>`. The layout, pages, cells, and components will be nested in newly created dir(s). For example, given a model user, running `yarn rw generate scaffold admin/user` will nest the layouts, pages, and components in a newly created `admin` directory:
+You can namespace your scaffolds by providing `<path/model>`. The layout, pages, cells, and components will be nested in newly created dir(s). For example, given a model user, running `yarn redwood generate scaffold admin/user` will nest the layouts, pages, and components in a newly created `admin` directory:
 
 ```plaintext{9-20}
-~/redwood-app$ yarn rw generate scaffold admin/user
+~/redwood-app$ yarn redwood generate scaffold admin/user
 yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw g scaffold admin/user
+$ /redwood-app/node_modules/.bin/redwood g scaffold admin/user
   ✔ Generating scaffold files...
     ✔ Writing `./api/src/graphql/users.sdl.js`...
     ✔ Writing `./api/src/services/users/users.test.js`...
@@ -999,7 +999,7 @@ const Routes = () => {
 **Destroying**
 
 ```
-yarn rw d scaffold <model>
+yarn redwood d scaffold <model>
 ```
 
 ### sdl
@@ -1007,13 +1007,13 @@ yarn rw d scaffold <model>
 Generate a GraphQL schema and service object.
 
 ```terminal
-yarn rw generate sdl <model>
+yarn redwood generate sdl <model>
 ```
 
 The sdl will inspect your `schema.prisma` and will do its best with relations. Schema to generators isn't one-to-one yet (and might never be).
 
 <!-- See limited generator support for relations
-https://community.redwoodjs.com/t/prisma-beta-2-and-rwjs-limited-generator-support-for-relations-with-workarounds/361 -->
+https://community.redwoodjs.com/t/prisma-beta-2-and-redwoodjs-limited-generator-support-for-relations-with-workarounds/361 -->
 
 | Arguments & Options  | Description                   |
 | :------------------- | :---------------------------- |
@@ -1026,7 +1026,7 @@ https://community.redwoodjs.com/t/prisma-beta-2-and-rwjs-limited-generator-suppo
 **Destroying**
 
 ```
-yarn rw d sdl <model>
+yarn redwood d sdl <model>
 ```
 
 **Example**
@@ -1034,9 +1034,9 @@ yarn rw d sdl <model>
 Generating a user sdl:
 
 ```terminal
-~/redwood-app$ yarn rw generate sdl user
+~/redwood-app$ yarn redwood generate sdl user
 yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw g sdl user
+$ /redwood-app/node_modules/.bin/redwood g sdl user
   ✔ Generating SDL files...
     ✔ Writing `./api/src/graphql/users.sdl.js`...
     ✔ Writing `./api/src/services/users/users.test.js`...
@@ -1136,7 +1136,7 @@ export const User = {
 Generate a service component.
 
 ```terminal
-yarn rw generate service <name>
+yarn redwood generate service <name>
 ```
 
 Services are where Redwood puts its business logic. They can be used by your GraphQL API or any other place in your backend code. See [How Redwood Works with Data](https://redwoodjs.com/tutorial/side-quest-how-redwood-works-with-data).
@@ -1153,7 +1153,7 @@ Services are where Redwood puts its business logic. They can be used by your Gra
 **Destroying**
 
 ```
-yarn rw d service <name>
+yarn redwood d service <name>
 ```
 
 **Example**
@@ -1161,9 +1161,9 @@ yarn rw d service <name>
 Generating a user service:
 
 ```terminal
-~/redwood-app$ yarn rw generate service user
+~/redwood-app$ yarn redwood generate service user
 yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw g service user
+$ /redwood-app/node_modules/.bin/redwood g service user
   ✔ Generating service files...
     ✔ Writing `./api/src/services/users/users.test.js`...
     ✔ Writing `./api/src/services/users/users.js`...
@@ -1191,15 +1191,15 @@ This command has been deprecated. See [Setup command](#setup).
 Print your system environment information.
 
 ```terminal
-yarn rw info
+yarn redwood info
 ```
 
 This command's primarily intended for getting information others might need to know to help you debug:
 
 ```terminal
-~/redwood-app$ yarn rw info
+~/redwood-app$ yarn redwood info
 yarn run v1.22.4
-$ /redwood-app/node_modules/.bin/rw info
+$ /redwood-app/node_modules/.bin/redwood info
 
   System:
     OS: Linux 5.4 Ubuntu 20.04 LTS (Focal Fossa)
@@ -1221,7 +1221,7 @@ Done in 1.98s.
 Lint your files.
 
 ```terminal
-yarn rw lint
+yarn redwood lint
 ```
 
 [Our ESLint configuration](https://github.com/redwoodjs/redwood/blob/master/packages/eslint-config/index.js) is a mix of [ESLint's recommended rules](https://eslint.org/docs/rules/), [React's recommended rules](https://www.npmjs.com/package/eslint-plugin-react#list-of-supported-rules), and a bit of our own stylistic flair:
@@ -1243,7 +1243,7 @@ yarn rw lint
 Open your project in your browser.
 
 ```terminal
-yarn rw open
+yarn redwood open
 ```
 
 ## prisma
@@ -1251,7 +1251,7 @@ yarn rw open
 Run Prisma CLI with experimental features.
 
 ```
-yarn rw prisma
+yarn redwood prisma
 ```
 
 Redwood's `prisma` command is a lightweight wrapper around the Prisma CLI. It's the primary way you interact with your database.
@@ -1273,11 +1273,11 @@ Redwood's `prisma` command is a lightweight wrapper around the Prisma CLI. It's 
 > ...
 > ```
 
-Since `yarn rw prisma` is just an entry point into all the database commands that the Prisma CLI has to offer, we won't try to provide an exhaustive reference of everything you can do with it here. Instead what we'll do is focus on some of the most common commands; those that you'll be running on a regular basis, and how they fit into Redwood's workflows.
+Since `yarn redwood prisma` is just an entry point into all the database commands that the Prisma CLI has to offer, we won't try to provide an exhaustive reference of everything you can do with it here. Instead what we'll do is focus on some of the most common commands; those that you'll be running on a regular basis, and how they fit into Redwood's workflows.
 
 For the complete list of commands, see the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference). It's the authority. 
 
-Along with the CLI reference, bookmark Prisma's [Migration Flows](https://www.prisma.io/docs/concepts/components/prisma-migrate/prisma-migrate-flows) doc&mdash;it'll prove to be an invaluable resource for understanding `yarn rw prisma migrate`.
+Along with the CLI reference, bookmark Prisma's [Migration Flows](https://www.prisma.io/docs/concepts/components/prisma-migrate/prisma-migrate-flows) doc&mdash;it'll prove to be an invaluable resource for understanding `yarn redwood prisma migrate`.
 
 | Command             | Description                                                  |
 | :------------------ | :----------------------------------------------------------- |
@@ -1290,7 +1290,7 @@ Along with the CLI reference, bookmark Prisma's [Migration Flows](https://www.pr
 Manage your database schema and lifecycle during development.
 
 ```
-yarn rw prisma db <command>
+yarn redwood prisma db <command>
 ```
 
 The `prisma db` namespace contains commands that operate directly against the database.
@@ -1302,12 +1302,12 @@ Pull the schema from an existing database, updating the Prisma schema.
 > 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#db-pull).
 
 ```
-yarn rw prisma db pull 
+yarn redwood prisma db pull 
 ```
 
 This command, formerly `introspect`, connects to your database and adds Prisma models to your Prisma schema that reflect the current database schema.
 
-> Warning: The command will overwrite the current schema.prisma file with the new schema. Any manual changes or customization will be lost. Be sure to back up your current schema.prisma file before running introspect if it contains important modifications.
+> Warning: The command will Overwrite the current schema.prisma file with the new schema. Any manual changes or customization will be lost. Be sure to back up your current schema.prisma file before running introspect if it contains important modifications.
 
 #### push
 
@@ -1316,12 +1316,12 @@ Push the state from your Prisma schema to your database.
 > 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#db-push).
 
 ```
-yarn rw prisma db push 
+yarn redwood prisma db push 
 ```
 
 This is your go-to command for prototyping changes to your Prisma schema (`schema.prisma`).
-Prior to to `yarn rw prisma db push`, there wasn't a great way to try out changes to your Prisma schema without creating a migration.
-This command fills the void by "pushing" your `schema.prisma` file to your database without creating a migration. You don't even have to run `yarn rw prisma generate` afterward&mdash;it's all taken care of for you, making it ideal for iterative development.
+Prior to to `yarn redwood prisma db push`, there wasn't a great way to try out changes to your Prisma schema without creating a migration.
+This command fills the void by "pushing" your `schema.prisma` file to your database without creating a migration. You don't even have to run `yarn redwood prisma generate` afteredwoodard&mdash;it's all taken care of for you, making it ideal for iterative development.
 
 #### seed
 
@@ -1330,7 +1330,7 @@ Seed your database.
 > 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#db-seed-preview).
 
 ```
-yarn rw prisma db seed
+yarn redwood prisma db seed
 ```
 
 This command seeds your database by running your project's `seed.js` file (in `api/db`). Note that having a great seed might not be all that important at the start, but as soon as you start collaborating with others, it becomes vital.
@@ -1344,7 +1344,7 @@ Prisma's got some great resources on this command. You can [code along with Ryan
 <!-- > 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#generate). -->
 
 <!-- ``` -->
-<!-- yarn rw prisma generate -->
+<!-- yarn redwood prisma generate -->
 <!-- ``` -->
 
 ### migrate
@@ -1354,12 +1354,12 @@ Update the database schema with migrations.
 > 👉 Quick link to the [Prisma Concepts](https://www.prisma.io/docs/concepts/components/prisma-migrate).
 
 ```
-yarn rw prisma migrate <command>
+yarn redwood prisma migrate <command>
 ```
 
 As a database toolkit, Prisma strives to be as holistic as possible. Prisma Migrate lets you use Prisma schema to make changes to your database declaratively, all while keeping things deterministic and fully customizable by generating the migration steps in a simple, familiar format: SQL. 
 
-Since migrate generates plain SQL files, you can edit those SQL files before applying the migration using `yarn rw prisma migrate --create-only`. This creates the migration based on the changes in the Prisma schema, but doesn't apply it, giving you the chance to go in and make any modifications you want. [Daniel Norman's tour of Prisma Migrate](https://www.youtube.com/watch?v=0LKhksstrfg) demonstrates this and more to great effect.
+Since migrate generates plain SQL files, you can edit those SQL files before applying the migration using `yarn redwood prisma migrate --create-only`. This creates the migration based on the changes in the Prisma schema, but doesn't apply it, giving you the chance to go in and make any modifications you want. [Daniel Norman's tour of Prisma Migrate](https://www.youtube.com/watch?v=0LKhksstrfg) demonstrates this and more to great effect.
 
 Prisma Migrate has separate commands for applying migrations based on whether you're in dev or in production. The Prisma [Migration flows](https://www.prisma.io/docs/concepts/components/prisma-migrate/prisma-migrate-flows) goes over the difference between these workflows in more detail.
 
@@ -1370,7 +1370,7 @@ Create a migration from changes in Prisma schema, apply it to the database, trig
 > 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#migrate-dev).
 
 ```
-yarn rw prisma migrate dev
+yarn redwood prisma migrate dev
 ```
 
 <!-- #### reset -->
@@ -1380,7 +1380,7 @@ yarn rw prisma migrate dev
 <!-- > 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#migrate-reset). -->
 
 <!-- ``` -->
-<!-- yarn rw prisma migrate reset -->
+<!-- yarn redwood prisma migrate reset -->
 <!-- ``` -->
 
 #### deploy
@@ -1390,7 +1390,7 @@ Apply pending migrations to update the database schema in production/staging.
 > 👉 Quick link to the [Prisma CLI Reference](https://www.prisma.io/docs/reference/api-reference/command-reference#migrate-deploy).
 
 ```
-yarn rw prisma migrate deploy
+yarn redwood prisma migrate deploy
 ```
 
 ## redwood-tools (alias rwt)
@@ -1402,7 +1402,7 @@ Redwood's companion CLI development tool. You'll be using this if you're contrib
 Initialize project config and install packages
 
 ```
-yarn rw setup <command>
+yarn redwood setup <command>
 ```
 
 <br/>
@@ -1421,7 +1421,7 @@ yarn rw setup <command>
 Setup an auth configuration.
 
 ```
-yarn rw setup auth <provider>
+yarn redwood setup auth <provider>
 ```
 
 You can get authentication out-of-the-box with generators. Right now we support Auth0, Firebase, GoTrue, Magic, and Netlify.
@@ -1440,7 +1440,7 @@ See [Authentication](https://redwoodjs.com/docs/authentication).
 Setup an `index.js` file in `web/src` so you can customize how your Redwood App mounts to the DOM.
 
 ```
-yarn rw setup custom-web-index
+yarn redwood setup custom-web-index
 ```
 
 Redwood automatically mounts your `<App />` to the DOM, but if you want to customize how that happens, you can use this setup command to generate a file where you can do that in.
@@ -1458,7 +1458,7 @@ See [Custom Web Index](https://redwoodjs.com/docs/custom-web-index).
 Setup a deployment configuration.
 
 ```
-yarn rw setup deploy <provider>
+yarn redwood setup deploy <provider>
 ```
 
 Creates provider-specific code and configuration for deployment.
@@ -1473,7 +1473,7 @@ Creates provider-specific code and configuration for deployment.
 Starts Storybook locally
 
 ```terminal
-yarn rw storybook
+yarn redwood storybook
 ```
 
 <br/>
@@ -1495,7 +1495,7 @@ RedwoodJS supports Storybook by creating stories when generating cells, componen
 Run Jest tests for api and web.
 
 ```terminal
-yarn rw test [side..]
+yarn redwood test [side..]
 ```
 
 <br/>
@@ -1515,7 +1515,7 @@ yarn rw test [side..]
 Upgrade all `@redwoodjs` packages via an interactive CLI.
 
 ```terminal
-yarn rw upgrade
+yarn redwood upgrade
 ```
 
 This command does all the heavy-lifting of upgrading to a new release for you.
@@ -1547,5 +1547,5 @@ yarn redwood upgrade -t 0.19.3
 Upgrade using packages from PR #1714 (version tag provided in PR comments):
 
 ```terminal
-yarn rw upgrade --pr 1714:0.24.0-38ba18c
+yarn redwood upgrade --pr 1714:0.24.0-38ba18c
 ```
