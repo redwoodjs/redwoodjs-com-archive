@@ -10,6 +10,7 @@ Redwood is designed for serverless architecture deployment, offering a unique co
 Currently, these are the officially supported deploy targets:
 - [Netlify](https://www.netlify.com/)
 - [Vercel](https://vercel.com)
+- [Qovery](https://qovery.com)
 - [AWS-Serverless](https://serverless.com)
 
 Redwood has a CLI generator that adds the code and configuration required by the specified provider (see the [CLI Doc](https://redwoodjs.com/docs/cli-commands#deploy-config) for more information):
@@ -157,6 +158,67 @@ Go ahead, click that "Visit" button. You’ve earned it 🎉
 From the Vercel Dashboard you can access the full settings and information for your Redwood App. The default settings seem to work just fine for most Redwood projects. Do take a look around, but be sure check out the [docs as well](https://vercel.com/docs).
 
 From now on, each time you push code to your git repo, Vercel will automatically trigger a deploy of the new code. You can also manually redeploy if you select "Deployments", then the specific deployment from the list, and finally the "Redeploy" option from the vertical dots menu next to "Visit".
+
+## Qovery Deploy
+>The following instructions assume you have read the [General Deployment Setup](#general-deployment-setup) section above.
+
+### Setup
+
+Follow the procedure below to set up a Redwood on Qovery:
+
+#### 1. Create a Qovery account.
+
+Visit the [Qovery dashboard](https://console.qovery.com) to create an account if you don't already have one.
+
+#### 2. Create a project
+
+Click on "Create a new project" and give a name to your project. 
+
+Click on "Next".
+
+#### 3. Add an application
+
+Click on "Create an application" then choose "I have an application" and select your GitHub or GitLab repository where your Redwood app is located.
+
+Click on "Next".
+
+#### 4. Add a PostgreSQL database
+
+Select "PostgreSQL" among the services.
+
+Select the version.
+
+Give a name to your PostgreSQL databse.
+
+Click on "Next".
+
+#### 5. Add a storage
+
+Select "Storage" among the services.
+
+Give a name to your storage.
+
+Select the storage type between Slow HDD, HDD, SSD, and Fast SSD. (SSD is recommended).
+
+Select the size.
+
+Give a mount point.
+
+#### 6. Deploy
+
+Click on the Deploy button. Your app should be deployed: you can see the status in real time by clicking on deployment logs.
+
+### Continuous deploys
+
+Now that Qovery is connected to your repo, it will **automatically build and publish your site** any time you push to GitHub.
+
+### Custom domains
+
+Add your own domains to your site easily using Qovery's [custom domains](https://docs.qovery.com/guides/getting-started/setting-custom-domain/) guide.
+
+### Support
+
+Chat with Qovery developers on [Discord](https://discord.qovery.com) if you need help.
 
 ## AWS Serverless Deploy
 >The following instructions assume you have read the [General Deployment Setup](#general-deployment-setup) section above.
