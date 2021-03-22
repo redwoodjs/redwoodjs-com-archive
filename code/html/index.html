@@ -19,14 +19,14 @@
         <li class="px-2 whitespace-no-wrap">
           <a
             href="https://learn.redwoodjs.com/docs/tutorial/welcome-to-redwood"
-            class="block mt-2 bg-red-700 text-white px-4 py-3 font-semibold rounded-lg hover:bg-red-600"
+            class="block mt-2 bg-red-700 text-white px-4 py-3 font-semibold rounded-lg hover:bg-red-600 transition duration-200"
             >Start the Tutorial</a
           >
         </li>
         <li class="px-2 whitespace-no-wrap">
           <a
             href="/docs"
-            class="block mt-2 bg-white text-red-700 border border-red-300 px-4 py-3 font-semibold rounded-lg hover:bg-red-200"
+            class="block mt-2 bg-white text-red-700 border border-red-300 px-4 py-3 font-semibold rounded-lg hover:bg-red-200 transition duration-200"
             >Read the Docs</a
           >
         </li>
@@ -37,60 +37,69 @@
 )
 
 <div class="xl:-mr-56 mt-4">
-  <section class="md:flex items-start">
-    <div class="md:w-1/2 md:pr-8">
-      <header>
-        <h2 class="text-red-700 font-semibold text-xl">Join our Newsletter</h2>
-        <p>Keep up on all that's happening with RedwoodJS!</p>
-      </header>
-      <form
-        class="flex items-center justify-between mt-4"
-        action="https://redwoodjs.us19.list-manage.com/subscribe/post?u=0c27354a06a7fdf4d83ce07fc&amp;id=09f634eea4"
-        method="post"
-        name="mc-embedded-subscribe-form"
-        target="_blank"
-        novalidate
+<section class="md:flex items-start max-w-screen-xl mx-auto my-8">
+  <div class="md:w-1/3">
+    <header class="text-center">
+      <h2 class="text-red-700 text-xl font-semibold tracking-tight">Get the Newsletter</h2>
+      <p class="text-sm mt-1">Keep up on what's happening with RedwoodJS!</p>
+    </header>
+    <form
+      class="flex items-center justify-between mt-4 pt-1"
+      action="https://redwoodjs.us19.list-manage.com/subscribe/post?u=0c27354a06a7fdf4d83ce07fc&amp;id=09f634eea4"
+      method="post"
+      name="mc-embedded-subscribe-form"
+      target="_blank"
+      novalidate
+    >
+      <input
+        type="email"
+        value=""
+        name="EMAIL"
+        class="block border border-red-700 rounded-l py-2 px-2 w-full"
+        id="mce-EMAIL"
+        placeholder="me@email.com"
+      />
+      <button
+        type="submit"
+        value="Subscribe"
+        name="subscribe"
+        class="block bg-red-700 hover:bg-red-600 transition duration-200 text-white px-4 py-2 border border-red-700 font-semibold rounded-r"
       >
-        <input
-          type="email"
-          value=""
-          name="EMAIL"
-          class="block border border-red-700 rounded-l py-2 px-2 w-full"
-          id="mce-EMAIL"
-          placeholder="your-email@example.com"
-        />
-        <button
-          type="submit"
-          value="Subscribe"
-          name="subscribe"
-          class="block bg-red-700 text-white px-4 py-2 border border-red-700 font-semibold rounded-r"
-        >
-          Subscribe
-        </button>
-      </form>
+        Subscribe
+      </button>
+    </form>
+  </div>
+
+  <div class="md:w-1/3 md:px-6 mt-8 md:mt-0">
+    <header class="text-center">
+      <a href="/stickers.html" class="hover:underline text-red-700">
+        <h2 class="text-red-700 text-xl font-semibold tracking-tight">Get Some Swag</h2>
+      </a>
+      <p class="text-sm mt-1">The Redwood logo on shirts, hats,<br />and more!</p>
+    </header>
+    <a href="https://shop.redwoodjs.com" class="mt-5 block w-auto bg-red-700 hover:bg-red-600 transition duration-200 text-white text-center px-4 py-2 border border-red-700 font-semibold rounded">The Redwood Shop &rarr;</a>
+  </div>
+
+  <div class="md:w-1/3 md:pl-8 mt-8 md:mt-0">
+    <header class="text-center">
+      <a href="/stickers.html" class="hover:underline text-red-700">
+        <h2 class="text-red-700 text-xl font-semibold tracking-tight">Get Free Stickers</h2>
+      </a>
+      <p class="text-sm mt-1">Enter your address for a chance to get some, free!</p>
+    </header>
+    <div class="mt-3">
+      <a href="/stickers.html" class="flex flex-between block hover:bg-red-100 rounded">
+        <div class="w-1/2">
+          <img src="/images/stickers.png" alt="Redwood stickers" />
+        </div>
+        <div class="w-1/2">
+          <img src="/images/stickers.png" alt="Redwood stickers" class="" />
+        </div>
+      </a>
     </div>
-    <div class="md:w-1/2 md:pl-8 mt-8 md:mt-0">
-      <header>
-        <a href="/stickers.html" class="hover:underline text-red-700">
-          <h2 class="text-red-700 font-semibold text-xl">Want some stickers?</h2>
-        </a>
-        <p>Enter your address for chance to get some, free!</p>
-      </header>
-      <div class="mt-3">
-        <a href="/stickers.html" class="flex flex-between block hover:bg-red-100 rounded">
-          <div class="w-1/3">
-            <img src="/images/stickers.png" alt="Redwood stickers" />
-          </div>
-          <div class="w-1/3">
-            <img src="/images/stickers.png" alt="Redwood stickers" class="transform rotate-180" />
-          </div>
-          <div class="w-1/3">
-            <img src="/images/stickers.png" alt="Redwood stickers" />
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
+  </div>
+</section>
+
 
   <section class="mt-12 pt-12 border-t lg:flex justify-between items-start">
     <div class="flex flex-col md:flex-row lg:flex-col justify-between lg:w-1/3 text-center px-4 lg:pr-2">
