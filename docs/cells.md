@@ -128,12 +128,12 @@ export const beforeQuery = (props) => {
 }
 ```
 
-For example, if you wanted to turn on Apollo's polling option, and prevent caching, you could export something like this:
+For example, if you wanted to turn on Apollo's polling option, and prevent caching, you could export something like this (see Apollo's docs on [polling](https://www.apollographql.com/docs/react/data/queries/#polling) and [caching](https://www.apollographql.com/docs/react/data/queries/#setting-a-fetch-policy))
 
 <!-- Source: https://github.com/redwoodjs/redwood/issues/717 -->
 ```javascript
 export const beforeQuery = (props) => {
-  return { variables: props, fetchPolicy: 'no-cache', pollInterval: 1000 * 2.5 }
+  return { variables: props, fetchPolicy: 'no-cache', pollInterval: 2500 }
 }
 ```
 
