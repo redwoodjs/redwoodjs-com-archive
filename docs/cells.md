@@ -133,7 +133,7 @@ For example, if you wanted to turn on Apollo's polling option, and prevent cachi
 <!-- Source: https://github.com/redwoodjs/redwood/issues/717 -->
 ```javascript
 export const beforeQuery = (props) => {
-  return { variables, fetchPolicy: 'no-cache', pollInterval: 1000 * 2.5 }
+  return { variables: props, fetchPolicy: 'no-cache', pollInterval: 1000 * 2.5 }
 }
 ```
 
