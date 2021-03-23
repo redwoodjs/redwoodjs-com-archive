@@ -117,18 +117,25 @@ This means you can think backwards about your Cell's props from your SDL: whatev
 
 ### beforeQuery
 
-`beforeQuery` is a lifecycle hook. The best way to think about it is as an API for configuring Apollo Client's `Query` component (so you might want to check out the [docs](https://www.apollographql.com/docs/react/api/react-components/#query) for it).
+`beforeQuery` is a lifecycle hook. The best way to think about it is as an API for configuring Apollo Client's `Query` component (so you might want to check out Apollo's [docs](https://www.apollographql.com/docs/react/api/react-components/#query) for it).
 
 By default, `beforeQuery` gives any props passed from the parent component to `Query` so that they're available as variables for `QUERY`. It'll also set the fetch policy to `'cache-and-network'` since we felt that this is the behavior users want most of the time.
 
 <!-- Source: https://github.com/redwoodjs/redwood/issues/717 -->
 ```javascript
 export const beforeQuery = (props) => {
-  return { variables: props, fetchPolicy: 'network-only' }
+  return { variables: props, fetchPolicy: 'cache-and-network' }
 }
 ```
 
-But you can of course override this by exporting your own.
+For example, if you wanted to turn on Apollo's polling option, and prevent caching, you could export something like this:
+
+<!-- Source: https://github.com/redwoodjs/redwood/issues/717 -->
+```javascript
+export const beforeQuery = (props) => {
+  return { variables, fetchPolicy: 'no-cache', pollInterval: 1000 * 2.5 }
+}
+```
 
 ### afterQuery
 
