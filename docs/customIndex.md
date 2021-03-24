@@ -11,7 +11,7 @@ yarn rw setup custom-web-index
 This generates a file named `index.js` in `web/src` that looks like this:
 
 ```js
-// web/src/index.js
+// web/src/App.js
 
 import ReactDOM from 'react-dom'
 

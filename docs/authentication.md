@@ -44,7 +44,7 @@ yarn add @redwoodjs/auth netlify-identity-widget
 You will need to enable Identity on your Netlify site. See [Netlify Identity Setup](https://redwoodjs.com/tutorial/authentication#netlify-identity-setup).
 
 ```js
-// web/src/index.js
+// web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
 import netlifyIdentity from 'netlify-identity-widget'
 
@@ -101,7 +101,7 @@ yarn workspace web add gotrue-js
 Instantiate GoTrue and pass in your configuration. Be sure to set APIUrl to the API endpoint found in your Netlify site's Identity tab:
 
 ```js
-// web/src/index.js
+// web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
 import GoTrue from 'gotrue-js'
 
@@ -153,7 +153,7 @@ To get your application keys, only complete the ["Configure Auth0"](https://auth
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
 ```js
-// web/src/index.js
+// web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
 import { Auth0Client } from '@auth0/auth0-spa-js'
 
@@ -258,7 +258,7 @@ This allows an application to request a token directly from the authorization en
 The Authority is a URL that indicates a directory that MSAL can request tokens from which you can read about [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-client-application-configuration#authority). However, you most likely want to have e.g. `https://login.microsoftonline.com/<tenant>` as Authority URL, where `<tenant>` is the Azure Active Directory tenant id. This will be the `AZURE_ACTIVE_DIRECTORY_AUTHORITY` environment variable.
 
 ```js
-// web/src/index.js
+// web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
 import { UserAgentApplication } from 'msal'
 
@@ -339,7 +339,7 @@ To get your application keys, go to [dashboard.magic.link](https://dashboard.mag
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
 ```js
-// web/src/index.js
+// web/src/App.js
 import { Magic } from 'magic-sdk'
 
 const m = new Magic(process.env.MAGICLINK_PUBLIC)
@@ -380,7 +380,7 @@ We're using [Firebase Google Sign-In](https://firebase.google.com/docs/auth/web/
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
 ```js
-// web/src/index.js
+// web/src/App.js
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 

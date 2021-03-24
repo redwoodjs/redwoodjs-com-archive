@@ -44,7 +44,7 @@ yarn redwood generate auth goTrue
 By specifying `goTrue` as the provider, Redwood automatically added the necessary GoTrue-JS config to our index.js. Let's open up `web/src/index.js` and inspect. You should see:
 
 ```js {3-4,13-16,20,24}
-// web/src/index.js
+// web/src/App.js
 
 import { AuthProvider } from '@redwoodjs/auth'
 import GoTrue from 'gotrue-js'
@@ -77,7 +77,7 @@ ReactDOM.render(
 Time to use that API endpoint we copied from the Netlify Identity page. Replace the value of `APIUrl` with your API endpoint. For example:
 
 ```js {6}
-// web/src/index.js
+// web/src/App.js
 
 // imports...
 
