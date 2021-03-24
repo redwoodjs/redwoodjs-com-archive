@@ -4,11 +4,11 @@ You can configure your Redwood app's settings in `redwood.toml`. By default, `re
 
 <!-- TODO -->
 <!-- toml syntax coloring not working here -->
+
 ```toml
 [web]
   port = 8910
   apiProxyPath = "/.netlify/functions"
-  experimentalFastRefresh = false
 [api]
   port = 8911
 [browser]
@@ -27,7 +27,7 @@ const DEFAULT_CONFIG: Config = {
     path: './web',
     target: TargetEnum.BROWSER,
     apiProxyPath: '/.netlify/functions',
-    experimentalFastRefresh: false,
+    fastRefresh: true,
   },
   api: {
     host: 'localhost',
@@ -51,6 +51,7 @@ The idea is that, in the future, changes here will have cascading, "app-level" e
 You can think of `redwood.toml` as a convenience layer over Redwood's webpack configuration files. That is, for certain settings, instead of having to deal with webpack directly, we give you quick access via `redwood.toml`. Some of these settings are for development, some are for production, and some are for both. You can actually see this reflected in which webpack file each configuration option is referenced in&mdash;[webpack.development.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.development.js), [webpack.production.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.production.js), and [webpack.common.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.common.js).
 
 <!-- https://github.com/redwoodjs/redwood/pull/152#issuecomment-593835518 -->
+
 `redwood.toml` also serves a slightly larger purpose: it's used to determine the base directory of a Redwood project. So this file is what really makes a Redwood app a Redwood app. If you remove it and run `yarn rw dev`, you'll get an error:
 
 ```terminal
@@ -71,7 +72,8 @@ Configuration for the web side.
 | `target`                      | Target for the web side            | `TargetEnum.BROWSER`    | `both`        |
 | `apiProxyPath`                | Proxy path to the api side         | `'/.netlify/functions'` | `production`  |
 | `includeEnvironmentVariables` | Environment variables to whitelist |                         | `both`        |
-| `experimentalFastRefresh`     | Enable webpack's fast refresh      | false                   | `development` | 
+| `fastRefresh`                 | Enable webpack's fast refresh      | true                    | `development` |
+
 ### apiProxyPath
 
 ```toml
@@ -84,6 +86,7 @@ The path to the serverless functions. When you're running your app locally, this
 Since Redwood plays nicely with Netlify, we use the [same proxy path](https://docs.netlify.com/functions/build-with-javascript) by default. If you're deploying elsewhere, you'll want to change this.
 
 ### includeEnvironmentVariables
+
 <!-- https://github.com/redwoodjs/redwood/issues/427 -->
 <!-- https://github.com/redwoodjs/redwood/blob/d51ade08118c17459cebcdb496197ea52485364a/packages/core/config/webpack.common.js#L17-L31 -->
 
