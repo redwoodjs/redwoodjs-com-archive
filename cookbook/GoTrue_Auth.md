@@ -41,7 +41,7 @@ Let's start by installing the required packages and generating boilerplate code 
 yarn redwood generate auth goTrue
 ```
 
-By specifying `goTrue` as the provider, Redwood automatically added the necessary GoTrue-JS config to our index.js. Let's open up `web/src/index.js` and inspect. You should see:
+By specifying `goTrue` as the provider, Redwood automatically added the necessary GoTrue-JS config to our App.js. Let's open up `web/src/App.js` and inspect. You should see:
 
 ```js {3-4,13-16,20,24}
 // web/src/App.js
