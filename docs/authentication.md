@@ -104,23 +104,30 @@ Instantiate GoTrue and pass in your configuration. Be sure to set APIUrl to the 
 // web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
 import GoTrue from 'gotrue-js'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
-const goTrue = new GoTrue({
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
+
+import './index.css'
+
+const goTrueClient = new GoTrue({
   APIUrl: 'https://MYAPP.netlify.app/.netlify/identity',
   setCookie: true,
 })
 
-// in your JSX component
-ReactDOM.render(
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
-    <AuthProvider client={goTrue} type="goTrue">
+    <AuthProvider client={goTrueClient} type="goTrue">
       <RedwoodApolloProvider>
         <Routes />
       </RedwoodApolloProvider>
     </AuthProvider>
-  </FatalErrorBoundary>,
-  document.getElementById('redwood-app')
+  </FatalErrorBoundary>
 )
+
+export default App
 ```
 
 +++
@@ -156,25 +163,37 @@ To get your application keys, only complete the ["Configure Auth0"](https://auth
 // web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
 import { Auth0Client } from '@auth0/auth0-spa-js'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
+
+import './index.css'
 
 const auth0 = new Auth0Client({
   domain: process.env.AUTH0_DOMAIN,
   client_id: process.env.AUTH0_CLIENT_ID,
-  redirect_uri: 'http://localhost:8910/',
+  redirect_uri: process.env.AUTH0_REDIRECT_URI,
+  // ** NOTE ** Storing tokens in browser local storage provides persistence across page refreshes and browser tabs.
+  // However, if an attacker can achieve running JavaScript in the SPA using a cross-site scripting (XSS) attack,
+  // they can retrieve the tokens stored in local storage.
+  // https://auth0.com/docs/libraries/auth0-spa-js#change-storage-options
   cacheLocation: 'localstorage',
   audience: process.env.AUTH0_AUDIENCE,
 })
 
-ReactDOM.render(
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={auth0} type="auth0">
       <RedwoodApolloProvider>
         <Routes />
       </RedwoodApolloProvider>
     </AuthProvider>
-  </FatalErrorBoundary>,
-  document.getElementById('redwood-app')
+  </FatalErrorBoundary>
 )
+
+export default App
 ```
 
 #### Login and Logout Options
@@ -261,26 +280,34 @@ The Authority is a URL that indicates a directory that MSAL can request tokens f
 // web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
 import { UserAgentApplication } from 'msal'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
+
+import './index.css'
 
 const azureActiveDirectoryClient = new UserAgentApplication({
-  auth: {
-    clientId: process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID,
-    authority: process.env.AZURE_ACTIVE_DIRECTORY_AUTHORITY,
-    redirectUri: process.env.AZURE_ACTIVE_DIRECTORY_REDIRECT_URI,
-    postLogoutRedirectUri: process.env.AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI,
-  },
-})
+    auth: {
+      clientId: process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID,
+      authority: process.env.AZURE_ACTIVE_DIRECTORY_AUTHORITY,
+      redirectUri: process.env.AZURE_ACTIVE_DIRECTORY_REDIRECT_URI,
+      postLogoutRedirectUri: process.env.AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI,
+    },
+  })
 
-ReactDOM.render(
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={azureActiveDirectoryClient} type="azureActiveDirectory">
       <RedwoodApolloProvider>
         <Routes />
       </RedwoodApolloProvider>
     </AuthProvider>
-  </FatalErrorBoundary>,
-  document.getElementById('redwood-app')
+  </FatalErrorBoundary>
 )
+
+export default App
 ```
 
 #### Roles
@@ -340,20 +367,29 @@ To get your application keys, go to [dashboard.magic.link](https://dashboard.mag
 
 ```js
 // web/src/App.js
+import { AuthProvider } from '@redwoodjs/auth'
 import { Magic } from 'magic-sdk'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
+
+import './index.css'
 
 const m = new Magic(process.env.MAGICLINK_PUBLIC)
 
-ReactDOM.render(
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={m} type="magicLink">
       <RedwoodApolloProvider>
         <Routes />
       </RedwoodApolloProvider>
     </AuthProvider>
-  </FatalErrorBoundary>,
-  document.getElementById('redwood-app')
+  </FatalErrorBoundary>
 )
+
+export default App
 ```
 
 #### Magic.Link Auth Provider Specific Integration
@@ -381,8 +417,16 @@ We're using [Firebase Google Sign-In](https://firebase.google.com/docs/auth/web/
 
 ```js
 // web/src/App.js
+import { AuthProvider } from '@redwoodjs/auth'
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
+
+import './index.css'
 
 const firebaseClientConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -399,16 +443,17 @@ const firebaseClient = ((config) => {
   return firebase
 })(firebaseClientConfig)
 
-ReactDOM.render(
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={firebaseClient} type="firebase">
       <RedwoodApolloProvider>
         <Routes />
       </RedwoodApolloProvider>
     </AuthProvider>
-  </FatalErrorBoundary>,
-  document.getElementById('redwood-app')
+  </FatalErrorBoundary>
 )
+
+export default App
 ```
 
 #### Usage
