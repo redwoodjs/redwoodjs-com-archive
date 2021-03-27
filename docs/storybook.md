@@ -9,14 +9,14 @@ You can set it all up as a story, tweak it there as you see fit, and even test i
 There's two files for configuring Storybook: `storybook.config.js` and `storybook.preview.js`.
 You can think of the two as being analogous to Redwood's api and web sides—`storybook.config.js` configures Storybook's server while `storybook.preview.js` configures the way stories render.
 
-### Configuring the Server with `storybook.main.js`
+### Configuring the Server with `storybook.config.js`
 
 You can configure Storybook's server by adding a `storybook.config.js` file to your `web/config` directory. Redwood merges this with it's base [configuration](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/storybook/main.js).
 
 While you can configure any of the properties (see the [Storybook docs](https://storybook.js.org/docs/react/configure/overview#configure-your-storybook-project) for a list of all the properties), you'll probably only really want to configure `addons`:
 
 ```js
-// web/src/config/storybook.main.js
+// web/config/storybook.config.js
 
 module.exports = {
   addons: ['@storybook/addon-essentials']
