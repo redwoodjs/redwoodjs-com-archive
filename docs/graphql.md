@@ -50,7 +50,7 @@ const MutateButton = () => {
 }
 ```
 
-Note that you're free to use any of Apollo's other hooks, you'll just have to import them from `@apollo/client` instead. In particular, these two hooks might come in handy:
+Note that you're free to use any of Apollo's other hooks, you'll just have to import them from `@redwoodjs/web/node_modules/@apollo/client` instead. In particular, these two hooks might come in handy:
 
 |Hook|Description|
 |:---|:---|
