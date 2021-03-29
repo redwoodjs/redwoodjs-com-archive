@@ -172,7 +172,19 @@ to = "/cookbook/gotrue-auth"
   force = true
 
 [[redirects]]
+  from = "/tutorial/welcome-to-redwood.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial/welcome-to-redwood"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial/prerequisites"
+  to = "https://learn.redwoodjs.com/docs/tutorial/prerequisites"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorial/prerequisites.html"
   to = "https://learn.redwoodjs.com/docs/tutorial/prerequisites"
   status = 301
   force = true
@@ -184,7 +196,19 @@ to = "/cookbook/gotrue-auth"
   force = true
 
 [[redirects]]
+  from = "/tutorial/installation-starting-development.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial/installation-starting-development"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial/redwood-file-structure"
+  to = "https://learn.redwoodjs.com/docs/tutorial/redwood-file-structure"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorial/redwood-file-structure.html"
   to = "https://learn.redwoodjs.com/docs/tutorial/redwood-file-structure"
   status = 301
   force = true
@@ -196,7 +220,19 @@ to = "/cookbook/gotrue-auth"
   force = true
 
 [[redirects]]
+  from = "/tutorial/our-first-page.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial/our-first-page"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial/a-second-page-and-a-link"
+  to = "https://learn.redwoodjs.com/docs/tutorial/a-second-page-and-a-link"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorial/a-second-page-and-a-link.html"
   to = "https://learn.redwoodjs.com/docs/tutorial/a-second-page-and-a-link"
   status = 301
   force = true
@@ -208,7 +244,19 @@ to = "/cookbook/gotrue-auth"
   force = true
 
 [[redirects]]
+  from = "/tutorial/layouts.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial/layouts"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial/getting-dynamic"
+  to = "https://learn.redwoodjs.com/docs/tutorial/getting-dynamic"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorial/getting-dynamic.html"
   to = "https://learn.redwoodjs.com/docs/tutorial/getting-dynamic"
   status = 301
   force = true
@@ -220,7 +268,19 @@ to = "/cookbook/gotrue-auth"
   force = true
 
 [[redirects]]
+  from = "/tutorial/cells.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial/cells"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial/side-quest-how-redwood-works-with-data"
+  to = "https://learn.redwoodjs.com/docs/tutorial/side-quest-how-redwood-works-with-data"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorial/side-quest-how-redwood-works-with-data.html"
   to = "https://learn.redwoodjs.com/docs/tutorial/side-quest-how-redwood-works-with-data"
   status = 301
   force = true
@@ -232,7 +292,19 @@ to = "/cookbook/gotrue-auth"
   force = true
 
 [[redirects]]
+  from = "/tutorial/routing-params.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial/routing-params"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial/everyone-s-favorite-thing-to-build-forms"
+  to = "https://learn.redwoodjs.com/docs/tutorial/everyones-favorite-thing-to-build-forms"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorial/everyone-s-favorite-thing-to-build-forms.html"
   to = "https://learn.redwoodjs.com/docs/tutorial/everyones-favorite-thing-to-build-forms"
   status = 301
   force = true
@@ -244,7 +316,19 @@ to = "/cookbook/gotrue-auth"
   force = true
 
 [[redirects]]
+  from = "/tutorial/saving-data.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial/saving-data"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial/administration"
+  to = "https://learn.redwoodjs.com/docs/tutorial/administration"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorial/administration.html"
   to = "https://learn.redwoodjs.com/docs/tutorial/administration"
   status = 301
   force = true
@@ -256,7 +340,19 @@ to = "/cookbook/gotrue-auth"
   force = true
 
 [[redirects]]
+  from = "/tutorial/authentication.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial/authentication"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial/deployment"
+  to = "https://learn.redwoodjs.com/docs/tutorial/deployment"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorial/deployment.html"
   to = "https://learn.redwoodjs.com/docs/tutorial/deployment"
   status = 301
   force = true
@@ -268,13 +364,31 @@ to = "/cookbook/gotrue-auth"
   force = true
 
 [[redirects]]
+  from = "/tutorial/wrapping-up.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial/wrapping-up"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial2/welcome-to-redwood-part-ii-redwood-s-revenge"
   to = "https://learn.redwoodjs.com/docs/tutorial2/welcome-to-redwood-part-ii-redwoods-revenge"
   status = 301
   force = true
 
 [[redirects]]
+  from = "/tutorial2/welcome-to-redwood-part-ii-redwood-s-revenge.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial2/welcome-to-redwood-part-ii-redwoods-revenge"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial2/prerequisites"
+  to = "https://learn.redwoodjs.com/docs/tutorial2/prerequisites"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorial2/prerequisites.html"
   to = "https://learn.redwoodjs.com/docs/tutorial2/prerequisites"
   status = 301
   force = true
@@ -286,7 +400,19 @@ to = "/cookbook/gotrue-auth"
   force = true
 
 [[redirects]]
+  from = "/tutorial2/introduction-to-storybook.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial2/introduction-to-storybook"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial2/our-first-story"
+  to = "https://learn.redwoodjs.com/docs/tutorial2/our-first-story"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorial2/our-first-story.html"
   to = "https://learn.redwoodjs.com/docs/tutorial2/our-first-story"
   status = 301
   force = true
@@ -298,7 +424,19 @@ to = "/cookbook/gotrue-auth"
   force = true
 
 [[redirects]]
+  from = "/tutorial2/our-first-test.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial2/building-a-component-the-redwood-way"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial2/building-a-component-the-redwood-way"
+  to = "https://learn.redwoodjs.com/docs/tutorial2/building-a-component-the-redwood-way"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorial2/building-a-component-the-redwood-way.html"
   to = "https://learn.redwoodjs.com/docs/tutorial2/building-a-component-the-redwood-way"
   status = 301
   force = true
@@ -310,7 +448,19 @@ to = "/cookbook/gotrue-auth"
   force = true
 
 [[redirects]]
+  from = "/tutorial2/multiple-comments.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial2/multiple-comments"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial2/adding-comments-to-the-schema"
+  to = "https://learn.redwoodjs.com/docs/tutorial2/adding-comments-to-the-schema"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorial2/adding-comments-to-the-schema.html"
   to = "https://learn.redwoodjs.com/docs/tutorial2/adding-comments-to-the-schema"
   status = 301
   force = true
@@ -322,13 +472,31 @@ to = "/cookbook/gotrue-auth"
   force = true
 
 [[redirects]]
+  from = "/tutorial2/creating-a-comment-form.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial2/creating-a-comment-form"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial2/role-based-authorization-control-rbac"
   to = "https://learn.redwoodjs.com/docs/tutorial2/role-based-authorization-control-rbac"
   status = 301
   force = true
 
 [[redirects]]
+  from = "/tutorial2/role-based-authorization-control-rbac.html"
+  to = "https://learn.redwoodjs.com/docs/tutorial2/role-based-authorization-control-rbac"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/tutorial2/wrapping-up"
+  to = "https://learn.redwoodjs.com/docs/tutorial2/wrapping-up"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorial2/wrapping-up.html"
   to = "https://learn.redwoodjs.com/docs/tutorial2/wrapping-up"
   status = 301
   force = true
