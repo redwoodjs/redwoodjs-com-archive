@@ -367,6 +367,27 @@ In these two examples, one with multiple field selection, validation requires th
 
 ```
 
+### transformValue
+
+Typically a `<SelectField>` will return a string, but similar to other InputFields, you can set the `<SelectField>'s` `transformValue` attribute to `Boolean`, `Float`, `Int`, `Json`, or a custom function.
+
+A use-case example is when `<SelectField>` is being used to select a numeric identifier, which can then be passed back to the api.  Without the `transformValue` attribute, the `<SelectField>` would return a string.  However, as per the example below, the `transformValue` can be utilized to return an `Int` or another type. 
+
+```javascript
+<SelectField name="select" transformValue="Int">
+  <option value={1}>Option 1</option>
+  <option value={2}>Option 2</option>
+  <option value={3}>Option 3</option>
+</SelectField>
+
+```
+
+For the example above, if Option 3 is selected, the form `onSubmit` function will be passed data as follows:
+```
+{
+  select: 3,
+}
+```
 ## InputFields
 
 Inputs are the backbone of most forms. `<TextField>` renders an HTML `<input type="text">` field, but is registered with `react-hook-form` to provide some validation and error handling.
