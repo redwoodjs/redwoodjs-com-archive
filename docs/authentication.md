@@ -47,20 +47,29 @@ You will need to enable Identity on your Netlify site. See [Netlify Identity Set
 // web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
 import netlifyIdentity from 'netlify-identity-widget'
+import { isBrowser } from '@redwoodjs/prerender/browserUtils'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
-netlifyIdentity.init()
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
 
-// in your JSX component
-ReactDOM.render(
+import './scaffold.css'
+import './index.css'
+
+isBrowser && netlifyIdentity.init()
+
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={netlifyIdentity} type="netlify">
       <RedwoodApolloProvider>
         <Routes />
       </RedwoodApolloProvider>
     </AuthProvider>
-  </FatalErrorBoundary>,
-  document.getElementById('redwood-app')
+  </FatalErrorBoundary>
 )
+
+export default App
 ```
 
 #### Netlify Identity Auth Provider Specific Setup
