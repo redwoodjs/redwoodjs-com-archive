@@ -438,7 +438,7 @@ If the transformValue is set to `DateTime`, `Float`, `Int`, or `Json` and the tr
       </Form>
 ```
 
-If the number field is not modified and remains empty, it will return an `undefined` into the 'submit' function as per the below, as an empty string cannot be converted to an `integer`.
+If the <NumberField> is not modified and remains empty, it will return an `undefined` into the 'submit' function as per the below, as an empty string cannot be converted to an `integer`.
 ```
 { intField: undefined }
 ```
@@ -481,7 +481,6 @@ Caveat:  JSON validation will not applied if a custom validation function, such 
 #### validation
 
 See InputFields [validation](#inputfields-attributes)
-
 
 #### errorStyle / errorClassName
 
