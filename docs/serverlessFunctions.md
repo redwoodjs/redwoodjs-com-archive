@@ -40,4 +40,37 @@ Note that you can use code in `api/src` in your serverless function, such as imp
 
 ## Developing locally
 
-When you're developing locally, the dev server watches the `api` directory for modifications; when it detects any, it reimports all the modules.
+When you're developing locally, the dev server watches the `api` directory for modifications; when it detects any, it re-imports all the modules.
+
+## Security considerations
+
+When deployed, a custom serverless function is an open API endpoint and is your responsibility to secure appropriately.
+
+### VerificationMethods
+#### RedwoodJS Authentication Header
+* requireAuth()
+
+
+
+#### Json Web Token Verification 
+
+* todo
+#### Secret Header
+* verify secret via header
+
+#### Signature Header
+* todo
+##### GitHub Approach
+* todo
+##### Stripe Approach
+* todo
+#### JSON Web Signature (JWS)
+* todo
+### Other considerations
+#### Visibility via Logging
+* todo
+#### Rate Limiting
+* todo
+#### IP Address Whitelisting
+* todo
+
