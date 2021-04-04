@@ -123,7 +123,7 @@ Besides the attributes listed below, any additional attributes are passed on as 
 
 The `onSubmit` prop accepts a function name or anonymous function to be called *if* validation is successful. This function will be called with a single object containing name/value pairs of all *Redwood form helper* fields in your form. Meaning if you mix `<input>` and `<TextField>` form fields, only `<TextField>` names/values will be present.
 
-Behind the scenes the handler given to `onSubmit` is given to [react-hook-form](https://react-hook-form.com/api#handleSubmit)'s `handleSubmit` function.
+Behind the scenes the handler given to `onSubmit` is given to [react-hook-form](https://react-hook-form.com/api#handleSubmit)'s `handleSubmit` function with the data transformed as specified by each `Input`'s `transformValue` prop.  See [`transformValue`](#transformvalue) attribute.
 
 #### validation
 
@@ -418,7 +418,7 @@ This attribute has been deprecated. See [transformValue](#transformvalue).
 
 ### transformValue
 
-If the type to coerce the input to can’t be inferred automatically, like making a `Float` from a `<TextField>` for example, you can set the InputField's `transformValue` attribute to `Boolean`, `Float`, `Int`, or `Json`.
+If the type to coerce the input to can’t be inferred automatically, like making a `Float` from a `<TextField>` for example, you can set the InputField's `transformValue` attribute to `Boolean`, `DateTime`, `Float`, `Int`, or `Json`.
 
 You can also pass a function to `transformValue`. For instance, you might remove commas from large numbers.
 
@@ -428,6 +428,26 @@ You can also pass a function to `transformValue`. For instance, you might remove
   transformValue={(str) => parseInt(str.replace(/,/g, ''), 10)}
   // '42,000,000' => 42000000
 />
+```
+
+If the transformValue is set to `DateTime`, `Float`, `Int`, or `Json` and the transformation fails, the form submission will gracefully return an `undefined` for that input.  For example:
+
+```javascript
+      <Form onSubmit={submit}>
+        <NumberField name="intField" defaultValue="" transformValue="Int" />
+      </Form>
+```
+
+If the number field is not modified and remains empty, it will return an `undefined` into the 'submit' function as per the below, as an empty string cannot be converted to an `integer`.
+```
+{ intField: undefined }
+```
+If the production environment is set to `development` or `test`, it will also issue a console warning upon a failed transformation.  It is recommended to set up your field validation to avoid cases of failed transformation.  In the specific case of the example above, it would be recommended to add a `validation={{ required: true }}` to the code as per the below.
+
+```javascript
+      <Form onSubmit={onSubmit}>
+        <NumberField name="intField" defaultValue="" transformValue="Int" validation={{ required: true }} />
+      </Form>
 ```
 
 ## `<TextAreaField>`
@@ -440,9 +460,28 @@ Besides the attributes listed below, any additional attributes are passed on as 
 
 See InputFields [name](#inputfields-attributes)
 
+### transformValue
+
+See InputField's [transformValue](#inputfields-attributes) for standard capabilities.
+
+In addition, if the `transformValue` of a `<TextAreaField>` is set to `Json` it will automatically apply a JSON validation to the `<TextAreaField>` in addition to a JSON transformation at the time of form submission.  For example, the below will have JSON validation:
+
+```javascript
+      <Form onSubmit={onSubmit}>
+        <TextAreaField
+          name="jsonField"
+          transformValue="Json"
+        />
+        <Submit>Save</Submit>
+      </Form>
+```
+
+Caveat:  JSON validation will not applied if a custom validation function, such as `fcn` is provided via the prop as follows: `validation={{ validate: fcn }}`
+
 #### validation
 
 See InputFields [validation](#inputfields-attributes)
+
 
 #### errorStyle / errorClassName
 
