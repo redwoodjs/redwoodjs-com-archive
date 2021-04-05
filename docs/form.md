@@ -439,9 +439,6 @@ If the transformValue is set to `DateTime`, `Float`, `Int`, or `Json` and the tr
 ```
 
 If the `<NumberField>` is not modified and remains empty, it will return `{ intField: undefined }` into the `onSubmit` function, as an empty string cannot be converted to an integer.
-```
-{ intField: undefined }
-```
 If the production environment is set to `development` or `test`, it will also issue a console warning upon a failed transformation.  It is recommended to set up your field validation to avoid cases of failed transformation.  In the specific case of the example above, it would be recommended to add a `validation={{ required: true }}` to the code as per the below.
 
 ```javascript
