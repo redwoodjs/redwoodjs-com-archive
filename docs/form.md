@@ -473,7 +473,7 @@ In addition, if the `transformValue` of a `<TextAreaField>` is set to `Json` it 
       </Form>
 ```
 
-Caveat:  JSON validation will not applied if a custom validation function, such as `fcn` is provided via the prop as follows: `validation={{ validate: fcn }}`
+Caveat:  JSON validation will not be applied if a custom validation function, such as `fcn` is provided via the prop as follows: `validation={{ validate: fcn }}`
 
 #### validation
 
