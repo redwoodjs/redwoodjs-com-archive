@@ -438,7 +438,7 @@ If the transformValue is set to `DateTime`, `Float`, `Int`, or `Json` and the tr
       </Form>
 ```
 
-If the <NumberField> is not modified and remains empty, it will return an `undefined` into the 'submit' function as per the below, as an empty string cannot be converted to an `integer`.
+If the `<NumberField>` is not modified and remains empty, it will return `{ intField: undefined }` into the `onSubmit` function, as an empty string cannot be converted to an integer.
 ```
 { intField: undefined }
 ```
