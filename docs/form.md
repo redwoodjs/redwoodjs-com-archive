@@ -433,18 +433,18 @@ You can also pass a function to `transformValue`. For instance, you might remove
 If the transformValue is set to `DateTime`, `Float`, `Int`, or `Json` and the transformation fails, the form submission will gracefully return an `undefined` for that input.  For example:
 
 ```javascript
-      <Form onSubmit={submit}>
-        <NumberField name="intField" defaultValue="" transformValue="Int" />
-      </Form>
+<Form onSubmit={submit}>
+  <NumberField name="intField" defaultValue="" transformValue="Int" />
+</Form>
 ```
 
 If the `<NumberField>` is not modified and remains empty, it will return `{ intField: undefined }` into the `onSubmit` function, as an empty string cannot be converted to an integer.
 If the `NODE_ENV` environment variable is set to `development` or `test`, it will also issue a console warning upon a failed transformation.  It is recommended to set up your field validation to avoid cases of failed transformation.  In the specific case of the example above, it would be recommended to add a `validation={{ required: true }}` to the code as per the below.
 
 ```javascript
-      <Form onSubmit={onSubmit}>
-        <NumberField name="intField" defaultValue="" transformValue="Int" validation={{ required: true }} />
-      </Form>
+<Form onSubmit={onSubmit}>
+  <NumberField name="intField" defaultValue="" transformValue="Int" validation={{ required: true }} />
+</Form>
 ```
 
 ## `<TextAreaField>`
@@ -464,13 +464,13 @@ See InputField's [transformValue](#inputfields-attributes) for standard capabili
 In addition, if the `transformValue` of a `<TextAreaField>` is set to `Json` it will automatically apply a JSON validation to the `<TextAreaField>` in addition to a JSON transformation at the time of form submission.  For example, the below will have JSON validation:
 
 ```javascript
-      <Form onSubmit={onSubmit}>
-        <TextAreaField
-          name="jsonField"
-          transformValue="Json"
-        />
-        <Submit>Save</Submit>
-      </Form>
+<Form onSubmit={onSubmit}>
+  <TextAreaField
+    name="jsonField"
+    transformValue="Json"
+  />
+  <Submit>Save</Submit>
+</Form>
 ```
 
 Caveat:  JSON validation will not be applied if a custom validation function, such as `fcn` is provided via the prop as follows: `validation={{ validate: fcn }}`
