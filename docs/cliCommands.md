@@ -1465,8 +1465,9 @@ Creates provider-specific code and configuration for deployment.
 
 | Arguments & Options | Description                                                                        |
 | :------------------ | :--------------------------------------------------------------------------------- |
-| `provider`          | Deploy provider to configure. Choices are `netlify`, `vercel`, or `aws-serverless` |
-| `--force, -f`       | Overwrite existing configuration [default: false]         |
+| `provider`          | Deploy provider to configure. Choices are `netlify`, `render`, `vercel`, or `aws-serverless` |
+| `--database, -d`    | Database deployment for Render only. Choices are `postgres`, `sqlite` or `none`. [default: postgres]| 
+| `--force, -f`       | Overwrite existing configuration [default: false]         
 
 ## storybook
 
