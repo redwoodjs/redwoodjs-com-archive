@@ -522,11 +522,13 @@ For full client docs, see: <https://supabase.io/docs/library/getting-started#ref
 
 #### Usage
 
-Supabase supports several signin methods: 
+Supabase supports several sign in methods: 
 
 * email/password
 * passwordless via emailed magiclink
-* OAuth (via Azure Active Directory, Bitbucket, Facebook, GitHub, GitLab, or Google).
+* Sign in with redirect. You can control where the user is redirected to after they are logged in via a `redirectTo` option.
+* Sign in using third-party providers/OAuth via Azure Active Directory, Bitbucket, Facebook, GitHub, GitLab, or Google logins.
+* Sign in with scopes. If you need additional data from an OAuth provider, you can include a space-separated list of `scopes` in your request options to get back an OAuth `provider_token`.
 
 Depending on the credentials provided:
 
