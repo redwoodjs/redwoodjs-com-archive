@@ -46,6 +46,12 @@ When you're developing locally, the dev server watches the `api` directory for m
 
 When deployed, a custom serverless function is an open API endpoint and is your responsibility to secure appropriately.
 
+That means that that anyone can access your function and perform any tasks it's asked to do. In many cases, this is completely appropriate and desired behavior. 
+
+But, in some cases, for example when the function interacts with third parties, like sending email, or when it retrieves sensitive information from a database, you may want to ensure that only verified requests from trusted sources can invoke your function.
+
+And, in some other cases, you may even want to limit how often the function is called over s set period of time to avoid denial-of-service-type attacks.
+
 ### VerificationMethods
 #### RedwoodJS Authentication Header
 * requireAuth()
@@ -71,6 +77,8 @@ When deployed, a custom serverless function is an open API endpoint and is your 
 * todo
 #### Rate Limiting
 * todo
+
+* Denial-of-Service. Example, if query db, consume all connections.
 #### IP Address Whitelisting
 * todo
 
