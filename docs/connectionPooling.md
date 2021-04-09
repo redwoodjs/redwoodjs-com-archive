@@ -10,6 +10,12 @@
 
 Production Redwood apps should enable connection pooling in order to properly scale with your Serverless functions.
 
+## Supabase
+
+For Postgres running on [Supabase](https://supabase.io), using [PgBouncer](https://www.pgbouncer.org/) see how [PgBouncer is now available in Supabase](https://supabase.io/blog/2021/04/02/supabase-pgbouncer#using-connection-pooling-in-supabase).
+
+All new Supabase projects include connection pooling.
+
 ## Heroku
 For Postgres, see [Postgres Connection Pooling](https://devcenter.heroku.com/articles/postgres-connection-pooling).
 
