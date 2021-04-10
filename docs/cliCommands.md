@@ -430,7 +430,7 @@ yarn redwood deploy aws [provider]
 | Options & Arguments | Description                                                                      |
 | :------------------ | :------------------------------------------------------------------------------- |
 | `provider`          | AWS Deploy provider to configure [choices: "serverless"] [default: "serverless"] |
-| `--side     `       | which Side(s)to deploy [choices: "api"] [default: "api"]                         |
+| `--side`            | which Side(s)to deploy [choices: "api"] [default: "api"]                         |
 
 ### netlify
 
@@ -1415,7 +1415,7 @@ yarn redwood setup <command>
 | :----------------- | :---------------------------------------------------------------------------------------- |
 | `auth`             | Setup auth configuration for a provider                                                   |
 | `custom-web-index` | Setup an `index.js` file, so you can customize how Redwood web is mounted in your browser |
-| `deploy`           | Setup a deployment configuration for  a provider                                          |
+| `deploy`           | Setup a deployment configuration for a provider                                           |
 | `i18n`             | Setup i18n                                                                                |
 | `tailwind`         | Setup tailwindcss and PostCSS                                                             |
 | `webpack`          | Setup webpack config file in your project so you can add custom config                    |
