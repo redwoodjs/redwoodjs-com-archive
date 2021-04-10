@@ -238,7 +238,7 @@ This means that `yarn redwood db generate` needs to be run after every change to
 
 ### introspect
 
-Introspect your database and generate models in `./api/db/schema.prisma`, overedwoodriting existing models.
+Introspect your database and generate models in `./api/db/schema.prisma`, overwriting existing models.
 
 > **WARNING**
 >
@@ -1515,7 +1515,7 @@ yarn redwood test [side..]
 | `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                                 |
 
 ## serve
-Run server for api in production, if you are self-hosting, or deploying into a serverful environment.
+Run server for api in production, if you are self-hosting, or deploying into a serverfull environment.
 
 ```terminal
 yarn redwood serve [side]
