@@ -1,272 +1,303 @@
 <mjml>
 
   <mj-head>
-
+    <mj-title>All RedwoodJS News Fit to Print</mj-title>
     <mj-attributes>
-      <mj-text align="center" color="#555" />
+      <!-- "reset" -->
+      <mj-all padding="0" />
+      <!-- default styling for tags -->
+      <mj-text 
+        align="left"
+        color="#1a202c"
+        font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif" 
+        font-size="16px"
+        line-height="1.5"
+      />
+      <!-- padding="18px"  -->
+      <mj-divider 
+        border-color="#eaeaea" 
+        border-width="3px" 
+        padding="18px"
+      />
+      <!-- custom classes -->
+      <mj-class
+        name="heading" 
+        align="center" 
+        color="#bf4722" 
+        font-size="40px" 
+        font-weight="bold" 
+      />
     </mj-attributes>
-
+    <mj-style>
+      /* h2 */
+      /* ------------------------  */
+      h2 {
+        font-size: 28px;
+      }
+      /* h3 */
+      /* ------------------------  */
+      h3 {
+        display: inline;
+        font-size: 22px;
+        font-weight: bold;
+      }
+      h3::after {
+        content: " — ";
+      }
+      /* p */
+      /* ------------------------  */
+      h3 + p {
+        display: inline;
+      }
+    </mj-style>
   </mj-head>
 
   <mj-body background-color="#fdf8f6">
 
-    <!-- header -->
-    <mj-include path="./header.mjml" />
-
-    <!-- letter -->
+    <!-- redwoodjs logo -->
+    <!-- ------------------------  -->
+    <!-- left/right padding to center -->
+    <!-- david made this; he still might have it -->
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="left"
-          color="#1a202c"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          line-height="1.5"
-        >
-          <p style="font-size: 16px; font-weight: bold">Hey,</p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-        </mj-text>
+        <mj-image 
+          src="https://mcusercontent.com/0c27354a06a7fdf4d83ce07fc/images/a7d49932-95ed-411e-b244-baa5342eef18.png" 
+          padding="25px"
+          padding-right="45px"
+        />
       </mj-column>
     </mj-section>
 
+    <!-- letter -->
+    <!-- ------------------------  -->
     <mj-section>
       <mj-column>
-        <mj-divider border-color="#eaeaea" border-width="1px" />
+        <mj-text>
+          <h2>Hey,</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+        </mj-text>
+        <mj-spacer height="36px" />
+      </mj-column>
+    </mj-section>
+
+    <!-- divider -->
+    <mj-section>
+      <mj-column>
+        <mj-divider />
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <!-- upcoming -->
+    <!-- ------------------------  -->
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="center" 
-          color="#bf4722"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          font-size="40px"
-          font-weight="bold"
-        >
+        <mj-text mj-class="heading">
           Upcoming
         </mj-text>
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="left"
-          color="#1a202c"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          line-height="1.5"
-        >
-          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
-          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+        <mj-text>
+          <h3>Lorem ipsum</h3>
+          <p>dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+          <p>dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
         </mj-text>
-      </mj-column>
-    </mj-section>
-
-    <mj-section>
-      <mj-column>
-        <mj-text 
-          align="left"
-          color="#1a202c"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          line-height="1.5"
-        >
-          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
-          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+        <mj-spacer height="36px" />
+        <mj-text>
+          <h3>Lorem ipsum</h3>
+          <p>dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+          <p>dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
         </mj-text>
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
+    <!-- divider -->
     <mj-section>
       <mj-column>
-        <mj-divider border-color="#eaeaea" border-width="1px" />
+        <mj-divider />
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <!-- highlights -->
+    <!-- ------------------------  -->
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="center" 
-          color="#bf4722"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          font-size="40px"
-          font-weight="bold"
-        >
+        <mj-text mj-class="heading">
           Highlights
         </mj-text>
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="left"
-          color="#1a202c"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          line-height="1.5"
-        >
-          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+        <mj-text>
+          <h3>Lorem ipsum</h3>
           dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
         </mj-text>
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="left"
-          color="#1a202c"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          line-height="1.5"
-        >
-          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+        <mj-text>
+          <h3>Lorem ipsum</h3>
           dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
         </mj-text>
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="left"
-          color="#1a202c"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          line-height="1.5"
-        >
-          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+        <mj-text>
+          <h3>Lorem ipsum</h3>
           dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
         </mj-text>
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="left"
-          color="#1a202c"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          line-height="1.5"
-        >
-          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
+        <mj-text>
+          <h3>Lorem ipsum</h3>
           dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
         </mj-text>
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
+    <!-- divider -->
     <mj-section>
       <mj-column>
-        <mj-divider border-color="#eaeaea" border-width="1px" />
+        <mj-divider />
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <!-- snippets -->
+    <!-- ------------------------  -->
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="center" 
-          color="#bf4722"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          font-size="40px"
-          font-weight="bold"
-        >
+        <mj-text mj-class="heading">
           Snippets
         </mj-text>
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="left"
-          color="#1a202c"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          line-height="1.5"
-        >
-          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
-          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        <mj-text>
+          <h3>Lorem ipsum</h3>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </mj-text>
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="left"
-          color="#1a202c"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          line-height="1.5"
-        >
-          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
-          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        <mj-text>
+          <h3>Lorem ipsum</h3>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </mj-text>
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="left"
-          color="#1a202c"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          line-height="1.5"
-        >
-          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
-          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        <mj-text>
+          <h3>Lorem ipsum</h3>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </mj-text>
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="left"
-          color="#1a202c"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          line-height="1.5"
-        >
-          <span style="font-size: 16px; font-weight: bold">Lorem ipsum—</span>
-          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        <mj-text>
+          <h3>Lorem ipsum</h3>
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </mj-text>
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
+    <!-- divider -->
     <mj-section>
       <mj-column>
-        <mj-divider border-color="#eaeaea" border-width="1px" />
+        <mj-divider />
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <!-- made with redwood -->
+    <!-- ------------------------  -->
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="center" 
-          color="#bf4722"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          font-size="40px"
-          font-weight="bold"
-        >
+        <mj-text mj-class="heading">
           Made with Redwood
         </mj-text>
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <mj-section>
       <mj-column>
-        <mj-text 
-          align="left"
-          color="#1a202c"
-          font-family="'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          line-height="1.5"
-        >
+        <mj-text>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
         </mj-text>
+        <mj-spacer height="36px" />
+        <mj-spacer height="36px" />
       </mj-column>
     </mj-section>
 
     <!-- footer -->
-    <mj-include path="./footer.mjml" />
+    <!-- ------------------------  -->
+    <mj-section background-color="#bf4722">
+      <mj-column>
+        <mj-social>
+          <mj-social-element name="twitter" href="http://www.twitter.com/redwoodjs" />
+          <!-- custom social element -->
+          <!-- https://documentation.mjml.io/#mj-social -->
+          <!-- in mailchimp, this was a link to our website -->
+          <mj-social-element href="https://redwoodjs.com" background-color="#FF00FF" src="path-to-your-icon" />
+          <mj-social-element name="github" href="https://github.com/redwoodjs" />
+        </mj-social>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#bf4722">
+      <mj-column>
+        <mj-divider border-width="1px" border-color="#ffffff" />
+      </mj-column>
+    </mj-section>
+
+    <!-- etc -->
+    <mj-section background-color="#bf4722">
+      <mj-column>
+        <mj-text color="#ffffff">
+          Copyright © 2021 RedwoodJS, All rights reserved.
+        </mj-text>
+        <mj-text color="#ffffff">
+          Want to change how you receive these emails?
+    You can update your preferences or unsubscribe from this list.
+        </mj-text>
+      </mj-column>
+    </mj-section>
 
   </mj-body>
 
