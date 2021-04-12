@@ -295,10 +295,10 @@ Seed your database with test data.
 > As of `v0.25`, `yarn redwood db <command>` has been deprecated in favor of `yarn redwood prisma <command>`. Click [here](#prisma) to skip to the prisma section below.
 
 ```terminal
-yarn redwood db seed
+yarn redwood prisma db seed
 ```
 
-Runs `seed.js` in `./api/db`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/db/seeds.js).
+Runs `seed.js` in `./api/db`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/db/seed.js).
 
 ### studio
 
