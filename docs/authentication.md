@@ -165,6 +165,15 @@ To get your application keys, only complete the ["Configure Auth0"](https://auth
 
 **NOTE** If you're using Auth0 with Redwood then you must also [create an API](https://auth0.com/docs/quickstart/spa/react/02-calling-an-api#create-an-api) and set the audience parameter, or you'll receive an opaque token instead of the required JWT token.
 
+The `useRefreshTokens` options is required for automatically extending sessions beyond that set in the initial JWT expiration (often 3600/1 hour or 86400/1 day).
+  
+If you want to allow users to get refresh tokens while offline, you must also enable the Allow Offline Access switch in your Auth0 API Settings as part of setup configuration. See: [https://auth0.com/docs/tokens/refresh-tokens](https://auth0.com/docs/tokens/refresh-tokens)
+
+You can increase security by using refresh token rotation which issues a new refresh token and invalidates the predecessor token with each request made to Auth0 for a new access token.
+
+Rotating the refresh token reduces the risk of a compromised refresh token. For more information, see: [https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation](https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation).
+  
+
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
 ```js
@@ -183,12 +192,27 @@ const auth0 = new Auth0Client({
   domain: process.env.AUTH0_DOMAIN,
   client_id: process.env.AUTH0_CLIENT_ID,
   redirect_uri: process.env.AUTH0_REDIRECT_URI,
+
   // ** NOTE ** Storing tokens in browser local storage provides persistence across page refreshes and browser tabs.
   // However, if an attacker can achieve running JavaScript in the SPA using a cross-site scripting (XSS) attack,
   // they can retrieve the tokens stored in local storage.
   // https://auth0.com/docs/libraries/auth0-spa-js#change-storage-options
   cacheLocation: 'localstorage',
   audience: process.env.AUTH0_AUDIENCE,
+
+  // @MARK: useRefreshTokens is required for automatically extending sessions
+  // beyond that set in the initial JWT expiration.
+  //
+  // If you want to allow users to get refresh tokens while offline,
+  // you must also enable the Allow Offline Access switch in your
+  // Auth0 API Settings as part of setup configuration.
+  // https://auth0.com/docs/tokens/refresh-tokens
+  //
+  // Note: You can increase security by using refresh token rotation which issues a new refresh token
+  // and invalidates the predecessor token with each request made to Auth0 for a new access token.
+  // Rotating the refresh token reduces the risk of a compromised refresh token.
+  // https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation
+  useRefreshTokens: true,
 })
 
 const App = () => (
