@@ -415,4 +415,4 @@
 
 ### Colbyashi Maru is a streaming series where Colby Fayock brings on guests and pits against the clock to build a project. In this episode Colby challenges Milecia McGregor to build an app using RedwoodJS. Will she succeed? 
 
-#### Twitch
+#### Video
