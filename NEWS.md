@@ -409,7 +409,7 @@
 
 ![Colbyashi Maru](https://user-images.githubusercontent.com/14932877/114967586-95dbf480-9e29-11eb-87e6-4d9d83d1b6f5.png)
 
-# [Full Stack Jamstack with RedwoodJS ft Milecia McGregor](https://www.twitch.tv/videos/979021309)
+# [Full Stack Jamstack with RedwoodJS ft Milecia McGregor](https://www.youtube.com/watch?v=ifr4VKsZ6cw)
 
 ## April 7 2021
 
