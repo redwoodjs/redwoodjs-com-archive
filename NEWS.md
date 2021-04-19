@@ -404,3 +404,15 @@
 ### In the Talking Serverless podcast, we dive into the world of serverless and talk to people in and around the space who are making contributions to the industry at large.
 
 #### Podcast
+
+---
+
+![Colbyashi Maru](https://user-images.githubusercontent.com/14932877/114967586-95dbf480-9e29-11eb-87e6-4d9d83d1b6f5.png)
+
+# [Full Stack Jamstack with RedwoodJS ft Milecia McGregor](https://www.youtube.com/watch?v=ifr4VKsZ6cw)
+
+## April 7 2021
+
+### Colbyashi Maru is a streaming series where Colby Fayock brings on guests and pits against the clock to build a project. In this episode Colby challenges Milecia McGregor to build an app using RedwoodJS. Will she succeed? 
+
+#### Video
