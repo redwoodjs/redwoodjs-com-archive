@@ -94,7 +94,7 @@ For the complete deployment process on Netlify, see the [Tutorial Deployment sec
 ### Render tl;dr Deploy
 If you simply want to experience the Render deployment process with the Prisma database of your choice, you can do the following:
 1. create a new redwood project: `yarn create redwood-app ./render-deploy`
-2. after your "render-deploy" project installation is complete, init git, commit, and add it as a new repo to GitHub 
+2. after your "render-deploy" project installation is complete, init git, commit, and add it as a new repo to GitHub or GitLab 
 3. run the command `yarn rw setup deploy render`, use the flag `-database` to select from `postgres`, `sqlite` or `none` to proceed without a database
 4. follow the [Render Redwood Deploy Docs](https://render.com/docs/deploy-redwood) for detailed instructions
 
