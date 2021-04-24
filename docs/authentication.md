@@ -594,7 +594,7 @@ yarn rw setup auth nhost
 Update your .env file with the following setting which can be found on your Nhost project's dashboard.
 
 - `NHOST_BACKEND_URL` with the unique Nhost Backend (Auth & Storage) URL for your project.
-
+- `NHOST_JWT_SECRET` with the JWT Key secret that you have set in your project's Settings > Hasura "JWT Key" section.
 #### Usage
 
 Nhost supports the following methods: 
@@ -610,13 +610,15 @@ Depending on the credentials provided:
 
 For the docs on Authentication, see: <https://docs.nhost.io/auth>
 
-If you are also using Nhost as your GraphQL API server, you will need to pass `skipFetchCurrentUser` as a prop to `AuthProvider` , as follows:
+If you are also **using Nhost as your GraphQL API server**, you will need to pass `skipFetchCurrentUser` as a prop to `AuthProvider` , as follows:
 
 ```js
 <AuthProvider client={nhost} type="nhost" skipFetchCurrentUser>
 ```
 
 This avoids having an additional request to fetch the current user which is meant to work with Apollo Server and Prisma.
+
+Important: The `skipFetchCurrentUser` attribute is **only** needed if you are **not** using the standard RedwoodJS api side GraphQL Server.
 +++
 
 ### Custom
