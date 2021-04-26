@@ -749,14 +749,15 @@ yarn redwood generate layout <name>
 
 Layouts wrap pages and help you stay DRY.
 
-| Arguments & Options  | Description                              |
-| :------------------- | :--------------------------------------- |
-| `name`               | Name of the layout                       |
-| `--force, -f`        | Overwrite existing files                 |
-| `--javascript, --js` | Generate JavaScript files                |
-| `--typescript, --ts` | Generate TypeScript files                |
-| `--tests`            | Generate test files [default: true]      |
-| `--stories`          | Generate Storybook files [default: true] |
+| Arguments & Options  | Description                                         |
+|----------------------|-----------------------------------------------------|
+| `name`               | Name of the layout                                  |
+| `--force, -f`        | Overwrite existing files                            |
+| `--javascript, --js` | Generate JavaScript files                           |
+| `--typescript, --ts` | Generate TypeScript files                           |
+| `--tests`            | Generate test files [default: true]                 |
+| `--stories`          | Generate Storybook files [default: true]            |
+| `--skipLink`         | Generate a layout with a skip link [default: false] |
 
 **Usage**
 
