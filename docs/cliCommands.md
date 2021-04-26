@@ -1515,7 +1515,8 @@ yarn redwood test [side..]
 | `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                                 |
 
 ## serve
-Run server for api in production, if you are self-hosting, or deploying into a serverfull environment.
+
+Runs a server that serves both the api and the web sides. 
 
 ```terminal
 yarn redwood serve [side]
@@ -1541,6 +1542,11 @@ yarn rw serve api
 
 This command uses `apiProxyPath` in your `redwood.toml`. Use this command if you want to run just the api side on a server (e.g. running on Render).
 
+| Arguments & Options | Description                                                       |
+|---------------------|-------------------------------------------------------------------|
+| `--port`            | What port should the server run on [default: 8911]                |
+| `--socket`          | The socket the server should run. This takes precedence over port |
+| `--apiRootPath`     | The root path where your api functions are served                 |
 
 ### web
 
@@ -1556,7 +1562,11 @@ This command serves the contents in `web/dist`. Use this command if you're debug
 >
 > Probably, but it can be a challenge to setup when you just want something running quickly!
 
-<br>
+| Arguments & Options | Description                                                                                  |
+|---------------------|----------------------------------------------------------------------------------------------|
+| `--port`            | What port should the server run on [default: 8911]                                           |
+| `--socket`          | The socket the server should run. This takes precedence over port                            |
+| `--apiHost`         | Forwards requests from the `apiProxyPath` (defined in `redwood.toml`) to the specified host  |
 
 ## upgrade
 
