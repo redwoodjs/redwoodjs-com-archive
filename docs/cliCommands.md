@@ -401,10 +401,10 @@ For the full list of Webpack Dev Server settings, see [this documentation](https
 
 Deploy your redwood project to a hosting provider target.
 
-**Netlify, Vercel, and Render**
+**Netlify, Vercel, and Render** <br>
 For hosting providers that auto deploy from Git, the deploy command runs the set of steps to build, apply production DB changes, and apply data migrations. In this context, it is often referred to as a Build Command. _Note: for Render, which uses traditional infrastructure, the command also starts Redwood's api server._
 
-**AWS**
+**AWS** <br>
 This command runs the steps to both build your project _and_ deploy it to AWS.
 
 <br />
