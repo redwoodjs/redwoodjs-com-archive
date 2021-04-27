@@ -401,9 +401,13 @@ For the full list of Webpack Dev Server settings, see [this documentation](https
 
 Deploy your redwood project to a hosting provider target.
 
-For Jamstack hosting providers like Netlify and Vercel, the deploy command runs the set of steps to build, apply production DB changes, and apply data migrations. In this context, it is often referred to as a Build Command.
+**Netlify, Vercel, and Render**  
+For hosting providers that auto deploy from Git, the deploy command runs the set of steps to build, apply production DB changes, and apply data migrations. In this context, it is often referred to as a Build Command. _Note: for Render, which uses traditional infrastructure, the command also starts Redwood's api server._
 
-For hosting providers like AWS, this command runs the steps to both build your project _and_ deploy it to AWS.
+**AWS**  
+This command runs the steps to both build your project _and_ deploy it to AWS.
+
+<br />
 
 ```
 yarn redwood deploy <target>
@@ -415,6 +419,7 @@ yarn redwood deploy <target>
 | :---------------------- | :---------------------------------------------------------------- |
 | `aws <provider>`        | Deploy to AWS using the selected provider [choices: "serverless"] |
 | `netlify [...commands]` | Build command for Netlify deploy                                  |
+| `render <side> [...commands]`  | Build command for Render deploy                                   |
 | `vercel [...commands]`  | Build command for Vercel deploy                                   |
 
 ### aws
@@ -437,7 +442,7 @@ yarn redwood deploy aws [provider]
 Build command for Netlify deploy
 
 ```
-yarn redwood deploy netlify [provider]
+yarn redwood deploy netlify
 ```
 
 <br/>
@@ -446,7 +451,7 @@ yarn redwood deploy netlify [provider]
 | :--------------------- | :--------------------------------------------------- |
 | `--build`              | Build for production [default: "true"]               |
 | `--prisma`             | Apply database migrations [default: "true"]          |
-| `--data-migrate, --dm` | wMigrate the data in your database [default: "true"] |
+| `--data-migrate, --dm` | Migrate the data in your database [default: "true"] |
 
 **Example**
 The following command will build, apply Prisma DB migrations, and skip data migrations.
@@ -455,12 +460,42 @@ The following command will build, apply Prisma DB migrations, and skip data migr
 yarn redwood deploy netlify --no-data-migrate
 ```
 
+### render
+
+Build (web) and Start (api) command for Render deploy. (For usage instructions, see the Render [Deploy Redwood](https://render.com/docs/deploy-redwood) doc.)
+
+```
+yarn redwood deploy render <side>
+```
+
+<br/>
+
+| Options & Arguments    | Description                                          |
+| :--------------------- | :--------------------------------------------------- |
+| `side`                 | select side to build [choices: "api", "web"]         |
+| `--prisma`             | Apply database migrations [default: "true"]          |
+| `--data-migrate, --dm` | Migrate the data in your database [default: "true"] |
+| `--serve`              | Run server for api in production [default: "true"]   |
+
+**Example**
+The following command will build the Web side for static-site CDN deployment.
+
+```
+yarn redwood deploy render web
+```
+
+The following command will apply Prisma DB migrations, run data migrations, and start the api server.
+
+```
+yarn redwood deploy render api
+```
+
 ### vercel
 
 Build command for Vercel deploy
 
 ```
-yarn redwood deploy vercel [provider]
+yarn redwood deploy vercel
 ```
 
 <br/>
@@ -469,7 +504,7 @@ yarn redwood deploy vercel [provider]
 | :--------------------- | :--------------------------------------------------- |
 | `--build`              | Build for production [default: "true"]               |
 | `--prisma`             | Apply database migrations [default: "true"]          |
-| `--data-migrate, --dm` | wMigrate the data in your database [default: "true"] |
+| `--data-migrate, --dm` | Migrate the data in your database [default: "true"] |
 
 **Example**
 The following command will build, apply Prisma DB migrations, and skip data migrations.
@@ -1469,7 +1504,8 @@ Creates provider-specific code and configuration for deployment.
 
 | Arguments & Options | Description                                                                        |
 | :------------------ | :--------------------------------------------------------------------------------- |
-| `provider`          | Deploy provider to configure. Choices are `netlify`, `vercel`, or `aws-serverless` |
+| `provider`          | Deploy provider to configure. Choices are `aws-serverless`, `netlify`, `render`, or `vercel` |
+| `--database, -d`    | Database deployment for Render only [choices: "none", "postgresql", "sqlite"] [default: "postgresql"]     |
 | `--force, -f`       | Overwrite existing configuration [default: false]                                  |
 
 ## storybook
