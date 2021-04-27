@@ -401,10 +401,10 @@ For the full list of Webpack Dev Server settings, see [this documentation](https
 
 Deploy your redwood project to a hosting provider target.
 
-**Netlify, Vercel, and Render**  
+**Netlify, Vercel, and Render**
 For hosting providers that auto deploy from Git, the deploy command runs the set of steps to build, apply production DB changes, and apply data migrations. In this context, it is often referred to as a Build Command. _Note: for Render, which uses traditional infrastructure, the command also starts Redwood's api server._
 
-**AWS**  
+**AWS**
 This command runs the steps to both build your project _and_ deploy it to AWS.
 
 <br />
@@ -1450,13 +1450,15 @@ yarn redwood setup <command>
 <br/>
 
 | Commands           | Description                                                                               |
-| :----------------- | :---------------------------------------------------------------------------------------- |
+|--------------------|-------------------------------------------------------------------------------------------|
 | `auth`             | Setup auth configuration for a provider                                                   |
 | `custom-web-index` | Setup an `index.js` file, so you can customize how Redwood web is mounted in your browser |
 | `deploy`           | Setup a deployment configuration for a provider                                           |
 | `i18n`             | Setup i18n                                                                                |
 | `tailwind`         | Setup tailwindcss and PostCSS                                                             |
 | `webpack`          | Setup webpack config file in your project so you can add custom config                    |
+| `tsconfig`         | Add relevant tsconfig, so you can start using TypeScript                                  |
+
 
 ### setup auth
 
@@ -1486,6 +1488,18 @@ yarn redwood setup custom-web-index
 ```
 
 Redwood automatically mounts your `<App />` to the DOM, but if you want to customize how that happens, you can use this setup command to generate a file where you can do that in.
+
+| Arguments & Options | Description              |
+| :------------------ | :----------------------- |
+| `--force, -f`       | Overwrite existing files |
+
+
+### setup tsconfig
+Setup tsconfig.json on both web and api sides.
+
+```
+yarn redwood setup tsconfig
+```
 
 | Arguments & Options | Description              |
 | :------------------ | :----------------------- |
