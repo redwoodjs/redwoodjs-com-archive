@@ -1,6 +1,6 @@
 # Deploy
 
-Redwood is designed for both serverless and traditional infrastructure deployments, offering a unique continuous deployment process:
+Redwood is designed for both serverless and traditional infrastructure deployments, offering a unique continuous deployment process in both cases:
 
 1. code is committed to a repository on GitHub, GitLab, or Bitbucket, which triggers the deployment
 2. the Redwood API Side and Web Side are individually prepared via a build process
