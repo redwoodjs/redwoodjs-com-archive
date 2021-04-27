@@ -33,7 +33,7 @@ The most important Redwood configuration is to set the `apiProxyPath` in your `r
 The build command is used to prepare the Web and API for deployment. Additionally, other actions can be run during build such as database migrations. The Redwood build command must specify one of the supported hosting providers (aka `target`):
 
 ```shell
-yarn rw prisma deploy <target>
+yarn rw deploy <target>
 ```
 
 For example:
