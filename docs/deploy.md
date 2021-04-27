@@ -1,6 +1,6 @@
 # Deploy
 
-Redwood is designed for serverless architecture deployment, offering a unique continuous deployment process:
+Redwood is designed for both serverless and traditional infrastructure deployments, offering a unique continuous deployment process:
 
 1. code is committed to a repository on GitHub, GitLab, or Bitbucket, which triggers the deployment
 2. the Redwood API Side and Web Side are individually prepared via a build process
@@ -11,6 +11,7 @@ Currently, these are the officially supported deploy targets:
 - [Netlify](https://www.netlify.com/)
 - [Vercel](https://vercel.com)
 - [AWS-Serverless](https://serverless.com)
+- [Render](https://render.com)
 
 Redwood has a CLI generator that adds the code and configuration required by the specified provider (see the [CLI Doc](https://redwoodjs.com/docs/cli-commands#deploy-config) for more information):
 ```shell
@@ -91,6 +92,7 @@ If you simply want to experience the Netlify deployment process without a databa
 For the complete deployment process on Netlify, see the [Tutorial Deployment section](https://redwoodjs.com/tutorial/deployment).
 
 ## Render Deploy
+Render is a unified cloud to build and run all your apps and websites with free SSL, a global CDN, private networks and auto deploys from Git — **database included**!
 ### Render tl;dr Deploy
 If you simply want to experience the Render deployment process with the Prisma database of your choice, you can do the following:
 1. create a new redwood project: `yarn create redwood-app ./render-deploy`
