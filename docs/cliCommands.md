@@ -407,6 +407,8 @@ For hosting providers that auto deploy from Git, the deploy command runs the set
 **AWS**  
 This command runs the steps to both build your project _and_ deploy it to AWS.
 
+<br />
+
 ```
 yarn redwood deploy <target>
 ```
