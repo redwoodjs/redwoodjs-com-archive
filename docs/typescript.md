@@ -29,7 +29,7 @@ Remember you don't _need_ to convert all your files to TypeScript, you can alway
 For your shared types we need to do a few things:
 
 1. Put your shared types at the root of the project (makes sense right?), maybe in `types` at the root
-2. You can call this folder whatever you like ofcourse, just add the same folder to your includes
+2. You can call this folder whatever you like, of course, just add the same folder to your includes
 3. Modify your web/tsconfig.json and api/tsconfig.json by adding this to your includes:
 
 ```diff
@@ -69,7 +69,6 @@ touch api/tsconfig.json
 2. Now copy and paste the latest config from the Redwood template: [api/tsconfig.json](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/api/tsconfig.json) into the empty file
 
 ### WEB
-
 
 1. Create a `./api/tsconfig.json` file:
 
