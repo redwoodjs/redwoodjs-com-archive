@@ -81,9 +81,17 @@ See [Logger](/docs/logger) in the RedwoodJS for more information about how to se
 
 Rate limiting (or throttling) how often a function executes by a particular IP addresses or user account is a common way of stemming api abuse.
 
+As LogRocket [says]((https://blog.logrocket.com/rate-limiting-node-js/)):
+
+> Rate limiting is a very powerful feature for securing backend APIs from malicious attacks and for handling unwanted streams of requests from users. In general terms, it allows us to control the rate at which user requests are processed by our server.
+
 API Gateways like [Kong](https://docs.konghq.com/hub/kong-inc/rate-limiting/) offer plugins to configure how many HTTP requests can be made in a given period of seconds, minutes, hours, days, months, or years.
 
 Currently, RedwoodJS does not offer rate limiting in the framework, but your deployment target infrastructure may. This is a feature redwoodJS will investigate for future releases.
+
+For more information about Rate Limiting in Node, consider:
+
+* [Understanding and implementing rate limiting in Node.js](https://blog.logrocket.com/rate-limiting-node-js/) on Logrocket
 
 * Denial-of-Service. Example, if query db, consume all connections.
 #### IP Address Whitelisting
