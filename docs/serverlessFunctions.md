@@ -65,7 +65,7 @@ This will then decode the Bearer token and check to see if the request is author
 
 ### Webhooks
 
-If your function receives an incoming Webhook from a third party, see [Webhooks](/webhooks) in the RedwoodJS documentation to verify and trust its payload.
+If your function receives an incoming Webhook from a third party, see [Webhooks](/docs/webhooks) in the RedwoodJS documentation to verify and trust its payload.
 
 ### Other considerations
 
@@ -76,7 +76,7 @@ Logging in production -- and monitoring for suspicious activity, unknown IP addr
 
 Third-party log services like [logFlare](https://logflare.app/), [Datadog](https://www.datadoghq.com/) and [LogDNA](https://www.logdna.com/) all have features that store logs for inspection, but also can trigger alerts and notifications if something you deem untoward occurs.
 
-See [Logger](/logger) in the RedwoodJS for more information about how to setup and use logging services.
+See [Logger](/docs/logger) in the RedwoodJS for more information about how to setup and use logging services.
 #### Rate Limiting
 
 Rate limiting (or throttling) how often a function executes by a particular IP addresses or user account is a common way of stemming api abuse.
