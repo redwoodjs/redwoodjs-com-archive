@@ -68,6 +68,8 @@ This will then decode the Bearer token and check to see if the request is author
 If your function receives an incoming Webhook from a third party, see [Webhooks](/webhooks) in the RedwoodJS documentation to verify and trust its payload.
 
 ### Other considerations
+
+In addition to securing your serverless functions, you may consider logging, rate limiting, whitelisting as ways to protect your functions from abuse or misuse.
 #### Visibility via Logging
 
 Logging in production -- and monitoring for suspicious activity, unknown IP addresses, errors, etc -- can be a critical part of keeping your serverless functions and your application safe.
