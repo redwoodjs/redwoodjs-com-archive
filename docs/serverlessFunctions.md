@@ -25,6 +25,9 @@ It'll give you a stub that exports a handler that returns a status code&mdash;th
 export const handler = async (event, context) => {
   return {
     statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({
       data: '${name} function',
     }),
