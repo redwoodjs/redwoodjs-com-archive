@@ -52,17 +52,52 @@ But, in some cases, for example when the function interacts with third parties, 
 
 And, in some other cases, you may even want to limit how often the function is called over s set period of time to avoid denial-of-service-type attacks.
 
+### Authentication
+
+If you invoke your function from your web side, you can use `requireAuth()` to ensure that function is allowed to execute by passing your auth provider's access token and the provider method in the request headers:
+
+```
+auth-provider: <your provider>
+authorization: Bearer <access_token>
+```
+
+This will then decode the Bearer token and check to see if the request is authorized.
+
 ### Webhooks
 
-See: ... link
+If your function receives an incoming Webhook from a third party, see [Webhooks](/webhooks) in the RedwoodJS documentation to verify and trust its payload.
 
 ### Other considerations
 #### Visibility via Logging
-* todo
+
+Logging in production -- and monitoring for suspicious activity, unknown IP addresses, errors, etc -- can be a critical part of keeping your serverless functions and your application safe.
+
+Third-party log services like [logFlare](https://logflare.app/), [Datadog](https://www.datadoghq.com/) and [LogDNA](https://www.logdna.com/) all have features that store logs for inspection, but also can trigger alerts and notifications if something you deem untoward occurs.
+
+See [Logger](/logger) in the RedwoodJS for more information about how to setup and use logging services.
 #### Rate Limiting
-* todo
+
+Rate limiting (or throttling) how often a function executes by a particular IP addresses or user account is a common way of stemming api abuse.
+
+API Gateways like [Kong](https://docs.konghq.com/hub/kong-inc/rate-limiting/) offer plugins to configure how many HTTP requests can be made in a given period of seconds, minutes, hours, days, months, or years.
+
+Currently, RedwoodJS does not offer rate limiting in the framework, but your deployment target infrastructure may. This is a feature redwoodJS will investigate for future releases.
 
 * Denial-of-Service. Example, if query db, consume all connections.
 #### IP Address Whitelisting
-* todo
+
+Because the `event` passed to the function handler contains the request's IP address, you could decide to whitelist only certain known and trusted IP addresses. 
+
+```js
+
+const ipAddress = ({ event }) => {
+  return (
+    event?.headers?.['client-ip'] ||
+    event?.requestContext?.identity?.sourceIp ||
+    'localhost'
+  )
+}
+```
+
+If the IP address in the event does not match, then you can raise an error and return `401 Unauthorized` status.
 
