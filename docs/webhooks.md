@@ -37,6 +37,7 @@ The RedwoodJS [`api/webhooks` package](https://github.com/redwoodjs/redwood/blob
 ## Webhook Verification
 
 Webhooks have a few ways of letting you know they should be trusted and the most common way is by sending along a "signature" in a header. They typically sign the payload with some secret key (in a few ways) and expect you to validate the signature before processing the payload.
+
 ###  Webhook Signature Verifiers
 
 Common signature verification methods are:
@@ -51,7 +52,48 @@ RedwoodJS adds a way to do no verification as well of testing or in the case you
 
 * SkipVerifier (bypass verification, or no verification)
 
-RedwoodJS  implements [signatureVerifiers](https://github.com/dthyresson/redwood/tree/dt-secure-handler/packages/api/src/auth/verifiers) for each of these so you can get started integrating your app with third-parties right away.
+RedwoodJS implements [signatureVerifiers](https://github.com/dthyresson/redwood/tree/dt-secure-handler/packages/api/src/auth/verifiers) for each of these so you can get started integrating your app with third-parties right away.
+
+```js
+export type SupportedVerifiers =
+  | SkipVerifier
+  | SecretKeyVerifier
+  | Sha1Verifier
+  | Sha256Verifier
+  | Sha1Verifier
+  | TimestampSchemeVerifier
+  | JwtVerifier
+```
+
+Each `SupportedVerifier` implements a method to `sign` and `verify` a payload with a secret (if needed).
+
+When the webhook needs [creates a verifier](https://github.com/dthyresson/redwood/blob/b3b21a4a2c7a96ac8d1fd8b078a9869d3f2f1cec/packages/api/src/auth/verifiers/index.ts#L12) in order to `verifyEvent`, `verifySignature` or `signPayload` it does so via:
+
+```js
+createVerifier(type, options)
+```
+
+where type is one of the support verifier and `VerifyOptions` sets the options the verifier needs to sign or verify.
+
+```js
+/**
+ * VerifyOptions
+ *
+ * Used when verifying a signature based on the verifier's requirements
+ *
+ * @param {string} signatureHeader - Optional Header that contains the signature to verify
+ * will default to DEFAULT_WEBHOOK_SIGNATURE_HEADER
+ * @param {number} timestamp - Optional timestamp in msec
+ * @param {number} tolerance - Optional tolerance in msec
+ * @param {string} issuer - Options JWT issuer for JWTVerifier
+ */
+export interface VerifyOptions {
+  signatureHeader?: string
+  timestamp?: number
+  tolerance?: number
+  issuer?: string
+}
+```
 
 ## How to Receive and Verify a Webhook using a RedwoodJS Function
 
@@ -612,6 +654,45 @@ export const handler = async (event: APIGatewayEvent) => {
 }
 ```
 
+## How to Sign a Payload for an Outgoing Webhook event in RedwoodJS
+
+The `api/webhooks` package exports [signPayload](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts) that will sign a payload using a [verification method](https://github.com/redwoodjs/redwood/tree/main/packages/api/src/auth/verifiers) and create your "webhook signature".
+
+Once you have the signature, you can 
+
+* add the signature to your request http headers 
+* with a signature key of your choosing 
+* and then post the request to the endpoint 
+* that needs to be sent the event
+
+```js
+import got from 'got'
+import { signPayload } from '@redwoodjs/api/webhooks'
+
+const YOUR_OUTGOING_WEBHOOK_DESTINATION_URL = 'https://example.com/receive'
+const YOUR_WEBHOOK_SIGNATURE = process.env.WEBHOOK_SIGNATURE
+
+export const sendOutGoingWebhooks = async ({ payload }) => {
+  const signature = signPayload('timestampSchemeVerifier', {
+    payload,
+    secret,
+  })
+
+  await got.put(
+    YOUR_OUTGOING_WEBHOOK_DESTINATION_URL,
+    {
+      responseType: 'json',
+
+      json: {
+        payload,
+      },
+      headers: {
+        YOUR_WEBHOOK_SIGNATURE: signature,
+      },
+    }
+  )
+}
+```
 ## More Information
 
 For more information about Webhooks, please consider the following resources:
