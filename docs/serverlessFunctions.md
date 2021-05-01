@@ -63,6 +63,38 @@ authorization: Bearer <access_token>
 
 This will then decode the Bearer token and check to see if the request is authorized.
 
+```js
+import { requireAuth } from 'src/lib/auth'
+import { AuthenticationError, ForbiddenError } from '@redwoodjs/api'
+
+export const handler = async (event, context) => {
+  try {
+    requireAuth({ role: 'admin' })
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        data: 'Permitted',
+      }),
+    }
+  } catch (e) {
+    if (e instanceof AuthenticationError) {
+      return {
+        statusCode: 401,
+      }
+    } else if (e instanceof ForbiddenError) {
+      return {
+        statusCode: 403,
+      }
+    } else {
+      return {
+        statusCode: 400,
+      }
+    }
+  }
+}
+```
+
 ### Webhooks
 
 If your function receives an incoming Webhook from a third party, see [Webhooks](/docs/webhooks) in the RedwoodJS documentation to verify and trust its payload.
