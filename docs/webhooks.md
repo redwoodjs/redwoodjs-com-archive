@@ -34,7 +34,7 @@ That is, you need to **verify your incoming webhooks**.
 
 The RedwoodJS [`api/webhooks` package](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts) makes it easy to receive and verify incoming Webhooks by implementing many of the most commonly used Webhook signature verifiers.
 
-## Webhook Verification
+### Webhook Verification
 
 Webhooks have a few ways of letting you know they should be trusted and the most common way is by sending along a "signature" in a header. They typically sign the payload with some secret key (in a few ways) and expect you to validate the signature before processing the payload.
 
@@ -95,7 +95,7 @@ export interface VerifyOptions {
 }
 ```
 
-## How to Receive and Verify a Webhook using a RedwoodJS Function
+## How to Receive and Verify an Incoming Webhook using a RedwoodJS Function
 
 The `api/webhooks` package exports [verifyEvent and verifySignature](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts) to apply [verification method](https://github.com/redwoodjs/redwood/tree/main/packages/api/src/auth/verifiers) and verify the event or or some portion of the event payload with a signature as defined in its [VerifyOptions](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts).
 
