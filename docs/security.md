@@ -41,11 +41,11 @@
 
 <p>Once that client starts talking to the api, though, it is talking to where the API is deployed and say I deployed to Netlify, it’s probably sitting on some AWS machines in northern Virginia USA waiting for requests to come in.</p>
 
-<p>Now, the api is simply a set of serverless functions – or API endpoints out there in the cloud. It’s going to talk to anything that asks it a question, that is formed in a way it can understand – and that you allow it to. More often than not, your data and features are completely public. But, in many cases it isn’t.</p>
+<p>Now, the api is simply a set of <a href="https://redwoodjs.com/docs/serverless-functions.html">Serverless Functions</a> – or API endpoints out there in the cloud. It’s going to talk to anything that asks it a question, that is formed in a way it can understand – and that you allow it to. More often than not, your data and features are completely public. But, in many cases it isn’t.</p>
 
 <p><b>This is where securing your API is important.</b> It’s going to be accessible – meaning pretty much any client can reach it, ie make an HTTP request … but that doesn’t mean it has to answer back or answer back nicely. If you don’t let it, it can return a 401 unauthorized (ok as we know GraphQL always responds with a 200 for some bizarro reason but it will also provide an error message).</p>
 
-<p>It’s important to know that the RW GraphQL API is just a serverless function.</p>
+<p>It’s important to know that the RW GraphQL API is just a <a href="https://redwoodjs.com/docs/serverless-functions.html">Serverless Function</a>.</p>
 
 <p><b>This is why it is important to use authentication</b> and require auth on the services and resolvers that are sensitive or should only be run by trusted actors. When you use Redwood auth, every GraphQL requests sends up in Authorization headers a Bearer access token that the API side will decode and can use to judge if some action or data is allowed by the user identified by that token.</p>
 
@@ -61,9 +61,9 @@
  
  * <b>Securing Services by default</b>. This will be in an upcoming release. See [Secure Services with beforeResolver by cannikin · Pull Request #2272 · redwoodjs/redwood · GitHub](https://community.redwoodjs.com/t/implications-of-this-add-generator-message-with-info-on-how-to-secure-a-function/2061/3) and [RFC - Secure Services by default · Issue #1630 · redwoodjs/redwood · GitHub](https://github.com/redwoodjs/redwood/issues/1630).
 
- * <b>Webhooks</b> These will be released today in v0.31 with documentation to come later today. This lets you secure your functions when used by third parties or yourself via Zapier, deploy hooks, Cron jobs, notification hooks, etc. See: https://github.com/redwoodjs/redwood/pull/1843#issuecomment-824428164
+ * <b>Webhooks</b> These will be released in v0.31 with documentation to come: [upcoming Webhooks Docs](https://redwoodjs.com/docs/webhooks.html). This lets you secure your functions when used by third parties or yourself via Zapier, deploy hooks, Cron jobs, notification hooks, etc. See: https://github.com/redwoodjs/redwood/pull/1843#issuecomment-824428164
 
- * <b>Logging</b> Having visibility into how your functions are used is key to keeping their secure. Logging serverless function output can help identify where requests originate and how often. That info can help spot any anomalies. Services like Datadog, LogDNA, LogFlare all can setup alerts based on log info to notify you if about usage or request IP addresses or other access issues. See: [Docs - Logger : RedwoodJS Docs](https://redwoodjs.com/docs/logger)
+ * <b>Logging</b> Having visibility into how your functions are used is key to keeping their secure. Logging <a href="https://redwoodjs.com/docs/serverless-functions.html">Serverless Function</a> output can help identify where requests originate and how often. That info can help spot any anomalies. Services like Datadog, LogDNA, LogFlare all can setup alerts based on log info to notify you if about usage or request IP addresses or other access issues. See: [Docs - Logger : RedwoodJS Docs](https://redwoodjs.com/docs/logger)
 
 <p>Hope this helps and again – making it accessible is a good, even great, even amazing thing – you just need, as with anything you build, to make sure you keep sensitive data or actions behind something that checks if they are trusted.</p>
 
