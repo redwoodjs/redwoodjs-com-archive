@@ -134,6 +134,7 @@ For more information about Rate Limiting in Node, consider:
 * [Understanding and implementing rate limiting in Node.js](https://blog.logrocket.com/rate-limiting-node-js/) on Logrocket
 
 * Denial-of-Service. Example, if query db, consume all connections.
+
 #### IP Address Whitelisting
 
 Because the `event` passed to the function handler contains the request's IP address, you could decide to whitelist only certain known and trusted IP addresses. 
@@ -150,4 +151,3 @@ const ipAddress = ({ event }) => {
 ```
 
 If the IP address in the event does not match, then you can raise an error and return `401 Unauthorized` status.
-
