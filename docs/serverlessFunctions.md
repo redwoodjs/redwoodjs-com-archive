@@ -109,7 +109,7 @@ If your function receives an incoming Webhook from a third party, see [Webhooks]
 
 ### Other considerations
 
-In addition to securing your serverless functions, you may consider logging, rate limiting, whitelisting as ways to protect your functions from abuse or misuse.
+In addition to securing your serverless functions, you may consider logging, rate limiting and whitelisting as ways to protect your functions from abuse or misuse.
 #### Visibility via Logging
 
 Logging in production -- and monitoring for suspicious activity, unknown IP addresses, errors, etc -- can be a critical part of keeping your serverless functions and your application safe.
