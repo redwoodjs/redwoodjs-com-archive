@@ -1,6 +1,6 @@
 # Security
 
-RedwoodJS wants you to be able build and deploy secure and  applications takes the topic of security seriously.
+RedwoodJS wants you to be able build and deploy secure applications and takes the topic of security seriously.
 
 * [RedwoodJS Security](https://github.com/redwoodjs/redwood/security) on GitHub
 * [CodeQL code scanning](https://github.com/features/security)
