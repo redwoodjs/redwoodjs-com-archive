@@ -25,6 +25,9 @@ It'll give you a stub that exports a handler that returns a status code&mdash;th
 export const handler = async (event, context) => {
   return {
     statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },    
     body: JSON.stringify({
       data: '${name} function',
     }),
@@ -52,6 +55,8 @@ But, in some cases, for example when the function interacts with third parties, 
 
 And, in some other cases, you may even want to limit how often the function is called over s set period of time to avoid denial-of-service-type attacks.
 
+> disclaimer
+
 ### Authentication
 
 If you invoke your function from your web side, you can use `requireAuth()` to ensure that function is allowed to execute by passing your auth provider's access token and the provider method in the request headers:
@@ -73,6 +78,9 @@ export const handler = async (event, context) => {
 
     return {
       statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },      
       body: JSON.stringify({
         data: 'Permitted',
       }),
