@@ -100,12 +100,7 @@ export interface VerifyOptions {
 The `api/webhooks` package exports [verifyEvent and verifySignature](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts) to apply [verification methods](https://github.com/redwoodjs/redwood/tree/main/packages/api/src/auth/verifiers) and verify the event or some portion of the event payload with a signature as defined in its [VerifyOptions](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts).
 If the signature fails verification, a `WebhookSignError` is raised which can be caught to return a `401` unauthorized.
 
-Typically, for each integration you will define
-
-* the events that trigger the Webhook
-* or the schedule via cron/conditions to send the Webhook
-* a secret
-* the endpoint to send the Webhook (ie, your RedwoodJS function api endpoint)
+Typically, for each integration you'll define 1) the events that triggers the webhook or the schedule via cron/conditions to send the webhook, 2) a secret, and 3) the endpoint to send the webhook to (ie, your endpoint).
 
 When the third-party creates the outgoing Webhook payload, they will sign that payload (typically the event request body) and add that signature to the request headers with some key.
 
