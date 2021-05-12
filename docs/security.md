@@ -11,6 +11,24 @@ RedwoodJS wants you to be able build and deploy secure applications and takes th
 
 > While Redwood offers the tools, practices, and information to keep your application secure, it remains your responsibility to put these in place. Proper password, token, and key protection using disciplined communication, password management systems, and environment management services like [Doppler](https://www.doppler.com) are strongly encouraged.
 
+## Authentication
+
+`@redwoodjs/auth` is a lightweight wrapper around popular SPA authentication libraries. We [currently support](https://redwoodjs.com/docs/authentication) the following authentication providers:
+
+* Netlify Identity Widget
+* Auth0
+* Azure Active Directory
+* Netlify GoTrue-JS
+* Magic Links - Magic.js
+* Firebase's GoogleAuthProvider
+* Ethereum
+* Supabase
+* Nhost
+
+For example implementations, please see [Authentitcation](https://github.com/redwoodjs/redwood/tree/main/packages/auth) and the use of the `getCurrentUser` and `requireAuth` helpers.
+
+For a demonstration, check out the [Auth Playground](https://redwood-playground-auth.netlify.app).
+
 ## GraphQL
 
 GraphQL is a fundamental part of Redwood. For details on how Redwood uses GraphQL and handles important security considerations, please see the [GraphQL Security](/docs/graphql#security) section.
