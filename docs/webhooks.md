@@ -23,10 +23,10 @@ Some examples of outgoing Webhooks are:
 
 Since each of these webhooks will call a function endpoint in your RedwoodJS api, you need to ensure that these run **only when they should**. That means you need to:
 
-* Verify it comes from the place you expect
-* Trust the party 
-* Know the payload sent in the hook hasn't been tampered with
-* Ensure that the hook isn't reprocessed or replayed (sometimes)
+* verify it comes from the place you expect
+* trust the party 
+* know the payload sent in the hook hasn't been tampered with
+* ensure that the hook isn't reprocessed or replayed (sometimes)
 
 That is, you need to **verify your incoming webhooks**.
 
