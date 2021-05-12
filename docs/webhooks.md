@@ -36,7 +36,7 @@ The RedwoodJS [`api/webhooks` package](https://github.com/redwoodjs/redwood/blob
 
 ### Webhook Verification
 
-Webhooks have a few ways of letting you know they should be trusted and the most common way is by sending along a "signature" in a header. They typically sign the payload with some secret key (in a few ways) and expect you to validate the signature before processing the payload.
+Webhooks have a few ways of letting you know they should be trusted. The most common is by sending along a "signature" header. They typically sign their payload with a secret key (in a few ways) and expect you to validate the signature before processing it.
 
 ###  Webhook Signature Verifiers
 
