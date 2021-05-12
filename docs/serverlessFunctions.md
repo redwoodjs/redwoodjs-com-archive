@@ -128,7 +128,7 @@ As LogRocket [says]((https://blog.logrocket.com/rate-limiting-node-js/)):
 
 API Gateways like [Kong](https://docs.konghq.com/hub/kong-inc/rate-limiting/) offer plugins to configure how many HTTP requests can be made in a given period of seconds, minutes, hours, days, months, or years.
 
-Currently, RedwoodJS does not offer rate limiting in the framework, but your deployment target infrastructure may. This is a feature redwoodJS will investigate for future releases.
+Currently, RedwoodJS does not offer rate limiting in the framework, but your deployment target infrastructure may. This is a feature RedwoodJS will investigate for future releases.
 
 For more information about Rate Limiting in Node, consider:
 
