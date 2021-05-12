@@ -13,9 +13,7 @@ RedwoodJS wants you to be able build and deploy secure applications and takes th
 
 ## GraphQL
 
-GraphQL is a fundamental part of the RedwoodJS api. 
-
-For details on how RedwoodJS uses GraphQL and handles important security considerations, please see the [GraphQL Security](/docs/graphql#security) section in the RedwoodJS documentation.
+GraphQL is a fundamental part of Redwood. For details on how Redwood uses GraphQL and handles important security considerations, please see the [GraphQL Security](/docs/graphql#security) section.
 
 ## Functions
 
