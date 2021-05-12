@@ -6,7 +6,7 @@ They are a form of messaging and automation allows web applications to communica
 
 The third-party considers these "outgoing Webhooks" and therefore your application receives "incoming Webhooks".
 
-When your RedwoodJS api side receives information in an incoming Webhook, the app can parse it, process it, save it or any other action needed.
+When the api side of your Redwood app receives a webhook, it can parse it, process it, save it to replay later, or any other action needed.
 
 Webhooks are different from other integration methods in that your third-party pushes new events instead of your application pulling or polling for new data.
 
