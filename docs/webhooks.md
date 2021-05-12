@@ -97,9 +97,8 @@ export interface VerifyOptions {
 
 ## How to Receive and Verify an Incoming Webhook
 
-The `api/webhooks` package exports [verifyEvent and verifySignature](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts) to apply [verification method](https://github.com/redwoodjs/redwood/tree/main/packages/api/src/auth/verifiers) and verify the event or or some portion of the event payload with a signature as defined in its [VerifyOptions](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts).
-
-If the signature fails verification, a `WebhookSignError` is raised which can be caught to returns a `401` unauthorized.
+The `api/webhooks` package exports [verifyEvent and verifySignature](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts) to apply [verification methods](https://github.com/redwoodjs/redwood/tree/main/packages/api/src/auth/verifiers) and verify the event or some portion of the event payload with a signature as defined in its [VerifyOptions](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts).
+If the signature fails verification, a `WebhookSignError` is raised which can be caught to return a `401` unauthorized.
 
 Typically, for each integration you will define
 
