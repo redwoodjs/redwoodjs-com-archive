@@ -17,9 +17,7 @@ GraphQL is a fundamental part of Redwood. For details on how Redwood uses GraphQ
 
 ## Functions
 
-When deployed, a custom [serverless function](/docs/serverless-functions) is an open API endpoint and is your responsibility to secure appropriately.
-
-That means that that anyone can access your function and perform any tasks it's asked to do. In many cases, this is completely appropriate and desired behavior. But, there are often times you need to restrict access to a function and RedwoodJS can help you do that using a [variety of methods and approaches](/docs/serverless-functions#security-considerations).
+When deployed, a [serverless function](/docs/serverless-functions) is an open API endpoint. That means anyone can access it and perform any tasks it's asked to do. In many cases, this is completely appropriate and desired behavior. But there are often times you need to restrict access to a function, and Redwood can help you do that using a [variety of methods and approaches](/docs/serverless-functions#security-considerations).
 
 For details on how to keep your functions secure, please see the [Serverless functions & Security considerations](/docs/serverless-functions#security-considerations) section in the RedwoodJS documentation.
 
