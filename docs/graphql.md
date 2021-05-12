@@ -223,9 +223,7 @@ The GraphQL Playground's nice, but if you're a power user, you'll want to be usi
 
 ## Security
 
-RedwoodJS already provides some best practices when deploying GraphQL to production, such as disabling the GraphQL Playground when you deploy and run in your production production environment.
-
-> Please come back soon where we will document more best practices when securing GraphQL as RedwoodJS reaches a v1.0 release candidate.
+We'll document more GraphQL security best practices as Redwood reaches a v1.0 release candidate, but note that Redwood already bakes in some when deploying GraphQL to production, such as disabling the GraphQL Playground.
 ## FAQ
 
 ### Why Doesn't Redwood Use Something Like Nexus?
