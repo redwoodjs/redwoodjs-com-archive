@@ -32,7 +32,7 @@ That is, you need to **verify your incoming webhooks**.
 
 ## Verifying Webhooks with RedwoodJS Made Easy
 
-The RedwoodJS [`api/webhooks` package](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts) makes it easy to receive and verify incoming Webhooks by implementing many of the most commonly used Webhook signature verifiers.
+The RedwoodJS [`api/webhooks` package](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts) makes it easy to receive and verify incoming webhooks by implementing many of the most commonly used Webhook signature verifiers.
 
 ### Webhook Verification
 
