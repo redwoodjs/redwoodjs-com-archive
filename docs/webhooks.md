@@ -8,7 +8,7 @@ The third-party considers these "outgoing Webhooks" and therefore your applicati
 
 When the api side of your Redwood app receives a webhook, it can parse it, process it, save it to replay later, or any other action needed.
 
-Webhooks are different from other integration methods in that your third-party pushes new events instead of your application pulling or polling for new data.
+Webhooks are different from other integration methods in that the third-party pushes new events to your app instead of your app constantly pulling or polling for new data.
 
 ## Examples of Webhooks
 
