@@ -34,4 +34,4 @@ Since each of these webhooks will call a function endpoint in your RedwoodJS api
 * Know the payload sent in the hook hasn't been tampered with
 * Ensure that the hook isn't reprocessed or replayed 
 
-For details on how to keep your incoming webhooks secure and how to sign your outgoing webhooks, please see: [Webhooks](/docs/webhooks) section in the RedwoodJS documentation.
+For details on how to keep your incoming webhooks secure and how to sign your outgoing webhooks, please see [Webhooks](/docs/webhooks).
