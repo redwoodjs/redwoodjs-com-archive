@@ -29,7 +29,7 @@ For details on how to keep your functions secure, please see the [Serverless fun
 
 [Webhooks](/docs/webhooks) are a common way that third-party services notify your RedwoodJS application when an event of interest happens. 
 
-They are a form of messaging and automation allows web applications to communicate with each other and send real-time data from one application to another whenever a given event occurs.
+They are a form of messaging or automation and allows web applications to communicate with each other and send real-time data from one application to another whenever a given event occurs.
 
 Since each of these webhooks will call a function endpoint in your RedwoodJS api, you need to ensure that these run **only when they should**. That means you need to:
 
