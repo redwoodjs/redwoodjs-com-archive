@@ -180,7 +180,7 @@ Now, back in the browser, you'll see:
 
 ### Adding Tailwind CSS
 
-This section is inspired by mdv.io's excellent blog post, [Adding Tailwind CSS to RedwoodJS](https://mdv.io/tailwindcss-in-redwoodjs). Note that the `webpack.config.js` file is no longer necessary since Redwood's webpack configuration now comes with postcss-loader by default (see [Supported Extensions and Loaders](#supported-extensions-and-loaders)). Neither is PurgeCSS, since, as of Tailwind CSS v1.4, it's [built-in](https://tailwindcss.com/docs/release-notes/#tailwind-css-v1-4).
+This section is inspired by mdv.io's excellent blog post, [Adding Tailwind CSS to RedwoodJS](https://mdv.io/tailwindcss-in-redwoodjs). Note that the `webpack.config.js` file is no longer necessary since Redwood's webpack configuration now comes with postcss-loader by default (see [Supported Extensions and Loaders](#supported-extensions-and-loaders)). Neither is PurgeCSS, since, as of Tailwind CSS v1.4, it's [built-in](https://github.com/tailwindlabs/tailwindcss/releases/tag/v1.4.0).
 
 > **But I need to use Tailwind _right now_**
 >
