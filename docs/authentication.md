@@ -297,13 +297,13 @@ import Routes from 'src/Routes'
 import './index.css'
 
 const azureActiveDirectoryClient = new UserAgentApplication({
-    auth: {
-      clientId: process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID,
-      authority: process.env.AZURE_ACTIVE_DIRECTORY_AUTHORITY,
-      redirectUri: process.env.AZURE_ACTIVE_DIRECTORY_REDIRECT_URI,
-      postLogoutRedirectUri: process.env.AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI,
-    },
-  })
+  auth: {
+    clientId: process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID,
+    authority: process.env.AZURE_ACTIVE_DIRECTORY_AUTHORITY,
+    redirectUri: process.env.AZURE_ACTIVE_DIRECTORY_REDIRECT_URI,
+    postLogoutRedirectUri: process.env.AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI,
+  },
+})
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
@@ -447,7 +447,9 @@ const firebaseClientConfig = {
 }
 
 const firebaseClient = ((config) => {
-  firebase.initializeApp(config)
+  if (!firebase.apps.length) {
+    firebase.initializeApp(config)
+  }
   return firebase
 })(firebaseClientConfig)
 
@@ -522,22 +524,21 @@ For full client docs, see: <https://supabase.io/docs/library/getting-started#ref
 
 #### Usage
 
-Supabase supports several signin methods: 
+Supabase supports several signin methods:
 
-* email/password
-* passwordless via emailed magiclink
-* OAuth (via Azure Active Directory, Bitbucket, Facebook, GitHub, GitLab, or Google).
+- email/password
+- passwordless via emailed magiclink
+- OAuth (via Azure Active Directory, Bitbucket, Facebook, GitHub, GitLab, or Google).
 
 Depending on the credentials provided:
 
-* A user can sign up either via email or a supported OAuth provider: `'azure' | 'bitbucket' | 'facebook' | 'github' | 'gitlab' | 'google'`
-* If you provide email without a password, the user will be sent a magic link.
-* The magic link's destination URL is determined by the SITE_URL config variable. To change this, you can go to Authentication -> Settings on `app.supabase.io` for your project.
-* Specifying an OAuth provider (such as Bitbucket, GitHub, GitLab, or Google) will open the browser to the relevant login page
-* Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to Authentication -> Settings on `app.supabase.io` for your project.
+- A user can sign up either via email or a supported OAuth provider: `'azure' | 'bitbucket' | 'facebook' | 'github' | 'gitlab' | 'google'`
+- If you provide email without a password, the user will be sent a magic link.
+- The magic link's destination URL is determined by the SITE_URL config variable. To change this, you can go to Authentication -> Settings on `app.supabase.io` for your project.
+- Specifying an OAuth provider (such as Bitbucket, GitHub, GitLab, or Google) will open the browser to the relevant login page
+- Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to Authentication -> Settings on `app.supabase.io` for your project.
 
 For full Sign In docs, see: <https://supabase.io/docs/client/auth-signin>
-
 
 +++
 
@@ -579,16 +580,16 @@ Update your .env file with the following setting which can be found on your Nhos
 
 #### Usage
 
-Nhost supports the following methods: 
+Nhost supports the following methods:
 
-* email/password
-* OAuth (via GitHub, Google, Facebook, or Linkedin).
+- email/password
+- OAuth (via GitHub, Google, Facebook, or Linkedin).
 
 Depending on the credentials provided:
 
-* A user can sign in either via email or a supported OAuth provider.
-* A user can sign up via email and password. For OAuth simply sign in and the user account will be created if it does not exist.
-* Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to the project's Settings -> Sign-In Methods page at `console.nhost.io`.
+- A user can sign in either via email or a supported OAuth provider.
+- A user can sign up via email and password. For OAuth simply sign in and the user account will be created if it does not exist.
+- Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to the project's Settings -> Sign-In Methods page at `console.nhost.io`.
 
 For the docs on Authentication, see: <https://docs.nhost.io/auth>
 
