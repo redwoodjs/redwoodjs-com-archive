@@ -9,6 +9,7 @@ RedwoodJS wants you to be able build and deploy secure applications and takes th
 * [Ways to keep your serverless functions secure](/docs/serverless-functions#security-considerations)
 * [Environment variables for secure keys and tokens](/docs/environment-variables)
 
+> ⚠️ Security is Your Responsibility
 > While Redwood offers the tools, practices, and information to keep your application secure, it remains your responsibility to put these in place. Proper password, token, and key protection using disciplined communication, password management systems, and environment management services like [Doppler](https://www.doppler.com) are strongly encouraged.
 
 ## Authentication

@@ -47,15 +47,14 @@ When you're developing locally, the dev server watches the `api` directory for m
 
 ## Security considerations
 
-When deployed, a custom serverless function is an open API endpoint and is your responsibility to secure appropriately.
+When deployed, **a custom serverless function is an open API endpoint and is your responsibility to secure appropriately**. 🔐
 
-That means that that anyone can access your function and perform any tasks it's asked to do. In many cases, this is completely appropriate and desired behavior. 
+That means _anyone_ can access your function and perform any tasks it's asked to do. In many cases, this is completely appropriate and desired behavior. 
 
 But, in some cases, for example when the function interacts with third parties, like sending email, or when it retrieves sensitive information from a database, you may want to ensure that only verified requests from trusted sources can invoke your function.
 
-And, in some other cases, you may even want to limit how often the function is called over s set period of time to avoid denial-of-service-type attacks.
+And, in some other cases, you may even want to limit how often the function is called over a set period of time to avoid denial-of-service-type attacks.
 
-> disclaimer
 
 ### Authentication
 
@@ -110,9 +109,10 @@ If your function receives an incoming Webhook from a third party, see [Webhooks]
 ### Other considerations
 
 In addition to securing your serverless functions, you may consider logging, rate limiting and whitelisting as ways to protect your functions from abuse or misuse.
+
 #### Visibility via Logging
 
-Logging in production -- and monitoring for suspicious activity, unknown IP addresses, errors, etc -- can be a critical part of keeping your serverless functions and your application safe.
+Logging in production — and monitoring for suspicious activity, unknown IP addresses, errors, etc. — can be a critical part of keeping your serverless functions and your application safe.
 
 Third-party log services like [logFlare](https://logflare.app/), [Datadog](https://www.datadoghq.com/) and [LogDNA](https://www.logdna.com/) all have features that store logs for inspection, but also can trigger alerts and notifications if something you deem untoward occurs.
 
@@ -120,7 +120,7 @@ See [Logger](/docs/logger) in the RedwoodJS docs for more information about how 
 
 #### Rate Limiting
 
-Rate limiting (or throttling) how often a function executes by a particular IP addresses or user account is a common way of stemming api abuse.
+Rate limiting (or throttling) how often a function executes by a particular IP addresses or user account is a common way of stemming api abuse (for example, a distributed Denial-of-Service, or DDoS, attack).
 
 As LogRocket [says]((https://blog.logrocket.com/rate-limiting-node-js/)):
 
@@ -130,11 +130,10 @@ API Gateways like [Kong](https://docs.konghq.com/hub/kong-inc/rate-limiting/) of
 
 Currently, RedwoodJS does not offer rate limiting in the framework, but your deployment target infrastructure may. This is a feature RedwoodJS will investigate for future releases.
 
-For more information about Rate Limiting in Node, consider:
+For more information about Rate Limiting in Node.js, consider:
 
 * [Understanding and implementing rate limiting in Node.js](https://blog.logrocket.com/rate-limiting-node-js/) on Logrocket
 
-* Denial-of-Service. Example, if query db, consume all connections.
 
 #### IP Address Whitelisting
 

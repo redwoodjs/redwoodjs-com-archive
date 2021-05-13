@@ -223,9 +223,9 @@ The GraphQL Playground's nice, but if you're a power user, you'll want to be usi
 
 ## Security
 
-We'll document more GraphQL security best practices as Redwood reaches a `v1.0` release candidate, but note that Redwood already has some baked-in when deploying GraphQL to production, such as disabling the GraphQL Playground. 
+We'll document more GraphQL security best practices as Redwood reaches a `v1.0` release candidate. For now, know that Redwood already has some baked-in best practices; for example, when deploying GraphQL to production, GraphQL Playground is automatically disabled. 
 
-Some of the biggest security improvements we'll be making revolve around Services (which are intimately linked to GraphQL since they're wrapped into your resolvers), and  for `v1.0` we plan on making all of your resolvers secure by default. You can even opt into this behavior now—see the [Secure Services](/docs/services#secure-services) section.
+Some of the biggest security improvements we'll be making revolve around Services (which are intimately linked to GraphQL since they're wrapped into your resolvers). For `v1.0` we plan to make all of your resolvers secure by default. You can even opt into this behavior now—see the [Secure Services](/docs/services) section.
 
 ## FAQ
 

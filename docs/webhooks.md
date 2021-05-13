@@ -2,7 +2,7 @@
 
 Webhooks are a common way that third-party services notify your RedwoodJS application when an event of interest happens. 
 
-They are a form of messaging and automation allows web applications to communicate with each other and send real-time data from one application to another whenever a given event occurs.
+They are a form of messaging and automation allowing distinct web applications to communicate with each other and send real-time data from one application to another whenever a given event occurs.
 
 The third-party considers these "outgoing Webhooks" and therefore your application receives "incoming Webhooks".
 
@@ -102,22 +102,19 @@ If the signature fails verification, a `WebhookSignError` is raised which can be
 
 Typically, for each integration you'll define 1) the events that triggers the webhook or the schedule via cron/conditions to send the webhook, 2) a secret, and 3) the endpoint to send the webhook to (ie, your endpoint).
 
-When the third-party creates the outgoing Webhook payload, they will sign that payload (typically the event request body) and add that signature to the request headers with some key.
+When the third-party creates the outgoing webhook payload, they'll sign it (typically the event request body) and add that signature to the request headers with some key.
 
-When the RedwoodJS api endpoint/function receives the request (incoming Webhook), it can extract the signature using the signature header key set in `VerifyOptions`, use the appropriate verifier, and validate the payload to ensure it comes from a trusted source.
+When your endpoint receives the request (incoming webhook), it can extract the signature using the signature header key set in `VerifyOptions`, use the appropriate verifier, and validate the payload to ensure it comes from a trusted source.
 
 Note that: 
 
-* `verifyEvent` will detect if the event body is base64 encoded, then decode and validate the payload with teh signature verifier
-* signatureHeader specified in `VerifyOptions` will be converted to lowercase when fetching the signature from teh event headers
+* `verifyEvent` will detect if the event body is base64 encoded, then decode and validate the payload with the signature verifier
+* signatureHeader specified in `VerifyOptions` will be converted to lowercase when fetching the signature from the event headers
 
 You can then use the payload data with confidence in your function.
 ### SHA256 Verifier (used by GitHub, Discourse)
 
-SHA256 HMAC is one of the most popular signatures and is currently used by:
-
-* [GitHub](https://docs.github.com/en/developers/webhooks-and-events/securing-your-webhooks#validating-payloads-from-github)
-* [Discourse](https://meta.discourse.org/t/setting-up-webhooks/49045)
+SHA256 HMAC is one of the most popular signatures. It's used by [Discourse](https://meta.discourse.org/t/setting-up-webhooks/49045) and [GitHub](https://docs.github.com/en/developers/webhooks-and-events/securing-your-webhooks#validating-payloads-from-github).
 
 When your secret token is set, GitHub uses it to create a hash signature with each payload. This hash signature is included with the headers of each request as `X-Hub-Signature-256`.
 
@@ -289,7 +286,7 @@ export const handler = async (event: APIGatewayEvent) => {
 ```
 ### TimestampScheme Verifier (used by Stripe)
 
-The TimestampScheme verifier now only signs the payload with a secret (SHA256), but also includes a timestamp to prevent [replay attacks](https://en.wikipedia.org/wiki/Replay_attack) and a scheme (ie, a version) to further protect webhooks.
+The TimestampScheme verifier not only signs the payload with a secret (SHA256), but also includes a timestamp to prevent [replay attacks](https://en.wikipedia.org/wiki/Replay_attack) and a scheme (i.e., a version) to further protect webhooks.
 
 A replay attack is when an attacker intercepts a valid payload and its signature, then re-transmits them. To mitigate such attacks, third-parties like Stripe includes a timestamp in the Stripe-Signature header. Because this timestamp is part of the signed payload, it is also verified by the signature, so an attacker cannot change the timestamp without invalidating the signature. If the signature is valid but the timestamp is too old, you can have your application reject the payload.
 
@@ -381,7 +378,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
 * [Netlify Outgoing Webhooks](https://docs.netlify.com/site-deploys/notifications/#outgoing-webhooks)
 
-The benefits JSON Web Token (JWT) Verifier is that not only does it cryptographically compare teh signature to the payload to ensure it has not been tampered with but given the added JWT claims like `issuer` and `expires` you can trust that the Webhook was sent by a trusted sounds and is not out of date.
+The JSON Web Token (JWT) Verifier not only cryptographically compares the signature to the payload to ensure it hasn't been tampered with, but also gives the added JWT claims like `issuer` and `expires` — you can trust that the Webhook was sent by a trusted sounds and isn't out of date.
 
 Here, the `VerifyOptions` not only specify the expected signature header, but allow will check that the `iss` claim is netlify.
 
@@ -467,9 +464,9 @@ export const handler = async (event: APIGatewayEvent) => {
 
 ### Secret Key Verifier (used by Orbit)
 
-* [Orbit](https://docs.orbit.love/docs/webhooks)
+* [Orbit Webhook Doc](https://docs.orbit.love/docs/webhooks)
 
-The Secret Key verifiers acts very much like a password. It doesn't perform some cryptographic comparison of the signature with the payload received, but rather simple checks if the expected key or token is present.
+The Secret Key verifiers used by [Orbit](https://docs.orbit.love/docs/webhooks) acts very much like a password. It doesn't perform some cryptographic comparison of the signature with the payload received, but rather simple checks if the expected key or token is present.
 
 ```js
 //import type { APIGatewayEvent, Context } from 'aws-lambda'
@@ -579,7 +576,7 @@ export const handler = async (event) => {
 
 ### Skip Verifier (used by Livestorm)
 
-[Livestorm](https://support.livestorm.co/article/119-webhooks) sends webhooks, but does not sign them with a secret.
+[Livestorm](https://support.livestorm.co/article/119-webhooks) sends webhooks but doesn't sign them with a secret.
 
 Here, you can use the `skipVerifier` -- or choose not to validate altogether, but setting up to `verifyEvent` would let you quickly change the verification method if their changes.
 
@@ -648,16 +645,9 @@ export const handler = async (event: APIGatewayEvent) => {
 }
 ```
 
-## How to Sign a Payload for an Outgoing Webhook event in RedwoodJS
+## Signing a Payload for an Outgoing Webhook
 
-The `api/webhooks` package exports [signPayload](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts) that will sign a payload using a [verification method](https://github.com/redwoodjs/redwood/tree/main/packages/api/src/auth/verifiers) and create your "webhook signature".
-
-Once you have the signature, you can 
-
-* add the signature to your request http headers 
-* with a signature key of your choosing 
-* and then post the request to the endpoint 
-* that needs to be sent the event
+To sign a payload for an outgoing webhook, the `api/webhooks` package exports [signPayload](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts), a function that signs a payload using a [verification method](https://github.com/redwoodjs/redwood/tree/main/packages/api/src/auth/verifiers), creating your "webhook signature". Once you have the signature, you can add it to your request's http headers with a name of your choosing, and then post the request to the endpoint:
 
 ```js
 import got from 'got'
@@ -689,7 +679,7 @@ export const sendOutGoingWebhooks = async ({ payload }) => {
 ```
 ## More Information
 
-For more information about Webhooks, please consider the following resources:
+Want to learn more about webhooks?
 
 * [Webhook.site lets you easily inspect, test and automate (with the visual Custom Actions builder, or WebhookScript) any incoming HTTP request or e-mail.](https://webhook.site/#!/)
 * [What is a Webhook](https://simonfredsted.com/1583) by Simon Fredsted
