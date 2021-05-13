@@ -1,8 +1,10 @@
 # Webhooks
 
-Webhooks are a common way that third-party services notify your RedwoodJS application when an event of interest happens. 
+If you've used [Automate](https://automate.io/), [IFTTT](https://ifttt.com/maker_webhooks), [Pipedream](https://pipedream.com/docs/api/rest/webhooks/), or [Zapier](https://zapier.com/apps/webhook/integrations) then you're familiar with how webhooks can give your app the power to create complex workflows, build one-to-one automation, and sync data between apps. RedwoodJS helps you work with webhooks by giving you the tools to both receive and verify incoming webhooks and sign outgoing ones with ease.
 
-They are a form of messaging and automation allowing distinct web applications to communicate with each other and send real-time data from one application to another whenever a given event occurs.
+## What is a webhook
+
+Simply put, webhooks are a common way that third-party services notify your RedwoodJS application when an event of interest happens. They are a form of messaging and automation allowing distinct web applications to communicate with each other and send real-time data from one application to another whenever a given event occurs.
 
 The third-party considers these "outgoing Webhooks" and therefore your application receives "incoming Webhooks".
 
@@ -10,7 +12,7 @@ When the api side of your Redwood app receives a webhook, it can parse it, proce
 
 Webhooks are different from other integration methods in that the third-party pushes new events to your app instead of your app constantly pulling or polling for new data.
 
-## Examples of Webhooks
+### Examples of Webhooks
 
 Some examples of outgoing Webhooks are:
 
@@ -21,7 +23,7 @@ Some examples of outgoing Webhooks are:
 * A cron/scheduled task wants to invoke a long running [background function on Netlify](https://docs.netlify.com/functions/background-functions/)
 * and more webhook integrations via services like [IFTTT](https://ifttt.com/maker_webhooks), [Pipedream](https://pipedream.com/docs/api/rest/webhooks/) and [Zapier](https://zapier.com/apps/webhook/integrations)
 
-Since each of these webhooks will call a function endpoint in your RedwoodJS api, you need to ensure that these run **only when they should**. That means you need to:
+If you were to subscribe to one of these webhooks, you'd point it to an endpoint in your RedwoodJS api -- ie, a serverless function. But, because that function is out "in the cloud" you need to ensure that these run **only when they should**. That means your function must:
 
 * verify it comes from the place you expect
 * trust the party 
@@ -662,7 +664,7 @@ export const sendOutGoingWebhooks = async ({ payload }) => {
     secret,
   })
 
-  await got.put(
+  await got.post(
     YOUR_OUTGOING_WEBHOOK_DESTINATION_URL,
     {
       responseType: 'json',
