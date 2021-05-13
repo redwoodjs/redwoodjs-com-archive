@@ -19,7 +19,7 @@ To self-host, you'll have to do a bit of configuration both to your Redwood app 
 
 ### Adding Dependencies
 
-First add PM2 as a dev depenency to your project root:
+First add PM2 as a dev dependency to your project root:
 
 ```termninal
 yarn add -DW pm2
