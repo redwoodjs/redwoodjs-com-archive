@@ -2,7 +2,7 @@
 
 How do you confidently write your business logic in a secure way while scaling?
 
-# Secure Services
+## Secure Services
 
 Starting with `v0.32`, Redwood includes a feature we call Secure Services. By default, your GraphQL endpoint is open to the world. Secure Services makes sure that the resolvers behind the endpoint (your services) can't be invoked unless you allow them explicitly.
 
