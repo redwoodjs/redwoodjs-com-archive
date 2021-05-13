@@ -1562,24 +1562,58 @@ yarn redwood test [side..]
 | `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                                 |
 
 ## serve
-Run server for api in production, if you are self-hosting, or deploying into a serverfull environment.
+
+Runs a server that serves both the api and the web sides. 
 
 ```terminal
 yarn redwood serve [side]
 ```
 
-<br>
+> You should run `yarn rw build` before running this command to make sure all the static assets that will be served have been built.
 
-| Arguments & Options | Description                                                                                                           |
-| :------------------ | :-------------------------------------------------------------------------------------------------------------------- |
-| `side`              | Which side(s) to run. Currently only supports `api`. Defaults to "api"                                                |
-| `--port`            | What port should the server run on [default: 8911]                                                                    |
-| `--socket`          | The socket the server should run. This takes precedence over port                                                     |
-| `--rootPath`        | The root path your api functions are served from i.e. localhost:`{port}`/`{rootPath}`/`{functionName}` [default: "/"] |
+`yarn rw serve` is useful for debugging locally or for self-hosting—deploying a single server into a serverful environment. Since both the api and the web sides run in the same server, CORS isn't a problem.
 
+| Arguments & Options | Description                                                                    |
+|---------------------|--------------------------------------------------------------------------------|
+| `side`              | Which side(s) to run. Choices are `api` and `web`. Defaults to `api` and `web` |
+| `--port`            | What port should the server run on [default: 8911]                             |
+| `--socket`          | The socket the server should run. This takes precedence over port              |
 
+### api
 
-<br>
+Runs a server that only serves the api side.
+
+```
+yarn rw serve api
+```
+
+This command uses `apiProxyPath` in your `redwood.toml`. Use this command if you want to run just the api side on a server (e.g. running on Render).
+
+| Arguments & Options | Description                                                       |
+|---------------------|-------------------------------------------------------------------|
+| `--port`            | What port should the server run on [default: 8911]                |
+| `--socket`          | The socket the server should run. This takes precedence over port |
+| `--apiRootPath`     | The root path where your api functions are served                 |
+
+### web
+
+Runs a server that only serves the web side. 
+
+```
+yarn rw serve web
+```
+
+This command serves the contents in `web/dist`. Use this command if you're debugging (e.g. great for debuging prerender) or if you want to run your api and web sides on separate servers, which is often considered a best practice for scalability (since your api side likely has much higher scaling requirements).
+
+> **But shouldn't I use nginx and/or equivalent technology to serve static files?**
+>
+> Probably, but it can be a challenge to setup when you just want something running quickly!
+
+| Arguments & Options | Description                                                                                  |
+|---------------------|----------------------------------------------------------------------------------------------|
+| `--port`            | What port should the server run on [default: 8911]                                           |
+| `--socket`          | The socket the server should run. This takes precedence over port                            |
+| `--apiHost`         | Forwards requests from the `apiProxyPath` (defined in `redwood.toml`) to the specified host  |
 
 ## upgrade
 
