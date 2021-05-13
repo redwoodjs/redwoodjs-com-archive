@@ -135,7 +135,7 @@ describe('add()', () => {
   })
 
   it('throws an error for too few arguments', () => {
-    expect(add(1)).toThrow('add requires 2 arguments')
+    expect(() => add(1)).toThrow('add requires 2 arguments')
   })
 })
 ```
