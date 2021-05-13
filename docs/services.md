@@ -32,6 +32,9 @@ Must define a `beforeResolver()` in posts/posts.js
 
 Which means it worked!
 
+> **Heads Up**: Using Env Vars for Config is a _Two-step Process_  
+> Technically, you need to enable this Env Var both for your local dev environment and your production deploy environment. In this case, we are assuming you are committing your `env.defaults` file to your project Repo, which will add the Env Var to both contexts. If not, you also need to specifically add the Env Var to your hosting provider config.
+
 ### Securing Your Services
 
 Secure Services rely on a new function that you export from your Service named `beforeResolver()`. This function defines a set of "rules" (functions) that will be invoked, one after the other, before calling any Service. **As long as none of those functions throw an error, the Service call will be allowed**.
