@@ -30,7 +30,7 @@ For your shared types we need to do a few things:
 
 1. Put your shared types at the root of the project (makes sense right?), maybe in `types` at the root
 2. You can call this folder whatever you like, of course, just add the same folder to your includes
-3. Modify your web/tsconfig.json and api/tsconfig.json by adding this to your includes:
+3. Modify your `web/tsconfig.json` and `api/tsconfig.json` by adding this to your includes:
 
 ```diff
 "include": [
@@ -66,7 +66,7 @@ This is what the setup command does for you
 touch api/tsconfig.json
 ```
 
-2. Now copy and paste the latest config from the Redwood template: [api/tsconfig.json](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/api/tsconfig.json) into the empty file
+2. Now copy and paste the latest config from the Redwood template: [`api/tsconfig.json`](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/api/tsconfig.json) into the empty file
 
 ### WEB
 
@@ -76,7 +76,7 @@ touch api/tsconfig.json
 touch web/tsconfig.json
 ```
 
-2. Now copy and paste the latest config from the Redwood template: [web/tsconfig.json](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/web/tsconfig.json) into the empty file
+2. Now copy and paste the latest config from the Redwood template: [`web/tsconfig.json`](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/web/tsconfig.json) into the empty file
 
 
 You should now have type definitions&mdash;you can rename your files from `.js` to `.ts`, and the files that contain JSX to `.tsx`.
