@@ -18,7 +18,7 @@ In addition to security, your Services benefit by being able to just focus on th
 
 To enable Secure Services, add `REDWOOD_SECURE_SERVICES=1` to your `.env.defaults` file:
 
-```shell
+```bash
 # env.defaults
 
 REDWOOD_SECURE_SERVICES=1
