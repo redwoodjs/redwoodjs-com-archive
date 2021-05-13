@@ -166,13 +166,12 @@ To get your application keys, only complete the ["Configure Auth0"](https://auth
 **NOTE** If you're using Auth0 with Redwood then you must also [create an API](https://auth0.com/docs/quickstart/spa/react/02-calling-an-api#create-an-api) and set the audience parameter, or you'll receive an opaque token instead of the required JWT token.
 
 The `useRefreshTokens` options is required for automatically extending sessions beyond that set in the initial JWT expiration (often 3600/1 hour or 86400/1 day).
-  
+
 If you want to allow users to get refresh tokens while offline, you must also enable the Allow Offline Access switch in your Auth0 API Settings as part of setup configuration. See: [https://auth0.com/docs/tokens/refresh-tokens](https://auth0.com/docs/tokens/refresh-tokens)
 
 You can increase security by using refresh token rotation which issues a new refresh token and invalidates the predecessor token with each request made to Auth0 for a new access token.
 
 Rotating the refresh token reduces the risk of a compromised refresh token. For more information, see: [https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation](https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation).
-  
 
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
@@ -313,13 +312,13 @@ import Routes from 'src/Routes'
 import './index.css'
 
 const azureActiveDirectoryClient = new UserAgentApplication({
-    auth: {
-      clientId: process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID,
-      authority: process.env.AZURE_ACTIVE_DIRECTORY_AUTHORITY,
-      redirectUri: process.env.AZURE_ACTIVE_DIRECTORY_REDIRECT_URI,
-      postLogoutRedirectUri: process.env.AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI,
-    },
-  })
+  auth: {
+    clientId: process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID,
+    authority: process.env.AZURE_ACTIVE_DIRECTORY_AUTHORITY,
+    redirectUri: process.env.AZURE_ACTIVE_DIRECTORY_REDIRECT_URI,
+    postLogoutRedirectUri: process.env.AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI,
+  },
+})
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
@@ -463,7 +462,9 @@ const firebaseClientConfig = {
 }
 
 const firebaseClient = ((config) => {
-  firebase.initializeApp(config)
+  if (!firebase.apps.length) {
+    firebase.initializeApp(config)
+  }
   return firebase
 })(firebaseClientConfig)
 
@@ -538,24 +539,23 @@ For full client docs, see: <https://supabase.io/docs/library/getting-started#ref
 
 #### Usage
 
-Supabase supports several sign in methods: 
+Supabase supports several sign in methods:
 
-* email/password
-* passwordless via emailed magiclink
-* Sign in with redirect. You can control where the user is redirected to after they are logged in via a `redirectTo` option.
-* Sign in using third-party providers/OAuth via Azure Active Directory, Bitbucket, Facebook, GitHub, GitLab, or Google logins.
-* Sign in with scopes. If you need additional data from an OAuth provider, you can include a space-separated list of `scopes` in your request options to get back an OAuth `provider_token`.
+- email/password
+- passwordless via emailed magiclink
+- Sign in with redirect. You can control where the user is redirected to after they are logged in via a `redirectTo` option.
+- Sign in using third-party providers/OAuth via Azure Active Directory, Bitbucket, Facebook, GitHub, GitLab, or Google logins.
+- Sign in with scopes. If you need additional data from an OAuth provider, you can include a space-separated list of `scopes` in your request options to get back an OAuth `provider_token`.
 
 Depending on the credentials provided:
 
-* A user can sign up either via email or a supported OAuth provider: `'azure' | 'bitbucket' | 'facebook' | 'github' | 'gitlab' | 'google'`
-* If you provide email without a password, the user will be sent a magic link.
-* The magic link's destination URL is determined by the SITE_URL config variable. To change this, you can go to Authentication -> Settings on `app.supabase.io` for your project.
-* Specifying an OAuth provider (such as Bitbucket, GitHub, GitLab, or Google) will open the browser to the relevant login page
-* Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to Authentication -> Settings on `app.supabase.io` for your project.
+- A user can sign up either via email or a supported OAuth provider: `'azure' | 'bitbucket' | 'facebook' | 'github' | 'gitlab' | 'google'`
+- If you provide email without a password, the user will be sent a magic link.
+- The magic link's destination URL is determined by the SITE_URL config variable. To change this, you can go to Authentication -> Settings on `app.supabase.io` for your project.
+- Specifying an OAuth provider (such as Bitbucket, GitHub, GitLab, or Google) will open the browser to the relevant login page
+- Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to Authentication -> Settings on `app.supabase.io` for your project.
 
 For full Sign In docs, see: <https://supabase.io/docs/client/auth-signin>
-
 
 +++
 
@@ -597,16 +597,16 @@ Update your .env file with the following setting which can be found on your Nhos
 
 #### Usage
 
-Nhost supports the following methods: 
+Nhost supports the following methods:
 
-* email/password
-* OAuth (via GitHub, Google, Facebook, or Linkedin).
+- email/password
+- OAuth (via GitHub, Google, Facebook, or Linkedin).
 
 Depending on the credentials provided:
 
-* A user can sign in either via email or a supported OAuth provider.
-* A user can sign up via email and password. For OAuth simply sign in and the user account will be created if it does not exist.
-* Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to the project's Settings -> Sign-In Methods page at `console.nhost.io`.
+- A user can sign in either via email or a supported OAuth provider.
+- A user can sign up via email and password. For OAuth simply sign in and the user account will be created if it does not exist.
+- Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to the project's Settings -> Sign-In Methods page at `console.nhost.io`.
 
 For the docs on Authentication, see: <https://docs.nhost.io/auth>
 
