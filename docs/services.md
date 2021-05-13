@@ -1,41 +1,32 @@
 # Services
 
-How do you confidently write your business logic in a secure way while scaling?
+Redwood puts all your business logic in one place—Services. These can be used by your GraphQL API or any other place in your backend code. Redwood does all of the annoying stuff for you, just write your business logic!
 
 ## Secure Services
 
-Starting with `v0.32`, Redwood includes a feature we call Secure Services. By default, your GraphQL endpoint is open to the world. Secure Services makes sure that the resolvers behind the endpoint (your services) can't be invoked unless you allow them explicitly.
+Starting with `v0.32`, Redwood includes a feature we call Secure Services. By default, your GraphQL endpoint is open to the world. Secure Services makes sure that the resolvers behind the endpoint (your Services) can't be invoked unless you explicitly allow them to be.
 
-As of now this behavior is opt-in for existing applications—if you don't do anything your services will continue to work as they always have. However, once Redwood hits v1.0, Secure Services will be enabled by default. (New apps created with v0.32 and onward will also be opted-in by default.)
+> As of now, this behavior is opt-in for existing applications—if you don't do anything, your Services will continue to work as they always have. But once Redwood hits v1.0, Secure Services will be enabled by default. (New apps created with v0.32 and onward will also be opted-in by default.)
+>
+> If you don't enable the opt-in flag now, you'll see a warning message during dev server startup that warns you that it will become the default behavior as of 1.0.
 
-If you don't enable the opt-in flag now, you'll see a warning message during dev server startup that warns you that it will become the default behavior as of 1.0.
+In addition to security, your Services benefit by being able to just focus on their job rather than worrying about whether someone is logged in first. Services remain laser focused on a specific bit of business logic, and larger concerns like security and validation can be moved "up" and out of the way.
 
-In addition to security, your service benefit by being able to just focus on their job, rather than worrying about whether someone is logged in first. Services remain laser focused on a specific bit of business logic, and larger concerns like security and validation can be moved "up" and out of the way.
-
-> Skip to the **TL;DR** section at the end of this article if you just want to get to the nitty gritty.
+> **Services are only secured when used as resolvers via GraphQL**. If you have one service calling another service, this logic will *not* be used.
 
 ## Enabling Secure Service for Existing Apps
 
-Add the `experimentalSecureServices` option in `redwood.toml`:
+> TODO—change to env var
 
-```toml
-[api]
-  port = 8911
-  schemaPath = "./api/db/schema.prisma"
-  experimentalSecureServices = true
-```
-
-Once you do this you'll see your services suddenly become inaccessible, with an error message in the console when you start your dev server:
+Once you do this, you'll see your Services suddenly become inaccessible, with an error message in the console when you start your dev server:
 
 ```
 Must define a `beforeResolver()` in posts/posts.js
 ```
 
-> Services are only secured when used as resolvers via GraphQL. If you have one service calling another service, this logic will *not* be used.
-
 ## Securing Your Services
 
-Secure Services rely on a new function that you export from your service named `beforeResolver()`. This function defines a set of "rules" (functions) that will be invoked, one after the other, before calling any service. **As long as none of those functions throw an error, the service call will be allowed.**
+Secure Services rely on a new function that you export from your Service named `beforeResolver()`. This function defines a set of "rules" (functions) that will be invoked, one after the other, before calling any Service. **As long as none of those functions throw an error, the Service call will be allowed.**
 
 ```javascript
 export const beforeResolver = () => {}
@@ -51,7 +42,7 @@ This is why we call it **Secure Services**—they're secure even if you do nothi
 
 ### A Simple Service
 
-First let's start with a simple service for viewing, creating and deleting blog posts:
+First let's start with a simple Service for viewing, creating and deleting blog posts:
 
 ```javascript
 export const posts = () => {
@@ -67,7 +58,7 @@ export const deletePost = ({ id }) => {
 }
 ```
 
-The simplest rule you can add which actually adds some security is to just require authentication before every service function call:
+The simplest rule you can add which actually adds some security is to just require authentication before every Service function call:
 
 ```javascript
 import { requireAuth } from 'src/lib/auth'
@@ -82,16 +73,17 @@ export const beforeResolver = (rules) => {
 1. `add()`
 2. `skip()`  
 
-In this example case, `requireAuth()` would be called automatically before each and every service function call (`posts`, `createPost` and `deletePost`). 
+In this example case, `requireAuth()` would be called automatically before each and every Service function call (`posts`, `createPost` and `deletePost`). 
 
 > Using `requireAuth()` assumes you have an authentication library installed. If you don't have one, you can create your `requireAuth` function to just return `true` for now:
 >
 > ```javascript
 > // api/src/lib/auth.js
+>
 > export const requireAuth = () => true
 > ```
 >
-> In fact if you create a new Redwood app as of 0.32 this is exactly what we do for you! Once you install an auth library we'll replace this function with one that actually checks if you're logged in, and you don't need to change anything in your `beforeResolvers()`
+> In fact, if you create a new Redwood app as of 0.32, this is exactly what we do for you! Once you install an auth library we'll replace this function with one that actually checks if you're logged in, and you don't need to change anything in your `beforeResolvers()`.
 
 In the rest of this text we'll refer to these functions that run as rules as "rule functions".
 
@@ -152,7 +144,7 @@ This is a pretty dangerous thing to do and in a future release we'll force you t
 
 ## More Complex Scenarios
 
-In our example posts service we probably want to add some role-based authorization to some of the services. Since we're using the `requireAuth` function we can pass role checks as usual:
+In our example posts Service, we probably want to add some role-based authorization to some of the Services. Since we're using the `requireAuth` function, we can pass role checks as usual:
 
 ```javascript
 export const beforeResolver = (rules) => {
@@ -189,7 +181,7 @@ export const beforeResolver = (rules) => {
 }
 ```
 
-So `createPost` and `deletePost` both require that you be logged in, and additionally `createPost` will also verify the input. Note the arguments sent to the `verifyPost()` function:
+So `createPost` and `deletePost` both require that you be logged in, and `createPost` will also verify the input. Note the arguments sent to the `verifyPost()` function:
 
 * `name` is the name of the service function that's being called, `"createPost"` in this case
 * The second argument is whatever was sent to the service call itself when it was called as a resolver by GraphQL (in this case an object containing the `input` from the mutation `variables`).
@@ -206,11 +198,11 @@ export const beforeResolver = (rules) => {
 }
 ```
 
-The rules will run in the following order, and if any of them `throw` the chain will stop and an error will be returned to GraphQL:
+The rules will run in the following order, and if any of them `throw`, the chain will stop and an error will be returned to GraphQL:
 
 `requireAuth() -> rateLimit() -> circularQueryCheck()`
 
-To get even more concise, if you have multiple rule functions that can run for the same scope of functions, as in the above example, you can send multiple functions as the first argument:
+To get even more concise, if you have multiple rule functions that can run for the same scope of functions (as in the above example), you can send multiple functions as the first argument:
 
 ```javascript
 export const beforeResolver = (rules) => {
@@ -222,7 +214,7 @@ export const beforeResolver = (rules) => {
 
 When do you use `only` and when do you use `except` and when do you use `skip` with or without `only` and `except`?
 
-You'll probably find it most clear to use whatever combination gives you a) the fewest number of lines and b) the shortest line length per line. These may seem arbitrary, but consider the following examples which are equivalent, but you'll probably find yourself leaning towards the syntax of one over the others:
+You'll probably find it most clear to use whatever combination gives you a) the fewest number of lines and b) the shortest line length per line. These prescriptions may seem arbitrary, but consider the following examples; they're equivalent, but you'll probably find yourself leaning towards the syntax of one over the others:
 
 ```javascript
 // one rule per line, very clear which ones will be run and where
@@ -255,25 +247,25 @@ It usually comes down to matter of taste!
 
 ## Thanks, I Hate It
 
-If you'd rather just handle these types of auth tasks within each individual service you can do that! Just `rules.skip()` in `beforeResolver` and handle these tasks in each individual service. 
+If you'd rather just handle these types of auth tasks within each individual Service, you can! Just `rules.skip()` in `beforeResolver` and handle these tasks in each individual service. 
 
-But beware: you'll need to be eternally vigilant and remember to add these checks each and every time you create a new service.
+But beware: you'll need to be eternally vigilant and remember to add these checks each and every time you create a new Service.
 
 ## TL;DR
 
-You must now export a `beforeResolver()` function in each of your services. 
+You must export a `beforeResolver()` function in each of your Services. 
 
-This function receives a single argument `rules` which you call `add` or `skip` on to build up a "specification" that provides a list of functions that will run before allowing access to the service as a GraphQL resolver. 
+This function receives a single argument, `rules`, which you call `add` or `skip` on to build a "specification" that provides a list of functions that run before allowing access to the Service as a GraphQL resolver. 
 
-The functions that you give to `rules.add()` will be sent two arguments: the first is the `name` of the service you tried to call and the second is whatever arguments were going to be passed to the service originally.
+The functions that you give to `rules.add()` will be sent two arguments: the first is the `name` of the Service you tried to call and the second is whatever arguments were going to be passed to the Service originally.
 
-All service functions *must* be covered by at least one rule, either in an `add()` or `skip()` call, otherwise you will see an error when calling the service as a resolver via GraphQL.
+All service functions *must* be covered by at least one rule, either in an `add()` or `skip()` call, otherwise you'll see an error when calling the Service as a resolver via GraphQL.
 
-Services can still call other services, in which case these rules will *not* be run.
+Services can still call other Services, in which case these rules will *not* be run.
 
 ### Examples
 
-Require authentication for every service function in a service (this is a great absolute minimum to make sure your services are not accessible via GraphQL to anyone that isn't logged in):
+Require authentication for every function in a Service (this is a great absolute minimum to make sure your Services aren't accessible via GraphQL to anyone that isn't logged in):
 
 ```javascript
 export const beforeResolver = (rules) => {
@@ -340,7 +332,7 @@ export const beforeResolver = (rules) => {
 }
 ```
 
-An even more complex version:
+An even more complex combination:
 
 ```javascript
 const verifyPost = (name, { input }) => {
