@@ -12,9 +12,9 @@ Starting with `v0.32`, Redwood includes a feature we call Secure Services. By de
 
 In addition to security, your Services benefit by being able to just focus on their job: rather than worrying about whether someone is logged in or not, Services remain laser focused on a specific bit of business logic. Larger concerns like security and validation can be moved "up" and out of the way.
 
-> **Services are only secured when used as resolvers via GraphQL**. If you have one service calling another service, this logic will *not* be used.
+> **Services are only secured when used as resolvers via GraphQL**. If you have one Service calling another Service, this logic will *not* be used.
 
-## Enabling Secure Services
+### Enabling Secure Services
 
 To enable Secure Services, add `REDWOOD_SECURE_SERVICES=1` to your `.env.defaults` file:
 
@@ -32,7 +32,7 @@ Must define a `beforeResolver()` in posts/posts.js
 
 Which means it worked!
 
-## Securing Your Services
+### Securing Your Services
 
 Secure Services rely on a new function that you export from your Service named `beforeResolver()`. This function defines a set of "rules" (functions) that will be invoked, one after the other, before calling any Service. **As long as none of those functions throw an error, the Service call will be allowed**.
 
@@ -48,7 +48,7 @@ Service call not authorized. If you really want to allow access, add `rules.skip
 
 This is why we call it **Secure Services**—they're secure even if you do nothing. You have to do *something* to allow access.
 
-### A Simple Service
+#### A Simple Service
 
 Let's start with a simple Service for viewing, creating and deleting blog posts:
 
@@ -95,7 +95,7 @@ In this example case, `requireAuth()` would be called automatically before each 
 
 We'll refer to these functions that run as rules as "rule functions".
 
-### Skipping Rules with `only` and `except`
+#### Skipping Rules with `only` and `except`
 
 What if we want to make `posts` open to the world and only require authentication for the "sensitive" endpoints like `createPost` and `deletePost`? `add()` takes a second argument of options where you can specify which Services the rule should apply to:
 
@@ -121,7 +121,7 @@ We'll refer to the `only` and `except` options as "scopes". So some rule functio
 
 Now if you try to access your `posts` Service, you'll encounter an error again, saying that it's unprotected. This is because we have no rule covering `posts` since we excluded it from `requireAuth()`. We need to tell the Secure Services engine that we acknowledge that we're leaving `posts` open to the world.
 
-## skip()
+### skip()
 
 Every Service function must be covered by either an `add()` or `skip()` call. This is you saying to Redwood "it's okay to call each and every Service function, either by first running these rule functions or by running nothing (and I know I'm running nothing)."
 
@@ -152,7 +152,7 @@ export const beforeResolver = (rules) => {
 
 This is a pretty dangerous thing to do, and in a future release, we'll force you to pass an option like `{ force: true }` to make sure you know what you're doing.
 
-## More Complex Scenarios
+### More Complex Scenarios
 
 In our example posts Service, we probably want to add some role-based authorization to some of the Services. Since we're using the `requireAuth` function, we can pass role checks as usual:
 
@@ -196,7 +196,7 @@ So `createPost` and `deletePost` both require that your users be logged in, and 
 * `name` is the name of the Service function that's being called—`"createPost"` in this case
 * the second argument is whatever was sent to the Service call itself when it was called as a resolver by GraphQL (in this case, an object containing the `input` from the mutation `variables`).
 
-### Rule Ordering
+#### Rule Ordering
 
 Rules are run in the order you define them in your `beforeResolver()`. Given this example:
 
@@ -224,7 +224,7 @@ export const beforeResolver = (rules) => {
 }
 ```
 
-### Best Practices
+#### Best Practices
 
 When do you use `only` and when do you use `except` and when do you use `skip` with or without `only` and `except`?
 
@@ -259,11 +259,11 @@ On the other hand, if you have a function that will only be run for a single Ser
 
 It usually comes down to matter of taste!
 
-## Thanks, I Hate It
+### Thanks, I Hate It
 
 If you'd rather just handle these types of auth tasks within each individual Service, you can! Just `rules.skip()` in `beforeResolver` and handle these tasks in each individual Service. But beware: you'll need to be eternally vigilant and remember to add these checks each and every time you create a new Service.
 
-## TL;DR
+### TL;DR
 
 You must export a `beforeResolver()` function in each of your Services. 
 
@@ -275,7 +275,7 @@ All service functions *must* be covered by at least one rule, either in an `add(
 
 **Services can still call other Services, in which case these rules will *not* be run**.
 
-### Examples
+#### Examples
 
 Require authentication for every function in a Service (this is a great absolute minimum to make sure your Services aren't accessible via GraphQL to anyone that isn't logged in):
 
