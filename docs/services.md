@@ -8,7 +8,7 @@ Starting with `v0.32`, Redwood includes a feature we call Secure Services. By de
 
 > As of now, this behavior is opt-in—if you don't do anything, your Services will continue to work as they always have. But once Redwood hits `v1.0`, Secure Services will be enabled by default. 
 >
-> If you don't enable the opt-in flag now, you'll see a warning message during dev server startup that warns you that it will become the default behavior as of `v1.0`.
+> If you don't opt-in now, you'll see a warning message during dev server startup that warns you that it will become the default behavior as of `v1.0`.
 
 In addition to security, your Services benefit by being able to just focus on their job: rather than worrying about whether someone is logged in or not, Services remain laser focused on a specific bit of business logic. Larger concerns like security and validation can be moved "up" and out of the way.
 
