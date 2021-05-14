@@ -932,7 +932,7 @@ export const standard = (variables) => {
 
 > An alternative explanation, written in TypeScript and featuring a Storybook example, [can be found on the RedwoodJS forum](https://community.redwoodjs.com/t/testing-forms-using-testing-library-user-event/2058).
 
-To test our forms, we can make use of of the [`@testing-library/user-event`](testing-library/user-event) library.
+To test our forms, we can make use of of the [`@testing-library/user-event`](https://testing-library.com/docs/ecosystem-user-event/) library.
 
 > `user-event` tries to simulate the real events that would happen in the browser as the user interacts with it. For example `userEvent.click(checkbox)` would change the state of the checkbox.
 
