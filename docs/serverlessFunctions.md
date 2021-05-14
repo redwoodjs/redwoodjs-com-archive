@@ -132,7 +132,7 @@ Currently, RedwoodJS does not offer rate limiting in the framework, but your dep
 
 For more information about Rate Limiting in Node.js, consider:
 
-* [Understanding and implementing rate limiting in Node.js](https://blog.logrocket.com/rate-limiting-node-js/) on Logrocket
+* [Understanding and implementing rate limiting in Node.js](https://blog.logrocket.com/rate-limiting-node-js/) on LogRocket
 
 
 #### IP Address Whitelisting

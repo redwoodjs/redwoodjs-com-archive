@@ -26,7 +26,7 @@ RedwoodJS wants you to be able build and deploy secure applications and takes th
 * Supabase
 * Nhost
 
-For example implementations, please see [Authentitcation](https://github.com/redwoodjs/redwood/tree/main/packages/auth) and the use of the `getCurrentUser` and `requireAuth` helpers.
+For example implementations, please see [Authentication](https://github.com/redwoodjs/redwood/tree/main/packages/auth) and the use of the `getCurrentUser` and `requireAuth` helpers.
 
 For a demonstration, check out the [Auth Playground](https://redwood-playground-auth.netlify.app).
 
