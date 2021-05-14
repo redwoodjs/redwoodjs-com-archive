@@ -1089,7 +1089,6 @@ The important takeaways are:
 // })
 ```
 
-These tests can then be ran as any other test, included when running `yarn rw test`.
 
 ## Testing Services
 
