@@ -938,11 +938,10 @@ To test our forms, we can make use of of the [`@testing-library/user-event`](htt
 
 ### Installing `@testing-library/user-event`
 
-`user-event` can be installed by entering the *Web*-side of your application, and running:
+`user-event` can be installed in the web side of your application by running:
 
 ```bash
-yarn add -D @testing-library/user-event
-```
+yarn workspace web add -D @testing-library/user-event
 
 > `@testing-library/dom`, `user-event's` dependency, is already provided by Redwood.
 
