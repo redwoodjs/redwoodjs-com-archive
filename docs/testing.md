@@ -1014,7 +1014,7 @@ Finally, we'll create three simple tests which ensure our form works as expected
 The important takeaways are:
 
 * We use `await` because our form's state will change multiple times; otherwise, our `expect`-ation would trigger prematurely.
-* We use `waitFor` because `user-event's` methods are synchronous, which contradicts the above.
+* We use `waitFor` because `user-event`'s methods are synchronous, which contradicts the above.
   * `waitFor` acts as our declaration of [`act`](https://reactjs.org/docs/test-utils.html#act), required when updating the state of a React component from a test.
 
 ```javascript
