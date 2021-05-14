@@ -1011,7 +1011,7 @@ Finally, we'll create three simple tests which ensure our form works as expected
 2) Does our component submit when required fields are populated?
 3) Does our component submit, passing our (submit) handler the data we entered?
 
-Important take-aways are:
+The important takeaways are:
 
 * We use `await` because our form's state will change multiple times; otherwise, our `expect`-ation would trigger prematurely.
 * We use `waitFor` because `user-event's` methods are synchronous, which contradicts the above.
