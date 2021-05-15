@@ -1028,7 +1028,7 @@ The important takeaways are:
 
     const submitButton = screen.getByText('Submit')
 
-    await waitFor(() => user.click(submitButton))
+    await waitFor(() => userEvent.click(submitButton))
 
     expect(onSubmit).not.toHaveBeenCalled()
   })
