@@ -39,6 +39,10 @@ const DEFAULT_CONFIG: Config = {
   browser: {
     open: true,
   },
+  generate: {
+    tests: true,
+    stories: true,
+  },
 }
 ```
 
@@ -136,6 +140,21 @@ You can also provide the name of a browser to use instead of the system default.
 > When you generate a new app, the `open` value is set to `true`. If you delete the `open` config from `redwood.toml`, it will default to `false`. For example, removing the line `open = true` disables automatic browser opening.
 
 There's a lot more you can do here. For all the details, see Webpack's docs on [devServer.open](https://webpack.js.org/configuration/dev-server/#devserveropen).
+
+## generate
+
+```toml
+[generate]
+  tests = true
+  stories = true
+```
+
+Configuration for Generator "test" and "story" files. By default, the following Generators create Jest test and Storybook files (with mock data files when applicable) along with the specific component file(s): component, cell, layout, page, sdl, and services.
+
+| Key       | Description                    | Default  |
+| :-------- | :----------------------------- | :------- |
+| `tests`   | Generate Jest test files       | `true` |
+| `stories` | Generate Storybook story files | `true`   |
 
 ## Running within a Container or VM
 
