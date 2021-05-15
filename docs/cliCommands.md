@@ -558,9 +558,8 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 | `service <name>`       | Generate a service component                                                                          |
 
 ### TypeScript generators
+
 If your project is configured for TypeScript (see [TypeScript docs](https://redwoodjs.com/docs/typescript)), the generators will automatically detect and generate `.ts`/`.tsx` files for you
-
-
 
 **Undoing a Generator with a Destroyer**
 
@@ -1579,7 +1578,7 @@ yarn redwood serve [side]
 | `--port`            | What port should the server run on [default: 8911]                             |
 | `--socket`          | The socket the server should run. This takes precedence over port              |
 
-### api
+### serve api
 
 Runs a server that only serves the api side.
 
@@ -1595,7 +1594,7 @@ This command uses `apiProxyPath` in your `redwood.toml`. Use this command if you
 | `--socket`          | The socket the server should run. This takes precedence over port |
 | `--apiRootPath`     | The root path where your api functions are served                 |
 
-### web
+### serve web
 
 Runs a server that only serves the web side. 
 
