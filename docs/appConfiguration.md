@@ -141,7 +141,7 @@ You can also provide the name of a browser to use instead of the system default.
 
 There's a lot more you can do here. For all the details, see Webpack's docs on [devServer.open](https://webpack.js.org/configuration/dev-server/#devserveropen).
 
-## generate
+## [generate]
 
 ```toml
 [generate]
