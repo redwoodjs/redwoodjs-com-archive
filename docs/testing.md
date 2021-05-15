@@ -1042,8 +1042,8 @@ The important takeaways are:
     const nameField = screen.getByPlaceholderText('Name')
     const submitButton = screen.getByText('Submit')
 
-    await waitFor(() => user.type(nameField, name))
-    await waitFor(() => user.click(submitButton))
+    await waitFor(() => userEvent.type(nameField, name))
+    await waitFor(() => userEvent.click(submitButton))
 
     expect(onSubmit).toHaveBeenCalledTimes(1)
     expect(onSubmit).toHaveBeenCalled()
