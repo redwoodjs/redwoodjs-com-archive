@@ -928,6 +928,165 @@ export const standard = (variables) => {
 })
 ```
 
+## Testing Forms
+
+> An alternative explanation, written in TypeScript and featuring a Storybook example, [can be found on the RedwoodJS forum](https://community.redwoodjs.com/t/testing-forms-using-testing-library-user-event/2058).
+
+To test our forms, we can make use of of the [`@testing-library/user-event`](https://testing-library.com/docs/ecosystem-user-event/) library which helps us approximate the the events that would actually happen in the browser if a real user were interacting with our forms. For example, calling `userEvent.click(checkbox)` toggles a checkbox as if a user had clicked it.
+
+### Installing `@testing-library/user-event`
+
+`user-event` can be installed in the web side of your application by running:
+
+```bash
+yarn workspace web add -D @testing-library/user-event
+
+> `@testing-library/dom`, `user-event's` dependency, is already provided by Redwood.
+
+### Building a Form
+
+Let's assume you've already created a component using `yarn rw g component`. This component is built using the `@redwoodjs/forms` package and provides a simple interface for using the form: we subscribe to changes via an `onSubmit` callback-prop.
+
+```javascript
+// NameForm.js
+import { Form, Submit, TextField } from '@redwoodjs/forms'
+
+const NameForm = ({ onSubmit }) => {
+  return (
+    <Form onSubmit={onSubmit}>
+      <TextField
+        name="name"
+        placeholder="Name"
+        validation={{
+          required: true,
+        }}
+      />
+      <TextField
+        name="nickname"
+        placeholder="Nickname"
+        validation={{
+          required: false,
+        }}
+      />
+      <Submit>Submit</Submit>
+    </Form>
+  )
+}
+
+export default NameForm
+```
+
+### Testing the Form
+
+Now, we can extend the `test` file which Redwood generated. We're going to want to:
+
+1) Import `waitFor` from the `@redwoodjs/testing` library.
+2) Add an import to `@testing-library/user-event` for its `default`.
+3) Provide an `onSubmit` prop to our "renders successfully" test.
+
+```javascript
+// NameForm.test.js
+import { render, screen, waitFor } from '@redwoodjs/testing'
+import user from '@testing-library/user-event'
+
+import NameForm from './NameForm'
+
+describe('NameForm', () => {
+  it('renders successfully', () => {
+    expect(() => {
+      const onSubmit = jest.fn()
+
+      render(<NameForm onSubmit={onSubmit} />)
+    }).not.toThrow()
+  })
+})
+```
+
+Finally, we'll create three simple tests which ensure our form works as expected.
+
+1) Does our component NOT submit when required fields are empty?
+2) Does our component submit when required fields are populated?
+3) Does our component submit, passing our (submit) handler the data we entered?
+
+The important takeaways are:
+
+* We use `await` because our form's state will change multiple times; otherwise, our `expect`-ation would trigger prematurely.
+* We use `waitFor` because `user-event`'s methods are synchronous, which contradicts the above.
+  * `waitFor` acts as our declaration of [`act`](https://reactjs.org/docs/test-utils.html#act), required when updating the state of a React component from a test.
+
+```javascript
+// NameForm.test.js
+
+// describe('NameForm', () => {
+
+  it('does not submit when required fields are empty', async () => {
+    const onSubmit = jest.fn()
+
+    render(<NameForm onSubmit={onSubmit} />)
+
+    const submitButton = screen.getByText('Submit')
+
+    await waitFor(() => userEvent.click(submitButton))
+
+    expect(onSubmit).not.toHaveBeenCalled()
+  })
+
+  it('submits when required fields are entered', async () => {
+    const name = 'My Name'
+    const nickname = ''
+
+    const onSubmit = jest.fn()
+
+    render(<NameForm onSubmit={onSubmit} />)
+
+    const nameField = screen.getByPlaceholderText('Name')
+    const submitButton = screen.getByText('Submit')
+
+    await waitFor(() => userEvent.type(nameField, name))
+    await waitFor(() => userEvent.click(submitButton))
+
+    expect(onSubmit).toHaveBeenCalledTimes(1)
+    expect(onSubmit).toHaveBeenCalled()
+    expect(onSubmit).toHaveBeenCalledWith(
+      { name, nickname },
+      expect.objectContaining({
+        _reactName: 'onSubmit',
+        type: 'submit',
+      })
+    )
+  })
+
+  it('submits with the expected, entered data', async () => {
+    const name = 'My Name'
+    const nickname = 'My Nickname'
+
+    const onSubmit = jest.fn()
+
+    render(<NameForm onSubmit={onSubmit} />)
+
+    const nameField = screen.getByPlaceholderText('Name')
+    const nicknameField = screen.getByPlaceholderText('Nickname')
+    const submitButton = screen.getByText('Submit')
+
+    await waitFor(() => userEvent.type(nameField, name))
+    await waitFor(() => userEvent.type(nicknameField, nickname))
+    await waitFor(() => userEvent.click(submitButton))
+
+    expect(onSubmit).toHaveBeenCalledTimes(1)
+    expect(onSubmit).toHaveBeenCalled()
+    expect(onSubmit).toHaveBeenCalledWith(
+      { name, nickname },
+      expect.objectContaining({
+        _reactName: 'onSubmit',
+        type: 'submit',
+      })
+    )
+  })
+
+// })
+```
+
+
 ## Testing Services
 
 Until now we've only tested things on the web-side of our app. When we test the api-side that means testing our Services.
