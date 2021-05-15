@@ -1239,7 +1239,7 @@ export const standard = defineScenario({
   },
 })
 
-export const incomplete = defineScneario({
+export const incomplete = defineScenario({
   user: {
     david: {
       name: 'David Thyresson',
