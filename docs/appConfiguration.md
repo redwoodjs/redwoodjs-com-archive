@@ -153,7 +153,7 @@ Configuration for Generator "test" and "story" files. By default, the following 
 
 | Key       | Description                    | Default  |
 | :-------- | :----------------------------- | :------- |
-| `tests`   | Generate Jest test files       | `true` |
+| `tests`   | Generate Jest test files       | `true`   |
 | `stories` | Generate Storybook story files | `true`   |
 
 ## Running within a Container or VM
