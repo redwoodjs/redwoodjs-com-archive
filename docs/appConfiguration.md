@@ -149,7 +149,7 @@ There's a lot more you can do here. For all the details, see Webpack's docs on [
   stories = true
 ```
 
-Configuration for Generator "test" and "story" files. By default, the following Generators create Jest test and Storybook files (with mock data files when applicable) along with the specific component file(s): component, cell, layout, page, sdl, and services.
+Configuration for Generator "test" and "story" files. By default, the following Generators create Jest test and/or Storybook files (with mock data files when applicable) along with specific component file(s): component, cell, layout, page, sdl, and services. Understandably, this is a lot of files, and sometimes you don't want all of them, either because you don't plan on using Jest/Storybook, or are just getting started and don't want the overhead. These toml keys allows you to toggle the generation of test and story files on and off.
 
 | Key       | Description                    | Default  |
 | :-------- | :----------------------------- | :------- |
