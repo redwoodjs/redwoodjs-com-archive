@@ -1,32 +1,23 @@
 # Roadmap
 
-_Last updated 25 Aug 2020_
+_Last updated [day] May 2021_
 
-We want to hit `1.0` by the end of the year. And we think we can do it. But there are a lot of moving parts, each at a different level of maturity.
-
-At this stage of development, when it's so important to keep the finish line in mind, a high-level overview is invaluable. Hence, this roadmap, and these color-coded labels:
+We plan on releasing a `v1.0` release candidate soon. At this stage of development, when it's so important to keep the finish line in mind, a high-level overview is invaluable. Hence, this roadmap, and these color-coded labels:
 
 - <span id="status-0" class="font-mono">Didn't start</span>
 - <span id="status-1" class="font-mono">Figuring it out</span>
 - <span id="status-2" class="font-mono">There's a plan</span>
 - <span id="status-3" class="font-mono">Making it happen</span>
-- <span id="status-4" class="font-mono">Cleaning up</span>
+- <span id="status-4" class="font-mono">Polishing</span>
 
-We're taking inspiration from Basecamp's [Shape Up](https://basecamp.com/shapeup/3.4-chapter-12#work-is-like-a-hill) here: you can think of each one of these color-coded labels as a point on the hill chart. So if you want an even higher level overview, scroll the aside on the right, keeping the colors in mind.
-
-> If you know Shape Up, then you'll know that our scopes are probably too big. They are. But we want to orient people who aren't knee-deep in this, and questions like "how's TypeScript going?" are usually the kinds they have. This means that even if we say TypeScript is <span id="status-3" class="font-mono">Making it happen</span>, there are some parts of it that might be <span id="status-0" class="font-mono">Didn't start</span>.
-
-This document is alive. We'll update it as often as we can, and when it's appropriate to do so. And as always, feel free to [open a PR](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md)!
-
-## What goes in 1.0?
-
-Not everything will be in `1.0`. Even things that are core to the Redwood dream, like more sides and targets, won't be there. But that's by design: we need to be very careful about our priorities, both because we want `1.0` to be something special and because if we aren't careful, we'll never get there. The hardest thing in open source is saying no, but as we get closer to `1.0`, it's increasingly what we'll have to do.
+Not everything will be in `1.0`. Even things that are core to the Redwood dream, like more sides and targets, won't be there. But that's by design: we need to be very careful about our priorities, both because we want `1.0` to be something special and because if we aren't careful, we'll never get there. 
+The hardest thing in open source is saying no, but as we get closer to `1.0`, it's increasingly what we'll have to do.
 
 With that said, here's a high level overview of the `1.0` roadmap with links to relevant GitHub project boards and forum topics. If you're interested in helping with one of these, just let us know in the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up!
 
 ## Accessibility
 
-<span id="status-1" class="font-mono">Figuring it out</span>
+<span id="status-4" class="font-mono">Figuring it out</span>
 
 Accessibility isn't something we're going to compromise on. It has to be first class. Our goal is to help app authors build accessible experiences without having to jump through hoops. As background reading, Gatsby has some [great blog posts](https://www.gatsbyjs.org/blog/2020-02-10-accessible-client-side-routing-improvements/).
 
@@ -84,7 +75,7 @@ Logging has wiped out almost all of the old-growth Redwoods in California. But t
 
 ## Performance
 
-<span id="status-0" class="font-mono">Didn't start</span>
+<span id="status-1" class="font-mono">Figuring it out</span>
 
 Can you have great developer ergonomics **and** performance? We intend to find out.
 
@@ -101,7 +92,7 @@ Bundle size will be important here, so a good place to start is by building with
 
 ## Router
 
-<span id="status-1" class="font-mono">Figuring it out</span>
+<span id="status-4" class="font-mono">Polishing</span>
 
 We've written our own router for Redwood, and we need to make sure it is competitive with existing routers in the React ecosystem (e.g. React Router, Reach Router). We've taken a stance on desiring a flat routing scheme (vs a nested one) and this currently comes with some performance downsides that need to be addressed.
 
