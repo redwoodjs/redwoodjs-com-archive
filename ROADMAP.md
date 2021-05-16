@@ -34,7 +34,7 @@ Accessibility isn't something we're going to compromise on. It has to be first c
 
 ## Auth
 
-<span id="status-3" class="font-mono">Making it happen</span>
+<span id="status-4" class="font-mono">Polishing</span>
 
 Authentication and authorization are baked into Redwood. We plan to have easy-to-install, sophisticated authentication methods for a variety of popular auth providers. On top of that, we'll also provide RBAC (role-based access control) capabilities if you want them.
 
@@ -42,7 +42,7 @@ Authentication and authorization are baked into Redwood. We plan to have easy-to
 
 ## Core
 
-<span id="status-3" class="font-mono">Making it happen</span>
+<span id="status-4" class="font-mono">Polishing</span>
 
 Redwood depends on a few libraries&mdash;namely Apollo and Prisma&mdash;for some of its core functionality. For us to be `1.0`, they have to be too. 
 
@@ -52,7 +52,7 @@ ApolloClient recently hit 3.0. Right now, Redwood uses 2.6, but we plan on upgra
 
 ## Deployment
 
-<span id="status-2" class="font-mono">There's a plan</span>
+<span id="status-4" class="font-mono">Polishing</span>
 
 We'd like to support several deployment targets. The ones high-up on our list are: Netlify (done), Vercel (done), AWS, and Google Cloud Run. Deployment strategies should be done in a way that makes it easy for additional targets to be added and for users to create their own custom strategies.
 
@@ -68,7 +68,7 @@ Docs are tracked on the [redwoodjs.com repo](https://github.com/redwoodjs/redwoo
 
 ## Generators
 
-<span id="status-1" class="font-mono">Figuring it out</span>
+<span id="status-4" class="font-mono">Polishing</span>
 
 Our generators are already in pretty good shape. So as we get closer to `1.0`, we don't just mean more generators, but more advanced generators. Especially given the recent addition of `@redwoodjs/structure`.
 
@@ -76,7 +76,7 @@ Our generators are already in pretty good shape. So as we get closer to `1.0`, w
 
 ## Logging
 
-<span id="status-1" class="font-mono">Figuring it out</span>
+<span id="status-4" class="font-mono">Polishing</span>
 
 Logging has wiped out almost all of the old-growth Redwoods in California. But that doesn't mean we're not fans of logging here at RedwoodJS. As long as the logging helps you figure out what your app is doing! A production Redwood app will need great logging, so we intend to make it easy to get hooked up.
 
@@ -94,7 +94,7 @@ Bundle size will be important here, so a good place to start is by building with
 
 ## Prerender
 
-<span id="status-1" class="font-mono">Figuring it out</span>
+<span id="status-4" class="font-mono">Polishing</span>
 
 - [Prerender proposal](https://community.redwoodjs.com/t/prerender-proposal/849)
 - [Pre-rendering with react-snap & Redwood](https://community.redwoodjs.com/t/pre-rendering-with-react-snap-redwood/863)
@@ -109,7 +109,7 @@ We've written our own router for Redwood, and we need to make sure it is competi
 
 ## Storybook
 
-<span id="status-3" class="font-mono">Making it happen</span>
+<span id="status-4" class="font-mono">Polishing</span>
 
 Redwood's component-development workflow starts with Storybook. Being able to develop your components in isolation without ever starting the dev server is a real game-changer.
 
@@ -125,7 +125,7 @@ Using Redwood's Structure package, we can use the same logic to power both an ID
 
 ## Testing (App)
 
-<span id="status-3" class="font-mono">Making it happen</span>
+<span id="status-4" class="font-mono">Polishing</span>
 
 We've integrated testing for both sides and made Jest configurable. From here, improving the templates that the generators create is a must, not only for the sake of completeness but also for user learning.
 
