@@ -1048,7 +1048,7 @@ Let's do that now:
 ```javascript{17,29-36}
 // api/db/schema.prisma
 
-datasource DS {
+datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }

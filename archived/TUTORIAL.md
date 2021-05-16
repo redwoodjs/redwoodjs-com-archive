@@ -496,7 +496,7 @@ First let's define the data structure for a post in the database. Open up `api/d
 ```plaintext{13-18}
 // api/db/schema.prisma
 
-datasource DS {
+datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
