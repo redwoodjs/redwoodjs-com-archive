@@ -1602,7 +1602,7 @@ Runs a server that only serves the web side.
 yarn rw serve web
 ```
 
-This command serves the contents in `web/dist`. Use this command if you're debugging (e.g. great for debuging prerender) or if you want to run your api and web sides on separate servers, which is often considered a best practice for scalability (since your api side likely has much higher scaling requirements).
+This command serves the contents in `web/dist`. Use this command if you're debugging (e.g. great for debugging prerender) or if you want to run your api and web sides on separate servers, which is often considered a best practice for scalability (since your api side likely has much higher scaling requirements).
 
 > **But shouldn't I use nginx and/or equivalent technology to serve static files?**
 >
