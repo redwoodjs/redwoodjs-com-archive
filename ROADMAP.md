@@ -17,7 +17,7 @@ With that said, here's a high level overview of the `1.0` roadmap with links to 
 
 ## Accessibility
 
-<span id="status-4" class="font-mono">Figuring it out</span>
+<span id="status-4" class="font-mono">Polishing</span>
 
 Accessibility isn't something we're going to compromise on. It has to be first class. Our goal is to help app authors build accessible experiences without having to jump through hoops. As background reading, Gatsby has some [great blog posts](https://www.gatsbyjs.org/blog/2020-02-10-accessible-client-side-routing-improvements/).
 
