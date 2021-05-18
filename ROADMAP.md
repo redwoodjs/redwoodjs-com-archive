@@ -35,7 +35,7 @@ Authentication and authorization are baked into Redwood. We plan to have easy-to
 
 ## Core
 
-<span id="status-4" class="font-mono">Polishing</span>
+<span id="status-3" class="font-mono">Making it happen</span>
 
 Redwood depends on a few libraries&mdash;namely Prisma and Apollo&mdash;for some of its core functionality. For us to be `v1.0`, they have to be too. With Prisma recently carrying Migrate and Studio to GA (general availability) to complete the ORM, and with Apollo Client hitting `v3.0` not too long ago, it's safe to say that they're ready to go.
 
