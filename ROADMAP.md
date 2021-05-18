@@ -37,9 +37,7 @@ Authentication and authorization are baked into Redwood. We plan to have easy-to
 
 <span id="status-4" class="font-mono">Polishing</span>
 
-Redwood depends on a few libraries&mdash;namely Apollo and Prisma&mdash;for some of its core functionality. For us to be `1.0`, they have to be too. 
-
-ApolloClient recently hit 3.0. Right now, Redwood uses 2.6, but we plan on upgrading as soon as we can. Prisma Client made it to general availability earlier this year, but Redwood depends on Prisma Migrate too, which is still experimental. You can check its status on Prisma's [public roadmap](https://www.notion.so/Prisma-public-roadmap-50766227b779464ab98899accb98295f).
+Redwood depends on a few libraries&mdash;namely Prisma and Apollo&mdash;for some of its core functionality. For us to be `v1.0`, they have to be too. With Prisma recently carrying Migrate and Studio to GA (general availability) to complete the ORM, and with Apollo Client hitting `v3.0` not too long ago, it's safe to say that they're ready to go.
 
 [Core • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/14)
 
