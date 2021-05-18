@@ -19,7 +19,9 @@ With that said, here's a high level overview of the `1.0` roadmap with links to 
 
 <span id="status-4" class="font-mono">Polishing</span>
 
-Accessibility isn't something we're going to compromise on. It has to be first class. Our goal is to help app authors build accessible experiences without having to jump through hoops. As background reading, Gatsby has some [great blog posts](https://www.gatsbyjs.org/blog/2020-02-10-accessible-client-side-routing-improvements/).
+Accessibility is a first-class concern. We want you to be able to build accessible websites without having to jump through hoops. While accessibility is a broad topic that we plan to keep iterating on, `v1.0` will bring you a solid foundation, addressing key concnerns, like route announcements. And the best part is it's all baked-in.
+
+A common theme of the weeks leading up to `v1.0` will be that we want to make sure what we have actually works, so if you're savy with a screen reader, testing the route announcer on multiple screen readers on multiple browsers would be invaluable feedback! The major things to look out for are that the route is actually announced and that the scroll is actually reset.
 
 [Accessibility • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/5)
 
