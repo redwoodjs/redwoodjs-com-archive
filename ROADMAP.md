@@ -43,7 +43,7 @@ Redwood depends on a few libraries&mdash;namely Prisma and Apollo&mdash;for some
 
 ## Deployment
 
-<span id="status-4" class="font-mono">Polishing</span>
+<span id="status-3" class="font-mono">Making it happen</span>
 
 We'd like to support several deployment targets. The ones high-up on our list are: Netlify (done), Vercel (done), AWS, and Google Cloud Run. Deployment strategies should be done in a way that makes it easy for additional targets to be added and for users to create their own custom strategies.
 
