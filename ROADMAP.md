@@ -29,7 +29,7 @@ A common theme leading up to `v1.0` will be that we want to make sure what we ha
 
 <span id="status-4" class="font-mono">Polishing</span>
 
-Authentication and authorization are questions Redwood has had answers to since `v0.7`. Redwood has easy-to-install, sophisticated auth for a variety of providers. There's even role-based access controls (RBACs)! Authentication and authorization are integrated across the whole stack, and when `v1.0` rolls around, your Services will be Secure by default. For more, see [Security](https://redwoodjs.com/docs/security).
+Authentication and authorization are questions Redwood has had answers to since `v0.7`. Redwood has easy-to-install, sophisticated auth for a variety of providers. There's even role-based access controls (RBACs)! Authentication and authorization are integrated across the whole stack, and when `v1.0` rolls around, your Services will be secure by default. For more, see [Security](https://redwoodjs.com/docs/security).
 
 [Auth • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/6)
 
@@ -89,7 +89,7 @@ Bundle size will be important here, so a good place to start is by building with
 
 <span id="status-4" class="font-mono">Polishing</span>
 
-Along with TypeScript, Prerendering was one of our most-requested features. And all you have to do is add a single prop:
+Along with TypeScript, Prerendering was one of our most-requested features. It's been available for some time now; all you have to do is add a single prop to one of your Routes:
 
 ```jsx
 <Route path="/" page={HomePage} name="home" prerender />
