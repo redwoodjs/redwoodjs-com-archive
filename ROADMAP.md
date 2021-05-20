@@ -63,7 +63,7 @@ One thing we plan on doing before `v1.0` is moving over to Docusarus to accomoda
 
 <span id="status-4" class="font-mono">Polishing</span>
 
-Our generators are already in pretty good shape. So as we get closer to `1.0`, we don't just mean more generators, but more advanced generators. Especially given the recent addition of `@redwoodjs/structure`. Look out for a long awaited feature: the ability to specify the path—where things get generated.
+Generators are part of what makes Redwood a joy. We've made generators more configurable, so you can do things like opt in and out of generating stories and test files, and generate files in TypeScript rather than JavaScript. Look out for another long awaited configuration option: the ability to specify the path—where things get generated.
 
 [Generators • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/13)
 
@@ -92,7 +92,7 @@ Bundle size will be important here, so a good place to start is by building with
 Along with TypeScript, Prerendering was one of our most-requested features. And all you have to do is add a single prop:
 
 ```jsx
-  <Route name="home" page={HomePage} path="/" prerender />
+<Route path="/" page={HomePage} name="home" prerender />
 ```
 
 <br />
@@ -139,6 +139,6 @@ The [TypeScript tracking issue](https://github.com/redwoodjs/redwood/issues/234)
 
 [Cells](https://github.com/redwoodjs/redwood/pull/2208) were one of the more-recent additions. And some of the things we've got coming, like [GraphQL Codegen](https://github.com/redwoodjs/redwood/pull/2485), are going to be icing on the cake.
 
-Having said all that, you can still just stick to JS! It's totally up to you.
+Although we want Redwood apps to default to TypeScript, you can still just stick to JS! It's totally up to you. All of our utilities, like generators, support both.
 
 [TypeScript • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/2)
