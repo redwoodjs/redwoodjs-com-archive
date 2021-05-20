@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last updated [day] May 2021_
+_Last updated 20 May 2021_
 
 We plan on releasing a `v1.0` release candidate soon. At this stage of development, when it's so important to keep the finish line in mind, a high-level overview is invaluable. Hence, this roadmap, and these color-coded labels:
 
@@ -10,16 +10,16 @@ We plan on releasing a `v1.0` release candidate soon. At this stage of developme
 - <span id="status-3" class="font-mono">Making it happen</span>
 - <span id="status-4" class="font-mono">Polishing</span>
 
-Not everything will be in `1.0`. Even things that are core to the Redwood dream, like more sides and targets, won't be there. But that's by design: we need to be very careful about our priorities, both because we want `1.0` to be something special and because if we aren't careful, we'll never get there. 
-The hardest thing in open source is saying no, but as we get closer to `1.0`, it's increasingly what we'll have to do.
+Not everything will be in `v1.0`. Even things core to the Redwood dream—like more sides and targets—won't be there. But that's by design: we're trying to be careful about our priorities, both because we want `v1.0` to be something special and because if we aren't careful, we'll never get there. 
+One of the hardest things in open source is saying no, but as we get closer to `v1.0`, it's increasingly what we'll have to do.
 
-With that said, here's a high level overview of the `1.0` roadmap with links to relevant GitHub project boards and forum topics. If you're interested in helping with one of these, just let us know in the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up!
+With that said, here's the `v1.0` roadmap. If you're interested in helping with one of these, just let us know in the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up. With so many corners to finish, we need contributors now more than ever, so even the smallest contribution is appreciated!
 
 ## Accessibility
 
 <span id="status-4" class="font-mono">Polishing</span>
 
-Accessibility is a first-class concern. We want you to be able to build accessible websites without having to jump through hoops. While accessibility is a broad topic that we plan to keep iterating on, `v1.0` will bring you a solid foundation, addressing key concnerns, like route announcements. And the best part is it's all baked-in.
+Accessibility is a first-class concern. We want you to be able to build accessible websites without having to jump through hoops. While accessibility is a broad topic that we plan to keep iterating on, `v1.0` will bring you a solid foundation, addressing key concnerns, like route announcements and scroll. And the best part is it's all baked-in.
 
 A common theme of the weeks leading up to `v1.0` will be that we want to make sure what we have actually works, so if you're savy with a screen reader, testing the route announcer on multiple screen readers on multiple browsers would be invaluable feedback! The major things to look out for are that the route is actually announced and that the scroll is actually reset.
 
@@ -29,7 +29,7 @@ A common theme of the weeks leading up to `v1.0` will be that we want to make su
 
 <span id="status-4" class="font-mono">Polishing</span>
 
-Authentication and authorization are baked into Redwood. We plan to have easy-to-install, sophisticated authentication methods for a variety of popular auth providers. On top of that, we'll also provide RBAC (role-based access control) capabilities if you want them.
+Authentication and authorization are questions Redwood has had answers to since `v0.7`. Redwood has easy-to-install, sophisticated auth for a variety of providers. There's even RBACs (role-based access controls)! Authentication and authorization are integrated across the whole stack. For more, see [Security](#security).
 
 [Auth • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/6)
 
@@ -37,15 +37,17 @@ Authentication and authorization are baked into Redwood. We plan to have easy-to
 
 <span id="status-3" class="font-mono">Making it happen</span>
 
-Redwood depends on a few libraries&mdash;namely Prisma and Apollo&mdash;for some of its core functionality. For us to be `v1.0`, they have to be too. With Prisma recently carrying Migrate and Studio to GA (general availability) to complete the ORM, and with Apollo Client hitting `v3.0` not too long ago, it's safe to say that they're ready to go.
+Redwood depends on a few libraries&mdash;namely Prisma&mdash;for some of its core functionality. For us to be `v1.0`, they have to be too. With Prisma recently carrying Migrate and Studio to GA (general availability) to complete the ORM, it's safe to say that they're ready to go.
+
+We still have a bit of work to do here; we're swapping out Apollo Server with Envelop.
 
 [Core • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/14)
 
 ## Deployment
 
-<span id="status-3" class="font-mono">Making it happen</span>
+<span id="status-4" class="font-mono">Polishing</span>
 
-We'd like to support several deployment targets. The ones high-up on our list are: Netlify (done), Vercel (done), AWS, and Google Cloud Run. Deployment strategies should be done in a way that makes it easy for additional targets to be added and for users to create their own custom strategies.
+We want to be able to deploy everywhere and anywhere: serverless, serverful, to the edge—to the world! Much like auth, we've already got a great lineup, but there's a few more we want to add before `v1.0`.
 
 [Deployment • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/9)
 
@@ -53,15 +55,17 @@ We'd like to support several deployment targets. The ones high-up on our list ar
 
 <span id="status-3" class="font-mono">Making it happen</span>
 
-Part of Redwood's initial success was the quality of the tutorial. The practice of readable and comprehensive documentation is something we plan to continue. The road to `1.0` doesn't mean sacrificing on the quality of docs. On the contrary, the more the framework can do, the better the docs have to be.
+A major part of Redwood's initial success was it's tutorial. The practice of readable, enjoyable, and comprehensive documentation is something we plan to continue. Getting to `v1.0` doesn't mean sacrificing on the quality of docs. On the contrary, the more the framework can do, the better the docs have to be.
 
-Docs are tracked on the [redwoodjs.com repo](https://github.com/redwoodjs/redwoodjs.com/projects/1)
+Docs are tracked on the [redwoodjs.com repo](https://github.com/redwoodjs/redwoodjs.com/projects/1). We welcome any and all contributions, from fixing typos to adding cookbooks!
+
+More on the vision: we plan on moving over to Docusarus to accomodate things like versioning. We'll lock the docs in at `v1` and then version from there. The tutorials are over there already, with translations to boot! 
 
 ## Generators
 
 <span id="status-4" class="font-mono">Polishing</span>
 
-Our generators are already in pretty good shape. So as we get closer to `1.0`, we don't just mean more generators, but more advanced generators. Especially given the recent addition of `@redwoodjs/structure`.
+Our generators are already in pretty good shape. So as we get closer to `1.0`, we don't just mean more generators, but more advanced generators. Especially given the recent addition of `@redwoodjs/structure`. Look out for a long awaited feature: the ability to specify the path—where things get generated.
 
 [Generators • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/13)
 
@@ -75,7 +79,7 @@ Logging has wiped out almost all of the old-growth Redwoods in California. But t
 
 ## Performance
 
-<span id="status-1" class="font-mono">Figuring it out</span>
+<span id="status-3" class="font-mono">Making it happen</span>
 
 Can you have great developer ergonomics **and** performance? We intend to find out.
 
@@ -87,6 +91,12 @@ Bundle size will be important here, so a good place to start is by building with
 
 <span id="status-4" class="font-mono">Polishing</span>
 
+Does prerendering get any easier?
+
+```js
+  <Route name="home" page={HomePage} path="/" prerender />
+```
+
 - [Prerender proposal](https://community.redwoodjs.com/t/prerender-proposal/849)
 - [Pre-rendering with react-snap & Redwood](https://community.redwoodjs.com/t/pre-rendering-with-react-snap-redwood/863)
 
@@ -94,7 +104,7 @@ Bundle size will be important here, so a good place to start is by building with
 
 <span id="status-4" class="font-mono">Polishing</span>
 
-We've written our own router for Redwood, and we need to make sure it is competitive with existing routers in the React ecosystem (e.g. React Router, Reach Router). We've taken a stance on desiring a flat routing scheme (vs a nested one) and this currently comes with some performance downsides that need to be addressed.
+We've written our own router for Redwood, and we need to make sure it is competitive with existing routers in the React ecosystem (e.g. React Router, Reach Router). We've taken a stance on desiring a flat routing scheme (vs a nested one) and this currently comes with some performance downsides, some of which we've addressed with Sets.
 
 [Router • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/11)
 
@@ -102,7 +112,7 @@ We've written our own router for Redwood, and we need to make sure it is competi
 
 <span id="status-4" class="font-mono">Polishing</span>
 
-Redwood's component-development workflow starts with Storybook. Being able to develop your components in isolation without ever starting the dev server is a real game-changer.
+Redwood's component-development workflow starts with Storybook. Being able to develop your components in isolation without ever starting the dev server is a real game-changer. Redwood even generates mock data for your Cells so you can iterate on all four of your component states.
 
 [Storybook • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/8)
 
@@ -110,7 +120,7 @@ Redwood's component-development workflow starts with Storybook. Being able to de
 
 <span id="status-3" class="font-mono">Making it happen</span>
 
-Using Redwood's Structure package, we can use the same logic to power both an IDE (e.g. Jamstack IDE) and Redwood itself. Redwood Structure's most common use-case is getting the diagnostics of a complete Redwood project, but being able to programmatically talk about a Redwood project like an AST moves many other amazing things we can't anticipate into the adjacent possible.
+Using Redwood's Structure package, we can use the same logic to power both an IDE (i.e. Jamstack IDE) and Redwood itself. Redwood Structure's most common use-case is getting the diagnostics of a complete Redwood project, but being able to programmatically talk about a Redwood project like an AST moves many other amazing things we can't anticipate into the adjacent possible.
 
 [Structure • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/12)
 
@@ -118,7 +128,7 @@ Using Redwood's Structure package, we can use the same logic to power both an ID
 
 <span id="status-4" class="font-mono">Polishing</span>
 
-We've integrated testing for both sides and made Jest configurable. From here, improving the templates that the generators create is a must, not only for the sake of completeness but also for user learning.
+Redwood makes testing a concern straightaway. We've integrated testing for both sides, and even wrote a [tome](https://redwoodjs.com/docs/testing) telling you how to use it, from the ground-up. We've got a template for Functions in the works, which would all but bring our unit tests to a close. One thing we'd really like to add as a stretch goal is a GitHub Action so you can have CI from the get go!
 
 [Testing • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/4)
 
@@ -126,6 +136,10 @@ We've integrated testing for both sides and made Jest configurable. From here, i
 
 <span id="status-3" class="font-mono">Making it happen</span>
 
-We want Redwood apps to default to TypeScript. There's a lot to do, both on the Framework-side and the app-side, but its happening.
+The [TypeScript tracking issue](https://github.com/redwoodjs/redwood/issues/234) easily has the most reactions of any of our issues and PRs. Bit by bit we've made Redwood more and more TypeScript compliant. [@corbt](https://github.com/corbt) (Kyle Corbitt) even [graphed our progress](https://github.com/redwoodjs/redwood/issues/234#issuecomment-792390125)! 
+
+[Cells](https://github.com/redwoodjs/redwood/pull/2208) were one of the more-recent additions. And some of the things we've got coming, like [GraphQL Codegen](https://github.com/redwoodjs/redwood/pull/2485), are going to be icing on the cake.
+
+Having said all that, you can still just stick to JS!
 
 [TypeScript • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/2)
