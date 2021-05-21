@@ -45,7 +45,7 @@ Redwood depends on a few libraries&mdash;namely Prisma&mdash;for some of its cor
 
 <span id="status-4" class="font-mono">Polishing</span>
 
-We want to be able to deploy everywhere and anywhere: serverless, serverful, to the edge—to the world! Much like auth, we've already got a great lineup: Netlify (done), Vercel (done), Render (done), AWS, and Google Cloud Run (in the works). We'll always be looking to add more and to support custom deployment strategies.
+We want to be able to deploy everywhere and anywhere: serverless, serverful, to the edge—to the world! Much like auth, we've already got a great lineup: Netlify (done), Vercel (done), Render (done), AWS (done), and Google Cloud Run (in the works). We'll always be looking to add more and to support custom deployment strategies.
 
 [Deployment • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/9)
 
