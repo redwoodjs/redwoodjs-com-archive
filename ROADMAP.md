@@ -19,9 +19,9 @@ With that said, here's the `v1.0` roadmap. If you're interested in contributing 
 
 <span id="status-4" class="font-mono">Polishing</span>
 
-Accessibility is a first-class concern. We want you to be able to build accessible websites without having to jump through hoops. While accessibility is a broad topic that we plan to keep iterating on, `v1.0` will bring you a solid foundation, addressing key concnerns, like route announcements and scroll. And the best part is: it's all baked-in.
+Accessibility is a first-class concern. We want you to be able to build accessible websites without having to jump through hoops. While accessibility is a broad topic that we plan to keep iterating on, `v1.0` will bring you a solid foundation, addressing key concerns, like route announcements and scroll. And the best part is: it's all baked-in.
 
-A common theme leading up to `v1.0` will be that we want to make sure what we have actually works, so if you're savy with a screen reader, testing the route announcer on multiple screen readers on multiple browsers would be invaluable feedback! 
+A common theme leading up to `v1.0` will be that we want to make sure what we have actually works, so if you're savvy with a screen reader, testing the route announcer on multiple screen readers on multiple browsers would be invaluable feedback! 
 
 [Accessibility • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/5)
 
@@ -57,7 +57,7 @@ A major part of Redwood's initial success was it's tutorial. The practice of rea
 
 We welcome any and all contributions, from fixing typos to adding cookbooks! 
 
-One thing we plan on doing before `v1.0` is moving over to Docusarus to accomodate features like versioning. When we release `v1.0`, we'll lock the docs in and version from there. The tutorials are over there already, with translations to boot! 
+One thing we plan on doing before `v1.0` is moving over to Docusarus to accommodate features like versioning. When we release `v1.0`, we'll lock the docs in and version from there. The tutorials are over there already, with translations to boot! 
 
 ## Generators
 
