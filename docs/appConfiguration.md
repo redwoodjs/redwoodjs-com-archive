@@ -160,7 +160,7 @@ Setting to `true` creates stories for [Storybook](https://storybook.js.org/) whe
 
 ## [experimental]
 
-This section includes features that are *not stable* and maybe removed in future versions.
+This section includes features that are *not stable* and may be removed in future versions.
 
 ### esbuild
 
