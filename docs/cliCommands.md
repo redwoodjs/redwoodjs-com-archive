@@ -1559,6 +1559,7 @@ yarn redwood test [side..]
 | `--watchAll`        | Run all tests                                                                                                                                                  |
 | `--collectCoverage` | Show test coverage summary and output info to `coverage` directory in project root. See this directory for an .html coverage report                            |
 | `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                                 |
+| `--db-push`         | Syncs the test database with your Prisma schema without requiring a migration. It creates a test database if it doesn't already exist [default: true]. Note that this flag is ignored if your project does not have an api side. [👉 More details](https://redwoodjs.com/docs/cli-commands#prisma-db-push). |
 
 ## serve
 
