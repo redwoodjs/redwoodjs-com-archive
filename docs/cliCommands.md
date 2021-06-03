@@ -1560,6 +1560,8 @@ yarn redwood test [side..]
 | `--collectCoverage` | Show test coverage summary and output info to `coverage` directory in project root. See this directory for an .html coverage report                            |
 | `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                                 |
 
+> **Note** all other flags are passed onto the jest cli. So for example if you wanted to update your snapshots you can pass the `-u` flag
+
 ## serve
 
 Runs a server that serves both the api and the web sides.
