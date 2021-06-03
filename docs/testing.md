@@ -202,12 +202,28 @@ yarn rw test --no-watch
 
 This one is handy before committing some changes to be sure you didn't inadvertently break something you didn't expect, or before a deploy to production.
 
+
+### Filtering what tests to run
+
 You can run only the web- or api-side test suites by including the side as another argument to the command:
 
 ```terminal
 yarn rw test web
 yarn rw test api
 ```
+
+Let's say you have a test file called `CommentForm.test.js`. In order to only watch and run tests in this file you can run
+
+```terminal
+yarn rw test CommentForm
+```
+
+If you need to be more specific, you can combine side filters, with other filters
+
+```terminal
+yarn rw test api Comment
+```
+which will only run test specs matching "Comment" in the API side
 
 ## Testing Components
 
