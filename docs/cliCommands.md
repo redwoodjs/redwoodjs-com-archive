@@ -580,12 +580,15 @@ Cells are signature to Redwood. We think they provide a simpler and more declara
 | `name`               | Name of the cell                                                                      |
 | `--force, -f`        | Overwrite existing files                                                              |
 | `--typescript, --ts` | Generate TypeScript files  Enabled by default if we detect your project is TypeScript |
+| `--list`            | Use this flag to generate a list cell. This flag is needed when dealing with irregular words whose plural and singular is identical such as equipment or pokemon |
 | `--tests`            | Generate test files [default: true]                                                   |
 | `--stories`          | Generate Storybook files [default: true]                                              |
 
 **Usage**
 
-See the [Cells](https://redwoodjs.com/tutorial/cells) section of the Tutorial.
+The cell generator supports both single items and lists. See the [Single Item Cell vs List Cell](https://redwoodjs.com/docs/cells.html#single-item-cell-vs-list-cell) section of the Cell documentation.
+
+See the [Cells](https://redwoodjs.com/tutorial/cells) section of the Tutorial for usage examples.
 
 **Destroying**
 
@@ -1562,7 +1565,7 @@ yarn redwood test [side..]
 
 ## serve
 
-Runs a server that serves both the api and the web sides. 
+Runs a server that serves both the api and the web sides.
 
 ```terminal
 yarn redwood serve [side]
@@ -1596,7 +1599,7 @@ This command uses `apiProxyPath` in your `redwood.toml`. Use this command if you
 
 ### serve web
 
-Runs a server that only serves the web side. 
+Runs a server that only serves the web side.
 
 ```
 yarn rw serve web
