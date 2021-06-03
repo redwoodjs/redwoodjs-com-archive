@@ -1518,6 +1518,43 @@ Creates provider-specific code and configuration for deployment.
 | `--database, -d`    | Database deployment for Render only [choices: "none", "postgresql", "sqlite"] [default: "postgresql"]     |
 | `--force, -f`       | Overwrite existing configuration [default: false]                                  |
 
+#### setup deploy netlify
+
+When configuring netlify deployment, the `setup deploy netlify` command generates a `netlify.toml` [configuration file](https://docs.netlify.com/configure-builds/file-based-configuration/) with the defaults needed to build and deploy a RedwoodJS site on Netlify.
+
+The `netlify.toml` file is a configuration file that specifies how Netlify builds and deploys your site — including redirects, branch and context-specific settings, and more.
+
+This configuration file also defines the settings needed for [Netlify Dev](https://docs.netlify.com/configure-builds/file-based-configuration/#netlify-dev) to detect that your site uses the RedwoodJS framework. Netlify Dev serves your RedwoodJS app as if it runs on the Netlify platform and can serve functions, handle Netlify [headers](https://docs.netlify.com/configure-builds/file-based-configuration/#headers) and [redirects](https://docs.netlify.com/configure-builds/file-based-configuration/#redirects).
+
+
+Netlify Dev can also create a tunnel from your local development server that allows you to share and collaborate with others using `netlify dev --live`.
+
+```
+// See: netlify.toml
+// ...
+[dev]
+  # To use [Netlify Dev](https://www.netlify.com/products/dev/),
+  # install netlify-cli from https://docs.netlify.com/cli/get-started/#installation
+  # and then use netlify link https://docs.netlify.com/cli/get-started/#link-and-unlink-sites
+  # to connect your local project to a site already on Netlify
+  # then run netlify dev and our app will be accessible on the port specified below
+  framework = "redwoodjs"
+  # Set targetPort to the [web] side port as defined in redwood.toml
+  targetPort = 8910
+  # Point your browser to this port to access your RedwoodJS app
+  port = 8888
+```
+
+In order to use [Netlify Dev](https://www.netlify.com/products/dev/) you need to:
+
+* install the latest [netlify-cli](https://docs.netlify.com/cli/get-started/#installation)
+* use [netlify link](https://docs.netlify.com/cli/get-started/#link-and-unlink-sites) to connect to your Netlify site
+* ensure that the `targetPort` matches the [web] side port in `redwood.toml`
+* run `netlify dev` and your site will be served on the specified `port` (e.g., 8888)
+* if you wish to share your local server with others, you can run `netlify dev --live`
+
+> Note: To detect the RedwoodJS framework, please use netlify-cli v3.34.0 or greater.
+
 ## storybook
 
 Starts Storybook locally
