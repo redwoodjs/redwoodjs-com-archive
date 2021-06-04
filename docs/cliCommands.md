@@ -139,7 +139,7 @@ yarn redwood dataMigrate <command>
 | `install` | Appends `DataMigration` model to `schema.prisma`, creates `api/db/dataMigrations` directory |
 | `up`      | Executes outstanding data migrations                                                        |
 
-### install
+### dataMigrate install
 
 - Appends a `DataMigration` model to `schema.prisma` for tracking which data migrations have already run.
 - Creates a DB migration using `yarn redwood prisma migrate dev --create-only create_data_migrations`.
@@ -149,7 +149,7 @@ yarn redwood dataMigrate <command>
 yarn redwood dataMigrate install
 ```
 
-### up
+### dataMigrate up
 
 Executes outstanding data migrations against the database. Compares the list of files in `api/db/dataMigrations` to the records in the `DataMigration` table in the database and executes any files not present.
 
@@ -185,7 +185,7 @@ yarn redwood db <command>
 | `studio`           | Start Prisma Studio                                                                                   |
 | `up [increment]`   | Generate the Prisma client and apply migrations                                                       |
 
-### down
+### db down
 
 Migrate your database down.
 
@@ -221,7 +221,7 @@ we could get to `20200518160457-create-users` by running:
 ~/redwood-app$ yarn redwood db down 2
 ```
 
-### generate
+### db generate
 
 Generate the Prisma client.
 
@@ -236,7 +236,7 @@ yarn redwood db generate
 The Prisma client is auto-generated and tailored to your `schema.prisma`.
 This means that `yarn redwood db generate` needs to be run after every change to your `schema.prisma` for your Prisma client to be up to date. But you usually won't have to do this manually as other Redwood commands run this behind the scenes.
 
-### introspect
+### db introspect
 
 Introspect your database and generate models in `./api/db/schema.prisma`, overwriting existing models.
 
@@ -248,7 +248,7 @@ Introspect your database and generate models in `./api/db/schema.prisma`, overwr
 yarn redwood db introspect
 ```
 
-### save
+### db save
 
 Create a new migration.
 
@@ -286,7 +286,7 @@ api/db/migrations
 - `migrations/<migration>/steps.json`: An alternate representation of the migration steps that will be applied.
 - `migrate.lock`: A lock file specifying the current migration.
 
-### seed
+### db seed
 
 Seed your database with test data.
 
@@ -300,7 +300,7 @@ yarn redwood prisma db seed
 
 Runs `seed.js` in `./api/db`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/db/seed.js).
 
-### studio
+### db studio
 
 Start <a href="https://github.com/prisma/studio">Prisma Studio</a>, a visual editor for your database.
 
@@ -312,7 +312,7 @@ Start <a href="https://github.com/prisma/studio">Prisma Studio</a>, a visual edi
 yarn redwood db studio
 ```
 
-### up
+### db up
 
 Generate the Prisma client and apply migrations.
 
@@ -422,7 +422,7 @@ yarn redwood deploy <target>
 | `render <side> [...commands]`  | Build command for Render deploy                                   |
 | `vercel [...commands]`  | Build command for Vercel deploy                                   |
 
-### aws
+### deploy aws
 
 Deploy to AWS using the selected provider
 
@@ -437,7 +437,7 @@ yarn redwood deploy aws [provider]
 | `provider`          | AWS Deploy provider to configure [choices: "serverless"] [default: "serverless"] |
 | `--side`            | which Side(s)to deploy [choices: "api"] [default: "api"]                         |
 
-### netlify
+### deploy netlify
 
 Build command for Netlify deploy
 
@@ -460,7 +460,7 @@ The following command will build, apply Prisma DB migrations, and skip data migr
 yarn redwood deploy netlify --no-data-migrate
 ```
 
-### render
+### deploy render
 
 Build (web) and Start (api) command for Render deploy. (For usage instructions, see the Render [Deploy Redwood](https://render.com/docs/deploy-redwood) doc.)
 
@@ -490,7 +490,7 @@ The following command will apply Prisma DB migrations, run data migrations, and 
 yarn redwood deploy render api
 ```
 
-### vercel
+### deploy vercel
 
 Build command for Vercel deploy
 
@@ -558,15 +558,14 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 | `service <name>`       | Generate a service component                                                                          |
 
 ### TypeScript generators
+
 If your project is configured for TypeScript (see [TypeScript docs](https://redwoodjs.com/docs/typescript)), the generators will automatically detect and generate `.ts`/`.tsx` files for you
-
-
 
 **Undoing a Generator with a Destroyer**
 
 Most generate commands (i.e., everything but `yarn redwood generate dataMigration`) can be undone by their corresponding destroy command. For example, `yarn redwood generate cell` can be undone with `yarn redwood d cell`.
 
-### cell
+### generate cell
 
 Generate a cell component.
 
@@ -632,7 +631,7 @@ export const Success = ({ user }) => {
 }
 ```
 
-### component
+### generate component
 
 Generate a component.
 
@@ -687,7 +686,7 @@ const User = () => {
 export default User
 ```
 
-### dataMigration
+### generate dataMigration
 
 Generate a data migration script.
 
@@ -709,7 +708,7 @@ See the [Data Migration](/docs/data-migrations) docs.
 
 See the [Deploy](/docs/deploy) docs.
 
-### function
+### generate function
 
 Generate a Function.
 
@@ -777,7 +776,7 @@ $ /redwood-app/node_modules/.bin/dev-server
 17:21:49 api | ► http://localhost:8911/user/
 ```
 
-### layout
+### generate layout
 
 Generate a layout component.
 
@@ -832,7 +831,7 @@ const UserLayout = ({ children }) => {
 export default UserLayout
 ```
 
-### page
+### generate page
 
 Generates a page component and updates the routes.
 
@@ -963,7 +962,7 @@ const Routes = () => {
 }
 ```
 
-### scaffold
+### generate scaffold
 
 Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts `<path/model>`.
 
@@ -999,39 +998,43 @@ You can namespace your scaffolds by providing `<path/model>`. The layout, pages,
 yarn run v1.22.4
 $ /redwood-app/node_modules/.bin/redwood g scaffold admin/user
   ✔ Generating scaffold files...
-    ✔ Writing `./api/src/graphql/users.sdl.js`...
-    ✔ Writing `./api/src/services/users/users.test.js`...
-    ✔ Writing `./api/src/services/users/users.js`...
-    ✔ Writing `./web/src/scaffold.css`...
-    ✔ Writing `./web/src/layouts/Admin/UsersLayout/UsersLayout.js`...
-    ✔ Writing `./web/src/pages/Admin/EditUserPage/EditUserPage.js`...
-    ✔ Writing `./web/src/pages/Admin/UserPage/UserPage.js`...
-    ✔ Writing `./web/src/pages/Admin/UsersPage/UsersPage.js`...
-    ✔ Writing `./web/src/pages/Admin/NewUserPage/NewUserPage.js`...
-    ✔ Writing `./web/src/components/Admin/EditUserCell/EditUserCell.js`...
-    ✔ Writing `./web/src/components/Admin/User/User.js`...
-    ✔ Writing `./web/src/components/Admin/UserCell/UserCell.js`...
-    ✔ Writing `./web/src/components/Admin/UserForm/UserForm.js`...
-    ✔ Writing `./web/src/components/Admin/Users/Users.js`...
-    ✔ Writing `./web/src/components/Admin/UsersCell/UsersCell.js`...
-    ✔ Writing `./web/src/components/Admin/NewUser/NewUser.js`...
+    ✔ Successfully wrote file `./api/src/graphql/users.sdl.js`
+    ✔ Successfully wrote file `./api/src/services/users/users.js`
+    ✔ Successfully wrote file `./api/src/services/users/users.scenarios.js`
+    ✔ Successfully wrote file `./api/src/services/users/users.test.js`
+    ✔ Successfully wrote file `./web/src/layouts/Admin/UsersLayout/UsersLayout.js`
+    ✔ Successfully wrote file `./web/src/pages/Admin/EditUserPage/EditUserPage.js`
+    ✔ Successfully wrote file `./web/src/pages/Admin/UserPage/UserPage.js`
+    ✔ Successfully wrote file `./web/src/pages/Admin/UsersPage/UsersPage.js`
+    ✔ Successfully wrote file `./web/src/pages/Admin/NewUserPage/NewUserPage.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/EditUserCell/EditUserCell.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/User/User.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/UserCell/UserCell.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/UserForm/UserForm.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/Users/Users.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/UsersCell/UsersCell.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/NewUser/NewUser.js`
+  ✔ Adding layout import...
+  ✔ Adding set import...
   ✔ Adding scaffold routes...
   ✔ Adding scaffold asset imports...
 Done in 1.21s.
 ```
 
-The routes will be nested too:
+The routes wrapped in the [`Set`](https://redwoodjs.com/docs/redwood-router.html#sets-of-routes) component with generated layout will be nested too:
 
-```javascript{6-9}
+```javascript{6-11}
 // ./web/src/Routes.js
 
 const Routes = () => {
   return (
     <Router>
-      <Route path="/admin/users/new" page={AdminNewUserPage} name="adminNewUser" />
-      <Route path="/admin/users/{id:Int}/edit" page={AdminEditUserPage} name="adminEditUser" />
-      <Route path="/admin/users/{id:Int}" page={AdminUserPage} name="adminUser" />
-      <Route path="/admin/users" page={AdminUsersPage} name="adminUsers" />
+      <Set wrap={UsersLayout}>
+        <Route path="/admin/users/new" page={AdminNewUserPage} name="adminNewUser" />
+        <Route path="/admin/users/{id:Int}/edit" page={AdminEditUserPage} name="adminEditUser" />
+        <Route path="/admin/users/{id:Int}" page={AdminUserPage} name="adminUser" />
+        <Route path="/admin/users" page={AdminUsersPage} name="adminUsers" />
+      </Set>
       <Route notfound page={NotFoundPage} />
     </Router>
   )
@@ -1044,7 +1047,7 @@ const Routes = () => {
 yarn redwood d scaffold <model>
 ```
 
-### sdl
+### generate sdl
 
 Generate a GraphQL schema and service object.
 
@@ -1172,7 +1175,7 @@ export const User = {
 }
 ```
 
-### service
+### generate service
 
 Generate a service component.
 
@@ -1321,7 +1324,7 @@ Along with the CLI reference, bookmark Prisma's [Migration Flows](https://www.pr
 | `generate`          | Generate artifacts (e.g. Prisma Client)                      |
 | `migrate <command>` | Update the database schema with migrations                   |
 
-### db
+### prisma db
 
 Manage your database schema and lifecycle during development.
 
@@ -1331,7 +1334,7 @@ yarn redwood prisma db <command>
 
 The `prisma db` namespace contains commands that operate directly against the database.
 
-#### pull
+#### prisma db pull
 
 Pull the schema from an existing database, updating the Prisma schema.
 
@@ -1345,7 +1348,7 @@ This command, formerly `introspect`, connects to your database and adds Prisma m
 
 > Warning: The command will Overwrite the current schema.prisma file with the new schema. Any manual changes or customization will be lost. Be sure to back up your current schema.prisma file before running introspect if it contains important modifications.
 
-#### push
+#### prisma db push
 
 Push the state from your Prisma schema to your database.
 
@@ -1359,7 +1362,7 @@ This is your go-to command for prototyping changes to your Prisma schema (`schem
 Prior to to `yarn redwood prisma db push`, there wasn't a great way to try out changes to your Prisma schema without creating a migration.
 This command fills the void by "pushing" your `schema.prisma` file to your database without creating a migration. You don't even have to run `yarn redwood prisma generate` afterward&mdash;it's all taken care of for you, making it ideal for iterative development.
 
-#### seed
+#### prisma db seed
 
 Seed your database.
 
@@ -1383,7 +1386,7 @@ Prisma's got some great resources on this command. You can [code along with Ryan
 <!-- yarn redwood prisma generate -->
 <!-- ``` -->
 
-### migrate
+### prisma migrate
 
 Update the database schema with migrations.
 
@@ -1399,7 +1402,7 @@ Since migrate generates plain SQL files, you can edit those SQL files before app
 
 Prisma Migrate has separate commands for applying migrations based on whether you're in dev or in production. The Prisma [Migration flows](https://www.prisma.io/docs/concepts/components/prisma-migrate/prisma-migrate-flows) goes over the difference between these workflows in more detail.
 
-#### dev
+#### prisma migrate dev
 
 Create a migration from changes in Prisma schema, apply it to the database, trigger generators (e.g. Prisma Client).
 
@@ -1419,7 +1422,7 @@ yarn redwood prisma migrate dev
 <!-- yarn redwood prisma migrate reset -->
 <!-- ``` -->
 
-#### deploy
+#### prisma migrate deploy
 
 Apply pending migrations to update the database schema in production/staging.
 
@@ -1579,7 +1582,7 @@ yarn redwood serve [side]
 | `--port`            | What port should the server run on [default: 8911]                             |
 | `--socket`          | The socket the server should run. This takes precedence over port              |
 
-### api
+### serve api
 
 Runs a server that only serves the api side.
 
@@ -1595,7 +1598,7 @@ This command uses `apiProxyPath` in your `redwood.toml`. Use this command if you
 | `--socket`          | The socket the server should run. This takes precedence over port |
 | `--apiRootPath`     | The root path where your api functions are served                 |
 
-### web
+### serve web
 
 Runs a server that only serves the web side. 
 
@@ -1603,7 +1606,7 @@ Runs a server that only serves the web side.
 yarn rw serve web
 ```
 
-This command serves the contents in `web/dist`. Use this command if you're debugging (e.g. great for debuging prerender) or if you want to run your api and web sides on separate servers, which is often considered a best practice for scalability (since your api side likely has much higher scaling requirements).
+This command serves the contents in `web/dist`. Use this command if you're debugging (e.g. great for debugging prerender) or if you want to run your api and web sides on separate servers, which is often considered a best practice for scalability (since your api side likely has much higher scaling requirements).
 
 > **But shouldn't I use nginx and/or equivalent technology to serve static files?**
 >

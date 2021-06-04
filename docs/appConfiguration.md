@@ -15,7 +15,7 @@ You can configure your Redwood app's settings in `redwood.toml`. By default, `re
   open = true
 ```
 
-These are listed by default because they're the ones that you're most likely to configure. But there are plenty more available. The rest are spread between Redwood's [webpack configuration files](https://github.com/redwoodjs/redwood/tree/main/packages/core/config) and `@redwoodjs/internal`'s [config.ts](https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/config.ts#L42-L60):
+These are listed by default because they're the ones that you're most likely to configure. But there are plenty more available. The rest are spread between Redwood's [webpack configuration files](https://github.com/redwoodjs/redwood/tree/main/packages/core/config) and `@redwoodjs/internal`'s [config.ts](https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/config.ts#L54-L82):
 
 ```javascript
 // redwood/packages/internal/src/config.ts
@@ -27,7 +27,9 @@ const DEFAULT_CONFIG: Config = {
     path: './web',
     target: TargetEnum.BROWSER,
     apiProxyPath: '/.netlify/functions',
+    apiProxyPort: 8911,
     fastRefresh: true,
+    a11y: true,
   },
   api: {
     host: 'localhost',
@@ -37,12 +39,16 @@ const DEFAULT_CONFIG: Config = {
     schemaPath: './api/db/schema.prisma',
   },
   browser: {
-    open: true,
+    open: false,
   },
   generate: {
     tests: true,
     stories: true,
   },
+  experimental: {
+    esbuild: false,
+  }
+
 }
 ```
 
@@ -75,8 +81,10 @@ Configuration for the web side.
 | `path`                        | Path to the web side               | `'./web'`               | `both`        |
 | `target`                      | Target for the web side            | `TargetEnum.BROWSER`    | `both`        |
 | `apiProxyPath`                | Proxy path to the api side         | `'/.netlify/functions'` | `production`  |
+| `apiProxyPort`                | Proxy port to the api side         | `8911`                  | `production`  |
 | `includeEnvironmentVariables` | Environment variables to whitelist |                         | `both`        |
 | `fastRefresh`                 | Enable webpack's fast refresh      | true                    | `development` |
+| `a11y`                        | Enable storybook addon-a11y and eslint-plugin-jsx-a11y  | true                    | `development` |
 
 ### apiProxyPath
 
@@ -155,6 +163,22 @@ Configuration for Generator "test" and "story" files. By default, the following 
 | :-------- | :----------------------------- | :------- |
 | `tests`   | Generate Jest test files       | `true`   |
 | `stories` | Generate Storybook story files | `true`   |
+
+### Tests
+
+Setting to `true` creates tests when the generate command is invoked.
+
+### Stories
+
+Setting to `true` creates stories for [Storybook](https://storybook.js.org/) when the generate command is invoked.
+
+## [experimental]
+
+This section includes features that are *not stable* and may be removed in future versions.
+
+### esbuild
+
+Setting to `true` will use [esbuild](https://esbuild.github.io/) instead of the Webpack for building the project.
 
 ## Running within a Container or VM
 
