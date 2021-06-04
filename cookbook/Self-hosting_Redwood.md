@@ -91,7 +91,7 @@ const user = 'deploy' // Server user
 const path = `/home/${user}/${name}` // Path on the server to deploy to
 const host = 'example.com' // Server hostname
 const port = 8911 // Port to use locally on the server
-const build = `yarn install && yarn rw build && yarn rw prisma deploy`
+const build = `yarn install && yarn rw build && yarn rw prisma migrate deploy`
 
 module.exports = {
   apps: [
@@ -100,7 +100,7 @@ module.exports = {
       node_args: '-r dotenv/config',
       cwd: `${path}/current/`,
       script: 'yarn rw serve api',
-      args: '--port ${port}',
+      args: `--port ${port}`,
       env: {
         NODE_ENV: 'development',
       },
