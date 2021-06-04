@@ -580,12 +580,15 @@ Cells are signature to Redwood. We think they provide a simpler and more declara
 | `name`               | Name of the cell                                                                      |
 | `--force, -f`        | Overwrite existing files                                                              |
 | `--typescript, --ts` | Generate TypeScript files  Enabled by default if we detect your project is TypeScript |
+| `--list`            | Use this flag to generate a list cell. This flag is needed when dealing with irregular words whose plural and singular is identical such as equipment or pokemon |
 | `--tests`            | Generate test files [default: true]                                                   |
 | `--stories`          | Generate Storybook files [default: true]                                              |
 
 **Usage**
 
-See the [Cells](https://redwoodjs.com/tutorial/cells) section of the Tutorial.
+The cell generator supports both single items and lists. See the [Single Item Cell vs List Cell](https://redwoodjs.com/docs/cells.html#single-item-cell-vs-list-cell) section of the Cell documentation.
+
+See the [Cells](https://redwoodjs.com/tutorial/cells) section of the Tutorial for usage examples.
 
 **Destroying**
 

@@ -30,6 +30,17 @@ $ /redwood-app/node_modules/.bin/rw g cell user
 Done in 1.07s.
 ```
 
+### Single Item Cell vs List Cell
+
+Sometimes, you want a Cell that renders a single item, like the above example. At other times, you want a list of items.
+
+The Redwood cell generator can do both for you, and detects if the `<name>` you pass is plural.
+
+To generate a Cell that gets you a list of users, instead, you would simply run `yarn rw generate cell users`.
+
+> For **irregular words** whose plural and singular is identical, such as *equipment* or *pokemon*, if you want a list simply specify the list flag: `yarn rw generate cell equipment --list`
+## Cells in-depth
+
 We'll go over each of these files in detail. But know that the file appended with just `.js` (in the example above, `UserCell.js`) contains all your Cell's logic.
 
 Off the bat, this file exports five constants: `QUERY`, `Loading` , `Empty` , `Failure`  and `Success`. The root query in `QUERY` is the same as `<name>` so that, if you're generating a cell based on a model in your `schema.prisma`, you can get something out of the database right away. But there's a good chance you won't generate your Cell this way, so if you need to, make sure to change the root query. See the [Cells](https://redwoodjs.com/tutorial/cells#our-first-cell) section of the Tutorial for a great example of this.
@@ -162,10 +173,10 @@ But why bother with Slow 3G when Redwood comes with Storybook? Storybook makes d
 
 A Cell renders this component if there's no data.
 
-What do we mean by no data? We mean if the response is 1) `null` or 2) an empty array (`[]`). There's actually four functions in [withCellHOC.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/withCellHOC.tsx) dedicated just to figuring this out:
+What do we mean by no data? We mean if the response is 1) `null` or 2) an empty array (`[]`). There's actually four functions in [createCell.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/createCell.tsx) dedicated just to figuring this out:
 
 ```javascript
-// withCellHOC.tsx
+// createCell.tsx
 
 const isDataNull = (data: DataObject) => {
   return dataField(data) === null
