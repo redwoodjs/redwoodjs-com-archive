@@ -25,6 +25,19 @@ Then run `yarn rw build` and enjoy the performance boost!
 <!-- this doesn't render... -->
 <!-- ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b2c2aa27-3b2b-4ab7-b514-6ebc963d5312/2021-02-19_20.24.00.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b2c2aa27-3b2b-4ab7-b514-6ebc963d5312/2021-02-19_20.24.00.gif) -->
 
+### Prerendering all pages in a Set
+
+Just add the `prerender` prop to the Set that wraps all Pages you want to prerender:
+
+```js{3}
+// Routes.js
+
+<Set prerender>
+  <Route path="/" page={HomePage} name="home" />
+  <Route path="/about" page={AboutPage} name="hello" />
+</Set>
+```
+
 ### Not found page
 
 You can also prerender your not found page (a.k.a your 404 page). Just add—you guessed it—the prerender prop:
