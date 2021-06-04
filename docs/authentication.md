@@ -545,12 +545,14 @@ Supabase supports several sign in methods:
 * email/password
 * passwordless via emailed magiclink
 * Sign in with redirect. You can control where the user is redirected to after they are logged in via a `redirectTo` option.
-* Sign in using third-party providers/OAuth via Azure Active Directory, Bitbucket, Facebook, GitHub, GitLab, or Google logins.
+* Sign in using third-party providers/OAuth via Apple, Azure Active Directory, Bitbucket, Facebook, GitHub, GitLab, Google or Twitter logins.
+* Sign in with a valid refresh token that was returned on login.
 * Sign in with scopes. If you need additional data from an OAuth provider, you can include a space-separated list of `scopes` in your request options to get back an OAuth `provider_token`.
 
 Depending on the credentials provided:
 
-* A user can sign up either via email or a supported OAuth provider: `'azure' | 'bitbucket' | 'facebook' | 'github' | 'gitlab' | 'google'`
+* A user can sign up either via email or sign in with supported OAuth provider: `'apple' | 'azure' | 'bitbucket' | 'facebook' | 'github' | 'gitlab' | 'google' | 'twitter'`
+* If you sign in with a valid refreshToken, the current user will be updated
 * If you provide email without a password, the user will be sent a magic link.
 * The magic link's destination URL is determined by the SITE_URL config variable. To change this, you can go to Authentication -> Settings on `app.supabase.io` for your project.
 * Specifying an OAuth provider (such as Bitbucket, GitHub, GitLab, or Google) will open the browser to the relevant login page
