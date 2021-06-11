@@ -415,12 +415,12 @@ yarn redwood deploy <target>
 
 <br/>
 
-| Commands                | Description                                                       |
-| :---------------------- | :---------------------------------------------------------------- |
-| `aws <provider>`        | Deploy to AWS using the selected provider [choices: "serverless"] |
-| `netlify [...commands]` | Build command for Netlify deploy                                  |
-| `render <side> [...commands]`  | Build command for Render deploy                                   |
-| `vercel [...commands]`  | Build command for Vercel deploy                                   |
+| Commands                      | Description                                                       |
+| :---------------------------- | :---------------------------------------------------------------- |
+| `aws <provider>`              | Deploy to AWS using the selected provider [choices: "serverless"] |
+| `netlify [...commands]`       | Build command for Netlify deploy                                  |
+| `render <side> [...commands]` | Build command for Render deploy                                   |
+| `vercel [...commands]`        | Build command for Vercel deploy                                   |
 
 ### deploy aws
 
@@ -447,10 +447,10 @@ yarn redwood deploy netlify
 
 <br/>
 
-| Options                | Description                                          |
-| :--------------------- | :--------------------------------------------------- |
-| `--build`              | Build for production [default: "true"]               |
-| `--prisma`             | Apply database migrations [default: "true"]          |
+| Options                | Description                                         |
+| :--------------------- | :-------------------------------------------------- |
+| `--build`              | Build for production [default: "true"]              |
+| `--prisma`             | Apply database migrations [default: "true"]         |
 | `--data-migrate, --dm` | Migrate the data in your database [default: "true"] |
 
 **Example**
@@ -470,12 +470,12 @@ yarn redwood deploy render <side>
 
 <br/>
 
-| Options & Arguments    | Description                                          |
-| :--------------------- | :--------------------------------------------------- |
-| `side`                 | select side to build [choices: "api", "web"]         |
-| `--prisma`             | Apply database migrations [default: "true"]          |
+| Options & Arguments    | Description                                         |
+| :--------------------- | :-------------------------------------------------- |
+| `side`                 | select side to build [choices: "api", "web"]        |
+| `--prisma`             | Apply database migrations [default: "true"]         |
 | `--data-migrate, --dm` | Migrate the data in your database [default: "true"] |
-| `--serve`              | Run server for api in production [default: "true"]   |
+| `--serve`              | Run server for api in production [default: "true"]  |
 
 **Example**
 The following command will build the Web side for static-site CDN deployment.
@@ -500,10 +500,10 @@ yarn redwood deploy vercel
 
 <br/>
 
-| Options                | Description                                          |
-| :--------------------- | :--------------------------------------------------- |
-| `--build`              | Build for production [default: "true"]               |
-| `--prisma`             | Apply database migrations [default: "true"]          |
+| Options                | Description                                         |
+| :--------------------- | :-------------------------------------------------- |
+| `--build`              | Build for production [default: "true"]              |
+| `--prisma`             | Apply database migrations [default: "true"]         |
 | `--data-migrate, --dm` | Migrate the data in your database [default: "true"] |
 
 **Example**
@@ -545,7 +545,7 @@ yarn redwood generate <type>
 Some generators require that their argument be a model in your `schema.prisma`. When they do, their argument is named `<model>`.
 
 | Command                | Description                                                                                           |
-|------------------------|-------------------------------------------------------------------------------------------------------|
+| ---------------------- | ----------------------------------------------------------------------------------------------------- |
 | `cell <name>`          | Generate a cell component                                                                             |
 | `component <name>`     | Generate a component component                                                                        |
 | `dataMigration <name>` | Generate a data migration component                                                                   |
@@ -575,14 +575,14 @@ yarn redwood generate cell <name>
 
 Cells are signature to Redwood. We think they provide a simpler and more declarative approach to data fetching.
 
-| Arguments & Options  | Description                                                                           |
-|----------------------|---------------------------------------------------------------------------------------|
-| `name`               | Name of the cell                                                                      |
-| `--force, -f`        | Overwrite existing files                                                              |
-| `--typescript, --ts` | Generate TypeScript files  Enabled by default if we detect your project is TypeScript |
-| `--list`            | Use this flag to generate a list cell. This flag is needed when dealing with irregular words whose plural and singular is identical such as equipment or pokemon |
-| `--tests`            | Generate test files [default: true]                                                   |
-| `--stories`          | Generate Storybook files [default: true]                                              |
+| Arguments & Options  | Description                                                                                                                                                      |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`               | Name of the cell                                                                                                                                                 |
+| `--force, -f`        | Overwrite existing files                                                                                                                                         |
+| `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript                                                                             |
+| `--list`             | Use this flag to generate a list cell. This flag is needed when dealing with irregular words whose plural and singular is identical such as equipment or pokemon |
+| `--tests`            | Generate test files [default: true]                                                                                                                              |
+| `--stories`          | Generate Storybook files [default: true]                                                                                                                         |
 
 **Usage**
 
@@ -644,13 +644,13 @@ yarn redwood generate component <name>
 
 Redwood loves function components and makes extensive use of React Hooks, which are only enabled in function components.
 
-| Arguments & Options  | Description                                                                           |
-|----------------------|---------------------------------------------------------------------------------------|
-| `name`               | Name of the component                                                                 |
-| `--force, -f`        | Overwrite existing files                                                              |
-| `--typescript, --ts` | Generate TypeScript files  Enabled by default if we detect your project is TypeScript |
-| `--tests`            | Generate test files [default: true]                                                   |
-| `--stories`          | Generate Storybook files [default: true]                                              |
+| Arguments & Options  | Description                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| `name`               | Name of the component                                                                |
+| `--force, -f`        | Overwrite existing files                                                             |
+| `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
+| `--tests`            | Generate test files [default: true]                                                  |
+| `--stories`          | Generate Storybook files [default: true]                                             |
 
 **Destroying**
 
@@ -721,11 +721,11 @@ yarn redwood generate function <name>
 
 Not to be confused with Javascript functions, Capital-F Functions are meant to be deployed to serverless endpoints like AWS Lambda.
 
-| Arguments & Options  | Description                                                                           |
-|----------------------|---------------------------------------------------------------------------------------|
-| `name`               | Name of the function                                                                  |
-| `--force, -f`        | Overwrite existing files                                                              |
-| `--typescript, --ts` | Generate TypeScript files  Enabled by default if we detect your project is TypeScript |
+| Arguments & Options  | Description                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| `name`               | Name of the function                                                                 |
+| `--force, -f`        | Overwrite existing files                                                             |
+| `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
 
 **Usage**
 
@@ -789,14 +789,14 @@ yarn redwood generate layout <name>
 
 Layouts wrap pages and help you stay DRY.
 
-| Arguments & Options  | Description                                                                           |
-|----------------------|---------------------------------------------------------------------------------------|
-| `name`               | Name of the layout                                                                    |
-| `--force, -f`        | Overwrite existing files                                                              |
-| `--typescript, --ts` | Generate TypeScript files  Enabled by default if we detect your project is TypeScript |
-| `--tests`            | Generate test files [default: true]                                                   |
-| `--stories`          | Generate Storybook files [default: true]                                              |
-| `--skipLink`         | Generate a layout with a skip link [default: false]                                   |
+| Arguments & Options  | Description                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| `name`               | Name of the layout                                                                   |
+| `--force, -f`        | Overwrite existing files                                                             |
+| `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
+| `--tests`            | Generate test files [default: true]                                                  |
+| `--stories`          | Generate Storybook files [default: true]                                             |
+| `--skipLink`         | Generate a layout with a skip link [default: false]                                  |
 
 **Usage**
 
@@ -850,14 +850,14 @@ from `name` and the route parameter, if specified, will be added to the end.
 
 This also updates `Routes.js` in `./web/src`.
 
-| Arguments & Options  | Description                                                                           |
-|----------------------|---------------------------------------------------------------------------------------|
-| `name`               | Name of the page                                                                      |
-| `path`               | URL path to the page. Defaults to `name`                                              |
-| `--force, -f`        | Overwrite existing files                                                              |
-| `--typescript, --ts` | Generate TypeScript files  Enabled by default if we detect your project is TypeScript |
-| `--tests`            | Generate test files [default: true]                                                   |
-| `--stories`          | Generate Storybook files [default: true]                                              |
+| Arguments & Options  | Description                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| `name`               | Name of the page                                                                     |
+| `path`               | URL path to the page. Defaults to `name`                                             |
+| `--force, -f`        | Overwrite existing files                                                             |
+| `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
+| `--tests`            | Generate test files [default: true]                                                  |
+| `--stories`          | Generate Storybook files [default: true]                                             |
 
 **Destroying**
 
@@ -985,10 +985,10 @@ A scaffold quickly creates a CRUD for a model by generating the following files 
 The content of the generated components is different from what you'd get by running them individually.
 
 | Arguments & Options  | Description                                                                                                                                                         |
-|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `model`              | Model to scaffold. You can also use `<path/model>` to nest files by type at the given path directory (or directories). For example, `redwood g scaffold admin/post` |
 | `--force, -f`        | Overwrite existing files                                                                                                                                            |
-| `--typescript, --ts` | Generate TypeScript files  Enabled by default if we detect your project is TypeScript                                                                               |
+| `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript                                                                                |
 
 **Usage**
 
@@ -1063,12 +1063,12 @@ The sdl will inspect your `schema.prisma` and will do its best with relations. S
 <!-- See limited generator support for relations
 https://community.redwoodjs.com/t/prisma-beta-2-and-redwoodjs-limited-generator-support-for-relations-with-workarounds/361 -->
 
-| Arguments & Options  | Description                                                                           |
-|----------------------|---------------------------------------------------------------------------------------|
-| `model`              | Model to generate the sdl for                                                         |
-| `--crud`             | Also generate mutations                                                               |
-| `--force, -f`        | Overwrite existing files                                                              |
-| `--typescript, --ts` | Generate TypeScript files  Enabled by default if we detect your project is TypeScript |
+| Arguments & Options  | Description                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| `model`              | Model to generate the sdl for                                                        |
+| `--crud`             | Also generate mutations                                                              |
+| `--force, -f`        | Overwrite existing files                                                             |
+| `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
 
 **Destroying**
 
@@ -1188,13 +1188,13 @@ yarn redwood generate service <name>
 
 Services are where Redwood puts its business logic. They can be used by your GraphQL API or any other place in your backend code. See [How Redwood Works with Data](https://redwoodjs.com/tutorial/side-quest-how-redwood-works-with-data).
 
-| Arguments & Options  | Description                                                                           |
-|----------------------|---------------------------------------------------------------------------------------|
-| `name`               | Name of the service                                                                   |
-| `--force, -f`        | Overwrite existing files                                                              |
-| `--typescript, --ts` | Generate TypeScript files  Enabled by default if we detect your project is TypeScript |
-| `--tests`            | Generate test files [default: true]                                                   |
-| `--stories`          | Generate Storybook files [default: true]                                              |
+| Arguments & Options  | Description                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| `name`               | Name of the service                                                                  |
+| `--force, -f`        | Overwrite existing files                                                             |
+| `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
+| `--tests`            | Generate test files [default: true]                                                  |
+| `--stories`          | Generate Storybook files [default: true]                                             |
 
 **Destroying**
 
@@ -1450,7 +1450,7 @@ yarn redwood setup <command>
 <br/>
 
 | Commands           | Description                                                                               |
-|--------------------|-------------------------------------------------------------------------------------------|
+| ------------------ | ----------------------------------------------------------------------------------------- |
 | `auth`             | Setup auth configuration for a provider                                                   |
 | `custom-web-index` | Setup an `index.js` file, so you can customize how Redwood web is mounted in your browser |
 | `deploy`           | Setup a deployment configuration for a provider                                           |
@@ -1458,7 +1458,6 @@ yarn redwood setup <command>
 | `tailwind`         | Setup tailwindcss and PostCSS                                                             |
 | `webpack`          | Setup webpack config file in your project so you can add custom config                    |
 | `tsconfig`         | Add relevant tsconfig, so you can start using TypeScript                                  |
-
 
 ### setup auth
 
@@ -1493,8 +1492,8 @@ Redwood automatically mounts your `<App />` to the DOM, but if you want to custo
 | :------------------ | :----------------------- |
 | `--force, -f`       | Overwrite existing files |
 
-
 ### setup tsconfig
+
 Setup tsconfig.json on both web and api sides.
 
 ```
@@ -1519,11 +1518,11 @@ yarn redwood setup deploy <provider>
 
 Creates provider-specific code and configuration for deployment.
 
-| Arguments & Options | Description                                                                        |
-| :------------------ | :--------------------------------------------------------------------------------- |
-| `provider`          | Deploy provider to configure. Choices are `aws-serverless`, `netlify`, `render`, or `vercel` |
-| `--database, -d`    | Database deployment for Render only [choices: "none", "postgresql", "sqlite"] [default: "postgresql"]     |
-| `--force, -f`       | Overwrite existing configuration [default: false]                                  |
+| Arguments & Options | Description                                                                                           |
+| :------------------ | :---------------------------------------------------------------------------------------------------- |
+| `provider`          | Deploy provider to configure. Choices are `aws-serverless`, `netlify`, `render`, or `vercel`          |
+| `--database, -d`    | Database deployment for Render only [choices: "none", "postgresql", "sqlite"] [default: "postgresql"] |
+| `--force, -f`       | Overwrite existing configuration [default: false]                                                     |
 
 ## storybook
 
@@ -1558,7 +1557,7 @@ yarn redwood test [side..]
 <br/>
 
 | Arguments & Options | Description                                                                                                                                                    |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `sides or filter`   | Which side(s) to test, and/or a regular expression to match against your test files to filter by                                                               |
 | `--help`            | Show help                                                                                                                                                      |
 | `--version`         | Show version number                                                                                                                                            |
@@ -1582,7 +1581,7 @@ yarn redwood serve [side]
 `yarn rw serve` is useful for debugging locally or for self-hosting—deploying a single server into a serverful environment. Since both the api and the web sides run in the same server, CORS isn't a problem.
 
 | Arguments & Options | Description                                                                    |
-|---------------------|--------------------------------------------------------------------------------|
+| ------------------- | ------------------------------------------------------------------------------ |
 | `side`              | Which side(s) to run. Choices are `api` and `web`. Defaults to `api` and `web` |
 | `--port`            | What port should the server run on [default: 8911]                             |
 | `--socket`          | The socket the server should run. This takes precedence over port              |
@@ -1598,7 +1597,7 @@ yarn rw serve api
 This command uses `apiProxyPath` in your `redwood.toml`. Use this command if you want to run just the api side on a server (e.g. running on Render).
 
 | Arguments & Options | Description                                                       |
-|---------------------|-------------------------------------------------------------------|
+| ------------------- | ----------------------------------------------------------------- |
 | `--port`            | What port should the server run on [default: 8911]                |
 | `--socket`          | The socket the server should run. This takes precedence over port |
 | `--apiRootPath`     | The root path where your api functions are served                 |
@@ -1617,11 +1616,11 @@ This command serves the contents in `web/dist`. Use this command if you're debug
 >
 > Probably, but it can be a challenge to setup when you just want something running quickly!
 
-| Arguments & Options | Description                                                                                  |
-|---------------------|----------------------------------------------------------------------------------------------|
-| `--port`            | What port should the server run on [default: 8911]                                           |
-| `--socket`          | The socket the server should run. This takes precedence over port                            |
-| `--apiHost`         | Forwards requests from the `apiProxyPath` (defined in `redwood.toml`) to the specified host  |
+| Arguments & Options | Description                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------------- |
+| `--port`            | What port should the server run on [default: 8911]                                          |
+| `--socket`          | The socket the server should run. This takes precedence over port                           |
+| `--apiHost`         | Forwards requests from the `apiProxyPath` (defined in `redwood.toml`) to the specified host |
 
 ## upgrade
 
