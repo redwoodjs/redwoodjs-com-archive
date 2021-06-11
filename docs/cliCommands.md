@@ -996,7 +996,7 @@ See [Creating a Post Editor](https://redwoodjs.com/tutorial/getting-dynamic#crea
 
 **Nesting of Components and Pages**
 
-By default, redwood will nest the components and pages in a directory named as per the `model`. For example:
+By default, redwood will nest the components and pages in a directory named as per the model. For example (where `post` is the model):
 `yarn rw g scaffold post`
 will output the following files, with the components and pages nested in a `Post` directory:
 
