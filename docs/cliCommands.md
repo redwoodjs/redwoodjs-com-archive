@@ -559,7 +559,7 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 
 ### TypeScript generators
 
-If your project is configured for TypeScript (see [TypeScript docs](https://redwoodjs.com/docs/typescript)), the generators will automatically detect and generate `.ts`/`.tsx` files for you
+If your project is configured for TypeScript (see [TypeScript docs](https://redwoodjs.com/docs/typescript)), the generators will automatically detect and generate `.ts`/`.js` files for you
 
 **Undoing a Generator with a Destroyer**
 
@@ -994,7 +994,53 @@ The content of the generated components is different from what you'd get by runn
 
 See [Creating a Post Editor](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor).
 
-You can namespace your scaffolds by providing `<path/model>`. The layout, pages, cells, and components will be nested in newly created dir(s). For example, given a model user, running `yarn redwood generate scaffold admin/user` will nest the layouts, pages, and components in a newly created `admin` directory:
+**Nesting of Components and Pages**
+
+By default, redwood will nest the components and pages in a directory named as per the `model`. For example:
+`yarn rw g scaffold post`
+will output the following files, with the components and pages nested in a `Post` directory:
+
+```plaintext{9-20}
+  √ Generating scaffold files...
+    √ Successfully wrote file `./api/src/graphql/posts.sdl.js`
+    √ Successfully wrote file `./api/src/services/posts/posts.js`
+    √ Successfully wrote file `./api/src/services/posts/posts.scenarios.js`
+    √ Successfully wrote file `./api/src/services/posts/posts.test.js`
+    √ Successfully wrote file `./web/src/layouts/PostsLayout/PostsLayout.js`
+    √ Successfully wrote file `./web/src/pages/Post/EditPostPage/EditPostPage.js`
+    √ Successfully wrote file `./web/src/pages/Post/PostPage/PostPage.js`
+    √ Successfully wrote file `./web/src/pages/Post/PostsPage/PostsPage.js`
+    √ Successfully wrote file `./web/src/pages/Post/NewPostPage/NewPostPage.js`
+    √ Successfully wrote file `./web/src/components/Post/EditPostCell/EditPostCell.js`
+    √ Successfully wrote file `./web/src/components/Post/Post/Post.js`
+    √ Successfully wrote file `./web/src/components/Post/PostCell/PostCell.js`
+    √ Successfully wrote file `./web/src/components/Post/PostForm/PostForm.js`
+    √ Successfully wrote file `./web/src/components/Post/Posts/Posts.js`
+    √ Successfully wrote file `./web/src/components/Post/PostsCell/PostsCell.js`
+    √ Successfully wrote file `./web/src/components/Post/NewPost/NewPost.js`
+  √ Adding layout import...
+  √ Adding set import...
+  √ Adding scaffold routes...
+  √ Adding scaffold asset imports...
+```
+
+If it is not desired to nest the components and pages, then redwood provides an option that you can set to disable this for your project.
+Add the following in your `redwood.toml` file to disable the nesting of components and pages.
+
+```
+[generate]
+  nestScaffoldByModel = false
+```
+
+Setting the `nestScaffoldByModel = true` will retain the default behavior, but is not required.
+
+Notes:
+
+1. The nesting directory is always set to be PascalCase.
+
+**Namespacing Scaffolds**
+
+You can namespace your scaffolds by providing `<path/model>`. The layout, pages, cells, and components will be nested in newly created dir(s). In addition, the nesting folder, based upon the model name, is still applied after the path for components and pages, unless turned off in the `redwood.toml` as described above. For example, given a model `user`, running `yarn redwood generate scaffold admin/user` will nest the layout, pages, and components in a newly created `Admin` directory created for each of the `layouts`, `pages`, and `components` folders:
 
 ```plaintext{9-20}
 ~/redwood-app$ yarn redwood generate scaffold admin/user
@@ -1006,17 +1052,17 @@ $ /redwood-app/node_modules/.bin/redwood g scaffold admin/user
     ✔ Successfully wrote file `./api/src/services/users/users.scenarios.js`
     ✔ Successfully wrote file `./api/src/services/users/users.test.js`
     ✔ Successfully wrote file `./web/src/layouts/Admin/UsersLayout/UsersLayout.js`
-    ✔ Successfully wrote file `./web/src/pages/Admin/EditUserPage/EditUserPage.js`
-    ✔ Successfully wrote file `./web/src/pages/Admin/UserPage/UserPage.js`
-    ✔ Successfully wrote file `./web/src/pages/Admin/UsersPage/UsersPage.js`
-    ✔ Successfully wrote file `./web/src/pages/Admin/NewUserPage/NewUserPage.js`
-    ✔ Successfully wrote file `./web/src/components/Admin/EditUserCell/EditUserCell.js`
-    ✔ Successfully wrote file `./web/src/components/Admin/User/User.js`
-    ✔ Successfully wrote file `./web/src/components/Admin/UserCell/UserCell.js`
-    ✔ Successfully wrote file `./web/src/components/Admin/UserForm/UserForm.js`
-    ✔ Successfully wrote file `./web/src/components/Admin/Users/Users.js`
-    ✔ Successfully wrote file `./web/src/components/Admin/UsersCell/UsersCell.js`
-    ✔ Successfully wrote file `./web/src/components/Admin/NewUser/NewUser.js`
+    ✔ Successfully wrote file `./web/src/pages/Admin/User/EditUserPage/EditUserPage.js`
+    ✔ Successfully wrote file `./web/src/pages/Admin/User/UserPage/UserPage.js`
+    ✔ Successfully wrote file `./web/src/pages/Admin/User/UsersPage/UsersPage.js`
+    ✔ Successfully wrote file `./web/src/pages/Admin/User/NewUserPage/NewUserPage.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/User/EditUserCell/EditUserCell.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/User/User/User.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/User/UserCell/UserCell.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/User/UserForm/UserForm.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/User/Users/Users.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/User/UsersCell/UsersCell.js`
+    ✔ Successfully wrote file `./web/src/components/Admin/User/NewUser/NewUser.js`
   ✔ Adding layout import...
   ✔ Adding set import...
   ✔ Adding scaffold routes...
@@ -1033,10 +1079,10 @@ const Routes = () => {
   return (
     <Router>
       <Set wrap={UsersLayout}>
-        <Route path="/admin/users/new" page={AdminNewUserPage} name="adminNewUser" />
-        <Route path="/admin/users/{id:Int}/edit" page={AdminEditUserPage} name="adminEditUser" />
-        <Route path="/admin/users/{id:Int}" page={AdminUserPage} name="adminUser" />
-        <Route path="/admin/users" page={AdminUsersPage} name="adminUsers" />
+        <Route path="/admin/users/new" page={AdminUserNewUserPage} name="adminNewUser" />
+        <Route path="/admin/users/{id:Int}/edit" page={AdminUserEditUserPage} name="adminEditUser" />
+        <Route path="/admin/users/{id:Int}" page={AdminUserUserPage} name="adminUser" />
+        <Route path="/admin/users" page={AdminUserUsersPage} name="adminUsers" />
       </Set>
       <Route notfound page={NotFoundPage} />
     </Router>
@@ -1044,10 +1090,26 @@ const Routes = () => {
 }
 ```
 
+Notes:
+
+1. Each directory in the scaffolded path is always set to be PascalCase.
+2. The scaffold path may be multiple directories deep.
+
 **Destroying**
 
 ```
 yarn redwood d scaffold <model>
+```
+
+Notes:
+
+1. You can also use `<path/model>` to destroy files that were generated under a scaffold path. For example, `redwood d scaffold admin/post`
+2. The destroy command will remove empty folders along the path, provided they are lower than the folder level of component, layout, page, etc.
+3. The destroy scaffold command will also follow the `nestScaffoldbyModel` in the `redwood.toml` file. For example, if you have an existing scaffold that you wish to destory, that does not have the pages and components nested by the model name, you can destroy the scaffold by temporarily setting:
+
+```
+[generate]
+  nestScaffoldByModel = false
 ```
 
 ### generate sdl
