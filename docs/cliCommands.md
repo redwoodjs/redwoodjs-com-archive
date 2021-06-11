@@ -1105,7 +1105,7 @@ Notes:
 
 1. You can also use `<path/model>` to destroy files that were generated under a scaffold path. For example, `redwood d scaffold admin/post`
 2. The destroy command will remove empty folders along the path, provided they are lower than the folder level of component, layout, page, etc.
-3. The destroy scaffold command will also follow the `nestScaffoldbyModel` in the `redwood.toml` file. For example, if you have an existing scaffold that you wish to destory, that does not have the pages and components nested by the model name, you can destroy the scaffold by temporarily setting:
+3. The destroy scaffold command will also follow the `nestScaffoldbyModel` setting in the `redwood.toml` file. For example, if you have an existing scaffold that you wish to destroy, that does not have the pages and components nested by the model name, you can destroy the scaffold by temporarily setting:
 
 ```
 [generate]
