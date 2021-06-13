@@ -921,9 +921,11 @@ None.
 
 #### Add Application hasRole Support in Firebase
 
+Requires a custom implementation.
+
 #### Auth Providers
 
-Providers can be configured by specifying `logIn(provider)` and `signUp(provider)`.
+Providers can be configured by specifying `logIn(provider)` and `signUp(provider)`, where `provider` is a **string** of one of the supported providers.
 
 Supported providers:
 
@@ -934,7 +936,32 @@ Supported providers:
 - microsoft.com
 - apple.com
 
+#### Email & Password Auth in Firebase
+
 Email/password authentication is supported by calling `login({ username, password })` and `signUp({ username, password })`.
+
+#### Custom Parameters & Scopes for Google OAuth Provider
+
+Both `logIn()` and `signUp()` can accept a single argument of either a **string** or **object**. If a string is provided, it should be any of the supported providers (see above), which will configure the defaults for that provider.
+
+`logIn()` and `signUp()` also accept a single a configuration object. This object accepts `providerId`, `email`, `password`, and `scope` and `customParameters`. (In fact, passing in any arguments ultimately results in this object). You can use this configuration object to pass in values for the optional Google OAuth Provider methods *setCustomParameters* and *addScope*.
+
+Below are the parameters that `logIn()` and `signUp()` accept:
+
+- `providerId`: Accepts one of the supported auth providers as a **string**. If no arguments are passed to `login() / signUp()` this will default to 'google.com'. Provider strings passed as a single argument to `login() / signUp()` will be cast to this value in the object.
+- `email`: Accepts a **string** of a users email address. Used in conjunction with `password` and requires that Firebase has emamil authentication enabled as an option.
+- `password`: Accepts a **string** of a users password. Used in conjunction with `email` and requires that Firebase has email authentication enabled as an option.
+- `scope`: Accepts an **array** of strings ([Google OAuth Scopes](https://developers.google.com/identity/protocols/oauth2/scopes)), which can be added to the requested Google OAuth Provider. These will be added using the Google OAuth *addScope* method.
+- `customParameters`: accepts an **object** with the [optional parameters](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider#setcustomparameters) for the Google OAuth Provider *setCustomParmeters* method. [Valid parameters](https://developers.google.com/identity/protocols/oauth2/openid-connect#authenticationuriparameters) include 'hd', 'include_granted_scopes', 'login_hint' and 'prompt'.
+
+#### Firebase Auth Examples
+
+- `logIn()/signUp()`: Defaults to Google provider.
+- `logIn({providerId: 'github.com'})`: Log in using GitHub as auth provider.
+- `signUp({email: "someone@email.com", password: 'some_good_password'})`: Creates a firebase user with email/password.
+- `logIn({email: "someone@email.com", password: 'some_good_password'})`: Logs in existing firebase user with email/password.
+- `logIn({scopes: ['https://www.googleapis.com/auth/calendar']})`: Adds a scope using the [addScope](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider#addscope) method.
+- `logIn({ customParameters: { prompt: "consent" } })`: Sets the OAuth custom parameters using [setCustomParameters](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider#addscope) method.
 
 +++
 
