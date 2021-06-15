@@ -416,7 +416,7 @@ export default App
 ```
 
 ```js
-// web/src/Routes.tsx
+// web/src/Routes.js|tsx
 import { useAuth } from '@redwoodjs/auth'
 import { Router, Route } from '@redwoodjs/router'
 
