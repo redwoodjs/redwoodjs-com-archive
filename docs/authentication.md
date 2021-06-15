@@ -907,7 +907,7 @@ The Redwood API does not include the functionality to decode Magic.link authenti
 
 ##### Installation
 
-You must manually install the **Magic Admin SDK** first
+First, you must manually install the **Magic Admin SDK** in your project's `api/package.json`.
 
 ```terminal
 yarn workspace api add @magic-sdk/admin
