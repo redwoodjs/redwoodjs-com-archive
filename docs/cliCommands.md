@@ -556,7 +556,7 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 | `scaffold <model>`     | Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts `<path/model>` |
 | `sdl <model>`          | Generate a GraphQL schema and service object                                                          |
 | `service <name>`       | Generate a service component                                                                          |
-| `types`                | Generate supplementary code                                                                           |
+| `types`                | Generate types and supplementary code                                                                           |
 
 ### TypeScript generators
 
