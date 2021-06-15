@@ -1,6 +1,6 @@
 # Quick Start
 
->RedwoodJS requires [Node.js](https://nodejs.org/en/) (>=12) and [Yarn](https://classic.yarnpkg.com/en/docs/install/) (>=1.15).
+>RedwoodJS requires [Node.js](https://nodejs.org/en/) (=14.x) and [Yarn](https://classic.yarnpkg.com/en/docs/install/) (>=1.15).
 
 Run the following command to create a new Redwood project in a "my-redwood-app" project directory.
 ```
