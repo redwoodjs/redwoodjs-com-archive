@@ -389,7 +389,7 @@ To get your application keys, go to [dashboard.magic.link](https://dashboard.mag
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
 ```js
-// web/src/App.tsx
+// web/src/App.js|tsx
 import { useAuth, AuthProvider } from '@redwoodjs/auth'
 import { Magic } from 'magic-sdk'
 import { FatalErrorBoundary } from '@redwoodjs/web'
