@@ -166,13 +166,12 @@ To get your application keys, only complete the ["Configure Auth0"](https://auth
 **NOTE** If you're using Auth0 with Redwood then you must also [create an API](https://auth0.com/docs/quickstart/spa/react/02-calling-an-api#create-an-api) and set the audience parameter, or you'll receive an opaque token instead of the required JWT token.
 
 The `useRefreshTokens` options is required for automatically extending sessions beyond that set in the initial JWT expiration (often 3600/1 hour or 86400/1 day).
-  
+
 If you want to allow users to get refresh tokens while offline, you must also enable the Allow Offline Access switch in your Auth0 API Settings as part of setup configuration. See: [https://auth0.com/docs/tokens/refresh-tokens](https://auth0.com/docs/tokens/refresh-tokens)
 
 You can increase security by using refresh token rotation which issues a new refresh token and invalidates the predecessor token with each request made to Auth0 for a new access token.
 
 Rotating the refresh token reduces the risk of a compromised refresh token. For more information, see: [https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation](https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation).
-  
 
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
@@ -313,13 +312,13 @@ import Routes from 'src/Routes'
 import './index.css'
 
 const azureActiveDirectoryClient = new UserAgentApplication({
-    auth: {
-      clientId: process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID,
-      authority: process.env.AZURE_ACTIVE_DIRECTORY_AUTHORITY,
-      redirectUri: process.env.AZURE_ACTIVE_DIRECTORY_REDIRECT_URI,
-      postLogoutRedirectUri: process.env.AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI,
-    },
-  })
+  auth: {
+    clientId: process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID,
+    authority: process.env.AZURE_ACTIVE_DIRECTORY_AUTHORITY,
+    redirectUri: process.env.AZURE_ACTIVE_DIRECTORY_REDIRECT_URI,
+    postLogoutRedirectUri: process.env.AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI,
+  },
+})
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
@@ -390,8 +389,8 @@ To get your application keys, go to [dashboard.magic.link](https://dashboard.mag
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
 ```js
-// web/src/App.js
-import { AuthProvider } from '@redwoodjs/auth'
+// web/src/App.tsx
+import { useAuth, AuthProvider } from '@redwoodjs/auth'
 import { Magic } from 'magic-sdk'
 import { FatalErrorBoundary } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
@@ -406,7 +405,7 @@ const m = new Magic(process.env.MAGICLINK_PUBLIC)
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={m} type="magicLink">
-      <RedwoodApolloProvider>
+      <RedwoodApolloProvider useAuth={useAuth}>
         <Routes />
       </RedwoodApolloProvider>
     </AuthProvider>
@@ -414,6 +413,23 @@ const App = () => (
 )
 
 export default App
+```
+
+```js
+// web/src/Routes.tsx
+import { useAuth } from '@redwoodjs/auth'
+import { Router, Route } from '@redwoodjs/router'
+
+const Routes = () => {
+  return (
+    <Router useAuth={useAuth}>
+      <Route path="/" page={HomePage} name="home" />
+      <Route notfound page={NotFoundPage} />
+    </Router>
+  )
+}
+
+export default Routes
 ```
 
 #### Magic.Link Auth Provider Specific Integration
@@ -540,26 +556,25 @@ For full client docs, see: <https://supabase.io/docs/library/getting-started#ref
 
 #### Usage
 
-Supabase supports several sign in methods: 
+Supabase supports several sign in methods:
 
-* email/password
-* passwordless via emailed magiclink
-* Sign in with redirect. You can control where the user is redirected to after they are logged in via a `redirectTo` option.
-* Sign in using third-party providers/OAuth via Apple, Azure Active Directory, Bitbucket, Facebook, GitHub, GitLab, Google or Twitter logins.
-* Sign in with a valid refresh token that was returned on login.
-* Sign in with scopes. If you need additional data from an OAuth provider, you can include a space-separated list of `scopes` in your request options to get back an OAuth `provider_token`.
+- email/password
+- passwordless via emailed magiclink
+- Sign in with redirect. You can control where the user is redirected to after they are logged in via a `redirectTo` option.
+- Sign in using third-party providers/OAuth via Apple, Azure Active Directory, Bitbucket, Facebook, GitHub, GitLab, Google or Twitter logins.
+- Sign in with a valid refresh token that was returned on login.
+- Sign in with scopes. If you need additional data from an OAuth provider, you can include a space-separated list of `scopes` in your request options to get back an OAuth `provider_token`.
 
 Depending on the credentials provided:
 
-* A user can sign up either via email or sign in with supported OAuth provider: `'apple' | 'azure' | 'bitbucket' | 'facebook' | 'github' | 'gitlab' | 'google' | 'twitter'`
-* If you sign in with a valid refreshToken, the current user will be updated
-* If you provide email without a password, the user will be sent a magic link.
-* The magic link's destination URL is determined by the SITE_URL config variable. To change this, you can go to Authentication -> Settings on `app.supabase.io` for your project.
-* Specifying an OAuth provider (such as Bitbucket, GitHub, GitLab, or Google) will open the browser to the relevant login page
-* Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to Authentication -> Settings on `app.supabase.io` for your project.
+- A user can sign up either via email or sign in with supported OAuth provider: `'apple' | 'azure' | 'bitbucket' | 'facebook' | 'github' | 'gitlab' | 'google' | 'twitter'`
+- If you sign in with a valid refreshToken, the current user will be updated
+- If you provide email without a password, the user will be sent a magic link.
+- The magic link's destination URL is determined by the SITE_URL config variable. To change this, you can go to Authentication -> Settings on `app.supabase.io` for your project.
+- Specifying an OAuth provider (such as Bitbucket, GitHub, GitLab, or Google) will open the browser to the relevant login page
+- Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to Authentication -> Settings on `app.supabase.io` for your project.
 
 For full Sign In docs, see: <https://supabase.io/docs/client/auth-signin>
-
 
 +++
 
@@ -599,18 +614,19 @@ Update your .env file with the following setting which can be found on your Nhos
 
 - `NHOST_BACKEND_URL` with the unique Nhost Backend (Auth & Storage) URL for your project.
 - `NHOST_JWT_SECRET` with the JWT Key secret that you have set in your project's Settings > Hasura "JWT Key" section.
+
 #### Usage
 
-Nhost supports the following methods: 
+Nhost supports the following methods:
 
-* email/password
-* OAuth (via GitHub, Google, Facebook, or Linkedin).
+- email/password
+- OAuth (via GitHub, Google, Facebook, or Linkedin).
 
 Depending on the credentials provided:
 
-* A user can sign in either via email or a supported OAuth provider.
-* A user can sign up via email and password. For OAuth simply sign in and the user account will be created if it does not exist.
-* Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to the project's Settings -> Sign-In Methods page at `console.nhost.io`.
+- A user can sign in either via email or a supported OAuth provider.
+- A user can sign up via email and password. For OAuth simply sign in and the user account will be created if it does not exist.
+- Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to the project's Settings -> Sign-In Methods page at `console.nhost.io`.
 
 For the docs on Authentication, see: <https://docs.nhost.io/auth>
 
@@ -889,7 +905,30 @@ The Redwood API does not include the functionality to decode Magic.link authenti
 
 +++ View Magic.link Options
 
-Magic.link recommends using the issuer as the userID.
+##### Installation
+
+You must manually install the **Magic Admin SDK** first
+
+```terminal
+yarn workspace api add @magic-sdk/admin
+```
+
+##### Setup
+
+To get your application running _without setting up_ `Prisma`, get your `SECRET KEY` from [dashboard.magic.link](https://dashboard.magic.link/) then add them to your `.env`.
+
+```js
+// redwood/api/src/lib/auth.ts
+import { Magic } from '@magic-sdk/admin'
+
+export const getCurrentUser = async (_decoded, { token }) => {
+  const mAdmin = new Magic(process.env.MAGICLINK_SECRET)
+
+  return await mAdmin.users.getMetadataByToken(token)
+}
+```
+
+Magic.link recommends using the issuer as the userID to retrieve user metadata via `Prisma`
 
 ```js
 // redwood/api/src/lib/auth.ts
