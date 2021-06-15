@@ -918,7 +918,7 @@ yarn workspace api add @magic-sdk/admin
 To get your application running _without setting up_ `Prisma`, get your `SECRET KEY` from [dashboard.magic.link](https://dashboard.magic.link/). Then add `MAGICLINK_SECRET` to your `.env`.
 
 ```js
-// redwood/api/src/lib/auth.ts
+// redwood/api/src/lib/auth.js|ts
 import { Magic } from '@magic-sdk/admin'
 
 export const getCurrentUser = async (_decoded, { token }) => {
