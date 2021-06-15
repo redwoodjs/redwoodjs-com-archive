@@ -556,6 +556,7 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 | `scaffold <model>`     | Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts `<path/model>` |
 | `sdl <model>`          | Generate a GraphQL schema and service object                                                          |
 | `service <name>`       | Generate a service component                                                                          |
+| `types`                | Generate supplementary code                                                                           |
 
 ### TypeScript generators
 
@@ -1226,6 +1227,45 @@ import { db } from 'src/lib/db'
 export const users = () => {
   return db.user.findMany()
 }
+```
+
+### generate types
+
+Generates supplementary code (project types)
+
+```terminal
+yarn redwood generate types
+```
+
+**Usage**
+
+```
+~/redwood-app$ yarn redwood generate types
+yarn run v1.22.10
+$ /redwood-app/node_modules/.bin/redwood g types
+$ /redwood-app/node_modules/.bin/rw-gen
+
+Generating...
+
+- .redwood/schema.graphql
+- .redwood/types/mirror/api/src/services/contacts/index.d.ts
+- .redwood/types/mirror/api/src/services/posts/index.d.ts
+- .redwood/types/mirror/web/src/components/BlogPost/index.d.ts
+- .redwood/types/mirror/web/src/layouts/BlogLayout/index.d.ts
+- .redwood/types/mirror/web/src/layouts/PostsLayout/index.d.ts
+- .redwood/types/mirror/web/src/components/Post/NewPost/index.d.ts
+...
+- .redwood/types/mirror/web/src/components/Post/PostsCell/index.d.ts
+- .redwood/types/includes/web-routesPages.d.ts
+- .redwood/types/includes/all-currentUser.d.ts
+- .redwood/types/includes/web-routerRoutes.d.ts
+- .redwood/types/includes/api-globImports.d.ts
+- .redwood/types/includes/api-globalContext.d.ts
+- .redwood/types/includes/api-scenarios.d.ts
+- api/types/graphql.d.ts
+- web/types/graphql.d.ts
+
+... and done.
 ```
 
 ## info
