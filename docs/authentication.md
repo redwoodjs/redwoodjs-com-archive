@@ -18,7 +18,7 @@ We currently support the following third-party authentication providers:
 
 Check out the [Auth Playground](https://github.com/redwoodjs/playground-auth).
 
-## dbAuth Installation and Setup
+## Self-hosted Auth Installation and Setup
 
 Redwood's own dbAuth provides several benefits:
 
@@ -90,7 +90,7 @@ Note that the secret that's output is *not* appended to your `.env` file or anyt
 
 > If you didn't see the [warning above](#setup), here it is again: the secret key should *never* be committed to version control!
 
-## Third Party Provider Installation and Setup
+## Third Party Providers Installation and Setup
 
 You will need to instantiate your authentication client and pass it to the `<AuthProvider>`. See instructions below for your specific provider.
 
