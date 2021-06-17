@@ -1,8 +1,6 @@
 # Authentication
 
-`@redwoodjs/auth` contains both a build-in database-backed authentication system (dbAuth), as well as lightweight wrappers around popular SPA authentication libraries.
-
-We currently support the following third-party authentication providers:
+`@redwoodjs/auth` is a lightweight wrapper around popular SPA authentication libraries. We currently support the following authentication providers:
 
 - [Netlify Identity Widget](https://github.com/netlify/netlify-identity-widget)
 - [Auth0](https://github.com/auth0/auth0-spa-js)
@@ -18,79 +16,7 @@ We currently support the following third-party authentication providers:
 
 Check out the [Auth Playground](https://github.com/redwoodjs/playground-auth).
 
-## dbAuth Installation and Setup
-
-Redwood's own dbAuth provides several benefits:
-
-* Use your own database for storing user credentials
-* Use your own login and signup pages
-* Customize login session length
-* Use your own database for storing user credentials
-* No external dependencies
-* No user data ever leaves your servers
-* No additional charges/limits based on number of users
-
-And potentially one large drawback:
-
-* Use your own database for storing user credentials
-
-However, we're following best practicies for storing these credentials:
-
-1. Users' passwords are [salted and hashed](https://auth0.com/blog/adding-salt-to-hashing-a-better-way-to-store-passwords/) with PBKDF2 before being stored
-2. Plaintext passwords are never stored anywhere, and only transferred between client and server during the login/signup phase (and hopefully only over HTTPS)
-3. Our logger scrubs senative parameters (like `password`) before they are output
-
-Even if you later decide you want to let someone else handle your user data for you, dbAuth is a great option for getting up and running quickly (we even have a generator for creating basic login and signup pages for you).
-
-### How It Works
-
-dbAuth relies on good ol' fashioned cookies to determine whether a user is logged in or not. On an attempted login, a serverless function on the api-side checks whether a user exists with the given username (internally, dbAuth refers to this field as *username* but you can use anything you want, like an email address). If a user with that username is found, does their salted and hashed password match the one in the database?
-
-If so, an [HttpOnly](https://owasp.org/www-community/HttpOnly), [Secure](https://owasp.org/www-community/controls/SecureCookieAttribute), [SameSite](https://owasp.org/www-community/SameSite) cookie (dbAuth calls this the "session cookie") is sent back to the browser containing the ID of the user. The content of the cookie is a simple string, but AES encrypted with a secret key (more on that later).
-
-When the user makes a GraphQL call, we decrypt the cookie and make sure that the user ID contained within still exists in the database. If so, the request is allowed to proceed.
-
-If there are any shenanegans detected (the cookie can't be decrypted properly, or the user ID found in the cookie does not exist in the database) the user is immediately logged out by expiring the session cookie.
-
-### Setup
-
-A single CLI command will get you everything you need to get dbAuth working, minus the actual login/signup pages:
-
-    yarn rw setup auth dbAuth
-
-Read the post-install instructions carefully as they contain instructions for adding database fields for the hashed password and salt, as well as how to configure the auth serverless function based on the name of the table that stores your user data.
-
-This command will also append a `SESSION_SECRET` environment variable and a long string to your `.env` file (or create the file if it doesn't exist). This is used to encrypt the session cookie.
-
-> The `.env` file is set to be ignored by git and not committed to version control. There is another file, `.env.defaults`, which is meant to be safe to commit and contain simple ENV vars that your dev team can share. The encryption key for the session cookie is NOT one of these shareable vars!
-
-### Scaffolding Login/Signup Pages
-
-If you don't want to create your own login and signup pages from scratch we've got a generator for that:
-
-    yarn rw g scaffold dbAuth
-
-Again, check the post-install instructions for one change you need to make to both pages: where to redirect the user to once their login/signup is successful.
-
-If you'd rather create your own, you might want to still start from the generated pages as they'll contain the other code you need to actually submit the login credentials or signup fields to the server for processing.
-
-### Configuration
-
-By default, the session cookie will not have the `Domain` property set, which a browser will default to be the [current domain only](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#define_where_cookies_are_sent). If your site is spread across multiple domains (for example, your site is at `example.com` but your api-side is deployed to `api.example.com`) you'll need to explictly set a Domain so that the cookie is accessible to both.
-
-Create an environment variable named `DBAUTH_COOKIE_DOMAIN` set to the root domain of your site, which will allow it to be read by all subdomains as well. For example:
-
-    DBAUTH_COOKIE_DOMAIN=example.com
-
-If you need to change the secret key that's used to encrypt the session cookie, or deploy to a new target (each deploy environment should have its own unique secret key) we've got a CLI tool for creating a new one:
-
-    yarn rw g secret
-
-Note that the secret that's output is *not* appended to your `.env` file or anything else, it's merely output to the screen. You'll need to put it in the right place after that.
-
-> If you didn't see the [warning above](#setup), here it is again: the secret key should *never* be committed to version control!
-
-## Third Party Provider Installation and Setup
+## Installation and Setup
 
 You will need to instantiate your authentication client and pass it to the `<AuthProvider>`. See instructions below for your specific provider.
 
