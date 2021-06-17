@@ -58,11 +58,36 @@ A single CLI command will get you everything you need to get dbAuth working, min
 
     yarn rw setup auth dbAuth
 
-Read the post-install instructions carefully as they contain instructions for adding database fields for the hashed password and salt, as well as how to configure the auth serverless function based on the name of the table that stores your user data.
+Read the post-install instructions carefully as they contain instructions for adding database fields for the hashed password and salt, as well as how to configure the auth serverless function based on the name of the table that stores your user data. Here they are, but could change in future releases:
 
-This command will also append a `SESSION_SECRET` environment variable and a long string to your `.env` file (or create the file if it doesn't exist). This is used to encrypt the session cookie.
-
-> The `.env` file is set to be ignored by git and not committed to version control. There is another file, `.env.defaults`, which is meant to be safe to commit and contain simple ENV vars that your dev team can share. The encryption key for the session cookie is NOT one of these shareable vars!
+> You will need to add a couple of fields to your User table in order to store a hashed password and > salt:
+>
+>     model User {
+>       id             Int @id @default(autoincrement())
+>       email          String  @unique
+>       hashedPassword String   // <─┐
+>       salt           String   // <─┴─ add these lines
+>     }
+>
+> If you already have existing user records you will need to provide a default value or Prisma complains, so change those to:
+>
+>     hashedPassword String @default("")
+>     salt           String @default("")
+>
+> You'll need to let Redwood know what field you're using for your users' `id` and `username` fields. > In this case we're using `id` and `email`, so update those in the `authFields` config in `/api/src/> functions/auth.js` (this is also the place to tell Redwood if you used a different name for the > `hashedPassword` or `salt` fields):
+>
+>     authFields: {
+>       id: 'id',
+>       username: 'email',
+>       hashedPassword: 'hashedPassword',
+>       salt: 'salt',
+>     },
+>
+> To get the actual user that's logged in, take a look at `getCurrentUser()` in `/api/src/lib/auth.js`. We default it to something simple, but you may use different names for your model or unique ID fields, in which case you need to update those calls (instructions are in the comment above the code).
+>
+> Finally, we created a SESSION_SECRET environment variable for you in '.env'. This value should NOT be checked into version control and should be unique for each environment you deploy to. If you ever need to log everyone out of your app at once change this secret to a new value. To create a new secret, run:
+>
+>     yarn rw g secret
 
 ### Scaffolding Login/Signup Pages
 
@@ -72,15 +97,19 @@ If you don't want to create your own login and signup pages from scratch we've g
 
 Again, check the post-install instructions for one change you need to make to both pages: where to redirect the user to once their login/signup is successful.
 
-If you'd rather create your own, you might want to still start from the generated pages as they'll contain the other code you need to actually submit the login credentials or signup fields to the server for processing.
+If you'd rather create your own, you might want to still start from the generated pages anyway as they'll contain the other code you need to actually submit the login credentials or signup fields to the server for processing.
 
 ### Configuration
 
+#### Domain
+
 By default, the session cookie will not have the `Domain` property set, which a browser will default to be the [current domain only](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#define_where_cookies_are_sent). If your site is spread across multiple domains (for example, your site is at `example.com` but your api-side is deployed to `api.example.com`) you'll need to explictly set a Domain so that the cookie is accessible to both.
 
-Create an environment variable named `DBAUTH_COOKIE_DOMAIN` set to the root domain of your site, which will allow it to be read by all subdomains as well. For example:
+To do this, create an environment variable named `DBAUTH_COOKIE_DOMAIN` set to the root domain of your site, which will allow it to be read by all subdomains as well. For example:
 
     DBAUTH_COOKIE_DOMAIN=example.com
+
+#### Session Secret Key
 
 If you need to change the secret key that's used to encrypt the session cookie, or deploy to a new target (each deploy environment should have its own unique secret key) we've got a CLI tool for creating a new one:
 
@@ -88,7 +117,7 @@ If you need to change the secret key that's used to encrypt the session cookie, 
 
 Note that the secret that's output is *not* appended to your `.env` file or anything else, it's merely output to the screen. You'll need to put it in the right place after that.
 
-> If you didn't see the [warning above](#setup), here it is again: the secret key should *never* be committed to version control!
+> The `.env` file is set to be ignored by git and not committed to version control. There is another file, `.env.defaults`, which is meant to be safe to commit and contain simple ENV vars that your dev team can share. The encryption key for the session cookie is NOT one of these shareable vars!
 
 ## Third Party Providers Installation and Setup
 
