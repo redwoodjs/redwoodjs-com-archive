@@ -1,12 +1,12 @@
 # Cells
 
-Cells are a declarative approach to data fetching and one of Redwood's signature modes of abstraction. In a way, Cells create space: by providing conventions around data fetching, Redwood can get in between the request and the response and perform optimizations, all without you ever having to change your code.
+Cells are a declarative approach to data fetching and one of Redwood's signature modes of abstraction. 
+By providing conventions around data fetching, Redwood can get in between the request and the response and perform optimizations, all without you ever having to change your code.
 
-While it might seem like there must be lot of magic involved, a Cell is actually just a [higher-order component](https://reactjs.org/docs/higher-order-components.html) that executes a GraphQL query and manages its lifecycle.
+While it might seem like there must be lot of magic involved, a Cell really just executes a GraphQL query and manages its lifecycle.
 All the logic's actually in just one file: [createCell.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/createCell.tsx).
-The idea is that, by exporting named constants that match the parameters of `withCell`, Redwood can assemble this higher-order component out of these constants at build-time using a babel plugin!
-
-All of this without writing a line of imperative code. Just say what is supposed to happen when, and Redwood will take care of the rest.
+The idea is that, by exporting named constants that match the parameters of `createCell`, Redwood can assemble these constants into a component at build-time using a babel plugin!
+All without writing a single line of imperative code. Just say what is supposed to happen when, and Redwood will take care of the rest.
 
 ## Generating a Cell
 
@@ -32,13 +32,10 @@ Done in 1.07s.
 
 ### Single Item Cell vs List Cell
 
-Sometimes, you want a Cell that renders a single item, like the above example. At other times, you want a list of items.
+Sometimes you want a Cell that renders a single item, like the above example. Other times, you want a list of items. The Redwood cell generator can do both for you by detecting if `<name>` is plural. For example, to generate a Cell that renders a list of users, run `yarn rw generate cell users`.
 
-The Redwood cell generator can do both for you, and detects if the `<name>` you pass is plural.
+> For **irregular words** whose plural and singular are identical, such as *equipment* or *pokemon*, if you want a list, just specify the list flag: `yarn rw generate cell equipment --list`
 
-To generate a Cell that gets you a list of users, instead, you would simply run `yarn rw generate cell users`.
-
-> For **irregular words** whose plural and singular is identical, such as *equipment* or *pokemon*, if you want a list simply specify the list flag: `yarn rw generate cell equipment --list`
 ## Cells in-depth
 
 We'll go over each of these files in detail. But know that the file appended with just `.js` (in the example above, `UserCell.js`) contains all your Cell's logic.
@@ -63,7 +60,11 @@ Only `QUERY` and `Success` are required. If you don't export `Empty`, empty resu
 
 `Loading`, `Empty`, `Failure`, and `Success` all have access to the same set of props, with `Failure` and `Success` getting exclusive access to `error` and `data` respectively. So, in addition to displaying the right component, a Cell funnels the right props to the right component.
 
-This prop set is composed of 1) what's returned from Apollo Client's `Query` component, which is quite a few things&mdash;see their [API reference](https://www.apollographql.com/docs/react/api/react-components/#render-prop-function) for the full list (note that, as we just mentioned, `error` and `data` are only available to `Failure` and `Success` respectively. And Cells use `loading` to decide when to show `Loading`, so you don't get that one either)&mdash;and 2) props passed down from the parent component in good ol' React fashion.
+This set of props is composed of:
+
+1) what's returned from Apollo Client's `Query` component, which is quite a few things&mdash;see their [API reference](https://www.apollographql.com/docs/react/api/react-components/#render-prop-function) for the full list (note that, as we just mentioned, `error` and `data` are only available to `Failure` and `Success` respectively. And Cells use `loading` to decide when to show `Loading`, so you don't get that one either)
+
+2) props passed down from the parent component in good ol' React fashion
 
 ### QUERY
 
@@ -92,7 +93,7 @@ export const Success = ({ posts, authors }) => {
 }
 ```
 
-If `QUERY` is a function, it has to return a valid GraphQL syntax tree.
+If `QUERY` is a function, it has to return a valid GraphQL document.
 Use a function if your queries need to be more dynamic:
 
 <!-- Source: https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth-advice-needed/610 -->
@@ -130,12 +131,14 @@ This means you can think backwards about your Cell's props from your SDL: whatev
 
 `beforeQuery` is a lifecycle hook. The best way to think about it is as an API for configuring Apollo Client's `Query` component (so you might want to check out Apollo's [docs](https://www.apollographql.com/docs/react/api/react-components/#query) for it).
 
-By default, `beforeQuery` gives any props passed from the parent component to `Query` so that they're available as variables for `QUERY`. It'll also set the fetch & next-fetch policies to `'cache-and-network'` & `'cache-first'` since we felt that matched the behavior users want most of the time.
+By default, `beforeQuery` gives any props passed from the parent component to `Query` so that they're available as variables for `QUERY`. It'll also set the fetch policy to `'cache-and-network'` since we felt that matched the behavior users want most of the time.
 
-<!-- Source: https://github.com/redwoodjs/redwood/issues/717 -->
 ```javascript
 export const beforeQuery = (props) => {
-  return { variables: props, fetchPolicy: 'cache-and-network', nextFetchPolicy: 'cache-first' }
+  return { 
+    variables: props, 
+    fetchPolicy: 'cache-and-network' 
+   }
 }
 ```
 
@@ -161,7 +164,7 @@ export const afterQuery = (data) => ({...data})
 
 ### Loading
 
-If the request is in flight, a Cell renders `Loading`.
+If there's no cached data and the request is in flight, a Cell renders `Loading`. 
 
 For a production example, navigate to [predictcovid.com](https://predictcovid.com), the first site made with Redwood. Usually, when you first navigate there, you'll see most of the dashboard spinning. Those are `Loading` components in action!
 
@@ -247,13 +250,15 @@ Note that you can still pass any other props to `Success`. After all, it's still
 
 ### When should I use a Cell?
 
-A good rule of thumb for when to use a Cell is if your component needs some data from a database or other service that may be delayed in responding. Let Redwood worry about juggling what is displayed when. You just focus on what those things should look like.
+Whenever you want to fetch data. Let Redwood juggle what's displayed when. You just focus on what those things should look like.
 
-<!-- Source: https://github.com/redwoodjs/redwood/pull/413 -->
-For one-off queries, there's always `useApolloClient`. This hook returns the client, which you can use to make queries:
+While you can use Cells whenever you want to fetch data, it's important to note that you don't have to. You can do anything you want! For example, for one-off queries, there's always `useApolloClient`. This hook returns the client, which you can use to make queries:
 
 ```javascript
+// in some react component...
+
 client = useApolloClient()
+
 client.query({
   query: gql`
     ...
@@ -317,7 +322,7 @@ export const Success = ({ posts }) => {
 }
 ```
 
-And now let's say that Babel isn't going to come along and assemble our exports into a higher-order component. What might we do?
+And now let's say that Babel isn't going to come along and assemble our exports. What might we do?
 
 We'd probably do something like this:
 
