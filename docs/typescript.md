@@ -30,6 +30,8 @@ This is what the setup command does for you step by step:
 touch api/tsconfig.json
 ```
 
+<br />
+
 2. Now copy and paste the latest config from the Redwood template [api/tsconfig.json](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/api/tsconfig.json) file here
 
 **WEB**
