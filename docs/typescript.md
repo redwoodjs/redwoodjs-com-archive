@@ -82,7 +82,7 @@ For example, if you're deploying to Vercel, you could add a `build:ci` script to
 "scripts": {
   .
   .
-+  "build:ci": "yarn rw typecheck && yarn rw test && yarn rw deploy vercel",
++  "build:ci": "yarn rw typecheck && yarn rw test --no-watch && yarn rw deploy vercel",
 }
 ```
 Configure your project's build command to be `yarn build:ci` - and you even have your type checks and tests run whenever a pull request is opened!
