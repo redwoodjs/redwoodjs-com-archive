@@ -577,7 +577,7 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 | `sdl <model>`          | Generate a GraphQL schema and service object                                                          |
 | `service <name>`       | Generate a service component                                                                          |
 | `types`                | Generate types and supplementary code                                                                 |
-| `script`               | Generate a script, that can use your services/libs to execute with rw exec                            |
+| `script <name>`               | Generate a script that can use your services/libs to execute with 'redwood exec <script>'                            |
 
 ### TypeScript generators
 
@@ -1356,7 +1356,7 @@ Generates an arbitary Node.js script in `./scripts/<name>` that can be used with
 | `name`               | Name of the service                                                                  |
 | `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
 
-Scripts have access to your services, and libraries used in your project. Some examples of how this can be useful:
+Scripts have access to services and libraries used in your project. Some examples of how this can be useful:
 - create special database seed scripts for different scenarios
 - sync products and prices from your payment provider
 - running cleanup jobs on a regular basis e.g. delete stale/expired data
