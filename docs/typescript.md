@@ -1,14 +1,5 @@
 # Typescript
-
-> ⚠ **Work in Progress** ⚠️
->
-> Full TypeScript support is nearly there! It's one of our main priorities. To follow our progress, check the [TypeScript Project Board](https://github.com/redwoodjs/redwood/projects/2).
->
-> Want to contribute? Redwood welcomes contributions and loves helping people become contributors.
-> You can edit this doc [here](https://github.com/redwoodjs/redwoodjs.com/blob/main/docs/typescript.md).
-> If you have any questions, just ask for help! We're active on the [forums](https://community.redwoodjs.com/c/contributing/9) and on [discord](https://discord.com/channels/679514959968993311/747258086569541703).
-
-Redwood doesn't use the TypeScript compiler; instead, we use Babel, which strips out the types before transpiling.
+Redwood comes with full TypeScript support out of the box, and you don't have to give up any of the convenience in Cells, Router or generators, while still enjoying all the benefits of a type-safe codebase.
 
 ## Starting a TypeScript Redwood project
 You can use the `--typescript` flag on create-redwood-app to generate a project with TypeScript configured
@@ -16,7 +7,7 @@ You can use the `--typescript` flag on create-redwood-app to generate a project 
 yarn create redwood-app --typescript /PATH/TO/FOLDER
 ```
 
-## Automatic Setup
+## Converting an existing JS project to Typescript
 If you already have a Redwood app, but want to configure it for TypeScript, you can use our setup command
 
 ```
@@ -24,41 +15,13 @@ yarn rw setup tsconfig
 ```
 Remember you don't _need_ to convert all your files to TypeScript, you can always do it incrementally. Start by renaming your files from `.js` to `.ts` or `.tsx`
 
+Having issues with automatic setup? See instructions for manual setup
 
-## Sharing Types between sides
-For your shared types we need to do a few things:
-
-1. Put your shared types at the root of the project (makes sense right?), maybe in `types` at the root
-2. You can call this folder whatever you like, of course, just add the same folder to your includes
-3. Modify your `web/tsconfig.json` and `api/tsconfig.json` by adding this to your includes:
-
-```diff
-"include": [
-"src",
-"../.redwood/**/*",
-+"../types"
-]
-```
-
-4. Restart TS server in vscode. And your new types should now be available on both web and api sides!
-
-
-## Types in Jest Files
-
-If you're adding tests, you'll want to include the types for `jest` in your `tsconfig`.
-
-```diff
--"types": []
-+"types": ["jest"]
-```
-
-Currently, these are added to `node_modules` by `@redwoodjs/core` and the above approach should just work. If this isn't the case, you can `yarn add -D @types/jest` in the `web` folder.
-
-## Manual Setup
-
+<details>
+<summary>Manually setup TypeScript</summary>
 This is what the setup command does for you
 
-### API
+**API**
 
 1. Create a `./api/tsconfig.json` file:
 
@@ -68,7 +31,7 @@ touch api/tsconfig.json
 
 2. Now copy and paste the latest config from the Redwood template: [`api/tsconfig.json`](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/api/tsconfig.json) into the empty file
 
-### WEB
+**WEB**
 
 1. Create a `./api/tsconfig.json` file:
 
@@ -80,6 +43,62 @@ touch web/tsconfig.json
 
 
 You should now have type definitions&mdash;you can rename your files from `.js` to `.ts`, and the files that contain JSX to `.tsx`.
+</details>
+
+## Sharing Types between sides
+For your shared types we need to do a few things:
+
+1. Put your shared types at the root of the project (makes sense right?), in a folder called `types` at the root
+2. Restart TS server in vscode. And your new types should now be available on both web and api sides!
+
+Redwood's tsconfig already contains the config for picking up types from `web/types`, `api/types` and `types` folders in your project.
+
+If you have an outdated tsconfig, and would like to replace it (i.e. overwrite it), use the setup command with the force flag
+
+```
+yarn rw setup tsconfig --force
+```
+
+## Running type checks
+
+Redwood uses Babel to transpile your TypeScript - which is why you are able to incrementally convert your project from JS to TS. However, it also means that just doing a build won't show you errors that the TypeScript compiler finds in your project <br/> <br/> That's why we have the handy `redwood typecheck` command!
+
+To check your TypeScript project for errors, run
+```
+yarn rw typecheck
+```
+This will run `tsc` on all the sides in your project, and make sure all the generated types are generated first, including Prisma.
 
 
-If you have any problems, please open an issue and let us know!
+### Check then build, on CI
+> **Tip!**<br/>
+> You don't need to build your project to run `rw typecheck`
+
+If your project is fully TypeScript, it might be useful to add typechecks before you run the deploy command in your CI.
+
+For example, if you're deploying to Vercel, you could add a `build:ci` script to your `package.json`
+```diff
+"scripts": {
+  .
+  .
++  "build:ci": "yarn rw typecheck && yarn rw test && yarn rw deploy vercel",
+}
+```
+Configure your project's build command to be `yarn build:ci` - and you even have your type checks and tests run whenever a pull request is opened!
+
+
+
+
+
+## Auto generated types
+Redwood's CLI will automatically generate types for you, including types for your graphql queries, but also so that you get types for your named routes, Cells, scenarios and tests.
+
+When you run `yarn rw dev`, the CLI watches for file changes and will automatically trigger the type generator.
+
+To trigger type generation, you can run
+```shell
+yarn rw g types
+```
+
+
+If you're curious, you can see the generated types in the `.redwood/types` folder, and in `./api/types/graphql.d.ts` and `./web/types/graphql.d.ts` in your project
