@@ -2,7 +2,7 @@
 Redwood comes with full TypeScript support out of the box, and you don't have to give up any of the conveniences that Redwood offers to enjoy all the benefits of a type-safe codebase. You can use TypeScript and have great DX too.
 
 ## Starting a TypeScript Redwood project
-You can use the `--typescript` flag on create-redwood-app to generate a project with TypeScript configured
+You can use the `--typescript` flag on create-redwood-app to generate a project with TypeScript configured:
 ```shell
 yarn create redwood-app --typescript /PATH/TO/FOLDER
 ```
