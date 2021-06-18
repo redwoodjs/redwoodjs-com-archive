@@ -42,6 +42,8 @@ touch api/tsconfig.json
 touch web/tsconfig.json
 ```
 
+<br />
+
 2. Now copy and paste the latest config from the Redwood template [web/tsconfig.json](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/web/tsconfig.json) file here
 
 
