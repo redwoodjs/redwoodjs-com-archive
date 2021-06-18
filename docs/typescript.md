@@ -1,5 +1,5 @@
 # Typescript
-Redwood comes with full TypeScript support out of the box, and you don't have to give up any of the convenience in Cells, Router or generators, while still enjoying all the benefits of a type-safe codebase.
+Redwood comes with full TypeScript support out of the box, and you don't have to give up any of the conveniences that Redwood offers to enjoy all the benefits of a type-safe codebase. You can use TypeScript and have great DX too.
 
 ## Starting a TypeScript Redwood project
 You can use the `--typescript` flag on create-redwood-app to generate a project with TypeScript configured
@@ -8,18 +8,19 @@ yarn create redwood-app --typescript /PATH/TO/FOLDER
 ```
 
 ## Converting an existing JS project to Typescript
-If you already have a Redwood app, but want to configure it for TypeScript, you can use our setup command
+If you already have a Redwood app, but want to configure it for TypeScript, you can use our setup command:
 
 ```
 yarn rw setup tsconfig
 ```
 Remember you don't _need_ to convert all your files to TypeScript, you can always do it incrementally. Start by renaming your files from `.js` to `.ts` or `.tsx`
 
-Having issues with automatic setup? See instructions for manual setup
+Having issues with automatic setup? See instructions for manual setup below:
 
 <details>
 <summary>Manually setup TypeScript</summary>
-This is what the setup command does for you
+
+This is what the setup command does for you step by step:
 
 **API**
 
@@ -29,7 +30,7 @@ This is what the setup command does for you
 touch api/tsconfig.json
 ```
 
-2. Now copy and paste the latest config from the Redwood template: [`api/tsconfig.json`](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/api/tsconfig.json) into the empty file
+2. Now copy and paste the latest config from the Redwood template [api/tsconfig.json](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/api/tsconfig.json) file here
 
 **WEB**
 
@@ -39,14 +40,14 @@ touch api/tsconfig.json
 touch web/tsconfig.json
 ```
 
-2. Now copy and paste the latest config from the Redwood template: [`web/tsconfig.json`](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/web/tsconfig.json) into the empty file
+2. Now copy and paste the latest config from the Redwood template [web/tsconfig.json](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/web/tsconfig.json) file here
 
 
 You should now have type definitions&mdash;you can rename your files from `.js` to `.ts`, and the files that contain JSX to `.tsx`.
 </details>
 
 ## Sharing Types between sides
-For your shared types we need to do a few things:
+For your shared types, we need to do a few things:
 
 1. Put your shared types at the root of the project (makes sense right?), in a folder called `types` at the root
 2. Restart TS server in vscode. And your new types should now be available on both web and api sides!
@@ -91,11 +92,11 @@ Configure your project's build command to be `yarn build:ci` - and you even have
 
 
 ## Auto generated types
-Redwood's CLI will automatically generate types for you, including types for your graphql queries, but also so that you get types for your named routes, Cells, scenarios and tests.
+Redwood's CLI automatically generates types for you, which not only includes types for your GraphQL queries, but also for your named routes, Cells, scenarios and tests.
 
-When you run `yarn rw dev`, the CLI watches for file changes and will automatically trigger the type generator.
+When you run `yarn rw dev`, the CLI watches for file changes and automatically triggers the type generator.
 
-To trigger type generation, you can run
+To trigger type generation, you can run:
 ```shell
 yarn rw g types
 ```
