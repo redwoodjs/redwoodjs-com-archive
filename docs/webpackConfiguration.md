@@ -231,13 +231,25 @@ yarn tailwindcss init
 
 This generates the tailwind config file, `tailwind.config.js`. Note that we'd ordinarily move this file to `web/config`, like we did with `postcss.config.js`. But since the Tailwind CSS IntelliSense won't work unless `tailwind.config.js` is in a base directory like `web`, we're just leaving this one here for now.
 
-Finally, use the tailwind directives in `web/src/index.css`
+Next, use the tailwind directives in `web/src/index.css`
 
 ```css
 /* ./web/src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+```
+
+Optionally, you may also add file types to `purge` in your tailwind config file. This will remove unused tailwind CSS when building for production, reducing your css bundle size.
+```javascript
+// ./web/tailwind.config.js
+  purge: [
+    './src/**/*.html',
+    './src/**/*.jsx',
+    './src/**/*.js',
+    './src/**/*.ts',
+    './src/**/*.tsx',
+  ]
 ```
 
 And that should be it!
