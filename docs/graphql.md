@@ -1,4 +1,4 @@
-# GraphQL 
+# GraphQL
 
 GraphQL is a fundamental part of Redwood. Having said that, you can get going without knowing anything about it, and can actually get quite far without ever having to read [the docs](https://graphql.org/learn/). But to master Redwood, you'll need to have more than just a vague notion of what GraphQL is; you'll have to really grok it.
 
@@ -28,34 +28,86 @@ const App = () => (
 // ...
 ```
 
+## useQuery and useMutation hooks
+
 You can use Apollo's `useQuery` and `useMutation` hooks by importing them from `@redwoodjs/web`, though if you're using `useQuery`, we recommend that you use a [Cell](https://redwoodjs.com/docs/cells):
 
+Here is an example of the useMutation hook (you can use this inside or outside of a [Cell](https://redwoodjs.com/docs/cells))
+
 ```js
-// web/src/components/MutateButton.js
+// web/src/components/AddFlagButton.js
 
 import { useMutation } from '@redwoodjs/web'
 
 const MUTATION = `
   # your mutation...
+  mutation setHasFlag($id: String!, $hasIt: Boolean!) {
+    setHasFlag(id: $id, hasIt: $hasIt) {
+      id
+      hasFlag
+    }
+  }
 `
 
-const MutateButton = () => {
+const AddFlagButton = ({ id }) => {
   const [mutate] = useMutation(MUTATION)
 
-  return (
-    <button onClick={() => mutate({ ... })}>
-      Click to mutate
-    </button>
-  )
+  return <button onClick={() => mutate({ variables: { id, hasIt: true } })}>Click to mutate</button>
 }
 ```
 
+Which you could support in your api thusly:
+
+```js
+// api/src/graphql/users.sdl.ts
+
+export const schema = gql`
+  type User {
+    id: String!
+    hasFlag: Boolean!
+  }
+
+  type Query {
+    user(id: String!): User
+    users: [User]!
+  }
+
+  type Mutation {
+    setHasFlag(id: String!, hasIt: Boolean!): User
+  }
+`
+```
+
+```js
+// api/src/services/users/users.ts
+
+import { db } from 'src/lib/db'
+import { context } from '@redwoodjs/api'
+import { requireAuth } from 'src/lib/auth'
+
+export const setHasPlanner = ({ id = context.currentUser.sub, hasIt }) => {
+  requireAuth()
+  return db.user
+    .update({
+      where: { id },
+      data: {
+        hasFlag: hasIt,
+      },
+    })
+    .then((data) => {
+      return data
+    })
+}
+```
+
+#### other Appolo hookss
+
 Note that you're free to use any of Apollo's other hooks, you'll just have to import them from `@apollo/client` instead. In particular, these two hooks might come in handy:
 
-|Hook|Description|
-|:---|:---|
-|[useLazyQuery](https://www.apollographql.com/docs/react/api/react/hooks/#uselazyquery)|Execute queries in response to events other than component rendering|
-|[useApolloClient](https://www.apollographql.com/docs/react/api/react/hooks/#useapolloclient)|Access your instance of `ApolloClient`|
+| Hook                                                                                         | Description                                                          |
+| :------------------------------------------------------------------------------------------- | :------------------------------------------------------------------- |
+| [useLazyQuery](https://www.apollographql.com/docs/react/api/react/hooks/#uselazyquery)       | Execute queries in response to events other than component rendering |
+| [useApolloClient](https://www.apollographql.com/docs/react/api/react/hooks/#useapolloclient) | Access your instance of `ApolloClient`                               |
 
 ### Swapping out the RedwoodApolloProvider
 
@@ -65,7 +117,7 @@ As long as you're willing to do a bit of configuring yourself, you can swap out 
 - `useFetchConfig`
 - `GraphQLHooksProvider`
 
-For an example of configuring your own GraphQL Client, see the [redwoodjs-react-query-provider](https://www.npmjs.com/package/redwoodjs-react-query-provider). If you were thinking about using [react-query](https://react-query.tanstack.com/), you can also just go ahead and install it! 
+For an example of configuring your own GraphQL Client, see the [redwoodjs-react-query-provider](https://www.npmjs.com/package/redwoodjs-react-query-provider). If you were thinking about using [react-query](https://react-query.tanstack.com/), you can also just go ahead and install it!
 
 Note that if you don't import `RedwoodApolloProvider`, it won't be included in your bundle, dropping your bundle size quite a lot!
 
@@ -158,6 +210,7 @@ export const Users = {
 ### Redwood's Resolver Args
 
 [According to the spec](https://graphql.org/learn/execution/#root-fields-resolvers), resolvers take four arguments: `args`, `obj`, `context`, and `info`. In Redwood, resolvers do take these four arguments, but what they're named and how they're passed to resolvers is slightly different:
+
 - `args` is passed as the first argument
 - `obj` is named `root` (all the rest keep their names)
 - `root`, `context`, and `info` are wrapped into an object; this object is passed as the second argument
@@ -166,18 +219,18 @@ Here's an example to make things clear:
 
 ```javascript
 export const Post = {
-  user: (args, { root, context, info }) => db.post.findUnique({ where: { id: root.id } }).user()
+  user: (args, { root, context, info }) => db.post.findUnique({ where: { id: root.id } }).user(),
 }
 ```
 
 Of the four, you'll see `args` and `root` being used a lot.
 
-|Argument|Description|
-|:---|:---|
-|`args`|The arguments provided to the field in the GraphQL query|
-|`root`|The previous return in the resolver chain|
-|`context`|Holds important contextual information, like the currently logged in user|
-|`info`|Holds field-specific information relevant to the current query as well as the schema details|
+| Argument  | Description                                                                                  |
+| :-------- | :------------------------------------------------------------------------------------------- |
+| `args`    | The arguments provided to the field in the GraphQL query                                     |
+| `root`    | The previous return in the resolver chain                                                    |
+| `context` | Holds important contextual information, like the currently logged in user                    |
+| `info`    | Holds field-specific information relevant to the current query as well as the schema details |
 
 > **There's so many terms!**
 >
@@ -225,7 +278,7 @@ The GraphQL Playground's nice, but if you're a power user, you'll want to be usi
 
 ### Why Doesn't Redwood Use Something Like Nexus?
 
-This might be one of our most frequently asked questions of all time. Here's [Tom's response in the forum](https://community.redwoodjs.com/t/anyone-playing-around-with-nexus-js/360/5): 
+This might be one of our most frequently asked questions of all time. Here's [Tom's response in the forum](https://community.redwoodjs.com/t/anyone-playing-around-with-nexus-js/360/5):
 
 > We started with Nexus, but ended up pulling it out because we felt like it was too much of an abstraction over the SDL. It’s so nice being able to just read the raw SDL to see what the GraphQL API is.
 
