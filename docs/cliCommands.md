@@ -577,7 +577,7 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 | `sdl <model>`          | Generate a GraphQL schema and service object                                                          |
 | `service <name>`       | Generate a service component                                                                          |
 | `types`                | Generate types and supplementary code                                                                 |
-| `script <name>`               | Generate a script that can use your services/libs to execute with 'redwood exec <script>'                            |
+| `script <name>`        | Generate a script that can use your services/libs to execute with `redwood exec script <name>`        |
 
 ### TypeScript generators
 
