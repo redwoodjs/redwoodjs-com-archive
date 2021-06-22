@@ -1,0 +1,3 @@
+Contact: security@redwoodjs.com
+Preferred-Languages: en
+Policy: https://github.com/redwoodjs/redwood/security/policy
