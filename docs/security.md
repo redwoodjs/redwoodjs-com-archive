@@ -9,9 +9,13 @@ RedwoodJS wants you to be able build and deploy secure applications and takes th
 * [Ways to keep your serverless functions secure](/docs/serverless-functions#security-considerations)
 * [Environment variables for secure keys and tokens](/docs/environment-variables)
 
-> ⚠️ Security is Your Responsibility
+> ⚠️ **Security is Your Responsibility**  
 > While Redwood offers the tools, practices, and information to keep your application secure, it remains your responsibility to put these in place. Proper password, token, and key protection using disciplined communication, password management systems, and environment management services like [Doppler](https://www.doppler.com) are strongly encouraged.
 
+> **Security Policy and Contact Information**  
+> The RedwoodJS Security Policy is located [in the codebase repository on GitHub](https://github.com/redwoodjs/redwood/security/policy)</a>  
+>   
+> To report a potential security vulnerability, contact us at [security@redwoodjs.com](mailto:security@redwoodjs.com)
 ## Authentication
 
 `@redwoodjs/auth` is a lightweight wrapper around popular SPA authentication libraries. We [currently support](https://redwoodjs.com/docs/authentication) the following authentication providers:
