@@ -1349,7 +1349,7 @@ Generating...
 ```
 
 ### generate script
-Generates an arbitary Node.js script in `./scripts/<name>` that can be used with `redwood execute` command later.
+Generates an arbitrary Node.js script in `./scripts/<name>` that can be used with `redwood execute` command later.
 
 | Arguments & Options  | Description                                                                          |
 | -------------------- | ------------------------------------------------------------------------------------ |
