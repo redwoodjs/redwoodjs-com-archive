@@ -36,7 +36,7 @@ For a demonstration, check out the [Auth Playground](https://redwood-playground-
 
 ## GraphQL
 
-GraphQL is a fundamental part of Redwood. For details on how Redwood uses GraphQL and handles important security considerations, please see the [GraphQL Security](/docs/graphql#security) section and the [Secure Services](docs/services#secure-services) section.
+GraphQL is a fundamental part of Redwood. For details on how Redwood uses GraphQL and handles important security considerations, please see the [GraphQL Security](/docs/graphql.html#security) section and the [Secure Services](/docs/services.html#secure-services) section.
 
 ## Functions
 
