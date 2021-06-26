@@ -243,13 +243,16 @@ Next, use the tailwind directives in `web/src/index.css`
 Optionally, you may also add file types to `purge` in your tailwind config file. This will remove unused tailwind CSS when building for production, reducing your css bundle size.
 ```javascript
 // ./web/tailwind.config.js
-  purge: [
-    './src/**/*.html',
-    './src/**/*.jsx',
-    './src/**/*.js',
-    './src/**/*.ts',
-    './src/**/*.tsx',
-  ]
+  purge: {
+    enabled: process.env.NETLIFY || process.env.NODE_ENV === 'production',
+    content: [
+      './src/**/*.html',
+      './src/**/*.js',
+      './src/**/*.jsx',
+      './src/**/*.tsx',
+      './src/**/*.ts',
+    ],
+  },
 ```
 
 And that should be it!
