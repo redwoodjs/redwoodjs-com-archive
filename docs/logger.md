@@ -75,13 +75,36 @@ In addition to the rich [features](https://github.com/pinojs/pino/blob/master/do
 
 ### Log Level
 
-The logger detects you current environment and will default an appropriate minimum log level.
+The logger detects you current environment and will default a sensible default minimum log level.
 
-In Development, the default is `trace` while in Production, the default is `warn`.
+> ***NOTE:*** In Development, the default is `trace` while in Production, the default is `warn`.
+> This means that output in your dev server can be verbose, but when you deploy you won't miss out on critical issues.
 
-This means that output in your dev server can be verbose, but when you deploy you won't miss out on critical issues.
+You can override the default log level via the `LOG_LEVEL` environment variable or the `level` LoggerOption.
 
-You can override the default log level via the `LOG_LEVEL` environment variable.
+### Troubleshooting
+
+> If you are not seeing log out when deployed, consider setting the level to `info` or `debug`.
+
+```js
+import { createLogger } from '@redwoodjs/api/logger'
+
+/**
+ * Creates a logger with RedwoodLoggerOptions
+ *
+ * These extend and override default LoggerOptions,
+ * can define a destination like a file or other supported pin log transport stream,
+ * and sets where or not to show the logger configuration settings (defaults to false)
+ *
+ * @param RedwoodLoggerOptions
+ *
+ * RedwoodLoggerOptions have
+ * @param {options} LoggerOptions - defines how to log, such as pretty printing, redaction, and format
+ * @param {string | DestinationStream} destination - defines where to log, such as a transport stream or file
+ * @param {boolean} showConfig - whether to display logger configuration on initialization
+ */
+export const logger = createLogger({ options: { level: 'info' } })
+```
 
 ### Redaction
 
@@ -171,7 +194,7 @@ Note: logging to a file is not permitted if deployed to Netlify or Vercel.
  * Log to a File
  */
 export const logger = createLogger({
-  options: { ...defaultLoggerOptions },
+  //options: {},
   destination: '/path/to/file/api.log',
 })
 ```
@@ -271,7 +294,7 @@ Note: logging to a file is not permitted if deployed to Netlify or Vercel.
  * Log to a File
  */
 export const logger = createLogger({
-  options: { ...defaultLoggerOptions },
+  // options: {},
   destination: '/path/to/file/api.log',
 })
 ```
@@ -308,8 +331,8 @@ To stream your logs to [Datadog](https://www.datadoghq.com/), you can
 // ...
 
 export const logger = createLogger({
-   options: { ...defaultLoggerOptions },
-   destination: stream },
+  // options: {},
+  destination: stream },
 })
 ```
 
@@ -338,10 +361,68 @@ export const stream = createWriteStream({
 })
 
 export const logger = createLogger({
-  options: { ...defaultLoggerOptions },
+  // options: {},
   destination: stream },
 })
 ```
+
+### Log to logDNA using a Transport Stream Destination
+
+* Install the [pino-logdna](https://www.npmjs.com/package/pino-logdna) package into `api`
+* Import `pino-logdna`
+* Configure the `stream` with your [ingestion key](https://github.com/Logflare/pino-logflare/blob/master/docs/API.md)
+* Set the logger `destination` to the `stream`
+
+```js
+import pinoLogDna from 'pino-logdna'
+
+const stream = pinoLogDna({
+   key: process.env.LOGDNA_INGESTION_KEY
+ , onError: console.error
+ })
+
+export const logger = createLogger({
+  // options: {},
+  destination: stream },
+}) 
+```
+### Log to Papertrail using a Transport Stream Destination
+
+* Install the [pino-papertrail](https://www.npmjs.com/package/pino-papertrail) package into `api`
+* Import `pino-papertrail`
+* Configure the `stream` with your Papertrail options
+* Set the logger `destination` to the `stream`
+
+```js
+import papertrail from 'pino-papertrail'
+import options from './options.json'
+
+const stream = papertrail({
+   ...options,
+   appname: 'my-project'
+ })
+
+export const logger = createLogger({
+  // options: {},
+  destination: stream },
+}) 
+```
+
+## Papertrail Options
+
+You can pass the [following properties](https://github.com/ovhemert/pino-papertrail/blob/master/docs/API.md) in an options object:
+
+| Property                                                | Type              | Description                                         |
+|---------------------------------------------------------|-------------------|-----------------------------------------------------|
+| appname (default: pino)                                 | string            | Application name                                    |
+| host (default: localhost)                               | string            | Papertrail destination address                      |
+| port (default: 1234)                                    | number            | Papertrail destination port                         |
+| connection (default: udp)                               | string            | Papertrail connection method (tls/tcp/udp)          |
+| echo (default: true)                                    | boolean           | Echo messages to the console                        |
+| message-only (default: false)                           | boolean           | Only send msg property as message to papertrail     |
+| backoff-strategy (default: `new ExponentialStrategy()`) | [BackoffStrategy] | Retry backoff strategy for any tls/tcp socket error |
+
+[BackoffStrategy]: https://github.com/MathieuTurcotte/node-backoff#interface-backoffstrategy
 
 ### Prisma Logging
 
