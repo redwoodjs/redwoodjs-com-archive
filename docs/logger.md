@@ -84,7 +84,7 @@ You can override the default log level via the `LOG_LEVEL` environment variable 
 
 ### Troubleshooting
 
-> If you are not seeing log out when deployed, consider setting the level to `info` or `debug`.
+> If you are not seeing log output when deployed, consider setting the level to `info` or `debug`.
 
 ```js
 import { createLogger } from '@redwoodjs/api/logger'
