@@ -396,16 +396,17 @@ export const logger = createLogger({
 
 * Install the [pino-papertrail](https://www.npmjs.com/package/pino-papertrail) package into `api`
 * Import `pino-papertrail`
-* Configure the `stream` in your Papertrail `options` with your project's configuration settings
+* Configure the `stream` in your Papertrail `options` with your appname's [configuration settings](https://github.com/ovhemert/pino-papertrail/blob/master/docs/API.md#options)
 * Set the logger `destination` to the `stream`
 
 ```js
 import papertrail from 'pino-papertrail'
 
-const stream = papertrail({
-   ...options,
-   appname: 'my-project'
- })
+const stream = papertrail.createWriteStream({
+  appname: 'my-app',
+  host: '*****.papertrailapp.com',
+  port: '*****',
+})```
 
 export const logger = createLogger({
   // options: {},
