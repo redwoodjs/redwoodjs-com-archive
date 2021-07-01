@@ -110,6 +110,8 @@ import { createLogger } from '@redwoodjs/api/logger'
 export const logger = createLogger({ options: { level: 'info' } })
 ```
 
+Please refer to the [Pino options documentation](https://github.com/pinojs/pino/blob/master/docs/api.md#options) for a complete list.
+
 ### Redaction
 
 Everyone has herd or reports that Company X logged emails, or passwords to files or systems that may not have been secured. While RedwoodJS logging won't necessarily prevent that, it does provide you with the mechanism to ensure that won't happen.
@@ -234,7 +236,7 @@ RedwoodJS provides an opinionated logger with sensible, practical defaults. Thes
 Some examples of common configurations and overrides demonstrate how you can have control over both how and where you log.
 ### Override Log Level
 
-You can set the minimum level to log via the `level` option. This is useful if you need to override the default Production settings (just `warn` and `error`) to in this case `debug`.
+You can set the minimum [level](https://redwoodjs.com/docs/logger#log-level) to log via the `level` option. This is useful if you need to override the default Production settings (just `warn` and `error`) to in this case `debug`.
 
 ```js
 /**
@@ -394,12 +396,11 @@ export const logger = createLogger({
 
 * Install the [pino-papertrail](https://www.npmjs.com/package/pino-papertrail) package into `api`
 * Import `pino-papertrail`
-* Configure the `stream` with your Papertrail options
+* Configure the `stream` in your Papertrail `options` with your project's configuration settings
 * Set the logger `destination` to the `stream`
 
 ```js
 import papertrail from 'pino-papertrail'
-import options from './options.json'
 
 const stream = papertrail({
    ...options,
