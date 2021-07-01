@@ -75,6 +75,9 @@ In addition to the rich [features](https://github.com/pinojs/pino/blob/master/do
 
 ### Log Level
 
+
+One of 'fatal', 'error', 'warn', 'info', 'debug', 'trace' or 'silent'.
+
 The logger detects you current environment and will default a sensible default minimum log level.
 
 > ***NOTE:*** In Development, the default is `trace` while in Production, the default is `warn`.
@@ -82,6 +85,7 @@ The logger detects you current environment and will default a sensible default m
 
 You can override the default log level via the `LOG_LEVEL` environment variable or the `level` LoggerOption.
 
+The 'silent' level disables logging.
 ### Troubleshooting
 
 > If you are not seeing log output when deployed, consider setting the level to `info` or `debug`.
