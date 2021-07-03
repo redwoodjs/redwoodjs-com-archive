@@ -300,7 +300,7 @@ Note: logging to a file is not permitted if deployed to Netlify or Vercel.
  * Log to a File
  */
 export const logger = createLogger({
-  // options: {},
+  options: {},
   destination: '/path/to/file/api.log',
 })
 ```
@@ -340,10 +340,22 @@ yarn workspace api add pino-datadog
    size: 1,
  })
 
-// ...
-
+/**
+ * Creates a logger with RedwoodLoggerOptions
+ *
+ * These extend and override default LoggerOptions,
+ * can define a destination like a file or other supported pin log transport stream,
+ * and sets where or not to show the logger configuration settings (defaults to false)
+ *
+ * @param RedwoodLoggerOptions
+ *
+ * RedwoodLoggerOptions have
+ * @param {options} LoggerOptions - defines how to log, such as pretty printing, redaction, and format
+ * @param {string | DestinationStream} destination - defines where to log, such as a transport stream or file
+ * @param {boolean} showConfig - whether to display logger configuration on initialization
+ */
 export const logger = createLogger({
-  // options: {},
+  options: {},
   destination: stream },
 })
 ```
@@ -374,7 +386,7 @@ export const stream = createWriteStream({
 })
 
 export const logger = createLogger({
-  // options: {},
+  options: {},
   destination: stream },
 })
 ```
@@ -400,8 +412,22 @@ const stream = pinoLogDna({
  , onError: console.error
  })
 
+/**
+ * Creates a logger with RedwoodLoggerOptions
+ *
+ * These extend and override default LoggerOptions,
+ * can define a destination like a file or other supported pin log transport stream,
+ * and sets where or not to show the logger configuration settings (defaults to false)
+ *
+ * @param RedwoodLoggerOptions
+ *
+ * RedwoodLoggerOptions have
+ * @param {options} LoggerOptions - defines how to log, such as pretty printing, redaction, and format
+ * @param {string | DestinationStream} destination - defines where to log, such as a transport stream or file
+ * @param {boolean} showConfig - whether to display logger configuration on initialization
+ */
 export const logger = createLogger({
-  // options: {},
+  options: {},
   destination: stream },
 }) 
 ```
@@ -425,10 +451,24 @@ const stream = papertrail.createWriteStream({
   appname: 'my-app',
   host: '*****.papertrailapp.com',
   port: '*****',
-})```
+})
 
+/**
+ * Creates a logger with RedwoodLoggerOptions
+ *
+ * These extend and override default LoggerOptions,
+ * can define a destination like a file or other supported pin log transport stream,
+ * and sets where or not to show the logger configuration settings (defaults to false)
+ *
+ * @param RedwoodLoggerOptions
+ *
+ * RedwoodLoggerOptions have
+ * @param {options} LoggerOptions - defines how to log, such as pretty printing, redaction, and format
+ * @param {string | DestinationStream} destination - defines where to log, such as a transport stream or file
+ * @param {boolean} showConfig - whether to display logger configuration on initialization
+ */
 export const logger = createLogger({
-  // options: {},
+  options: {},
   destination: stream },
 }) 
 ```
