@@ -310,7 +310,12 @@ export const logger = createLogger({
 To stream your logs to [Datadog](https://www.datadoghq.com/), you can
 
 * Install the [`pino-datadog`](https://www.npmjs.com/package/pino-datadog) package into `api`
-* Import `pino-datadog`
+
+```terminal
+yarn workspace api add pino-datadog
+```
+
+* Import `pino-datadog` into `api/src/lib/logger.ts`
 * Configure the `stream` with your API key and [settings](https://github.com/ovhemert/pino-datadog/blob/master/docs/API.md)
 * Set the logger `destination` to the `stream`
 
@@ -318,6 +323,7 @@ To stream your logs to [Datadog](https://www.datadoghq.com/), you can
 /**
  * Stream logs to Datadog
  */
+ //`api/src/lib/logger.ts
  import datadog from 'pino-datadog'
  /**
   * Creates a synchronous pino-datadog stream
@@ -345,12 +351,13 @@ export const logger = createLogger({
 ### Log to Logflare using a Transport Stream Destination
 
 * Install the [`pino-logflare`](https://www.npmjs.com/package/pino-logflare) package into `api`
-* Import `pino-logflare`
+* Import `pino-logflare` into `api/src/lib/logger.ts`
 * Configure the `stream` with your [API key and sourceToken](https://github.com/Logflare/pino-logflare/blob/master/docs/API.md)
 * Set the logger `destination` to the `stream`
 
 
 ```js
+//`api/src/lib/logger.ts
 import { createWriteStream } from 'pino-logflare'
 
 /**
@@ -375,11 +382,17 @@ export const logger = createLogger({
 ### Log to logDNA using a Transport Stream Destination
 
 * Install the [pino-logdna](https://www.npmjs.com/package/pino-logdna) package into `api`
-* Import `pino-logdna`
+
+```terminal
+yarn workspace api add pino-logdna
+```
+
+* Import `pino-logdna` into `api/src/lib/logger.ts`
 * Configure the `stream` with your [ingestion key](https://github.com/Logflare/pino-logflare/blob/master/docs/API.md)
 * Set the logger `destination` to the `stream`
 
 ```js
+//`api/src/lib/logger.ts
 import pinoLogDna from 'pino-logdna'
 
 const stream = pinoLogDna({
@@ -395,7 +408,13 @@ export const logger = createLogger({
 ### Log to Papertrail using a Transport Stream Destination
 
 * Install the [pino-papertrail](https://www.npmjs.com/package/pino-papertrail) package into `api`
-* Import `pino-papertrail`
+
+
+```terminal
+yarn workspace api add pino-papertrail]
+```
+
+* Import `pino-papertrail` into `logger.ts`
 * Configure the `stream` in your Papertrail `options` with your appname's [configuration settings](https://github.com/ovhemert/pino-papertrail/blob/master/docs/API.md#options)
 * Set the logger `destination` to the `stream`
 
