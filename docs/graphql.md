@@ -256,8 +256,6 @@ export const handler = createGraphQLHandler({
 
 The `loggerConfig` takes several options that logs meaningful information along the graphQL execution lifecycle.
 
-TODO make into a table!
-
 
 |Option|Description|
 |:---|:---|
@@ -350,7 +348,6 @@ api |     }
 api |     query: "query ($id: Int!) {\n  post(id: $id) {\n    id\n    title\n    body\n    createdAt\n    publishedAt\n    updatedAt\n    __typename\n  }\n}\n"
 ```
 
-
 but keep your services concise!
 
 #### Send to Third-party Transports
@@ -380,7 +377,7 @@ export const logger = createLogger({
 })
 ```
 
-#### Timing Traces for Benchmarking Performances
+#### Timing Traces and Metrics
 
 Often you want to measure and report how long your queries take to execute and respond. You may already be measuring these durations at the database level, but you can also measure the time it takes for your the GraphQL server to parse, validate, and execute the request.
 
