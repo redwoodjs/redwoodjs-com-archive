@@ -371,25 +371,10 @@ Here is an example of an application `/api/src/lib/logger.ts` configured to reda
 
 ```js
 // /api/src/lib/logger.ts
-import { createLogger } from '@redwoodjs/api/logger'
-import { redactionsList } from '@redwoodjs/api/logger'
-/**
- * Creates a logger with RedwoodLoggerOptions
- *
- * These extend and override default LoggerOptions,
- * can define a destination like a file or other supported pin log transport stream,
- * and sets where or not to show the logger configuration settings (defaults to false)
- *
- * @param RedwoodLoggerOptions
- *
- * RedwoodLoggerOptions have
- * @param {options} LoggerOptions - defines how to log, such as pretty printing, redaction, and format
- * @param {string | DestinationStream} destination - defines where to log, such as a transport stream or file
- * @param {boolean} showConfig - whether to display logger configuration on initialization
- */
+import { createLogger, redactionsList } from '@redwoodjs/api/logger'
+
 export const logger = createLogger({
   options: {
-    prettyPrint: true,
     redact: [...redactionsList, 'email', 'data.users[*].email'],
   },
 })
@@ -401,14 +386,13 @@ Often you want to measure and report how long your queries take to execute and r
 
 You may turn on logging these metrics via the `tracing` GraphQL configuration option.
 
+```js
+// api/src/functions/graphql.ts
+// ...
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: { tracing: true } },
+// ...
 ```
-  /**
-   * @description Include the tracing and timing information.
-   *
-   * This will log various performance timings withing the GraphQL event lifecycle (parsing, validating, executing, etc).
-   */
-  tracing?: boolean
-  ```
 
 Let's say we wanted to get some benchmark numbers for the "find post by id" resolver
 
@@ -480,7 +464,7 @@ The [GraphQL Playground](https://github.com/graphql/graphql-playground) is a way
 
 Attackers often submit expensive, nested queries that could overload your database or expend costly resources.
 
-Typically, these types of  complex and expensive queries are usually huge deeply nested and take advantage of an understanding of your schema (hence why schema introspection is disabled byu default in production) and the data model relationships to create "cyclical" queries.
+Typically, these types of  complex and expensive queries are usually huge deeply nested and take advantage of an understanding of your schema (hence why schema introspection is disabled by default in production) and the data model relationships to create "cyclical" queries.
 
 Such unbounded GraphQL queries allow attackers to abuse query depth and with enough depth, this can easily impact your Graphql server and application.
 
@@ -514,15 +498,7 @@ query cyclical {
 
 > To mitigate the risk of attacking your application via deeply nested queries, RedwoodJS by default sets the [Query Depth Limit](https://www.npmjs.com/package/graphql-depth-limit#documentation) to 11. 
 
-If You would like to set the limit to a lower or higher limit, you may do so via the `depthLimitOptions` setting when creating your GraphQL handler.
-
-```
-  /**
-   * Limit the complexity of the queries solely by their depth.
-   * @see https://www.npmjs.com/package/graphql-depth-limit#documentation
-   */
-  depthLimitOptions?: DepthLimitOptions
-```
+You can change the default value via the `depthLimitOptions` setting when creating your GraphQL handler.
 
 You `depthLimitOptions` are `maxDepth` or `ignore` stops recursive depth checking based on a field name. Ignore can be [either a string or regexp]( https://www.npmjs.com/package/graphql-depth-limit#documentation) to match the name, or a function that returns a boolean.
 
