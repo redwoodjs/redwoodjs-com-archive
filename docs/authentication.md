@@ -89,6 +89,8 @@ Read the post-install instructions carefully as they contain instructions for ad
 >
 >     yarn rw g secret
 
+Note that if you change the fields named `hashedPassword` and `salt`, and you have some verbose logging in your app, you'll want to scrub those fields from appearing in your logs. See the [Redaction](/docs/logger#redaction) docs for info.
+
 ### Scaffolding Login/Signup Pages
 
 If you don't want to create your own login and signup pages from scratch we've got a generator for that:
