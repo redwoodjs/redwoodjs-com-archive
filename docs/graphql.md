@@ -241,28 +241,14 @@ A typical GraphQLHandler `graphql.ts` is as follows:
 
 ```js
 // api/src/functions/graphql.ts
+// ...
 
-import {
-  createGraphQLHandler,
-  makeMergedSchema,
-  makeServices,
-} from '@redwoodjs/api'
-
-import schemas from 'src/graphql/**/*.{js,ts}'
-import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
-import services from 'src/services/**/*.{js,ts}'
 
+// ...
 export const handler = createGraphQLHandler({
   loggerConfig: { logger, options: {} },
-  schema: makeMergedSchema({
-    schemas,
-    services: makeServices({ services }),
-  }),
-  onException: () => {
-    // Disconnect from your database with an unhandled exception.
-    db.$disconnect()
-  },
+// ...
 })
 ```
 
@@ -270,64 +256,17 @@ export const handler = createGraphQLHandler({
 
 The `loggerConfig` takes several options that logs meaningful information along the graphQL execution lifecycle.
 
-```js
-/**
- * Options for request and response information to include in the log statements
- * output by UseRedwoodLogger around the execution event
- *
- * @param data - Include response data sent to client.
- * @param operationName - Include operation name.
- * @param requestId - Include the event's requestId, or if none, generate a uuid as an identifier.
- * @param query - Include the query. This is the query or mutation (with fields) made in the request.
- * @param tracing - Include the tracing and timing information.
- * @param userAgent -Include the browser (or client's) user agent.
- */
-type GraphQLLoggerOptions = {
-  /**
-   * @description Include response data sent to client.
-   */
-  data?: boolean
+TODO make into a table!
 
-  /**
-   * @description Include operation name.
-   *
-   * The operation name is a meaningful and explicit name for your operation. It is only required in multi-operation documents,
-   * but its use is encouraged because it is very helpful for debugging and server-side logging.
-   * When something goes wrong (you see errors either in your network logs, or in the logs of your GraphQL server)
-   * it is easier to identify a query in your codebase by name instead of trying to decipher the contents.
-   * Think of this just like a function name in your favorite programming language.
-   *
-   * @see https://graphql.org/learn/queries/#operation-name
-   */
-  operationName?: boolean
 
-  /**
-   * @description Include the event's requestId, or if none, generate a uuid as an identifier.
-   *
-   * The requestId can be helpful when contacting your deployment provider to resolve issues when encountering errors or unexpected behavior.
-   */
-  requestId?: boolean
-
-  /**
-   * @description Include the query. This is the query or mutation (with fields) made in the request.
-   */
-  query?: boolean
-
-  /**
-   * @description Include the tracing and timing information.
-   *
-   * This will log various performance timings withing the GraphQL event lifecycle (parsing, validating, executing, etc).
-   */
-  tracing?: boolean
-
-  /**
-   * @description Include the browser (or client's) user agent.
-   *
-   * This can be helpful to know what type of client made the request to resolve issues when encountering errors or unexpected behavior.
-   */
-  userAgent?: boolean
-}
-```
+|Option|Description|
+|:---|:---|
+| data | Include response data sent to client. |
+| operationName | Include operation name. The operation name is a meaningful and explicit name for your operation. It is only required in multi-operation documents, but its use is encouraged because it is very helpful for debugging and server-side logging. When something goes wrong (you see errors either in your network logs, or in the logs of your GraphQL server) it is easier to identify a query in your codebase by name instead of trying to decipher the contents. Think of this just like a function name in your favorite programming language. See https://graphql.org/learn/queries/#operation-name
+|requestId| Include the event's requestId, or if none, generate a uuid as an identifier.
+|query|Include the query. This is the query or mutation (with fields) made in the request.
+| tracing |Include the tracing and timing information. This will ||log various performance timings withing the GraphQL event lifecycle (parsing, validating, executing, etc).
+|userAgent|Include the browser (or client's) user agent. This can be helpful to know what type of client made the request to resolve issues when encountering errors or unexpected behavior.
 
 Therefore, if you wish to log the GraphQL `query` made, the `data` returned, and the `operationName` used, you would
 
@@ -339,14 +278,7 @@ export const handler = createGraphQLHandler({
     logger,
     options: { data: true, operationName: true, query: true },
   },
-  schema: makeMergedSchema({
-    schemas,
-    services: makeServices({ services }),
-  }),
-  onException: () => {
-    // Disconnect from your database with an unhandled exception.
-    db.$disconnect()
-  },
+// ...
 })
 ```
 
@@ -386,7 +318,7 @@ export const handler = createGraphQLHandler({
 // ...
 ```
 
-then you do not need to log your `input` variables or the results in each service method.
+then you no longer have log your `input` variables or the results in each service method which can clean up your code.
 
 For example, instead of
 
@@ -466,7 +398,7 @@ Stream to third-party log and application monitoring services vital to productio
 
 #### Supports Log Redaction
 
-Everyone has herd or reports that Company X logged emails, or passwords to files or systems that may not have been secured. While RedwoodJS logging won't necessarily prevent that, it does provide you with the mechanism to ensure that won't happen.
+Everyone has heard of reports that Company X logged emails, or passwords to files or systems that may not have been secured. While RedwoodJS logging won't necessarily prevent that, it does provide you with the mechanism to ensure that won't happen.
 
 To redact sensitive information, you can supply paths to keys that hold sensitive data using the RedwoodJS logger [redact option](https://redwoodjs.com/docs/logger#redaction).
 
@@ -474,7 +406,7 @@ Because this logger is used with the GraphQL handler, it will respect any redact
 
 For example, you have chosen to log `data` return by each request, then you may want to redact sensitive information, like email addresses from yur logs.
 
-Here is an example of an application `/api/src/lib/logger.ts` confgured to redact email addresses. Take note of the path `data.users[*].email` as this says, in the `data` attribute, redact the `email` from every `user`:
+Here is an example of an application `/api/src/lib/logger.ts` configured to redact email addresses. Take note of the path `data.users[*].email` as this says, in the `data` attribute, redact the `email` from every `user`:
 
 ```js
 // /api/src/lib/logger.ts
@@ -559,61 +491,7 @@ api |             "returnType": "Int!",
 api |             "startOffset": 520982888,
 api |             "duration": 25140
 api |           },
-api |           {
-api |             "path": [
-api |               "post",
-api |               "title"
-api |             ],
-api |             "parentType": "Post",
-api |             "fieldName": "title",
-api |             "returnType": "String!",
-api |             "startOffset": 521023462,
-api |             "duration": 9168
-api |           },
-api |           {
-api |             "path": [
-api |               "post",
-api |               "body"
-api |             ],
-api |             "parentType": "Post",
-api |             "fieldName": "body",
-api |             "returnType": "String!",
-api |             "startOffset": 521042600,
-api |             "duration": 7028
-api |           },
-api |           {
-api |             "path": [
-api |               "post",
-api |               "createdAt"
-api |             ],
-api |             "parentType": "Post",
-api |             "fieldName": "createdAt",
-api |             "returnType": "DateTime!",
-api |             "startOffset": 521055959,
-api |             "duration": 8058
-api |           },
-api |           {
-api |             "path": [
-api |               "post",
-api |               "publishedAt"
-api |             ],
-api |             "parentType": "Post",
-api |             "fieldName": "publishedAt",
-api |             "returnType": "DateTime",
-api |             "startOffset": 521072409,
-api |             "duration": 5622
-api |           },
-api |           {
-api |             "path": [
-api |               "post",
-api |               "updatedAt"
-api |             ],
-api |             "parentType": "Post",
-api |             "fieldName": "updatedAt",
-api |             "returnType": "DateTime",
-api |             "startOffset": 521085620,
-api |             "duration": 5261
-api |           }
+... more paths follow ...
 api |         ]
 api |       }
 api |     }
@@ -690,28 +568,11 @@ You `depthLimitOptions` are `maxDepth` or `ignore` stops recursive depth checkin
 For example:
 
 ```js
-import {
-  createGraphQLHandler,
-  makeMergedSchema,
-  makeServices,
-} from '@redwoodjs/api'
-
-import schemas from 'src/graphql/**/*.{js,ts}'
-import { db } from 'src/lib/db'
-import { logger } from 'src/lib/logger'
-import services from 'src/services/**/*.{js,ts}'
-
+// ...
 export const handler = createGraphQLHandler({
   loggerConfig: { logger, options: { query: true } },
   depthLimitOptions: { maxDepth: 6 },
-  schema: makeMergedSchema({
-    schemas,
-    services: makeServices({ services }),
-  }),
-  onException: () => {
-    // Disconnect from your database with an unhandled exception.
-    db.$disconnect()
-  },
+// ...
 })
 
 ## FAQ
