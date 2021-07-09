@@ -361,6 +361,19 @@ The [operation name](https://graphql.org/learn/queries/#operation-name) is a mea
 Because your cell typically has a unique operation name, logging this can help you identify which cell made a request.
 #### RequestId for Support Issue Resolution
 
+Often times, your deployment provider will provide a request identifier to help reconcile and track down problems at an infrastructure level. For example, AWS API GAteway and AWS Lambda (used by Netlify, for example) provides `requestId` on the `event`.
+
+You can include the request identifier setting the `requestId` logger option to `true`.
+
+```js
+// api/src/functions/graphql.ts
+// ...
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: { requestId: true } },
+// ...
+```
+
+And then, when working to resolve a support issue with your deployment provider, you can supply this request id to help them track down and investigate the problem more easily.
 #### No Need to Log within Services
 
 If you configure your GraphQL logger to include `data` and `query` information about each request adn its response as shown in:
@@ -370,7 +383,7 @@ If you configure your GraphQL logger to include `data` and `query` information a
 // ...
 export const handler = createGraphQLHandler({
   loggerConfig: { logger, options: { data: true, operationName: true, query: true } },
-/// ...
+// ...
 ```
 
 then you do not need to log your `input` variables or the results in each service method.
