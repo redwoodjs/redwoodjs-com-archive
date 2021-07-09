@@ -308,7 +308,7 @@ export const handler = createGraphQLHandler({
 And then, when working to resolve a support issue with your deployment provider, you can supply this request id to help them track down and investigate the problem more easily.
 #### No Need to Log within Services
 
-If you configure your GraphQL logger to include `data` and `query` information about each request adn its response as shown in:
+By configuring your GraphQL logger to include `data` and `query` information about each request you can keep your service implementation clean, concise and free of repeated logger statements in every resolver -- and still log the useful debugging information.
 
 ```js
 // api/src/functions/graphql.ts
@@ -316,57 +316,18 @@ If you configure your GraphQL logger to include `data` and `query` information a
 export const handler = createGraphQLHandler({
   loggerConfig: { logger, options: { data: true, operationName: true, query: true } },
 // ...
-```
 
-then you no longer have log your `input` variables or the results in each service method which can clean up your code.
-
-For example, instead of
-
-```js
-export const post = async ({ id }) => {
-  logger.debug({ id }, `Fetching post`)
-
-  const post = await db.post.findUnique({
-    where: { id },
-  })
-
-  logger.debug({ payload: post }, `Fetched post`)
-
-  return post
-}
-```
-
-that logs
-
-```terminal
-api | DEBUG [2021-07-09 14:17:03.030 +0000]: Fetching post
-api |     id: 2
-api | DEBUG [2021-07-09 14:17:03.385 +0000]: Fetched post
-api |     payload: {
-api |       "id": 2,
-api |       "createdAt": "2021-03-18T05:32:39.258Z",
-api |       "title": "Lime Tree Arbour",
-api |       "body": "The wind in the trees is whispering \\ Whispering low that I love her \\ She puts her hand over mine \\ Down in the lime tree arbour",
-api |       "authorId": null,
-api |       "editorId": "2458b7cf-9fef-4408-b4ab-ebaf2bacd0fa",
-api |       "publisherId": "2458b7cf-9fef-4408-b4ab-ebaf2bacd0fa",
-api |       "publishedAt": "2021-03-18T05:32:39.258Z",
-api |       "updatedAt": "2021-07-09T01:52:08.005Z"
-api |     }
-```
-
-you can configure operationName, data, and query log statements and  simplify your service to just be
-
-```js
+// api/src/services/posts.js
+//... 
 export const post = async ({ id }) => {
   return await db.post.findUnique({
     where: { id },
   })
 }
+//... 
 ```
 
-and output the same useful information (in a slightly different shape)
-
+The GraphQL handler take care of will then take take of logging  your query and data -- as long as your logger is setup to log at the `info` [level](https://redwoodjs.com/docs/logger#log-level) and above. You can also disable the statements in production by just logging at the `warn` and above [level](https://redwoodjs.com/docs/logger#log-level).
 
 ```terminal
 api | INFO [2021-07-09 14:20:11.656 +0000] (apollo-graphql-server): GraphQL requestDidStart
