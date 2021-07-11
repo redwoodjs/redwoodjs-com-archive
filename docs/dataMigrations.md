@@ -4,12 +4,12 @@
 
 There are two kinds of changes you can make to your database:
 
-* Changes to structure
-* Changes to content
+- Changes to structure
+- Changes to content
 
-In Redwood, [Prisma Migrate](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-migrate) takes care of codifying changes to your database *structure* in code by creating a snapshot of changes to your database that can be reliably repeated to end up in some known state.
+In Redwood, [Prisma Migrate](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-migrate) takes care of codifying changes to your database _structure_ in code by creating a snapshot of changes to your database that can be reliably repeated to end up in some known state.
 
-To track changes to your database *content*, Redwood includes a feature we call **Data Migration**. As your app evolves and you move data around, you need a way to consistently declare how that data should move.
+To track changes to your database _content_, Redwood includes a feature we call **Data Migration**. As your app evolves and you move data around, you need a way to consistently declare how that data should move.
 
 Imagine a `User` model that contains several columns for user preferences. Over time, you may end up with more and more preferences to the point that you have more preference-related columns in the table than you do data unique to the user! This is a common occurrence as applications grow. You decide that the app should have a new model, `Preference`, to keep track of them all (and `Preference` will have a foreign key `userId` to reference it back to its `User`). You'll use Prisma Migrate to create the new `Preference` model, but how do you copy the preference data to the new table? Data migrations to the rescue!
 
@@ -28,7 +28,7 @@ Take a look at `schema.prisma` to see the new model definition:
 ```javascript
 // api/db/schema.prisma
 
-model DataMigration {
+model RW_DataMigration {
   version    String   @id
   name       String
   startedAt  DateTime
@@ -86,8 +86,8 @@ export default async ({ db }) => {
         newsletter: user.newsletter,
         frequency: user.frequency,
         theme: user.theme,
-        user: { connect: { id: user.id } }
-      }
+        user: { connect: { id: user.id } },
+      },
     })
   })
 }
@@ -102,7 +102,7 @@ This loops through each existing `User` and creates a new `Preference` record co
 >
 > When going to production, you would need to run this as two separate deploys to ensure no data is lost.
 >
-> The reason is that all DB migrations are run and *then* all data migrations. So if you had two DB migrations (one to create `Preference` and one to drop the unneeded columns from `User`) they would both run before the Data Migration, so the columns containing the preferences are gone before the data migration gets a chance to copy them over!
+> The reason is that all DB migrations are run and _then_ all data migrations. So if you had two DB migrations (one to create `Preference` and one to drop the unneeded columns from `User`) they would both run before the Data Migration, so the columns containing the preferences are gone before the data migration gets a chance to copy them over!
 >
 > **Remember**: Any destructive action on the database (removing a table or column especially) needs to be a two step process to avoid data loss.
 
@@ -118,7 +118,7 @@ Any logging statements (like `console.info()`) you include in your data migratio
 
 If the script encounters an error, the process will abort, skipping any following data migrations.
 
-> The example data migration above didn't include this for brevity, but you should always run your data migration [inside a transaction](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/transactions#bulk-operations-experimental) so that if any errors occur during execution the database will not be left in an inconsistent state where only *some* of your changes were performed.
+> The example data migration above didn't include this for brevity, but you should always run your data migration [inside a transaction](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/transactions#bulk-operations-experimental) so that if any errors occur during execution the database will not be left in an inconsistent state where only _some_ of your changes were performed.
 
 ## Long-term Maintainability
 
