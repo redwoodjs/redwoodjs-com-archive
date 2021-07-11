@@ -28,7 +28,7 @@ Take a look at `schema.prisma` to see the new model definition:
 ```javascript
 // api/db/schema.prisma
 
-model DataMigration {
+model RW_DataMigration {
   version    String   @id
   name       String
   startedAt  DateTime
@@ -152,7 +152,7 @@ export default async ({ db }) => {
 Run once:
 
     yarn rw dataMigrate install
-    yarn rw db up
+    yarn rw prisma migrate dev
 
 Run every time you need a new data migration:
 
