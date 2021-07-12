@@ -151,7 +151,7 @@ export default async ({ db }) => {
 
 Run once:
 
-    yarn rw dataMigrate install
+    yarn rw data-migrate install
     yarn rw prisma migrate dev
 
 Run every time you need a new data migration:
