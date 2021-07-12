@@ -229,11 +229,7 @@ We want to make logging simple when using RedwoodJS and therefore have configure
 
 By configuring the GraphQL handler to use your api side [RedwoodJS logger](https://redwoodjs.com/docs/logger), any errors and other log statements about the [GraphQL execution](https://graphql.org/learn/execution/) will be logged to the [destination](https://redwoodjs.com/docs/logger#destination-aka-where-to-log) you've set up: to standard output, file, or transport stream.
 
-You configure the logger using the `loggerConfig` that accepts a [`logger`]((https://redwoodjs.com/docs/logger)) and s set of [GraphQL Logger Options](#graphql-logger-options):
-
-```js
-  loggerConfig: { logger, options: {} }
-```
+You configure the logger using the `loggerConfig` that accepts a [`logger`]((https://redwoodjs.com/docs/logger)) and s set of [GraphQL Logger Options](#graphql-logger-options).
 
 ### Configure the GraphQL Logger
 
@@ -459,11 +455,9 @@ The [GraphQL Playground](https://github.com/graphql/graphql-playground) is a way
 
 ### Query Depth Limit
 
-Attackers often submit expensive, nested queries that could overload your database or expend costly resources.
+Attackers often submit expensive, nested queries to abuse query depth that could overload your database or expend costly resources.
 
-Typically, these types of  complex and expensive queries are usually huge deeply nested and take advantage of an understanding of your schema (hence why schema introspection is disabled by default in production) and the data model relationships to create "cyclical" queries.
-
-Such unbounded GraphQL queries allow attackers to abuse query depth and with enough depth, this can easily impact your Graphql server and application.
+Typically, these types of unbounded, complex and expensive GraphQL queries are usually huge deeply nested and take advantage of an understanding of your schema (hence why schema introspection is disabled by default in production) and the data model relationships to create "cyclical" queries.
 
 An example of a cyclical query here takes advantage of knowing that and author has posts and each post has and author ... that has posts ... that has an another that ... etc.
 
