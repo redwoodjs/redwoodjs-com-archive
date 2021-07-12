@@ -19,7 +19,7 @@ Just like Prisma, we will store which data migrations have run in the database i
 
 Rather than create this model by hand, Redwood includes a CLI tool to add the model to `schema.prisma` and create the DB migration that adds the table to the database:
 
-    yarn rw dataMigrate install
+    yarn rw data-migrate install
 
 You'll see a new directory created at `api/db/dataMigrations` which will store our individual migration tasks.
 
@@ -28,7 +28,7 @@ Take a look at `schema.prisma` to see the new model definition:
 ```javascript
 // api/db/schema.prisma
 
-model DataMigration {
+model RW_DataMigration {
   version    String   @id
   name       String
   startedAt  DateTime
@@ -108,9 +108,9 @@ This loops through each existing `User` and creates a new `Preference` record co
 
 ## Running a Data Migration
 
-When you're ready, you can execute your data migration with `dataMigrate`'s `up` command:
+When you're ready, you can execute your data migration with `data-migrate`'s `up` command:
 
-    yarn rw dataMigrate up
+    yarn rw data-migrate up
 
 This goes through each file in `api/db/dataMigrations`, compares it against the list of migrations that have already run according to the `DataMigration` table in the database, and executes any that aren't present in that table, sorted oldest to newest based on the timestamp in the filename.
 
@@ -151,10 +151,10 @@ export default async ({ db }) => {
 
 Run once:
 
-    yarn rw dataMigrate install
-    yarn rw db up
+    yarn rw data-migrate install
+    yarn rw prisma migrate dev
 
 Run every time you need a new data migration:
 
     yarn rw generate dataMigration migrationName
-    yarn rw dataMigrate up
+    yarn rw data-migrate up
