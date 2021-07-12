@@ -221,6 +221,221 @@ The GraphQL Playground's nice, but if you're a power user, you'll want to be usi
 - dt has some thoughts on this
 - insomnia -->
 
+## Logging
+
+Logging is essential in production apps to be alerted about critical errors and to be able to respond effectively to support issues. In staging and development environments, logging helps you debug queries, resolvers and cell requests.
+
+We want to make logging simple when using RedwoodJS and therefore have configured the api-side GraphQL handler to log common information about your queries and mutations. Log statements also be optionally enriched with [operation names](https://graphql.org/learn/queries/#operation-name), user agents, request ids, and performance timings to give you move visibility into your GraphQL api.
+
+By configuring the GraphQL handler to use your api side [RedwoodJS logger](https://redwoodjs.com/docs/logger), any errors and other log statements about the [GraphQL execution](https://graphql.org/learn/execution/) will be logged to the [destination](https://redwoodjs.com/docs/logger#destination-aka-where-to-log) you've set up: to standard output, file, or transport stream.
+
+You configure the logger using the `loggerConfig` that accepts a [`logger`]((https://redwoodjs.com/docs/logger)) and s set of [GraphQL Logger Options](#graphql-logger-options).
+
+### Configure the GraphQL Logger
+
+A typical GraphQLHandler `graphql.ts` is as follows:
+
+```js
+// api/src/functions/graphql.ts
+// ...
+
+import { logger } from 'src/lib/logger'
+
+// ...
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: {} },
+// ...
+})
+```
+
+#### Log Common Information
+
+The `loggerConfig` takes several options that logs meaningful information along the graphQL execution lifecycle.
+
+
+|Option|Description|
+|:---|:---|
+| data | Include response data sent to client. |
+| operationName | Include operation name. The operation name is a meaningful and explicit name for your operation. It is only required in multi-operation documents, but its use is encouraged because it is very helpful for debugging and server-side logging. When something goes wrong (you see errors either in your network logs, or in the logs of your GraphQL server) it is easier to identify a query in your codebase by name instead of trying to decipher the contents. Think of this just like a function name in your favorite programming language. See https://graphql.org/learn/queries/#operation-name
+|requestId| Include the event's requestId, or if none, generate a uuid as an identifier.
+|query|Include the query. This is the query or mutation (with fields) made in the request.
+| tracing |Include the tracing and timing information. This will ||log various performance timings withing the GraphQL event lifecycle (parsing, validating, executing, etc).
+|userAgent|Include the browser (or client's) user agent. This can be helpful to know what type of client made the request to resolve issues when encountering errors or unexpected behavior.
+
+Therefore, if you wish to log the GraphQL `query` made, the `data` returned, and the `operationName` used, you would
+
+```js
+// api/src/functions/graphql.ts
+
+export const handler = createGraphQLHandler({
+  loggerConfig: {
+    logger,
+    options: { data: true, operationName: true, query: true },
+  },
+// ...
+})
+```
+
+### Benefits of Logging
+
+Benefits of logging common GraphQL request information include debugging, profiling, and resolving issue reports.
+
+#### Operation Name Identifies Cells
+
+The [operation name](https://graphql.org/learn/queries/#operation-name) is a meaningful and explicit name for your operation. It is only required in multi-operation documents, but its use is encouraged because it is very helpful for debugging and server-side logging.
+
+Because your cell typically has a unique operation name, logging this can help you identify which cell made a request.
+#### RequestId for Support Issue Resolution
+
+Often times, your deployment provider will provide a request identifier to help reconcile and track down problems at an infrastructure level. For example, AWS API GAteway and AWS Lambda (used by Netlify, for example) provides `requestId` on the `event`.
+
+You can include the request identifier setting the `requestId` logger option to `true`.
+
+```js
+// api/src/functions/graphql.ts
+// ...
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: { requestId: true } },
+// ...
+```
+
+And then, when working to resolve a support issue with your deployment provider, you can supply this request id to help them track down and investigate the problem more easily.
+#### No Need to Log within Services
+
+By configuring your GraphQL logger to include `data` and `query` information about each request you can keep your service implementation clean, concise and free of repeated logger statements in every resolver -- and still log the useful debugging information.
+
+```js
+// api/src/functions/graphql.ts
+// ...
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: { data: true, operationName: true, query: true } },
+// ...
+
+// api/src/services/posts.js
+//... 
+export const post = async ({ id }) => {
+  return await db.post.findUnique({
+    where: { id },
+  })
+}
+//... 
+```
+
+The GraphQL handler take care of will then take take of logging  your query and data -- as long as your logger is setup to log at the `info` [level](https://redwoodjs.com/docs/logger#log-level) and above. You can also disable the statements in production by just logging at the `warn` and above [level](https://redwoodjs.com/docs/logger#log-level).
+
+```terminal
+api | INFO [2021-07-09 14:20:11.656 +0000] (apollo-graphql-server): GraphQL requestDidStart
+api |     query: "query ($id: Int!) {\n  post(id: $id) {\n    id\n    title\n    body\n    createdAt\n    publishedAt\n    updatedAt\n    __typename\n  }\n}\n"
+api | DEBUG [2021-07-09 14:20:11.657 +0000] (apollo-graphql-server): GraphQL executionDidStart
+api |     operationName: null
+api |     query: "query ($id: Int!) {\n  post(id: $id) {\n    id\n    title\n    body\n    createdAt\n    publishedAt\n    updatedAt\n    __typename\n  }\n}\n"
+api | INFO [2021-07-09 14:20:12.114 +0000] (apollo-graphql-server): GraphQL willSendResponse
+api |     data: {
+api |       "post": {
+api |         "id": 2,
+api |         "title": "Lime Tree Arbour",
+api |         "body": "The wind in the trees is whispering \\ Whispering low that I love her \\ She puts her hand over mine \\ Down in the lime tree arbour",
+api |         "createdAt": "2021-03-18T05:32:39.258Z",
+api |         "publishedAt": "2021-03-18T05:32:39.258Z",
+api |         "updatedAt": "2021-07-09T01:52:08.005Z",
+api |         "__typename": "Post"
+api |       }
+api |     }
+api |     query: "query ($id: Int!) {\n  post(id: $id) {\n    id\n    title\n    body\n    createdAt\n    publishedAt\n    updatedAt\n    __typename\n  }\n}\n"
+```
+
+but keep your services concise!
+
+#### Send to Third-party Transports
+
+Stream to third-party log and application monitoring services vital to production logging in serverless environments like [logFlare](https://logflare.app/), [Datadog](https://www.datadoghq.com/) or [LogDNA](https://www.logdna.com/)
+
+#### Supports Log Redaction
+
+Everyone has heard of reports that Company X logged emails, or passwords to files or systems that may not have been secured. While RedwoodJS logging won't necessarily prevent that, it does provide you with the mechanism to ensure that won't happen.
+
+To redact sensitive information, you can supply paths to keys that hold sensitive data using the RedwoodJS logger [redact option](https://redwoodjs.com/docs/logger#redaction).
+
+Because this logger is used with the GraphQL handler, it will respect any redaction paths setup.
+
+For example, you have chosen to log `data` return by each request, then you may want to redact sensitive information, like email addresses from yur logs.
+
+Here is an example of an application `/api/src/lib/logger.ts` configured to redact email addresses. Take note of the path `data.users[*].email` as this says, in the `data` attribute, redact the `email` from every `user`:
+
+```js
+// /api/src/lib/logger.ts
+import { createLogger, redactionsList } from '@redwoodjs/api/logger'
+
+export const logger = createLogger({
+  options: {
+    redact: [...redactionsList, 'email', 'data.users[*].email'],
+  },
+})
+```
+
+#### Timing Traces and Metrics
+
+Often you want to measure and report how long your queries take to execute and respond. You may already be measuring these durations at the database level, but you can also measure the time it takes for your the GraphQL server to parse, validate, and execute the request.
+
+You may turn on logging these metrics via the `tracing` GraphQL configuration option.
+
+```js
+// api/src/functions/graphql.ts
+// ...
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: { tracing: true } },
+// ...
+```
+
+Let's say we wanted to get some benchmark numbers for the "find post by id" resolver
+
+```js
+  return await db.post.findUnique({
+    where: { id },
+  })
+```
+
+We see that this request took about 500 msecs (note: duration is reported in nanoseconds).
+
+Ror more details about the information logged and its format, see [Apollo Tracing](https://github.com/apollographql/apollo-tracing).
+
+```terminal
+pi | INFO [2021-07-09 14:25:52.452 +0000] (apollo-graphql-server): GraphQL willSendResponse
+api |     tracing: {
+api |       "version": 1,
+api |       "startTime": "2021-07-09T14:25:51.931Z",
+api |       "endTime": "2021-07-09T14:25:52.452Z",
+api |       "duration": 521131526,
+api |       "execution": {
+api |         "resolvers": [
+api |           {
+api |             "path": [
+api |               "post"
+api |             ],
+api |             "parentType": "Query",
+api |             "fieldName": "post",
+api |             "returnType": "Post!",
+api |             "startOffset": 1787428,
+api |             "duration": 519121497
+api |           },
+api |           {
+api |             "path": [
+api |               "post",
+api |               "id"
+api |             ],
+api |             "parentType": "Post",
+api |             "fieldName": "id",
+api |             "returnType": "Int!",
+api |             "startOffset": 520982888,
+api |             "duration": 25140
+api |           },
+... more paths follow ...
+api |         ]
+api |       }
+api |     }
+```
+
+By logging the operation name and extracting the duration for each query, you can easily collect and benchmark query perforamance.
 ## Security
 
 We'll document more GraphQL security best practices as Redwood reaches a `v1.0` release candidate. For now, know that Redwood already has some baked-in best practices; for example, when deploying GraphQL to production, GraphQL Playground is automatically disabled. 
@@ -229,6 +444,64 @@ We'll document more GraphQL security best practices as Redwood reaches a `v1.0` 
 ### Secure Services
 
 Some of the biggest security improvements we'll be making revolve around Services (which are intimately linked to GraphQL since they're wrapped into your resolvers). For `v1.0` we plan to make all of your GraphQL resolvers secure by default. You can even opt into this behavior now—see the [Secure Services](https://redwoodjs.com/docs/services.html#secure-services) section.
+
+### Introspection and Playground Disabled in Production
+
+Because it is often useful to ask a GraphQL schema for information about what queries it supports, GraphQL allows us to do so using the [introspection](https://graphql.org/learn/introspection/) system.
+
+The [GraphQL Playground](https://github.com/graphql/graphql-playground) is a way for you to interact with your schema and try out queries and mutations. It can show you the schema by inspecting it. You can find the GraphQL Playground at http://localhost:8911/graphql when your dev server is running.
+
+> Because both introspection and the playground share possibly sensitive information about your data model, your data, your queries and mutations, best practices for deploying a GraphQL Server call to disable these in production, RedwoodJS **only enables introspection and the playground when running in development**. That is when `process.env.NODE_ENV === 'development'`.
+
+### Query Depth Limit
+
+Attackers often submit expensive, nested queries to abuse query depth that could overload your database or expend costly resources.
+
+Typically, these types of unbounded, complex and expensive GraphQL queries are usually huge deeply nested and take advantage of an understanding of your schema (hence why schema introspection is disabled by default in production) and the data model relationships to create "cyclical" queries.
+
+An example of a cyclical query here takes advantage of knowing that and author has posts and each post has and author ... that has posts ... that has an another that ... etc.
+
+This cyclical query has a depth of 8.
+
+```js
+// cyclical query example
+// depth: 8+
+query cyclical {
+  author(id: 'jules-verne') {
+    posts {
+      author {
+        posts {
+          author {
+            posts {
+              author {
+                ... {
+                  ... # more deep nesting!
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+> To mitigate the risk of attacking your application via deeply nested queries, RedwoodJS by default sets the [Query Depth Limit](https://www.npmjs.com/package/graphql-depth-limit#documentation) to 11. 
+
+You can change the default value via the `depthLimitOptions` setting when creating your GraphQL handler.
+
+You `depthLimitOptions` are `maxDepth` or `ignore` stops recursive depth checking based on a field name. Ignore can be [either a string or regexp]( https://www.npmjs.com/package/graphql-depth-limit#documentation) to match the name, or a function that returns a boolean.
+
+For example:
+
+```js
+// ...
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: { query: true } },
+  depthLimitOptions: { maxDepth: 6 },
+// ...
+})
 
 ## FAQ
 
