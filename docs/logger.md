@@ -75,13 +75,42 @@ In addition to the rich [features](https://github.com/pinojs/pino/blob/master/do
 
 ### Log Level
 
-The logger detects you current environment and will default an appropriate minimum log level.
 
-In Development, the default is `trace` while in Production, the default is `warn`.
+One of 'fatal', 'error', 'warn', 'info', 'debug', 'trace' or 'silent'.
 
-This means that output in your dev server can be verbose, but when you deploy you won't miss out on critical issues.
+The logger detects you current environment and will default a sensible default minimum log level.
 
-You can override the default log level via the `LOG_LEVEL` environment variable.
+> ***NOTE:*** In Development, the default is `trace` while in Production, the default is `warn`.
+> This means that output in your dev server can be verbose, but when you deploy you won't miss out on critical issues.
+
+You can override the default log level via the `LOG_LEVEL` environment variable or the `level` LoggerOption.
+
+The 'silent' level disables logging.
+### Troubleshooting
+
+> If you are not seeing log output when deployed, consider setting the level to `info` or `debug`.
+
+```js
+import { createLogger } from '@redwoodjs/api/logger'
+
+/**
+ * Creates a logger with RedwoodLoggerOptions
+ *
+ * These extend and override default LoggerOptions,
+ * can define a destination like a file or other supported pin log transport stream,
+ * and sets where or not to show the logger configuration settings (defaults to false)
+ *
+ * @param RedwoodLoggerOptions
+ *
+ * RedwoodLoggerOptions have
+ * @param {options} LoggerOptions - defines how to log, such as pretty printing, redaction, and format
+ * @param {string | DestinationStream} destination - defines where to log, such as a transport stream or file
+ * @param {boolean} showConfig - whether to display logger configuration on initialization
+ */
+export const logger = createLogger({ options: { level: 'info' } })
+```
+
+Please refer to the [Pino options documentation](https://github.com/pinojs/pino/blob/master/docs/api.md#options) for a complete list.
 
 ### Redaction
 
@@ -171,7 +200,7 @@ Note: logging to a file is not permitted if deployed to Netlify or Vercel.
  * Log to a File
  */
 export const logger = createLogger({
-  options: { ...defaultLoggerOptions },
+  //options: {},
   destination: '/path/to/file/api.log',
 })
 ```
@@ -207,7 +236,7 @@ RedwoodJS provides an opinionated logger with sensible, practical defaults. Thes
 Some examples of common configurations and overrides demonstrate how you can have control over both how and where you log.
 ### Override Log Level
 
-You can set the minimum level to log via the `level` option. This is useful if you need to override the default Production settings (just `warn` and `error`) to in this case `debug`.
+You can set the minimum [level](https://redwoodjs.com/docs/logger#log-level) to log via the `level` option. This is useful if you need to override the default Production settings (just `warn` and `error`) to in this case `debug`.
 
 ```js
 /**
@@ -271,7 +300,7 @@ Note: logging to a file is not permitted if deployed to Netlify or Vercel.
  * Log to a File
  */
 export const logger = createLogger({
-  options: { ...defaultLoggerOptions },
+  options: {},
   destination: '/path/to/file/api.log',
 })
 ```
@@ -281,7 +310,12 @@ export const logger = createLogger({
 To stream your logs to [Datadog](https://www.datadoghq.com/), you can
 
 * Install the [`pino-datadog`](https://www.npmjs.com/package/pino-datadog) package into `api`
-* Import `pino-datadog`
+
+```terminal
+yarn workspace api add pino-datadog
+```
+
+* Import `pino-datadog` into `api/src/lib/logger.ts`
 * Configure the `stream` with your API key and [settings](https://github.com/ovhemert/pino-datadog/blob/master/docs/API.md)
 * Set the logger `destination` to the `stream`
 
@@ -289,6 +323,7 @@ To stream your logs to [Datadog](https://www.datadoghq.com/), you can
 /**
  * Stream logs to Datadog
  */
+ //`api/src/lib/logger.ts
  import datadog from 'pino-datadog'
  /**
   * Creates a synchronous pino-datadog stream
@@ -305,23 +340,36 @@ To stream your logs to [Datadog](https://www.datadoghq.com/), you can
    size: 1,
  })
 
-// ...
-
+/**
+ * Creates a logger with RedwoodLoggerOptions
+ *
+ * These extend and override default LoggerOptions,
+ * can define a destination like a file or other supported pin log transport stream,
+ * and sets where or not to show the logger configuration settings (defaults to false)
+ *
+ * @param RedwoodLoggerOptions
+ *
+ * RedwoodLoggerOptions have
+ * @param {options} LoggerOptions - defines how to log, such as pretty printing, redaction, and format
+ * @param {string | DestinationStream} destination - defines where to log, such as a transport stream or file
+ * @param {boolean} showConfig - whether to display logger configuration on initialization
+ */
 export const logger = createLogger({
-   options: { ...defaultLoggerOptions },
-   destination: stream },
+  options: {},
+  destination: stream },
 })
 ```
 
 ### Log to Logflare using a Transport Stream Destination
 
 * Install the [`pino-logflare`](https://www.npmjs.com/package/pino-logflare) package into `api`
-* Import `pino-logflare`
+* Import `pino-logflare` into `api/src/lib/logger.ts`
 * Configure the `stream` with your [API key and sourceToken](https://github.com/Logflare/pino-logflare/blob/master/docs/API.md)
 * Set the logger `destination` to the `stream`
 
 
 ```js
+//`api/src/lib/logger.ts
 import { createWriteStream } from 'pino-logflare'
 
 /**
@@ -338,10 +386,108 @@ export const stream = createWriteStream({
 })
 
 export const logger = createLogger({
-  options: { ...defaultLoggerOptions },
+  options: {},
   destination: stream },
 })
 ```
+
+### Log to logDNA using a Transport Stream Destination
+
+* Install the [pino-logdna](https://www.npmjs.com/package/pino-logdna) package into `api`
+
+```terminal
+yarn workspace api add pino-logdna
+```
+
+* Import `pino-logdna` into `api/src/lib/logger.ts`
+* Configure the `stream` with your [ingestion key](https://github.com/Logflare/pino-logflare/blob/master/docs/API.md)
+* Set the logger `destination` to the `stream`
+
+```js
+//`api/src/lib/logger.ts
+import pinoLogDna from 'pino-logdna'
+
+const stream = pinoLogDna({
+   key: process.env.LOGDNA_INGESTION_KEY
+ , onError: console.error
+ })
+
+/**
+ * Creates a logger with RedwoodLoggerOptions
+ *
+ * These extend and override default LoggerOptions,
+ * can define a destination like a file or other supported pin log transport stream,
+ * and sets where or not to show the logger configuration settings (defaults to false)
+ *
+ * @param RedwoodLoggerOptions
+ *
+ * RedwoodLoggerOptions have
+ * @param {options} LoggerOptions - defines how to log, such as pretty printing, redaction, and format
+ * @param {string | DestinationStream} destination - defines where to log, such as a transport stream or file
+ * @param {boolean} showConfig - whether to display logger configuration on initialization
+ */
+export const logger = createLogger({
+  options: {},
+  destination: stream },
+}) 
+```
+### Log to Papertrail using a Transport Stream Destination
+
+* Install the [pino-papertrail](https://www.npmjs.com/package/pino-papertrail) package into `api`
+
+
+```terminal
+yarn workspace api add pino-papertrail]
+```
+
+* Import `pino-papertrail` into `logger.ts`
+* Configure the `stream` in your Papertrail `options` with your appname's [configuration settings](https://github.com/ovhemert/pino-papertrail/blob/master/docs/API.md#options)
+* Set the logger `destination` to the `stream`
+
+```js
+import papertrail from 'pino-papertrail'
+
+const stream = papertrail.createWriteStream({
+  appname: 'my-app',
+  host: '*****.papertrailapp.com',
+  port: '*****',
+})
+
+/**
+ * Creates a logger with RedwoodLoggerOptions
+ *
+ * These extend and override default LoggerOptions,
+ * can define a destination like a file or other supported pin log transport stream,
+ * and sets where or not to show the logger configuration settings (defaults to false)
+ *
+ * @param RedwoodLoggerOptions
+ *
+ * RedwoodLoggerOptions have
+ * @param {options} LoggerOptions - defines how to log, such as pretty printing, redaction, and format
+ * @param {string | DestinationStream} destination - defines where to log, such as a transport stream or file
+ * @param {boolean} showConfig - whether to display logger configuration on initialization
+ */
+export const logger = createLogger({
+  options: {},
+  destination: stream },
+}) 
+```
+
+## Papertrail Options
+
+You can pass the [following properties](https://github.com/ovhemert/pino-papertrail/blob/master/docs/API.md) in an options object:
+
+| Property                                                | Type              | Description                                         |
+|---------------------------------------------------------|-------------------|-----------------------------------------------------|
+| appname (default: pino)                                 | string            | Application name                                    |
+| host (default: localhost)                               | string            | Papertrail destination address                      |
+| port (default: 1234)                                    | number            | Papertrail destination port                         |
+| connection (default: udp)                               | string            | Papertrail connection method (tls/tcp/udp)          |
+| echo (default: true)                                    | boolean           | Echo messages to the console                        |
+| message-only (default: false)                           | boolean           | Only send msg property as message to papertrail     |
+| backoff-strategy (default: `new ExponentialStrategy()`) | [BackoffStrategy] | Retry backoff strategy for any tls/tcp socket error |
+
+[BackoffStrategy]: https://github.com/MathieuTurcotte/node-backoff#interface-backoffstrategy
 
 ### Prisma Logging
 
