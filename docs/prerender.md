@@ -51,12 +51,12 @@ This will prerender your NotFoundPage to 404.html in your dist folder. Note that
 
 ## Cells, Private Routes, and Dynamic URLs
 
-How does Prerendering handle dynamic data? In a way that For Cells, Redwood prerenders your Cells' `<Loading/>` component. Similarly, for Private Routes, Redwood prerenders your Private Routes' `whileLoading` prop:
+How does Prerendering handle dynamic data? In a way that For Cells, Redwood prerenders your Cells' `<Loading/>` component. Similarly, for Private Routes, Redwood prerenders your Private Routes' `whileLoadingAuth` prop:
 
 ```js{1,2}
 <Private >
   // Loading is shown while we're checking to see if the user's logged in
-  <Route path="/super-secret-admin-dashboard" page={SuperSecretAdminDashboard} name="ssad" whileLoading={() => <Loading />} prerender/>
+  <Route path="/super-secret-admin-dashboard" page={SuperSecretAdminDashboard} name="ssad" whileLoadingAuth={() => <Loading />} prerender/>
 </Private>
 ```
 
