@@ -34,11 +34,11 @@ And potentially one large drawback:
 
 * Use your own database for storing user credentials
 
-However, we're following best practicies for storing these credentials:
+However, we're following best practices for storing these credentials:
 
 1. Users' passwords are [salted and hashed](https://auth0.com/blog/adding-salt-to-hashing-a-better-way-to-store-passwords/) with PBKDF2 before being stored
 2. Plaintext passwords are never stored anywhere, and only transferred between client and server during the login/signup phase (and hopefully only over HTTPS)
-3. Our logger scrubs senative parameters (like `password`) before they are output
+3. Our logger scrubs sensitive parameters (like `password`) before they are output
 
 Even if you later decide you want to let someone else handle your user data for you, dbAuth is a great option for getting up and running quickly (we even have a generator for creating basic login and signup pages for you).
 
@@ -50,7 +50,7 @@ If so, an [HttpOnly](https://owasp.org/www-community/HttpOnly), [Secure](https:/
 
 When the user makes a GraphQL call, we decrypt the cookie and make sure that the user ID contained within still exists in the database. If so, the request is allowed to proceed.
 
-If there are any shenanegans detected (the cookie can't be decrypted properly, or the user ID found in the cookie does not exist in the database) the user is immediately logged out by expiring the session cookie.
+If there are any shenanigans detected (the cookie can't be decrypted properly, or the user ID found in the cookie does not exist in the database) the user is immediately logged out by expiring the session cookie.
 
 ### Setup
 
@@ -105,7 +105,7 @@ If you'd rather create your own, you might want to start from the generated page
 
 #### Cookie Domain
 
-By default, the session cookie will not have the `Domain` property set, which a browser will default to be the [current domain only](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#define_where_cookies_are_sent). If your site is spread across multiple domains (for example, your site is at `example.com` but your api-side is deployed to `api.example.com`) you'll need to explictly set a Domain so that the cookie is accessible to both.
+By default, the session cookie will not have the `Domain` property set, which a browser will default to be the [current domain only](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#define_where_cookies_are_sent). If your site is spread across multiple domains (for example, your site is at `example.com` but your api-side is deployed to `api.example.com`) you'll need to explicitly set a Domain so that the cookie is accessible to both.
 
 To do this, create an environment variable named `DBAUTH_COOKIE_DOMAIN` set to the root domain of your site, which will allow it to be read by all subdomains as well. For example:
 

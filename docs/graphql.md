@@ -259,7 +259,7 @@ The `loggerConfig` takes several options that logs meaningful information along 
 | operationName | Include operation name. The operation name is a meaningful and explicit name for your operation. It is only required in multi-operation documents, but its use is encouraged because it is very helpful for debugging and server-side logging. When something goes wrong (you see errors either in your network logs, or in the logs of your GraphQL server) it is easier to identify a query in your codebase by name instead of trying to decipher the contents. Think of this just like a function name in your favorite programming language. See https://graphql.org/learn/queries/#operation-name
 |requestId| Include the event's requestId, or if none, generate a uuid as an identifier.
 |query|Include the query. This is the query or mutation (with fields) made in the request.
-| tracing |Include the tracing and timing information. This will ||log various performance timings withing the GraphQL event lifecycle (parsing, validating, executing, etc).
+| tracing |Include the tracing and timing information. This will ||log various performance timings within the GraphQL event lifecycle (parsing, validating, executing, etc).
 |userAgent|Include the browser (or client's) user agent. This can be helpful to know what type of client made the request to resolve issues when encountering errors or unexpected behavior.
 
 Therefore, if you wish to log the GraphQL `query` made, the `data` returned, and the `operationName` used, you would
@@ -287,7 +287,7 @@ The [operation name](https://graphql.org/learn/queries/#operation-name) is a mea
 Because your cell typically has a unique operation name, logging this can help you identify which cell made a request.
 #### RequestId for Support Issue Resolution
 
-Often times, your deployment provider will provide a request identifier to help reconcile and track down problems at an infrastructure level. For example, AWS API GAteway and AWS Lambda (used by Netlify, for example) provides `requestId` on the `event`.
+Often times, your deployment provider will provide a request identifier to help reconcile and track down problems at an infrastructure level. For example, AWS API Gateway and AWS Lambda (used by Netlify, for example) provides `requestId` on the `event`.
 
 You can include the request identifier setting the `requestId` logger option to `true`.
 
@@ -435,7 +435,7 @@ api |       }
 api |     }
 ```
 
-By logging the operation name and extracting the duration for each query, you can easily collect and benchmark query perforamance.
+By logging the operation name and extracting the duration for each query, you can easily collect and benchmark query performance.
 ## Security
 
 We'll document more GraphQL security best practices as Redwood reaches a `v1.0` release candidate. For now, know that Redwood already has some baked-in best practices; for example, when deploying GraphQL to production, GraphQL Playground is automatically disabled. 
