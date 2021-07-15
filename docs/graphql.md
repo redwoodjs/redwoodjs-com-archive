@@ -191,7 +191,9 @@ In Redwood, the `context` object that's passed to resolvers is actually availabl
 import { context } from '@redwoodjs/api
 ```
 
-Note that when in your service (ie, a resolver) the context is read-only. If you need to modify the context, you need to do so in `createGraphQLHandler`.
+#### How to Modify the Context
+
+Because the context is read-only in your services, if you need to modify it, then you need to do so in the `createGraphQLHandler`.
 
 To populate or enrich the context on a per-request basis with additional attributes, set a the `context` attribute `createGraphQLHandler` to a custom ContextFunction which modifies the context.
 
