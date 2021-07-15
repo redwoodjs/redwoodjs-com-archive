@@ -191,6 +191,47 @@ In Redwood, the `context` object that's passed to resolvers is actually availabl
 import { context } from '@redwoodjs/api
 ```
 
+Note that when in your service (ie, a resolver) the context is read-only. If you need to modify the context, you need to do so in `createGraphQLHandler`.
+
+To populate or enrich the context on a per-request basis with additional attributes, set a the `context` attribute `createGraphQLHandler` to a custom ContextFunction which modifies the context.
+
+For example, if we want to populate a new, custom `ipAddress` attribute on the context with the information from the request's event, declare the `setIpAddress` ContextFunction as seen here:
+
+```js
+// api/src/functions/graphql.js
+
+// ...
+
+const ipAddress = ({ event }) => {
+  return (
+    event?.headers?.['client-ip'] ||
+    event?.requestContext?.identity?.sourceIp ||
+    'localhost'
+  )
+}
+
+const setIpAddress = async ({ event, context }) => {
+  context.ipAddress = ipAddress({ event })
+}
+
+export const handler = createGraphQLHandler({
+  getCurrentUser,
+  loggerConfig: {
+    logger,
+    options: { operationName: true, tracing: true },
+  },
+  schema: makeMergedSchema({
+    schemas,
+    services: makeServices({ services }),
+  }),
+  context: setIpAddress,
+  onException: () => {
+    // Disconnect from your database with an unhandled exception.
+    db.$disconnect()
+  },
+})
+```
+
 ### The Root Schema
 
 Did you know that you can query `redwood`? Try it in the GraphQL Playground (you can find the GraphQL Playground at http://localhost:8911/graphql when your dev server is running&mdash;`yarn rw dev api`):
