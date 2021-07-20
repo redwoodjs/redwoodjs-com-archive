@@ -1,12 +1,13 @@
 # Authentication
 
-`@redwoodjs/auth` contains both a build-in database-backed authentication system (dbAuth), as well as lightweight wrappers around popular SPA authentication libraries.
+`@redwoodjs/auth` contains both a built-in database-backed authentication system (dbAuth), as well as lightweight wrappers around popular SPA authentication libraries.
 
 We currently support the following third-party authentication providers:
 
 - [Netlify Identity Widget](https://github.com/netlify/netlify-identity-widget)
 - [Auth0](https://github.com/auth0/auth0-spa-js)
 - [Azure Active Directory](https://github.com/AzureAD/microsoft-authentication-library-for-js)
+- [Clerk](https://clerk.dev)
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
@@ -38,7 +39,7 @@ However, we're following best practicies for storing these credentials:
 
 1. Users' passwords are [salted and hashed](https://auth0.com/blog/adding-salt-to-hashing-a-better-way-to-store-passwords/) with PBKDF2 before being stored
 2. Plaintext passwords are never stored anywhere, and only transferred between client and server during the login/signup phase (and hopefully only over HTTPS)
-3. Our logger scrubs senative parameters (like `password`) before they are output
+3. Our logger scrubs sensitive parameters (like `password`) before they are output
 
 Even if you later decide you want to let someone else handle your user data for you, dbAuth is a great option for getting up and running quickly (we even have a generator for creating basic login and signup pages for you).
 
@@ -364,6 +365,113 @@ const UserAuthTools = () => {
 #### Auth0 Auth Provider Specific Setup
 
 See the Auth0 information within this doc's [Auth Provider Specific Integration](https://redwoodjs.com/docs/authentication.html#auth-provider-specific-integration) section.
+
++++
+
+### Clerk
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw setup auth clerk
+```
+
+_If you prefer to manually install the package and add code_, see the documented changes below in **Manual Setup**.
+
+#### Setup
+
+To get started with Clerk, sign up on [their website](https://clerk.dev/) and create an application.
+
+Applications in Clerk have different instances - by default one for development, one for staging (preview builds), and one for production. You will need to pull two values from one of these instances. We recommend storing the development values in your local `.env` file and using the staging and production values in the appropriate env setups for your hosting platform when you deploy.
+
+The two values you will need from Clerk are your instance's "Frontend API" url and an API key from your instance's settings. The Frontend API url should be stored in an `env` variable named `NEXT_PUBLIC_CLERK_FRONTEND_API`. The API key should be named `CLERK_API_KEY`.
+
+Otherwise, feel free to configure your instances however you wish with regards to their appearance and functionality.
+
+> **Including Environment Variables in Serverless Deployment:** in addition to adding these env vars to your local `.env` file or deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given above, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`". You should expose the `NEXT_PUBLIC_CLERK_FRONTEND_API` only to the `web` workspace and expose `CLERK_API_KEY` **only** to the `api` workspace.
+
+#### Manual Setup
+
+If you opt against using `yarn rw setup auth clerk`, you can instead make the required changes manually to add the basics of auth to your app.
+
+First, run this to add the required packages:
+```bash
+yarn workspace web add @redwoodjs/auth @clerk/clerk-react
+yarn workspace api add @redwoodjs/auth @clerk/clerk-sdk-node
+```
+
+Then, extract the relevant changes to your `App` file:
+```js
+// web/src/App.js
+import { AuthProvider } from '@redwoodjs/auth'
+import { ClerkProvider, ClerkLoaded, useClerk } from '@clerk/clerk-react'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
+
+import './index.css'
+
+let clerk
+const ClerkAuthConsumer = ({ children }) => {
+  clerk = useClerk()
+  return React.cloneElement(children, { client: clerk })
+}
+
+const ClerkAuthProvider = ({ children }) => {
+  const frontendApi = process.env.NEXT_PUBLIC_CLERK_FRONTEND_API
+  if (!frontendApi) {
+    throw new Error('Need to define env variable NEXT_PUBLIC_CLERK_FRONTEND_API')
+  }
+
+  return (
+    <ClerkProvider frontendApi={frontendApi}>
+      <ClerkLoaded>
+        <ClerkAuthConsumer>{children}</ClerkAuthConsumer>
+      </ClerkLoaded>
+    </ClerkProvider>
+  )
+}
+
+const App = () => (
+  <FatalErrorBoundary page={FatalErrorPage}>
+    <ClerkAuthProvider>
+      <AuthProvider client={clerk} type="clerk">
+        <RedwoodApolloProvider>
+          <Routes />
+        </RedwoodApolloProvider>
+      </AuthProvider>
+    </ClerkAuthProvider>
+  </FatalErrorBoundary>
+)
+
+export default App
+```
+
+Then, provide your own implementations of `api/src/lib/auth.(j|t)s` and add current user to the API context in `api/src/functions/graphql.(j|t)s`. These are standard changes and not dependent on Clerk.
+
+#### Login and Logout Options
+
+When using the Clerk client, `login` and `signUp` take an `options` object that can be used to override the client config.
+
+For `login` the `options` may contain:
+
+- `afterSignIn`: Where to navigate after sign in is complete
+- `signUpURL`: The route where "Sign up instead" links. If not passed, Sign up will open as a modal.
+
+For `signUp` the `options` may contain:
+
+- `afterSignUp`: Where to navigate after sign up is complete
+- `signInURL`: The route where "Sign in instead" links. If not passed, Sign in will open as a modal.
+
+#### Avoiding Feature Duplication Confusion
+
+Redwood's integration of Clerk is based on [Clerk's React SDK](https://docs.clerk.dev/frontend/react). This means there is some duplication between the features available through that SDK and the ones available in the `@redwoodjs/auth` package - such as the alternatives of using Clerk's `SignedOut` component to redirect users away from a private page vs. using Redwood's `Private` route wrapper. In general, we would recommend you use the **Redwood** way of doing things when possible, as that is more likely to function harmoniously with the rest of Redwood. That being said, though, there are some great features in Clerk's SDK that you will be able to now use in your app, such as the `UserButton` and `UserProfile` components.
 
 +++
 
