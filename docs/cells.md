@@ -3,7 +3,7 @@
 Cells are a declarative approach to data fetching and one of Redwood's signature modes of abstraction. In a way, Cells create space: by providing conventions around data fetching, Redwood can get in between the request and the response and perform optimizations, all without you ever having to change your code.
 
 While it might seem like there must be lot of magic involved, a Cell is actually just a [higher-order component](https://reactjs.org/docs/higher-order-components.html) that executes a GraphQL query and manages its lifecycle.
-All the logic's actually in just one file: [withCellHOC.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/withCellHOC.tsx).
+All the logic's actually in just one file: [createCell.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/createCell.tsx).
 The idea is that, by exporting named constants that match the parameters of `withCell`, Redwood can assemble this higher-order component out of these constants at build-time using a babel plugin!
 
 All of this without writing a line of imperative code. Just say what is supposed to happen when, and Redwood will take care of the rest.
@@ -221,7 +221,7 @@ In production, failed cells won't break your app, they'll just be empty divs... 
 
 If everything went well, a Cell renders `Success`.
 
-As mentioned, Success gets exclusive access to the `data` prop. But if you try to destructure it from props, you'll notice that it doesn't exist. This is because Redwood adds another layer of convenience: in [withCellHOC.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/withCellHOC.tsx#L121), Redwood spreads `data` (using the spread operator, `...`) into `Success` so that you can just destructure whatever data you were expecting from your `QUERY` directly.
+As mentioned, Success gets exclusive access to the `data` prop. But if you try to destructure it from props, you'll notice that it doesn't exist. This is because Redwood adds another layer of convenience: in [createCell.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/createCell.tsx#L149), Redwood spreads `data` (using the spread operator, `...`) into `Success` so that you can just destructure whatever data you were expecting from your `QUERY` directly.
 
 So, if you're querying for `posts` and `authors`, instead of doing:
 
