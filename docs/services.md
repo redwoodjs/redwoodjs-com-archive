@@ -6,13 +6,22 @@ Redwood puts all your business logic in one place—Services. These can be used 
 
 Starting with `v0.32`, Redwood includes a feature we call Secure Services. By default, your GraphQL endpoint is open to the world. Secure Services makes sure that the resolvers behind the endpoint (your Services) can't be invoked unless you allow them explicitly.
 
-> As of now, this behavior is opt-in—if you don't do anything, your Services will continue to work as they always have. But once Redwood hits `v1.0`, Secure Services will be enabled by default. 
+> As of now, this behavior is opt-in: if you don't do anything, your Services will continue to work as they always have. But once Redwood hits `v1.0`, Secure Services will be enabled by default.
 >
 > If you don't opt-in now, you'll see a warning message during dev server startup that warns you that it will become the default behavior as of `v1.0`.
 
 In addition to security, your Services benefit by being able to just focus on their job: rather than worrying about whether someone is logged in or not, Services remain laser focused on a specific bit of business logic. Larger concerns like security and validation can be moved "up" and out of the way.
 
 > **Services are only secured when used as resolvers via GraphQL**. If you have one Service calling another Service, this logic will *not* be used.
+
+### A Note About Shared Code
+
+Secure Services work by making sure that each *file* you have in your `api/src/services` directory exports a `beforeResolver()` function. Which means if you want to share code among your services, and you move that shared code into a new file, you'll get an error that no `beforeResolver()` is exportec. There are two solutions:
+
+1. Keep shared code in `api/src/lib`
+2. Export an empty `beforeResolver()` function in that shared file
+
+The rules defined in a `beforeResolver()` are only invoked when the service function (like `createUser()`) is called when a GraphQL query or mutation is looking for a resolver. Since your shared code is not itself a service that will be invoked as a GraphQL resolver, no rules will be checked, and so `beforeResolver()` can be empty.
 
 ### Enabling Secure Services
 
@@ -32,8 +41,8 @@ Must define a `beforeResolver()` in posts/posts.js
 
 Which means it worked!
 
-> **Heads Up**: Using Env Vars for Config is a _Two-step Process_  
-> Technically, you need to enable this Env Var both for your local dev environment and your production deploy environment. In this case, we are assuming you are committing your `env.defaults` file to your project Repo, which will add the Env Var to both contexts. If not, you also need to specifically add the Env Var to your hosting provider config.
+> **Heads Up**: Using Env Vars for Config is a _Two-step Process_
+> Technically, you need to enable this ENV var both for your local dev environment and your production deploy environment. In this case, we are assuming you are committing your `env.defaults` file to your project Repo, which will add the ENV var to both contexts. If not, you also need to specifically add the Env Var to your hosting provider config.
 
 ### Securing Your Services
 
@@ -82,9 +91,9 @@ export const beforeResolver = (rules) => {
 `beforeResolver()` receives an argument that we'll call `rules` that you can call one of these functions on:
 
 1. `add()`
-2. `skip()`  
+2. `skip()`
 
-In this example case, `requireAuth()` would be called automatically before each and every Service function call (`posts`, `createPost` and `deletePost`). 
+In this example case, `requireAuth()` would be called automatically before each and every Service function call (`posts`, `createPost` and `deletePost`).
 
 > Using `requireAuth()` assumes you have an authentication library installed. If you don't, you can create a `requireAuth` function in `api/src/lib/auth.js` (which you'll also probably have to create) and just have it return `true` for now:
 >
@@ -108,7 +117,7 @@ export const beforeResolver = (rules) => {
 }
 ```
 
-Now the resolver will NOT run for `posts()`. 
+Now the resolver will NOT run for `posts()`.
 
 You can also use `only` as the opposite of `except`:
 
@@ -186,7 +195,7 @@ const verifyPost = (name, { input }) => {
     throw new UserInputError('Title is required')
   }
 }
-  
+
 export const beforeResolver = (rules) => {
   rules.add(requireAuth)
   rules.add(verifyPost, { only: ['createPost'] })
@@ -254,7 +263,7 @@ export const beforeResolver = (rules) => {
 }
 ```
 
-Another way to think about it is to avoid adding to fewer services than not, and avoid skipping more Services than not. It's much clearer to add rules to all services and then `except` one or two than to add a Service to `only` a dozen different services. 
+Another way to think about it is to avoid adding to fewer services than not, and avoid skipping more Services than not. It's much clearer to add rules to all services and then `except` one or two than to add a Service to `only` a dozen different services.
 
 Likewise, it's usually clearer to skip only a few Services than to skip a ton of them. If you find yourself skipping a ton of Services, you probably added it to too many to begin with.
 
@@ -268,9 +277,9 @@ If you'd rather just handle these types of auth tasks within each individual Ser
 
 ### TL;DR
 
-You must export a `beforeResolver()` function in each of your Services. 
+You must export a `beforeResolver()` function in each of your Services.
 
-This function receives a single argument, `rules`, which you call `add` or `skip` on to build a "specification" that provides a list of functions that run before allowing access to the Service as a GraphQL resolver. 
+This function receives a single argument, `rules`, which you call `add` or `skip` on to build a "specification" that provides a list of functions that run before allowing access to the Service as a GraphQL resolver.
 
 The functions that you give to `rules.add()` will be sent two arguments: the first is the `name` of the Service you tried to call and the second is whatever arguments were going to be passed to the Service originally.
 
@@ -361,7 +370,7 @@ const verifyOwnership = (name, { id }) => {
     throw new UserInputError('User does not own this post')
   }
 }
-  
+
 export const beforeResolver = (rules) => {
   rules.add(rateLimit)
   rules.add(() => requireAuth({ roles => ['admin'] }), { only: ['createPost', 'deletePost'] })
