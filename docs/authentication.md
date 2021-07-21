@@ -388,11 +388,11 @@ To get started with Clerk, sign up on [their website](https://clerk.dev/) and cr
 
 Applications in Clerk have different instances - by default one for development, one for staging (preview builds), and one for production. You will need to pull two values from one of these instances. We recommend storing the development values in your local `.env` file and using the staging and production values in the appropriate env setups for your hosting platform when you deploy.
 
-The two values you will need from Clerk are your instance's "Frontend API" url and an API key from your instance's settings. The Frontend API url should be stored in an `env` variable named `NEXT_PUBLIC_CLERK_FRONTEND_API`. The API key should be named `CLERK_API_KEY`.
+The two values you will need from Clerk are your instance's "Frontend API" url and an API key from your instance's settings. The Frontend API url should be stored in an `env` variable named `CLERK_FRONTEND_API_URL`. The API key should be named `CLERK_API_KEY`.
 
 Otherwise, feel free to configure your instances however you wish with regards to their appearance and functionality.
 
-> **Including Environment Variables in Serverless Deployment:** in addition to adding these env vars to your local `.env` file or deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given above, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`". You should expose the `NEXT_PUBLIC_CLERK_FRONTEND_API` only to the `web` workspace and expose `CLERK_API_KEY` **only** to the `api` workspace.
+> **Including Environment Variables in Serverless Deployment:** in addition to adding these env vars to your local `.env` file or deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given above, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`". You should expose the `CLERK_FRONTEND_API_URL` only to the `web` workspace and expose `CLERK_API_KEY` **only** to the `api` workspace.
 
 #### Manual Setup
 
@@ -424,9 +424,9 @@ const ClerkAuthConsumer = ({ children }) => {
 }
 
 const ClerkAuthProvider = ({ children }) => {
-  const frontendApi = process.env.NEXT_PUBLIC_CLERK_FRONTEND_API
+  const frontendApi = process.env.CLERK_FRONTEND_API_URL
   if (!frontendApi) {
-    throw new Error('Need to define env variable NEXT_PUBLIC_CLERK_FRONTEND_API')
+    throw new Error('Need to define env variable CLERK_FRONTEND_API_URL')
   }
 
   return (
