@@ -34,11 +34,11 @@ And potentially one large drawback:
 
 * Use your own database for storing user credentials
 
-However, we're following best practicies for storing these credentials:
+However, we're following best practices for storing these credentials:
 
 1. Users' passwords are [salted and hashed](https://auth0.com/blog/adding-salt-to-hashing-a-better-way-to-store-passwords/) with PBKDF2 before being stored
 2. Plaintext passwords are never stored anywhere, and only transferred between client and server during the login/signup phase (and hopefully only over HTTPS)
-3. Our logger scrubs senative parameters (like `password`) before they are output
+3. Our logger scrubs sensitive parameters (like `password`) before they are output
 
 Even if you later decide you want to let someone else handle your user data for you, dbAuth is a great option for getting up and running quickly (we even have a generator for creating basic login and signup pages for you).
 
