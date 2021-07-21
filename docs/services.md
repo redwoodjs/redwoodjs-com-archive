@@ -16,7 +16,7 @@ In addition to security, your Services benefit by being able to just focus on th
 
 ### A Note About Shared Code
 
-Secure Services work by making sure that each *file* you have in your `api/src/services` directory exports a `beforeResolver()` function. Which means if you want to share code among your services, and you move that shared code into a new file, you'll get an error that no `beforeResolver()` is exportec. There are two solutions:
+Secure Services work by making sure that each *file* you have in your `api/src/services` directory exports a `beforeResolver()` function. Which means if you want to share code among your services, and you move that shared code into a new file, you'll get an error that no `beforeResolver()` is exported. There are two solutions:
 
 1. Keep shared code in `api/src/lib`
 2. Export an empty `beforeResolver()` function in that shared file
