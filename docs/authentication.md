@@ -1,6 +1,6 @@
 # Authentication
 
-`@redwoodjs/auth` contains both a build-in database-backed authentication system (dbAuth), as well as lightweight wrappers around popular SPA authentication libraries.
+`@redwoodjs/auth` contains both a built-in database-backed authentication system (dbAuth), as well as lightweight wrappers around popular SPA authentication libraries.
 
 We currently support the following third-party authentication providers:
 
