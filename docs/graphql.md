@@ -234,6 +234,8 @@ export const handler = createGraphQLHandler({
 })
 ```
 
+> **Note:** If you use the preview GraphQL Helix/Envelop `graphql-server` package and a custom ContextFunction to modify the context in the createGraphQL handler, the function is provided ***only the context*** and ***not event***. However, the `event` information is available as an attribute of the context as `context.event`. Therefore, in the above example, one would fetch the ip address from the event this way: `ipAddress({ event: context.event })`.
+
 ### The Root Schema
 
 Did you know that you can query `redwood`? Try it in the GraphQL Playground (you can find the GraphQL Playground at http://localhost:8911/graphql when your dev server is running&mdash;`yarn rw dev api`):
