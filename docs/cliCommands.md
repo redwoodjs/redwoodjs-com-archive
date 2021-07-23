@@ -1520,7 +1520,7 @@ Creates provider-specific code and configuration for deployment.
 
 #### setup deploy netlify
 
-When configuring netlify deployment, the `setup deploy netlify` command generates a `netlify.toml` [configuration file](https://docs.netlify.com/configure-builds/file-based-configuration/) with the defaults needed to build and deploy a RedwoodJS site on Netlify.
+When configuring Netlify deployment, the `setup deploy netlify` command generates a `netlify.toml` [configuration file](https://docs.netlify.com/configure-builds/file-based-configuration/) with the defaults needed to build and deploy a RedwoodJS site on Netlify.
 
 The `netlify.toml` file is a configuration file that specifies how Netlify builds and deploys your site — including redirects, branch and context-specific settings, and more.
 
@@ -1546,7 +1546,6 @@ Netlify Dev can also create a tunnel from your local development server that all
 ```
 
 In order to use [Netlify Dev](https://www.netlify.com/products/dev/) you need to:
-
 * install the latest [netlify-cli](https://docs.netlify.com/cli/get-started/#installation)
 * use [netlify link](https://docs.netlify.com/cli/get-started/#link-and-unlink-sites) to connect to your Netlify site
 * ensure that the `targetPort` matches the [web] side port in `redwood.toml`
