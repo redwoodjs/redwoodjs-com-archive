@@ -4,7 +4,7 @@ Redwood comes with full TypeScript support out of the box, and you don't have to
 ## Starting a TypeScript Redwood project
 You can use the `--typescript` flag on create-redwood-app to generate a project with TypeScript configured:
 ```shell
-yarn create redwood-app --typescript /PATH/TO/FOLDER
+yarn create redwood-app --typescript my-redwood-app
 ```
 
 ## Converting an existing JS project to Typescript
