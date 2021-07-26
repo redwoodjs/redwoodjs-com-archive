@@ -1757,7 +1757,7 @@ yarn redwood test [side..]
 
 ## type-check
 
-Checks your TypeScript project for errors on both the api and the web sides.
+Runs a TypeScript compiler check on both the api and the web sides.
 
 ```terminal
 yarn redwood type-check [side]
