@@ -1755,6 +1755,24 @@ yarn redwood test [side..]
 
 > **Note** all other flags are passed onto the jest cli. So for example if you wanted to update your snapshots you can pass the `-u` flag
 
+## type-check
+
+Runs a TypeScript compiler check on both the api and the web sides.
+
+```terminal
+yarn redwood type-check [side]
+```
+
+<br/>
+
+| Arguments & Options | Description                                                                    |
+| ------------------- | ------------------------------------------------------------------------------ |
+| `side`              | Which side(s) to run. Choices are `api` and `web`. Defaults to `api` and `web` |
+
+**Usage**
+
+See [Running Type Checks](https://redwoodjs.com/docs/typescript#running-type-checks).
+
 ## serve
 
 Runs a server that serves both the api and the web sides.
