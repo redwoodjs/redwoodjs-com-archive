@@ -191,6 +191,51 @@ In Redwood, the `context` object that's passed to resolvers is actually availabl
 import { context } from '@redwoodjs/api
 ```
 
+#### How to Modify the Context
+
+Because the context is read-only in your services, if you need to modify it, then you need to do so in the `createGraphQLHandler`.
+
+To populate or enrich the context on a per-request basis with additional attributes, set the `context` attribute `createGraphQLHandler` to a custom ContextFunction that modifies the context.
+
+For example, if we want to populate a new, custom `ipAddress` attribute on the context with the information from the request's event, declare the `setIpAddress` ContextFunction as seen here:
+
+```js
+// api/src/functions/graphql.js
+
+// ...
+
+const ipAddress = ({ event }) => {
+  return (
+    event?.headers?.['client-ip'] ||
+    event?.requestContext?.identity?.sourceIp ||
+    'localhost'
+  )
+}
+
+const setIpAddress = async ({ event, context }) => {
+  context.ipAddress = ipAddress({ event })
+}
+
+export const handler = createGraphQLHandler({
+  getCurrentUser,
+  loggerConfig: {
+    logger,
+    options: { operationName: true, tracing: true },
+  },
+  schema: makeMergedSchema({
+    schemas,
+    services: makeServices({ services }),
+  }),
+  context: setIpAddress,
+  onException: () => {
+    // Disconnect from your database with an unhandled exception.
+    db.$disconnect()
+  },
+})
+```
+
+> **Note:** If you use the preview GraphQL Helix/Envelop `graphql-server` package and a custom ContextFunction to modify the context in the createGraphQL handler, the function is provided ***only the context*** and ***not event***. However, the `event` information is available as an attribute of the context as `context.event`. Therefore, in the above example, one would fetch the ip address from the event this way: `ipAddress({ event: context.event })`.
+
 ### The Root Schema
 
 Did you know that you can query `redwood`? Try it in the GraphQL Playground (you can find the GraphQL Playground at http://localhost:8911/graphql when your dev server is running&mdash;`yarn rw dev api`):
