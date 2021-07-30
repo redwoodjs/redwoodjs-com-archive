@@ -305,6 +305,63 @@ export const logger = createLogger({
 })
 ```
 
+### Customize your own Transport Stream Destination, eg: with Honeybadger
+
+If `pino` doesn't have a transport package for your service, you can write one with the class `Write` from the `stream` package. You can adapt this example to your own logging needs but here, we will use [Honeybadger.io](https://honeybadger.io).
+
+
+
+* Install the `stream` package into `api`
+```shell
+yarn workspace api add stream
+```
+
+* Install the `honeybadger-io/js` package into `api`, or any other package that suits you
+```shell
+yarn workspace api add @honeybadger-io/js
+```
+
+* Import both `stream` and `@honeybadger-io/js` into `api/src/lib/logger.ts`
+```js
+import { createLogger } from '@redwoodjs/api/logger'
+import { Writable } from 'stream'
+
+const Honeybadger = require('@honeybadger-io/js')
+
+Honeybadger.configure({
+    apiKey: process.env.HONEYBADGER_API_KEY,
+})
+
+const HoneybadgerStream = () => {
+    const stream = new Writable({
+        write(
+            chunk: any,
+            encoding: BufferEncoding,
+            fnOnFlush: (error?: Error | null) => void
+        ) {
+            Honeybadger.notify(chunk.toString())
+            fnOnFlush()
+        },
+    })
+
+    return stream
+}
+
+
+/**
+ * Creates a logger. Options define how to log. Destination defines where to log.
+ * If no destination, std out.
+ */
+export const logger = createLogger({
+    options: { prettyPrint: true },
+    destination: HoneybadgerStream(),
+})
+```
+
+* For the sake of our example, make sure you have a `HONEYBADGER_API_KEY` variable in your environment.
+
+Documentation on the `Write` class can be found here: [https://nodejs.org/api/stream.html](https://nodejs.org/api/stream.html#stream_writable_write_chunk_encoding_callback)
+
 ### Log to Datadog using a Transport Stream Destination
 
 To stream your logs to [Datadog](https://www.datadoghq.com/), you can
@@ -431,6 +488,7 @@ export const logger = createLogger({
   destination: stream },
 }) 
 ```
+
 ### Log to Papertrail using a Transport Stream Destination
 
 * Install the [pino-papertrail](https://www.npmjs.com/package/pino-papertrail) package into `api`
