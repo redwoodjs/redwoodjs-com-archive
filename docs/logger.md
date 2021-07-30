@@ -438,7 +438,7 @@ export const logger = createLogger({
 yarn workspace api add @honeybadger-io/js stream
 ```
 
-* Import `@honeybadger-io/js` `stream` into `logger.ts`
+* Import `@honeybadger-io/js` and `stream` into `logger.ts`
 ```js
 import { createLogger } from '@redwoodjs/api/logger'
 import { Writable } from 'stream'
