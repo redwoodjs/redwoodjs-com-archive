@@ -305,6 +305,61 @@ export const logger = createLogger({
 })
 ```
 
+### Customize your own Transport Stream Destination ( eg: Honeybadger.io )
+If Pino doesn't have a transport package for your service, you can write one with the class `Write` from the `stream` package. You can adapt this example to your own needs but here, we will use Honeybadger.io, which doesn't have an official pino transport package.
+
+This example where we log to Honeybadger is an example of how to implement a custom logging solution.
+
+
+* Install the `stream` package into `api`
+```shell
+yarn workspace api add stream
+```
+
+* Install the `honeybadger-io/js` package into `api`, or any other package to suit your logging needs
+```shell
+yarn workspace api add @honeybadger-io/js
+```
+
+* Import `@honeybadger-io/js` `stream` into `logger.ts`
+```js
+import { createLogger } from '@redwoodjs/api/logger'
+import { Writable } from 'stream'
+
+const Honeybadger = require('@honeybadger-io/js')
+
+Honeybadger.configure({
+    apiKey: process.env.HONEYBADGER_API_KEY,
+})
+
+const HoneybadgerStream = () => {
+    const stream = new Writable({
+        write(
+            chunk: any,
+            encoding: BufferEncoding,
+            fnOnFlush: (error?: Error | null) => void
+        ) {
+            Honeybadger.notify(chunk.toString())
+            fnOnFlush()
+        },
+    })
+
+    return stream
+}
+
+
+/**
+ * Creates a logger. Options define how to log. Destination defines where to log.
+ * If no destination, std out.
+ */
+export const logger = createLogger({
+    options: { prettyPrint: true },
+    destination: HoneybadgerStream(),
+})
+```
+
+* Make sure you have a `HONEYBADGER_API_KEY` variable in your environment.
+
 ### Log to Datadog using a Transport Stream Destination
 
 To stream your logs to [Datadog](https://www.datadoghq.com/), you can
@@ -431,51 +486,6 @@ export const logger = createLogger({
   destination: stream },
 }) 
 ```
-### Log to Honeybadger using a Transport Stream Destination
-
-* Install the Honeybadger & Stream packages into `api`
-```shell
-yarn workspace api add @honeybadger-io/js stream
-```
-
-* Import `@honeybadger-io/js` and `stream` into `logger.ts`
-```js
-import { createLogger } from '@redwoodjs/api/logger'
-import { Writable } from 'stream'
-
-const Honeybadger = require('@honeybadger-io/js')
-
-Honeybadger.configure({
-    apiKey: process.env.HONEYBADGER_API_KEY,
-})
-
-const HoneybadgerStream = () => {
-    const stream = new Writable({
-        write(
-            chunk: any,
-            encoding: BufferEncoding,
-            fnOnFlush: (error?: Error | null) => void
-        ) {
-            Honeybadger.notify(chunk.toString())
-            fnOnFlush()
-        },
-    })
-
-    return stream
-}
-
-
-/**
- * Creates a logger. Options define how to log. Destination defines where to log.
- * If no destination, std out.
- */
-export const logger = createLogger({
-    options: { prettyPrint: true },
-    destination: HoneybadgerStream(),
-})
-```
-
-* Make sure you have a `HONEYBADGER_API_KEY` variable in your environment.
 
 ### Log to Papertrail using a Transport Stream Destination
 
