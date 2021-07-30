@@ -306,9 +306,8 @@ export const logger = createLogger({
 ```
 
 ### Customize your own Transport Stream Destination ( eg: Honeybadger.io )
-If Pino doesn't have a transport package for your service, you can write one with the class `Write` from the `stream` package. You can adapt this example to your own needs but here, we will use Honeybadger.io, which doesn't have an official pino transport package.
+If `pino` doesn't have a transport package for your service, you can write one with the class `Write` from the `stream` package. You can adapt this example to your own logging needs but here, we will use [Honeybadger.io](https://honeybadger.io).
 
-This example where we log to Honeybadger is an example of how to implement a custom logging solution.
 
 
 * Install the `stream` package into `api`
@@ -316,12 +315,12 @@ This example where we log to Honeybadger is an example of how to implement a cus
 yarn workspace api add stream
 ```
 
-* Install the `honeybadger-io/js` package into `api`, or any other package to suit your logging needs
+* Install the `honeybadger-io/js` package into `api`, or any other package that suits you
 ```shell
 yarn workspace api add @honeybadger-io/js
 ```
 
-* Import `@honeybadger-io/js` `stream` into `logger.ts`
+* Import both `stream` and `@honeybadger-io/js` into `api/src/lib/logger.ts`
 ```js
 import { createLogger } from '@redwoodjs/api/logger'
 import { Writable } from 'stream'
@@ -358,7 +357,9 @@ export const logger = createLogger({
 })
 ```
 
-* Make sure you have a `HONEYBADGER_API_KEY` variable in your environment.
+* For the sake of our example, make sure you have a `HONEYBADGER_API_KEY` variable in your environment.
+
+Documentation on the `Write` class can be found here: [https://nodejs.org/api/stream.html](https://nodejs.org/api/stream.html#stream_writable_write_chunk_encoding_callback)
 
 ### Log to Datadog using a Transport Stream Destination
 
