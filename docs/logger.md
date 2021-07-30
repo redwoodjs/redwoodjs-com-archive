@@ -305,7 +305,7 @@ export const logger = createLogger({
 })
 ```
 
-### Customize your own Transport Stream Destination with Honeybadger
+### Customize your own Transport Stream Destination, eg: with Honeybadger
 
 If `pino` doesn't have a transport package for your service, you can write one with the class `Write` from the `stream` package. You can adapt this example to your own logging needs but here, we will use [Honeybadger.io](https://honeybadger.io).
 
