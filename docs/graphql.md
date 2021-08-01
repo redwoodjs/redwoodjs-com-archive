@@ -485,6 +485,8 @@ By logging the operation name and extracting the duration for each query, you ca
 
 We'll document more GraphQL security best practices as Redwood reaches a `v1.0` release candidate. For now, know that Redwood already has some baked-in best practices; for example, when deploying GraphQL to production, GraphQL Playground is automatically disabled. 
 
+For more information about how to keep your GraphQL API secure, please read [Securing your GraphQL API](https://www.envelop.dev/docs/guides/) from [the Guild](https://the-guild.dev).
+
 
 ### Secure Services
 
