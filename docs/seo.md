@@ -53,6 +53,7 @@ const AboutPage = () => {
         ogUrl="https://awesomeredwoodapp.com/start"
         ogContentUrl="https://awesomeredwoodapp.com/static/og.png"
         robots={['nofollow']}
+        locale={}
       />
       <p className="font-light">This is the about page!</p>
     </div>
@@ -63,6 +64,33 @@ export default AboutPage
 ```
 
 This is great not just for link unfurling on say Facebook or Slack, but also for SEO. Take a look at the [source](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/MetaTags.tsx#L83) if you're curious what tags get set here.
+
+## Adding app title
+
+Add "title" to redwood.toml to be globally use
+
+```toml
+[web]
+  title = "Redwood App"
+  port = 8910
+  apiProxyPath = "/.redwood/functions"
+```
+### Title template 
+
+add titleTemplate as prop for RedwoodProvider to have a title template for every pages
+
+```js
+// redwood/web/src/app.js
+  <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
+    /* ... */
+  <RedwoodProvider />
+  ```
+Exemple  : 
+
+%PageTitle | %AppTitle => Home Page | Redwood App
+
+%AppTitle · %PageTitle => Redwood App · Home Page
+
 
 
 ## Dynamic tags
