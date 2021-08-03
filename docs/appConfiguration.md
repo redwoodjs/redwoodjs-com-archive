@@ -76,6 +76,7 @@ Configuration for the web side.
 
 | Key                           | Description                        | Default                 | Context       |
 | :---------------------------- | :--------------------------------- | :---------------------- | :------------ |
+| `title`                       | Title of your Redwood App          |                         | `both`        |
 | `host`                        | Hostname to listen on              | `'localhost'`           | `development` |
 | `port`                        | Port to listen on                  | `8910`                  | `development` |
 | `path`                        | Path to the web side               | `'./web'`               | `both`        |
