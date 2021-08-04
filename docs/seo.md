@@ -34,7 +34,7 @@ _Examples  :_
 
 "%AppTitle · %PageTitle" = "Redwood App · Home Page"
 
-"%PageTitle : %AppTitle " = "Home Page : Redwood App"
+"%PageTitle : %AppTitle" = "Home Page : Redwood App"
 ```
 
 So now in your page you only need to write the title of the page.
