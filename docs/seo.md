@@ -2,7 +2,7 @@
 
 ## Add app title
 You certainly want to change the title of your Redwood app.
-You can start by adding or modify "title" inside `redwood.toml`
+You can start by adding or modify `title` inside `redwood.toml`
 
 ```diff
 [web]
@@ -11,12 +11,13 @@ You can start by adding or modify "title" inside `redwood.toml`
   port = 8910
   apiProxyPath = "/.redwood/functions"
 ```
-This title (the app title) is used by default for all your pages if you don't define another one. 
+This title (the app title) is used by default for all your pages if you don't define another one.
 It will also be use for the title template ! 
 ### Title template 
 Now that you have the app title set, you probably want some consistence with the page title, that's what the title template is for. 
 
-Add titleTemplate as a prop for RedwoodProvider to have a title template for every pages
+Add `titleTemplate` as a prop for `RedwoodProvider` to have a title template for every pages
+
 In _web/src/App.{tsx,js}_
 ```diff
 -  <RedwoodProvider>
