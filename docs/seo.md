@@ -1,5 +1,41 @@
 # SEO & Meta tags
 
+## Add app title
+You certainly want to change the title of your Redwood app.
+You can start by adding or modify "title" inside `redwood.toml`
+
+```diff
+[web]
+- title = "Redwood App"
++ title = "My Cool App"
+  port = 8910
+  apiProxyPath = "/.redwood/functions"
+```
+This title (the app title) is used by default for all your pages if you don't define another one. 
+It will also be use for the title template ! 
+### Title template 
+Now that you have the app title set, you probably want some consistence with the page title, that's what the title template is for. 
+
+Add titleTemplate as a prop for RedwoodProvider to have a title template for every pages
+In _web/src/App.{tsx,js}_
+```diff
+-  <RedwoodProvider>
++  <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
+    /* ... */
+  <RedwoodProvider />
+```
+
+You can write the format you like. 
+_Example  :_
+```js
+"%PageTitle | %AppTitle" = "Home Page | Redwood App"
+
+"%AppTitle · %PageTitle" = "Redwood App · Home Page"
+
+"%AppTitle · %PageTitle" = "Redwood App · Home Page"
+```
+So now in your page you only need to write the title of the page.
+
 ## Adding to page `<head>`
 So you want to change the title of your page, or add elements to the `<head>` of the page? We've got you!
 
@@ -64,33 +100,6 @@ export default AboutPage
 ```
 
 This is great not just for link unfurling on say Facebook or Slack, but also for SEO. Take a look at the [source](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/MetaTags.tsx#L83) if you're curious what tags get set here.
-
-## Adding app title
-
-Add "title" to redwood.toml to be globally use
-
-```toml
-[web]
-  title = "Redwood App"
-  port = 8910
-  apiProxyPath = "/.redwood/functions"
-```
-### Title template 
-
-add titleTemplate as prop for RedwoodProvider to have a title template for every pages
-
-```js
-// redwood/web/src/app.js
-  <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
-    /* ... */
-  <RedwoodProvider />
-  ```
-Exemple  : 
-
-%PageTitle | %AppTitle => Home Page | Redwood App
-
-%AppTitle · %PageTitle => Redwood App · Home Page
-
 
 
 ## Dynamic tags
