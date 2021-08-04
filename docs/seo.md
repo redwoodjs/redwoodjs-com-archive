@@ -30,11 +30,11 @@ You can write the format you like.
 
 _Examples  :_
 ```js
-"%PageTitle | %AppTitle" = "Home Page | Redwood App"
+"%PageTitle | %AppTitle" => "Home Page | Redwood App"
 
-"%AppTitle · %PageTitle" = "Redwood App · Home Page"
+"%AppTitle · %PageTitle" => "Redwood App · Home Page"
 
-"%PageTitle : %AppTitle" = "Home Page : Redwood App"
+"%PageTitle : %AppTitle" => "Home Page : Redwood App"
 ```
 
 So now in your page you only need to write the title of the page.
