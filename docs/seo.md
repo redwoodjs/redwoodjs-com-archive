@@ -27,14 +27,15 @@ In _web/src/App.{tsx,js}_
 ```
 
 You can write the format you like. 
-_Example  :_
-```js
-"%PageTitle | %AppTitle" = "Home Page | Redwood App"
 
-"%AppTitle · %PageTitle" = "Redwood App · Home Page"
+_Examples  :_
 
-"%AppTitle · %PageTitle" = "Redwood App · Home Page"
-```
+`"%PageTitle | %AppTitle" = "Home Page | Redwood App"`
+
+`"%AppTitle · %PageTitle" = "Redwood App · Home Page"`
+
+`"%PageTitle : %AppTitle " = "Home Page : Redwood App"`
+
 So now in your page you only need to write the title of the page.
 
 ## Adding to page `<head>`
