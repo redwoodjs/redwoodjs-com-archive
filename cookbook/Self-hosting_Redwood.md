@@ -65,6 +65,7 @@ server {
 
   location / {
     root /home/deploy/redwood-pm2/current/web/dist;
+    try_files $uri /index.html;
   }
 
   location /api/ {
