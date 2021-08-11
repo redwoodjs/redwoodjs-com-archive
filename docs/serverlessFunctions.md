@@ -45,6 +45,398 @@ Note that you can use code in `api/src` in your serverless function, such as imp
 
 When you're developing locally, the dev server watches the `api` directory for modifications; when it detects any, it re-imports all the modules.
 
+## Testing
+
+You can write tests and scenarios for your serverless functions very much like you would for services, but it's important to properly mock the information that the function `handler` needs.
+
+To help you mock the `event` and `context` information, we've provided several api testing fixture utilities: 
+
+|Mock  |Usage |
+|---|-|
+| `mockHttpEvent`  | Use this to mock out the http request `event` that is received by your function in unit tests. Here you can set `headers`, `httpMethod`, `queryStringParameters` as well as the `body` and if the body `isBase64Encoded`. The `event` contains information from the invoker as JSON-formatted string whose structure will vary. See [Working with AWS Lambda proxy integrations for HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html) for the payload format.|
+| `mockContext` | Use this function to mock the http `context`. Your function handler receives a context object with properties that provide information about the invocation, function, and execution environment. See [AWS Lambda context object in Node.js](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-context.html) for what context properties you can mock.
+| `mockSignedWebhook` | Use this function to mock a signed webhook. This is a specialized `mockHttpEvent` mock that also signs the payload and adds a signature header needed to verify that the webhook is trustworthy. See [How to Receive and Verify an Incoming Webhook](https://redwoodjs.com/docs/webhooks#how-to-receive-and-verify-an-incoming-webhook) to learn more about signing and verifying webhooks.
+
+
+
+### Functions
+
+### Example
+```typescript
+// api/src/functions/divide/divide.ts
+
+import type { APIGatewayEvent, Context } from 'aws-lambda'
+
+/**
+ * Divide two integers: a dividend and a divisor
+ *
+ * @param { APIGatewayEvent } event - an object which contains information from the invoker.
+ * @param { Context } context - contains information about the invocation function, and execution environment.
+ *
+ * @param @dividend Integer The dividend is required in the event's querystring
+ * @param @divisor Integer The divisor is required in the event's querystring
+ *
+ * @returns a JSON payload containing a message along the dividend, divisor and quotient
+ * @returns an error if the dividend or divisor is missing, or unable to divide the two numbers
+ */
+export const handler = async (event: APIGatewayEvent, _context: Context) => {
+  // sets the default response
+  let statusCode = 200
+  let message = ''
+
+  try {
+
+    // get the two numbers to divide from the event query string
+    const dividend = event.queryStringParameters.dividend
+    const divisor = event.queryStringParameters.divisor
+
+    // make sure the values to divide are provided
+    if (dividend === undefined || divisor === undefined) {
+      statusCode = 400
+      message = `Please specify both a dividend and divisor.`
+      throw Error(message)
+    }
+
+    // divide the two numbers
+    const quotient = parseInt(dividend) / parseInt(divisor)
+    message = `${dividend} / ${divisor} = ${quotient}`
+
+    // check if the numbers could be divided
+    if (quotient === Infinity || isNaN(quotient)) {
+      statusCode = 500
+      message = `Sorry. Could not divide ${dividend} by ${divisor}`
+      throw Error(message)
+    }
+
+    return {
+      statusCode,
+      body: {
+        message,
+        dividend,
+        divisor,
+        quotient,
+      },
+    }
+  } catch (error) {
+    return {
+      statusCode,
+      body: {
+        message: error.message,
+      },
+    }
+  }
+}
+
+```
+
+### Testing a Serverless Function
+
+```javascript
+// api/src/functions/divideBy/divide.test.ts
+
+import { mockHttpEvent } from '@redwoodjs/testing/api'
+import { handler } from './divide'
+
+describe('divide serverless function',  () => {
+  it('divides two numbers successfully', async () => {
+    const httpEvent = mockHttpEvent({
+      queryStringParameters: {
+        dividend: '20',
+        divisor: '5',
+      },
+    })
+
+    const result = await handler(httpEvent, null)
+    const body = result.body
+
+    expect(result.statusCode).toBe(200)
+    expect(body.message).toContain('=')
+    expect(body.quotient).toEqual(4)
+  })
+
+  it('requires a dividend', async () => {
+    const httpEvent = mockHttpEvent({
+      queryStringParameters: {
+        divisor: '0',
+      },
+    })
+
+    const result = await handler(httpEvent, null)
+    const body = result.body
+    expect(result.statusCode).toBe(400)
+    expect(body.message).toContain('Please specify both')
+    expect(body.quotient).toBeUndefined
+  })
+
+  it('requires a divisor', async () => {
+    const httpEvent = mockHttpEvent({
+      queryStringParameters: {
+        dividend: '10',
+      },
+    })
+
+    const result = await handler(httpEvent, null)
+    const body = result.body
+
+    expect(result.statusCode).toBe(400)
+    expect(body.message).toContain('Please specify both')
+    expect(body.quotient).toBeUndefined
+  })
+
+  it('cannot divide by 0', async () => {
+    const httpEvent = mockHttpEvent({
+      queryStringParameters: {
+        dividend: '20',
+        divisor: '0',
+      },
+    })
+
+    const result = await handler(httpEvent, null)
+    const body = result.body
+
+    expect(result.statusCode).toBe(500)
+    expect(body.message).toContain('Could not divide')
+    expect(body.quotient).toBeUndefined
+  })
+})
+
+```
+
+### Webhooks
+
+
+### Webhook Example
+
+```js
+// /api/db/schema.prisma
+
+model Order {
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  trackingNumber String
+  status         String   @default("UNKNOWN")
+
+  @@unique([trackingNumber, status])
+}
+```
+
+
+```ts
+import type { APIGatewayEvent } from 'aws-lambda'
+import {
+  verifyEvent,
+  VerifyOptions,
+  WebhookVerificationError,
+} from '@redwoodjs/api/webhooks'
+import { db } from 'src/lib/db'
+
+/**
+ * The handler function is your code that processes http request events.
+ * You can use return and throw to send a response or error, respectively.
+ *
+ * Important: When deployed, a custom serverless function is an open API endpoint and
+ * is your responsibility to secure appropriately.
+ *
+ * @see {@link https://redwoodjs.com/docs/serverless-functions#security-considerations|Serverless Function Considerations}
+ * in the RedwoodJS documentation for more information.
+ *
+ * @typedef { import('aws-lambda').APIGatewayEvent } APIGatewayEvent
+ * @typedef { import('aws-lambda').Context } Context
+ * @param { APIGatewayEvent } event - an object which contains information from the invoker.
+ * @param { Context } context - contains information about the invocation,
+ * function, and execution environment.
+ */
+
+export const handler = async (event: APIGatewayEvent) => {
+  let currentOrderStatus = 'UNKNOWN'
+
+  try {
+    const options = {
+      signatureHeader: 'X-Webhook-Signature',
+    } as VerifyOptions
+
+    verifyEvent('sha256Verifier', {
+      event,
+      secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME',
+      options,
+    })
+
+    // Safely use the validated webhook payload body
+    const body = JSON.parse(event.body)
+    const trackingNumber = body.trackingNumber
+    const status = body.status
+
+    // You can only update the status if the order's current status allows
+    switch(status) {
+      case 'PLACED':
+        currentOrderStatus = 'UNKNOWN'
+        break
+      case 'SHIPPED':
+        currentOrderStatus = 'PLACED'
+        break
+      case 'DELIVERED':
+        currentOrderStatus = 'SHIPPED'
+        break
+      default:
+        currentOrderStatus = 'UNKNOWN'
+    }
+
+    // updated the order with the new status using the trackingNumber provided
+    const order = await db.order.update({
+      where: { trackingNumber_status: {trackingNumber, status: currentOrderStatus }},
+      data: { status: status },
+    })
+
+    return {
+      statusCode: 200, // Success!!!
+      body: JSON.stringify({
+        order,
+        message: `Updated order ${order.id} to ${order.status} at ${order.updatedAt}`
+      }),
+    }
+  } catch (error) {
+    if (error instanceof WebhookVerificationError) {
+      return {
+        statusCode: 401, // Unauthorized
+      }
+    } else {
+      return {
+        statusCode: 500, // An error
+        body: JSON.stringify({
+          error: error.message,
+          message: `Unable to update the order status`
+        }),
+      }
+    }
+  }
+}
+```
+
+### Testing a Webhook
+
+#### Webhook Test Scenarios
+
+```ts
+// api/src/functions/updateOrderStatus/updateOrderStatus.scenarios.ts
+
+export const standard = defineScenario({
+  order: {
+    placed: { trackingNumber: '1ZP1LC3D0Rd3R000001', status: 'PLACED' },
+    shipped: { trackingNumber: '1ZSH1PP3D000002', status: 'SHIPPED' },
+    delivered: { trackingNumber: '1ZD31IV3R3D000003', status: 'DELIVERED' },
+  },
+})
+```
+
+#### Webhook Test
+
+```ts
+// api/src/functions/updateOrderStatus/updateOrderStatus.scenarios.ts
+
+import type { APIGatewayEvent, APIGatewayProxyEventHeaders } from 'aws-lambda'
+
+import { mockSignedWebhook } from '@redwoodjs/testing/api'
+import { handler } from './updateOrderStatus'
+
+describe('updates an order via a webhook', () => {
+  scenario('with a shipped order, updates the status to DELIVERED', async (scenario) => {
+    const order = scenario.order.shipped
+
+    const payload = {trackingNumber: order.trackingNumber, status: 'DELIVERED'}
+    const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
+                       signatureHeader: 'X-Webhook-Signature',
+                       secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
+
+    const result = await handler(event)
+    const body = JSON.parse(result.body)
+
+    expect(result.statusCode).toBe(200)
+    expect(body.message).toContain(`Updated order ${order.id}`)
+    expect(body.message).toContain(`to ${payload.status}`)
+    expect(body.order.id).toEqual(order.id)
+    expect(body.order.status).toEqual(payload.status)
+  })
+
+  scenario('with an invalid signature header, the webhook is unauthorized', async (scenario) => {
+    const order = scenario.order.placed
+
+    const payload = {trackingNumber: order.trackingNumber, status: 'DELIVERED'}
+    const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
+                       signatureHeader: 'X-Webhook-Signature-Invalid',
+                       secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
+
+    const result = await handler(event)
+
+    expect(result.statusCode).toBe(401)
+  })
+
+  scenario('with the wrong webhook secret the webhook is unauthorized', async (scenario) => {
+    const order = scenario.order.placed
+
+    const payload = {trackingNumber: order.trackingNumber, status: 'DELIVERED'}
+    const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
+                       signatureHeader: 'X-Webhook-Signature',
+                       secret: 'MY-NAME-IS-WERNER-BRANDES-VERIFY-ME' })
+
+    const result = await handler(event)
+
+    expect(result.statusCode).toBe(401)
+  })
+
+  scenario('when the tracking number cannot be found, returns an error', async (scenario) => {
+    const order = scenario.order.placed
+
+    const payload = {trackingNumber: '1Z-DOES-NOT-EXIST', status: 'DELIVERED'}
+    const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
+                       signatureHeader: 'X-Webhook-Signature',
+                       secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
+
+    const result = await handler(event)
+
+    const body = JSON.parse(result.body)
+
+    expect(result.statusCode).toBe(500)
+    expect(body).toHaveProperty('error')
+  })
+
+  scenario('when the order has not yet shipped, returns an error', async (scenario) => {
+    const order = scenario.order.placed
+
+    const payload = {trackingNumber: order.trackingNumber, status: 'DELIVERED'}
+    const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
+                       signatureHeader: 'X-Webhook-Signature',
+                       secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
+
+    const result = await handler(event)
+
+    const body = JSON.parse(result.body)
+
+    expect(result.statusCode).toBe(500)
+    expect(body).toHaveProperty('error')
+    expect(body.message).toEqual('Unable to update the order status')
+  })
+
+
+  scenario('when the order has already been delivered, returns an error', async (scenario) => {
+    const order = scenario.order.delivered
+
+    const payload = {trackingNumber: order.trackingNumber, status: 'DELIVERED'}
+    const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
+                       signatureHeader: 'X-Webhook-Signature',
+                       secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
+
+    const result = await handler(event)
+
+    const body = JSON.parse(result.body)
+
+    expect(result.statusCode).toBe(500)
+    expect(body).toHaveProperty('error')
+    expect(body.message).toEqual('Unable to update the order status')
+  })
+})
+```
+
 ## Security considerations
 
 When deployed, **a custom serverless function is an open API endpoint and is your responsibility to secure appropriately**. 🔐
