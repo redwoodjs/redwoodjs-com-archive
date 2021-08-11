@@ -59,9 +59,8 @@ To help you mock the `event` and `context` information, we've provided several a
 
 
 
-### Functions
+### Testing Serverless Functions
 
-### Example
 ```typescript
 // api/src/functions/divide/divide.ts
 
@@ -129,7 +128,7 @@ export const handler = async (event: APIGatewayEvent, _context: Context) => {
 
 ```
 
-### Testing a Serverless Function
+#### Serverless Function Unit Tests
 
 ```javascript
 // api/src/functions/divideBy/divide.test.ts
@@ -202,10 +201,8 @@ describe('divide serverless function',  () => {
 
 ```
 
-### Webhooks
+### Testing Webhooks
 
-
-### Webhook Example
 
 ```js
 // /api/db/schema.prisma
@@ -313,9 +310,7 @@ export const handler = async (event: APIGatewayEvent) => {
 }
 ```
 
-### Testing a Webhook
-
-#### Webhook Test Scenarios
+##### Webhook Test Scenarios
 
 ```ts
 // api/src/functions/updateOrderStatus/updateOrderStatus.scenarios.ts
@@ -329,7 +324,7 @@ export const standard = defineScenario({
 })
 ```
 
-#### Webhook Test
+#### Webhook Unit Tests
 
 ```ts
 // api/src/functions/updateOrderStatus/updateOrderStatus.scenarios.ts
