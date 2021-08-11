@@ -310,7 +310,7 @@ export const handler = async (event: APIGatewayEvent) => {
 }
 ```
 
-##### Webhook Test Scenarios
+#### Webhook Test Scenarios
 
 ```ts
 // api/src/functions/updateOrderStatus/updateOrderStatus.scenarios.ts
