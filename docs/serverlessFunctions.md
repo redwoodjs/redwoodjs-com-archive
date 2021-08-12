@@ -1,14 +1,6 @@
 # Serverless Functions
 <!-- `redwood.toml`&mdash;`api/src/functions` by default.  -->
 
-> ⚠ **Work in Progress** ⚠️
->
-> There's more to document here. In the meantime, you can check our [community forum](https://community.redwoodjs.com/search?q=serverless%20functions) for answers.
->
-> Want to contribute? Redwood welcomes contributions and loves helping people become contributors.
-> You can edit this doc [here](https://github.com/redwoodjs/redwoodjs.com/blob/main/docs/serverlessFunctions.md). 
-> If you have any questions, just ask for help! We're active on the [forums](https://community.redwoodjs.com/c/contributing/9) and on [discord](https://discord.com/channels/679514959968993311/747258086569541703).
-
 Redwood looks for serverless functions in `api/src/functions`. Each function is mapped to a URI based on its filename. For example, you can find `api/src/functions/graphql.js` at `http://localhost:8911/graphql`.
 
 ## Creating Serverless Functions
@@ -57,9 +49,7 @@ To help you mock the `event` and `context` information, we've provided several a
 | `mockContext` | Use this function to mock the http `context`. Your function handler receives a context object with properties that provide information about the invocation, function, and execution environment. See [AWS Lambda context object in Node.js](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-context.html) for what context properties you can mock.
 | `mockSignedWebhook` | Use this function to mock a signed webhook. This is a specialized `mockHttpEvent` mock that also signs the payload and adds a signature header needed to verify that the webhook is trustworthy. See [How to Receive and Verify an Incoming Webhook](https://redwoodjs.com/docs/webhooks#how-to-receive-and-verify-an-incoming-webhook) to learn more about signing and verifying webhooks.
 
-
-
-### Testing Serverless Functions
+### How to Test Serverless Functions
 
 Let's learn how to test a serverless function by first creating a simple function that divides two numbers.
 
@@ -92,17 +82,6 @@ And, we'll have some error handling to consider the case when either the dividen
 
 import type { APIGatewayEvent } from 'aws-lambda'
 
-/**
- * Divide two integers: a dividend and a divisor
- *
- * @param { APIGatewayEvent } event - an object which contains information from the invoker.
- *
- * @param @dividend Integer The dividend is required in the event's querystring
- * @param @divisor Integer The divisor is required in the event's querystring
- *
- * @returns a JSON payload containing a message along the dividend, divisor and quotient
- * @returns an error if the dividend or divisor is missing, or unable to divide the two numbers
- */
 export const handler = async (event: APIGatewayEvent) => {
   // sets the default response
   let statusCode = 200
@@ -158,9 +137,7 @@ Sure, you could launch a browser or use Curl os some other manual approach and t
 That means we need to write some tests.
 #### Function Unit Tests
 
-To test a serverless function, you create a test file alongside your function.
-
-Since we have our `divide` function in ` api/src/functions/divideBy` we'll create our test script ` api/src/functions/divideBy/divide.test.ts`:
+To test a serverless function, you'll work with the test script associated with the function. You'll find it in the same directory as your function:
 
 ```terminals
 api
@@ -294,15 +271,17 @@ Watch Usage
 
 If the test fails, you can update your function or test script and the test will automatically re-run.
 
-### Testing Webhooks
+### How to Test Webhooks
 
 [Webhooks](https://redwoodjs.com/docs/webhooks#webhooks) are specialized serverless functions that will verify a signature header to ensure you can trust the incoming request and use the payload with confidence.
 
-> Simply put, webhooks are a common way that third-party services notify your RedwoodJS application when an event of interest happens. They are a form of messaging and automation allowing distinct web applications to communicate with each other and send real-time data from one application to another whenever a given event occurs.
+> Note: Want to learn more about webhooks? See a [Detailed discussion of webhooks](https://redwoodjs.com/docs/webhooks) to find out how webhooks can give your app the power to create complex workflows, build one-to-one automation, and sync data between apps.
 
-Because your webhook is typically sent from a third-party's system, manually testing webhooks can be difficult. For one thing, you often have to create some kind of event in their system that will trigger the event -- and you'll often have to do that in a production environment with real data. Second, for each case you'll have to find data that represents each case and issue a hook for each -- which can take a lot of time and is tedious. And also, you'll be using production secrets to sign the payload.
+Because your webhook is typically sent from a third-party's system, manually testing webhooks can be difficult. For one thing, you often have to create some kind of event in their system that will trigger the event -- and you'll often have to do that in a production environment with real data. Second, for each case you'll have to find data that represents each case and issue a hook for each -- which can take a lot of time and is tedious. Also, you'll be using production secrets to sign the payload. And finally, since your third-party needs to send you the incoming webhook you'll most likely have to launch a local tunnel to expose your development machine publicly in order to receive them. 
 
 Instead, we can automate and mock the webhook to contain a signed payload that we can use to test the handler.
+
+By writing these tests, you cam iterate and work on implementing the webhook logic much faster and easier because you don't have to rely on a third party to send you data, or having to setup tunnelling, or triggering events on the external system or service.
 
 In the following example, we'll also have the webhook interact with our app's database, so we can see how we can use scenario testing to create data that the handler can access and modify.
 
@@ -357,23 +336,6 @@ import {
   WebhookVerificationError,
 } from '@redwoodjs/api/webhooks'
 import { db } from 'src/lib/db'
-
-/**
- * The handler function is your code that processes http request events.
- * You can use return and throw to send a response or error, respectively.
- *
- * Important: When deployed, a custom serverless function is an open API endpoint and
- * is your responsibility to secure appropriately.
- *
- * @see {@link https://redwoodjs.com/docs/serverless-functions#security-considerations|Serverless Function Considerations}
- * in the RedwoodJS documentation for more information.
- *
- * @typedef { import('aws-lambda').APIGatewayEvent } APIGatewayEvent
- * @typedef { import('aws-lambda').Context } Context
- * @param { APIGatewayEvent } event - an object which contains information from the invoker.
- * @param { Context } context - contains information about the invocation,
- * function, and execution environment.
- */
 
 export const handler = async (event: APIGatewayEvent) => {
   let currentOrderStatus = 'UNKNOWN'
@@ -483,9 +445,6 @@ In our first scenario, we'll use the shipped order to test that we can update th
 
 ```ts
 // api/src/functions/updateOrderStatus/updateOrderStatus.scenarios.ts
-
-import type { APIGatewayEvent, APIGatewayProxyEventHeaders } from 'aws-lambda'
-
 import { mockSignedWebhook } from '@redwoodjs/testing/api'
 import { handler } from './updateOrderStatus'
 
@@ -582,7 +541,6 @@ Last, we want to test a business rule that says you cannot update an order to be
 Therefore our scenario uses the `scenario.order.delivered` data where the order has a placed status.
 
 > Note: you'll have additional tests here to check that if the order is placed you cannot update it to be delivered and if the order is shipped you cannot update to be placed, etc
-
 
 ```javascript
   scenario('when the order has already been delivered, returns an error', async (scenario) => {
@@ -707,7 +665,7 @@ If the test fails, you can update your function or test script and the test will
 
 ### Webhooks
 
-If your function receives an incoming Webhook from a third party, see [Webhooks](/docs/webhooks) in the RedwoodJS documentation to verify and trust its payload.
+If your function receives an incoming Webhook from a third party, see [Webhooks](https://redwoodjs.com/docs/webhooks) in the RedwoodJS documentation to verify and trust its payload.
 
 ### Other considerations
 
