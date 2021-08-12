@@ -167,8 +167,8 @@ api
 ├── src
 │   ├── functions
 │   │   ├── divide
-│   │   │   ├── divide.test.ts
 │   │   │   ├── divide.ts
+│   │   │   ├── divide.test.ts
 ```
 
 The setup steps are to:
@@ -256,6 +256,19 @@ You can also `mockContext` and pass the mocked `context` to the handler and even
 
 ### Testing Webhooks
 
+[Webhooks](https://redwoodjs.com/docs/webhooks#webhooks) are specialized serverless functions that will verify a signature header to ensure you can trust the incoming request and use the payload with confidence.
+
+> Simply put, webhooks are a common way that third-party services notify your RedwoodJS application when an event of interest happens. They are a form of messaging and automation allowing distinct web applications to communicate with each other and send real-time data from one application to another whenever a given event occurs.
+
+Because your webhook is typically sent from a third-party's system, manually testing webhooks can be difficult. For one thing, you often have to create some kind of event in their system that will trigger the event -- and you'll often have to do that in a production environment with real data. Second, for each case you'll have to find data that represents each case and issue a hook for each -- which can take a lot of time and is tedious. And also, you'll be using production secrets to sign the payload.
+
+Instead, we can automate and mock the webhook to contain a signed payload that we can use to test the handler.
+
+In the following example, we'll also have the webhook interact with our app's database, so we can see how we can use scenario testing to create data that the handler can access and modify.
+
+For our webhook test example, we'll create a webhook that updates a Order's Status by looking up the order by its Tracking Number and then updating the status to by Delivered (if our rules allow it).
+
+Because we'll be interacting with data, our app has an `Order` model defined in the Prisma schema that has a unique `trackingNumber` and `status`:
 
 ```js
 // /api/db/schema.prisma
@@ -264,12 +277,36 @@ model Order {
   id             Int      @id @default(autoincrement())
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  trackingNumber String
+  trackingNumber String   @unique
   status         String   @default("UNKNOWN")
 
   @@unique([trackingNumber, status])
 }
 ```
+
+Our function is called `updateOrderStatus` and exists in the `api/src/functions` directory along with the tests and scenario scripts:
+
+```terminal
+api
+├── src
+│   ├── functions
+│   │   ├── updateOrderStatus
+│   │   │   ├── updateOrderStatus.ts
+│   │   │   ├── updateOrderStatus.scenarios.ts
+│   │   │   ├── updateOrderStatus.test.ts
+
+```
+
+The `updateOrderStatus` webhook will expect:
+
+* a signature header named `X-Webhook-Signature`
+* that the signature in that header will signed using the [SHA256 method](https://redwoodjs.com/docs/webhooks#sha256-verifier-used-by-github-discourse)
+* verify the signature and throw an [401 Unauthorized](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401) error if the event cannot be trusted (that is, it failed signature verification)
+* if verified, then proceed to
+* find the order by the tracking number provided
+* check that the order's current status allows the status to be changed
+* and if so, update the error and return the order and message
+* or if not, return a [500 internal server error](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500) with a message that teh order couldn't be updated
 
 
 ```ts
@@ -365,6 +402,14 @@ export const handler = async (event: APIGatewayEvent) => {
 
 #### Webhook Test Scenarios
 
+Since our `updateOrderStatus` webhook will query an order by its tracking number and then attempt to update its status, we'll want to seed our test run with some scenario data that helps us have records we can use to test that the webhook does what we expect it to in each situation.
+
+Let's create three orders for with different status: places, shipped, and delivered.
+
+We'll use these to test that you cannot update an order to the delivered status unless it is currently "shipped:.
+
+We can refer to these individual orders in our tests as `scenario.order.placed`, `scenario.order.shipped` , or `scenario.order.delivered`.
+
 ```ts
 // api/src/functions/updateOrderStatus/updateOrderStatus.scenarios.ts
 
@@ -378,6 +423,23 @@ export const standard = defineScenario({
 ```
 
 #### Webhook Unit Tests
+
+The webhook test setup needs to:
+
+* import your api testing utilities, such as `mockSignedWebhook`
+* import your function handler
+
+In each test scenario we will:
+
+* get the scenario order data
+* create a webhook payload with a tracking number and a status what we want to change its order to
+* mock and sign the webhook using `mockSignedWebhook` that specifies the verifier method, signature header, and the secret that will verify that signature
+* invoke the handler with the mocked signed event
+* extract the result body (and parse it since it will be JSON data)
+* test that the values match what you expect
+
+
+In our first scenario, we'll use the shipped order to test that we can update the order given a valid tracking number and change its status to delivered:
 
 ```ts
 // api/src/functions/updateOrderStatus/updateOrderStatus.scenarios.ts
@@ -393,12 +455,14 @@ describe('updates an order via a webhook', () => {
 
     const payload = { trackingNumber: order.trackingNumber, 
                       status: 'DELIVERED' }
+
     const event = mockSignedWebhook({ payload, 
                                       signatureType: 'sha256Verifier',
                                       signatureHeader: 'X-Webhook-Signature',
                                       secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
 
     const result = await handler(event)
+
     const body = JSON.parse(result.body)
 
     expect(result.statusCode).toBe(200)
@@ -409,6 +473,11 @@ describe('updates an order via a webhook', () => {
   })
 ```
 
+But, we also want to test what happens if the webhook receives an invalid signature header like `X-Webhook-Signature-Invalid`.
+
+Because the header isn't what the webhook expects (it wants to see a header named `X-Webhook-Signature`), this request is not verified and will return a 401 Unauthorized and not try to update the order at all.
+
+> Note: For brevity we didn't test that the order's status wasn't changed, but that could be checked as well
 
 ```javascript
 
@@ -426,13 +495,16 @@ describe('updates an order via a webhook', () => {
   })
 ```
 
+Next, we test what happens if the event payload is signed, but with a different secret than it expects; that is it was signed using the wrong secret (`MY-NAME-IS-WERNER-BRANDES-VERIFY-ME` and not `MY-VOICE-IS-MY-PASSPORT-VERIFY-ME`).
+
+Again, we expect as 401 Unauthorized response.
 
 ```javascript
 
   scenario('with the wrong webhook secret the webhook is unauthorized', async (scenario) => {
     const order = scenario.order.placed
 
-    const payload = {trackingNumber: order.trackingNumber, status: 'DELIVERED'}
+    const payload = { trackingNumber: order.trackingNumber, status: 'DELIVERED'}
     const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
                        signatureHeader: 'X-Webhook-Signature',
                        secret: 'MY-NAME-IS-WERNER-BRANDES-VERIFY-ME' })
@@ -443,13 +515,14 @@ describe('updates an order via a webhook', () => {
   })
 ```
 
+Next, what happens if the order cannot be found? We'll try a tracking number that doesn't exist (that is we did not create it in our scenario order data):
 
 ```javascript
 
   scenario('when the tracking number cannot be found, returns an error', async (scenario) => {
     const order = scenario.order.placed
 
-    const payload = {trackingNumber: '1Z-DOES-NOT-EXIST', status: 'DELIVERED'}
+    const payload = { trackingNumber: '1Z-DOES-NOT-EXIST', status: 'DELIVERED' }
     const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
                        signatureHeader: 'X-Webhook-Signature',
                        secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
@@ -464,6 +537,11 @@ describe('updates an order via a webhook', () => {
 
 ```
 
+Last, we want to test a business rule that says you cannot update an order to be delivered if it already is delivered
+
+Therefore our scenario uses the `scenario.order.delivered` data where the order has a placed status.
+
+> Note: you'll have additional tests here to check that if the order is placed you cannot update it to be delivered and if the order is shipped you cannot update to be placed, etc
 
 
 ```javascript
@@ -485,6 +563,8 @@ describe('updates an order via a webhook', () => {
   })
 })
 ```
+
+As with other serverless function testing, ou can also `mockContext` and pass the mocked context to the handler if yur webhook requires that information.
 
 ## Security considerations
 
