@@ -61,16 +61,41 @@ To help you mock the `event` and `context` information, we've provided several a
 
 ### Testing Serverless Functions
 
+Let's learn how to test a serverless function by first creating a simple function that divides two numbers.
+
+As with all serverless lambda functions, the handler accepts an `APIGatewayEvent` which contains information from the invoker. 
+That means it will have the HTTP headers, the querystring parameters, the method (GET, POST, PUT, etc), cookies, and the body of the request.
+See [Working with AWS Lambda proxy integrations for HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html) for the payload format.
+
+In our example, we'll create a function called `divide.ts` in `api/src/functions/divide/divide.ts`.
+
+We'll use the querystring to pass the `dividend` and `divisor` to the function handler on the event as seen here to divide 10 by 2.
+
+```terminal
+// request
+http://localhost:8911/divide?dividend=10&divisor=2
+
+```
+
+
+If the function can successfully divide the two numbers, the function returns a body payload back in the response with a [HTTP 200 Success](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200) status:
+
+```terminal
+// response
+{"message":"10 / 2 = 5","dividend":"10","divisor":"2","quotient":5}
+```
+
+And, we'll have some error handling to consider the case when either the dividend or divisor is missing and return a [HTTP 400 Bad Request](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400) status code; or, if we try to divide by zero or something else goes wrong, we return a [500  Internal Server Error](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500).
+
 ```typescript
 // api/src/functions/divide/divide.ts
 
-import type { APIGatewayEvent, Context } from 'aws-lambda'
+import type { APIGatewayEvent } from 'aws-lambda'
 
 /**
  * Divide two integers: a dividend and a divisor
  *
  * @param { APIGatewayEvent } event - an object which contains information from the invoker.
- * @param { Context } context - contains information about the invocation function, and execution environment.
  *
  * @param @dividend Integer The dividend is required in the event's querystring
  * @param @divisor Integer The divisor is required in the event's querystring
@@ -78,7 +103,7 @@ import type { APIGatewayEvent, Context } from 'aws-lambda'
  * @returns a JSON payload containing a message along the dividend, divisor and quotient
  * @returns an error if the dividend or divisor is missing, or unable to divide the two numbers
  */
-export const handler = async (event: APIGatewayEvent, _context: Context) => {
+export const handler = async (event: APIGatewayEvent) => {
   // sets the default response
   let statusCode = 200
   let message = ''
@@ -128,7 +153,36 @@ export const handler = async (event: APIGatewayEvent, _context: Context) => {
 
 ```
 
-#### Serverless Function Unit Tests
+Sure, you could launch a browser or use Curl os some other manual approach and try out various combinations to test the success and error cases, but we want to automate the tests as part of our app's CI.
+
+That means we need to write some tests.
+#### Function Unit Tests
+
+To test a serverless function, you create a test file alongside your function.
+
+Since we have our `divide` function in ` api/src/functions/divideBy` we'll create our test script ` api/src/functions/divideBy/divide.test.ts`:
+
+```terminals
+api
+├── src
+│   ├── functions
+│   │   ├── divide
+│   │   │   ├── divide.test.ts
+│   │   │   ├── divide.ts
+```
+
+The setup steps are to:
+
+* import your api testing utilities, such as `mockHttpEvent`
+* import your function handler
+* write your test cases by mocking the event to contain the information you want to give the handler
+* invoke the handler with the mocked event
+* extract the result body
+* test that the values match what you expect
+
+Let's look at a series of tests that mock the event with different information in each.
+
+First, let's write a test that divides 20 by 5 and we'll expect to get 4 as the quotient:
 
 ```javascript
 // api/src/functions/divideBy/divide.test.ts
@@ -152,11 +206,16 @@ describe('divide serverless function',  () => {
     expect(body.message).toContain('=')
     expect(body.quotient).toEqual(4)
   })
+```
 
+Then we can also add a test to handle the error when we don't provide a dividend:
+
+```javascript
+  // api/src/functions/divideBy/divide.test.ts
   it('requires a dividend', async () => {
     const httpEvent = mockHttpEvent({
       queryStringParameters: {
-        divisor: '0',
+        divisor: '5',
       },
     })
 
@@ -167,21 +226,11 @@ describe('divide serverless function',  () => {
     expect(body.quotient).toBeUndefined
   })
 
-  it('requires a divisor', async () => {
-    const httpEvent = mockHttpEvent({
-      queryStringParameters: {
-        dividend: '10',
-      },
-    })
+```
 
-    const result = await handler(httpEvent, null)
-    const body = result.body
+And finally, we can also add a test to handle the error when we try to divide by 0:
 
-    expect(result.statusCode).toBe(400)
-    expect(body.message).toContain('Please specify both')
-    expect(body.quotient).toBeUndefined
-  })
-
+```javascript
   it('cannot divide by 0', async () => {
     const httpEvent = mockHttpEvent({
       queryStringParameters: {
@@ -200,6 +249,10 @@ describe('divide serverless function',  () => {
 })
 
 ```
+
+The `divide` function is a simple example, but you can use the `mockHttpEvent` to set any event values you handler needs to test more complex functions.
+
+You can also `mockContext` and pass the mocked `context` to the handler and even create scenario data if your function interacts with your database. For an example of using scenarios when test functions, let's look at a specialized serverless function: the webhook.
 
 ### Testing Webhooks
 
@@ -338,10 +391,12 @@ describe('updates an order via a webhook', () => {
   scenario('with a shipped order, updates the status to DELIVERED', async (scenario) => {
     const order = scenario.order.shipped
 
-    const payload = {trackingNumber: order.trackingNumber, status: 'DELIVERED'}
-    const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
-                       signatureHeader: 'X-Webhook-Signature',
-                       secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
+    const payload = { trackingNumber: order.trackingNumber, 
+                      status: 'DELIVERED' }
+    const event = mockSignedWebhook({ payload, 
+                                      signatureType: 'sha256Verifier',
+                                      signatureHeader: 'X-Webhook-Signature',
+                                      secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
 
     const result = await handler(event)
     const body = JSON.parse(result.body)
@@ -352,6 +407,10 @@ describe('updates an order via a webhook', () => {
     expect(body.order.id).toEqual(order.id)
     expect(body.order.status).toEqual(payload.status)
   })
+```
+
+
+```javascript
 
   scenario('with an invalid signature header, the webhook is unauthorized', async (scenario) => {
     const order = scenario.order.placed
@@ -365,6 +424,10 @@ describe('updates an order via a webhook', () => {
 
     expect(result.statusCode).toBe(401)
   })
+```
+
+
+```javascript
 
   scenario('with the wrong webhook secret the webhook is unauthorized', async (scenario) => {
     const order = scenario.order.placed
@@ -378,6 +441,10 @@ describe('updates an order via a webhook', () => {
 
     expect(result.statusCode).toBe(401)
   })
+```
+
+
+```javascript
 
   scenario('when the tracking number cannot be found, returns an error', async (scenario) => {
     const order = scenario.order.placed
@@ -395,24 +462,11 @@ describe('updates an order via a webhook', () => {
     expect(body).toHaveProperty('error')
   })
 
-  scenario('when the order has not yet shipped, returns an error', async (scenario) => {
-    const order = scenario.order.placed
-
-    const payload = {trackingNumber: order.trackingNumber, status: 'DELIVERED'}
-    const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
-                       signatureHeader: 'X-Webhook-Signature',
-                       secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
-
-    const result = await handler(event)
-
-    const body = JSON.parse(result.body)
-
-    expect(result.statusCode).toBe(500)
-    expect(body).toHaveProperty('error')
-    expect(body.message).toEqual('Unable to update the order status')
-  })
+```
 
 
+
+```javascript
   scenario('when the order has already been delivered, returns an error', async (scenario) => {
     const order = scenario.order.delivered
 
