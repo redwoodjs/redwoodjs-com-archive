@@ -1368,6 +1368,18 @@ Only the posts scenarios will be present in the database when running the `posts
 
 During the run of any single test, there is only every one scenario's worth of data present in the database: users.standard *or* users.incomplete.
 
+## Testing Functions
+
+Testing serverless functions and webhooks can be difficult and time-consuming because you have to construct the event and context information that the function handler needs. 
+
+Webhook testing is even more complex because you might need to open a http tunnel to a running dev server to accept in incoming request, and you'll have to sign the webhook payload so that the request is trusted, and then you might even trigger events from your third-party service ... all manually. Every. Time.
+
+Luckily, RedwoodJS has several api testing utilities to make testing functions and webhooks a breeze -- and without having to run a dev server.
+
+> Want to learn to [How to Test Serverless Functions](https://redwoodjs.com/docs/serverless-functions#how-to-test-serverless-functions) and [Webhooks](https://?redwoodjs.com/docs/serverless-functions#how-to-test-webhooks)?
+> 
+> We have an entire testing section in the [Serverless Functions documentation](https://redwoodjs.com/docs/serverless-functions) that will walk your through an example of a function and a webhook.
+
 ## Wrapping Up
 
 So that's the world of testing according to Redwood. Did we miss anything? Can we make it even more awesome? Stop by [the community](https://community.redwoodjs.com) and ask questions, or if you've thought of a way to make this doc even better then [open a PR](https://github.com/redwoodjs/redwoodjs.com/pulls).
