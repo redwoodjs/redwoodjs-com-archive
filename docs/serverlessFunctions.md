@@ -254,6 +254,46 @@ The `divide` function is a simple example, but you can use the `mockHttpEvent` t
 
 You can also `mockContext` and pass the mocked `context` to the handler and even create scenario data if your function interacts with your database. For an example of using scenarios when test functions, let's look at a specialized serverless function: the webhook.
 
+#### Running Function Tests
+
+To run an individual serverless function test:
+
+```terminal
+// cd into `api/src/divide/divide`
+yarn rw test divide.test.ts    
+```
+
+When the test run completes (and succeeds), you see the results:
+
+```terminal
+ PASS   api  api/src/functions/divide/divide.test.ts (12.69 s)
+  divide serverless function
+    ✓ divides two numbers successfully (153 ms)
+    ✓ requires a dividend (48 ms)
+    ✓ requires a divisor (45 ms)
+    ✓ cannot divide by 0 (47 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       4 passed, 4 total
+Snapshots:   0 total
+Time:        13.155 s
+Ran all test suites matching /divide.test.ts|divide.test.ts|false/i.
+
+Active Filters: filename /divide.test.ts|divide.test.ts|false/
+ › Press c to clear filters.
+
+Watch Usage
+ › Press a to run all tests.
+ › Press f to run only failed tests.
+ › Press o to only run tests related to changed files.
+ › Press p to filter by a filename regex pattern.
+ › Press t to filter by a test name regex pattern.
+ › Press q to quit watch mode.
+ › Press Enter to trigger a test run.
+```
+
+If the test fails, you can update your function or test script and the test will automatically re-run.
+
 ### Testing Webhooks
 
 [Webhooks](https://redwoodjs.com/docs/webhooks#webhooks) are specialized serverless functions that will verify a signature header to ensure you can trust the incoming request and use the payload with confidence.
@@ -622,6 +662,48 @@ export const handler = async (event, context) => {
   }
 }
 ```
+
+#### Running Webhook Tests
+
+To run an individual webhook test:
+
+```terminal
+// cd into `api/src/functions/updateOrderStatus`
+yarn rw test updateOrderStatus.test.ts
+```
+
+When the test run completes (and succeeds), you see the results:
+
+```terminal
+ PASS   api  api/src/functions/updateOrderStatus/updateOrderStatus.test.ts (10.3 s)
+  updates an order via a webhook
+    ✓ with a shipped order, updates the status to DELIVERED (549 ms)
+    ✓ with an invalid signature header, the webhook is unauthorized (51 ms)
+    ✓ with the wrong webhook secret the webhook is unauthorized (44 ms)
+    ✓ when the tracking number cannot be found, returns an error (54 ms)
+    ✓ when the order has not yet shipped, returns an error (57 ms)
+    ✓ when the order has already been delivered, returns an error (73 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       6 passed, 6 total
+Snapshots:   0 total
+Time:        10.694 s, estimated 36 s
+Ran all test suites matching /updateOrderStatus.test.ts|updateOrderStatus.test.ts|false/i.
+
+Active Filters: filename /updateOrderStatus.test.ts|updateOrderStatus.test.ts|false/
+ › Press c to clear filters.
+
+Watch Usage
+ › Press a to run all tests.
+ › Press f to run only failed tests.
+ › Press o to only run tests related to changed files.
+ › Press p to filter by a filename regex pattern.
+ › Press t to filter by a test name regex pattern.
+ › Press q to quit watch mode.
+ › Press Enter to trigger a test run.
+```
+
+If the test fails, you can update your function or test script and the test will automatically re-run.
 
 ### Webhooks
 
