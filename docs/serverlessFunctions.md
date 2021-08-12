@@ -57,16 +57,18 @@ As with all serverless lambda functions, the handler accepts an `APIGatewayEvent
 That means it will have the HTTP headers, the querystring parameters, the method (GET, POST, PUT, etc), cookies, and the body of the request.
 See [Working with AWS Lambda proxy integrations for HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html) for the payload format.
 
-In our example, we'll create a function called `divide.ts` in `api/src/functions/divide/divide.ts`.
+Let's generate our function:
+
+```terminal
+yarn rw generate function divide
+```
 
 We'll use the querystring to pass the `dividend` and `divisor` to the function handler on the event as seen here to divide 10 by 2.
 
 ```terminal
 // request
 http://localhost:8911/divide?dividend=10&divisor=2
-
 ```
-
 
 If the function can successfully divide the two numbers, the function returns a body payload back in the response with a [HTTP 200 Success](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200) status:
 
@@ -76,6 +78,7 @@ If the function can successfully divide the two numbers, the function returns a 
 ```
 
 And, we'll have some error handling to consider the case when either the dividend or divisor is missing and return a [HTTP 400 Bad Request](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400) status code; or, if we try to divide by zero or something else goes wrong, we return a [500  Internal Server Error](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500).
+
 
 ```typescript
 // api/src/functions/divide/divide.ts
@@ -236,8 +239,7 @@ You can also `mockContext` and pass the mocked `context` to the handler and even
 To run an individual serverless function test:
 
 ```terminal
-// cd into `api/src/divide/divide`
-yarn rw test divide.test.ts    
+yarn rw test api divide 
 ```
 
 When the test run completes (and succeeds), you see the results:
@@ -255,18 +257,6 @@ Tests:       4 passed, 4 total
 Snapshots:   0 total
 Time:        13.155 s
 Ran all test suites matching /divide.test.ts|divide.test.ts|false/i.
-
-Active Filters: filename /divide.test.ts|divide.test.ts|false/
- › Press c to clear filters.
-
-Watch Usage
- › Press a to run all tests.
- › Press f to run only failed tests.
- › Press o to only run tests related to changed files.
- › Press p to filter by a filename regex pattern.
- › Press t to filter by a test name regex pattern.
- › Press q to quit watch mode.
- › Press Enter to trigger a test run.
 ```
 
 If the test fails, you can update your function or test script and the test will automatically re-run.
@@ -275,15 +265,18 @@ If the test fails, you can update your function or test script and the test will
 
 [Webhooks](https://redwoodjs.com/docs/webhooks#webhooks) are specialized serverless functions that will verify a signature header to ensure you can trust the incoming request and use the payload with confidence.
 
-> Note: Want to learn more about webhooks? See a [Detailed discussion of webhooks](https://redwoodjs.com/docs/webhooks) to find out how webhooks can give your app the power to create complex workflows, build one-to-one automation, and sync data between apps.
+> **Note:** Want to learn more about webhooks? See a [Detailed discussion of webhooks](https://redwoodjs.com/docs/webhooks) to find out how webhooks can give your app the power to create complex workflows, build one-to-one automation, and sync data between apps.
 
-Because your webhook is typically sent from a third-party's system, manually testing webhooks can be difficult. For one thing, you often have to create some kind of event in their system that will trigger the event -- and you'll often have to do that in a production environment with real data. Second, for each case you'll have to find data that represents each case and issue a hook for each -- which can take a lot of time and is tedious. Also, you'll be using production secrets to sign the payload. And finally, since your third-party needs to send you the incoming webhook you'll most likely have to launch a local tunnel to expose your development machine publicly in order to receive them. 
+In the following example, we'll have the webhook interact with our app's database, so we can see how we can use **scenario testing** to create data that the handler can access and modify.
 
-Instead, we can automate and mock the webhook to contain a signed payload that we can use to test the handler.
+>Why testing webhooks is hard
+>
+>Because your webhook is typically sent from a third-party's system, manually testing webhooks can be difficult. For one thing, you often have to create some kind of event in their system that will trigger the event -- and you'll often have to do that in a production environment with real data. Second, for each case you'll have to find data that represents each case and issue a hook for each -- which can take a lot of time and is tedious. Also, you'll be using production secrets to sign the payload. And finally, since your third-party needs to send you the incoming webhook you'll most likely have to launch a local tunnel to expose your development machine publicly in order to receive them. 
+>
+>Instead, we can automate and mock the webhook to contain a signed payload that we can use to test the handler.
+>
+> By writing these tests, you can iterate and implement the webhook logic much faster and easier without having to rely on a third party to send you data, or setting up tunnelling, or triggering events on the external system.
 
-By writing these tests, you cam iterate and work on implementing the webhook logic much faster and easier because you don't have to rely on a third party to send you data, or having to setup tunnelling, or triggering events on the external system or service.
-
-In the following example, we'll also have the webhook interact with our app's database, so we can see how we can use scenario testing to create data that the handler can access and modify.
 
 For our webhook test example, we'll create a webhook that updates a Order's Status by looking up the order by its Tracking Number and then updating the status to by Delivered (if our rules allow it).
 
@@ -303,7 +296,11 @@ model Order {
 }
 ```
 
-Our function is called `updateOrderStatus` and exists in the `api/src/functions` directory along with the tests and scenario scripts:
+Let's generate our webhook function:
+
+```terminal
+yarn rw generate function updateOrderStatus
+```
 
 ```terminal
 api
@@ -406,7 +403,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
 Since our `updateOrderStatus` webhook will query an order by its tracking number and then attempt to update its status, we'll want to seed our test run with some scenario data that helps us have records we can use to test that the webhook does what we expect it to in each situation.
 
-Let's create three orders for with different status: places, shipped, and delivered.
+Let's create three orders for with different status:  `PLACED`, `SHIPPED`, and `DELIVERED`.
 
 We'll use these to test that you cannot update an order to the delivered status unless it is currently "shipped:.
 
@@ -564,6 +561,35 @@ Therefore our scenario uses the `scenario.order.delivered` data where the order 
 
 As with other serverless function testing, ou can also `mockContext` and pass the mocked context to the handler if yur webhook requires that information.
 
+#### Running Webhook Tests
+
+To run an individual webhook test:
+
+```terminal
+yarn rw test api updateOrderStatus
+```
+
+When the test run completes (and succeeds), you see the results:
+
+```terminal
+ PASS   api  api/src/functions/updateOrderStatus/updateOrderStatus.test.ts (10.3 s)
+  updates an order via a webhook
+    ✓ with a shipped order, updates the status to DELIVERED (549 ms)
+    ✓ with an invalid signature header, the webhook is unauthorized (51 ms)
+    ✓ with the wrong webhook secret the webhook is unauthorized (44 ms)
+    ✓ when the tracking number cannot be found, returns an error (54 ms)
+    ✓ when the order has not yet shipped, returns an error (57 ms)
+    ✓ when the order has already been delivered, returns an error (73 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       6 passed, 6 total
+Snapshots:   0 total
+Time:        10.694 s, estimated 36 s
+Ran all test suites matching /updateOrderStatus.test.ts|updateOrderStatus.test.ts|false/i.
+```
+
+If the test fails, you can update your function or test script and the test will automatically re-run.
+
 ## Security considerations
 
 When deployed, **a custom serverless function is an open API endpoint and is your responsibility to secure appropriately**. 🔐
@@ -620,49 +646,6 @@ export const handler = async (event, context) => {
   }
 }
 ```
-
-#### Running Webhook Tests
-
-To run an individual webhook test:
-
-```terminal
-// cd into `api/src/functions/updateOrderStatus`
-yarn rw test updateOrderStatus.test.ts
-```
-
-When the test run completes (and succeeds), you see the results:
-
-```terminal
- PASS   api  api/src/functions/updateOrderStatus/updateOrderStatus.test.ts (10.3 s)
-  updates an order via a webhook
-    ✓ with a shipped order, updates the status to DELIVERED (549 ms)
-    ✓ with an invalid signature header, the webhook is unauthorized (51 ms)
-    ✓ with the wrong webhook secret the webhook is unauthorized (44 ms)
-    ✓ when the tracking number cannot be found, returns an error (54 ms)
-    ✓ when the order has not yet shipped, returns an error (57 ms)
-    ✓ when the order has already been delivered, returns an error (73 ms)
-
-Test Suites: 1 passed, 1 total
-Tests:       6 passed, 6 total
-Snapshots:   0 total
-Time:        10.694 s, estimated 36 s
-Ran all test suites matching /updateOrderStatus.test.ts|updateOrderStatus.test.ts|false/i.
-
-Active Filters: filename /updateOrderStatus.test.ts|updateOrderStatus.test.ts|false/
- › Press c to clear filters.
-
-Watch Usage
- › Press a to run all tests.
- › Press f to run only failed tests.
- › Press o to only run tests related to changed files.
- › Press p to filter by a filename regex pattern.
- › Press t to filter by a test name regex pattern.
- › Press q to quit watch mode.
- › Press Enter to trigger a test run.
-```
-
-If the test fails, you can update your function or test script and the test will automatically re-run.
-
 ### Webhooks
 
 If your function receives an incoming Webhook from a third party, see [Webhooks](https://redwoodjs.com/docs/webhooks) in the RedwoodJS documentation to verify and trust its payload.
