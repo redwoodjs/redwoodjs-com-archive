@@ -181,6 +181,7 @@ The setup steps are to:
 * invoke the handler with the mocked event
 * extract the result body
 * test that the values match what you expect
+
 The boilerplate steps are generated automatically for you by the function generator
 Let's look at a series of tests that mock the event with different information in each.
 
@@ -293,7 +294,9 @@ In the following example, we'll have the webhook interact with our app's databas
 
 > **Why testing webhooks is hard**
 >
->Because your webhook is typically sent from a third-party's system, manually testing webhooks can be difficult. For one thing, you often have to create some kind of event in their system that will trigger the event -- and you'll often have to do that in a production environment with real data. Second, for each case you'll have to find data that represents each case and issue a hook for each -- which can take a lot of time and is tedious. Also, you'll be using production secrets to sign the payload. And finally, since your third-party needs to send you the incoming webhook you'll most likely have to launch a local tunnel to expose your development machine publicly in order to receive them.
+>Because your webhook is typically sent from a third-party's system, manually testing webhooks can be difficult. For one thing, you often have to create some kind of event in their system that will trigger the event -- and you'll often have to do that in a production environment with real data. Second, for each case you'll have to find data that represents each case and issue a hook for each -- which can take a lot of time and is tedious. 
+>
+>Also, you'll be using production secrets to sign the payload. And finally, since your third-party needs to send you the incoming webhook you'll most likely have to launch a local tunnel to expose your development machine publicly in order to receive them.
 >
 >Instead, we can automate and mock the webhook to contain a signed payload that we can use to test the handler.
 >
@@ -392,7 +395,8 @@ export const handler = async (event: APIGatewayEvent) => {
 
     // updated the order with the new status using the trackingNumber provided
     const order = await db.order.update({
-      where: { trackingNumber_status: {trackingNumber, status: currentOrderStatus }},
+      where: { trackingNumber_status: { trackingNumber, 
+                                        status: currentOrderStatus }},
       data: { status: status },
     })
 
@@ -468,16 +472,18 @@ import { mockSignedWebhook } from '@redwoodjs/testing/api'
 import { handler } from './updateOrderStatus'
 
 describe('updates an order via a webhook', () => {
-  scenario('with a shipped order, updates the status to DELIVERED', async (scenario) => {
+  scenario('with a shipped order, updates the status to DELIVERED', 
+            async (scenario) => {
+
     const order = scenario.order.shipped
 
     const payload = { trackingNumber: order.trackingNumber,
                       status: 'DELIVERED' }
 
     const event = mockSignedWebhook({ payload,
-                                      signatureType: 'sha256Verifier',
-                                      signatureHeader: 'X-Webhook-Signature',
-                                      secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
+                      signatureType: 'sha256Verifier',
+                      signatureHeader: 'X-Webhook-Signature',
+                      secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
 
     const result = await handler(event)
 
@@ -499,13 +505,16 @@ Because the header isn't what the webhook expects (it wants to see a header name
 
 ```javascript
 
-  scenario('with an invalid signature header, the webhook is unauthorized', async (scenario) => {
+  scenario('with an invalid signature header, the webhook is unauthorized', 
+            async (scenario) => {
     const order = scenario.order.placed
 
-    const payload = {trackingNumber: order.trackingNumber, status: 'DELIVERED'}
-    const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
-                       signatureHeader: 'X-Webhook-Signature-Invalid',
-                       secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
+    const payload = { trackingNumber: order.trackingNumber, 
+                      status: 'DELIVERED' }
+    const event = mockSignedWebhook({ payload, 
+                      signatureType: 'sha256Verifier',
+                      signatureHeader: 'X-Webhook-Signature-Invalid',
+                      secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
 
     const result = await handler(event)
 
@@ -519,13 +528,16 @@ Again, we expect as 401 Unauthorized response.
 
 ```javascript
 
-  scenario('with the wrong webhook secret the webhook is unauthorized', async (scenario) => {
+  scenario('with the wrong webhook secret the webhook is unauthorized', 
+            async (scenario) => {
     const order = scenario.order.placed
 
-    const payload = { trackingNumber: order.trackingNumber, status: 'DELIVERED'}
-    const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
-                       signatureHeader: 'X-Webhook-Signature',
-                       secret: 'MY-NAME-IS-WERNER-BRANDES-VERIFY-ME' })
+    const payload = { trackingNumber: order.trackingNumber, 
+                      status: 'DELIVERED' }
+    const event = mockSignedWebhook({payload, 
+                      signatureType: 'sha256Verifier',
+                      signatureHeader: 'X-Webhook-Signature',
+                      secret: 'MY-NAME-IS-WERNER-BRANDES-VERIFY-ME' })
 
     const result = await handler(event)
 
@@ -537,13 +549,15 @@ Next, what happens if the order cannot be found? We'll try a tracking number tha
 
 ```javascript
 
-  scenario('when the tracking number cannot be found, returns an error', async (scenario) => {
+  scenario('when the tracking number cannot be found, returns an error', 
+            async (scenario) => {
     const order = scenario.order.placed
 
     const payload = { trackingNumber: '1Z-DOES-NOT-EXIST', status: 'DELIVERED' }
-    const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
-                       signatureHeader: 'X-Webhook-Signature',
-                       secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
+    const event = mockSignedWebhook({payload, 
+                      signatureType: 'sha256Verifier',
+                      signatureHeader: 'X-Webhook-Signature',
+                      secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
 
     const result = await handler(event)
 
@@ -562,13 +576,16 @@ Therefore our scenario uses the `scenario.order.delivered` data where the order 
 > Note: you'll have additional tests here to check that if the order is placed you cannot update it to be delivered and if the order is shipped you cannot update to be placed, etc
 
 ```javascript
-  scenario('when the order has already been delivered, returns an error', async (scenario) => {
+  scenario('when the order has already been delivered, returns an error', 
+            async (scenario) => {
     const order = scenario.order.delivered
 
-    const payload = {trackingNumber: order.trackingNumber, status: 'DELIVERED'}
-    const event = mockSignedWebhook({payload, signatureType: 'sha256Verifier',
-                       signatureHeader: 'X-Webhook-Signature',
-                       secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
+    const payload = { trackingNumber: order.trackingNumber, 
+                     status: 'DELIVERED'}
+    const event = mockSignedWebhook({payload, 
+                      signatureType: 'sha256Verifier',
+                      signatureHeader: 'X-Webhook-Signature',
+                      secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
 
     const result = await handler(event)
 

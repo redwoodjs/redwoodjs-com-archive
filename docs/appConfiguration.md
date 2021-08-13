@@ -8,7 +8,7 @@ You can configure your Redwood app's settings in `redwood.toml`. By default, `re
 ```toml
 [web]
   port = 8910
-  apiProxyPath = "/.netlify/functions"
+  apiProxyPath = "/.redwood/functions"
 [api]
   port = 8911
 [browser]
