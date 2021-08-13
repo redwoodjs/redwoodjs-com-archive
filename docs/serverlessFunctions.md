@@ -11,37 +11,60 @@ Creating serverless functions is easy with Redwood's function generator:
 yarn rw g function <name>
 ```
 
-It'll give you a stub that exports a handler that returns a status code&mdash;the bare minimum you need to get going: 
-
-```js
-export const handler = async (event, context) => {
-  return {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },    
-    body: JSON.stringify({
-      data: '${name} function',
-    }),
-  }
-}
-```
-
+This will generate a stub serverless function in the folder `api/src/functions/<name>`, along with a test and an empty scenarios file.
 ## The handler
 
 For a lambda function to be a lambda function, it must export a handler that returns a status code. The handler receives two arguments: `event` and `context`. Whatever it returns is the `response`, which should include a `statusCode` at the very least.
 
-Note that you can use code in `api/src` in your serverless function, such as importing the `db` from `src/lib/db`.
+> **File/Folder Structure**
+>
+>  For example, with a target function endpoint name of /hello, you could save the function file in one of the following ways:
+> - `./api/src/functions/hello.{js,ts}`
+> - `./api/src/functions/hello/hello.{js,ts}`
+> - `./api/src/functions/hello/index.{js,ts}`
+>
+> Other files in the folder will _not_ be exposed as a serverless function
+
+### Re-using/Sharing code
+You can use code in `api/src` in your serverless function, some examples:
+
+```js
+// importing `db` directly
+import { db } from 'src/lib/db'
+
+// importing services
+import { update } from 'src/services/subscriptions'
+
+// importing a custom shared library
+import { reportError } from 'src/lib/errorHandling'
+```
+If you just want to move some logic into another file, that's totally fine too!
+
+```bash
+api/src
+├── functions
+│   ├── graphql.ts
+│   └── helloWorld
+│       ├── helloWorld.scenarios.ts
+│       ├── helloWorld.test.ts
+│       └── helloWorld.ts     # <-- imports hellWorldLib
+│       └── helloWorldLib.ts  # <-- exports can be used in the helloWorld
+```
 
 ## Developing locally
 
-When you're developing locally, the dev server watches the `api` directory for modifications; when it detects any, it re-imports all the modules.
+When you run `yarn rw dev` - it'll watch for changes and make your functions available at:
+- `localhost:8911/{functionName}` and
+- `localhost:8910/.redwood/functions/{functionName}` (used by the web side).
+
+Note that the `.redwood/functions` path is detetermined by your setting in your [redwood.toml](https://redwoodjs.com/docs/app-configuration-redwood-toml#apiproxypath) - and is used both in development and in the deployed Redwood app
+
 
 ## Testing
 
 You can write tests and scenarios for your serverless functions very much like you would for services, but it's important to properly mock the information that the function `handler` needs.
 
-To help you mock the `event` and `context` information, we've provided several api testing fixture utilities: 
+To help you mock the `event` and `context` information, we've provided several api testing fixture utilities:
 
 |Mock  |Usage |
 |---|-|
@@ -53,7 +76,7 @@ To help you mock the `event` and `context` information, we've provided several a
 
 Let's learn how to test a serverless function by first creating a simple function that divides two numbers.
 
-As with all serverless lambda functions, the handler accepts an `APIGatewayEvent` which contains information from the invoker. 
+As with all serverless lambda functions, the handler accepts an `APIGatewayEvent` which contains information from the invoker.
 That means it will have the HTTP headers, the querystring parameters, the method (GET, POST, PUT, etc), cookies, and the body of the request.
 See [Working with AWS Lambda proxy integrations for HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html) for the payload format.
 
@@ -239,7 +262,7 @@ You can also `mockContext` and pass the mocked `context` to the handler and even
 To run an individual serverless function test:
 
 ```terminal
-yarn rw test api divide 
+yarn rw test api divide
 ```
 
 When the test run completes (and succeeds), you see the results:
@@ -271,7 +294,7 @@ In the following example, we'll have the webhook interact with our app's databas
 
 >Why testing webhooks is hard
 >
->Because your webhook is typically sent from a third-party's system, manually testing webhooks can be difficult. For one thing, you often have to create some kind of event in their system that will trigger the event -- and you'll often have to do that in a production environment with real data. Second, for each case you'll have to find data that represents each case and issue a hook for each -- which can take a lot of time and is tedious. Also, you'll be using production secrets to sign the payload. And finally, since your third-party needs to send you the incoming webhook you'll most likely have to launch a local tunnel to expose your development machine publicly in order to receive them. 
+>Because your webhook is typically sent from a third-party's system, manually testing webhooks can be difficult. For one thing, you often have to create some kind of event in their system that will trigger the event -- and you'll often have to do that in a production environment with real data. Second, for each case you'll have to find data that represents each case and issue a hook for each -- which can take a lot of time and is tedious. Also, you'll be using production secrets to sign the payload. And finally, since your third-party needs to send you the incoming webhook you'll most likely have to launch a local tunnel to expose your development machine publicly in order to receive them.
 >
 >Instead, we can automate and mock the webhook to contain a signed payload that we can use to test the handler.
 >
@@ -449,10 +472,10 @@ describe('updates an order via a webhook', () => {
   scenario('with a shipped order, updates the status to DELIVERED', async (scenario) => {
     const order = scenario.order.shipped
 
-    const payload = { trackingNumber: order.trackingNumber, 
+    const payload = { trackingNumber: order.trackingNumber,
                       status: 'DELIVERED' }
 
-    const event = mockSignedWebhook({ payload, 
+    const event = mockSignedWebhook({ payload,
                                       signatureType: 'sha256Verifier',
                                       signatureHeader: 'X-Webhook-Signature',
                                       secret: 'MY-VOICE-IS-MY-PASSPORT-VERIFY-ME' })
@@ -594,58 +617,12 @@ If the test fails, you can update your function or test script and the test will
 
 When deployed, **a custom serverless function is an open API endpoint and is your responsibility to secure appropriately**. 🔐
 
-That means _anyone_ can access your function and perform any tasks it's asked to do. In many cases, this is completely appropriate and desired behavior. 
+That means _anyone_ can access your function and perform any tasks it's asked to do. In many cases, this is completely appropriate and desired behavior.
 
 But, in some cases, for example when the function interacts with third parties, like sending email, or when it retrieves sensitive information from a database, you may want to ensure that only verified requests from trusted sources can invoke your function.
 
 And, in some other cases, you may even want to limit how often the function is called over a set period of time to avoid denial-of-service-type attacks.
 
-
-### Authentication
-
-If you invoke your function from your web side, you can use `requireAuth()` to ensure that function is allowed to execute by passing your auth provider's access token and the provider method in the request headers:
-
-```
-auth-provider: <your provider>
-authorization: Bearer <access_token>
-```
-
-This will then decode the Bearer token and check to see if the request is authorized.
-
-```js
-import { requireAuth } from 'src/lib/auth'
-import { AuthenticationError, ForbiddenError } from '@redwoodjs/api'
-
-export const handler = async (event, context) => {
-  try {
-    requireAuth({ role: 'admin' })
-
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },      
-      body: JSON.stringify({
-        data: 'Permitted',
-      }),
-    }
-  } catch (e) {
-    if (e instanceof AuthenticationError) {
-      return {
-        statusCode: 401,
-      }
-    } else if (e instanceof ForbiddenError) {
-      return {
-        statusCode: 403,
-      }
-    } else {
-      return {
-        statusCode: 400,
-      }
-    }
-  }
-}
-```
 ### Webhooks
 
 If your function receives an incoming Webhook from a third party, see [Webhooks](https://redwoodjs.com/docs/webhooks) in the RedwoodJS documentation to verify and trust its payload.
@@ -681,7 +658,7 @@ For more information about Rate Limiting in Node.js, consider:
 
 #### IP Address Whitelisting
 
-Because the `event` passed to the function handler contains the request's IP address, you could decide to whitelist only certain known and trusted IP addresses. 
+Because the `event` passed to the function handler contains the request's IP address, you could decide to whitelist only certain known and trusted IP addresses.
 
 ```js
 

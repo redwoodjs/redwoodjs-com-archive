@@ -26,7 +26,7 @@ const DEFAULT_CONFIG: Config = {
     port: 8910,
     path: './web',
     target: TargetEnum.BROWSER,
-    apiProxyPath: '/.netlify/functions',
+    apiProxyPath: '/.redwood/functions',
     apiProxyPort: 8911,
     fastRefresh: true,
     a11y: true,
@@ -80,7 +80,7 @@ Configuration for the web side.
 | `port`                        | Port to listen on                  | `8910`                  | `development` |
 | `path`                        | Path to the web side               | `'./web'`               | `both`        |
 | `target`                      | Target for the web side            | `TargetEnum.BROWSER`    | `both`        |
-| `apiProxyPath`                | Proxy path to the api side         | `'/.netlify/functions'` | `production`  |
+| `apiProxyPath`                | Proxy path to the api side         | `'/.redwood/functions'` | `production`  |
 | `apiProxyPort`                | Proxy port to the api side         | `8911`                  | `production`  |
 | `includeEnvironmentVariables` | Environment variables to whitelist |                         | `both`        |
 | `fastRefresh`                 | Enable webpack's fast refresh      | true                    | `development` |
