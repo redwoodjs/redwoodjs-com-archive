@@ -177,9 +177,7 @@ api
 
 The setup steps are to:
 
-* import your api testing utilities, such as `mockHttpEvent`
-* import your function handler
-* write your test cases by mocking the event to contain the information you want to give the handler
+* write your test cases by mocking the event using `mockHttpEvent` to contain the information you want to give the handler
 * invoke the handler with the mocked event
 * extract the result body
 * test that the values match what you expect
@@ -293,7 +291,7 @@ If the test fails, you can update your function or test script and the test will
 
 In the following example, we'll have the webhook interact with our app's database, so we can see how we can use **scenario testing** to create data that the handler can access and modify.
 
->Why testing webhooks is hard
+> **Why testing webhooks is hard**
 >
 >Because your webhook is typically sent from a third-party's system, manually testing webhooks can be difficult. For one thing, you often have to create some kind of event in their system that will trigger the event -- and you'll often have to do that in a production environment with real data. Second, for each case you'll have to find data that represents each case and issue a hook for each -- which can take a lot of time and is tedious. Also, you'll be using production secrets to sign the payload. And finally, since your third-party needs to send you the incoming webhook you'll most likely have to launch a local tunnel to expose your development machine publicly in order to receive them.
 >
