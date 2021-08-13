@@ -1370,11 +1370,11 @@ During the run of any single test, there is only every one scenario's worth of d
 
 ## Testing Functions
 
-Testing serverless functions and webhooks can be difficult and time-consuming because you have to construct the event and context information that the function handler needs. 
+Testing [serverless functions](https://redwoodjs.com/docs/serverless-functions) and [webhooks](https://redwoodjs.com/docs/webhooks) can be difficult and time-consuming because you have to construct the event and context information that the function handler needs. 
 
-Webhook testing is even more complex because you might need to open a http tunnel to a running dev server to accept in incoming request, and you'll have to sign the webhook payload so that the request is trusted, and then you might even trigger events from your third-party service ... all manually. Every. Time.
+Webhook testing is even more complex because you might need to open a http tunnel to a running dev server to accept an incoming request, then you'll have to sign the webhook payload so that the request is trusted, and then you might even trigger events from your third-party service ... all manually. Every. Time.
 
-Luckily, RedwoodJS has several api testing utilities to make testing functions and webhooks a breeze -- and without having to run a dev server.
+Luckily, RedwoodJS has several api testing utilities to make [testing functions and webhooks](https://redwoodjs.com/docs/serverless-functions#how-to-test-serverless-functions) a breeze -- and without having to run a dev server.
 
 > Want to learn to [How to Test Serverless Functions](https://redwoodjs.com/docs/serverless-functions#how-to-test-serverless-functions) and [Webhooks](https://?redwoodjs.com/docs/serverless-functions#how-to-test-webhooks)?
 > 

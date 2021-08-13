@@ -393,7 +393,8 @@ export const handler = async (event: APIGatewayEvent) => {
         currentOrderStatus = 'UNKNOWN'
     }
 
-    // updated the order with the new status using the trackingNumber provided
+    // updated the order with the new status 
+    // using the trackingNumber provided
     const order = await db.order.update({
       where: { trackingNumber_status: { trackingNumber, 
                                         status: currentOrderStatus }},
@@ -553,7 +554,8 @@ Next, what happens if the order cannot be found? We'll try a tracking number tha
             async (scenario) => {
     const order = scenario.order.placed
 
-    const payload = { trackingNumber: '1Z-DOES-NOT-EXIST', status: 'DELIVERED' }
+    const payload = { trackingNumber: '1Z-DOES-NOT-EXIST', 
+                      status: 'DELIVERED' }
     const event = mockSignedWebhook({payload, 
                       signatureType: 'sha256Verifier',
                       signatureHeader: 'X-Webhook-Signature',
@@ -581,7 +583,7 @@ Therefore our scenario uses the `scenario.order.delivered` data where the order 
     const order = scenario.order.delivered
 
     const payload = { trackingNumber: order.trackingNumber, 
-                     status: 'DELIVERED'}
+                      status: 'DELIVERED'}
     const event = mockSignedWebhook({payload, 
                       signatureType: 'sha256Verifier',
                       signatureHeader: 'X-Webhook-Signature',
