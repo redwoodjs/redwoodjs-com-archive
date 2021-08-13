@@ -226,7 +226,7 @@ Then we can also add a test to handle the error when we don't provide a dividend
     const body = result.body
     expect(result.statusCode).toBe(400)
     expect(body.message).toContain('Please specify both')
-    expect(body.quotient).toBeUndefined()
+    expect(body.quotient).toBeUndefined
   })
 
 ```
@@ -247,7 +247,7 @@ And finally, we can also add a test to handle the error when we try to divide by
 
     expect(result.statusCode).toBe(500)
     expect(body.message).toContain('Could not divide')
-    expect(body.quotient).toBeUndefined()
+    expect(body.quotient).toBeUndefined
   })
 })
 
