@@ -118,7 +118,7 @@ export const handler = async (event: APIGatewayEvent) => {
   try {
 
     // get the two numbers to divide from the event query string
-    const { dividend, divisor } = event.queryStringParameters.dividend
+    const { dividend, divisor } = event.queryStringParameters
 
     // make sure the values to divide are provided
     if (dividend === undefined || divisor === undefined) {
@@ -166,7 +166,7 @@ That means we need to write some tests.
 
 To test a serverless function, you'll work with the test script associated with the function. You'll find it in the same directory as your function:
 
-```terminals
+```terminal
 api
 ├── src
 │   ├── functions
@@ -202,7 +202,7 @@ describe('divide serverless function',  () => {
       },
     })
 
-    const result = await handler(httpEvent, null)
+    const result = await handler(httpEvent)
     const body = result.body
 
     expect(result.statusCode).toBe(200)
@@ -222,11 +222,11 @@ Then we can also add a test to handle the error when we don't provide a dividend
       },
     })
 
-    const result = await handler(httpEvent, null)
+    const result = await handler(httpEvent)
     const body = result.body
     expect(result.statusCode).toBe(400)
     expect(body.message).toContain('Please specify both')
-    expect(body.quotient).toBeUndefined
+    expect(body.quotient).toBeUndefined()
   })
 
 ```
@@ -242,12 +242,12 @@ And finally, we can also add a test to handle the error when we try to divide by
       },
     })
 
-    const result = await handler(httpEvent, null)
+    const result = await handler(httpEvent)
     const body = result.body
 
     expect(result.statusCode).toBe(500)
     expect(body.message).toContain('Could not divide')
-    expect(body.quotient).toBeUndefined
+    expect(body.quotient).toBeUndefined()
   })
 })
 
@@ -255,8 +255,7 @@ And finally, we can also add a test to handle the error when we try to divide by
 
 The `divide` function is a simple example, but you can use the `mockHttpEvent` to set any event values you handler needs to test more complex functions.
 
-You can also `mockContext` and pass the mocked `context` to the handler and even create scenario data if your function interacts with your database. For an example of using scenarios when test functions, let's look at a specialized serverless function: the webhook.
-
+You can also `mockContext` and pass the mocked `context` to the handler and even create scenario data if your function interacts with your database. For an example of using scenarios when test functions, please look at a specialized serverless function: the [webhook below](https://redwoodjs.com/docs/serverless-functions#how-to-test-webhooks).
 #### Running Function Tests
 
 To run an individual serverless function test:
@@ -284,6 +283,65 @@ Ran all test suites matching /divide.test.ts|divide.test.ts|false/i.
 
 If the test fails, you can update your function or test script and the test will automatically re-run.
 
+### Using Test Fixtures
+
+Often times your serverless function will have a variety of test cases, but because it may not interact with the database, you don't want to use scenarios (since that creates records in your test database). But, you still want a way to define these cases in a more declarative way for readability and maintainability -- and you can using fixtures.
+
+First, let's create a fixture for the `divide` function alongside your function and test as `divide.fixtures.ts`:
+
+```terminal
+api
+├── src
+│   ├── functions
+│   │   ├── divide
+│   │   │   ├── divide.ts
+│   │   │   ├── divide.test.ts
+│   │   │   ├── divide.fixtures.ts // <-- your fixture
+```
+
+Let's define a fixture for a new test case: when the function is invoked, but it is missing a divisor:
+
+```js
+// api/src/functions/divide/divide.fixtures.ts
+
+import { mockHttpEvent } from '@redwoodjs/testing/api'
+
+export const missingDivisor = () => mockHttpEvent({
+  queryStringParameters: {
+    dividend: '20',
+  },
+})
+```
+
+The `missingDivisor()` fixture constructs and mocks the event for the test case -- that is, we don't provide a divisor value in the querystring parameters in the mocked http event.
+
+Now, let's use this fixture in a test by providing the handler with the event we mocked in the fixture:
+
+```js
+// api/src/functions/divide/divide.test.ts
+import { missingDivisor } from './divide.fixtures'
+
+describe('divide serverless function',  () => {
+// ... other test cases
+
+  it('requires a divisor', async () => {
+    const result = await handler(missingDivisor())
+
+    const body = result.body
+
+    expect(result.statusCode).toBe(400)
+    expect(body.message).toContain('Please specify both')
+    expect(body.quotient).toBeUndefined
+  })
+
+// ...
+})
+
+```
+
+Now, if we decide to change the test case date, we simply modify the fixture and re-run our tests.
+
+You can then define multiple fixtures to define all the cases in a central place, export each, and then use in your tests for more maintainable and readable tests.
 ### How to Test Webhooks
 
 [Webhooks](https://redwoodjs.com/docs/webhooks#webhooks) are specialized serverless functions that will verify a signature header to ensure you can trust the incoming request and use the payload with confidence.
