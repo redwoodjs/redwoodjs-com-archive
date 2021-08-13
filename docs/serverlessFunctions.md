@@ -181,7 +181,7 @@ The setup steps are to:
 * invoke the handler with the mocked event
 * extract the result body
 * test that the values match what you expect
-
+The boilerplate steps are generated automatically for you by the function generator
 Let's look at a series of tests that mock the event with different information in each.
 
 First, let's write a test that divides 20 by 5 and we'll expect to get 4 as the quotient:
