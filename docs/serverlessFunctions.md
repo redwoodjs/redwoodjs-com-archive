@@ -116,8 +116,7 @@ export const handler = async (event: APIGatewayEvent) => {
   try {
 
     // get the two numbers to divide from the event query string
-    const dividend = event.queryStringParameters.dividend
-    const divisor = event.queryStringParameters.divisor
+    const { dividend, divisor } = event.queryStringParameters.dividend
 
     // make sure the values to divide are provided
     if (dividend === undefined || divisor === undefined) {
