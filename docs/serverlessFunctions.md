@@ -12,6 +12,8 @@ yarn rw g function <name>
 ```
 
 This will generate a stub serverless function in the folder `api/src/functions/<name>`, along with a test and an empty scenarios file.
+
+Just a note here, we call them 'serverless' but they can also be used on 'serverful' hosted environments too, such as Render or Heroku.
 ## The handler
 
 For a lambda function to be a lambda function, it must export a handler that returns a status code. The handler receives two arguments: `event` and `context`. Whatever it returns is the `response`, which should include a `statusCode` at the very least.
@@ -23,7 +25,7 @@ For a lambda function to be a lambda function, it must export a handler that ret
 > - `./api/src/functions/hello/hello.{js,ts}`
 > - `./api/src/functions/hello/index.{js,ts}`
 >
-> Other files in the folder will _not_ be exposed as a serverless function
+> Other files in the folder will _not_ be exposed as an endpoint
 
 ### Re-using/Sharing code
 You can use code in `api/src` in your serverless function, some examples:
