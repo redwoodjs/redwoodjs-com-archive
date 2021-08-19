@@ -132,23 +132,6 @@ import {
 
 import { logger } from 'src/lib/logger'
 
-/**
- * The handler function is your code that processes http request events.
- * You can use return and throw to send a response or error, respectively.
- *
- * Important: When deployed, a custom serverless function is an open API endpoint and
- * is your responsibility to secure appropriately.
- *
- * @see {@link https://redwoodjs.com/docs/serverless-functions#security-considerations|Serverless Function Considerations}
- * in the RedwoodJS documentation for more information.
- *
- * @typedef { import('aws-lambda').APIGatewayEvent } APIGatewayEvent
- * @typedef { import('aws-lambda').Context } Context
- * @param { APIGatewayEvent } event - an object which contains information from the invoker.
- * @param { Context } context - contains information about the invocation,
- * function, and execution environment.
- */
-
 export const handler = async (event: APIGatewayEvent) => {
   const discourseInfo = { webhook: 'discourse' }
   const webhookLogger = logger.child({ discourseInfo })
@@ -217,23 +200,6 @@ import {
 } from '@redwoodjs/api/webhooks'
 
 import { logger } from 'src/lib/logger'
-
-/**
- * The handler function is your code that processes http request events.
- * You can use return and throw to send a response or error, respectively.
- *
- * Important: When deployed, a custom serverless function is an open API endpoint and
- * is your responsibility to secure appropriately.
- *
- * @see {@link https://redwoodjs.com/docs/serverless-functions#security-considerations|Serverless Function Considerations}
- * in the RedwoodJS documentation for more information.
- *
- * @typedef { import('aws-lambda').APIGatewayEvent } APIGatewayEvent
- * @typedef { import('aws-lambda').Context } Context
- * @param { APIGatewayEvent } event - an object which contains information from the invoker.
- * @param { Context } context - contains information about the invocation,
- * function, and execution environment.
- */
 
 export const handler = async (event: APIGatewayEvent) => {
   const vercelInfo = { webhook: 'vercel' }
@@ -679,6 +645,13 @@ export const sendOutGoingWebhooks = async ({ payload }) => {
   )
 }
 ```
+
+## How To Test Webhooks
+
+
+Because your webhook is typically sent from a third-party's system, manually testing webhooks can be difficult and time-consuming. See [How To Test Webhooks](https://redwoodjs.com/docs/serverless-functions#how-to-test-webhooks) to learn how to write tests that can automate tests and help you implement your webhook handler.
+ 
+
 ## More Information
 
 Want to learn more about webhooks?
