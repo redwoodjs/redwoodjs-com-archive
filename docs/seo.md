@@ -34,11 +34,12 @@ For example, if you set title in your Layout, and a title in your Page, it'll re
 > If your content is static you can use Redwood's built in [Prerender](/docs/prerender). For dynamic tags, check the [Dynamic head tags](#dynamic-tags)
 
 ## Setting meta tags / open graph directives
-Often we want to set more than just the title - most commonly to set "og" headers. Og standing for [open graph](https://ogp.me/) ofcourse.
+Often we want to set more than just the title - most commonly to set "og" headers. Og standing for
+[open graph](https://ogp.me/) of course.
 
 Redwood provides a convenience component `<MetaTags>` to help you get all the relevant tags with one go (but you can totally choose to do them yourself)
 
-Here's an exmaple setting some common headers, including how to set an `og:image`
+Here's an example setting some common headers, including how to set an `og:image`
 ```js
 import { MetaTags } from '@redwoodjs/web'
 

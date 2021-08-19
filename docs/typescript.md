@@ -4,7 +4,7 @@ Redwood comes with full TypeScript support out of the box, and you don't have to
 ## Starting a TypeScript Redwood project
 You can use the `--typescript` flag on create-redwood-app to generate a project with TypeScript configured:
 ```shell
-yarn create redwood-app --typescript /PATH/TO/FOLDER
+yarn create redwood-app --typescript my-redwood-app
 ```
 
 ## Converting an existing JS project to Typescript
@@ -66,18 +66,18 @@ yarn rw setup tsconfig --force
 
 ## Running type checks
 
-Redwood uses Babel to transpile your TypeScript - which is why you are able to incrementally convert your project from JS to TS. However, it also means that just doing a build won't show you errors that the TypeScript compiler finds in your project <br/> <br/> That's why we have the handy `redwood typecheck` command!
+Redwood uses Babel to transpile your TypeScript - which is why you are able to incrementally convert your project from JS to TS. However, it also means that just doing a build won't show you errors that the TypeScript compiler finds in your project <br/> <br/> That's why we have the handy `redwood type-check` command!
 
 To check your TypeScript project for errors, run
 ```
-yarn rw typecheck
+yarn rw type-check
 ```
 This will run `tsc` on all the sides in your project, and make sure all the generated types are generated first, including Prisma.
 
 
 ### Check then build, on CI
 > **Tip!**<br/>
-> You don't need to build your project to run `rw typecheck`
+> You don't need to build your project to run `rw type-check`
 
 If your project is fully TypeScript, it might be useful to add typechecks before you run the deploy command in your CI.
 
@@ -86,7 +86,7 @@ For example, if you're deploying to Vercel, you could add a `build:ci` script to
 "scripts": {
   .
   .
-+  "build:ci": "yarn rw typecheck && yarn rw test --no-watch && yarn rw deploy vercel",
++  "build:ci": "yarn rw type-check && yarn rw test --no-watch && yarn rw deploy vercel",
 }
 ```
 Configure your project's build command to be `yarn build:ci` - and you even have your type checks and tests run whenever a pull request is opened!
