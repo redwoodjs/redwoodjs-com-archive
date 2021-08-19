@@ -1,4 +1,5 @@
 # Serverless Functions
+
 <!-- `redwood.toml`&mdash;`api/src/functions` by default.  -->
 
 Redwood looks for serverless functions in `api/src/functions`. Each function is mapped to a URI based on its filename. For example, you can find `api/src/functions/graphql.js` at `http://localhost:8911/graphql`.
@@ -13,7 +14,23 @@ yarn rw g function <name>
 
 This will generate a stub serverless function in the folder `api/src/functions/<name>`, along with a test and an empty scenarios file.
 
-Just a note here, we call them 'serverless' but they can also be used on 'serverful' hosted environments too, such as Render or Heroku.
+_Example of a bare minimum handler you need to get going:_
+```js
+export const handler = async (event, context) => {
+  return {
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      data: '${name} function',
+    }),
+  }
+}
+
+```
+
+> Just a note here, we call them 'serverless' but they can also be used on 'serverful' hosted environments too, such as Render or Heroku.
 ## The handler
 
 For a lambda function to be a lambda function, it must export a handler that returns a status code. The handler receives two arguments: `event` and `context`. Whatever it returns is the `response`, which should include a `statusCode` at the very least.
@@ -703,6 +720,33 @@ And, in some other cases, you may even want to limit how often the function is c
 
 If your function receives an incoming Webhook from a third party, see [Webhooks](https://redwoodjs.com/docs/webhooks) in the RedwoodJS documentation to verify and trust its payload.
 
+### Returning Binary Data
+
+By default, RedwoodJS functions return strings or JSON. If you need to return binary data, your function will need to encode it as Base64 and then set the `isBase64Encoded` response parameter to `true`. Note that this is best suited to relatively small responses. The entire response body will be loaded into memory as a string, and many serverless hosting environments will limit your function to eg. 10 seconds, so if your file takes longer than that to process and download it may get cut off. For larger or static files, it may be better to upload files to an object store like S3 and generate a [presigned URL](https://stackoverflow.com/questions/38831829/nodejs-aws-sdk-s3-generate-presigned-url) that the client can use to download the file directly.
+
+Here's an example of how to return a binary file from the filesystem:
+
+```typescript
+// api/src/functions/myCustomFunction.ts
+
+import type { APIGatewayEvent, Context } from 'aws-lambda'
+import fs from 'fs'
+
+export const handler = async (event: APIGatewayEvent, context: Context) => {
+  const file = await fs.promises.readFile('/path/to/image.png')
+
+  return {
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'image/png',
+      'Content-Length': file.length,
+    },
+    body: file.toString('base64'),
+    isBase64Encoded: true,
+  }
+}
+```
+
 ### Other considerations
 
 In addition to securing your serverless functions, you may consider logging, rate limiting and whitelisting as ways to protect your functions from abuse or misuse.
@@ -719,7 +763,7 @@ See [Logger](/docs/logger) in the RedwoodJS docs for more information about how 
 
 Rate limiting (or throttling) how often a function executes by a particular IP addresses or user account is a common way of stemming api abuse (for example, a distributed Denial-of-Service, or DDoS, attack).
 
-As LogRocket [says]((https://blog.logrocket.com/rate-limiting-node-js/)):
+As LogRocket [says](https://blog.logrocket.com/rate-limiting-node-js/):
 
 > Rate limiting is a very powerful feature for securing backend APIs from malicious attacks and for handling unwanted streams of requests from users. In general terms, it allows us to control the rate at which user requests are processed by our server.
 
@@ -729,21 +773,15 @@ Currently, RedwoodJS does not offer rate limiting in the framework, but your dep
 
 For more information about Rate Limiting in Node.js, consider:
 
-* [Understanding and implementing rate limiting in Node.js](https://blog.logrocket.com/rate-limiting-node-js/) on LogRocket
-
+- [Understanding and implementing rate limiting in Node.js](https://blog.logrocket.com/rate-limiting-node-js/) on LogRocket
 
 #### IP Address Whitelisting
 
 Because the `event` passed to the function handler contains the request's IP address, you could decide to whitelist only certain known and trusted IP addresses.
 
 ```js
-
 const ipAddress = ({ event }) => {
-  return (
-    event?.headers?.['client-ip'] ||
-    event?.requestContext?.identity?.sourceIp ||
-    'localhost'
-  )
+  return event?.headers?.['client-ip'] || event?.requestContext?.identity?.sourceIp || 'localhost'
 }
 ```
 
