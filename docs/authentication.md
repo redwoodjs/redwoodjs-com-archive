@@ -103,6 +103,67 @@ If you'd rather create your own, you might want to start from the generated page
 
 ### Configuration
 
+Almost all config for dbAuth lives in `api/src/functions/auth.js` in the object you give to the `DbAuthHandler` initialization. The comments above each key will explain what goes where. Here's an in-depth explanation for a couple of those options:
+
+#### loginHandler()
+
+If you want to do something other than immediately let a user log in if their username/password is correct, you can add additional logic in the `loginHandler()`. For example, if a user's credentials are correct, but they haven't verified their email address yet, you can throw an error in this function with the appropriate message and then display it to the user. If the login should proceed, simply return the user that was passed as the only argument to the function:
+
+```javascript
+loginHandler: (user) => {
+  if (!user.verified) {
+    throw new Error('Please validate your email first!')
+  } else {
+    return user
+  }
+}
+```
+
+#### signupHandler()
+
+This function should contain the code needed to actually create a user in your database. You will receive a single argument which is an object with all of the fields necessary to create the user (`username`, `hashedPassword` and `salt`) as well as any additional fields you included in your signup form in an object called `userAttributes`:
+
+```javascript
+signupHandler: {
+  handler: ({ username, hashedPassword, salt, userAttributes }) => {
+    return db.user.create({
+      data: {
+        email: username,
+        hashedPassword: hashedPassword,
+        salt: salt,
+        name: userAttributes.name
+      }
+    })
+  }
+}
+```
+
+Before `signupHandler()` is invoked, dbAuth will check that the username is unique in the database and throw an error if not. 
+
+There are three things you can do within this function depending on how you want the signup to proceed:
+
+1. If everything is good and the user should be logged in after signup: return the user you just created
+2. If the user is safe to create, but you do not want to log them in automatically: return a string, which will be returned by the `signUp()` function you called after destructuring it from `useAuth()` (see code snippet below)
+3. If the user should *not* be able to sign up for whatever reason: throw an error in this function with the message to be displayed
+
+You can deal with case #2 by doing something like the following in a signup component/page:
+
+```javascript
+const { signUp } = useAuth()
+
+const onSubmit = async (data) => {
+  const response = await signUp({ ...data })
+
+  if (response.message) {
+    toast.error(response.message) // user created, but not logged in
+  } else {
+    toast.success('Welcome!')     // user created and logged in
+  }
+}
+```
+
+### Environment Variables
+
 #### Cookie Domain
 
 By default, the session cookie will not have the `Domain` property set, which a browser will default to be the [current domain only](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#define_where_cookies_are_sent). If your site is spread across multiple domains (for example, your site is at `example.com` but your api-side is deployed to `api.example.com`) you'll need to explicitly set a Domain so that the cookie is accessible to both.
