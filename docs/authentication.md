@@ -7,6 +7,7 @@ We currently support the following third-party authentication providers:
 - [Netlify Identity Widget](https://github.com/netlify/netlify-identity-widget)
 - [Auth0](https://github.com/auth0/auth0-spa-js)
 - [Azure Active Directory](https://github.com/AzureAD/microsoft-authentication-library-for-js)
+- [Clerk](https://clerk.dev)
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
@@ -102,6 +103,67 @@ The default routes will make them available at `/login` and `/signup`, but that'
 If you'd rather create your own, you might want to start from the generated pages anyway as they'll contain the other code you need to actually submit the login credentials or signup fields to the server for processing.
 
 ### Configuration
+
+Almost all config for dbAuth lives in `api/src/functions/auth.js` in the object you give to the `DbAuthHandler` initialization. The comments above each key will explain what goes where. Here's an in-depth explanation for a couple of those options:
+
+#### loginHandler()
+
+If you want to do something other than immediately let a user log in if their username/password is correct, you can add additional logic in the `loginHandler()`. For example, if a user's credentials are correct, but they haven't verified their email address yet, you can throw an error in this function with the appropriate message and then display it to the user. If the login should proceed, simply return the user that was passed as the only argument to the function:
+
+```javascript
+loginHandler: (user) => {
+  if (!user.verified) {
+    throw new Error('Please validate your email first!')
+  } else {
+    return user
+  }
+}
+```
+
+#### signupHandler()
+
+This function should contain the code needed to actually create a user in your database. You will receive a single argument which is an object with all of the fields necessary to create the user (`username`, `hashedPassword` and `salt`) as well as any additional fields you included in your signup form in an object called `userAttributes`:
+
+```javascript
+signupHandler: {
+  handler: ({ username, hashedPassword, salt, userAttributes }) => {
+    return db.user.create({
+      data: {
+        email: username,
+        hashedPassword: hashedPassword,
+        salt: salt,
+        name: userAttributes.name
+      }
+    })
+  }
+}
+```
+
+Before `signupHandler()` is invoked, dbAuth will check that the username is unique in the database and throw an error if not. 
+
+There are three things you can do within this function depending on how you want the signup to proceed:
+
+1. If everything is good and the user should be logged in after signup: return the user you just created
+2. If the user is safe to create, but you do not want to log them in automatically: return a string, which will be returned by the `signUp()` function you called after destructuring it from `useAuth()` (see code snippet below)
+3. If the user should *not* be able to sign up for whatever reason: throw an error in this function with the message to be displayed
+
+You can deal with case #2 by doing something like the following in a signup component/page:
+
+```javascript
+const { signUp } = useAuth()
+
+const onSubmit = async (data) => {
+  const response = await signUp({ ...data })
+
+  if (response.message) {
+    toast.error(response.message) // user created, but not logged in
+  } else {
+    toast.success('Welcome!')     // user created and logged in
+  }
+}
+```
+
+### Environment Variables
 
 #### Cookie Domain
 
@@ -364,6 +426,113 @@ const UserAuthTools = () => {
 #### Auth0 Auth Provider Specific Setup
 
 See the Auth0 information within this doc's [Auth Provider Specific Integration](https://redwoodjs.com/docs/authentication.html#auth-provider-specific-integration) section.
+
++++
+
+### Clerk
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw setup auth clerk
+```
+
+_If you prefer to manually install the package and add code_, see the documented changes below in **Manual Setup**.
+
+#### Setup
+
+To get started with Clerk, sign up on [their website](https://clerk.dev/) and create an application.
+
+Applications in Clerk have different instances - by default one for development, one for staging (preview builds), and one for production. You will need to pull two values from one of these instances. We recommend storing the development values in your local `.env` file and using the staging and production values in the appropriate env setups for your hosting platform when you deploy.
+
+The two values you will need from Clerk are your instance's "Frontend API" url and an API key from your instance's settings. The Frontend API url should be stored in an `env` variable named `CLERK_FRONTEND_API_URL`. The API key should be named `CLERK_API_KEY`.
+
+Otherwise, feel free to configure your instances however you wish with regards to their appearance and functionality.
+
+> **Including Environment Variables in Serverless Deployment:** in addition to adding these env vars to your local `.env` file or deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given above, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`". You should expose the `CLERK_FRONTEND_API_URL` only to the `web` workspace and expose `CLERK_API_KEY` **only** to the `api` workspace.
+
+#### Manual Setup
+
+If you opt against using `yarn rw setup auth clerk`, you can instead make the required changes manually to add the basics of auth to your app.
+
+First, run this to add the required packages:
+```bash
+yarn workspace web add @redwoodjs/auth @clerk/clerk-react
+yarn workspace api add @redwoodjs/auth @clerk/clerk-sdk-node
+```
+
+Then, extract the relevant changes to your `App` file:
+```js
+// web/src/App.js
+import { AuthProvider } from '@redwoodjs/auth'
+import { ClerkProvider, ClerkLoaded, useClerk } from '@clerk/clerk-react'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
+
+import './index.css'
+
+let clerk
+const ClerkAuthConsumer = ({ children }) => {
+  clerk = useClerk()
+  return React.cloneElement(children, { client: clerk })
+}
+
+const ClerkAuthProvider = ({ children }) => {
+  const frontendApi = process.env.CLERK_FRONTEND_API_URL
+  if (!frontendApi) {
+    throw new Error('Need to define env variable CLERK_FRONTEND_API_URL')
+  }
+
+  return (
+    <ClerkProvider frontendApi={frontendApi}>
+      <ClerkLoaded>
+        <ClerkAuthConsumer>{children}</ClerkAuthConsumer>
+      </ClerkLoaded>
+    </ClerkProvider>
+  )
+}
+
+const App = () => (
+  <FatalErrorBoundary page={FatalErrorPage}>
+    <ClerkAuthProvider>
+      <AuthProvider client={clerk} type="clerk">
+        <RedwoodApolloProvider>
+          <Routes />
+        </RedwoodApolloProvider>
+      </AuthProvider>
+    </ClerkAuthProvider>
+  </FatalErrorBoundary>
+)
+
+export default App
+```
+
+Then, provide your own implementations of `api/src/lib/auth.(j|t)s` and add current user to the API context in `api/src/functions/graphql.(j|t)s`. These are standard changes and not dependent on Clerk.
+
+#### Login and Logout Options
+
+When using the Clerk client, `login` and `signUp` take an `options` object that can be used to override the client config.
+
+For `login` the `options` may contain:
+
+- `afterSignIn`: Where to navigate after sign in is complete
+- `signUpURL`: The route where "Sign up instead" links. If not passed, Sign up will open as a modal.
+
+For `signUp` the `options` may contain:
+
+- `afterSignUp`: Where to navigate after sign up is complete
+- `signInURL`: The route where "Sign in instead" links. If not passed, Sign in will open as a modal.
+
+#### Avoiding Feature Duplication Confusion
+
+Redwood's integration of Clerk is based on [Clerk's React SDK](https://docs.clerk.dev/frontend/react). This means there is some duplication between the features available through that SDK and the ones available in the `@redwoodjs/auth` package - such as the alternatives of using Clerk's `SignedOut` component to redirect users away from a private page vs. using Redwood's `Private` route wrapper. In general, we would recommend you use the **Redwood** way of doing things when possible, as that is more likely to function harmoniously with the rest of Redwood. That being said, though, there are some great features in Clerk's SDK that you will be able to now use in your app, such as the `UserButton` and `UserProfile` components.
 
 +++
 
@@ -657,7 +826,7 @@ Update your .env file with the following settings supplied when you created your
 
 You can find these values in your project's dashboard under Settings -> API.
 
-For full client docs, see: <https://supabase.io/docs/library/getting-started#reference>
+For full Supabase documentation, see: <https://supabase.io/docs>
 
 #### Usage
 
@@ -665,21 +834,34 @@ Supabase supports several sign in methods:
 
 - email/password
 - passwordless via emailed magiclink
+- authenticate via phone with SMS based OTP (One-Time Password) tokens. See: [SMS OTP with Twilio](https://supabase.io/docs/guides/auth/auth-twilio)
 - Sign in with redirect. You can control where the user is redirected to after they are logged in via a `redirectTo` option.
-- Sign in using third-party providers/OAuth via Apple, Azure Active Directory, Bitbucket, Discord, Facebook, GitHub, GitLab, Google or Twitter logins.
 - Sign in with a valid refresh token that was returned on login.
+- Sign in using third-party providers/OAuth via
+  - [Apple](https://supabase.io/docs/guides/auth/auth-apple)
+  - Azure Active Directory
+  - [Bitbucket](https://supabase.io/docs/guides/auth/auth-bitbucket)
+  - [Discord](https://supabase.io/docs/guides/auth/auth-discord)
+  - [Facebook](https://supabase.io/docs/guides/auth/auth-facebook)
+  - [GitHub](https://supabase.io/docs/guides/auth/auth-github)
+  - [GitLab](https://supabase.io/docs/guides/auth/auth-gitlab)
+  - [Google](https://supabase.io/docs/guides/auth/auth-google)
+  - [Twitch](https://supabase.io/docs/guides/auth/auth-twitch)
+  - [Twitter](https://supabase.io/docs/guides/auth/auth-twitter)
+- Sign in with a [valid refresh token](https://supabase.io/docs/reference/javascript/auth-signin#sign-in-using-a-refresh-token-eg-in-react-native) that was returned on login. Used e.g. in React Native.
 - Sign in with scopes. If you need additional data from an OAuth provider, you can include a space-separated list of `scopes` in your request options to get back an OAuth `provider_token`.
 
 Depending on the credentials provided:
 
-- A user can sign up either via email or sign in with supported OAuth provider: `'apple' | 'azure' | 'bitbucket' | 'discord' | 'facebook' | 'github' | 'gitlab' | 'google' | 'twitter'`
+- A user can sign up either via email or sign in with supported OAuth provider: `'apple' | 'azure' | 'bitbucket' | 'discord' | 'facebook' | 'github' | 'gitlab' | 'google' | 'twitch' | 'twitter'`
 - If you sign in with a valid refreshToken, the current user will be updated
 - If you provide email without a password, the user will be sent a magic link.
 - The magic link's destination URL is determined by the SITE_URL config variable. To change this, you can go to Authentication -> Settings on `app.supabase.io` for your project.
-- Specifying an OAuth provider (such as Bitbucket, GitHub, GitLab, or Google) will open the browser to the relevant login page
+- Specifying an OAuth provider will open the browser to the relevant login page
 - Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to Authentication -> Settings on `app.supabase.io` for your project.
+- Note: To authenticte using SMS based OTP (One-Time Password) you will need a [Twilio](https://www.twilio.com/try-twilio) account
 
-For full Sign In docs, see: <https://supabase.io/docs/client/auth-signin>
+For Supabase Authentication documentation, see: <https://supabase.io/docs/guides/auth>
 
 +++
 
@@ -1065,9 +1247,11 @@ None.
 
 #### Add Application hasRole Support in Firebase
 
+Requires a custom implementation.
+
 #### Auth Providers
 
-Providers can be configured by specifying `logIn(provider)` and `signUp(provider)`.
+Providers can be configured by specifying `logIn(provider)` and `signUp(provider)`, where `provider` is a **string** of one of the supported providers.
 
 Supported providers:
 
@@ -1078,7 +1262,32 @@ Supported providers:
 - microsoft.com
 - apple.com
 
+#### Email & Password Auth in Firebase
+
 Email/password authentication is supported by calling `login({ username, password })` and `signUp({ username, password })`.
+
+#### Custom Parameters & Scopes for Google OAuth Provider
+
+Both `logIn()` and `signUp()` can accept a single argument of either a **string** or **object**. If a string is provided, it should be any of the supported providers (see above), which will configure the defaults for that provider.
+
+`logIn()` and `signUp()` also accept a single a configuration object. This object accepts `providerId`, `email`, `password`, and `scope` and `customParameters`. (In fact, passing in any arguments ultimately results in this object). You can use this configuration object to pass in values for the optional Google OAuth Provider methods *setCustomParameters* and *addScope*.
+
+Below are the parameters that `logIn()` and `signUp()` accept:
+
+- `providerId`: Accepts one of the supported auth providers as a **string**. If no arguments are passed to `login() / signUp()` this will default to 'google.com'. Provider strings passed as a single argument to `login() / signUp()` will be cast to this value in the object.
+- `email`: Accepts a **string** of a users email address. Used in conjunction with `password` and requires that Firebase has emamil authentication enabled as an option.
+- `password`: Accepts a **string** of a users password. Used in conjunction with `email` and requires that Firebase has email authentication enabled as an option.
+- `scope`: Accepts an **array** of strings ([Google OAuth Scopes](https://developers.google.com/identity/protocols/oauth2/scopes)), which can be added to the requested Google OAuth Provider. These will be added using the Google OAuth *addScope* method.
+- `customParameters`: accepts an **object** with the [optional parameters](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider#setcustomparameters) for the Google OAuth Provider *setCustomParmeters* method. [Valid parameters](https://developers.google.com/identity/protocols/oauth2/openid-connect#authenticationuriparameters) include 'hd', 'include_granted_scopes', 'login_hint' and 'prompt'.
+
+#### Firebase Auth Examples
+
+- `logIn()/signUp()`: Defaults to Google provider.
+- `logIn({providerId: 'github.com'})`: Log in using GitHub as auth provider.
+- `signUp({email: "someone@email.com", password: 'some_good_password'})`: Creates a firebase user with email/password.
+- `logIn({email: "someone@email.com", password: 'some_good_password'})`: Logs in existing firebase user with email/password.
+- `logIn({scopes: ['https://www.googleapis.com/auth/calendar']})`: Adds a scope using the [addScope](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider#addscope) method.
+- `logIn({ customParameters: { prompt: "consent" } })`: Sets the OAuth custom parameters using [setCustomParameters](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider#addscope) method.
 
 +++
 

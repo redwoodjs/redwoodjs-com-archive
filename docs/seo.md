@@ -1,5 +1,44 @@
 # SEO & Meta tags
 
+## Add app title
+You certainly want to change the title of your Redwood app.
+You can start by adding or modify `title` inside `redwood.toml`
+
+```diff
+[web]
+- title = "Redwood App"
++ title = "My Cool App"
+  port = 8910
+  apiProxyPath = "/.redwood/functions"
+```
+This title (the app title) is used by default for all your pages if you don't define another one.
+It will also be use for the title template ! 
+### Title template 
+Now that you have the app title set, you probably want some consistence with the page title, that's what the title template is for. 
+
+Add `titleTemplate` as a prop for `RedwoodProvider` to have a title template for every pages
+
+In _web/src/App.{tsx,js}_
+```diff
+-  <RedwoodProvider>
++  <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
+    /* ... */
+  <RedwoodProvider />
+```
+
+You can write the format you like. 
+
+_Examples  :_
+```js
+"%PageTitle | %AppTitle" => "Home Page | Redwood App"
+
+"%AppTitle · %PageTitle" => "Redwood App · Home Page"
+
+"%PageTitle : %AppTitle" => "Home Page : Redwood App"
+```
+
+So now in your page you only need to write the title of the page.
+
 ## Adding to page `<head>`
 So you want to change the title of your page, or add elements to the `<head>` of the page? We've got you!
 
@@ -53,6 +92,7 @@ const AboutPage = () => {
         ogUrl="https://awesomeredwoodapp.com/start"
         ogContentUrl="https://awesomeredwoodapp.com/static/og.png"
         robots={['nofollow']}
+        locale={}
       />
       <p className="font-light">This is the about page!</p>
     </div>

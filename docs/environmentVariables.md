@@ -17,38 +17,6 @@ Redwood also configures Webpack with `dotenv-webpack`, so that all references to
 
 ## Web
 
-### Development
-
-Like the API Side, anything defined in your `.env` and `.env.defaults` files is simply available:
-
-```
-HELLO_ENV=hello world
-```
-
-```javascript{8}
-// web/src/pages/HomePage.js
-
-const HomePage = () => {
-  return (
-    <div>
-      <h1>HomePage</h1>
-      <p>Find me in ./web/src/pages/HomePage/HomePage.js</p>
-      <p>{process.env.HELLO_ENV}</p>
-    </div>
-  )
-}
-
-export default HomePage
-```
-
-![rw-envVars-web](https://user-images.githubusercontent.com/32992335/86520491-c0f4da80-bdf9-11ea-9212-c1d792d2ff5f.png)
-
-But this only goes for development. In production, references like this will either err or fail silently, depending on where you reference your environment variables.
-
-For another example of using environment variables in development, see [File Uploads](https://redwoodjs.com/cookbook/file-uploads).
-
-### Production
-
 > **Heads Up:** for Web to access environment variables in production, you _must_ configure one of the options below. 
 > 
 > Redwood recommends **Option 1: `redwood.toml`** as it is the most robust.
