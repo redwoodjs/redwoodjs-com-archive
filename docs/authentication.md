@@ -728,6 +728,7 @@ Supabase supports several sign in methods:
 - passwordless via emailed magiclink
 - authenticate via phone with SMS based OTP (One-Time Password) tokens. See: [SMS OTP with Twilio](https://supabase.io/docs/guides/auth/auth-twilio)
 - Sign in with redirect. You can control where the user is redirected to after they are logged in via a `redirectTo` option.
+- Sign in with a valid refresh token that was returned on login.
 - Sign in using third-party providers/OAuth via
   - [Apple](https://supabase.io/docs/guides/auth/auth-apple)
   - Azure Active Directory
@@ -752,7 +753,7 @@ Depending on the credentials provided:
 - Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to Authentication -> Settings on `app.supabase.io` for your project.
 - Note: To authenticte using SMS based OTP (One-Time Password) you will need a [Twilio](https://www.twilio.com/try-twilio) account
 
-For full Sign In docs, see: <https://supabase.io/docs/client/auth-signin>
+For Supabase Authentication documentation, see: <https://supabase.io/docs/guides/auth>
 
 +++
 
