@@ -300,6 +300,10 @@ yarn redwood prisma db seed
 
 Runs `seed.js` in `./api/db`. `seed.js` instantiates the Prisma client and provides an async main function where you can put any seed data&mdash;data that needs to exist for your app to run. See the [example blog's seed.js file](https://github.com/redwoodjs/example-blog/blob/master/api/db/seed.js).
 
+> **Note:** The RedwoodJS seed CLI command supports a _Javascript_ `seed.js` file. If you wish to use Typescript, please refer to [Seeding your database with TypeScript
+](https://www.prisma.io/docs/guides/database/seed-database/) in the Prisma documentation.
+
+
 ### db studio
 
 Start <a href="https://github.com/prisma/studio">Prisma Studio</a>, a visual editor for your database.
