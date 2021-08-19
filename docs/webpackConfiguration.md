@@ -127,56 +127,13 @@ module.exports = {
 }
 ```
 
-Why choose one over another? There's a couple reasons: you can only configure a specific environment (i.e. development, production) using the first format. And as the [Changing the Title of the Page](#changing-the-title-of-the-page) example shows, you can also only modify existing rules using the first format.
+Why choose one over another? There's a couple reasons: you can only configure a specific environment (i.e. development, production) using the first format.
 
 If you're adding extras, the second format should work just fine. But by now you're already set up with the first so, unless you feel strongly, just go with that. -->
 
 ## Examples
 
 If you've never configured webpack before, here's some Redwood-specific examples to get you started.
-
-### Changing the Title of the Page
-
-By default, the title of the page will be the same as your app's base directory. For example, if your app's base directory is `redwood-app`, you'll see "redwood-app":
-
-![rw-wp-before](https://user-images.githubusercontent.com/32992335/83955148-b2b89c00-a804-11ea-92b5-55541f1b89aa.png)
-
-This is set in [webpack.common.js](https://github.com/redwoodjs/redwood/blob/34dd1a91516e7756ac6f9247a5d89c3adcbfdc2f/packages/core/config/webpack.common.js#L90):
-
-```js{4}
-// redwood/packages/core/config/webpack.common.js
-
-new HtmlWebpackPlugin({
-  title: path.basename(redwoodPaths.base),
-  template: path.resolve(redwoodPaths.base, 'web/src/index.html'),
-  inject: true,
-  chunks: 'all',
-}),
-```
-
-To change this, in your `web/config/webpack.config.js`, search `config`'s `plugins` array for `HtmlWebpackPlugin` and change it's `title` option:
-
-```javascript{6}
-// ./web/config/webpack.config.js
-
-module.exports = (config, { env }) => {
-  config.plugins.forEach((plugin) => {
-    if (plugin.constructor.name === 'HtmlWebpackPlugin') {
-      plugin.options.title = 'Some Custom Title'
-    }
-  })
-
-  return config
-}
-```
-
-Now, back in the browser, you'll see:
-
-![rw-wp-after](https://user-images.githubusercontent.com/32992335/83955150-bb10d700-a804-11ea-9c63-708bc2fe7139.png)
-
-> **Couldn't I just have done this in `web/index.html`?**
->
-> Yep. And you should. But hey, you're learning how to configure webpack over here!
 
 ### Adding Tailwind CSS
 
