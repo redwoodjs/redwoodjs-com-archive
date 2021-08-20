@@ -85,7 +85,7 @@ Configuration for the web side.
 | `apiProxyPort`                | Proxy port to the api side         | `8911`                  | `production`  |
 | `includeEnvironmentVariables` | Environment variables to whitelist |                         | `both`        |
 | `fastRefresh`                 | Enable webpack's fast refresh      | true                    | `development` |
-| `a11y`                        | Enable storybook addon-a11y and eslint-plugin-jsx-a11y  | true                    | `development` |
+| `a11y`                        | Enable storybook `addon-a11y` and `eslint-plugin-jsx-a11y`  | true                    | `development` |
 
 ### apiProxyPath
 

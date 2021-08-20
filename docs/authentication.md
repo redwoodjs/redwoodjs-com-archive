@@ -859,7 +859,7 @@ Depending on the credentials provided:
 - The magic link's destination URL is determined by the SITE_URL config variable. To change this, you can go to Authentication -> Settings on `app.supabase.io` for your project.
 - Specifying an OAuth provider will open the browser to the relevant login page
 - Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to Authentication -> Settings on `app.supabase.io` for your project.
-- Note: To authenticte using SMS based OTP (One-Time Password) you will need a [Twilio](https://www.twilio.com/try-twilio) account
+- Note: To authenticate using SMS based OTP (One-Time Password) you will need a [Twilio](https://www.twilio.com/try-twilio) account
 
 For Supabase Authentication documentation, see: <https://supabase.io/docs/guides/auth>
 
@@ -1275,10 +1275,10 @@ Both `logIn()` and `signUp()` can accept a single argument of either a **string*
 Below are the parameters that `logIn()` and `signUp()` accept:
 
 - `providerId`: Accepts one of the supported auth providers as a **string**. If no arguments are passed to `login() / signUp()` this will default to 'google.com'. Provider strings passed as a single argument to `login() / signUp()` will be cast to this value in the object.
-- `email`: Accepts a **string** of a users email address. Used in conjunction with `password` and requires that Firebase has emamil authentication enabled as an option.
+- `email`: Accepts a **string** of a users email address. Used in conjunction with `password` and requires that Firebase has email authentication enabled as an option.
 - `password`: Accepts a **string** of a users password. Used in conjunction with `email` and requires that Firebase has email authentication enabled as an option.
 - `scope`: Accepts an **array** of strings ([Google OAuth Scopes](https://developers.google.com/identity/protocols/oauth2/scopes)), which can be added to the requested Google OAuth Provider. These will be added using the Google OAuth *addScope* method.
-- `customParameters`: accepts an **object** with the [optional parameters](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider#setcustomparameters) for the Google OAuth Provider *setCustomParmeters* method. [Valid parameters](https://developers.google.com/identity/protocols/oauth2/openid-connect#authenticationuriparameters) include 'hd', 'include_granted_scopes', 'login_hint' and 'prompt'.
+- `customParameters`: accepts an **object** with the [optional parameters](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider#setcustomparameters) for the Google OAuth Provider *setCustomParameters* method. [Valid parameters](https://developers.google.com/identity/protocols/oauth2/openid-connect#authenticationuriparameters) include 'hd', 'include_granted_scopes', 'login_hint' and 'prompt'.
 
 #### Firebase Auth Examples
 
