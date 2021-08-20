@@ -57,6 +57,31 @@ Note that you're free to use any of Apollo's other hooks, you'll just have to im
 |[useLazyQuery](https://www.apollographql.com/docs/react/api/react/hooks/#uselazyquery)|Execute queries in response to events other than component rendering|
 |[useApolloClient](https://www.apollographql.com/docs/react/api/react/hooks/#useapolloclient)|Access your instance of `ApolloClient`|
 
+### Customizing the RedwoodApolloProvider and Cache Type Policy
+
+By default, `RedwoodApolloProvider` configures an `ApolloClient` instance with an `InMemoryCache` to store responses from the GraphQL API and an `authMiddleware` to sign requests to the API for use with [Redwood's built-in auth](https://redwoodjs.com/docs/authentication). Beyond the `cache` and `link` params, which are used to set up that functionality, you can specify additional params to be passed to the `ApolloClient` using the `graphQLClientConfig` prop. The full list of avialable configuration options for the client are [documented here on Apollo's site](https://www.apollographql.com/docs/react/api/core/ApolloClient/#options).
+
+Additionally, depending on your use case, you may want or need to customize the cache configuration. For example, you may need to specify a type policy to change the key by which a model is cached or to enable pagination on a query. [This article from Apollo](https://www.apollographql.com/docs/react/caching/cache-configuration/) explains in further detail why and how you might want to do this.
+
+By default, the provider's `InMemoryCache` with no custom configuration. To configure the cache `RedwoodApolloProvider` also observes for the key `cacheConfig` on the `graphQLClientConfig` object. Any value you pass to this key will be passed directly to the `InMemoryCache` instance that the provider creates. For example, if you had a query named `search` that supports [Apollo's offset pagination](https://www.apollographql.com/docs/react/pagination/core-api/), you could add support for this on your site by specifying:
+
+```js
+<RedwoodApolloProvider graphQLClientConfig={{
+  cacheConfig: {
+    typePolicies: {
+      Query: {
+        fields: {
+          search: {
+            // Uses the offsetLimitPagination preset from "@apollo/client/utilities";
+            ...offsetLimitPagination()
+          }
+        }
+      }
+    }
+  }
+}}>
+```
+
 ### Swapping out the RedwoodApolloProvider
 
 As long as you're willing to do a bit of configuring yourself, you can swap out `RedwoodApolloProvider` with your GraphQL Client of choice. You'll just have to get to know a bit of the make up of the [RedwoodApolloProvider](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/apollo/index.tsx#L71-L84); it's actually composed of a few more Providers and hooks:
