@@ -520,19 +520,13 @@ Then, provide your own implementations of `api/src/lib/auth.(j|t)s` and add curr
 
 When using the Clerk client, `login` and `signUp` take an `options` object that can be used to override the client config.
 
-For `login` the `options` may contain:
+For `login` the `options` may contain all the options listed at the Clerk [props documentation for login](https://docs.clerk.dev/reference/clerkjs/clerk#signinprops).
 
-- `afterSignIn`: Where to navigate after sign in is complete
-- `signUpURL`: The route where "Sign up instead" links. If not passed, Sign up will open as a modal.
-
-For `signUp` the `options` may contain:
-
-- `afterSignUp`: Where to navigate after sign up is complete
-- `signInURL`: The route where "Sign in instead" links. If not passed, Sign in will open as a modal.
+For `signUp` the `options` may contain all the options listed at the Clerk [props documentation for signup](https://docs.clerk.dev/reference/clerkjs/clerk#signupprops).
 
 #### Avoiding Feature Duplication Confusion
 
-Redwood's integration of Clerk is based on [Clerk's React SDK](https://docs.clerk.dev/frontend/react). This means there is some duplication between the features available through that SDK and the ones available in the `@redwoodjs/auth` package - such as the alternatives of using Clerk's `SignedOut` component to redirect users away from a private page vs. using Redwood's `Private` route wrapper. In general, we would recommend you use the **Redwood** way of doing things when possible, as that is more likely to function harmoniously with the rest of Redwood. That being said, though, there are some great features in Clerk's SDK that you will be able to now use in your app, such as the `UserButton` and `UserProfile` components.
+Redwood's integration of Clerk is based on [Clerk's React SDK](https://docs.clerk.dev/reference/clerk-react). This means there is some duplication between the features available through that SDK and the ones available in the `@redwoodjs/auth` package - such as the alternatives of using Clerk's `SignedOut` component to redirect users away from a private page vs. using Redwood's `Private` route wrapper. In general, we would recommend you use the **Redwood** way of doing things when possible, as that is more likely to function harmoniously with the rest of Redwood. That being said, though, there are some great features in Clerk's SDK that you will be able to now use in your app, such as the `UserButton` and `UserProfile` components.
 
 +++
 
