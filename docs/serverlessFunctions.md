@@ -76,7 +76,7 @@ When you run `yarn rw dev` - it'll watch for changes and make your functions ava
 - `localhost:8911/{functionName}` and
 - `localhost:8910/.redwood/functions/{functionName}` (used by the web side).
 
-Note that the `.redwood/functions` path is detetermined by your setting in your [redwood.toml](https://redwoodjs.com/docs/app-configuration-redwood-toml#apiproxypath) - and is used both in development and in the deployed Redwood app
+Note that the `.redwood/functions` path is determined by your setting in your [redwood.toml](https://redwoodjs.com/docs/app-configuration-redwood-toml#apiproxypath) - and is used both in development and in the deployed Redwood app
 
 
 ## Testing
@@ -375,7 +375,7 @@ In the following example, we'll have the webhook interact with our app's databas
 >
 >Instead, we can automate and mock the webhook to contain a signed payload that we can use to test the handler.
 >
-> By writing these tests, you can iterate and implement the webhook logic much faster and easier without having to rely on a third party to send you data, or setting up tunnelling, or triggering events on the external system.
+> By writing these tests, you can iterate and implement the webhook logic much faster and easier without having to rely on a third party to send you data, or setting up tunneling, or triggering events on the external system.
 
 
 For our webhook test example, we'll create a webhook that updates a Order's Status by looking up the order by its Tracking Number and then updating the status to by Delivered (if our rules allow it).
@@ -675,7 +675,7 @@ Therefore our scenario uses the `scenario.order.delivered` data where the order 
 })
 ```
 
-As with other serverless function testing, ou can also `mockContext` and pass the mocked context to the handler if yur webhook requires that information.
+As with other serverless function testing, you can also `mockContext` and pass the mocked context to the handler if your webhook requires that information.
 
 #### Running Webhook Tests
 
