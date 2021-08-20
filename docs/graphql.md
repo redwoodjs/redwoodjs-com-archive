@@ -57,7 +57,7 @@ Note that you're free to use any of Apollo's other hooks, you'll just have to im
 |[useLazyQuery](https://www.apollographql.com/docs/react/api/react/hooks/#uselazyquery)|Execute queries in response to events other than component rendering|
 |[useApolloClient](https://www.apollographql.com/docs/react/api/react/hooks/#useapolloclient)|Access your instance of `ApolloClient`|
 
-### Customizing the RedwoodApolloProvider and Cache Type Policy
+### Customizing the Apollo Client and Cache
 
 By default, `RedwoodApolloProvider` configures an `ApolloClient` instance with an `InMemoryCache` to store responses from the GraphQL API and an `authMiddleware` to sign requests to the API for use with [Redwood's built-in auth](https://redwoodjs.com/docs/authentication). Beyond the `cache` and `link` params, which are used to set up that functionality, you can specify additional params to be passed to the `ApolloClient` using the `graphQLClientConfig` prop. The full list of avialable configuration options for the client are [documented here on Apollo's site](https://www.apollographql.com/docs/react/api/core/ApolloClient/#options).
 
