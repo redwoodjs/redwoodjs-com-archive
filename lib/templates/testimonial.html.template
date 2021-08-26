@@ -1,0 +1,11 @@
+<li class="glide__slide h-full">
+  <div class="flex flex-col justify-center items-center max-w-screen-md mx-auto h-full">
+    <div class="-mt-4 text-base md:text-lg text-center">
+      ${body}
+    </div>
+    <div class="flex flex-shrink-0 items-center justify-center text-sm font-semibold mt-4">
+      <img class="rounded-full w-10" src="${avatar}">
+      <span class="ml-2">${name} / <a class="text-red-700 hover:underline" href="${link}">${provider}</a><span>
+    </div>
+  </div>
+</li>

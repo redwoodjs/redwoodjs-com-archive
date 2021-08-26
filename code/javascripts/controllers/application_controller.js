@@ -1,15 +1,19 @@
 import { Controller } from 'stimulus'
 import hljs from 'highlight.js'
 import ClipboardJS from 'clipboard'
+import Glide from '@glidejs/glide/dist/glide.esm'
 
 export default class extends Controller {
   static get targets() {
-    return ['header','logo','search','stars','nav','innerNav','body','code','year','thanks', 'cone']
+    return ['header', 'logo', 'search', 'stars', 'nav', 'innerNav', 'body', 'code', 'year', 'thanks', 'cone']
   }
 
   connect() {
     // set the year in the footer
     this.yearTarget.textContent = new Date().getFullYear()
+
+    // start glide sliders
+    new Glide('.glide', { type: 'carousel', autoplay: 6000 }).mount()
 
     // code highlighting
     this.codeTargets.forEach((target) => {
@@ -164,8 +168,8 @@ export default class extends Controller {
       this.element.appendChild(cone)
       cone.style.left = `${Math.random() * this.element.offsetWidth}px`
       cone.style.width = `${size}px`
-      cone.style.setProperty('--rotateStart',`${rotateStart}deg`)
-      cone.style.setProperty('--rotateEnd',`${rotateEnd}deg`)
+      cone.style.setProperty('--rotateStart', `${rotateStart}deg`)
+      cone.style.setProperty('--rotateEnd', `${rotateEnd}deg`)
 
       setTimeout(() => {
         cone.classList.remove('hidden')
