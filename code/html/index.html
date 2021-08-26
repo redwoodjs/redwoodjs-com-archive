@@ -6,14 +6,16 @@
       <img src="/images/diecut.svg" alt="Redwood Logo" class="w-4/5 mx-auto" />
     </div>
     <div class="w-full lg:w-2/3 lg:pr-4">
-      <h2 class="text-3xl md:text-4xl text-center lg:text-left text-white font-semibold tracking-tight leading-10">
-        A <span class="text-red-400">full-stack</span> JS framework for the
-        <span class="text-red-400">edge</span>
+      <h2 class="text-3xl md:text-6xl text-center lg:text-left text-white font-semibold tracking-tight leading-10">
+        The <span class="text-red-400">full-stack</span> JS framework
+        for <span class="text-red-400">getting stuff done</span>
       </h2>
       <p class="max-w-2xl mx-auto lg:mx-0 text-center font-light lg:text-left md:text-lg xl:text-xl mt-6 xl:leading-8 text-white">
-        Do you love the Jamstack philosophy but need a database-backed web app? Want great developer experience and easy
-        scaling? Redwood is here! Built on React, GraphQL, and Prisma, Redwood works with the components and development
-        workflow you love, but with simple conventions and helpers to make your experience even better.
+        Spend less time configuring and more time buliding your next web app.
+        Redwood includes React, GraphQL, Prisma, Storybook, Jest, and more
+        pre-configured and ready to go. Scale from one developer doing it
+        all to independent front- and back-end teams working in tandem or separately.
+        However you organize, Redwood works with your workflow.
       </p>
       <ul class="flex flex-wrap mt-8 justify-center lg:justify-start lg:-ml-2">
         <li class="px-2 whitespace-no-wrap">
@@ -260,6 +262,7 @@ export const Success = ({ users }) => {
 <section class="md:flex mt-24 max-w-screen-lg mx-auto">
   <div class="md:w-3/5 md:pr-4 mt-4 md:mt-0">
     <pre class="border border-red-200 rounded-lg"><code class="javascript" data-target="application.code">// api/src/graphql/users.sdl.js
+
 export const schema = gql`
   type User {
     id: Int!
@@ -268,14 +271,17 @@ export const schema = gql`
   type Query {
     users: [User]
   }
-`
+`</code></pre>
 
-// api/src/services/users/users.js
+    <pre class="mt-2 border border-red-200 rounded-lg"><code class="javascript" data-target="application.code">// api/src/services/users/users.js
+
 import { db } from 'src/lib/db'
 
 export const users = () => db.user.findMany()
+</code></pre>
 
-// web/src/components/UsersCell/UsersCell.js
+    <pre class="mt-2 border border-red-200 rounded-lg"><code class="javascript" data-target="application.code">// web/src/components/UsersCell/UsersCell.js
+
 export const QUERY = gql`
   query USERS {
     users {
@@ -311,35 +317,37 @@ export const Success = ({ users }) => {
 
 <section class="md:flex mt-24 max-w-screen-lg mx-auto">
   <div class="md:w-2/5 pr-4 text-right">
-    <h3 class="text-2xl text-red-700 font-bold tracking-tight">Generators</h3>
+    <h3 class="text-2xl text-red-700 font-bold tracking-tight">CLI Tools</h3>
     <p class="my-3">
       Even with a relentless elimination of boilerplate, Redwood files still need a bit of code to get you started,
       and need to be created in the right directories. No problem, let a computer do that <span class="whitespace-nowrap">for you!</span>
     </p>
     <p class="my-3">
       Redwood contains several <strong>generators</strong> which create the shell of cells, pages, layouts, services,
-      and more. We even have a <strong>scaffold</strong> generator which will create all the pages necessary to run
-      end-to-end CRUD operations on a <span class="whitespace-nowrap">database table.</span>
+      as well as <strong>installers</strong> for TailwindCSS, authentication libraries and even <span class="whitespace-nowrap">deploy targets.</span>
     </p>
   </div>
   <div class="md:w-3/5 md:pl-4 mt-4 md:mt-0">
     <pre class="border border-red-200 rounded-lg"><code class="bash" data-target="application.code"># Create a cell for Users
 $ yarn rw generate cell User
 
-# Create a layout named Admin
-$ yarn rw generate layout Admin
-
-# Create an About page and set the URL to /about
-$ yarn rw generate page About /about
+# Create a homepage and set the URL to /
+$ yarn rw generate page Home /
 
 # Read the DB schema and create the SDL file for the User table
 $ yarn rw generate sdl User
 
-# Create api/src/services/email/email.js and include CRUD functions
-$ yarn rw generate service Email --crud
-
 # Create the SDL, service, cells, pages and components to CRUD a User
-$ yarn rw generate scaffold User</code></pre>
+$ yarn rw generate scaffold User
+
+# Install and configure TailwindCSS
+$ yarn rw setup tailwind
+
+# Install and configure Auth0 for login/signup
+$ yarn rw setup auth Auth0
+
+# Configure deployment to Netlify
+$ yarn rw setup deploy netlify</code></pre>
   </div>
 </section>
 
