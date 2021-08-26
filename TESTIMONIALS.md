@@ -37,3 +37,12 @@ Made with a lot of love for @redwoodjs 💕
 The launch of RedwoodJS today marks a first: it is the first time React components are being expressed in a single file format with explicit conventions.
 
 This movement has been a long time coming, and I can see the momentum accelerating now.
+
+---
+
+# Amanda Giannelli
+## https://pbs.twimg.com/profile_images/1339986708461473792/XHUVridC_400x400.jpg
+### https://twitter.com/GiannelliTech/status/1431020145867165702
+#### Twitter
+
+@redwoodjs makes me feel like a superhero 🦹‍♀️🚀
