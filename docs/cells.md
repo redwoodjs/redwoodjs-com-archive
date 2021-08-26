@@ -163,8 +163,6 @@ export const afterQuery = (data) => ({...data})
 
 If the request is in flight, a Cell renders `Loading`.
 
-For a production example, navigate to predictcovid.com, the first site made with Redwood. Usually, when you first navigate there, you'll see most of the dashboard spinning. Those are `Loading` components in action!
-
 When you're developing locally, you can catch your Cell waiting to hear back for a moment if set your speed in the Inspector's **Network** tab to something like "Slow 3G".
 
 But why bother with Slow 3G when Redwood comes with Storybook? Storybook makes developing components like `Loading` (and `Failure`) a breeze. We don't have to put up with hacky workarounds like Slow 3G or intentionally breaking our app just to develop our components.
