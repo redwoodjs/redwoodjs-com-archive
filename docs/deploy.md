@@ -73,6 +73,10 @@ Whenever you make changes to your `schema.prisma`, you must run the following co
 $ yarn rw prisma migrate dev # creates and applies a new Prisma DB migration	
 ```
 
+> Note: when setting your Production DATABASE_URL envar, be sure to also set any connection pooling or sslmode parameters. For example, if using Supabase Postgres with pooling, then you would use a connection string similar to `postgresql://postgres:mydb.supabase.co:6432/postgres?sslmode=require&pgbouncer=true` that uses a specific 6432 port, informs Prisma to consider pgBouncer, and also to use SSL. See: [Connection Pooling](https://redwoodjs.com/docs/connection-pooling) for more info.
+
+
+
 ### 4. Environment Variables
 Any environment variables used locally, e.g. in your `env.defaults` or `.env`, must also be added to your hosting provider settings. (See documentation specific to your provider.)
 
