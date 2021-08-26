@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^2.0.6",
+    "@glidejs/glide": "^3.4.1",
     "@octokit/rest": "^16.43.1",
     "@tailwindcss/postcss7-compat": "^2.0.3",
     "algoliasearch": "^4.3.0",
