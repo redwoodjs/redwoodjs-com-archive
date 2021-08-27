@@ -346,7 +346,7 @@ const ImagesList = ({ images }) => {
                   <img src={image.url} style={{ maxWidth: '50px' }} />
                 </a>
               </td>
-              <td className="p-3 pr-4 text-right whitespace-nowrap">
+              <td className="p-3 pr-4 text-right whitespace-no-wrap">
                 <nav>
                   <ul>
                     <li className="inline-block">
