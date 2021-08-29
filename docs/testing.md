@@ -1189,10 +1189,14 @@ When you use any of the generators that create a service (scaffold, sdl or servi
 export const standard = defineScenario({
   user: {
     one: {
-      name: 'String',
+      data: {
+        name: 'String',
+      },
     },
     two: {
-      name: 'String',
+      data: {
+        name: 'String',
+      },
     }
   },
 })
@@ -1200,18 +1204,24 @@ export const standard = defineScenario({
 
 This scenario creates two user records. The generator can't determine the intent of your fields, it can only tell the datatypes, so strings get prefilled with just 'String'. What's up with the `one` and `two` keys? Those are friendly names you can use to reference your scenario data in your test.
 
+Notice the `data` field contains all the user object fields. It helps in a way to provide additional options to describe [related fields](https://redwoodjs.com/docs/testing.html#relationships).
+
 Let's look at a better example. We'll update the scenario with some additional data and give them a more distinctive name:
 
 ```javascript
 export const standard = defineScenario({
   user: {
     anthony: {
-      name: 'Anthony Campolo',
-      email: 'anthony@redwoodjs.com'
+      data : {
+        name: 'Anthony Campolo',
+        email: 'anthony@redwoodjs.com'
+      },
     },
     dom: {
-      name: 'Dom Saadi',
-      email: 'dom@redwoodjs.com'
+      data: {
+        name: 'Dom Saadi',
+        email: 'dom@redwoodjs.com'
+      },
     }
   },
 })
@@ -1245,12 +1255,16 @@ You may have noticed that the scenario we used was once again named `standard`. 
 export const standard = defineScenario({
   user: {
     anthony: {
-      name: 'Anthony Campolo',
-      email: 'anthony@redwoodjs.com'
+      data : {
+        name: 'Anthony Campolo',
+        email: 'anthony@redwoodjs.com'
+      },
     },
     dom: {
-      name: 'Dom Saadi',
-      email: 'dom@redwoodjs.com'
+      data: {
+        name: 'Dom Saadi',
+        email: 'dom@redwoodjs.com'
+      },
     }
   },
 })
@@ -1258,12 +1272,16 @@ export const standard = defineScenario({
 export const incomplete = defineScenario({
   user: {
     david: {
-      name: 'David Thyresson',
-      email: 'dt@redwoodjs.com'
+      data: {
+        name: 'David Thyresson',
+        email: 'dt@redwoodjs.com'
+      },
     },
     forrest: {
-      name: '',
-      email: 'forrest@redwoodjs.com'
+      data: {
+        name: '',
+        email: 'forrest@redwoodjs.com'
+      },
     }
   }
 })
@@ -1286,19 +1304,25 @@ You're not limited to only creating a single model type in your scenario, you ca
 export const standard = defineScenario({
   product: {
     shirt: {
-      name: 'T-shirt',
-      inventory: 5
+      data: {
+        name: 'T-shirt',
+        inventory: 5
+      },
     }
   },
   order: {
     first: {
-      poNumber: 'ABC12345'
+      data: {
+        poNumber: 'ABC12345'
+      },
     }
   },
   paymentMethod: {
     credit: {
-      type: 'Visa',
-      last4: 1234
+      data: {
+        type: 'Visa',
+        last4: 1234
+      },
     }
   }
 })
@@ -1320,14 +1344,16 @@ What if your models have relationships to each other? For example, a blog **Comm
 export const standard = defineScenario({
   comment: {
     first: {
-      name: 'Tobbe',
-      body: 'But it uses some letters twice'
-      post: {
-        create: {
-          title: 'Every Letter',
-          body: 'The quick brown fox jumped over the lazy dog.'
+      data: {
+        name: 'Tobbe',
+        body: 'But it uses some letters twice'
+        post: {
+          create: {
+            title: 'Every Letter',
+            body: 'The quick brown fox jumped over the lazy dog.'
+          }
         }
-      }
+      },
     }
   }
 })
@@ -1354,6 +1380,40 @@ scenario('creates a second comment', async (scenario) => {
 `postId` is created by Prisma after creating the nested `post` model and associating it back to the `comment`.
 
 Why check against `Object.keys(scenario.comment).length + 1` and not just `2`? Because if we ever update the scenario to add more records (maybe to support another test) this test will keep working because it only assumes what *it itself* did: add one comment to existing count of comments in the scenario.
+
+Additionally, you can also [configure](https://www.prisma.io/docs/concepts/components/prisma-client/select-fields/) to `include` the post object  or `select` the specific field from it:
+
+``` javascript
+export const standard = defineScenario({
+  comment: {
+    first: {
+      data: {
+        name: 'Rob',
+        body: 'Something really interesting'
+        post: {
+          create: {
+            title: 'Brand new post',
+            body: 'Introducing dbAuth'
+          }
+        }
+      },
+      include: {
+        post: true
+      }
+    }
+  }
+})
+```
+
+You’ll have both the `comment` and the related `post` object available to the tests:
+
+```javascript
+scenario('retrieves a comment with post', async (scenario) => {
+  const comment = await commentWithPost({ id: scenario.comment.first.id })
+
+  expect(comment.post.title).toEqual(scenario.comment.first.post.title)
+})
+```
 
 #### Which Scenarios Are Seeded?
 
