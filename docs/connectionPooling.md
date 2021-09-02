@@ -9,7 +9,7 @@
 > If you have any questions, just ask for help! We're active on the [forums](https://community.redwoodjs.com/c/contributing/9) and on [discord](https://discord.com/channels/679514959968993311/747258086569541703).
 
 Production Redwood apps should enable connection pooling in order to properly scale with your Serverless functions.
-## Prisma Pooling with pgBouncer
+## Prisma Pooling with PgBouncer
 
 PgBouncer holds a connection pool to the database and proxies incoming client connections by sitting between Prisma Client and the database. This reduces the number of processes a database has to handle at any given time. PgBouncer passes on a limited number of connections to the database and queues additional connections for delivery when space becomes available.
 
@@ -20,7 +20,7 @@ To use Prisma Client with PgBouncer from a serverless function, add the `?pgboun
 postgresql://USER:PASSWORD@HOST:PORT/DATABASE?pgbouncer=true
 ```
 
-Typically, your pgBouncer port will be 6432 which is different than the Postgres default of 5432.
+Typically, your PgBouncer port will be 6543 which is different than the Postgres default of 5432.
 
 > Note that since Prisma Migrate uses database transactions to check out the current state of the database and the migrations table, if you attempt to run Prisma Migrate commands in any environment that uses PgBouncer for connection pooling, you might see an error.
 >
@@ -39,8 +39,8 @@ We recommend that you connect to your Supabase Postgres instance using SSL which
 ```
 // not pooled typically uses port 5432
 postgresql://postgres:mydb.supabase.co:5432/postgres?sslmode=require
-// pooled typically uses port 6432
-postgresql://postgres:mydb.supabase.co:6432/postgres?sslmode=require&pgbouncer=true
+// pooled typically uses port 6543
+postgresql://postgres:mydb.supabase.co:6543/postgres?sslmode=require&pgbouncer=true
 ```
 
 ## Heroku
