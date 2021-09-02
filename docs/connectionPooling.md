@@ -23,8 +23,8 @@ postgresql://USER:PASSWORD@HOST:PORT/DATABASE?pgbouncer=true
 Typically, your pgBouncer port will be 6432 which is different than the Postgres default of 5432.
 
 > Note that since Prisma Migrate uses database transactions to check out the current state of the database and the migrations table, if you attempt to run Prisma Migrate commands in any environment that uses PgBouncer for connection pooling, you might see an error.
-
-To work around this issue, you must connect directly to the database rather than going through PgBouncer when migrating.
+>
+> To work around this issue, you must connect directly to the database rather than going through PgBouncer when migrating.
 
 For more information on Primsa and PgBouncer, please refer to Prisma's Guide on [Configuring Prisma Client with PgBouncer](https://www.prisma.io/docs/guides/performance-and-optimization/connection-management/configure-pg-bouncer).
 
