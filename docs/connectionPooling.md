@@ -11,7 +11,7 @@
 Production Redwood apps should enable connection pooling in order to properly scale with your Serverless functions.
 ## Prisma Pooling with pgBouncer
 
-> PgBouncer holds a connection pool to the database and proxies incoming client connections by sitting between Prisma Client and the database. This reduces the number of processes a database has to handle at any given time. PgBouncer passes on a limited number of connections to the database and queues additional connections for delivery when space becomes available.
+PgBouncer holds a connection pool to the database and proxies incoming client connections by sitting between Prisma Client and the database. This reduces the number of processes a database has to handle at any given time. PgBouncer passes on a limited number of connections to the database and queues additional connections for delivery when space becomes available.
 
 * Add `pgbouncer` to the connection URL
 
