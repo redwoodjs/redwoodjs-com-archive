@@ -38,10 +38,9 @@ All new Supabase projects include connection pooling using [PgBouncer](https://w
 We recommend that you connect to your Supabase Postgres instance using SSL which you can do by setting `sslmode` to `require` on the connection string:
 
 ```
-// not pooled typically used port 5432
+// not pooled typically uses port 5432
 postgresql://postgres:mydb.supabase.co:5432/postgres?sslmode=require
-// or, pooled which typically used port 6432
-// not pooled typically used port 5432
+// pooled typically uses port 6432
 postgresql://postgres:mydb.supabase.co:6432/postgres?sslmode=require&pgbouncer=true
 ```
 
