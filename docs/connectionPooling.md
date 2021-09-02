@@ -27,7 +27,7 @@ Typically, your pgBouncer port will be 6432 which is different than the Postgres
 
 To work around this issue, you must connect directly to the database rather than going through PgBouncer when migrating.
 
-For more information on Primsa and PgBouncer, please refer to Prisma's Guide to [Configure Prisma Client with PgBouncer](https://www.prisma.io/docs/guides/performance-and-optimization/connection-management/configure-pg-bouncer).
+For more information on Primsa and PgBouncer, please refer to Prisma's Guide on [Configuring Prisma Client with PgBouncer](https://www.prisma.io/docs/guides/performance-and-optimization/connection-management/configure-pg-bouncer).
 
 ## Supabase
 
