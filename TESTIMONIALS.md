@@ -46,3 +46,15 @@ This movement has been a long time coming, and I can see the momentum accelerati
 #### Twitter
 
 @redwoodjs makes me feel like a superhero 🦹‍♀️🚀
+
+--- 
+
+# Barak John
+## https://pbs.twimg.com/profile_images/1298217213271343104/_CGBI9gB_400x400.jpg
+### https://twitter.com/barakcodes/status/1433125815554805770
+#### Twitter
+
+It's 2021, if you're a maker, small team or starting a new project. Consider:
+@redwoodjs + @supabase + @vercel
+ 
+I can promise it's a dev productivity heaven. 🤯 It's fast ⚡ Scales to infinity ♾
