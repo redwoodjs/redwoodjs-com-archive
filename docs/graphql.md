@@ -59,13 +59,13 @@ Note that you're free to use any of Apollo's other hooks, you'll just have to im
 
 ### Customizing the Apollo Client and Cache
 
-By default, `RedwoodApolloProvider` configures an `ApolloClient` instance with an `InMemoryCache` to store responses from the GraphQL API and an `authMiddleware` to sign requests to the API for use with [Redwood's built-in auth](https://redwoodjs.com/docs/authentication). Beyond the `cache` and `link` params, which are used to set up that functionality, you can specify additional params to be passed to the `ApolloClient` using the `graphQLClientConfig` prop. The full list of available configuration options for the client are [documented here on Apollo's site](https://www.apollographql.com/docs/react/api/core/ApolloClient/#options).
+By default, `RedwoodApolloProvider` configures an `ApolloClient` instance with 1) a default instance of `InMemoryCache` to cache responses from the GraphQL API and 2) an `authMiddleware` to sign API requests for use with [Redwood's built-in auth](https://redwoodjs.com/docs/authentication). Beyond the `cache` and `link` params, which are used to set up that functionality, you can specify additional params to be passed to `ApolloClient` using the `graphQLClientConfig` prop. The full list of available configuration options for the client are [documented here on Apollo's site](https://www.apollographql.com/docs/react/api/core/ApolloClient/#options).
 
-Additionally, depending on your use case, you may want to customize the cache's configuration. For example, you may need to specify a type policy to change the key by which a model is cached or to enable pagination on a query. [This article from Apollo](https://www.apollographql.com/docs/react/caching/cache-configuration/) explains in further detail why and how you might want to do this.
+Depending on your use case, you may want to configure `InMemoryCache`. For example, you may need to specify a type policy to change the key by which a model is cached or to enable pagination on a query. [This article from Apollo](https://www.apollographql.com/docs/react/caching/cache-configuration/) explains in further detail why and how you might want to do this.
 
-To configure the cache when it is created use the `cacheConfig` key on the `graphQLClientConfig` object. Any value you pass to this key will be passed directly to the `InMemoryCache` instance when it is created.
+To configure the cache when it's created, use the `cacheConfig` property on `graphQLClientConfig`. Any value you pass is passed directly to `InMemoryCache` when it's created.
 
-For example, if you had a query named `search` that supports [Apollo's offset pagination](https://www.apollographql.com/docs/react/pagination/core-api/), you could add support for this on your site by specifying:
+For example, if you have a query named `search` that supports [Apollo's offset pagination](https://www.apollographql.com/docs/react/pagination/core-api/), you could enable it by specifying:
 
 ```js
 <RedwoodApolloProvider graphQLClientConfig={{
