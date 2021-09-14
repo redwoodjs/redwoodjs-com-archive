@@ -58,24 +58,25 @@ You can get this working by creating an explicit relationship—defining the tab
 
 ```javascript
 model Product {
-  id       Int      @id @default(autoincrement())
-  title    String
-  desc     String
-  tags     Tag[]
+  id    Int         @id @default(autoincrement())
+  title String
+  desc  String
+  tags  ProductsOnTag[]
 }
 
 model Tag {
-  id       Int       @id @default(autoincrement())
+  id       Int      @id @default(autoincrement())
   name     String
-  products Product[]
+  products ProductsOnTag[]
 }
 
-model ProductsOnTags {
-  id        Int       @id @default(autoincrement())
+model ProductsOnTag {
+  id        Int     @id @default(autoincrement())
   tagId     Int
-  tags      Tag[]     @relation(fields: [tagId], references: [id])
+  tag       Tag     @relation(fields: [tagId], references: [id])
   productId Int
-  products  Product[] @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+
   @@unique([tagId, productId])
 }
 ```
