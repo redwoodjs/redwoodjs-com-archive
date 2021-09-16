@@ -1415,6 +1415,100 @@ scenario('retrieves a comment with post', async (scenario) => {
 })
 ```
 
+####  Relationships with an existing record
+If your models have relationships to each other and you need to connect them to an existing record, using the normal object syntax is just not going to cut it. 
+
+One example: a blog **Comment** has a parent **Post**, and both **Comment** and **Post** need to belong to an **Author**. With object syntax, there is no way to access the `authorId` of the `Author` we just created. We could potentially hard code the `id`, but that is just asking for trouble.
+
+```javascript
+// unable to access authorId
+export const standard = defineScenario({
+  post: {
+    first: {
+      data: {
+        name: 'First Post',
+        author: { create: { name: 'Kris' }},
+        comments: {
+          create: [
+            {
+              name: 'First Comment',
+              body: 'String',
+              authorId: // We want a different author...
+            },
+            {
+              name: 'First Comment Response',
+              body: 'String',
+              authorId: // We want the same author as post author...,
+            },
+          ],
+        },
+      }
+    }),
+  },
+})
+```
+
+
+
+When these use cases happen you can connect an existing `scenario` record using the distinctive name key as a function that returns an object.
+
+```javascript
+export const standard = defineScenario({
+  author: { 
+    kris: { 
+      data: { name: 'Kris' }
+    }
+    rob: { 
+      data: { name: 'rob' }
+    }
+  },
+  post: {
+    first: (scenario) => ({
+     data: {
+        name: 'First Post',
+        authorId: scenario.author.kris.id,
+        comments: {
+          create: [
+            {
+              name: 'First Comment',
+              body: 'String',
+              authorId: scenario.author.rob.id,
+            },
+            {
+              name: 'First Comment Response',
+              body: 'String',
+              authorId: scenario.author.kris.id,
+            },
+          ],
+        },
+      }
+    }),
+  },
+})
+```
+
+Since [ES2015](https://tc39.es/ecma262/#sec-ordinaryownpropertykeys), object property keys are in ascending order of property creation. In the context of `defineScenerio`, this means that a key will have access to any key(s) created before it. We can leverage this like so:
+
+```javascript
+export const standard = defineScenario({
+  user: { 
+    kris: { 
+      data: { name: 'Kris' }
+    }
+  },
+  post: {
+    first: (scenario) => ({
+     // You have access to scenario.user
+    }),
+  },
+  comment: {
+    first: (scenario) => ({
+      // You have access to scenario.user and scenario.post
+    })
+  }
+})
+```
+
 #### Which Scenarios Are Seeded?
 
 Only the scenarios named for your test are included at the time the test is run. This means that if you have:
