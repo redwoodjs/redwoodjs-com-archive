@@ -1204,7 +1204,7 @@ export const standard = defineScenario({
 
 This scenario creates two user records. The generator can't determine the intent of your fields, it can only tell the datatypes, so strings get prefilled with just 'String'. What's up with the `one` and `two` keys? Those are friendly names you can use to reference your scenario data in your test.
 
-Notice the `data` field contains all the user object fields. It helps in a way to provide additional options to describe [related fields](https://redwoodjs.com/docs/testing.html#relationships).
+The `data` key is one of Prisma's [create options](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create). It's the same as in your Services—everything in the `one` and `two` keys actually just gets passed to Prisma's create. You can even create [relationships](https://redwoodjs.com/docs/testing.html#relationships) if you want. 
 
 Let's look at a better example. We'll update the scenario with some additional data and give them a more distinctive name:
 
