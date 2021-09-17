@@ -1381,7 +1381,7 @@ scenario('creates a second comment', async (scenario) => {
 
 Why check against `Object.keys(scenario.comment).length + 1` and not just `2`? Because if we ever update the scenario to add more records (maybe to support another test) this test will keep working because it only assumes what *it itself* did: add one comment to existing count of comments in the scenario.
 
-Additionally, you can also [configure](https://www.prisma.io/docs/concepts/components/prisma-client/select-fields/) to `include` the post object  or `select` the specific field from it:
+You can also [include](https://www.prisma.io/docs/concepts/components/prisma-client/select-fields/) the post object (or `select` specific fields from it):
 
 ``` javascript
 export const standard = defineScenario({
@@ -1405,7 +1405,7 @@ export const standard = defineScenario({
 })
 ```
 
-You’ll have both the `comment` and the related `post` object available to the tests:
+Then you’ll have both the `comment` and its `post`:
 
 ```javascript
 scenario('retrieves a comment with post', async (scenario) => {
