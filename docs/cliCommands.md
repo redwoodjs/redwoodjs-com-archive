@@ -611,7 +611,7 @@ $ /redwood-app/node_modules/.bin/dev-server
 
 ### generate generator
 
-Copies a given generators template files to your local app for customization. The next time you generate that type again, it will use your custom template instead of Redwood's default.
+Copies a given generator's template files to your local app for customization. The next time you generate that type again, it will use your custom template instead of Redwood's default.
 
 ```
 yarn rw generate generator <name>
