@@ -9,7 +9,7 @@ You don't have to start the dev server, login as a user, tab through dropdowns, 
 Or render a whole page and make six GraphQL calls just to change the color of a modal.
 You can set it all up as a story, tweak it there as you see fit, and even test it for good measure.
 
-## Starting Storybook
+## Getting Started with Storybook
 
 You can start Storybook with `yarn rw storybook`:
 
