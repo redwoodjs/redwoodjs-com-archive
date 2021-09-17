@@ -1,24 +1,24 @@
 # File Uploads
 
-As you've probably heard, Redwood thinks the future is serverless. This concept introduces some interesting problems you may not have had to worry about in the past. For example: where do files go when you upload them—there's no server! Like many tasks you may have done [yourself](https://redwoodjs.com/tutorial/authentication) in the past, this is another job that we can farm out to a third party service.
+As you've probably heard, Redwood thinks the future is serverless. This concept introduces some interesting problems you might not have had to worry about in the past. For example: where do files go when you upload them? There's no server! Like many tasks you may have done [yourself](https://redwoodjs.com/tutorial/authentication) in the past, this is another job that we can farm out to a third party service.
 
 ## The Service
 
-There are many services out there that handle file uploads and serving from a CDN. Two of the big ones are [Cloudinary](https://cloudinary.com) and [Filestack](https://filestack.com). We're going to demo a Filestack integration here because we've found it very easy to integrate. In addition to storing your uploads and making them available via a CDN they also offer on-the-fly image transformations so even if someone uploads a Retina-ready 5000px wide headshot, you can shrink it down and only serve a 100px version for their avatar in the upper right corner of your site. You save bandwidth and transfer costs.
+There are many services out there that handle uploading files and serving them from a CDN. Two of the big ones are [Cloudinary](https://cloudinary.com) and [Filestack](https://filestack.com). We're going to demo a Filestack integration here because we've found it very easy to integrate. In addition to storing your uploads and making them available via a CDN, they also offer on-the-fly image transformations so that even if someone uploads a Retina-ready 5000px wide headshot, you can shrink it down and only serve a 100px version for their avatar in the upper right corner of your site. You save bandwidth and transfer costs.
 
-We're going to sign up for a free plan which gives us 100 uploads a month, 1000 transformations (like resizing an image), 1GB of bandwidth, and 0.5GB of storage. That is more than enough for this demo and maybe even a low traffic production site.
+We're going to sign up for a free plan which gives us 100 uploads a month, 1000 transformations (like resizing an image), 1GB of bandwidth, and 0.5GB of storage. That's more than enough for this demo, and maybe even a low-traffic production site!
 
-Head over to https://dev.filestack.com/signup/free/ and sign up. Be sure to use a real email address because they're going to send you a confirmation email before you can log in. Once you verify your email you'll be dropped on your dashboard where your API key will be shown at the upper right:
+Head over to https://dev.filestack.com/signup/free/ and sign up. Be sure to use a real email address because they're going to send you a confirmation email before you can log in. Once you verify your email, you'll be dropped on your dashboard where your API key will be shown in the upper right:
 
 ![New image scaffold](https://user-images.githubusercontent.com/300/82616735-ec41a400-9b82-11ea-9566-f96089e35e52.png)
 
-Copy that or at least keep the browser tab open because we're going to need it in a minute. (I already changed that key so don't bother trying to steal it!)
+Copy that (or at least keep the browser tab open) because we're going to need it in a minute. (I already changed that key so don't bother trying to steal it!)
 
-That's it on the Filestack side, on to the application.
+That's it on the Filestack side—on to the application.
 
 ## The App
 
-Let's create a very simple DAM (Digital Asset Manager) that lets users upload and catalog images. They will be able to click the thumbnail to open a full-size version.
+Let's create a very simple DAM (Digital Asset Manager) that lets users upload and catalog images. They'll be able to click the thumbnail to open a full-size version.
 
 Create a new Redwood app:
 
@@ -33,7 +33,7 @@ The first thing we'll do is create an environment variable to hold our Filestack
 REDWOOD_ENV_FILESTACK_API_KEY=AM18i8xV4QpoiGwetoTWd
 ```
 
-> We're prefixing with `REDWOOD_ENV_` here as an indicator to webpack that we want it to replace these variables with the actual values as it is processing pages and statically generating them. Otherwise our generated pages would still contain something like `process.env.FILESTACK_API_KEY`, which would not exist when the pages are static and being served from a CDN.
+> We're prefixing with `REDWOOD_ENV_` here as an indicator to webpack that we want it to replace these variables with their actual values as it's processing pages and statically generating them. Otherwise our generated pages would still contain something like `process.env.FILESTACK_API_KEY`, which would not exist when the pages are static and being served from a CDN.
 
 Now we can start our development server:
 
@@ -55,22 +55,21 @@ model Image {
 }
 ```
 
-`title` will be a user-supplied name for this asset and `url` will contain the public URL that Filestack creates after an upload.
+`title` will be the user-supplied name for this asset and `url` will contain the public URL that Filestack creates after an upload.
 
-Create a migration and update the database:
+Create a migration to update the database:
 
 ```terminal
-yarn rw db save
-yarn rw db up
+yarn rw prism migrate dev
 ```
 
-To make our lives easier let's scaffold the screens necessary to create/edit/delete an image and we'll modify those to add the uploader:
+To make our lives easier, let's scaffold the screens necessary to create/update/delete an image, then we'll worry about what we need to do to add the uploader:
 
 ```terminal
 yarn rw generate scaffold image
 ```
 
-Now head to http://localhost:8910/images/new and let's figure out what we need to do to add an image uploader:
+Now head to http://localhost:8910/images/new and let's figure this out:
 
 ![New image scaffold](https://user-images.githubusercontent.com/300/82694608-653f0b00-9c18-11ea-8003-4dc4aeac7b86.png)
 
@@ -82,7 +81,7 @@ Filestack has a [React component](https://github.com/filestack/filestack-react) 
 yarn workspace web add filestack-react
 ```
 
-We know we'll want the uploader on our scaffolded form so let's import it and try replacing the **Url** input with it, giving it the API key:
+We want the uploader on our scaffolded form, so let's import it and try replacing the **Url** input with it, giving it the API key:
 
 ```javascript{11,54}
 // web/src/components/ImageForm/ImageForm.js
