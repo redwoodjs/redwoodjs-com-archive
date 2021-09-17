@@ -420,11 +420,7 @@ For this we will need to define a custom `<div>` and make it a child of `<Picker
   apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
   onSuccess={onFileUpload}
 >
-  <div
-    style={{
-      display: url ? 'none' : 'block',
-    }}
-  ></div>
+  <div style={{ display: url ? 'none' : 'block' }}></div>
 </PickerInline>
 
 
