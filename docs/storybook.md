@@ -21,6 +21,8 @@ This spins up Storybook on port `7910`.
 
 ## Configuring Storybook
 
+You only have to configure Storybook if you want to extend Redwood's default configuration, which handles things like how to find stories, configuring Webpack, startring Mock Service Worker, etc.
+
 There's two files you can add to your project's `web/config` directory to configure Storybook: `storybook.config.js` and `storybook.preview.js`. Note that you may have to create the `web/config` directory:
 
 ```
@@ -30,12 +32,15 @@ touch config/storybook.config.js config/storybook.preview.js
 ```
 
 `storybook.config.js` configures Storybook's server while `storybook.preview.js` configures the way stories render.
+Both of these files get merged with Redwood's default configurations, which you can find in the `@redwoodjs/testing` package:
+- [main.js](https://github.com/redwoodjs/redwood/blob/main/packages/testing/config/storybook/main.js)—gets merged with your project's `storybook.config.js` 
+- [preview.js](https://github.com/redwoodjs/redwood/blob/main/packages/testing/config/storybook/preview.js)—gets merged with your project's `storybook.preview.js`
 
 ### Configuring the Server with `storybook.config.js`
 
 > Since `storybook.config.js` configures Storybook's server, note that any changes you make require restarting Storybook.
 
-While you can configure [any of Storybook server's available options](https://storybook.js.org/docs/react/configure/overview#configure-your-storybook-project) in `storybook.config.js`, you'll probably only configure `addons`:
+While you can configure [any of Storybook server's available options](https://storybook.js.org/docs/react/configure/overview#configure-your-storybook-project) in `storybook.config.js`, you'll probably only want to configure `addons`:
 
 ```js
 // web/config/storybook.config.js
@@ -49,9 +54,6 @@ module.exports = {
   addons: ['@storybook/addon-essentials']
 }
 ```
-
-This's because the other options are for things like how to find stories, configuring Webpack, configuring Babel, etc. 
-Since Redwood merges your project's `storybook.config.js` with its base configuration, it does all that for you.
 
 ### Configuring Rendering with `storybook.preview.js`
 
