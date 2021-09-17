@@ -630,7 +630,7 @@ If you wanted to customize the page generator template, run the command:
 yarn rw generate generator page
 ```
 
-And then check `web/generators/page` for the page, storybook and test template files. You don't need to keep all of these templates, you could customize just `page.tsx.template` and delete the others and they would still be generated, but using the default Redwood templates.
+And then check `web/generators/page` for the page, storybook and test template files. You don't need to keep all of these templates—you could customize just `page.tsx.template` and delete the others and they would still be generated, but using the default Redwood templates.
 
 The only exception to this rule is the scaffold templates. You'll get four directories, `assets`, `components`, `layouts` and `pages`. If you want to customize any one of the templates in those directories, you will need to keep all the other files inside of that same directory, even if you make no changes. (This is due to the way the scaffold looks up its template files.) For exmaple, if you wanted to customize only the index page of the scaffold (the one that lists all available records in the database) you would edit `web/generators/scaffold/pages/NamesPage.tsx.template` and keep the other pages in that directory. You _could_ delete the other three directories (`assets`, 'components`, `layouts`) if you just want to use the default templates for those.
 
