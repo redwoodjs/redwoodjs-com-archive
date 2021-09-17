@@ -194,7 +194,8 @@ const ImageForm = (props) => {
 
 <PickerInline
   apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
-  onSuccess={onFileUpload} />
+  onSuccess={onFileUpload}
+/>
 ```
 
 Well lookie here:
