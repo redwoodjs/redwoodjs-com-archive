@@ -27,13 +27,13 @@ yarn create redwood-app uploader
 cd uploader
 ```
 
-The first thing we'll do is create an environment variable to hold our Filestack API key. This is a best practice so that the key isn't living in your repository for prying eyes to see. Add the key to the `.env` file in the root of our app:
+The first thing we'll do is create an environment variable to hold our Filestack API key. This is a best practice so that the key isn't living in our repository for prying eyes to see. Add the key to the `.env` file in the root of our app:
 
 ```terminal
 REDWOOD_ENV_FILESTACK_API_KEY=AM18i8xV4QpoiGwetoTWd
 ```
 
-> We're prefixing with `REDWOOD_ENV_` here as an indicator to webpack that we want it to replace these variables with their actual values as it's processing pages and statically generating them. Otherwise our generated pages would still contain something like `process.env.FILESTACK_API_KEY`, which wouldn't exist when the pages are static and being served from a CDN.
+> We're prefixing with `REDWOOD_ENV_` here to tell webpack that we want it to replace this variables with its actual value as it's processing pages and statically generating them. Otherwise our generated pages would still contain something like `process.env.FILESTACK_API_KEY`, which wouldn't exist when the pages are static and being served from a CDN.
 
 Now we can start our development server:
 
@@ -45,7 +45,7 @@ yarn rw dev
 
 We'll create a single model to store our image data:
 
-```javascript
+```prisma
 // api/db/schema.prisma
 
 model Image {
@@ -63,13 +63,13 @@ Create a migration to update the database; when prompted, name it "add image":
 yarn rw prisma migrate dev
 ```
 
-To make our lives easier, let's scaffold the screens necessary to create/update/delete an image, then we'll worry about what we need to do to add the uploader:
+To make our lives easier, let's scaffold the screens necessary to create/update/delete an image, then we'll worry about adding the uploader:
 
 ```terminal
 yarn rw generate scaffold image
 ```
 
-Now head to http://localhost:8910/images/new and let's figure this out:
+Now head to http://localhost:8910/images/new and let's figure this out!
 
 ![New image scaffold](https://user-images.githubusercontent.com/300/82694608-653f0b00-9c18-11ea-8003-4dc4aeac7b86.png)
 
@@ -81,7 +81,7 @@ Filestack has a couple of [React components](https://github.com/filestack/filest
 yarn workspace web add filestack-react
 ```
 
-We want the uploader on our scaffolded form, so let's import it and try replacing the **Url** input with it, giving it the API key:
+We want the uploader on our scaffolded form, so let's head over to `ImageForm`, import Filestack's inline picker, and try replacing the **Url** input with it:
 
 ```javascript{11,51}
 // web/src/components/ImageForm/ImageForm.js
@@ -149,7 +149,7 @@ const ImageForm = (props) => {
 export default ImageForm
 ```
 
-We now have a picker with all kinds of options, like picking a local file, providing a URL, and even grabbing a file from Facebook, Instagram or Google Drive. Not bad!
+We now have a picker with all kinds of options, like picking a local file, providing a URL, and even grabbing a file from Facebook, Instagram, or Google Drive. Not bad!
 
 ![Filestack picker](https://user-images.githubusercontent.com/32992335/133859676-4086a4b9-8112-4a19-a4fe-5663388aafc0.png)
 
@@ -433,9 +433,9 @@ We're already storing the attached image URL in state, so let's use the existenc
 {url && <img src={url} style={{ marginTop: '2rem' }} />}
 ```
 
-Now if you create a new image record, you'll see the picker, and as soon as the upload is complete, the uploaded image will pop into place. If you go to edit an image you'll see the file that's already attached.
+Now if you create a new image record, you'll see the picker, and as soon as the upload is complete, the uploaded image will pop into place. If you go to edit an image, you'll see the file that's already attached.
 
-> You should probably use the same resize URL trick here so make sure it doesn't try to display a 10MB image immediately after uploading it. A max width of 500px may be good...
+> You should probably use the same resize-URL trick here to make sure it doesn't try to display a 10MB image immediately after uploading it. A max width of 500px may be good...
 
 Now let's add the ability to bring back the uploader if you decide you want to change the image. We can do that by clearing the image that's in state:
 
@@ -464,7 +464,7 @@ Now let's add the ability to bring back the uploader if you decide you want to c
 
 ![Replace image button](https://user-images.githubusercontent.com/300/82719274-e7055780-9c5d-11ea-9a8a-8c1c72185983.png)
 
-We're borrowing the styles from the submit button and made sure the image has both a top and bottom margin so it doesn't crash into the new button.
+We're borrowing the styles from the submit button and making sure that the image has both a top and bottom margin so it doesn't crash into the new button.
 
 ## The Wrapup
 
