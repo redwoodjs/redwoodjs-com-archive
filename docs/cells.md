@@ -3,9 +3,8 @@
 Cells are a declarative approach to data fetching and one of Redwood's signature modes of abstraction. 
 By providing conventions around data fetching, Redwood can get in between the request and the response and perform optimizations, all without you ever having to change your code.
 
-While it might seem like there must be lot of magic involved, a Cell really just executes a GraphQL query and manages its lifecycle.
-All the logic's actually in just one file: [createCell.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/createCell.tsx).
-The idea is that, by exporting named constants that match the parameters of `createCell`, Redwood can assemble these constants into a component at build-time using a babel plugin!
+While it might seem like there must be lot of magic involved, all a Cell really does is execute a GraphQL query and manage its lifecycle.
+The idea is that, by exporting named constants, Redwood can assemble these constants into a component at build-time using a babel plugin!
 All without writing a single line of imperative code. Just say what is supposed to happen when, and Redwood will take care of the rest.
 
 ## Generating a Cell
@@ -16,7 +15,7 @@ You can generate a Cell with:
 yarn rw generate cell <name>
 ```
 
-This creates the directory named `<name>Cell` in `web/src/components` with four files:
+This creates a directory named `<name>Cell` in `web/src/components` with four files:
 
 ```terminal
 ~/redwood-app$ yarn rw generate cell user
@@ -32,9 +31,13 @@ Done in 1.07s.
 
 ### Single Item Cell vs List Cell
 
-Sometimes you want a Cell that renders a single item, like the above example. Other times, you want a list of items. The Redwood cell generator can do both for you by detecting if `<name>` is plural. For example, to generate a Cell that renders a list of users, run `yarn rw generate cell users`.
+Sometimes you want a Cell that renders a single item, like the example aboce, and other times you want a Cell that renders list of items. 
+The Redwood cell generator can do both for you: it detects if `<name>` is singular plural. 
+For example, to generate a Cell that renders a list of users, run `yarn rw generate cell users`.
 
-> For **irregular words** whose plural and singular are identical, such as *equipment* or *pokemon*, if you want a list, just specify the list flag: `yarn rw generate cell equipment --list`
+> For **irregular words** whose plural and singular are identical, such as *equipment* or *pokemon*, if you want a list, just specify the list flag: 
+> 
+> ```yarn rw generate cell equipment --list```
 
 ## Cells in-depth
 
