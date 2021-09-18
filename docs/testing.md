@@ -1422,7 +1422,6 @@ If your models have relationships and you need to connect new records to existin
 One example: a blog **Comment** has a parent **Post**, and both **Comment** and **Post** need to belong to an **Author**. With object syntax, there is no way to access the `authorId` of the `Author` we just created. We could potentially hard code the `id`, but that is just asking for trouble.
 
 ```javascript
-// unable to access authorId
 export const standard = defineScenario({
   post: {
     first: {
