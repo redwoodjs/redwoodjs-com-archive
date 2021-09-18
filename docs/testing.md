@@ -1415,7 +1415,8 @@ scenario('retrieves a comment with post', async (scenario) => {
 })
 ```
 
-####  Relationships with an existing record
+####  Relationships with Existing Records
+
 If your models have relationships to each other and you need to connect them to an existing record, using the normal object syntax is just not going to cut it. 
 
 One example: a blog **Comment** has a parent **Post**, and both **Comment** and **Post** need to belong to an **Author**. With object syntax, there is no way to access the `authorId` of the `Author` we just created. We could potentially hard code the `id`, but that is just asking for trouble.
