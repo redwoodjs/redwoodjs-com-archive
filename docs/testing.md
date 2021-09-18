@@ -1433,7 +1433,7 @@ export const standard = defineScenario({
             {
               name: 'First Comment',
               body: 'String',
-              authorId: // We want a different author...
+              authorId: // Here we want a different author...
             },
             {
               name: 'First Comment Response',
