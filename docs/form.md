@@ -1,54 +1,66 @@
-# Form
+# Forms
 
-Redwood provides several helpers to make your life easier when working with forms. All of Redwood's form helpers are simple wrappers around [react-hook-form](https://react-hook-form.com/) that makes it even easier to use in many cases. If Redwood's form helpers aren't flexible enough for you, you can always use `react-hook-form` directly, or use any other [form builder](https://github.com/jaredpalmer/formik) that works with React.
+Redwood provides several helpers to make building forms easier. 
+All of Redwood's helpers are simple wrappers around [React Hook Form](https://react-hook-form.com/) (RHF) that make it even easier to use in most cases. 
 
-> **WARNING:** RedwoodJS software has not reached a stable version 1.0 and should not be considered suitable for production use. In the "make it work; make it right; make it fast" paradigm, Redwood is in the later stages of the "make it work" phase.
+If Redwood's helpers aren't flexible enough for you, you can use React Hook Form directly. `@redwoodjs/forms` exports everytyhing it does:
 
-Redwood currently provides the following form components:
+```javascript
+import { 
+  useForm, 
+  useFormContext, 
+  /**
+   * Or anything else React Hook Form exports!
+   * 
+   * @see {@link https://react-hook-form.com/api}
+   */
+} from '@redwoodjs/forms'
+```
 
-* `<Form>` surrounds all form elements and provides contexts for errors and form submission
-* `<FormError>` displays an error message, typically at the top of your form, containing error messages from the server
-* `<Label>` is used in place of the HTML `<label>` tag and can respond to errors with different styling
-* `<SelectField>` is used in place of the HTML `<select>` tag and responds to errors with different styling
-* `<TextAreaField>` is used in place of the HTML `<textarea>` tag and can accept validation options and be styled differently in the presence of an error
- The default validation for `required` is `false` for this field, To make it required, please pass the prop `validation={{ required: true }}` for all the `<RadioField>`.
-* `<FieldError>` will display error messages from form validation and server errors
-* `<Submit>` is used in place of `<button type="submit">` and will trigger a validation check and "submission" of the form (actually executes the function given to the `onSubmit` attribute on `<Form>`)
-* HTML `<input>` types are available as a component `<TypeField>` where `Type` is one of the official [HTML types](https://www.w3schools.com/html/html_form_input_types.asp). They can accept validation options and be styled differently in the presence of an error. We'll refer to these collectively as "InputFields" below. The full list is:
-    * `<ButtonField>`
-    * `<CheckboxField>`
-    * `<ColorField>`
-    * `<DateField>`
-    * `<DatetimeLocalField>`
-    * `<EmailField>`
-    * `<FileField>`
-    * `<HiddenField>`
-    * `<ImageField>`
-    * `<MonthField>`
-    * `<NumberField>`
-    * `<PasswordField>`
-    * `<RadioField>`
-    * `<RangeField>`
-    * `<ResetField>`
-    * `<SearchField>`
-    * `<SubmitField>`
-    * `<TelField>`
-    * `<TextField>`
-    * `<TimeField>`
-    * `<UrlField>`
-    * `<WeekField>`
+## Overview
 
-Some fields also share options:
+`@redwoodjs/forms` exports the following components:
 
-`<Label>`, `<TextAreaField>` and all InputFields take similar options for styling in the presence of an error.
+| Component         | Description                                                                                                                                                   |
+|:------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `<Form>`          | Surrounds all components, providing form and error contexts                                                                                                   |
+| `<FormError>`     | Displays error messages from the server. Typically placed at the top of your form.                                                                            |
+| `<Label>`         | Used in place of the HTML `<label>` tag. Accepts error-specific styling                                                                                       |
+| `<InputField>`    | Used in place of the HTML `<input>` tag. Accepts validation options and error-specific styling (also see the list of input field components enumerated below) |
+| `<SelectField>`   | Used in place of the HTML `<select>` tag. Accepts validation options and error-specific styling                                                               |
+| `<TextAreaField>` | Used in place of the HTML `<textarea>` tag. Accepts validation options and error-specific styling                                                             |
+| `<FieldError>`    | Displays error messages if the field with the same `name` prop has validation errors. Only renders if there's an error on the associated field                |
+| `<Submit>`        | Used in place of `<button type="submit">`. Triggers form validation and "submission" (actually executes the function given to `<Form>`'s `onSubmit` prop)     |
 
-The `<TextAreaField>` and all InputFields accept the same options for validation.
+All HTML `<input>` types are also available as components. They follow the naming convention `<TypeField>`, where `Type` is one of the official [HTML types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types). 
+They accept validation options and error-specific styling. 
 
-`<FieldError>` only takes styling for errors and is only rendered if there is an error on the associated field.
+We'll refer to them collectively as "input fields".
+The full list is:
+- `<ButtonField>`
+- `<CheckboxField>`
+- `<ColorField>`
+- `<DateField>`
+- `<DatetimeLocalField>`
+- `<EmailField>`
+- `<FileField>`
+- `<HiddenField>`
+- `<ImageField>`
+- `<MonthField>`
+- `<NumberField>`
+- `<PasswordField>`
+- `<RadioField>`
+- `<RangeField>`
+- `<ResetField>`
+- `<SearchField>`
+- `<SubmitField>`
+- `<TelField>`
+- `<TextField>`
+- `<TimeField>`
+- `<UrlField>`
+- `<WeekField>`
 
-Certain `<TypeField>`s have type coercion built-in, like `<NumberField>`, but you can always override the coercion or, if it's not built-in, set it manually via the `transformValue` attribute. See [transformValue](#transformvalue).
-
-A typical React component using these helpers would look something like this Contact Us page form:
+A typical React component using these helpers would look something like this:
 
 ```javascript
 import {
