@@ -1487,7 +1487,7 @@ export const standard = defineScenario({
 })
 ```
 
-Since [ES2015](https://tc39.es/ecma262/#sec-ordinaryownpropertykeys), object property keys are in ascending order of property creation. In the context of `defineScenerio`, this means that a key will have access to any key(s) created before it. We can leverage this like so:
+Since [ES2015](https://tc39.es/ecma262/#sec-ordinaryownpropertykeys), object property keys are in ascending order of creation. This means that a key in `defineScenario` has access to key(s) created before it. We can leverage this like so:
 
 ```javascript
 export const standard = defineScenario({
