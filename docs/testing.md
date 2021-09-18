@@ -1419,7 +1419,7 @@ scenario('retrieves a comment with post', async (scenario) => {
 
 If your models have relationships and you need to connect new records to existing ones, using the object syntax just isn't going to cut it. 
 
-One example: a blog **Comment** has a parent **Post**, and both **Comment** and **Post** need to belong to an **Author**. With object syntax, there is no way to access the `authorId` of the `Author` we just created. We could potentially hard code the `id`, but that is just asking for trouble.
+Consider a `Comment`: it has a parent `Post`, and both of them have an `Author`. Using the object syntax, there's no way of accessing the `authorId` of the `Author` we just created. We could potentially hardcode it, but that's bad practice.
 
 ```javascript
 export const standard = defineScenario({
