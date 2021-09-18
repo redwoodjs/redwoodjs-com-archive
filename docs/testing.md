@@ -1503,7 +1503,7 @@ export const standard = defineScenario({
   },
   comment: {
     first: (scenario) => ({
-      // You have access to scenario.user and scenario.post
+      // Here you have access to both `scenario.user` and `scenario.post`
     })
   }
 })
