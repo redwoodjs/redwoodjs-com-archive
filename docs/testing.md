@@ -1450,7 +1450,7 @@ export const standard = defineScenario({
 
 
 
-When these use cases happen you can connect an existing `scenario` record using the distinctive name key as a function that returns an object.
+When you run into this, you can access an existing `scenario` record using the distinctive name key as a function that returns an object:
 
 ```javascript
 export const standard = defineScenario({
