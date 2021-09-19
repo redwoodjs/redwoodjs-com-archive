@@ -30,7 +30,7 @@ import {
 | `<SelectField>`   | Used in place of the HTML `<select>` tag. Accepts validation options and error-specific styling                                                               |
 | `<TextAreaField>` | Used in place of the HTML `<textarea>` tag. Accepts validation options and error-specific styling                                                             |
 | `<FieldError>`    | Displays error messages if the field with the same `name` prop has validation errors. Only renders if there's an error on the associated field                |
-| `<Submit>`        | Used in place of `<button type="submit">`. Triggers form validation and "submission" (actually executes the function given to `<Form>`'s `onSubmit` prop)     |
+| `<Submit>`        | Used in place of `<button type="submit">`. Triggers validation and "submission" (executes the function passed to `<Form>`'s `onSubmit` prop)                  |
 
 All HTML `<input>` types are also available as components. They follow the naming convention `<TypeField>`, where `Type` is one of the official [HTML types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types). 
 They accept validation options and error-specific styling. 
@@ -59,6 +59,19 @@ The full list is:
 - `<TimeField>`
 - `<UrlField>`
 - `<WeekField>`
+
+To avoid repeating ourselves too much, all components ending in `Field` (i.e. all input fields, along with `<SelectField>` and `<TextArea>`) accept at least the following props:
+
+| Prop             | Description                                                                                                                                                                                                     |
+|:-----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`           | The name of the field. React Hook Form uses it a key to hook it up with everything else else                                                                                                                    |
+| `validation`     | All your validation logic. Accepts all of React Hook Form's [`register` options](https://react-hook-form.com/api/useform/register), plus the Redwood-exclusive coercion helpers `valueAsBoolean`, `valueAsJSON` |
+| `errorClassName` | The class name to apply if there's an error                                                                                                                                                                     |
+| `errorStyle`     | The style to apply if there's an error                                                                                                                                                                          |
+
+All other props passed to these components are forwarded to the tag they render.
+
+### Example
 
 A typical React component using these helpers would look something like this:
 
