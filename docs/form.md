@@ -185,17 +185,38 @@ This helper renders a `<div>` containing a "title" message and a `<ul>` enumerat
 
 For example, let's say you have a form with a `<TextField>` for a user's email address, but you didn't provide any validation on it:
 
-```javascript
-<Form onSubmit={sendToServer}>
-  // No validation—any email goes!
-  <TextField name="email" />
-</Form>
+```javascript{12,20}
+import { useMutation } from '@redwoodjs/web'
+
+const CREATE_CONTACT = gql`
+  mutation CreateContactMutation($input: ContactInput!) {
+    createContact(input: $input) {
+      id
+    }
+  }
+`
+
+const ContactPage = () => {
+  const [create, { loading, error }] = useMutation(CREATE_CONTACT)
+
+  const onSubmit = (data) => {
+    create({ variables: { input: data }})
+  }
+
+  return (
+    <Form onSubmit={onSubmit}>
+      <FormError error={error}>
+      // No validation—any email goes!
+      <TextField name="email" />
+    </Form>
+  )
+}
 ```
 
 Since there's no validation, anything goes!
 On the client at least.
 GraphQL is strongly typed, so it's not going to let just anything through.
-Instead it'll throw an error and bubble it back up to the top, where `<FormError>` renders something like:
+Instead it'll throw an error and bubble it back up to the top (via the `error` object returned by the `useMutation` hook) where `<FormError>` can render something like:
 
 ```html
 <div>
@@ -209,60 +230,6 @@ Instead it'll throw an error and bubble it back up to the top, where `<FormError
   </ul>
 </div>
 ```
-
-In this case if you provided validation for `email` in the `<TextField>` component itself then you wouldn't see this message at the top of your form—form validation would have caught it before it got to the GraphQL layer.
-
-### `<FormError>` Attributes
-
-#### error
-
-An object containing server errors. Redwood expects this object to be from GraphQL listing errors in validation before submission to the server, or errors from the server when trying to mutate the data store in response to the GraphQL mutation sent across the wire.
-
-The easiest way to get your errors in this format is give `<FormError>` the `error` property created by the `useMutation` hook provided by `@redwoodjs/web` (the body of the form has been left out to keep this code short-ish):
-
-```javascript
-const CREATE_CONTACT = gql`
-  mutation CreateContactMutation($input: ContactInput!) {
-    createContact(input: $input) {
-      id
-    }
-  }
-`
-import { useMutation } from '@redwoodjs/web'
-
-const ContactPage = (props) => {
-  const [create, { loading, error }] = useMutation(CREATE_CONTACT)
-
-  const onSubmit = (data) => {
-    create({ variables: { input: data }})
-  }
-
-  return (
-    <Form onSubmit={onSubmit}>
-      <FormError error={error} />
-      // ...
-    </Form>
-  )
-}
-```
-
-If `error` contains the object that `<FormError>` is expecting then the errors will be shown (in this case at the top of the form) otherwise nothing is rendered.
-
-#### wrapperStyle / wrapperClassName
-
-`style` and `className` attributes given to the `<div>` that surrounds the rest of the error messaging.
-
-#### titleStyle / titleClassName
-
-`style` and `className` attributes given to the `<p>` that contains the "title" of the error message.
-
-#### listStyle / listClassName
-
-`style` and `className` attributes given to the `<ul>` that surrounds each individual field error message.
-
-#### listItemStyle / listItemClassName
-
-`style` and `className` attributes given to the `<li>` that surround each individual field error message.
 
 ## `<Label>`
 
