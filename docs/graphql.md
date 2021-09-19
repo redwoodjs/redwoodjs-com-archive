@@ -469,7 +469,7 @@ Let's say we wanted to get some benchmark numbers for the "find post by id" reso
 
 We see that this request took about 500 msecs (note: duration is reported in nanoseconds).
 
-Ror more details about the information logged and its format, see [Apollo Tracing](https://github.com/apollographql/apollo-tracing).
+For more details about the information logged and its format, see [Apollo Tracing](https://github.com/apollographql/apollo-tracing).
 
 ```terminal
 pi | INFO [2021-07-09 14:25:52.452 +0000] (apollo-graphql-server): GraphQL willSendResponse
