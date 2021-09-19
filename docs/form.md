@@ -132,37 +132,32 @@ const ContactPage = () => {
 
 ## `<Form>`
 
-Any form you want Redwood to provide validation and error styling on should be surrounded by this tag. Except for the view attributes specific to validation and submission, props are passed down to the regular `<form>` tag that is rendered.
+Any form you want Redwood to validate and style in the presence errors should be surrounded by this tag. 
 
-```html
-<Form onSubmit={onSubmit} className="form">...</Form>
+| Prop          | Description                                                                                                                                |
+|:--------------|:-------------------------------------------------------------------------------------------------------------------------------------------|
+| `config`      | Accepts an object containing options for React Hook Form's [`useForm` hook](https://react-hook-form.com/api/useform)                       |
+| `formMethods` | The functions returned from `useForm`. You only need this prop if you need to access to one of the functions that `useForm` returns        |
+| `onSubmit`    | Accepts a function to be called *if* validation succeeds. Called with an object containing name-value pairs of all the fields in your form |
 
-<!-- Renders: <form class="form">...</form> -->
-```
+All other props are forwarded to the `<form>` tag that it renders.
 
-### `<Form>` Attributes
+### `<Form>` Explained
 
-Besides the attributes listed below, any additional attributes are passed on as props to the underlying `<form>` tag which is rendered.
+`<Form>` encapsulates React Hook Form's `useForm` hook and `<FormProvider>` context, along with Redwood's `ServerError` context.
+It's hard to talk about this component without getting into the nitty-gritty of React Hook Forms.
 
-#### onSubmit
+`useForm` is React Hook Form's major hook.
+It returns a bunch of functions, one of which is `register`, which you use to "register" fields into React Hook Form so it can validate them. 
+(This has to do with [controlled vs. unctrolled components](https://reactjs.org/docs/uncontrolled-components.html). React Hook Form takes the latter approach.)
 
-The `onSubmit` prop accepts a function name or anonymous function to be called *if* validation is successful. This function will be called with a single object containing name/value pairs of all *Redwood form helper* fields in your form. Meaning if you mix `<input>` and `<TextField>` form fields, only `<TextField>` names/values will be present.
+All of Redwood's form helpers need the `register` function to do what they do. But they don't get it straight from `<Form>` because they could be nested arbitrarily deep. That's where `<FormProvider>` comes in: by passing the functions returned from `useForm` to `<FormProvider>`, Redwood's helpers can just use `useFormContext` to get what they need. 
 
-Behind the scenes the handler given to `onSubmit` is given to [react-hook-form](https://react-hook-form.com/api#handleSubmit)'s `handleSubmit` function with the data transformed as specified by each `Input`'s `transformValue` prop.  See [`transformValue`](#transformvalue) attribute.
+### Using `formMethods`
 
-#### validation
-
-The `validation` prop accepts an object containing options for react-hook-form, which Redwood's `<Form>` is a simple wrapper around. See the [useForm](https://react-hook-form.com/api#useForm) for the full list of options.
-
-The object given to `validation` is forwarded to `useForm` behind the scenes when creating the form. For example, to validate your form fields when the user leaves a field instead of waiting for them to click the submit button:
-
-```javascript
-<Form validation={{ mode: 'onBlur' }}>
-```
-
-#### formMethods
-
-If you need access to the functions that `useForm` gives you then you can manually call it in your component, but you'll need to provide those functions to `<Form>` so that it can use those instead of calling `useForm` itself and generating its own instance of them.
+`useForm` returns a function `reset`, which resets the form's fields. 
+To access it, you have to call `useForm` yourself. 
+But you still need to pass `useForm`'s return to the `<FormProvider>` so that Redwood's helpers can register themselves:
 
 ```javascript
 import { useForm } from 'react-hook-form'
@@ -171,13 +166,14 @@ const ContactPage = () => {
   const formMethods = useForm()
 
   const onSubmit = (data) => {
-    console.info(data)
+    console.log(data)
     formMethods.reset()
   }
 
   return (
     <Form formMethods={formMethods} onSubmit={onSubmit}>
-      // ...
+      // Still works!
+      <TextField name="name" validation={{ required: true }}>
     </Form>
   )
 }
