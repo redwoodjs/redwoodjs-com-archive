@@ -181,9 +181,21 @@ const ContactPage = () => {
 
 ## `<FormError>`
 
-This helper will render a `<div>` containing a "title" message and a `<ul>` containing any errors reported by the server when trying to save your form data.
+This helper renders a `<div>` containing a "title" message and a `<ul>` enumerating any errors reported by the server when trying to save your form.
 
-If an error is present the following HTML is rendered (`className` and `style` attributes can be passed to each element, see the `*ClassName` and `*Style` attribute descriptions below):
+For example, let's say you have a form with a `<TextField>` for a user's email address, but you didn't provide any validation on it:
+
+```javascript
+<Form onSubmit={sendToServer}>
+  // No validation—any email goes!
+  <TextField name="email" />
+</Form>
+```
+
+Since there's no validation, anything goes!
+On the client at least.
+GraphQL is strongly typed, so it's not going to let just anything through.
+Instead it'll throw an error and bubble it back up to the top, where `<FormError>` renders something like:
 
 ```html
 <div>
