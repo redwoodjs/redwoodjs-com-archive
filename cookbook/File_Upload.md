@@ -1,24 +1,24 @@
 # File Uploads
 
-As you've probably heard, Redwood thinks the future is serverless. This concept introduces some interesting problems you may not have had to worry about in the past. For example: where do files go when you upload them—there's no server! Like many tasks you may have done [yourself](https://redwoodjs.com/tutorial/authentication) in the past, this is another job that we can farm out to a third party service.
+As you've probably heard, Redwood thinks the future is serverless. This concept introduces some interesting problems you might not have had to worry about in the past. For example, where do files go when you upload them? There's no server! Like many tasks you may have done [yourself](https://redwoodjs.com/tutorial/authentication) in the past, this is another job that we can farm out to a third-party service.
 
 ## The Service
 
-There are many services out there that handle file uploads and serving from a CDN. Two of the big ones are [Cloudinary](https://cloudinary.com) and [Filestack](https://filestack.com). We're going to demo a Filestack integration here because we've found it very easy to integrate. In addition to storing your uploads and making them available via a CDN they also offer on-the-fly image transformations so even if someone uploads a Retina-ready 5000px wide headshot, you can shrink it down and only serve a 100px version for their avatar in the upper right corner of your site. You save bandwidth and transfer costs.
+There are many services out there that handle uploading files and serving them from a CDN. Two of the big ones are [Cloudinary](https://cloudinary.com) and [Filestack](https://filestack.com). We're going to demo a Filestack integration here because we've found it easy to integrate. In addition to storing your uploads and making them available via a CDN, they also offer on-the-fly image transformations so that even if someone uploads a Retina-ready 5000px wide headshot, you can shrink it down and only serve a 100px version for their avatar in the upper right corner of your site. You save bandwidth and transfer costs.
 
-We're going to sign up for a free plan which gives us 100 uploads a month, 1000 transformations (like resizing an image), 1GB of bandwidth, and 0.5GB of storage. That is more than enough for this demo and maybe even a low traffic production site.
+We're going to sign up for a free plan which gives us 100 uploads a month, 1000 transformations (like resizing an image), 1GB of bandwidth, and 0.5GB of storage. That's more than enough for this demo. (And maybe even a low-traffic production site!)
 
-Head over to https://dev.filestack.com/signup/free/ and sign up. Be sure to use a real email address because they're going to send you a confirmation email before you can log in. Once you verify your email you'll be dropped on your dashboard where your API key will be shown at the upper right:
+Head over to https://dev.filestack.com/signup/free/ and sign up. Be sure to use a real email address because they're going to send you a confirmation email before they let you log in. Once you verify your email, you'll be dropped on your dashboard where your API key will be shown in the upper right:
 
 ![New image scaffold](https://user-images.githubusercontent.com/300/82616735-ec41a400-9b82-11ea-9566-f96089e35e52.png)
 
-Copy that or at least keep the browser tab open because we're going to need it in a minute. (I already changed that key so don't bother trying to steal it!)
+Copy that (or at least keep the tab open) because we're going to need it in a minute. (I already changed that key so don't bother trying to steal it!)
 
-That's it on the Filestack side, on to the application.
+That's it on the Filestack side; on to the application.
 
 ## The App
 
-Let's create a very simple DAM (Digital Asset Manager) that lets users upload and catalog images. They will be able to click the thumbnail to open a full-size version.
+Let's create a very simple DAM (Digital Asset Manager) that lets users upload and catalogue images. They'll be able to click the thumbnail to open a full-size version.
 
 Create a new Redwood app:
 
@@ -27,13 +27,13 @@ yarn create redwood-app uploader
 cd uploader
 ```
 
-The first thing we'll do is create an environment variable to hold our Filestack API key. This is a best practice so that the key isn't living in your repository for prying eyes to see. Add the key to the `.env` file in the root of our app:
+The first thing we'll do is create an environment variable to hold our Filestack API key. This is a best practice so that the key isn't living in our repository for prying eyes to see. Add the key to the `.env` file in the root of our app:
 
 ```terminal
 REDWOOD_ENV_FILESTACK_API_KEY=AM18i8xV4QpoiGwetoTWd
 ```
 
-> We're prefixing with `REDWOOD_ENV_` here as an indicator to webpack that we want it to replace these variables with the actual values as it is processing pages and statically generating them. Otherwise our generated pages would still contain something like `process.env.FILESTACK_API_KEY`, which would not exist when the pages are static and being served from a CDN.
+> We're prefixing with `REDWOOD_ENV_` here to tell webpack that we want it to replace this variables with its actual value as it's processing pages and statically generating them. Otherwise our generated pages would still contain something like `process.env.FILESTACK_API_KEY`, which wouldn't exist when the pages are static and being served from a CDN.
 
 Now we can start our development server:
 
@@ -45,45 +45,45 @@ yarn rw dev
 
 We'll create a single model to store our image data:
 
-```javascript
+```prisma
 // api/db/schema.prisma
 
 model Image {
-  id    Int    @default(autoincrement()) @id
+  id    Int    @id @default(autoincrement())
   title String
   url   String
 }
 ```
 
-`title` will be a user-supplied name for this asset and `url` will contain the public URL that Filestack creates after an upload.
+`title` will be the user-supplied name for this asset and `url` will contain the public URL that Filestack creates after an upload.
 
-Create a migration and update the database:
+Create a migration to update the database; when prompted, name it "add image":
 
 ```terminal
 yarn rw prisma migrate dev
 ```
 
-To make our lives easier let's scaffold the screens necessary to create/edit/delete an image and we'll modify those to add the uploader:
+To make our lives easier, let's scaffold the screens necessary to create/update/delete an image, then we'll worry about adding the uploader:
 
 ```terminal
 yarn rw generate scaffold image
 ```
 
-Now head to http://localhost:8910/images/new and let's figure out what we need to do to add an image uploader:
+Now head to http://localhost:8910/images/new and let's figure this out!
 
 ![New image scaffold](https://user-images.githubusercontent.com/300/82694608-653f0b00-9c18-11ea-8003-4dc4aeac7b86.png)
 
 ## The Uploader
 
-Filestack has a [React component](https://github.com/filestack/filestack-react) that handles all the uploading for us. Let's add the package:
+Filestack has a couple of [React components](https://github.com/filestack/filestack-react) that handle all the uploading for us. Let's add the package:
 
 ```terminal
 yarn workspace web add filestack-react
 ```
 
-We know we'll want the uploader on our scaffolded form so let's import it and try replacing the **Url** input with it, giving it the API key:
+We want the uploader on our scaffolded form, so let's head over to `ImageForm`, import Filestack's inline picker, and try replacing the **Url** input with it:
 
-```javascript{11,54}
+```javascript{11,51}
 // web/src/components/ImageForm/ImageForm.js
 
 import {
@@ -94,16 +94,12 @@ import {
   TextField,
   Submit,
 } from '@redwoodjs/forms'
-import ReactFilestack from 'filestack-react'
+import { PickerInline } from 'filestack-react'
 
-const CSS = {
-  label: 'block mt-6 text-gray-700 font-semibold',
-  labelError: 'block mt-6 font-semibold text-red-700',
-  input:
-    'block mt-2 w-full p-2 border border-gray-300 text-gray-700 rounded focus:outline-none focus:border-gray-500',
-  inputError:
-    'block mt-2 w-full p-2 border border-red-700 text-red-900 rounded focus:outline-none',
-  errorMessage: 'block mt-1 font-semibold uppercase text-xs text-red-700',
+const formatDatetime = (value) => {
+  if (value) {
+    return value.replace(/:\d{2}\.\d{3}\w/, '')
+  }
 }
 
 const ImageForm = (props) => {
@@ -112,38 +108,36 @@ const ImageForm = (props) => {
   }
 
   return (
-    <div className="box-border text-sm -mt-4">
+    <div className="rw-form-wrapper">
       <Form onSubmit={onSubmit} error={props.error}>
         <FormError
           error={props.error}
-          wrapperClassName="p-4 bg-red-100 text-red-700 border border-red-300 rounded mt-4 mb-4"
-          titleClassName="mt-0 font-semibold"
-          listClassName="mt-2 list-disc list-inside"
+          wrapperClassName="rw-form-error-wrapper"
+          titleClassName="rw-form-error-title"
+          listClassName="rw-form-error-list"
         />
 
         <Label
           name="title"
-          className={CSS.label}
-          errorClassName={CSS.labelError}
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
         >
           Title
         </Label>
         <TextField
           name="title"
           defaultValue={props.image?.title}
-          className={CSS.input}
-          errorClassName={CSS.inputError}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
         />
-        <FieldError name="title" className={CSS.errorMessage} />
 
-        <ReactFilestack apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY} />
+        <FieldError name="title" className="rw-field-error" />
 
-        <div className="mt-8 text-center">
-          <Submit
-            disabled={props.loading}
-            className="bg-blue-600 text-white hover:bg-blue-700 text-xs rounded px-4 py-2 uppercase font-semibold tracking-wide"
-          >
+        <PickerInline apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY} />
+
+        <div className="rw-button-group">
+          <Submit disabled={props.loading} className="rw-button rw-button-blue">
             Save
           </Submit>
         </div>
@@ -155,34 +149,17 @@ const ImageForm = (props) => {
 export default ImageForm
 ```
 
-If you look closely there's a *little* button under the Title input:
+We now have a picker with all kinds of options, like picking a local file, providing a URL, and even grabbing a file from Facebook, Instagram, or Google Drive. Not bad!
 
-![Pick file button](https://user-images.githubusercontent.com/300/82617171-1c3d7700-9b84-11ea-9e70-d005c419ebe1.png)
+![Filestack picker](https://user-images.githubusercontent.com/32992335/133859676-4086a4b9-8112-4a19-a4fe-5663388aafc0.png)
 
-Clicking that actually launches the picker with all kinds of options, like picking a local file, providing a URL or even grabbing one from Facebook, Instagram or Google Drive. Not bad!
-
-![Filestack picker](https://user-images.githubusercontent.com/300/82617240-51e26000-9b84-11ea-8aec-210b7a751e8c.png)
-
-There's no reason to make the user click that button, let's just show the picker on the page when it loads by adding a couple of [options](https://github.com/filestack/filestack-react#props). We'll need to create a container for it to live in, so we'll add a `<div>` and give it an `id` attribute that we'll tell `<ReactFilestack>` about. We'll also give the `<div>` a couple of styles so that the picker doesn't collapse to 0px tall:
-
-```javascript
-// web/src/components/ImageForm/ImageForm.js
-
-<ReactFilestack
-  apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
-  componentDisplayMode={{ type: 'immediate' }}
-  actionOptions={{ displayMode: 'inline', container: 'picker' }}
-/>
-<div id="picker" style={{ marginTop: '2rem', height: '20rem' }}></div>
-```
-
-Great! You can even try uploading an image to make sure it works:
+You can even try uploading an image to make sure it works:
 
 ![Upload](https://user-images.githubusercontent.com/300/82618035-bb636e00-9b86-11ea-9401-61b8c989f43c.png)
 
 > Make sure you click the **Upload** button that appears after picking your file.
 
-If you go over to the Filestack dashboard you can see we've uploaded an image:
+If you go over to the Filestack dashboard, you'll see that we've uploaded an image:
 
 ![Filestack dashboard](https://user-images.githubusercontent.com/300/82618057-ccac7a80-9b86-11ea-9cd8-7a9e80a5a20f.png)
 
@@ -190,7 +167,7 @@ But that doesn't help us attach anything to our database record. Let's do that.
 
 ## The Data
 
-Let's see what's going on when an upload completes. The Filestack picker takes an `onSuccess` attribute with a function to call when complete:
+Let's see what's going on when an upload completes. The Filestack picker takes an `onSuccess` prop with a function to call when complete:
 
 ```javascript{10-12,18}
 // web/src/components/ImageForm/ImageForm.js
@@ -208,11 +185,9 @@ const ImageForm = (props) => {
 
   // form stuff...
 
-  <ReactFilestack
+  <PickerInline
     apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
     onSuccess={onFileUpload}
-    componentDisplayMode={{ type: 'immediate' }}
-    actionOptions={{ displayMode: 'inline', container: 'picker' }}
   />
 ```
 
@@ -222,7 +197,7 @@ Well lookie here:
 
 `filesUploaded[0].url` seems to be exactly what we need—the public URL to the image that was just uploaded. Excellent! How about we use a little state to track that for us so it's available when we submit our form:
 
-```javascript{12,25,32}
+```javascript{12,21,28}
 // web/src/components/ImageForm/ImageForm.js
 
 import {
@@ -233,17 +208,13 @@ import {
   TextField,
   Submit,
 } from '@redwoodjs/forms'
-import ReactFilestack from 'filestack-react'
+import { PickerInline } from 'filestack-react'
 import { useState } from 'react'
 
-const CSS = {
-  label: 'block mt-6 text-gray-700 font-semibold',
-  labelError: 'block mt-6 font-semibold text-red-700',
-  input:
-    'block mt-2 w-full p-2 border border-gray-300 text-gray-700 rounded focus:outline-none focus:border-gray-500',
-  inputError:
-    'block mt-2 w-full p-2 border border-red-700 text-red-900 rounded focus:outline-none',
-  errorMessage: 'block mt-1 font-semibold uppercase text-xs text-red-700',
+const formatDatetime = (value) => {
+  if (value) {
+    return value.replace(/:\d{2}\.\d{3}\w/, '')
+  }
 }
 
 const ImageForm = (props) => {
@@ -258,13 +229,12 @@ const ImageForm = (props) => {
   }
 
   return (
-  // component stuff...
-
+    // component stuff...
 ```
 
 So we'll use `setState` to store the URL for the image. We default it to the existing `url` value, if it exists—remember that scaffolds use this same form for editing of existing records, where we'll already have a value for `url`. If we didn't store that url value somewhere then it would be overridden with `null` if we started editing an existing record!
 
-The last thing we need to do is set the value of `url` in the `data` object before it gets sent on to the `onSave` handler:
+The last thing we need to do is set the value of `url` in the `data` object before it gets passed to the `onSave` handler:
 
 ```javascript{4,5}
 // web/src/components/ImageForm/ImageForm.js
@@ -275,17 +245,20 @@ const onSubmit = (data) => {
 }
 ```
 
-Now try uploading a file and then saving the form:
+Now try uploading a file and saving the form:
 
 ![Upload done](https://user-images.githubusercontent.com/300/82702493-f5844c80-9c26-11ea-8fc4-0273b92034e4.png)
 
 It worked! Next let's update the display here to actually show the image as a thumbnail and make it clickable to see the full version:
 
-```javascript{61-63}
+```javascript{78-80}
 // web/src/components/Images/Images.js
 
 import { useMutation } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/toast'
 import { Link, routes } from '@redwoodjs/router'
+
+import { QUERY } from 'src/components/Image/ImagesCell'
 
 const DELETE_IMAGE_MUTATION = gql`
   mutation DeleteImageMutation($id: Int!) {
@@ -305,6 +278,10 @@ const truncate = (text) => {
   return output
 }
 
+const jsonTruncate = (obj) => {
+  return truncate(JSON.stringify(obj, null, 2))
+}
+
 const timeTag = (datetime) => {
   return (
     <time dateTime={datetime} title={datetime}>
@@ -313,71 +290,73 @@ const timeTag = (datetime) => {
   )
 }
 
+const checkboxInputTag = (checked) => {
+  return <input type="checkbox" checked={checked} disabled />
+}
+
 const ImagesList = ({ images }) => {
-  const [deleteImage] = useMutation(DELETE_IMAGE_MUTATION)
+  const [deleteImage] = useMutation(DELETE_IMAGE_MUTATION, {
+    onCompleted: () => {
+      toast.success('Image deleted')
+    },
+    // This refetches the query on the list page. Read more about other ways to
+    // update the cache over here:
+    // https://www.apollographql.com/docs/react/data/mutations/#making-all-other-cache-updates
+    refetchQueries: [{ query: QUERY }],
+    awaitRefetchQueries: true,
+  })
 
   const onDeleteClick = (id) => {
     if (confirm('Are you sure you want to delete image ' + id + '?')) {
-      deleteImage({ variables: { id }, refetchQueries: ['IMAGES'] })
+      deleteImage({ variables: { id } })
     }
   }
 
   return (
-    <div className="bg-white text-gray-900 border rounded-lg overflow-x-scroll">
-      <table className="table-auto w-full min-w-3xl text-sm">
+    <div className="rw-segment rw-table-wrapper-responsive">
+      <table className="rw-table">
         <thead>
-          <tr className="bg-gray-300 text-gray-700">
-            <th className="font-semibold text-left p-3">id</th>
-            <th className="font-semibold text-left p-3">title</th>
-            <th className="font-semibold text-left p-3">file</th>
-            <th className="font-semibold text-left p-3">&nbsp;</th>
+          <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Url</th>
+            <th>&nbsp;</th>
           </tr>
         </thead>
         <tbody>
           {images.map((image) => (
-            <tr
-              key={image.id}
-              className="odd:bg-gray-100 even:bg-white border-t"
-            >
-              <td className="p-3">{truncate(image.id)}</td>
-              <td className="p-3">{truncate(image.title)}</td>
-              <td className="p-3">
+            <tr key={image.id}>
+              <td>{truncate(image.id)}</td>
+              <td>{truncate(image.title)}</td>
+              <td>
                 <a href={image.url} target="_blank">
                   <img src={image.url} style={{ maxWidth: '50px' }} />
                 </a>
               </td>
-              <td className="p-3 pr-4 text-right whitespace-no-wrap">
-                <nav>
-                  <ul>
-                    <li className="inline-block">
-                      <Link
-                        to={routes.image({ id: image.id })}
-                        title={'Show image ' + image.id + ' detail'}
-                        className="text-xs bg-gray-100 text-gray-600 hover:bg-gray-600 hover:text-white rounded-sm px-2 py-1 uppercase font-semibold tracking-wide"
-                      >
-                        Show
-                      </Link>
-                    </li>
-                    <li className="inline-block">
-                      <Link
-                        to={routes.editImage({ id: image.id })}
-                        title={'Edit image ' + image.id}
-                        className="text-xs bg-gray-100 text-blue-600 hover:bg-blue-600 hover:text-white rounded-sm px-2 py-1 uppercase font-semibold tracking-wide"
-                      >
-                        Edit
-                      </Link>
-                    </li>
-                    <li className="inline-block">
-                      <a
-                        href="#"
-                        title={'Delete image ' + image.id}
-                        className="text-xs bg-gray-100 text-red-600 hover:bg-red-600 hover:text-white rounded-sm px-2 py-1 uppercase font-semibold tracking-wide"
-                        onClick={() => onDeleteClick(image.id)}
-                      >
-                        Delete
-                      </a>
-                    </li>
-                  </ul>
+              <td>
+                <nav className="rw-table-actions">
+                  <Link
+                    to={routes.image({ id: image.id })}
+                    title={'Show image ' + image.id + ' detail'}
+                    className="rw-button rw-button-small"
+                  >
+                    Show
+                  </Link>
+                  <Link
+                    to={routes.editImage({ id: image.id })}
+                    title={'Edit image ' + image.id}
+                    className="rw-button rw-button-small rw-button-blue"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    type="button"
+                    title={'Delete image ' + image.id}
+                    className="rw-button rw-button-small rw-button-red"
+                    onClick={() => onDeleteClick(image.id)}
+                  >
+                    Delete
+                  </button>
                 </nav>
               </td>
             </tr>
@@ -395,7 +374,9 @@ export default ImagesList
 
 ## The Transform
 
-Remember when we mentioned that Filestack can save you bandwidth by transforming images on the fly? This page is a perfect example—the image is never bigger than 50px, why pull down the full resolution just for that tiny display? Here's how we can tell Filestack that whenever we grab this instance of the image, it only needs to be 100px. Why 100px? Most phones and many laptops and desktop displays are now 4k or larger. Images are actually displayed at at least double resolution on these displays, so even though it's "50px" it's really 100px when shown on these displays. So you'll usually want to bring down all images at twice their intended display resolution.
+Remember when we mentioned that Filestack can save you bandwidth by transforming images on the fly? This page is a perfect example—the image is never bigger than 50px, why pull down the full resolution just for that tiny display? Here's how we can tell Filestack that whenever we grab this instance of the image, it only needs to be 100px.
+
+Why 100px? Most phones and many laptops and desktop displays are now 4k or larger. Images are actually displayed at at least double resolution on these displays, so even though it's "50px", it's really 100px when shown on these displays. So you'll usually want to bring down all images at twice their intended display resolution.
 
 We need to add a special indicator to the URL itself to trigger the transform so let's add a function that does that for a given image URL (this can go either inside or outside of the component definition):
 
@@ -409,7 +390,17 @@ const thumbnail = (url) => {
 }
 ```
 
-What this does is turn a URL like `https://cdn.filestackcontent.com/81m7qIrURxSp7WHcft9a` into `https://cdn.filestackcontent.com/resize=width:100/81m7qIrURxSp7WHcft9a`.
+What this does is turn a URL like 
+
+```
+https://cdn.filestackcontent.com/81m7qIrURxSp7WHcft9a
+``` 
+
+into 
+
+```
+https://cdn.filestackcontent.com/resize=width:100/81m7qIrURxSp7WHcft9a
+```
 
 Now we'll use the result of that function in the `<img>` tag:
 
@@ -419,81 +410,66 @@ Now we'll use the result of that function in the `<img>` tag:
 <img src={thumbnail(image.url)} style={{ maxWidth: '50px' }} />
 ```
 
-Starting with an uploaded image of 157kB the 100px thumbnail clocks in at only 6.5kB! Optimizing image delivery is almost always worth the extra effort!
+Starting with an uploaded image of 157kB, the 100px thumbnail clocks in at only 6.5kB! Optimizing image delivery is almost always worth the extra effort!
 
-You can read more about the available transforms over at [Filestack's API reference](https://www.filestack.com/docs/api/processing/).
+You can read more about the available transforms at [Filestack's API reference](https://www.filestack.com/docs/api/processing/).
 
 ## The Improvements
 
-It would be nice if, after uploading, you could see the image you uploaded. Likewise, when editing an image, it would be helpful to see what's already attached. Let's make those improvements now.
+It'd be nice if, after uploading, you could see the image you uploaded. Likewise, when editing an image, it'd be helpful to see what's already attached. Let's make those improvements now.
 
 We're already storing the attached image URL in state, so let's use the existence of that state to show the attached image. In fact, let's also hide the uploader and assume you're done (you'll be able to show it again if needed):
 
-```javascript{14,18}
+```javascript{7,10}
 // web/src/components/ImageForm/ImageForm.js
 
-<ReactFilestack
+<PickerInline
   apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
   onSuccess={onFileUpload}
-  componentDisplayMode={{ type: 'immediate' }}
-  actionOptions={{ displayMode: 'inline', container: 'picker' }}
-/>
-<div
-  id="picker"
-  style={{
-    marginTop: '2rem',
-    height: '20rem',
-    display: url ? 'none' : 'block',
-  }}
-></div>
+>
+  <div style={{ display: url ? 'none' : 'block', height: '500px' }}></div>
+</PickerInline>
 
 {url && <img src={url} style={{ marginTop: '2rem' }} />}
 ```
 
-Now if you create a new image you'll see the picker, and as soon as the upload is complete the uploaded image will pop into place. If you go to edit an image you'll see the file that's already attached.
+Now if you create a new image record, you'll see the picker, and as soon as the upload is complete, the uploaded image will pop into place. If you go to edit an image, you'll see the file that's already attached.
 
-> You should probably use the same resize URL trick here so make sure it doesn't try to display a 10MB image immediately after uploading it. A max width of 500px could be good...
+> You should probably use the same resize-URL trick here to make sure it doesn't try to display a 10MB image immediately after uploading it. A max width of 500px may be good...
 
-Now let's just add the ability to bring back the uploader if you decide you want to change the image. We can do that by clearing the image that's in state:
+Now let's add the ability to bring back the uploader if you decide you want to change the image. We can do that by clearing the image that's in state:
 
-```javascript{18-29}
+```javascript{10-20}
 // web/src/components/ImageForm/ImageForm.js
 
-<ReactFilestack
+<PickerInline
   apikey={process.env.REDWOOD_ENV_FILESTACK_API_KEY}
   onSuccess={onFileUpload}
-  componentDisplayMode={{ type: 'immediate' }}
-  actionOptions={{ displayMode: 'inline', container: 'picker' }}
-/>
-<div
-  id="picker"
-  style={{
-    marginTop: '2rem',
-    height: '20rem',
-    display: url ? 'none' : 'block',
-  }}
-></div>
+>
+  <div style={{ display: url ? 'none' : 'block', height: '500px' }}></div>
+</PickerInline>
 
 {url && (
   <div>
     <img src={url} style={{ display: 'block', margin: '2rem 0' }} />
-    <a
-      href="#"
+    <button
       onClick={() => setUrl(null)}
-      className="bg-blue-600 text-white hover:bg-blue-700 text-xs rounded px-4 py-2 uppercase font-semibold tracking-wide"
+      className="rw-button rw-button-blue"
     >
       Replace Image
-    </a>
+    </button>
   </div>
 )}
 ```
 
 ![Replace image button](https://user-images.githubusercontent.com/300/82719274-e7055780-9c5d-11ea-9a8a-8c1c72185983.png)
 
-We're borrowing the styles from the submit button and made sure the image has both a top and bottom margin so it doesn't crash into the new button.
+We're borrowing the styles from the submit button and making sure that the image has both a top and bottom margin so it doesn't crash into the new button.
 
 ## The Wrap-up
 
-Files uploaded! There's plenty of ways to integrate a file picker and this is just one, but we think it's simple, yet flexible. We use the same technique on the [example-blog](https://github.com/redwoodjs/example-blog).
+Files uploaded! 
+
+There's plenty of ways to integrate a file picker. This is just one, but we think it's simple, yet flexible. We use the same technique on the [example-blog](https://github.com/redwoodjs/example-blog).
 
 Have fun and get uploading!
