@@ -2,8 +2,6 @@
 
 Redwood provides several helpers to make your life easier when working with forms. All of Redwood's form helpers are simple wrappers around [react-hook-form](https://react-hook-form.com/) that makes it even easier to use in many cases. If Redwood's form helpers aren't flexible enough for you, you can always use `react-hook-form` directly, or use any other [form builder](https://github.com/jaredpalmer/formik) that works with React.
 
-> **WARNING:** RedwoodJS software has not reached a stable version 1.0 and should not be considered suitable for production use. In the "make it work; make it right; make it fast" paradigm, Redwood is in the later stages of the "make it work" phase.
-
 Redwood currently provides the following form components:
 
 * `<Form>` surrounds all form elements and provides contexts for errors and form submission
