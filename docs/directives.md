@@ -1,5 +1,7 @@
 # Directives
 
+Redwood Directives are a powerful feature not offered by other frameworks. 
+
 Directives supercharge your GraphQL services. They add configuration to fields, types or operations that act like "middleware" that lets you run reusable code during GraphQL execution to perform tasks like authentication, formatting, and more.
 
 You'll recognize a directive by its preceded by the `@` character, e.g. `@myDirective`, and by being declared alongside a field:
@@ -243,28 +245,161 @@ Of course, you can write your own directives. Just generate a directive using th
 
 ### Generator
 
-The `yarn redwood generate` command ...
+When using the `yarn redwood generate` command you will be presented with a choice of creating a Validator or a Transformer directive.
 
 ```bash
-yarn redwood generate directive myCoolDirective # <-- you would use it like @myCoolDirective
+yarn redwood generate directive myDirective
 ```
-* interactive
-* --transfomer
-* --validators
+
+```terminal
+yarn rw g directive myDirective
+
+? What type of directive would you like to generate? › - Use arrow-keys. Return to submit.
+❯   Validator - Implement a validation: throw an error if criteria not met to stop execution
+    Transformer - Modify values of fields or query responses
+```
+
+> **Note:** You can pass the `--type` parameter with either `validator` or `transformer` to create the desired driective type.
+
+After picking the sirective type, the directive files will be created in you `api/src/directives/ directory:
+
+```terminal
+  ✔ Generating directive file ...
+    ✔ Successfully wrote file `./api/src/directives/myDirective/myDirective.test.ts`
+    ✔ Successfully wrote file `./api/src/directives/myDirective/myDirective.ts`
+  ✔ Generating TypeScript definitions and GraphQL schemas ...
+  ✔ Next steps...
+
+    After modifying your directive, you can add it to your SDLs e.g.:
+     // example todo.sdl.js
+     # Option A: Add it to a field
+     type Todo {
+       id: Int!
+       body: String! @myDirective
+     }
+
+     # Option B: Add it to query/mutation
+     type Query {
+       todos: [Todo] @myDirective
+     }
+```     
 
 
 ### Validator 
-#### Explain params
-#### Explain args
-#### Explain defaultValue
+
+Let's create a `@isSubscriber` directive that will check roles to see if the user is a subscriber.
+
+```terminal
+yarn rw g directive isSubscriber --type validator
+```
+
+Next, implement your validatation logic in the directive's `validate` function.
+
+Validator directives do not have access to the field value, i.e. they are called before resolving the value. But then do have access to the `context` and `directiveArgs`.
+
+ - Throw an error, if you want to stop executing e.g. not sufficient permissions
+ - Validator directives can be async or sync
+ - Returned value will be ignored
+   
+
+```ts
+const validate: ValidatorDirectiveFunc = ({ context, directiveArgs }) => {
+
+  // You can also modify your directive to take arguments
+  // and use the directiveArgs object provided to this function to get values
+  logger.debug(directiveArgs, 'directiveArgs in isSubscriber directive')
+
+  throw new Error('Implementation missing for isSubscriber')
+}
+```
+
+Here, we can access the `context` parameter and then check to see in the currentUser is authenticated as if they belog to the `SUBSCRIBER` role:
 
 
+```ts
+// /api/src/directives/isSubscriber/isSubscriber.ts
+// ...
+
+const validate: ValidatorDirectiveFunc = ({ context }) => {
+  if (!context.currentUser)) {
+    throw new AuthenticationError("You don't have permission to do that.")
+  }
+
+  if (!context.currentUser.roles?.includes('SUBSCRIBER')) {
+    throw new ForbiddenError("You don't have access to do that.")
+  }
+}
+```
+
+#### Writing Tests
+
+```ts
+import { mockRedwoodDirective, getDirectiveName } from '@redwoodjs/testing/api'
+
+import isSubscriber from './isSubscriber'
+
+describe('isSubscriber directive', () => {
+  it('declares the directive sdl as schema, with the correct name', () => {
+    expect(isSubscriber.schema).toBeTruthy()
+    expect(getDirectiveName(isSubscriber.schema)).toBe('isSubscriber')
+  })
+
+  it('has a isSubscriber throws an error if validation does not pass', () => {
+    const mockExecution = mockRedwoodDirective(isSubscriber, {})
+
+    expect(mockExecution).toThrowError(
+      'Implementation missing for isSubscriber'
+    )
+  })
+})
+```
 
 ### Transformer 
+
+Let's create a `@maskedEmail` directive that will check roles to see if the user is a subscriber.
+
+```terminal
+yarn rw g directive maskedEmail --type transformer
+```
+
+Next, implement your validatation logic in the directive's `transform` function.
+
+Transformer directives provide `context` and `resolvedValue` paramaters and run **after** resolving the value.
+   
+* You can also throw an error, if you want to stop executing, but note that the value has already been resolved
+* Transformer directives **must** be synchronous, and return a value
+
+```ts
+
+const transform: TransformerDirectiveFunc = ({ context, resolvedValue }) => {
+  return resolvedValue.replace('foo', 'bar')
+}
+```
 #### Explain params
 #### Explain args
 #### Explain defaultValue
 
 
 
-### Writing tests
+#### Writing tests
+
+```ts
+import { mockRedwoodDirective, getDirectiveName } from '@redwoodjs/testing/api'
+
+import maskedEmail from './maskedEmail'
+
+describe('maskedEmail directive', () => {
+  it('declares the directive sdl as schema, with the correct name', () => {
+    expect(maskedEmail.schema).toBeTruthy()
+    expect(getDirectiveName(maskedEmail.schema)).toBe('maskedEmail')
+  })
+
+  it('has a maskedEmail implementation transforms the value', () => {
+    const mockExecution = mockRedwoodDirective(maskedEmail, {
+      mockedResolvedValue: 'foo',
+    })
+
+    expect(mockExecution()).toBe('bar')
+  })
+})
+```

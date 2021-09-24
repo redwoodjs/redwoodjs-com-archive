@@ -555,8 +555,7 @@ yarn redwood generate directive <name>
 | `name`               | Name of the directive                                                                |
 | `--force, -f`        | Overwrite existing files                                                             |
 | `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
-| `--transformer`      | Generate a transformer directive                                                     |
-| `--validator`        | Generate a validator directive                                                       |
+| `--type       `      | Choices: "validator", "transformer"] to generate the directive type                  |
 
 **Usage**
 
@@ -564,13 +563,14 @@ See[Redwood Directives](https://www.redwoodjs.com/docs/directives).
 
 **Example**
 
-Generating a myDirective directive:
+Generating a myDirective directive using the interative command:
 
 ```terminal
-~/redwood-app$ yarn redwood generate directive myDirective
+yarn rw g directive myDirective
 
-@TODO
-
+? What type of directive would you like to generate? › - Use arrow-keys. Return to submit.
+❯   Validator - Implement a validation: throw an error if criteria not met to stop execution
+    Transformer - Modify values of fields or query responses
 ```
 
 ### generate function
