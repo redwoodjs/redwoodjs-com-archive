@@ -293,6 +293,77 @@ The GraphQL Playground's nice, but if you're a power user, you'll want to be usi
 - dt has some thoughts on this
 - insomnia -->
 
+## Verifying GraphQL Schema
+
+In order to keep your GraphQL endpoint and services secure, you must specify one of `@requireAuth`, `@skipAuth` or a custom directive on **every** query and mutation defined in your SDL.
+
+Redwood will verify that your schema complies with these runs when:
+
+* building (or building just the api)
+* launching the dev server.
+
+If any fail this check, you will see:
+
+* each query of mutation listed in the command's error log
+* a fatal error `⚠️ GraphQL server crashed` if launching the server
+
+### Build-time Verification
+
+When building via the `yarn rw build` command and the SDL fails verification, you will see output that lists each query or mutation missing the directive:
+
+
+```terminal
+  ✔ Generating Prisma Client...
+  ✖ Verifying graphql schema...
+    → - deletePost Mutation
+    Building API...
+    Cleaning Web...
+    Building Web...
+    Prerendering Web...
+
+You must specify one of @requireAuth, @skipAuth or a custom directive for
+- contacts Query
+- posts Query
+- post Query
+- createContact Mutation
+- createPost Mutation
+- updatePost Mutation
+- deletePost Mutation 
+```
+
+### Dev Server Verification
+
+When launching the dev server via the `yarn rw dev` command, you will see output that lists each query or mutation missing the directive:
+
+```terminal
+
+api | [nodemon] 2.0.12
+api | [nodemon] to restart at any time, enter `rs`
+api | [nodemon] watching path(s): redwood.toml
+api | [nodemon] watching extensions: js,mjs,json
+api | [nodemon] starting `yarn rw-api-server-watch`
+gen | Generating TypeScript definitions and GraphQL schemas...
+gen | 37 files generated
+api | Building... Took 444 ms
+api | Starting API Server... Took 2 ms
+api | Listening on http://localhost:8911/
+api | Importing Server Functions... 
+web | ...
+api | FATAL [2021-09-24 18:41:49.700 +0000]: 
+api |  ⚠️ GraphQL server crashed 
+api | 
+api |     Error: You must specify one of @requireAuth, @skipAuth or a custom directive for 
+api |     - contacts Query
+api |     - posts Query
+api |     - post Query
+api |     - createContact Mutation
+api |     - createPost Mutation
+api |     - updatePost Mutation
+api |     - deletePost Mutation 
+```
+
+To fix these errors, simple declare with `@requireAuth` to enforce authentication or `@skipAuth` to keep the operation public on each as approriate for your app's permissions needs.
+
 ## Directives
 
 Directives supercharge your GraphQL services. They add configuration to fields, types or operations that act like "middleware" that lets you run reusable code during GraphQL execution to perform tasks like authentication, formatting, and more.
