@@ -541,6 +541,38 @@ See the [Data Migration](/docs/data-migrations) docs.
 
 See the [Deploy](/docs/deploy) docs.
 
+### generate directive
+
+Generate a directive.
+
+```terminal
+yarn redwood generate directive <name>
+```
+
+
+| Arguments & Options  | Description                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| `name`               | Name of the directive                                                                |
+| `--force, -f`        | Overwrite existing files                                                             |
+| `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
+| `--transformer`      | Generate a transformer directive                                                     |
+| `--validator`        | Generate a validator directive                                                       |
+
+**Usage**
+
+See[Redwood Directives](https://www.redwoodjs.com/docs/directives).
+
+**Example**
+
+Generating a myDirective directive:
+
+```terminal
+~/redwood-app$ yarn redwood generate directive myDirective
+
+@TODO
+
+```
+
 ### generate function
 
 Generate a Function.

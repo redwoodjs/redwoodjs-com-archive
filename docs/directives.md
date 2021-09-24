@@ -231,35 +231,40 @@ input UserExampleInput {
 
 ### @requireAuth
 
+@todo 
+
 ### @skipAuth
 
-
-```jsx
-```
-
-## Write your own directives
+@todo 
+## Custom Directives
 
 
-Of course, you can generate a directive using the Redwood CLI to give you the boiler plate and a handy test!
+Of course, you can write your own directives. Just generate a directive using the Redwood CLI to give you the boiler plate and a handy test!
 
-# Generator
+### Generator
+
+The `yarn redwood generate` command ...
 
 ```bash
 yarn redwood generate directive myCoolDirective # <-- you would use it like @myCoolDirective
 ```
-
-## Validator 
-### Explain params
-### Explain args
-### Explain defaultValue
+* interactive
+* --transfomer
+* --validators
 
 
-### Writing tests
+### Validator 
+#### Explain params
+#### Explain args
+#### Explain defaultValue
 
-## Transformer 
-### Explain params
-### Explain args
-### Explain defaultValue
+
+
+### Transformer 
+#### Explain params
+#### Explain args
+#### Explain defaultValue
+
 
 
 ### Writing tests
