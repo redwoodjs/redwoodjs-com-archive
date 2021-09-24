@@ -293,6 +293,62 @@ The GraphQL Playground's nice, but if you're a power user, you'll want to be usi
 - dt has some thoughts on this
 - insomnia -->
 
+## Directives
+
+Directives supercharge your GraphQL services. They add configuration to fields, types or operations that act like "middleware" that lets you run reusable code during GraphQL execution to perform tasks like authentication, formatting, and more.
+
+You'll recognize a directive by its preceded by the `@` character, e.g. `@myDirective`, and by being declared alongside a field:
+
+
+```ts
+type Bar {
+  name: String! @myDirective
+}
+```
+
+or a Query or Mutation:
+
+
+```ts
+type Query {
+  bars: [Bar!]! @myDirective
+}
+
+type Mutation {
+  createBar(input: CreateBarInput!): Bar! @myDirective
+}
+```
+### GraphQL Handler Setup
+
+Redwood makes it easy to code, organize, and map your directives into the GraphQL schema.
+
+You simply add them to the `directives` directory and the `createGraphQLHandler` will do all the work.
+
+```ts
+// api/src/functions/graphql.ts
+
+import { createGraphQLHandler } from '@redwoodjs/graphql-server'
+
+import directives from 'src/directives/**/*.{js,ts}' // 👈 directives live here
+import sdls from 'src/graphql/**/*.sdl.{js,ts}'
+import services from 'src/services/**/*.{js,ts}'
+
+import { db } from 'src/lib/db'
+import { logger } from 'src/lib/logger'
+
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: {} },
+  directives,//  👈 directives are added to the schema here
+  sdls,
+  services,
+  onException: () => {
+    // Disconnect from your database with an unhandled exception.
+    db.$disconnect()
+  },
+})
+```
+
+> Note: Check-out the [in-depth look at Redwood Directives](https://www.redwoodjs.com/docs/directives) that explains how to generate directives so you may use them to validate access and transform the response.
 ## Logging
 
 Logging is essential in production apps to be alerted about critical errors and to be able to respond effectively to support issues. In staging and development environments, logging helps you debug queries, resolvers and cell requests.

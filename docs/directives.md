@@ -1,6 +1,6 @@
 # Directives
 
-GraphQL directives are a SDL (Schema Definition Language) feature that lets you add configuration to a field, type or operation that act like "middleware" that lets you run some reusable code during GraphQL execution to perform tasks like authentication, formatting, and more.
+Directives supercharge your GraphQL services. They add configuration to fields, types or operations that act like "middleware" that lets you run reusable code during GraphQL execution to perform tasks like authentication, formatting, and more.
 
 You'll recognize a directive by its preceded by the `@` character, e.g. `@myDirective`, and by being declared alongside a field:
 
@@ -42,6 +42,36 @@ Whatever flavor of directive you want, all Redwood directives must have the foll
 - Be in the `./api/src/directives/{directiveName}` folder where `directiveName` is yur directive
 - Must have a file name with `{directiveName}.{js,ts}` extension e.g. `maskedEmail.ts`
 - Must export a `schema` and implement either their `validate` or `transform` function
+
+### GraphQL Handler Setup
+
+Redwood makes it easy to code, organize, and map your directives into the GraphQL schema.
+
+You simply add them to the `directives` directory and the `createGraphQLHandler` will do all the work.
+
+```ts
+// api/src/functions/graphql.ts
+
+import { createGraphQLHandler } from '@redwoodjs/graphql-server'
+
+import directives from 'src/directives/**/*.{js,ts}' // 👈 directives live here
+import sdls from 'src/graphql/**/*.sdl.{js,ts}'
+import services from 'src/services/**/*.{js,ts}'
+
+import { db } from 'src/lib/db'
+import { logger } from 'src/lib/logger'
+
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: {} },
+  directives,//  👈 directives are added to the schema here
+  sdls,
+  services,
+  onException: () => {
+    // Disconnect from your database with an unhandled exception.
+    db.$disconnect()
+  },
+})
+```
 
 ### Validators
 
