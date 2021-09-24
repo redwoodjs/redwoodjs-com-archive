@@ -73,6 +73,12 @@ export const handler = createGraphQLHandler({
 })
 ```
 
+### Secure by Default
+
+
+* must declare `@requireAuth`, `@skipAuth` or a custom directive on **all** queries and mutations
+* build time checks
+* GraphQL api won't start up
 ### Validators
 
 Validators integrate with Redwood's authentication so evaluate whether or not a field, query or mutation is permitted -- that is, if the request context's `currentUser` is authenticated or belongs to one of the permitted roles.
@@ -191,15 +197,7 @@ type UserExample {
 }
 ```
 
----
-
-TODO
-
-Of course, you can generate a directive using the Redwood CLI to give you the boiler plate and a handy test!
-
-```bash
-yarn redwood generate directive myCoolDirective # <-- you would use it like @myCoolDirective
-```
+### Some Rules
 
 Each directive can only appear in certain locations within a GraphQL schema or operation. These locations are listed in the directive's definition. In the `@maskedEmail` example, the directive can only appear in the `FIELD_DEFINITION` location.
 
@@ -229,53 +227,39 @@ input UserExampleInput {
 
 ## Built-in directives
 
-requireAuth
-
-skipAuth
-
 - accessing context, currentUser and roles "Make your directive role-speciifc"
-- how createGraphQLHandler hooks up directives (just like sdl and services)
+
+### @requireAuth
+
+### @skipAuth
+
 
 ```jsx
 ```
 
-## Writing your own directive
+## Write your own directives
 
-- generator command
-- explain params
-- explain args
-- explain defaultValue
 
-## Transformers vs Validators
+Of course, you can generate a directive using the Redwood CLI to give you the boiler plate and a handy test!
 
-❯   Validator
-    Implement a validation: throw an error
-   if criteria not met to stop execution
+# Generator
 
-❯   Transformer
-    Modify values of fields or query
-   responses
+```bash
+yarn redwood generate directive myCoolDirective # <-- you would use it like @myCoolDirective
+```
 
-## Validators
+## Validator 
+### Explain params
+### Explain args
+### Explain defaultValue
 
-### Where can you apply validators?
 
-- field with example
-- query/mutation with example
+### Writing tests
 
-## Transformers
+## Transformer 
+### Explain params
+### Explain args
+### Explain defaultValue
 
-### Where can you apply transformers?
 
-- field with example
-- type with example ?
-
-## Writing tests
-
----
-
-## TODO:
-
-- [ ]  Update secure by default / rules docs
-
-[Docs - Services : RedwoodJS Docs](https://redwoodjs.com/docs/services#enabling-secure-services)
+### Writing tests
