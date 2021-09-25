@@ -21,7 +21,8 @@ In addition to security, your Services benefit by being able to just focus on th
 
 ### Securing Your Services
 
-Secure Services rely on directives ...
+Secure Services rely on directives ... @todo
+
 
 #### A Simple Service
 
@@ -67,6 +68,11 @@ In this example case, the `requireAuth()` directive would be called automaticall
 >
 
 #### Best Practices
+
+If you want your query or mutation to be public, simply use the `@skipAuth` directive.
+
+When generating sdl, the file will include the `@requireAuth` directive by default to ensure queries and mutations are secure. If your app's queries and mutations are all public, you can setup a custom generator sdl template to apply `@skipAuth` or a custom validator directive to suit you application's needs.
+
 
 @TODO
 #### Examples

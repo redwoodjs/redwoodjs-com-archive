@@ -995,7 +995,7 @@ https://community.redwoodjs.com/t/prisma-beta-2-and-redwoodjs-limited-generator-
 | `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
 
 
-> **Note:** The generated sdl will include the `@requireAuth` directive by default to ensure queries and mutations are secure. If your app's queries and mutations are all public, you can setup a custom generator sdl template to applut `@skipAuth` or a custom validator directive to suit you application's needs.
+> **Note:** The generated sdl will include the `@requireAuth` directive by default to ensure queries and mutations are secure. If your app's queries and mutations are all public, you can setup a custom generator sdl template to apply `@skipAuth` or a custom validator directive to suit you application's needs.
 
 **Destroying**
 
