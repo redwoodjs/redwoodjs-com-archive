@@ -422,7 +422,7 @@ The `updateOrderStatus` webhook will expect:
 * find the order by the tracking number provided
 * check that the order's current status allows the status to be changed
 * and if so, update the error and return the order and message
-* or if not, return a [500 internal server error](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500) with a message that teh order couldn't be updated
+* or if not, return a [500 internal server error](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500) with a message that the order couldn't be updated
 
 
 ```ts
@@ -722,7 +722,7 @@ If your function receives an incoming Webhook from a third party, see [Webhooks]
 
 ### Returning Binary Data
 
-By default, RedwoodJS functions return strings or JSON. If you need to return binary data, your function will need to encode it as Base64 and then set the `isBase64Encoded` response parameter to `true`. Note that this is best suited to relatively small responses. The entire response body will be loaded into memory as a string, and many serverless hosting environments will limit your function to eg. 10 seconds, so if your file takes longer than that to process and download it may get cut off. For larger or static files, it may be better to upload files to an object store like S3 and generate a [presigned URL](https://stackoverflow.com/questions/38831829/nodejs-aws-sdk-s3-generate-presigned-url) that the client can use to download the file directly.
+By default, RedwoodJS functions return strings or JSON. If you need to return binary data, your function will need to encode it as Base64 and then set the `isBase64Encoded` response parameter to `true`. Note that this is best suited to relatively small responses. The entire response body will be loaded into memory as a string, and many serverless hosting environments will limit your function to eg. 10 seconds, so if your file takes longer than that to process and download it may get cut off. For larger or static files, it may be better to upload files to an object store like S3 and generate a [pre-signed URL](https://stackoverflow.com/questions/38831829/nodejs-aws-sdk-s3-generate-presigned-url) that the client can use to download the file directly.
 
 Here's an example of how to return a binary file from the filesystem:
 
