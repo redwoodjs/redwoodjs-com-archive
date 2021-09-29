@@ -1,8 +1,10 @@
 # Roadmap
 
-_Last updated 20 May 2021_
+_Last updated 29 September 2021_
 
-We plan on releasing a `v1.0` release candidate soon. At this stage of development, when it's so important to keep the finish line in mind, a high-level overview is invaluable. Hence, this roadmap, and these color-coded labels:
+RedwoodJS is very close to a stable version 1.0. In the last two years, the project has matured significantly and is already used in production by a number of startups. We intend to have a 1.0 release candidate before the end of 2021 and to release a truly production-ready 1.0 in early 2022. If you want to follow along with development, we are updating the ["Current Release Sprint"](https://github.com/redwoodjs/redwood/projects) GitHub project board several times a week. Once the "On Deck" and "In Progress" columns are complete, we'll be publishing the v1.0.0-rc.
+
+At this stage of development, when it's so important to keep the finish line in mind, a high-level overview is invaluable. Hence, this roadmap, and these color-coded labels:
 
 - <span id="status-0" class="font-mono">Didn't start</span>
 - <span id="status-1" class="font-mono">Figuring it out</span>
