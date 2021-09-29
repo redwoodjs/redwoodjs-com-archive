@@ -25,7 +25,7 @@ Accessibility is a first-class concern. We want you to be able to build accessib
 
 A common theme leading up to `v1.0` will be that we want to make sure what we have actually works, so if you're savvy with a screen reader, testing the route announcer on multiple screen readers on multiple browsers would be invaluable feedback! 
 
-[Accessibility • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/5)
+[GitHub Project Board](https://github.com/redwoodjs/redwood/projects/20)
 
 ## Auth
 
@@ -33,7 +33,7 @@ A common theme leading up to `v1.0` will be that we want to make sure what we ha
 
 Authentication and authorization are questions Redwood has had answers to since `v0.7`. Redwood has easy-to-install, sophisticated auth for a variety of providers. There's even role-based access controls (RBACs)! Authentication and authorization are integrated across the whole stack, and when `v1.0` rolls around, your Services will be secure by default. For more, see [Security](https://redwoodjs.com/docs/security).
 
-[Auth • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/6)
+[GitHub Project Board](https://github.com/redwoodjs/redwood/projects/20)
 
 ## Core
 
@@ -41,7 +41,7 @@ Authentication and authorization are questions Redwood has had answers to since 
 
 Redwood depends on a few libraries&mdash;namely Prisma&mdash;for some of its core functionality. For us to be `v1.0`, they have to be too. With Prisma recently carrying Migrate and Studio to general availability (GA) to complete the ORM, it's safe to say that they're ready to go. As we transition to Envelop and polish Cells, GraphQL is one of the other core aspects of Redwood that's getting a lot of attention.
 
-[Core • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/14)
+[GitHub Project Board](https://github.com/redwoodjs/redwood/projects/20)
 
 ## Deployment
 
@@ -49,7 +49,7 @@ Redwood depends on a few libraries&mdash;namely Prisma&mdash;for some of its cor
 
 We want to be able to deploy everywhere and anywhere: serverless, serverful, to the edge—to the world! Much like auth, we've already got a great lineup: Netlify (done), Vercel (done), Render (done), AWS (done), and Google Cloud Run (in the works). We'll always be looking to add more and to support custom deployment strategies.
 
-[Deployment • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/9)
+[GitHub Project Board](https://github.com/redwoodjs/redwood/projects/20)
 
 ## Docs
 
@@ -67,7 +67,7 @@ One thing we plan on doing before `v1.0` is moving over to Docusarus to accommod
 
 Generators are part of what makes Redwood a joy. We've made generators more configurable, so you can do things like opt in and out of generating stories and test files, and generate files in TypeScript rather than JavaScript. Look out for another long awaited configuration option: the ability to specify the path—where things get generated.
 
-[Generators • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/13)
+[GitHub Project Board](https://github.com/redwoodjs/redwood/projects/20)
 
 ## Logging
 
@@ -75,7 +75,7 @@ Generators are part of what makes Redwood a joy. We've made generators more conf
 
 Logging has wiped out almost all of the old-growth Redwoods in California. But that doesn't mean we're not fans of logging here at RedwoodJS. As long as the logging helps you figure out what your app is doing! A production Redwood app will need great logging, so we intend to make it easy to get hooked up.
 
-[Logging • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/7)
+[GitHub Project Board](https://github.com/redwoodjs/redwood/projects/20)
 
 ## Performance
 
@@ -85,7 +85,7 @@ Can you have great developer ergonomics **and** performance? We intend to find o
 
 Bundle size will be important here, so a good place to start is by building with the stats flag (`yarn rw build --stats`). This will make Redwood bundle with the [Webpack Bundle Analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer).
 
-[Performance • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/10)
+[GitHub Project Board](https://github.com/redwoodjs/redwood/projects/20)
 
 ## Prerender
 
@@ -107,7 +107,7 @@ We're not done by any means; there's a lot more features we'll add to Prerenderi
 
 We've written our own router for Redwood, and we need to make sure it's competitive with existing routers in the React ecosystem (e.g. React Router, Reach Router). We've taken a stance on desiring a flat routing scheme (vs a nested one) and this currently comes with some performance downsides, some of which we've addressed with Sets. There's a lot of little things for us to polish, so if you're looking to work on something with a smaller scope, the router's a great place to get started.
 
-[Router • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/11)
+[GitHub Project Board](https://github.com/redwoodjs/redwood/projects/20)
 
 ## Storybook
 
@@ -115,7 +115,7 @@ We've written our own router for Redwood, and we need to make sure it's competit
 
 Redwood's component-development workflow starts with Storybook. Being able to develop your components in isolation without ever starting the dev server is a real game-changer. Redwood even generates mock data for your Cells so you can iterate on all of your component states!
 
-[Storybook • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/8)
+[GitHub Project Board](https://github.com/redwoodjs/redwood/projects/20)
 
 ## Structure
 
@@ -123,7 +123,7 @@ Redwood's component-development workflow starts with Storybook. Being able to de
 
 Using Redwood's Structure package, we can use the same logic to power both an IDE (i.e. Jamstack IDE) and Redwood itself. Redwood Structure's most common use-case is getting the diagnostics of a complete Redwood project, but being able to programmatically talk about a Redwood project like an AST moves many other amazing things we can't anticipate into the adjacent possible.
 
-[Structure • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/12)
+[GitHub Project Board](https://github.com/redwoodjs/redwood/projects/20)
 
 ## Testing (App)
 
@@ -131,7 +131,7 @@ Using Redwood's Structure package, we can use the same logic to power both an ID
 
 Redwood makes testing a first-class concern, and maybe even makes it fun? We've integrated testing for both sides, and even wrote a [tome](https://redwoodjs.com/docs/testing) telling you how to use it, from the ground-up. We've got a template for Functions in the works, which would all but bring our unit tests to a close. One thing we'd really like to add as a stretch goal is a GitHub Action so you can have CI from the get go!
 
-[Testing • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/4)
+[GitHub Project Board](https://github.com/redwoodjs/redwood/projects/20)
 
 ## TypeScript
 
@@ -143,4 +143,4 @@ The [TypeScript tracking issue](https://github.com/redwoodjs/redwood/issues/234)
 
 Although we want Redwood apps to default to TypeScript, you can still just stick to JS! It's totally up to you. All of our utilities, like generators, support both.
 
-[TypeScript • GitHub Project Board](https://github.com/redwoodjs/redwood/projects/2)
+[GitHub Project Board](https://github.com/redwoodjs/redwood/projects/20)
