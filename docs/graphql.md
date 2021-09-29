@@ -523,24 +523,26 @@ export const post = async ({ id }) => {
 The GraphQL handler take care of will then take take of logging  your query and data -- as long as your logger is setup to log at the `info` [level](https://redwoodjs.com/docs/logger#log-level) and above. You can also disable the statements in production by just logging at the `warn` and above [level](https://redwoodjs.com/docs/logger#log-level).
 
 ```terminal
-api | INFO [2021-07-09 14:20:11.656 +0000] (apollo-graphql-server): GraphQL requestDidStart
-api |     query: "query ($id: Int!) {\n  post(id: $id) {\n    id\n    title\n    body\n    createdAt\n    publishedAt\n    updatedAt\n    __typename\n  }\n}\n"
-api | DEBUG [2021-07-09 14:20:11.657 +0000] (apollo-graphql-server): GraphQL executionDidStart
-api |     operationName: null
-api |     query: "query ($id: Int!) {\n  post(id: $id) {\n    id\n    title\n    body\n    createdAt\n    publishedAt\n    updatedAt\n    __typename\n  }\n}\n"
-api | INFO [2021-07-09 14:20:12.114 +0000] (apollo-graphql-server): GraphQL willSendResponse
+api | POST /graphql 200 7.754 ms - 1772
+api | DEBUG [2021-09-29 16:04:09.313 +0000] (graphql-server): GraphQL execution started: BlogPostQuery
+api |     operationName: "BlogPostQuery"
+api |     query: {
+api |       "id": 3
+api |     }
+api | DEBUG [2021-09-29 16:04:09.321 +0000] (graphql-server): GraphQL execution completed: BlogPostQuery
 api |     data: {
 api |       "post": {
-api |         "id": 2,
-api |         "title": "Lime Tree Arbour",
-api |         "body": "The wind in the trees is whispering \\ Whispering low that I love her \\ She puts her hand over mine \\ Down in the lime tree arbour",
-api |         "createdAt": "2021-03-18T05:32:39.258Z",
-api |         "publishedAt": "2021-03-18T05:32:39.258Z",
-api |         "updatedAt": "2021-07-09T01:52:08.005Z",
+api |         "id": 3,
+api |         "body": "Meh waistcoat succulents umami asymmetrical, hoodie post-ironic paleo chillwave tote bag. Trust fund kitsch waistcoat vape, cray offal gochujang food truck cloud bread enamel pin forage. Roof party chambray ugh occupy fam stumptown. Dreamcatcher tousled snackwave, typewriter lyft unicorn pabst portland blue bottle locavore squid PBR&B tattooed.",
+api |         "createdAt": "2021-09-24T16:51:06.198Z",
 api |         "__typename": "Post"
 api |       }
 api |     }
-api |     query: "query ($id: Int!) {\n  post(id: $id) {\n    id\n    title\n    body\n    createdAt\n    publishedAt\n    updatedAt\n    __typename\n  }\n}\n"
+api |     operationName: "BlogPostQuery"
+api |     query: {
+api |       "id": 3
+api |     }
+api | POST /graphql 200 9.386 ms - 441
 ```
 
 but keep your services concise!
@@ -599,7 +601,7 @@ We see that this request took about 500 msecs (note: duration is reported in nan
 For more details about the information logged and its format, see [Apollo Tracing](https://github.com/apollographql/apollo-tracing).
 
 ```terminal
-pi | INFO [2021-07-09 14:25:52.452 +0000] (apollo-graphql-server): GraphQL willSendResponse
+pi | INFO [2021-07-09 14:25:52.452 +0000] (graphql-server): GraphQL willSendResponse
 api |     tracing: {
 api |       "version": 1,
 api |       "startTime": "2021-07-09T14:25:51.931Z",

@@ -1,8 +1,8 @@
 # Directives
 
-Redwood Directives are a powerful feature not offered by other frameworks. 
+Redwood Directives are a powerful feature not offered by other frameworks that supercharge your GraphQL-backed services. 
 
-Directives supercharge your GraphQL services. They add configuration to fields, types or operations that act like "middleware" that lets you run reusable code during GraphQL execution to perform tasks like authentication, formatting, and more.
+Simply put, directives add configuration to fields, types or operations that act like "middleware" that lets you run reusable code during GraphQL execution to perform tasks like authentication, formatting, and more.
 
 You'll recognize a directive by its preceded by the `@` character, e.g. `@myDirective`, and by being declared alongside a field:
 
@@ -33,11 +33,13 @@ type Bar {
 }
 ```
 
-Because there are many ways to write directives that can get rather complicated and often require a deep understanding of the GraphQL lifecycle and structure, Redwood provides an easy and ergonomic way to generate and write your own directives. 
+There are many ways to write directives using GraphQL tools and libraries, and believe us, it can get rcomplicated fast. 
+
+But, don't fret: Redwood provides an easy and ergonomic way to generate and write your own directives so you can focus on the implementation logic and not the GraphQL plumbing. 
 
 ## What is a Redwood Directive?
 
-Redwood directives are purposeful and come in two flavors: **Validators** and **Transformers**.
+Redwood directives are purposeful; they come in two flavors: **Validators** and **Transformers**.
 
 Whatever flavor of directive you want, all Redwood directives must have the following properties:
 
@@ -45,42 +47,27 @@ Whatever flavor of directive you want, all Redwood directives must have the foll
 - Must have a file name with `{directiveName}.{js,ts}` extension e.g. `maskedEmail.ts`
 - Must export a `schema` and implement either their `validate` or `transform` function
 
-### GraphQL Handler Setup
+### Understanding the Directive Flow
 
-Redwood makes it easy to code, organize, and map your directives into the GraphQL schema.
+It helps to know a little about the GraphQL Phases, specifically the Execution Phase, and how Redwood Directive fit in the data fetching and authentication flow.
 
-You simply add them to the `directives` directory and the `createGraphQLHandler` will do all the work.
+First, we see the built-in `@requireAuth` Validator directive that can allow or deny access to a service (aka a resolver) based on Redwood authentication.
 
-```ts
-// api/src/functions/graphql.ts
+In this example, the `post(id: Int!)` query is protected using the `@requireAuth` directive.
 
-import { createGraphQLHandler } from '@redwoodjs/graphql-server'
+If the request's context has a `currentUser` and the app's `auth.{js|ts}` determines it `isAuthenticated()` then the execution phase proceeds to get resolved (for example, use the `post({ id })` service and query the database using Prisma) and return then data in the resulting resposne when execution is done.
 
-import directives from 'src/directives/**/*.{js,ts}' // 👈 directives live here
-import sdls from 'src/graphql/**/*.sdl.{js,ts}'
-import services from 'src/services/**/*.{js,ts}'
+![require-auth-directive](https://user-images.githubusercontent.com/1051633/135320891-34dc06fc-b600-4c76-8a35-86bf42c7f179.png)
 
-import { db } from 'src/lib/db'
-import { logger } from 'src/lib/logger'
+In this second example, we add a Transformer directive `@welcome` to the `title` field on `Post` in the SDL. 
 
-export const handler = createGraphQLHandler({
-  loggerConfig: { logger, options: {} },
-  directives,//  👈 directives are added to the schema here
-  sdls,
-  services,
-  onException: () => {
-    // Disconnect from your database with an unhandled exception.
-    db.$disconnect()
-  },
-})
-```
+The GraphQL Execution phase proceeds the same as the prior example (because the `post` query is still protected and we'll want to fetch the user's name) and then the `title` field is resolved based on the data fetch query in the service. 
 
-### Secure by Default
+Finally after execution is done, then the directive can inspect the `resolvedValue` (here "Welcome to the blog!") and replace the value by inserting the current user's name -- "Welcome, Tom, to the blog!"
 
+![welcome-directive](https://user-images.githubusercontent.com/1051633/135320906-5e2d639d-13a1-4aaf-85bf-98529822d244.png)
+)
 
-* must declare `@requireAuth`, `@skipAuth` or a custom directive on **all** queries and mutations
-* build time checks
-* GraphQL api won't start up
 ### Validators
 
 Validators integrate with Redwood's authentication so evaluate whether or not a field, query or mutation is permitted -- that is, if the request context's `currentUser` is authenticated or belongs to one of the permitted roles.
@@ -199,6 +186,51 @@ type UserExample {
 }
 ```
 
+### When Should I Use a Redwood Directive?
+
+|     | Use                                      | Directive      | Custom? | Type       | 
+|---- |------------------------------------------|----------------|---------|------------|
+| ✅  | Check if the request is authenticated?   | @requireAuth   | Built-in | Validator |
+| ✅  | Check if the user belongs to a role?     | @requireAuth(roles: ["AUTHOR"])   | Built-in | Validator |
+| ✅  | Only allow admins to see emails, but others get a masked value like "###@######.###"    | @maskedEmail(roles: ["ADMIN"])   | Custom | Transformer |
+| 🙅  | Know if the logged in user can edit the record, and/or values | N/A - Instead do this check in your service
+| 🙅  | Is my input a valid email address format? | N/A - Instead do this check in your service or using a GraphQL scalar (Future Redwood)
+| 🙅  | I want to remove a field from the response for data filtereing; for example, do not include the title of the post | N/A - Instead use standard directives ***on the GraphQL query, not the SDL*** |  `@skip(if: true )` or `@include(if: false)` | Standard
+
+### Chaining and Cascading Directives
+
+
+### GraphQL Handler Setup
+
+Redwood makes it easy to code, organize, and map your directives into the GraphQL schema.
+
+You simply add them to the `directives` directory and the `createGraphQLHandler` will do all the work.
+
+> **Note:** Redwood has a generator that will do all the heavy lifting setup for you.
+
+```ts
+// api/src/functions/graphql.ts
+
+import { createGraphQLHandler } from '@redwoodjs/graphql-server'
+
+import directives from 'src/directives/**/*.{js,ts}' // 👈 directives live here
+import sdls from 'src/graphql/**/*.sdl.{js,ts}'
+import services from 'src/services/**/*.{js,ts}'
+
+import { db } from 'src/lib/db'
+import { logger } from 'src/lib/logger'
+
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: {} },
+  directives,//  👈 directives are added to the schema here
+  sdls,
+  services,
+  onException: () => {
+    // Disconnect from your database with an unhandled exception.
+    db.$disconnect()
+  },
+})
+```
 ### Some Rules
 
 Each directive can only appear in certain locations within a GraphQL schema or operation. These locations are listed in the directive's definition. In the `@maskedEmail` example, the directive can only appear in the `FIELD_DEFINITION` location.
@@ -227,7 +259,12 @@ input UserExampleInput {
  }
 ```
 
-## Built-in directives
+### Secure by Default with Built-in directives
+
+
+* must declare `@requireAuth`, `@skipAuth` or a custom directive on **all** queries and mutations
+* build time checks
+* GraphQL api won't start up
 
 - accessing context, currentUser and roles "Make your directive role-speciifc"
 
@@ -356,7 +393,7 @@ describe('isSubscriber directive', () => {
 
 ### Transformer 
 
-Let's create a `@maskedEmail` directive that will check roles to see if the user is a subscriber.
+Let's create a `@maskedEmail` directive that will check roles to see if the user should see the email or if it should be obfuscated.
 
 ```terminal
 yarn rw g directive maskedEmail --type transformer
