@@ -554,16 +554,16 @@ yarn redwood generate directive <name>
 | -------------------- | ------------------------------------------------------------------------------------ |
 | `name`               | Name of the directive                                                                |
 | `--force, -f`        | Overwrite existing files                                                             |
-| `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
-| `--type       `      | Choices: "validator", "transformer"] to generate the directive type                  |
+| `--typescript, --ts` | Generate TypeScript files (defaults to your projects language target) |
+| `--type       `      | Directive type [Choices: "validator", "transformer"]                  |
 
 **Usage**
 
-See[Redwood Directives](https://www.redwoodjs.com/docs/directives).
+See [Redwood Directives](/docs/directives).
 
 **Example**
 
-Generating a myDirective directive using the interative command:
+Generating a `myDirective` directive using the interactive command:
 
 ```terminal
 yarn rw g directive myDirective
@@ -995,7 +995,7 @@ https://community.redwoodjs.com/t/prisma-beta-2-and-redwoodjs-limited-generator-
 | `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
 
 
-> **Note:** The generated sdl will include the `@requireAuth` directive by default to ensure queries and mutations are secure. If your app's queries and mutations are all public, you can setup a custom generator sdl template to apply `@skipAuth` or a custom validator directive to suit you application's needs.
+> **Note:** The generated sdl will include the `@requireAuth` directive by default to ensure queries and mutations are secure. If your app's queries and mutations are all public, you can set up a custom SDL generator template to apply `@skipAuth` (or a custom validator directive) to suit you application's needs.
 
 **Destroying**
 
