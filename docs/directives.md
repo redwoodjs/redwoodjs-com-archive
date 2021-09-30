@@ -211,7 +211,37 @@ type UserExample {
 }
 ```
 
-### When Should I Use a Redwood Directive?
+### Where can I use a Redwood Directive?
+
+A directive can only appear in certain locations within a GraphQL schema or operation. These locations are listed in the directive's definition. 
+
+In the example below, the `@maskedEmail` example, the directive can only appear in the `FIELD_DEFINITION` location.
+
+An example of a `FIELD_DEFINITION` location is a field that exists on a `Type`:
+
+```jsx
+type UserExample {
+  id: Int!
+  email: String! @requireAuth
+  name: String @maskedEmail # 👈 will maskedEmail name in the response!
+}
+
+type Query {
+ userExamples: [UserExample!]! @requireAuth 👈 will enforce auth when fetching all users
+ userExamples(id: Int!): UserExample @requireAuth 👈 will enforce auth when fetching a us
+}
+```
+
+Note: Even though GraphQL supports `FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | ENUM_VALUE` locations, RedwoodDirectives can **only** be declared on a `FIELD_DEFINITION` — that is, you **cannot** declare a directive in an `Input type`:
+
+```graphql
+input UserExampleInput {
+  email: String! @maskedEmail # 👈 🙅 not allowed on an input
+  name: String! @requireAuth # 👈 🙅 also not allowed on an input
+ }
+```
+
+## When Should I Use a Redwood Directive?
 
 As the GraphQL spec [notes](https://graphql.org/learn/queries/#directives):
 
@@ -228,12 +258,12 @@ Here's a helpful guide when you might want to use one of the Redwood Validator o
 | 🙅  | Is my input a valid email address format? | N/A - Instead do this check in your service or use [GraphQL Scalars](https://www.graphql-scalars.dev) (Future Redwood)
 | 🙅  | I want to remove a field from the response for data filtering; for example, do not include the title of the post |  `@skip(if: true )` or `@include(if: false)` |Instead use [core directives](https://graphql.org/learn/queries/#directives) *on the GraphQL client query, not the SDL* | | Core GraphQL
 
-### Combining, Chaining and Cascading Directives
+## Combining, Chaining and Cascading Directives
 
 Now that you have seen what Validator and Transformer directives look like and where and when you might use them, you might wonder: Can I use them together? Can I transform the result of a transformer.
 
 Yes! You can.
-#### Combine Directives on a Query and a Type Field
+### Combine Directives on a Query and a Type Field
 
 Let's say I want to only allow logged in users to be able to query User details.
 
@@ -303,7 +333,7 @@ query user(id: 1) {
 
 They will be forbidden from even making the request.
 
-#### Chaining a Validator and a Transformer
+### Chaining a Validator and a Transformer
 
 Similar the the prior example, you may want to chain directives, but the transform doesn't consider authentication or role membership.
 
@@ -320,7 +350,7 @@ And then, if they are, apply a mask to the email field.
   }
 ```
 
-#### Cascade Transformers
+### Cascade Transformers
 
 Maybe you want to apply multiple field formatting?
 
@@ -339,7 +369,7 @@ Then, you can chain the `@dateFormat` Transformer, to just return the date porti
 
 > Note: These directives could be alternatively be implemented as "operation directives" so the client can use them on a query instead of the schema-level. These such directives are a potential future Redwood directive feature.
 
-### GraphQL Handler Setup
+## GraphQL Handler Setup
 
 Redwood makes it easy to code, organize, and map your directives into the GraphQL schema.
 
@@ -370,56 +400,59 @@ export const handler = createGraphQLHandler({
   },
 })
 ```
-### Some Rules
 
-Each directive can only appear in certain locations within a GraphQL schema or operation. These locations are listed in the directive's definition. In the `@maskedEmail` example, the directive can only appear in the `FIELD_DEFINITION` location.
+## Secure by Default with Built-in Directives
 
-An example of a `FIELD_DEFINITION` location is a filed that exists on a `Type`:
+By default, your GraphQL endpoint is open to the world. 
 
-```jsx
-type UserExample {
-  id: Int!
-  email: String! @requireAuth
-  name: String @maskedEmail # 👈 will maskedEmail name in the response!
-}
+That means anyone can request any query and invoke any Mutation. Whatever types and fields are defined in your SDL is data that anyone can access.
 
-type Query {
- userExamples: [UserExample!]! @requireAuth 👈 will enforce auth when fetching all users
- userExamples(id: Int!): UserExample @requireAuth 👈 will enforce auth when fetching a us
-}
-```
+But Redwood encourages being secure by default through defaulting all queries and mutations to have the `@requireAuth` directive when generating SDL or a service.
 
-Note: Even though GraphQL supports `FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | ENUM_VALUE` locations, RedwoodDirectives can **only** be declared on a `FIELD_DEFINITION` — that is, you **cannot** declare a directive in an `Input type`:
+When your app builds and your dev/api server launches, Redwood checks that **all** queries and mutations have `@requireAuth`, `@skipAuth` or a custom directive applied.
 
-```graphql
-input UserExampleInput {
-  email: String! @maskedEmail # 👈 🙅 not allowed on an input
-  name: String! @requireAuth # 👈 🙅 also not allowed on an input
- }
-```
+If not, then your build will fail and your server won't startup.
 
-### Secure by Default with Built-in directives
-
-
-* must declare `@requireAuth`, `@skipAuth` or a custom directive on **all** queries and mutations
-* build time checks
-* GraphQL api won't start up
-
-- accessing context, currentUser and roles "Make your directive role-specific"
 
 ### @requireAuth
 
-@todo 
+It is your responsibility to implement the `requireAuth()` function in your app's `api/src/lib/auth.{js|ts}` to check with the user is properly authenticated and/or has the expected role membership.
+
+The `@requireAuth` directive will call the `requireAuth()` function to determine if the user is authenticated or not.
+
+```ts
+// api/src/lib/auth.ts
+// ... 
+
+export const isAuthenticated = (): boolean => {
+  return true // 👈 replace with the appropriate check
+}
+
+// ... 
+
+export const requireAuth = ({ roles }: { roles: AllowedRoles }) => {
+  if (isAuthenticated()) {
+    throw new AuthenticationError("You don't have permission to do that.")
+  }
+
+  if (!hasRole({ roles })) {
+    throw new ForbiddenError("You don't have access to do that.")
+  }
+}
+```
+
+> Note: The `auth.ts` file here is the stub for a new RedwoodJS app. Once you have setup auth with your provider, this will enforce a proper authentication check.
 
 ### @skipAuth
 
-@todo 
+If, however, you want your query or mutation to be public, then simply use `@skipAuth`.
+
 ## Custom Directives
 
 
 Of course, you can write your own directives. Just generate a directive using the Redwood CLI to give you the boiler plate and a handy test!
 
-### Generator
+### Generators
 
 When using the `yarn redwood generate` command you will be presented with a choice of creating a Validator or a Transformer directive.
 
