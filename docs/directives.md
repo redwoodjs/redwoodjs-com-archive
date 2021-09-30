@@ -37,6 +37,28 @@ type Bar {
 }
 ```
 
+or a Query or Mutation:
+
+
+```ts
+type Query {
+  bars: [Bar!]! @myDirective
+}
+```
+
+Can I use directives on relations? Yes, you can.
+
+```ts
+type Baz {
+  name: String! 
+}
+
+type Bar {
+  name: String!
+  bazzes: [Baz]! @myDirective
+}
+```
+
 There are many ways to write directives using GraphQL tools and libraries, and believe us, it can get complicated fast. 
 
 But, don't fret: Redwood provides an easy and ergonomic way to generate and write your own directives so you can focus on the implementation logic and not the GraphQL plumbing. 
@@ -53,7 +75,7 @@ Whatever flavor of directive you want, all Redwood directives must have the foll
 
 ### Understanding the Directive Flow
 
-It helps to know a little about the GraphQL Phases, specifically the Execution Phase, and how Redwood Directive fit in the data fetching and authentication flow.
+Since it helps to know a little about the GraphQL Phases, specifically the Execution Phase, and how Redwood Directive fits in the data fetching and authentication flow, let's have quick look at some flow diagrams.
 
 First, we see the built-in `@requireAuth` Validator directive that can allow or deny access to a service (aka a resolver) based on Redwood authentication.
 
@@ -70,7 +92,6 @@ The GraphQL Execution phase proceeds the same as the prior example (because the 
 Finally after execution is done, then the directive can inspect the `resolvedValue` (here "Welcome to the blog!") and replace the value by inserting the current user's name -- "Welcome, Tom, to the blog!"
 
 ![welcome-directive](https://user-images.githubusercontent.com/1051633/135320906-5e2d639d-13a1-4aaf-85bf-98529822d244.png)
-
 
 ### Validators
 
@@ -209,14 +230,24 @@ Here's a helpful guide when you might want to use one of the Redwood Validator o
 
 ### Combining, Chaining and Cascading Directives
 
+Now that you have seen what Validator and Transformer directives look like and where and when you might use them, you might wonder: Can I use them together? Can I transform the result of a transformer.
 
+Yes! You can.
 #### Combine Directives on a Query and a Type Field
+
+Let's say I want to only allow logged in users to be able to query User details.
+
+But, I only want un-redacted email addresses to be shown to ADMINs.
+
+I can apply the `@requireAuth` directive to the `user(id: Int!)` query so I have to be logged in.
+
+Then, I can compose a `@maskedEmail` directive checks the logged in user's role membership and if they are not an ADMIN, then mask the email address.
 
 ```ts
   type User {
     id: Int!
     name: String! 
-    email: String! @maskedEmail
+    email: String! @maskedEmail(role: "ADMIN")
     createdAt: DateTime!
   }
 
@@ -225,12 +256,60 @@ Here's a helpful guide when you might want to use one of the Redwood Validator o
   }
 ```
 
+Or, let's say I want to only allow logged in users to be able to query User details.
+
+But, I only want ADMIN users to be able to query and fetch the email address.
+
+I can apply the `@requireAuth` directive to the `user(id: Int!)` query so I have to be logged in.
+
+And, I can apply the `@requireAuth` directive to the `email` field with a role argument.
+
+
+```ts
+  type User {
+    id: Int!
+    name: String! 
+    email: String! @requireAuth(role: "ADMIN")
+    createdAt: DateTime!
+  }
+
+  type Query {
+    user(id: Int!): User @requireAuth
+  }
+```
+
+Now, if a user who is not an ADMIN queries:
+
+```ts
+query user(id: 1) {
+  id
+  name
+  createdAt
+}
+```
+
+The will get a result.
+
+But, if they try to query:
+
+```ts
+query user(id: 1) {
+  id
+  name
+  email
+  createdAt
+}
+```
+
+They will be forbidden from even making the request.
+
 #### Chaining a Validator and a Transformer
 
-You may want to chain directives.
+Similar the the prior example, you may want to chain directives, but the transform doesn't consider authentication or role membership.
 
-For example:
+For example, here we ensure that anyone trying to query a User and fetch the email must be authenticated.
 
+And then, if they are, apply a mask to the email field.
 
 ```ts
   type User {
@@ -243,6 +322,12 @@ For example:
 
 #### Cascade Transformers
 
+Maybe you want to apply multiple field formatting?
+
+If your request event headers includes geographic or timezone info, you could compose a custom Transformer directive called `@localTimezone` could inspect the header vaklue and convert the `createdAt` from UTC to local time -- something often done in the browser.
+
+Then, you can chain the `@dateFormat` Transformer, to just return the date portion of the timestamp -- and not the time.
+
 ```ts
   type User {
     id: Int!
@@ -252,8 +337,7 @@ For example:
   }
 ```
 
-> Note: These directives could be implemented as "operation directives" so the client can use to query instead of the schema-level. But this would be a future Redwood directive feature.
-
+> Note: These directives could be alternatively be implemented as "operation directives" so the client can use them on a query instead of the schema-level. These such directives are a potential future Redwood directive feature.
 
 ### GraphQL Handler Setup
 
