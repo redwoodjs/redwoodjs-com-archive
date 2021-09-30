@@ -1,8 +1,12 @@
 # Directives
 
-Redwood Directives are a powerful feature not offered by other frameworks that supercharge your GraphQL-backed services. 
+Redwood Directives are a powerful feature that supercharge your GraphQL-backed services. 
 
-Simply put, directives add configuration to fields, types or operations that act like "middleware" that lets you run reusable code during GraphQL execution to perform tasks like authentication, formatting, and more.
+You can think of directives like "middleware" that lets you run reusable code during GraphQL execution to perform tasks like authentication and formatting.
+
+Redwood uses them to make protecting your api services from unauthorized access a snap. We call those Validators.
+
+And, your can use them to transform the output of your query result to modify string values, format dates, shield sensitive data, and more! We call those Transformers.
 
 You'll recognize a directive by its preceded by the `@` character, e.g. `@myDirective`, and by being declared alongside a field:
 
@@ -66,7 +70,7 @@ The GraphQL Execution phase proceeds the same as the prior example (because the 
 Finally after execution is done, then the directive can inspect the `resolvedValue` (here "Welcome to the blog!") and replace the value by inserting the current user's name -- "Welcome, Tom, to the blog!"
 
 ![welcome-directive](https://user-images.githubusercontent.com/1051633/135320906-5e2d639d-13a1-4aaf-85bf-98529822d244.png)
-)
+
 
 ### Validators
 
@@ -188,16 +192,69 @@ type UserExample {
 
 ### When Should I Use a Redwood Directive?
 
+As the GraphQL spec [notes](https://graphql.org/learn/queries/#directives):
+
+> Directives can be useful to get out of situations where you otherwise would need to do string manipulation to add and remove fields in your query. Server implementations may also add experimental features by defining completely new directives.
+
+But, when should I use a Redwood Directive?
+
+Here's a helpful guide when you might want to use one of the Redwood Validator or Transformer directivesm when it might not be appropriate ... and if yiou should consider another approach.
+
 |     | Use                                      | Directive      | Custom? | Type       | 
 |---- |------------------------------------------|----------------|---------|------------|
 | ✅  | Check if the request is authenticated?   | @requireAuth   | Built-in | Validator |
 | ✅  | Check if the user belongs to a role?     | @requireAuth(roles: ["AUTHOR"])   | Built-in | Validator |
 | ✅  | Only allow admins to see emails, but others get a masked value like "###@######.###"    | @maskedEmail(roles: ["ADMIN"])   | Custom | Transformer |
 | 🙅  | Know if the logged in user can edit the record, and/or values | N/A - Instead do this check in your service
-| 🙅  | Is my input a valid email address format? | N/A - Instead do this check in your service or using a GraphQL scalar (Future Redwood)
-| 🙅  | I want to remove a field from the response for data filtereing; for example, do not include the title of the post | N/A - Instead use standard directives ***on the GraphQL query, not the SDL*** |  `@skip(if: true )` or `@include(if: false)` | Standard
+| 🙅  | Is my input a valid email address format? | N/A - Instead do this check in your service or use [GraphQL Scalars](https://www.graphql-scalars.dev) (Future Redwood)
+| 🙅  | I want to remove a field from the response for data filtering; for example, do not include the title of the post |  `@skip(if: true )` or `@include(if: false)` |Instead use [core directives](https://graphql.org/learn/queries/#directives) *on the GraphQL client query, not the SDL* | | Core GraphQL
 
-### Chaining and Cascading Directives
+### Combining, Chaining and Cascading Directives
+
+
+#### Combine Directives on a Query and a Type Field
+
+```ts
+  type User {
+    id: Int!
+    name: String! 
+    email: String! @maskedEmail
+    createdAt: DateTime!
+  }
+
+  type Query {
+    user(id: Int!): User @requireAuth
+  }
+```
+
+#### Chaining a Validator and a Transformer
+
+You may want to chain directives.
+
+For example:
+
+
+```ts
+  type User {
+    id: Int!
+    name: String! 
+    email: String! @requireAuth @maskedEmail
+    createdAt: DateTime!
+  }
+```
+
+#### Cascade Transformers
+
+```ts
+  type User {
+    id: Int!
+    name: String! 
+    email: String! 
+    createdAt: DateTime! @localTimezone @dateFormat
+  }
+```
+
+> Note: These directives could be implemented as "operation directives" so the client can use to query instead of the schema-level. But this would be a future Redwood directive feature.
 
 
 ### GraphQL Handler Setup
