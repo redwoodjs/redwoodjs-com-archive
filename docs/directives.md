@@ -1,14 +1,14 @@
 # Directives
 
-Redwood Directives are a powerful feature that supercharge your GraphQL-backed services. 
+Redwood Directives are a powerful feature, supercharging your GraphQL-backed services. 
 
 You can think of directives like "middleware" that lets you run reusable code during GraphQL execution to perform tasks like authentication and formatting.
 
-Redwood uses them to make protecting your api services from unauthorized access a snap. We call those Validators.
+Redwood uses them to make it a snap to protect your api services from unauthorized access. We call those **Validators**.
 
-And, your can use them to transform the output of your query result to modify string values, format dates, shield sensitive data, and more! We call those Transformers.
+You can also use them to transform the output of your query result to modify string values, format dates, shield sensitive data, and more! We call those **Transformers**.
 
-You'll recognize a directive by its preceded by the `@` character, e.g. `@myDirective`, and by being declared alongside a field:
+You'll recognize a directive being by the preceding `@` character, e.g. `@myDirective`, and by being declared alongside a field:
 
 ```ts
 type Bar {
@@ -46,7 +46,7 @@ type Query {
 }
 ```
 
-Can I use directives on relations? Yes, you can.
+Can I use directives on relations? Yes, you can!
 
 ```ts
 type Baz {
@@ -59,19 +59,19 @@ type Bar {
 }
 ```
 
-There are many ways to write directives using GraphQL tools and libraries, and believe us, it can get complicated fast. 
+There are many ways to write directives using GraphQL tools and libraries. Believe us, it can get complicated fast.
 
 But, don't fret: Redwood provides an easy and ergonomic way to generate and write your own directives so you can focus on the implementation logic and not the GraphQL plumbing. 
 
 ## What is a Redwood Directive?
 
-Redwood directives are purposeful; they come in two flavors: **Validators** and **Transformers**.
+Redwood directives are purposeful. They come in two flavors: **Validators** and **Transformers**.
 
 Whatever flavor of directive you want, all Redwood directives must have the following properties:
 
-- Be in the `./api/src/directives/{directiveName}` folder where `directiveName` is yur directive
-- Must have a file name with `{directiveName}.{js,ts}` extension e.g. `maskedEmail.ts`
-- Must export a `schema` and implement either their `validate` or `transform` function
+- Be in the `./api/src/directives/{directiveName}` folder where `directiveName` is the directive directory
+- Must have a file name with `{directiveName}.{js,ts}` extension, e.g. `maskedEmail.ts`
+- Must export a `schema` and implement either a `validate` or `transform` function
 
 ### Understanding the Directive Flow
 
