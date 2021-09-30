@@ -470,12 +470,12 @@ yarn rw g directive isSubscriber --type validator
 
 Next, implement your validation logic in the directive's `validate` function.
 
-Validator directives do not have access to the field value, i.e. they are called before resolving the value. But then do have access to the `context` and `directiveArgs`.
+Validator directives do not have access to the field value, i.e. they are called before resolving the value. But they do have access to the `context` and `directiveArgs`.
 
  - Throw an error, if you want to stop executing e.g. not sufficient permissions
  - Validator directives can be async or sync
  - Returned value will be ignored
-   
+ - An example of `directiveArgs` is the `roles` argument in the driective `requireAuth(roles: "ADMIN")`
 
 ```ts
 const validate: ValidatorDirectiveFunc = ({ context, directiveArgs }) => {
@@ -506,7 +506,16 @@ const validate: ValidatorDirectiveFunc = ({ context }) => {
 }
 ```
 
-#### Writing Tests
+#### Writing Validator Tests
+
+When writing a Validator directive test, you will want to:
+
+* Ensure the directive is named consistently and correctly so the directive name maps properly when validating.
+* Confirm that the directive throws and error when invalid. The Validator directive should always have a reason to throw an error.
+
+Since when generating the Validator directive, we stub out the `Error('Implementation missing for isSubscriber')` case, these tests should pass.
+
+But, once you begin implementing the validate logic, it is your task to update appropriately.
 
 ```ts
 import { mockRedwoodDirective, getDirectiveName } from '@redwoodjs/testing/api'
@@ -531,7 +540,7 @@ describe('isSubscriber directive', () => {
 
 ### Transformer 
 
-Let's create a `@maskedEmail` directive that will check roles to see if the user should see the email or if it should be obfuscated.
+Let's create a `@maskedEmail` directive that will check roles to see if the user should see the complete email address or if it should be obfuscated from prying eyes.
 
 ```terminal
 yarn rw g directive maskedEmail --type transformer
@@ -544,19 +553,36 @@ Transformer directives provide `context` and `resolvedValue` parameters and run 
 * You can also throw an error, if you want to stop executing, but note that the value has already been resolved
 * Transformer directives **must** be synchronous, and return a value
 
+Take note of the `resolvedValue`. 
+
 ```ts
 
 const transform: TransformerDirectiveFunc = ({ context, resolvedValue }) => {
   return resolvedValue.replace('foo', 'bar')
 }
 ```
-#### Explain params
-#### Explain args
-#### Explain defaultValue
+
+It contains the value of the field on which the directive was placed, here: `email`. 
+
+Therefore the `resolvedValue` will be the the value of the email property in the User model, the "original value" so-to-speak.
 
 
+When you return a value from the `transform` function, just return a modified value and that will be returned as the result and replace the `email` value in the response.
 
-#### Writing tests
+> 🛎️ Important: You must return a value of the same type. So, if your resolvedValue is a String, return a String. If a Date, then return a Date. Otherwise, your data will not match the SDL Type.
+
+#### Writing Transformer Tests
+
+When writing a Transformer directive test, you will want to:
+
+* Ensure the directive is named consistently and correctly so the directive name maps properly when transforming.
+* Confirm that the directive returns a value and it is the expected transformed value.
+
+Since when generating the Transformer directive, we stub out and mock the `mockedResolvedValue`, these tests should pass.
+
+Here we mock the value `foo` and since the generated `transform` function replaces `foo` with `bar` we expect that after execution, the returned value will be `bar`.
+
+But, once you begin implementing the validate logic, it is your task to update appropriately.
 
 ```ts
 import { mockRedwoodDirective, getDirectiveName } from '@redwoodjs/testing/api'
