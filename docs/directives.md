@@ -37,7 +37,7 @@ type Bar {
 }
 ```
 
-There are many ways to write directives using GraphQL tools and libraries, and believe us, it can get rcomplicated fast. 
+There are many ways to write directives using GraphQL tools and libraries, and believe us, it can get complicated fast. 
 
 But, don't fret: Redwood provides an easy and ergonomic way to generate and write your own directives so you can focus on the implementation logic and not the GraphQL plumbing. 
 
@@ -59,7 +59,7 @@ First, we see the built-in `@requireAuth` Validator directive that can allow or 
 
 In this example, the `post(id: Int!)` query is protected using the `@requireAuth` directive.
 
-If the request's context has a `currentUser` and the app's `auth.{js|ts}` determines it `isAuthenticated()` then the execution phase proceeds to get resolved (for example, use the `post({ id })` service and query the database using Prisma) and return then data in the resulting resposne when execution is done.
+If the request's context has a `currentUser` and the app's `auth.{js|ts}` determines it `isAuthenticated()` then the execution phase proceeds to get resolved (for example, use the `post({ id })` service and query the database using Prisma) and return then data in the resulting response when execution is done.
 
 ![require-auth-directive](https://user-images.githubusercontent.com/1051633/135320891-34dc06fc-b600-4c76-8a35-86bf42c7f179.png)
 
@@ -196,9 +196,7 @@ As the GraphQL spec [notes](https://graphql.org/learn/queries/#directives):
 
 > Directives can be useful to get out of situations where you otherwise would need to do string manipulation to add and remove fields in your query. Server implementations may also add experimental features by defining completely new directives.
 
-But, when should I use a Redwood Directive?
-
-Here's a helpful guide when you might want to use one of the Redwood Validator or Transformer directivesm when it might not be appropriate ... and if yiou should consider another approach.
+Here's a helpful guide when you might want to use one of the Redwood Validator or Transformer directives and when it might not be appropriate ... and if you should consider another approach.
 
 |     | Use                                      | Directive      | Custom? | Type       | 
 |---- |------------------------------------------|----------------|---------|------------|
@@ -323,7 +321,7 @@ input UserExampleInput {
 * build time checks
 * GraphQL api won't start up
 
-- accessing context, currentUser and roles "Make your directive role-speciifc"
+- accessing context, currentUser and roles "Make your directive role-specific"
 
 ### @requireAuth
 
@@ -353,9 +351,9 @@ yarn rw g directive myDirective
     Transformer - Modify values of fields or query responses
 ```
 
-> **Note:** You can pass the `--type` parameter with either `validator` or `transformer` to create the desired driective type.
+> **Note:** You can pass the `--type` parameter with either `validator` or `transformer` to create the desired directive type.
 
-After picking the sirective type, the directive files will be created in you `api/src/directives/ directory:
+After picking the directive type, the directive files will be created in you `api/src/directives/ directory:
 
 ```terminal
   ✔ Generating directive file ...
@@ -378,7 +376,6 @@ After picking the sirective type, the directive files will be created in you `ap
      }
 ```     
 
-
 ### Validator 
 
 Let's create a `@isSubscriber` directive that will check roles to see if the user is a subscriber.
@@ -387,7 +384,7 @@ Let's create a `@isSubscriber` directive that will check roles to see if the use
 yarn rw g directive isSubscriber --type validator
 ```
 
-Next, implement your validatation logic in the directive's `validate` function.
+Next, implement your validation logic in the directive's `validate` function.
 
 Validator directives do not have access to the field value, i.e. they are called before resolving the value. But then do have access to the `context` and `directiveArgs`.
 
@@ -407,7 +404,7 @@ const validate: ValidatorDirectiveFunc = ({ context, directiveArgs }) => {
 }
 ```
 
-Here, we can access the `context` parameter and then check to see in the currentUser is authenticated as if they belog to the `SUBSCRIBER` role:
+Here, we can access the `context` parameter and then check to see in the currentUser is authenticated as if they belong to the `SUBSCRIBER` role:
 
 
 ```ts
@@ -456,9 +453,9 @@ Let's create a `@maskedEmail` directive that will check roles to see if the user
 yarn rw g directive maskedEmail --type transformer
 ```
 
-Next, implement your validatation logic in the directive's `transform` function.
+Next, implement your validation logic in the directive's `transform` function.
 
-Transformer directives provide `context` and `resolvedValue` paramaters and run **after** resolving the value.
+Transformer directives provide `context` and `resolvedValue` parameters and run **after** resolving the value.
    
 * You can also throw an error, if you want to stop executing, but note that the value has already been resolved
 * Transformer directives **must** be synchronous, and return a value
