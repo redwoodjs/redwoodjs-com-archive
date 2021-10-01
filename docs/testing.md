@@ -1448,8 +1448,6 @@ export const standard = defineScenario({
 })
 ```
 
-
-
 When you run into this, you can access an existing `scenario` record using the distinctive name key as a function that returns an object:
 
 ```javascript
