@@ -723,11 +723,13 @@ We're using [Firebase Google Sign-In](https://firebase.google.com/docs/auth/web/
 
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
+
+
 ```js
 // web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
-import * as firebase from 'firebase/app'
-import 'firebase/auth'
+import { initializeApp, getApps, getApp } from '@firebase/app'
+import * as firebaseAuth from '@firebase/auth'
 import { FatalErrorBoundary } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
@@ -746,12 +748,18 @@ const firebaseClientConfig = {
   appId: process.env.FIREBASE_APP_ID,
 }
 
-const firebaseClient = ((config) => {
-  if (!firebase.apps.length) {
-    firebase.initializeApp(config)
+const firebaseApp = ((config) => {
+  const apps = getApps()
+  if (!apps.length) {
+    initializeApp(config)
   }
-  return firebase
-})(firebaseClientConfig)
+  return getApp()
+})(firebaseConfig)
+
+export const firebaseClient = {
+  firebaseAuth,
+  firebaseApp,
+}
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
