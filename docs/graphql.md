@@ -362,7 +362,7 @@ api |     - updatePost Mutation
 api |     - deletePost Mutation 
 ```
 
-To fix these errors, simple declare with `@requireAuth` to enforce authentication or `@skipAuth` to keep the operation public on each as approriate for your app's permissions needs.
+To fix these errors, simple declare with `@requireAuth` to enforce authentication or `@skipAuth` to keep the operation public on each as appropriate for your app's permissions needs.
 
 ## Directives
 
@@ -559,7 +559,7 @@ To redact sensitive information, you can supply paths to keys that hold sensitiv
 
 Because this logger is used with the GraphQL handler, it will respect any redaction paths setup.
 
-For example, you have chosen to log `data` return by each request, then you may want to redact sensitive information, like email addresses from yur logs.
+For example, you have chosen to log `data` return by each request, then you may want to redact sensitive information, like email addresses from your logs.
 
 Here is an example of an application `/api/src/lib/logger.ts` configured to redact email addresses. Take note of the path `data.users[*].email` as this says, in the `data` attribute, redact the `email` from every `user`:
 
