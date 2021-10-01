@@ -10,7 +10,7 @@ We currently support the following third-party authentication providers:
 - [Clerk](https://clerk.dev)
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
-- [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
+- [Firebase](https://firebase.google.com/docs/auth)
 - [Ethereum](https://github.com/oneclickdapp/ethereum-auth)
 - [Supabase](https://supabase.io/docs/guides/auth)
 - [Nhost](https://docs.nhost.io/auth)
@@ -723,11 +723,13 @@ We're using [Firebase Google Sign-In](https://firebase.google.com/docs/auth/web/
 
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
+
+
 ```js
 // web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
-import * as firebase from 'firebase/app'
-import 'firebase/auth'
+import { initializeApp, getApps, getApp } from '@firebase/app'
+import * as firebaseAuth from '@firebase/auth'
 import { FatalErrorBoundary } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
@@ -746,12 +748,18 @@ const firebaseClientConfig = {
   appId: process.env.FIREBASE_APP_ID,
 }
 
-const firebaseClient = ((config) => {
-  if (!firebase.apps.length) {
-    firebase.initializeApp(config)
+const firebaseApp = ((config) => {
+  const apps = getApps()
+  if (!apps.length) {
+    initializeApp(config)
   }
-  return firebase
-})(firebaseClientConfig)
+  return getApp()
+})(firebaseConfig)
+
+export const firebaseClient = {
+  firebaseAuth,
+  firebaseApp,
+}
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
@@ -1259,6 +1267,52 @@ Supported providers:
 #### Email & Password Auth in Firebase
 
 Email/password authentication is supported by calling `login({ username, password })` and `signUp({ username, password })`.
+
+#### Email link (passwordless sign-in ) in Firebase
+
+In Firebase Console, you must enable "Email link (passwordless sign-in)" with the configuration toggle for the email provider. The authenticaton sequence for passwordless email links has two steps:
+
+  1. First, an email with the link must be generated and sent to the user.   Either using using firebase client sdk (web side) [sendSignInLinkToEmail()](https://firebase.google.com/docs/reference/js/auth.emailauthprovider#example_2_2), which generates the link and sends the email to the user on behalf of your application or alternatively, generate the link using backend admin sdk (api side), see ["Generate email link for sign-in](https://firebase.google.com/docs/auth/admin/email-action-links#generate_email_link_for_sign-in) but it is then your responsibility to send an email to the user containing the link.
+  2. Second, authentication is completed when the user is redirected back to the application and the AuthProvider's logIn({emailLink, email, providerId: 'emailLink'}) method is called.
+ 
+For example, users could be redirected to a dedicated route/page to complete authentication:
+
+```js
+import { useEffect } from 'react'
+import { Redirect, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
+
+const EmailSigninPage = () => {
+  const { loading, hasError, error, logIn } = useAuth()
+
+  const email = window.localStorage.getItem('emailForSignIn')
+  // TODO: Prompt the user for email if not found in local storage, for example
+  // if the user opened the email link on a different device.
+
+  const emailLink = window.location.href
+
+  useEffect(() => {
+    logIn({
+      providerId: 'emailLink',
+      email,
+      emailLink,
+    })
+  }, [])
+
+  if (loading) {
+    return <div>Auth Loading...</div>
+  }
+
+  if (hasError) {
+    console.error(error)
+    return <div>Auth Error... check console</div>
+  }
+
+  return <Redirect to={routes.home()} />
+}
+
+export default EmailSigninPage
+```
 
 #### Custom Parameters & Scopes for Google OAuth Provider
 
