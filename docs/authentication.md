@@ -1270,9 +1270,9 @@ Email/password authentication is supported by calling `login({ username, passwor
 
 #### Email link (passwordless sign-in ) in Firebase
 
-In Firebase Console, you must enable "Email link (passwordless sign-in)" as configuration toggle under the email/password Sign-In Provider.  When using passwordless email links the authentication occurs in two-steps:
+In Firebase Console, you must enable "Email link (passwordless sign-in)" with the configuration toggle under the email provider. The authenticaton sequence for passwordless email links has two steps:
 
-  - First an email with the link must be generated and sent to the user.   Either using using firebase's client (web side) sdk [sendSignInLinkToEmail](https://firebase.google.com/docs/reference/js/auth.emailauthprovider#example_2_2), which will generate and send the email to the user on your applications behalf or alternatively, you can generate a link using backend (api side) admin sdk to generate a link, see ["Generate email link for sign-in](https://firebase.google.com/docs/auth/admin/email-action-links#generate_email_link_for_sign-in) but it is then your responsibility to send an email to the user containing the generated link.
+  - First, an email with the link must be generated and sent to the user.   Either using using firebase client sdk (web side) [sendSignInLinkToEmail](https://firebase.google.com/docs/reference/js/auth.emailauthprovider#example_2_2), which will generate and send the email to the user on your applications behalf or alternatively, generate the link using backend admin sdk (api side), see ["Generate email link for sign-in](https://firebase.google.com/docs/auth/admin/email-action-links#generate_email_link_for_sign-in) but it is then your responsibility to send an email to the user containing the link.
 
   - Second, authentication is completed when the user is redirected back to the application and the AuthProvider's logIn({emailLink, email, providerId: 'emailLink'}) method is called.
  
@@ -1287,8 +1287,8 @@ const EmailSigninPage = () => {
   const { loading, hasError, error, logIn } = useAuth()
 
   const email = window.localStorage.getItem('emailForSignIn')
-  // Prompt the user for email if its not available, in cases such as opening email link
-  // on a different device than from which email link authentication was initiated.
+  // TODO: Prompt the user for email if not found in local storage, for example
+  // if the user opened the email link on a different device.
 
   const emailLink = window.location.href
 
