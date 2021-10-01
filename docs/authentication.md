@@ -1268,11 +1268,11 @@ Supported providers:
 
 Email/password authentication is supported by calling `login({ username, password })` and `signUp({ username, password })`.
 
-#### Email Links (Passwordless) in Firebase
+#### Email link (passwordless sign-in ) in Firebase
 
-Email links authentication with firebase are also supported.  In this case Authentication is two-steps:
+In Firebase Console, you must enable "Email link (passwordless sign-in)" as configuration toggle under the email/password Sign-In Provider.  When using passwordless email links the authentication occurs in two-steps:
 
-  - First an email with the link must be generated and sent to the user.   Generate/send combined using firebase's client/web side sdk [sendSignInLinkToEmail](https://firebase.google.com/docs/reference/js/auth.emailauthprovider#example_2_2) or generate a link using backend/api side's admin sdk to generate a link, see ["Generate email link for sign-in](https://firebase.google.com/docs/auth/admin/email-action-links#generate_email_link_for_sign-in) which you must then send to a user yourself using an email service or SMTP server.
+  - First an email with the link must be generated and sent to the user.   Either using using firebase's client (web side) sdk [sendSignInLinkToEmail](https://firebase.google.com/docs/reference/js/auth.emailauthprovider#example_2_2), which will generate and send the email to the user on your applications behalf or alternatively, you can generate a link using backend (api side) admin sdk to generate a link, see ["Generate email link for sign-in](https://firebase.google.com/docs/auth/admin/email-action-links#generate_email_link_for_sign-in) but it is then your responsibility to send an email to the user containing the generated link.
 
   - Second, authentication is completed when the user is redirected back to the application and the AuthProvider's logIn({emailLink, email, providerId: 'emailLink'}) method is called.
  
