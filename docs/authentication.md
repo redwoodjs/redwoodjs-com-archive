@@ -10,7 +10,7 @@ We currently support the following third-party authentication providers:
 - [Clerk](https://clerk.dev)
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
-- [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
+- [Firebase](https://firebase.google.com/docs/auth)
 - [Ethereum](https://github.com/oneclickdapp/ethereum-auth)
 - [Supabase](https://supabase.io/docs/guides/auth)
 - [Nhost](https://docs.nhost.io/auth)
