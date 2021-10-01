@@ -13,7 +13,7 @@ Starting with `v0.37`, Redwood includes a feature we call Validator Directives.
 * requireAuth
 * skipAuth
 
- By default, your GraphQL endpoint is open to the world. Secure Services use validtor deirectives to make sure that the resolvers behind the endpoint (your Services) can't be invoked unless you allow them explicitly.
+ By default, your GraphQL endpoint is open to the world. Secure Services use validator directives to make sure that the resolvers behind the endpoint (your Services) can't be invoked unless you allow them explicitly.
 
 
 In addition to security, your Services benefit by being able to just focus on their job: rather than worrying about whether someone is logged in or not, Services remain laser focused on a specific bit of business logic. Larger concerns like security and validation can be moved "up" and out of the way.
