@@ -1268,6 +1268,47 @@ Supported providers:
 
 Email/password authentication is supported by calling `login({ username, password })` and `signUp({ username, password })`.
 
+#### Passwordless Email Link Auth in Firebase
+
+Email links can be used for authentication with firebase.  See the ["Generate email link for sign-in](https://firebase.google.com/docs/auth/admin/email-action-links#generate_email_link_for_sign-in).  When a user clicks the login link they are first directed to firebase's backend and is completed on the application side at redirected url specified by actionCodes.url.  For example a dedicated route/page for completing email signin in your app to receive users at the actionCodes.url would use the AuthProvider's logIn() method:
+
+```js
+import { useEffect } from 'react'
+import { Redirect, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
+
+const EmailSigninPage = () => {
+  const { loading, hasError, error, logIn } = useAuth()
+
+  const email = window.localStorage.getItem('emailForSignIn')
+  // Prompt the user for email if its not available, in cases such as opening email link
+  // on a different device than from which email link authentication was initiated.
+
+  const emailLink = window.location.href
+
+  useEffect(() => {
+    logIn({
+      providerId: 'emailLink',
+      email,
+      emailLink,
+    })
+  }, [])
+
+  if (loading) {
+    return <div>Auth Loading...</div>
+  }
+
+  if (hasError) {
+    console.error(error)
+    return <div>Auth Error... check console</div>
+  }
+
+  return <Redirect to={routes.home()} />
+}
+
+export default EmailSigninPage
+```
+
 #### Custom Parameters & Scopes for Google OAuth Provider
 
 Both `logIn()` and `signUp()` can accept a single argument of either a **string** or **object**. If a string is provided, it should be any of the supported providers (see above), which will configure the defaults for that provider.
