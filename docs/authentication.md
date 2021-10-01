@@ -23,17 +23,17 @@ Check out the [Auth Playground](https://github.com/redwoodjs/playground-auth).
 
 Redwood's own dbAuth provides several benefits:
 
-* Use your own database for storing user credentials
-* Use your own login and signup pages
-* Customize login session length
-* Use your own database for storing user credentials
-* No external dependencies
-* No user data ever leaves your servers
-* No additional charges/limits based on number of users
+- Use your own database for storing user credentials
+- Use your own login and signup pages
+- Customize login session length
+- Use your own database for storing user credentials
+- No external dependencies
+- No user data ever leaves your servers
+- No additional charges/limits based on number of users
 
 And potentially one large drawback:
 
-* Use your own database for storing user credentials
+- Use your own database for storing user credentials
 
 However, we're following best practices for storing these credentials:
 
@@ -45,7 +45,7 @@ Even if you later decide you want to let someone else handle your user data for 
 
 ### How It Works
 
-dbAuth relies on good ol' fashioned cookies to determine whether a user is logged in or not. On an attempted login, a serverless function on the api-side checks whether a user exists with the given username (internally, dbAuth refers to this field as *username* but you can use anything you want, like an email address). If a user with that username is found, does their salted and hashed password match the one in the database?
+dbAuth relies on good ol' fashioned cookies to determine whether a user is logged in or not. On an attempted login, a serverless function on the api-side checks whether a user exists with the given username (internally, dbAuth refers to this field as _username_ but you can use anything you want, like an email address). If a user with that username is found, does their salted and hashed password match the one in the database?
 
 If so, an [HttpOnly](https://owasp.org/www-community/HttpOnly), [Secure](https://owasp.org/www-community/controls/SecureCookieAttribute), [SameSite](https://owasp.org/www-community/SameSite) cookie (dbAuth calls this the "session cookie") is sent back to the browser containing the ID of the user. The content of the cookie is a simple string, but AES encrypted with a secret key (more on that later).
 
@@ -132,20 +132,20 @@ signupHandler: {
         email: username,
         hashedPassword: hashedPassword,
         salt: salt,
-        name: userAttributes.name
-      }
+        name: userAttributes.name,
+      },
     })
   }
 }
 ```
 
-Before `signupHandler()` is invoked, dbAuth will check that the username is unique in the database and throw an error if not. 
+Before `signupHandler()` is invoked, dbAuth will check that the username is unique in the database and throw an error if not.
 
 There are three things you can do within this function depending on how you want the signup to proceed:
 
 1. If everything is good and the user should be logged in after signup: return the user you just created
 2. If the user is safe to create, but you do not want to log them in automatically: return a string, which will be returned by the `signUp()` function you called after destructuring it from `useAuth()` (see code snippet below)
-3. If the user should *not* be able to sign up for whatever reason: throw an error in this function with the message to be displayed
+3. If the user should _not_ be able to sign up for whatever reason: throw an error in this function with the message to be displayed
 
 You can deal with case #2 by doing something like the following in a signup component/page:
 
@@ -158,7 +158,7 @@ const onSubmit = async (data) => {
   if (response.message) {
     toast.error(response.message) // user created, but not logged in
   } else {
-    toast.success('Welcome!')     // user created and logged in
+    toast.success('Welcome!') // user created and logged in
   }
 }
 ```
@@ -179,7 +179,7 @@ If you need to change the secret key that's used to encrypt the session cookie, 
 
     yarn rw g secret
 
-Note that the secret that's output is *not* appended to your `.env` file or anything else, it's merely output to the screen. You'll need to put it in the right place after that.
+Note that the secret that's output is _not_ appended to your `.env` file or anything else, it's merely output to the screen. You'll need to put it in the right place after that.
 
 > The `.env` file is set to be ignored by git and not committed to version control. There is another file, `.env.defaults`, which is meant to be safe to commit and contain simple ENV vars that your dev team can share. The encryption key for the session cookie is NOT one of these shareable vars!
 
@@ -460,12 +460,14 @@ Otherwise, feel free to configure your instances however you wish with regards t
 If you opt against using `yarn rw setup auth clerk`, you can instead make the required changes manually to add the basics of auth to your app.
 
 First, run this to add the required packages:
+
 ```bash
 yarn workspace web add @redwoodjs/auth @clerk/clerk-react
 yarn workspace api add @redwoodjs/auth @clerk/clerk-sdk-node
 ```
 
 Then, extract the relevant changes to your `App` file:
+
 ```js
 // web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
@@ -546,22 +548,18 @@ _If you prefer to manually install the package and add code_, run the following 
 
 ```bash
 cd web
-yarn add msal
+yarn add @azure/msal-browser
 ```
 
 #### Setup
 
-To get your application credentials, create an [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application ID_ (client), and the _Directory ID_ (tenant).
+To get your application credentials, create an [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/scenario-spa-app-registration) using in your Azure Active Directory tenant and make sure you configure as a [MSAL.js 2.0 with auth code flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/scenario-spa-app-registration#redirect-uri-msaljs-20-with-auth-code-flow) registration. Take a note of your generated _Application ID_ (client), and the _Directory ID_ (tenant).
+
+[Learn more about authorization code flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/reference-third-party-cookies-spas).
 
 ##### Redirect URIs
 
-Enter allowed redirect urls for the integrations, e.g. `http://localhost:8910`. This will be the `AZURE_ACTIVE_DIRECTORY_REDIRECT_URI` environment variable, and suggestively `AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI`.
-
-##### ID tokens
-
-Under the _Authentication_ tab, tick `ID tokens`.
-
-This allows an application to request a token directly from the authorization endpoint. Checking Access tokens and ID tokens is recommended only if the application has a single-page architecture (SPA). [Learn more about implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps).
+Enter allowed redirect urls for the integrations, e.g. `http://localhost:8910/login`. This will be the `AZURE_ACTIVE_DIRECTORY_REDIRECT_URI` environment variable, and suggestively `AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI`.
 
 #### Authority
 
@@ -570,7 +568,7 @@ The Authority is a URL that indicates a directory that MSAL can request tokens f
 ```js
 // web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
-import { UserAgentApplication } from 'msal'
+import { PublicClientApplication } from '@azure/msal-browser'
 import { FatalErrorBoundary } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
@@ -579,7 +577,7 @@ import Routes from 'src/Routes'
 
 import './index.css'
 
-const azureActiveDirectoryClient = new UserAgentApplication({
+const azureActiveDirectoryClient = new PublicClientApplication({
   auth: {
     clientId: process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID,
     authority: process.env.AZURE_ACTIVE_DIRECTORY_AUTHORITY,
@@ -607,7 +605,7 @@ To setup your App Registration with custom roles and have them exposed via the `
 
 #### Login Options
 
-Options in method `logIn(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html) and is a good place to pass in optional [scopes](https://docs.microsoft.com/en-us/graph/permissions-reference#user-permissions) to be authorized. By default, MSAL sets `scopes` to [/.default](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#the-default-scope) which is built in for every application that refers to the static list of permissions configured on the application registration. Furthermore, MSAL will add `openid` and `profile` to all requests. In example below we explicit include `User.Read.All` to the login scope.
+Options in method `logIn(options?)` is of type [RedirectRequest](https://azuread.github.io/microsoft-authentication-library-for-js/ref/modules/_azure_msal_browser.html#redirectrequest) and is a good place to pass in optional [scopes](https://docs.microsoft.com/en-us/graph/permissions-reference#user-permissions) to be authorized. By default, MSAL sets `scopes` to [/.default](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#the-default-scope) which is built in for every application that refers to the static list of permissions configured on the application registration. Furthermore, MSAL will add `openid` and `profile` to all requests. In example below we explicit include `User.Read.All` to the login scope.
 
 ```js
 await logIn({
@@ -615,11 +613,11 @@ await logIn({
 })
 ```
 
-See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/loginPopup.html), [UserAgentApplication class ](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors) and [Scopes Behavior](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-core/docs/scopes.md#scopes-behavior) for more documentation.
+See [loginRedirect](https://azuread.github.io/microsoft-authentication-library-for-js/ref/classes/_azure_msal_browser.publicclientapplication.html#loginredirect), [UserAgentApplication class](https://azuread.github.io/microsoft-authentication-library-for-js/ref/classes/_azure_msal_browser.publicclientapplication.html) and [Scopes Behavior](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-core/docs/scopes.md#scopes-behavior) for more documentation.
 
 #### getToken Options
 
-Options in method `getToken(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html). By default, `getToken` will be called with scope `['openid', 'profile']`. As Azure Active Directory apply [incremental consent](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md#dynamic-scopes-and-incremental-consent), we can extend the permissions from the login example by including another scope, for example `Mail.Read`.
+Options in method `getToken(options?)` is of type [RedirectRequest](https://azuread.github.io/microsoft-authentication-library-for-js/ref/modules/_azure_msal_browser.html#redirectrequest). By default, `getToken` will be called with scope `['openid', 'profile']`. As Azure Active Directory apply [incremental consent](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md#dynamic-scopes-and-incremental-consent), we can extend the permissions from the login example by including another scope, for example `Mail.Read`.
 
 ```js
 await getToken({
@@ -627,7 +625,7 @@ await getToken({
 })
 ```
 
-See [acquireTokenSilent](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/acquireTokenSilent.html), [Resources and Scopes](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md#resources-and-scopes) or [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors) for more documentation.
+See [acquireTokenSilent](https://azuread.github.io/microsoft-authentication-library-for-js/ref/classes/_azure_msal_browser.publicclientapplication.html#acquiretokensilent), [Resources and Scopes](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md#resources-and-scopes) or [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors) for more documentation.
 
 +++
 
@@ -1264,15 +1262,15 @@ Email/password authentication is supported by calling `login({ username, passwor
 
 Both `logIn()` and `signUp()` can accept a single argument of either a **string** or **object**. If a string is provided, it should be any of the supported providers (see above), which will configure the defaults for that provider.
 
-`logIn()` and `signUp()` also accept a single a configuration object. This object accepts `providerId`, `email`, `password`, and `scope` and `customParameters`. (In fact, passing in any arguments ultimately results in this object). You can use this configuration object to pass in values for the optional Google OAuth Provider methods *setCustomParameters* and *addScope*.
+`logIn()` and `signUp()` also accept a single a configuration object. This object accepts `providerId`, `email`, `password`, and `scope` and `customParameters`. (In fact, passing in any arguments ultimately results in this object). You can use this configuration object to pass in values for the optional Google OAuth Provider methods _setCustomParameters_ and _addScope_.
 
 Below are the parameters that `logIn()` and `signUp()` accept:
 
 - `providerId`: Accepts one of the supported auth providers as a **string**. If no arguments are passed to `login() / signUp()` this will default to 'google.com'. Provider strings passed as a single argument to `login() / signUp()` will be cast to this value in the object.
 - `email`: Accepts a **string** of a users email address. Used in conjunction with `password` and requires that Firebase has email authentication enabled as an option.
 - `password`: Accepts a **string** of a users password. Used in conjunction with `email` and requires that Firebase has email authentication enabled as an option.
-- `scope`: Accepts an **array** of strings ([Google OAuth Scopes](https://developers.google.com/identity/protocols/oauth2/scopes)), which can be added to the requested Google OAuth Provider. These will be added using the Google OAuth *addScope* method.
-- `customParameters`: accepts an **object** with the [optional parameters](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider#setcustomparameters) for the Google OAuth Provider *setCustomParameters* method. [Valid parameters](https://developers.google.com/identity/protocols/oauth2/openid-connect#authenticationuriparameters) include 'hd', 'include_granted_scopes', 'login_hint' and 'prompt'.
+- `scope`: Accepts an **array** of strings ([Google OAuth Scopes](https://developers.google.com/identity/protocols/oauth2/scopes)), which can be added to the requested Google OAuth Provider. These will be added using the Google OAuth _addScope_ method.
+- `customParameters`: accepts an **object** with the [optional parameters](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider#setcustomparameters) for the Google OAuth Provider _setCustomParameters_ method. [Valid parameters](https://developers.google.com/identity/protocols/oauth2/openid-connect#authenticationuriparameters) include 'hd', 'include_granted_scopes', 'login_hint' and 'prompt'.
 
 #### Firebase Auth Examples
 
