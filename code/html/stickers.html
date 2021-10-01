@@ -1,16 +1,22 @@
-@@layout("application", { "title": "RedwoodJS - Get a sticker!", "version": "v0.21.0" })
+@@layout("application", { "title": "RedwoodJS - Get a sticker!", "version": "v0.34.1" })
 
 <div class="xl:-mr-56">
   <section class="max-w-4xl mx-auto text-center">
     <img src="/images/stickers.png" alt="Redwood stickers" class="max-w-lg mx-auto" />
     <h2 class="mt-4 text-4xl font-semibold tracking-tight">Want some stickers?</h2>
-    <p>Shipped anywhere in the world, free! Honest!</p>
+    <p>Give us your address and <strong>each week we'll pick 100 entries</strong><br />to get stickers, shipped anywhere in the world, free!</p>
     <form name="stickers" class="mt-8 max-w-lg mx-auto" data-netlify="true" action="/stickers-thanks.html">
       <input
         type="text"
         name="email"
         placeholder="Email (optional)"
         class="block w-full border border-gray-300 px-3 py-2 rounded w-auto"
+      />
+      <input
+        type="text"
+        name="username"
+        placeholder="GitHub Username"
+        class="mt-4 block w-full border border-gray-300 px-3 py-2 rounded w-auto"
       />
       <input
         type="text"

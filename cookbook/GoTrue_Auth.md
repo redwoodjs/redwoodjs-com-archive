@@ -38,20 +38,20 @@ Now you should see an Identity API endpoint, e.g. `https://my-bodacious-app.netl
 Let's start by installing the required packages and generating boilerplate code and files for Redwood Auth, all with this simple [CLI command](/docs/cli-commands#generate-auth):
 
 ```bash
-yarn redwood generate auth goTrue
+yarn redwood setup auth goTrue
 ```
 
-By specifying `goTrue` as the provider, Redwood automatically added the necessary GoTrue-JS config to our index.js. Let's open up `web/src/index.js` and inspect. You should see:
+By specifying `goTrue` as the provider, Redwood automatically added the necessary GoTrue-JS config to our App.js. Let's open up `web/src/App.js` and inspect. You should see:
 
 ```js {3-4,13-16,20,24}
-// web/src/index.js
+// web/src/App.js
 
 import { AuthProvider } from '@redwoodjs/auth'
 import GoTrue from 'gotrue-js'
-import ReactDOM from 'react-dom'
-import { RedwoodProvider, FatalErrorBoundary } from '@redwoodjs/web'
-import FatalErrorPage from 'src/pages/FatalErrorPage'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
+import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 
 import './index.css'
@@ -61,22 +61,23 @@ const goTrueClient = new GoTrue({
   setCookie: true,
 })
 
-ReactDOM.render(
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={goTrueClient} type="goTrue">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
-  </FatalErrorBoundary>,
-  document.getElementById('redwood-app')
+  </FatalErrorBoundary>
 )
+
+export default App
 ```
 
 Time to use that API endpoint we copied from the Netlify Identity page. Replace the value of `APIUrl` with your API endpoint. For example:
 
 ```js {6}
-// web/src/index.js
+// web/src/App.js
 
 // imports...
 

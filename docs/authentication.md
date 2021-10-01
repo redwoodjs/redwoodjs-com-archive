@@ -1,21 +1,189 @@
 # Authentication
 
-`@redwoodjs/auth` is a lightweight wrapper around popular SPA authentication libraries. We currently support the following authentication providers:
+`@redwoodjs/auth` contains both a built-in database-backed authentication system (dbAuth), as well as lightweight wrappers around popular SPA authentication libraries.
+
+We currently support the following third-party authentication providers:
 
 - [Netlify Identity Widget](https://github.com/netlify/netlify-identity-widget)
 - [Auth0](https://github.com/auth0/auth0-spa-js)
 - [Azure Active Directory](https://github.com/AzureAD/microsoft-authentication-library-for-js)
+- [Clerk](https://clerk.dev)
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
 - [Ethereum](https://github.com/oneclickdapp/ethereum-auth)
 - [Supabase](https://supabase.io/docs/guides/auth)
+- [Nhost](https://docs.nhost.io/auth)
 - Custom
 - [Contribute one](https://github.com/redwoodjs/redwood/tree/main/packages/auth), it's SuperEasy™!
 
 Check out the [Auth Playground](https://github.com/redwoodjs/playground-auth).
 
-## Installation and Setup
+## Self-hosted Auth Installation and Setup
+
+Redwood's own dbAuth provides several benefits:
+
+* Use your own database for storing user credentials
+* Use your own login and signup pages
+* Customize login session length
+* Use your own database for storing user credentials
+* No external dependencies
+* No user data ever leaves your servers
+* No additional charges/limits based on number of users
+
+And potentially one large drawback:
+
+* Use your own database for storing user credentials
+
+However, we're following best practices for storing these credentials:
+
+1. Users' passwords are [salted and hashed](https://auth0.com/blog/adding-salt-to-hashing-a-better-way-to-store-passwords/) with PBKDF2 before being stored
+2. Plaintext passwords are never stored anywhere, and only transferred between client and server during the login/signup phase (and hopefully only over HTTPS)
+3. Our logger scrubs sensitive parameters (like `password`) before they are output
+
+Even if you later decide you want to let someone else handle your user data for you, dbAuth is a great option for getting up and running quickly (we even have a generator for creating basic login and signup pages for you).
+
+### How It Works
+
+dbAuth relies on good ol' fashioned cookies to determine whether a user is logged in or not. On an attempted login, a serverless function on the api-side checks whether a user exists with the given username (internally, dbAuth refers to this field as *username* but you can use anything you want, like an email address). If a user with that username is found, does their salted and hashed password match the one in the database?
+
+If so, an [HttpOnly](https://owasp.org/www-community/HttpOnly), [Secure](https://owasp.org/www-community/controls/SecureCookieAttribute), [SameSite](https://owasp.org/www-community/SameSite) cookie (dbAuth calls this the "session cookie") is sent back to the browser containing the ID of the user. The content of the cookie is a simple string, but AES encrypted with a secret key (more on that later).
+
+When the user makes a GraphQL call, we decrypt the cookie and make sure that the user ID contained within still exists in the database. If so, the request is allowed to proceed.
+
+If there are any shenanigans detected (the cookie can't be decrypted properly, or the user ID found in the cookie does not exist in the database) the user is immediately logged out by expiring the session cookie.
+
+### Setup
+
+A single CLI command will get you everything you need to get dbAuth working, minus the actual login/signup pages:
+
+    yarn rw setup auth dbAuth
+
+Read the post-install instructions carefully as they contain instructions for adding database fields for the hashed password and salt, as well as how to configure the auth serverless function based on the name of the table that stores your user data. Here they are, but could change in future releases:
+
+> You will need to add a couple of fields to your User table in order to store a hashed password and salt:
+>
+>     model User {
+>       id             Int @id @default(autoincrement())
+>       email          String  @unique
+>       hashedPassword String   // <─┐
+>       salt           String   // <─┴─ add these lines
+>     }
+>
+> If you already have existing user records you will need to provide a default value or Prisma complains, so change those to:
+>
+>     hashedPassword String @default("")
+>     salt           String @default("")
+>
+> You'll need to let Redwood know what field you're using for your users' `id` and `username` fields In this case we're using `id` and `email`, so update those in the `authFields` config in `/api/src/functions/auth.js` (this is also the place to tell Redwood if you used a different name for the `hashedPassword` or `salt` fields):
+>
+>     authFields: {
+>       id: 'id',
+>       username: 'email',
+>       hashedPassword: 'hashedPassword',
+>       salt: 'salt',
+>     },
+>
+> To get the actual user that's logged in, take a look at `getCurrentUser()` in `/api/src/lib/auth.js`. We default it to something simple, but you may use different names for your model or unique ID fields, in which case you need to update those calls (instructions are in the comment above the code).
+>
+> Finally, we created a `SESSION_SECRET` environment variable for you in `.env`. This value should NOT be checked into version control and should be unique for each environment you deploy to. If you ever need to log everyone out of your app at once change this secret to a new value. To create a new secret, run:
+>
+>     yarn rw g secret
+
+Note that if you change the fields named `hashedPassword` and `salt`, and you have some verbose logging in your app, you'll want to scrub those fields from appearing in your logs. See the [Redaction](/docs/logger#redaction) docs for info.
+
+### Scaffolding Login/Signup Pages
+
+If you don't want to create your own login and signup pages from scratch we've got a generator for that:
+
+    yarn rw g scaffold dbAuth
+
+The default routes will make them available at `/login` and `/signup`, but that's easy enough to change. Again, check the post-install instructions for one change you need to make to both pages: where to redirect the user to once their login/signup is successful.
+
+If you'd rather create your own, you might want to start from the generated pages anyway as they'll contain the other code you need to actually submit the login credentials or signup fields to the server for processing.
+
+### Configuration
+
+Almost all config for dbAuth lives in `api/src/functions/auth.js` in the object you give to the `DbAuthHandler` initialization. The comments above each key will explain what goes where. Here's an in-depth explanation for a couple of those options:
+
+#### loginHandler()
+
+If you want to do something other than immediately let a user log in if their username/password is correct, you can add additional logic in the `loginHandler()`. For example, if a user's credentials are correct, but they haven't verified their email address yet, you can throw an error in this function with the appropriate message and then display it to the user. If the login should proceed, simply return the user that was passed as the only argument to the function:
+
+```javascript
+loginHandler: (user) => {
+  if (!user.verified) {
+    throw new Error('Please validate your email first!')
+  } else {
+    return user
+  }
+}
+```
+
+#### signupHandler()
+
+This function should contain the code needed to actually create a user in your database. You will receive a single argument which is an object with all of the fields necessary to create the user (`username`, `hashedPassword` and `salt`) as well as any additional fields you included in your signup form in an object called `userAttributes`:
+
+```javascript
+signupHandler: {
+  handler: ({ username, hashedPassword, salt, userAttributes }) => {
+    return db.user.create({
+      data: {
+        email: username,
+        hashedPassword: hashedPassword,
+        salt: salt,
+        name: userAttributes.name
+      }
+    })
+  }
+}
+```
+
+Before `signupHandler()` is invoked, dbAuth will check that the username is unique in the database and throw an error if not. 
+
+There are three things you can do within this function depending on how you want the signup to proceed:
+
+1. If everything is good and the user should be logged in after signup: return the user you just created
+2. If the user is safe to create, but you do not want to log them in automatically: return a string, which will be returned by the `signUp()` function you called after destructuring it from `useAuth()` (see code snippet below)
+3. If the user should *not* be able to sign up for whatever reason: throw an error in this function with the message to be displayed
+
+You can deal with case #2 by doing something like the following in a signup component/page:
+
+```javascript
+const { signUp } = useAuth()
+
+const onSubmit = async (data) => {
+  const response = await signUp({ ...data })
+
+  if (response.message) {
+    toast.error(response.message) // user created, but not logged in
+  } else {
+    toast.success('Welcome!')     // user created and logged in
+  }
+}
+```
+
+### Environment Variables
+
+#### Cookie Domain
+
+By default, the session cookie will not have the `Domain` property set, which a browser will default to be the [current domain only](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#define_where_cookies_are_sent). If your site is spread across multiple domains (for example, your site is at `example.com` but your api-side is deployed to `api.example.com`) you'll need to explicitly set a Domain so that the cookie is accessible to both.
+
+To do this, create an environment variable named `DBAUTH_COOKIE_DOMAIN` set to the root domain of your site, which will allow it to be read by all subdomains as well. For example:
+
+    DBAUTH_COOKIE_DOMAIN=example.com
+
+#### Session Secret Key
+
+If you need to change the secret key that's used to encrypt the session cookie, or deploy to a new target (each deploy environment should have its own unique secret key) we've got a CLI tool for creating a new one:
+
+    yarn rw g secret
+
+Note that the secret that's output is *not* appended to your `.env` file or anything else, it's merely output to the screen. You'll need to put it in the right place after that.
+
+> The `.env` file is set to be ignored by git and not committed to version control. There is another file, `.env.defaults`, which is meant to be safe to commit and contain simple ENV vars that your dev team can share. The encryption key for the session cookie is NOT one of these shareable vars!
+
+## Third Party Providers Installation and Setup
 
 You will need to instantiate your authentication client and pass it to the `<AuthProvider>`. See instructions below for your specific provider.
 
@@ -28,7 +196,7 @@ You will need to instantiate your authentication client and pass it to the `<Aut
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth netlify
+yarn rw setup auth netlify
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -43,23 +211,31 @@ yarn add @redwoodjs/auth netlify-identity-widget
 You will need to enable Identity on your Netlify site. See [Netlify Identity Setup](https://redwoodjs.com/tutorial/authentication#netlify-identity-setup).
 
 ```js
-// web/src/index.js
+// web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
 import netlifyIdentity from 'netlify-identity-widget'
+import { isBrowser } from '@redwoodjs/prerender/browserUtils'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
-netlifyIdentity.init()
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
 
-// in your JSX component
-ReactDOM.render(
+import './index.css'
+
+isBrowser && netlifyIdentity.init()
+
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={netlifyIdentity} type="netlify">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
-  </FatalErrorBoundary>,
-  document.getElementById('redwood-app')
+  </FatalErrorBoundary>
 )
+
+export default App
 ```
 
 #### Netlify Identity Auth Provider Specific Setup
@@ -77,7 +253,7 @@ See the Netlify Identity information within this doc's [Auth Provider Specific I
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth goTrue
+yarn rw setup auth goTrue
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -100,26 +276,33 @@ yarn workspace web add gotrue-js
 Instantiate GoTrue and pass in your configuration. Be sure to set APIUrl to the API endpoint found in your Netlify site's Identity tab:
 
 ```js
-// web/src/index.js
+// web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
 import GoTrue from 'gotrue-js'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
-const goTrue = new GoTrue({
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
+
+import './index.css'
+
+const goTrueClient = new GoTrue({
   APIUrl: 'https://MYAPP.netlify.app/.netlify/identity',
   setCookie: true,
 })
 
-// in your JSX component
-ReactDOM.render(
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
-    <AuthProvider client={goTrue} type="goTrue">
-      <RedwoodProvider>
+    <AuthProvider client={goTrueClient} type="goTrue">
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
-  </FatalErrorBoundary>,
-  document.getElementById('redwood-app')
+  </FatalErrorBoundary>
 )
+
+export default App
 ```
 
 +++
@@ -133,7 +316,7 @@ ReactDOM.render(
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth auth0
+yarn rw setup auth auth0
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -149,31 +332,58 @@ To get your application keys, only complete the ["Configure Auth0"](https://auth
 
 **NOTE** If you're using Auth0 with Redwood then you must also [create an API](https://auth0.com/docs/quickstart/spa/react/02-calling-an-api#create-an-api) and set the audience parameter, or you'll receive an opaque token instead of the required JWT token.
 
+The `useRefreshTokens` options is required for automatically extending sessions beyond that set in the initial JWT expiration (often 3600/1 hour or 86400/1 day).
+
+If you want to allow users to get refresh tokens while offline, you must also enable the Allow Offline Access switch in your Auth0 API Settings as part of setup configuration. See: [https://auth0.com/docs/tokens/refresh-tokens](https://auth0.com/docs/tokens/refresh-tokens)
+
+You can increase security by using refresh token rotation which issues a new refresh token and invalidates the predecessor token with each request made to Auth0 for a new access token.
+
+Rotating the refresh token reduces the risk of a compromised refresh token. For more information, see: [https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation](https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation).
+
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
 ```js
-// web/src/index.js
+// web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
 import { Auth0Client } from '@auth0/auth0-spa-js'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
+
+import './index.css'
 
 const auth0 = new Auth0Client({
   domain: process.env.AUTH0_DOMAIN,
   client_id: process.env.AUTH0_CLIENT_ID,
-  redirect_uri: 'http://localhost:8910/',
+  redirect_uri: process.env.AUTH0_REDIRECT_URI,
+
+  // ** NOTE ** Storing tokens in browser local storage provides persistence across page refreshes and browser tabs.
+  // However, if an attacker can achieve running JavaScript in the SPA using a cross-site scripting (XSS) attack,
+  // they can retrieve the tokens stored in local storage.
+  // https://auth0.com/docs/libraries/auth0-spa-js#change-storage-options
   cacheLocation: 'localstorage',
   audience: process.env.AUTH0_AUDIENCE,
+
+  // @MARK: useRefreshTokens is required for automatically extending sessions
+  // beyond that set in the initial JWT expiration.
+  //
+  // @MARK: https://auth0.com/docs/tokens/refresh-tokens
+  // useRefreshTokens: true,
 })
 
-ReactDOM.render(
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={auth0} type="auth0">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
-  </FatalErrorBoundary>,
-  document.getElementById('redwood-app')
+  </FatalErrorBoundary>
 )
+
+export default App
 ```
 
 #### Login and Logout Options
@@ -219,6 +429,107 @@ See the Auth0 information within this doc's [Auth Provider Specific Integration]
 
 +++
 
+### Clerk
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw setup auth clerk
+```
+
+_If you prefer to manually install the package and add code_, see the documented changes below in **Manual Setup**.
+
+#### Setup
+
+To get started with Clerk, sign up on [their website](https://clerk.dev/) and create an application.
+
+Applications in Clerk have different instances - by default one for development, one for staging (preview builds), and one for production. You will need to pull two values from one of these instances. We recommend storing the development values in your local `.env` file and using the staging and production values in the appropriate env setups for your hosting platform when you deploy.
+
+The two values you will need from Clerk are your instance's "Frontend API" url and an API key from your instance's settings. The Frontend API url should be stored in an `env` variable named `CLERK_FRONTEND_API_URL`. The API key should be named `CLERK_API_KEY`.
+
+Otherwise, feel free to configure your instances however you wish with regards to their appearance and functionality.
+
+> **Including Environment Variables in Serverless Deployment:** in addition to adding these env vars to your local `.env` file or deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given above, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`". You should expose the `CLERK_FRONTEND_API_URL` only to the `web` workspace and expose `CLERK_API_KEY` **only** to the `api` workspace.
+
+#### Manual Setup
+
+If you opt against using `yarn rw setup auth clerk`, you can instead make the required changes manually to add the basics of auth to your app.
+
+First, run this to add the required packages:
+```bash
+yarn workspace web add @redwoodjs/auth @clerk/clerk-react
+yarn workspace api add @redwoodjs/auth @clerk/clerk-sdk-node
+```
+
+Then, extract the relevant changes to your `App` file:
+```js
+// web/src/App.js
+import { AuthProvider } from '@redwoodjs/auth'
+import { ClerkProvider, ClerkLoaded, useClerk } from '@clerk/clerk-react'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
+
+import './index.css'
+
+let clerk
+const ClerkAuthConsumer = ({ children }) => {
+  clerk = useClerk()
+  return React.cloneElement(children, { client: clerk })
+}
+
+const ClerkAuthProvider = ({ children }) => {
+  const frontendApi = process.env.CLERK_FRONTEND_API_URL
+  if (!frontendApi) {
+    throw new Error('Need to define env variable CLERK_FRONTEND_API_URL')
+  }
+
+  return (
+    <ClerkProvider frontendApi={frontendApi}>
+      <ClerkLoaded>
+        <ClerkAuthConsumer>{children}</ClerkAuthConsumer>
+      </ClerkLoaded>
+    </ClerkProvider>
+  )
+}
+
+const App = () => (
+  <FatalErrorBoundary page={FatalErrorPage}>
+    <ClerkAuthProvider>
+      <AuthProvider client={clerk} type="clerk">
+        <RedwoodApolloProvider>
+          <Routes />
+        </RedwoodApolloProvider>
+      </AuthProvider>
+    </ClerkAuthProvider>
+  </FatalErrorBoundary>
+)
+
+export default App
+```
+
+Then, provide your own implementations of `api/src/lib/auth.(j|t)s` and add current user to the API context in `api/src/functions/graphql.(j|t)s`. These are standard changes and not dependent on Clerk.
+
+#### Login and Logout Options
+
+When using the Clerk client, `login` and `signUp` take an `options` object that can be used to override the client config.
+
+For `login` the `options` may contain all the options listed at the Clerk [props documentation for login](https://docs.clerk.dev/reference/clerkjs/clerk#signinprops).
+
+For `signUp` the `options` may contain all the options listed at the Clerk [props documentation for signup](https://docs.clerk.dev/reference/clerkjs/clerk#signupprops).
+
+#### Avoiding Feature Duplication Confusion
+
+Redwood's integration of Clerk is based on [Clerk's React SDK](https://docs.clerk.dev/reference/clerk-react). This means there is some duplication between the features available through that SDK and the ones available in the `@redwoodjs/auth` package - such as the alternatives of using Clerk's `SignedOut` component to redirect users away from a private page vs. using Redwood's `Private` route wrapper. In general, we would recommend you use the **Redwood** way of doing things when possible, as that is more likely to function harmoniously with the rest of Redwood. That being said, though, there are some great features in Clerk's SDK that you will be able to now use in your app, such as the `UserButton` and `UserProfile` components.
+
++++
+
 ### Azure Active Directory
 
 +++ View Installation and Setup
@@ -228,7 +539,7 @@ See the Auth0 information within this doc's [Auth Provider Specific Integration]
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth azureActiveDirectory
+yarn rw setup auth azureActiveDirectory
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -240,11 +551,7 @@ yarn add msal
 
 #### Setup
 
-To get your application credentials, create an [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application (client) ID_ and the _Directory (tenant) ID_.
-
-##### Supported account types
-
-In most cases you want to choose _Accounts in this organizational directory only (Single tenant)_, as this will allow only users in your Azure Active Directory tenant to login to your application. If you want to enable Microsoft accounts to be able to login, choose the bottom alternative.
+To get your application credentials, create an [App Registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure Active Directory tenant. Take a note of your generated _Application ID_ (client), and the _Directory ID_ (tenant).
 
 ##### Redirect URIs
 
@@ -254,16 +561,23 @@ Enter allowed redirect urls for the integrations, e.g. `http://localhost:8910`. 
 
 Under the _Authentication_ tab, tick `ID tokens`.
 
-This allows an application to request a token directly from the authorization endpoint. Checking Access tokens and ID tokens is recommended only if the application has a single-page architecture (SPA). [Learn more about the implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps)
+This allows an application to request a token directly from the authorization endpoint. Checking Access tokens and ID tokens is recommended only if the application has a single-page architecture (SPA). [Learn more about implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps).
 
 #### Authority
 
 The Authority is a URL that indicates a directory that MSAL can request tokens from which you can read about [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-client-application-configuration#authority). However, you most likely want to have e.g. `https://login.microsoftonline.com/<tenant>` as Authority URL, where `<tenant>` is the Azure Active Directory tenant id. This will be the `AZURE_ACTIVE_DIRECTORY_AUTHORITY` environment variable.
 
 ```js
-// web/src/index.js
+// web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
 import { UserAgentApplication } from 'msal'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
+
+import './index.css'
 
 const azureActiveDirectoryClient = new UserAgentApplication({
   auth: {
@@ -274,25 +588,46 @@ const azureActiveDirectoryClient = new UserAgentApplication({
   },
 })
 
-ReactDOM.render(
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={azureActiveDirectoryClient} type="azureActiveDirectory">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
-  </FatalErrorBoundary>,
-  document.getElementById('redwood-app')
+  </FatalErrorBoundary>
 )
+
+export default App
 ```
 
 #### Roles
 
 To setup your App Registration with custom roles and have them exposed via the `roles` claim, follow [this documentation](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
 
-#### Login and Logout Options
+#### Login Options
 
-When using the Azure Active Directory client, `login` take `options` that can be used to override the client config. See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/loginPopup.html) or see [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors).
+Options in method `logIn(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html) and is a good place to pass in optional [scopes](https://docs.microsoft.com/en-us/graph/permissions-reference#user-permissions) to be authorized. By default, MSAL sets `scopes` to [/.default](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#the-default-scope) which is built in for every application that refers to the static list of permissions configured on the application registration. Furthermore, MSAL will add `openid` and `profile` to all requests. In example below we explicit include `User.Read.All` to the login scope.
+
+```js
+await logIn({
+  scopes: ['User.Read.All'], // becomes ['openid', 'profile', 'User.Read.All']
+})
+```
+
+See [loginPopup](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/loginPopup.html), [UserAgentApplication class ](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors) and [Scopes Behavior](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-core/docs/scopes.md#scopes-behavior) for more documentation.
+
+#### getToken Options
+
+Options in method `getToken(options?)` is of type [AuthRequest](https://pub.dev/documentation/msal_js/latest/msal_js/AuthRequest-class.html). By default, `getToken` will be called with scope `['openid', 'profile']`. As Azure Active Directory apply [incremental consent](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md#dynamic-scopes-and-incremental-consent), we can extend the permissions from the login example by including another scope, for example `Mail.Read`.
+
+```js
+await getToken({
+  scopes: ['Mail.Read'], // becomes ['openid', 'profile', 'User.Read.All', 'Mail.Read']
+})
+```
+
+See [acquireTokenSilent](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication/acquireTokenSilent.html), [Resources and Scopes](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md#resources-and-scopes) or [full class documentation](https://pub.dev/documentation/msal_js/latest/msal_js/UserAgentApplication-class.html#constructors) for more documentation.
 
 +++
 
@@ -305,7 +640,7 @@ When using the Azure Active Directory client, `login` take `options` that can be
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth magicLink
+yarn rw setup auth magicLink
 ```
 
 _If you prefer to manually install the package and add code_, run the following command and then add the required code provided in the next section.
@@ -322,21 +657,47 @@ To get your application keys, go to [dashboard.magic.link](https://dashboard.mag
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
 ```js
-// web/src/index.js
+// web/src/App.js|tsx
+import { useAuth, AuthProvider } from '@redwoodjs/auth'
 import { Magic } from 'magic-sdk'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
+
+import './index.css'
 
 const m = new Magic(process.env.MAGICLINK_PUBLIC)
 
-ReactDOM.render(
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={m} type="magicLink">
-      <RedwoodProvider>
+      <RedwoodApolloProvider useAuth={useAuth}>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
-  </FatalErrorBoundary>,
-  document.getElementById('redwood-app')
+  </FatalErrorBoundary>
 )
+
+export default App
+```
+
+```js
+// web/src/Routes.js|tsx
+import { useAuth } from '@redwoodjs/auth'
+import { Router, Route } from '@redwoodjs/router'
+
+const Routes = () => {
+  return (
+    <Router useAuth={useAuth}>
+      <Route path="/" page={HomePage} name="home" />
+      <Route notfound page={NotFoundPage} />
+    </Router>
+  )
+}
+
+export default Routes
 ```
 
 #### Magic.Link Auth Provider Specific Integration
@@ -353,7 +714,7 @@ See the Magic.Link information within this doc's [Auth Provider Specific Integra
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth firebase
+yarn rw setup auth firebase
 ```
 
 #### Setup
@@ -363,9 +724,17 @@ We're using [Firebase Google Sign-In](https://firebase.google.com/docs/auth/web/
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
 ```js
-// web/src/index.js
+// web/src/App.js
+import { AuthProvider } from '@redwoodjs/auth'
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
+import { FatalErrorBoundary } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
+import FatalErrorPage from 'src/pages/FatalErrorPage'
+import Routes from 'src/Routes'
+
+import './index.css'
 
 const firebaseClientConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -378,20 +747,23 @@ const firebaseClientConfig = {
 }
 
 const firebaseClient = ((config) => {
-  firebase.initializeApp(config)
+  if (!firebase.apps.length) {
+    firebase.initializeApp(config)
+  }
   return firebase
 })(firebaseClientConfig)
 
-ReactDOM.render(
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={firebaseClient} type="firebase">
-      <RedwoodProvider>
+      <RedwoodApolloProvider>
         <Routes />
-      </RedwoodProvider>
+      </RedwoodApolloProvider>
     </AuthProvider>
-  </FatalErrorBoundary>,
-  document.getElementById('redwood-app')
+  </FatalErrorBoundary>
 )
+
+export default App
 ```
 
 #### Usage
@@ -435,20 +807,55 @@ See the Firebase information within this doc's [Auth Provider Specific Integrati
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth supabase
+yarn rw setup auth supabase
 ```
 
 #### Setup
 
 Update your .env file with the following settings supplied when you created your new Supabase project:
 
-* `SUPABASE_URL` with the unique Supabase URL for your project
-* `SUPABASE_KEY` with the unique Supabase Key that identifies which API KEY to use
-* `SUPABASE_JWT_SECRET` with the secret used to sign and verify the JSON Web Token (JWT)
+- `SUPABASE_URL` with the unique Supabase URL for your project
+- `SUPABASE_KEY` with the unique Supabase Key that identifies which API KEY to use
+- `SUPABASE_JWT_SECRET` with the secret used to sign and verify the JSON Web Token (JWT)
 
 You can find these values in your project's dashboard under Settings -> API.
 
-For full client docs, see: <https://supabase.io/docs/library/getting-started#reference>
+For full Supabase documentation, see: <https://supabase.io/docs>
+
+#### Usage
+
+Supabase supports several sign in methods:
+
+- email/password
+- passwordless via emailed magiclink
+- authenticate via phone with SMS based OTP (One-Time Password) tokens. See: [SMS OTP with Twilio](https://supabase.io/docs/guides/auth/auth-twilio)
+- Sign in with redirect. You can control where the user is redirected to after they are logged in via a `redirectTo` option.
+- Sign in with a valid refresh token that was returned on login.
+- Sign in using third-party providers/OAuth via
+  - [Apple](https://supabase.io/docs/guides/auth/auth-apple)
+  - Azure Active Directory
+  - [Bitbucket](https://supabase.io/docs/guides/auth/auth-bitbucket)
+  - [Discord](https://supabase.io/docs/guides/auth/auth-discord)
+  - [Facebook](https://supabase.io/docs/guides/auth/auth-facebook)
+  - [GitHub](https://supabase.io/docs/guides/auth/auth-github)
+  - [GitLab](https://supabase.io/docs/guides/auth/auth-gitlab)
+  - [Google](https://supabase.io/docs/guides/auth/auth-google)
+  - [Twitch](https://supabase.io/docs/guides/auth/auth-twitch)
+  - [Twitter](https://supabase.io/docs/guides/auth/auth-twitter)
+- Sign in with a [valid refresh token](https://supabase.io/docs/reference/javascript/auth-signin#sign-in-using-a-refresh-token-eg-in-react-native) that was returned on login. Used e.g. in React Native.
+- Sign in with scopes. If you need additional data from an OAuth provider, you can include a space-separated list of `scopes` in your request options to get back an OAuth `provider_token`.
+
+Depending on the credentials provided:
+
+- A user can sign up either via email or sign in with supported OAuth provider: `'apple' | 'azure' | 'bitbucket' | 'discord' | 'facebook' | 'github' | 'gitlab' | 'google' | 'twitch' | 'twitter'`
+- If you sign in with a valid refreshToken, the current user will be updated
+- If you provide email without a password, the user will be sent a magic link.
+- The magic link's destination URL is determined by the SITE_URL config variable. To change this, you can go to Authentication -> Settings on `app.supabase.io` for your project.
+- Specifying an OAuth provider will open the browser to the relevant login page
+- Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to Authentication -> Settings on `app.supabase.io` for your project.
+- Note: To authenticate using SMS based OTP (One-Time Password) you will need a [Twilio](https://www.twilio.com/try-twilio) account
+
+For Supabase Authentication documentation, see: <https://supabase.io/docs/guides/auth>
 
 +++
 
@@ -461,13 +868,58 @@ For full client docs, see: <https://supabase.io/docs/library/getting-started#ref
 The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth ethereum
+yarn rw setup auth ethereum
 ```
 
 #### Setup
 
 To complete setup, you'll also need to update your `api` server manually. See https://github.com/oneclickdapp/ethereum-auth for instructions.
 
++++
+
+### Nhost
+
++++ View Installation and Setup
+
+#### Installation
+
+The following CLI command will install required packages and generate boilerplate code and files for Redwood Projects:
+
+```terminal
+yarn rw setup auth nhost
+```
+
+#### Setup
+
+Update your .env file with the following setting which can be found on your Nhost project's dashboard.
+
+- `NHOST_BACKEND_URL` with the unique Nhost Backend (Auth & Storage) URL for your project.
+- `NHOST_JWT_SECRET` with the JWT Key secret that you have set in your project's Settings > Hasura "JWT Key" section.
+
+#### Usage
+
+Nhost supports the following methods:
+
+- email/password
+- OAuth (via GitHub, Google, Facebook, or Linkedin).
+
+Depending on the credentials provided:
+
+- A user can sign in either via email or a supported OAuth provider.
+- A user can sign up via email and password. For OAuth simply sign in and the user account will be created if it does not exist.
+- Note: You must enable and configure the OAuth provider appropriately. To configure these providers, you can go to the project's Settings -> Sign-In Methods page at `console.nhost.io`.
+
+For the docs on Authentication, see: <https://docs.nhost.io/auth>
+
+If you are also **using Nhost as your GraphQL API server**, you will need to pass `skipFetchCurrentUser` as a prop to `AuthProvider` , as follows:
+
+```js
+<AuthProvider client={nhost} type="nhost" skipFetchCurrentUser>
+```
+
+This avoids having an additional request to fetch the current user which is meant to work with Apollo Server and Prisma.
+
+Important: The `skipFetchCurrentUser` attribute is **only** needed if you are **not** using the standard RedwoodJS api side GraphQL Server.
 +++
 
 ### Custom
@@ -479,7 +931,7 @@ To complete setup, you'll also need to update your `api` server manually. See ht
 The following CLI command (not implemented, see https://github.com/redwoodjs/redwood/issues/1585) will install required packages and generate boilerplate code and files for Redwood Projects:
 
 ```terminal
-yarn rw generate auth custom
+yarn rw setup auth custom
 ```
 
 #### Setup
@@ -734,7 +1186,30 @@ The Redwood API does not include the functionality to decode Magic.link authenti
 
 +++ View Magic.link Options
 
-Magic.link recommends using the issuer as the userID.
+##### Installation
+
+First, you must manually install the **Magic Admin SDK** in your project's `api/package.json`.
+
+```terminal
+yarn workspace api add @magic-sdk/admin
+```
+
+##### Setup
+
+To get your application running _without setting up_ `Prisma`, get your `SECRET KEY` from [dashboard.magic.link](https://dashboard.magic.link/). Then add `MAGICLINK_SECRET` to your `.env`.
+
+```js
+// redwood/api/src/lib/auth.js|ts
+import { Magic } from '@magic-sdk/admin'
+
+export const getCurrentUser = async (_decoded, { token }) => {
+  const mAdmin = new Magic(process.env.MAGICLINK_SECRET)
+
+  return await mAdmin.users.getMetadataByToken(token)
+}
+```
+
+Magic.link recommends using the issuer as the userID to retrieve user metadata via `Prisma`
 
 ```js
 // redwood/api/src/lib/auth.ts
@@ -766,9 +1241,11 @@ None.
 
 #### Add Application hasRole Support in Firebase
 
+Requires a custom implementation.
+
 #### Auth Providers
 
-Providers can be configured by specifying `logIn(provider)` and `signUp(provider)`.
+Providers can be configured by specifying `logIn(provider)` and `signUp(provider)`, where `provider` is a **string** of one of the supported providers.
 
 Supported providers:
 
@@ -779,7 +1256,32 @@ Supported providers:
 - microsoft.com
 - apple.com
 
+#### Email & Password Auth in Firebase
+
 Email/password authentication is supported by calling `login({ username, password })` and `signUp({ username, password })`.
+
+#### Custom Parameters & Scopes for Google OAuth Provider
+
+Both `logIn()` and `signUp()` can accept a single argument of either a **string** or **object**. If a string is provided, it should be any of the supported providers (see above), which will configure the defaults for that provider.
+
+`logIn()` and `signUp()` also accept a single a configuration object. This object accepts `providerId`, `email`, `password`, and `scope` and `customParameters`. (In fact, passing in any arguments ultimately results in this object). You can use this configuration object to pass in values for the optional Google OAuth Provider methods *setCustomParameters* and *addScope*.
+
+Below are the parameters that `logIn()` and `signUp()` accept:
+
+- `providerId`: Accepts one of the supported auth providers as a **string**. If no arguments are passed to `login() / signUp()` this will default to 'google.com'. Provider strings passed as a single argument to `login() / signUp()` will be cast to this value in the object.
+- `email`: Accepts a **string** of a users email address. Used in conjunction with `password` and requires that Firebase has email authentication enabled as an option.
+- `password`: Accepts a **string** of a users password. Used in conjunction with `email` and requires that Firebase has email authentication enabled as an option.
+- `scope`: Accepts an **array** of strings ([Google OAuth Scopes](https://developers.google.com/identity/protocols/oauth2/scopes)), which can be added to the requested Google OAuth Provider. These will be added using the Google OAuth *addScope* method.
+- `customParameters`: accepts an **object** with the [optional parameters](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider#setcustomparameters) for the Google OAuth Provider *setCustomParameters* method. [Valid parameters](https://developers.google.com/identity/protocols/oauth2/openid-connect#authenticationuriparameters) include 'hd', 'include_granted_scopes', 'login_hint' and 'prompt'.
+
+#### Firebase Auth Examples
+
+- `logIn()/signUp()`: Defaults to Google provider.
+- `logIn({providerId: 'github.com'})`: Log in using GitHub as auth provider.
+- `signUp({email: "someone@email.com", password: 'some_good_password'})`: Creates a firebase user with email/password.
+- `logIn({email: "someone@email.com", password: 'some_good_password'})`: Logs in existing firebase user with email/password.
+- `logIn({scopes: ['https://www.googleapis.com/auth/calendar']})`: Adds a scope using the [addScope](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider#addscope) method.
+- `logIn({ customParameters: { prompt: "consent" } })`: Sets the OAuth custom parameters using [setCustomParameters](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider#addscope) method.
 
 +++
 

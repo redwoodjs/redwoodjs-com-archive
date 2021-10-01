@@ -2,8 +2,6 @@
 
 Redwood provides several helpers to make your life easier when working with forms. All of Redwood's form helpers are simple wrappers around [react-hook-form](https://react-hook-form.com/) that makes it even easier to use in many cases. If Redwood's form helpers aren't flexible enough for you, you can always use `react-hook-form` directly, or use any other [form builder](https://github.com/jaredpalmer/formik) that works with React.
 
-> **WARNING:** RedwoodJS software has not reached a stable version 1.0 and should not be considered suitable for production use. In the "make it work; make it right; make it fast" paradigm, Redwood is in the later stages of the "make it work" phase.
-
 Redwood currently provides the following form components:
 
 * `<Form>` surrounds all form elements and provides contexts for errors and form submission
@@ -123,7 +121,7 @@ Besides the attributes listed below, any additional attributes are passed on as 
 
 The `onSubmit` prop accepts a function name or anonymous function to be called *if* validation is successful. This function will be called with a single object containing name/value pairs of all *Redwood form helper* fields in your form. Meaning if you mix `<input>` and `<TextField>` form fields, only `<TextField>` names/values will be present.
 
-Behind the scenes the handler given to `onSubmit` is given to [react-hook-form](https://react-hook-form.com/api#handleSubmit)'s `handleSubmit` function.
+Behind the scenes the handler given to `onSubmit` is given to [react-hook-form](https://react-hook-form.com/api#handleSubmit)'s `handleSubmit` function with the data transformed as specified by each `Input`'s `transformValue` prop.  See [`transformValue`](#transformvalue) attribute.
 
 #### validation
 
@@ -367,6 +365,27 @@ In these two examples, one with multiple field selection, validation requires th
 
 ```
 
+### transformValue
+
+Typically a `<SelectField>` will return a string, but similar to other InputFields, you can set the `<SelectField>`'s `transformValue` attribute to `Boolean`, `Float`, `Int`, `Json`, or a custom function.
+
+A use-case example is when `<SelectField>` is being used to select a numeric identifier, which can then be passed back to the api.  Without the `transformValue` attribute, the `<SelectField>` would return a string.  However, as per the example below, the `transformValue` can be utilized to return an `Int` or another type. 
+
+```javascript
+<SelectField name="select" transformValue="Int">
+  <option value={1}>Option 1</option>
+  <option value={2}>Option 2</option>
+  <option value={3}>Option 3</option>
+</SelectField>
+
+```
+
+For the example above, if Option 3 is selected, the form `onSubmit` function will be passed data as follows:
+```
+{
+  select: 3,
+}
+```
 ## InputFields
 
 Inputs are the backbone of most forms. `<TextField>` renders an HTML `<input type="text">` field, but is registered with `react-hook-form` to provide some validation and error handling.
@@ -418,7 +437,7 @@ This attribute has been deprecated. See [transformValue](#transformvalue).
 
 ### transformValue
 
-If the type to coerce the input to can’t be inferred automatically, like making a `Float` from a `<TextField>` for example, you can set the InputField's `transformValue` attribute to `Boolean`, `Float`, `Int`, or `Json`.
+If the type to coerce the input to can’t be inferred automatically, like making a `Float` from a `<TextField>` for example, you can set the InputField's `transformValue` attribute to `Boolean`, `DateTime`, `Float`, `Int`, or `Json`.
 
 You can also pass a function to `transformValue`. For instance, you might remove commas from large numbers.
 
@@ -430,6 +449,23 @@ You can also pass a function to `transformValue`. For instance, you might remove
 />
 ```
 
+If the transformValue is set to `DateTime`, `Float`, `Int`, or `Json` and the transformation fails, the form submission will gracefully return an `undefined` for that input.  For example:
+
+```javascript
+<Form onSubmit={submit}>
+  <NumberField name="intField" defaultValue="" transformValue="Int" />
+</Form>
+```
+
+If the `<NumberField>` is not modified and remains empty, it will return `{ intField: undefined }` into the `onSubmit` function, as an empty string cannot be converted to an integer.
+If the `NODE_ENV` environment variable is set to `development` or `test`, it will also issue a console warning upon a failed transformation.  It is recommended to set up your field validation to avoid cases of failed transformation.  In the specific case of the example above, it would be recommended to add a `validation={{ required: true }}` to the code as per the below.
+
+```javascript
+<Form onSubmit={onSubmit}>
+  <NumberField name="intField" defaultValue="" transformValue="Int" validation={{ required: true }} />
+</Form>
+```
+
 ## `<TextAreaField>`
 
 ### `<TextAreaField>` Attributes
@@ -439,6 +475,24 @@ Besides the attributes listed below, any additional attributes are passed on as 
 #### name
 
 See InputFields [name](#inputfields-attributes)
+
+### transformValue
+
+See InputField's [transformValue](#inputfields-attributes) for standard capabilities.
+
+In addition, if the `transformValue` of a `<TextAreaField>` is set to `Json` it will automatically apply a JSON validation to the `<TextAreaField>` in addition to a JSON transformation at the time of form submission.  For example, the below will have JSON validation:
+
+```javascript
+<Form onSubmit={onSubmit}>
+  <TextAreaField
+    name="jsonField"
+    transformValue="Json"
+  />
+  <Submit>Save</Submit>
+</Form>
+```
+
+Caveat:  JSON validation will not be applied if a custom validation function, such as `fcn` is provided via the prop as follows: `validation={{ validate: fcn }}`
 
 #### validation
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta name="description" content="Bringing full-stack to the Jstack. An opinionated framework that combines React, GraphQL, Prisma2, SQL, and lots more out of the box.">
+    <meta name="description" content="An opinionated Javascript framework that combines React, GraphQL, Prisma2, SQL, and lots more out of the box.">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="RedwoodJS">
     <meta property="og:title" content="@@title">
@@ -13,7 +13,7 @@
     <meta property="og:url" content="https://redwoodjs.com/">
     <meta name="twitter:site" content="@redwoodjs">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Bringing full-stack to the Jamstack">
+    <meta name="twitter:title" content="@@title">
     <meta name="twitter:description" content="An opinionated Javascript framework that combines React, GraphQL, Prisma2, SQL, and lots more out of the box.">
     <meta name="twitter:image" content="https://redwoodjs.com/images/opengraph-256.png">
     <title>@@title</title>
@@ -23,6 +23,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css">
     <script type="text/javascript" src="/javascripts/application.js"></script>
+    <script defer data-domain="redwoodjs.com" src="https://plausible.io/js/plausible.js"></script>
   </head>
 
   <body class="relative bg-white text-gray-900 font-sans antialiased h-full flex flex-col" data-controller="application" data-action="turbolinks:before-cache@document->application#saveScrollPosition turbolinks:before-cache@document->application#closeNav keydown@window->application#focusSearch">
@@ -41,7 +42,9 @@
             </div>
             <div class="flex items-center">
               <div class="text-red-700 font-mono font-semibold mr-8">
-                @@version
+                <a class="hover:underline" href="https://github.com/redwoodjs/redwood/releases" title="Go to Redwood's Releases">
+                  @@version
+                </a>
               </div>
               <div class="ml-8 lg:hidden w-10 p-2" data-action="click->application#toggleNav">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-current text-gray-700">
@@ -142,8 +145,8 @@
             </a>
           </li>
           <li class="mx-4">
-            <a class="hover:underline" href="https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md" title="Go to Redwood's GitHub repo">
-              Contributing
+            <a class="hover:underline" href="/security.html" title="RedwoodJS Security Information">
+              Security
             </a>
           </li>
           <li class="mx-4">

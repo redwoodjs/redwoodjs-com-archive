@@ -1,22 +1,22 @@
 # Cells
 
-Cells are a declarative approach to data fetching and one of Redwood's signature modes of abstraction. In a way, Cells create space: by providing conventions around data fetching, Redwood can get in between the request and the response and perform optimizations, all without you ever having to change your code.
+Cells are a declarative approach to data fetching and one of Redwood's signature modes of abstraction. 
+By providing conventions around data fetching, Redwood can get in between the request and the response to do things like query optimization and more, all without you ever having to change your code.
 
-While it might seem like there must be lot of magic involved, a Cell is actually just a [higher-order component](https://reactjs.org/docs/higher-order-components.html) that executes a GraphQL query and manages its lifecycle.
-All the logic's actually in just one file: [withCellHOC.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/withCellHOC.tsx).
-The idea is that, by exporting named constants that match the parameters of `withCell`, Redwood can assemble this higher-order component out of these constants at build-time using a babel plugin!
-
-All of this without writing a line of imperative code. Just say what is supposed to happen when, and Redwood will take care of the rest.
+While it might seem like there's a lot of magic involved, all a Cell really does is execute a GraphQL query and manage its lifecycle.
+The idea is that, by exporting named constants that declare what you want your UI to look like throughout a query's lifecycle, 
+Redwood can assemble these into a component template at build-time using a Babel plugin.
+All without you having to write a single line of imperative code!
 
 ## Generating a Cell
 
-You can generate a Cell with:
+You can generate a Cell with Redwood's Cell generator:
 
 ```terminal
 yarn rw generate cell <name>
 ```
 
-This creates the directory named `<name>Cell` in `web/src/components` with four files:
+This creates a directory named `<name>Cell` in `web/src/components` with four files:
 
 ```terminal
 ~/redwood-app$ yarn rw generate cell user
@@ -29,6 +29,21 @@ $ /redwood-app/node_modules/.bin/rw g cell user
     ✔ Writing `./web/src/components/UserCell/UserCell.js`...
 Done in 1.07s.
 ```
+
+### Single Item Cell vs List Cell
+
+Sometimes you want a Cell that renders a single item, like the example above, and other times you want a Cell that renders a list. 
+Redwood's Cell generator can do both. 
+
+First, it detects if `<name>` is singular or plural. 
+For example, to generate a Cell that renders a list of users, run `yarn rw generate cell users`.
+Second, for **irregular words** whose singular and plural are identical, such as *equipment* or *pokemon*, you can specify the `--list` flag to tell Redwood to generate a list Cell explicitly: 
+
+```
+yarn rw generate cell equipment --list
+```
+
+## Cells in-depth
 
 We'll go over each of these files in detail. But know that the file appended with just `.js` (in the example above, `UserCell.js`) contains all your Cell's logic.
 
@@ -52,7 +67,9 @@ Only `QUERY` and `Success` are required. If you don't export `Empty`, empty resu
 
 `Loading`, `Empty`, `Failure`, and `Success` all have access to the same set of props, with `Failure` and `Success` getting exclusive access to `error` and `data` respectively. So, in addition to displaying the right component, a Cell funnels the right props to the right component.
 
-This prop set is composed of 1) what's returned from Apollo Client's `Query` component, which is quite a few things&mdash;see their [API reference](https://www.apollographql.com/docs/react/api/react-components/#render-prop-function) for the full list (note that, as we just mentioned, `error` and `data` are only available to `Failure` and `Success` respectively. And Cells use `loading` to decide when to show `Loading`, so you don't get that one either)&mdash;and 2) props passed down from the parent component in good ol' React fashion.
+This set of props is composed of:
+1) what's returned from Apollo Client's `Query` component, which is quite a few things&mdash;see their [API reference](https://www.apollographql.com/docs/react/api/react-components/#render-prop-function) for the full list (note that, as we just mentioned, `error` and `data` are only available to `Failure` and `Success` respectively)
+2) props passed down from the parent component in good ol' React fashion
 
 ### QUERY
 
@@ -81,7 +98,7 @@ export const Success = ({ posts, authors }) => {
 }
 ```
 
-If `QUERY` is a function, it has to return a valid GraphQL syntax tree.
+If `QUERY` is a function, it has to return a valid GraphQL document.
 Use a function if your queries need to be more dynamic:
 
 <!-- Source: https://community.redwoodjs.com/t/custom-github-jwt-auth-with-redwood-auth-advice-needed/610 -->
@@ -117,18 +134,27 @@ This means you can think backwards about your Cell's props from your SDL: whatev
 
 ### beforeQuery
 
-`beforeQuery` is a lifecycle hook. The best way to think about it is as an API for configuring Apollo Client's `Query` component (so you might want to check out the [docs](https://www.apollographql.com/docs/react/api/react-components/#query) for it).
+`beforeQuery` is a lifecycle hook. The best way to think about it is as an API for configuring Apollo Client's `Query` component (so you might want to check out Apollo's [docs](https://www.apollographql.com/docs/react/api/react-components/#query) for it).
 
-By default, `beforeQuery` gives any props passed from the parent component to `Query` so that they're available as variables for `QUERY`. It'll also set the fetch policy to `'cache-and-network'` since we felt that this is the behavior users want most of the time.
+By default, `beforeQuery` gives any props passed from the parent component to `Query` so that they're available as variables for `QUERY`. It'll also set the fetch policy to `'cache-and-network'` since we felt it matched the behavior users want most of the time.
+
+```javascript
+export const beforeQuery = (props) => {
+  return { 
+    variables: props, 
+    fetchPolicy: 'cache-and-network' 
+   }
+}
+```
+
+For example, if you wanted to turn on Apollo's polling option, and prevent caching, you could export something like this (see Apollo's docs on [polling](https://www.apollographql.com/docs/react/data/queries/#polling) and [caching](https://www.apollographql.com/docs/react/data/queries/#setting-a-fetch-policy))
 
 <!-- Source: https://github.com/redwoodjs/redwood/issues/717 -->
 ```javascript
 export const beforeQuery = (props) => {
-  return { variables: props, fetchPolicy: 'network-only' }
+  return { variables: props, fetchPolicy: 'no-cache', pollInterval: 2500 }
 }
 ```
-
-But you can of course override this by exporting your own.
 
 ### afterQuery
 
@@ -143,9 +169,9 @@ export const afterQuery = (data) => ({...data})
 
 ### Loading
 
-If the request is in flight, a Cell renders `Loading`.
+If there's no cached data and the request is in flight, a Cell renders `Loading`. 
 
-For a production example, navigate to predictcovid.com, the first site made with Redwood. Usually, when you first navigate there, you'll see most of the dashboard spinning. Those are `Loading` components in action!
+For a production example, navigate to [predictcovid.com](https://predictcovid.com), the first site made with Redwood. Usually, when you first navigate there, you'll see most of the dashboard spinning. Those are `Loading` components in action!
 
 When you're developing locally, you can catch your Cell waiting to hear back for a moment if set your speed in the Inspector's **Network** tab to something like "Slow 3G".
 
@@ -155,10 +181,10 @@ But why bother with Slow 3G when Redwood comes with Storybook? Storybook makes d
 
 A Cell renders this component if there's no data.
 
-What do we mean by no data? We mean if the response is 1) `null` or 2) an empty array (`[]`). There's actually four functions in [withCellHOC.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/withCellHOC.tsx) dedicated just to figuring this out:
+What do we mean by no data? We mean if the response is 1) `null` or 2) an empty array (`[]`). There's actually four functions in [createCell.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/createCell.tsx) dedicated just to figuring this out:
 
 ```javascript
-// withCellHOC.tsx
+// createCell.tsx
 
 const isDataNull = (data: DataObject) => {
   return dataField(data) === null
@@ -203,7 +229,7 @@ In production, failed cells won't break your app, they'll just be empty divs... 
 
 If everything went well, a Cell renders `Success`.
 
-As mentioned, Success gets exclusive access to the `data` prop. But if you try to destructure it from props, you'll notice that it doesn't exist. This is because Redwood adds another layer of convenience: in [withCellHOC.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/withCellHOC.tsx#L121), Redwood spreads `data` (using the spread operator, `...`) into `Success` so that you can just destructure whatever data you were expecting from your `QUERY` directly.
+As mentioned, Success gets exclusive access to the `data` prop. But if you try to destructure it from props, you'll notice that it doesn't exist. This is because Redwood adds another layer of convenience: in [createCell.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/createCell.tsx#L149), Redwood spreads `data` (using the spread operator, `...`) into `Success` so that you can just destructure whatever data you were expecting from your `QUERY` directly.
 
 So, if you're querying for `posts` and `authors`, instead of doing:
 
@@ -229,13 +255,15 @@ Note that you can still pass any other props to `Success`. After all, it's still
 
 ### When should I use a Cell?
 
-A good rule of thumb for when to use a Cell is if your component needs some data from a database or other service that may be delayed in responding. Let Redwood worry about juggling what is displayed when. You just focus on what those things should look like.
+Whenever you want to fetch data. Let Redwood juggle what's displayed when. You just focus on what those things should look like.
 
-<!-- Source: https://github.com/redwoodjs/redwood/pull/413 -->
-For one-off queries, there's always `useApolloClient`. This hook returns the client, which you can use to make queries:
+While you can use a Cell whenever you want to fetch data, it's important to note that you don't have to. You can do anything you want! For example, for one-off queries, there's always `useApolloClient`. This hook returns the client, which you can use to execute queries, among other things:
 
 ```javascript
+// In a react component...
+
 client = useApolloClient()
+
 client.query({
   query: gql`
     ...
@@ -267,7 +295,7 @@ When would you want to do this? If you just want a file to end in "Cell" for som
 
 If we didn't do all that built-time stuff for you, how might you go about implementing a Cell yourself?
 
-Consider the [example from the Tutorial](https://deploy-preview-202--redwoodjs.netlify.app/tutorial/cells#cells) where we're fetching posts:
+Consider the [example from the Tutorial](https://learn.redwoodjs.com/docs/tutorial/cells#our-first-cell) where we're fetching posts:
 
 ```javascript
 export const QUERY = gql`
@@ -299,7 +327,7 @@ export const Success = ({ posts }) => {
 }
 ```
 
-And now let's say that Babel isn't going to come along and assemble our exports into a higher-order component. What might we do?
+And now let's say that Babel isn't going to come along and assemble our exports. What might we do?
 
 We'd probably do something like this:
 
@@ -366,4 +394,4 @@ export const Cell = () => {
 
 That's a lot of code. A lot of imperative code too.
 
-We're basically just dumping the contents of [withCellHOC.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/withCellHOC.tsx) into this file. Can you imagine having to do this every time you wanted to fetch data that might be delayed in responding? Yikes.
+We're basically just dumping the contents of [createCell.tsx](https://github.com/redwoodjs/redwood/blob/main/packages/web/src/components/createCell.tsx) into this file. Can you imagine having to do this every time you wanted to fetch data that might be delayed in responding? Yikes.

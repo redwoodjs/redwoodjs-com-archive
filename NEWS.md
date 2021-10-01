@@ -1,3 +1,15 @@
+![react_summit2_logo](https://user-images.githubusercontent.com/638764/119685584-1a4b6b00-be0b-11eb-9924-2c2c4070513b.png)
+
+# [RedwoodJS: The Full-Stack React App Framework – Tom Preston-Werner, React Summit Remote Edition 2021](https://www.youtube.com/watch?v=J21zOUhHjl4)
+
+## 26 May 2021
+
+### In @mojombo's talk, you'll learn about the @RedwoodJS architecture, see core features in action, and walk away with a sense of wonder and awe in your heart
+
+#### Video
+
+---
+
 ![swyx logo](https://user-images.githubusercontent.com/300/80043647-2867e300-84b7-11ea-93dd-1b9aa906f3d2.png)
 
 # [React Single File Components Are Here](https://www.swyx.io/writing/react-sfcs-here)
@@ -404,3 +416,15 @@
 ### In the Talking Serverless podcast, we dive into the world of serverless and talk to people in and around the space who are making contributions to the industry at large.
 
 #### Podcast
+
+---
+
+![Colbyashi Maru](https://user-images.githubusercontent.com/14932877/114967586-95dbf480-9e29-11eb-87e6-4d9d83d1b6f5.png)
+
+# [Full Stack Jamstack with RedwoodJS ft Milecia McGregor](https://www.youtube.com/watch?v=ifr4VKsZ6cw)
+
+## April 7 2021
+
+### Colbyashi Maru is a streaming series where Colby Fayock brings on guests and pits against the clock to build a project. In this episode Colby challenges Milecia McGregor to build an app using RedwoodJS. Will she succeed? 
+
+#### Video

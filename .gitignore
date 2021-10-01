@@ -5,6 +5,7 @@ publish/*
 !publish/downloads
 !publish/images
 !publish/favicon.*
+!publish/security.txt
 yarn-error.log
 code/html/cookbook/*.html
 !code/html/cookbook/index.html

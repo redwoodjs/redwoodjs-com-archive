@@ -19,7 +19,7 @@ Just like Prisma, we will store which data migrations have run in the database i
 
 Rather than create this model by hand, Redwood includes a CLI tool to add the model to `schema.prisma` and create the DB migration that adds the table to the database:
 
-    yarn rw dataMigrate install
+    yarn rw data-migrate install
 
 You'll see a new directory created at `api/db/dataMigrations` which will store our individual migration tasks.
 
@@ -28,7 +28,7 @@ Take a look at `schema.prisma` to see the new model definition:
 ```javascript
 // api/db/schema.prisma
 
-model DataMigration {
+model RW_DataMigration {
   version    String   @id
   name       String
   startedAt  DateTime
@@ -36,9 +36,9 @@ model DataMigration {
 }
 ```
 
-The install script also ran `yarn rw db save` automatically so you have a DB migration ready to go. You just need to run the `up` command to apply it:
+The install script also ran `yarn rw prisma migrate dev --create-only` automatically so you have a DB migration ready to go. You just need to run the `prisma migrate dev` command to apply it:
 
-    yarn rw db up
+    yarn rw prisma migrate dev
 
 ## Creating a New Data Migration
 
@@ -64,7 +64,7 @@ export default async ({ db }) => {
 
 > **Why such a long name?**
 >
-> So that if mutliple developers are creating data migrations, the chances of them creating one with the exact same filename is essentially zero, and they will all run in a predictable order—oldest to newest.
+> So that if multiple developers are creating data migrations, the chances of them creating one with the exact same filename is essentially zero, and they will all run in a predictable order—oldest to newest.
 
 Now it's up to you to define your data migration. In our user/preference example, it may look something like:
 
@@ -102,15 +102,15 @@ This loops through each existing `User` and creates a new `Preference` record co
 >
 > When going to production, you would need to run this as two separate deploys to ensure no data is lost.
 >
-> The reason is that all DB migrations are run and *then* all data migrations. So if you had two DB migrations (one to create `Preference` and one to drop the uneeded columns from `User`) they would both run before the Data Migration, so the columns containing the preferences are gone before the data migration gets a chance to copy them over!
+> The reason is that all DB migrations are run and *then* all data migrations. So if you had two DB migrations (one to create `Preference` and one to drop the unneeded columns from `User`) they would both run before the Data Migration, so the columns containing the preferences are gone before the data migration gets a chance to copy them over!
 >
 > **Remember**: Any destructive action on the database (removing a table or column especially) needs to be a two step process to avoid data loss.
 
 ## Running a Data Migration
 
-When you're ready, you can execute your data migration with `dataMigrate`'s `up` command:
+When you're ready, you can execute your data migration with `data-migrate`'s `up` command:
 
-    yarn rw dataMigrate up
+    yarn rw data-migrate up
 
 This goes through each file in `api/db/dataMigrations`, compares it against the list of migrations that have already run according to the `DataMigration` table in the database, and executes any that aren't present in that table, sorted oldest to newest based on the timestamp in the filename.
 
@@ -151,10 +151,10 @@ export default async ({ db }) => {
 
 Run once:
 
-    yarn rw dataMigrate install
-    yarn rw db up
+    yarn rw data-migrate install
+    yarn rw prisma migrate dev
 
 Run every time you need a new data migration:
 
     yarn rw generate dataMigration migrationName
-    yarn rw dataMigrate up
+    yarn rw data-migrate up

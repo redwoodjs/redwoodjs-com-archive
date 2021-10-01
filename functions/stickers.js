@@ -15,6 +15,7 @@ exports.handler = async (event,context) => {
   delete fields.user_agent
   delete fields.referrer
   fields.status = 'New'
+  fields.created_at = new Date().toISOString()
 
   const response = await fetch(process.env.AIRTABLE_ENDPOINT,
     {

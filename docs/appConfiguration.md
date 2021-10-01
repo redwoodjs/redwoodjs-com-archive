@@ -4,18 +4,18 @@ You can configure your Redwood app's settings in `redwood.toml`. By default, `re
 
 <!-- TODO -->
 <!-- toml syntax coloring not working here -->
+
 ```toml
 [web]
   port = 8910
-  apiProxyPath = "/.netlify/functions"
-  experimentalFastRefresh = false
+  apiProxyPath = "/.redwood/functions"
 [api]
   port = 8911
 [browser]
   open = true
 ```
 
-These are listed by default because they're the ones that you're most likely to configure. But there are plenty more available. The rest are spread between Redwood's [webpack configuration files](https://github.com/redwoodjs/redwood/tree/main/packages/core/config) and `@redwoodjs/internal`'s [config.ts](https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/config.ts#L42-L60):
+These are listed by default because they're the ones that you're most likely to configure. But there are plenty more available. The rest are spread between Redwood's [webpack configuration files](https://github.com/redwoodjs/redwood/tree/main/packages/core/config) and `@redwoodjs/internal`'s [config.ts](https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/config.ts#L54-L82):
 
 ```javascript
 // redwood/packages/internal/src/config.ts
@@ -26,8 +26,10 @@ const DEFAULT_CONFIG: Config = {
     port: 8910,
     path: './web',
     target: TargetEnum.BROWSER,
-    apiProxyPath: '/.netlify/functions',
-    experimentalFastRefresh: false,
+    apiProxyPath: '/.redwood/functions',
+    apiProxyPort: 8911,
+    fastRefresh: true,
+    a11y: true,
   },
   api: {
     host: 'localhost',
@@ -37,8 +39,16 @@ const DEFAULT_CONFIG: Config = {
     schemaPath: './api/db/schema.prisma',
   },
   browser: {
-    open: true,
+    open: false,
   },
+  generate: {
+    tests: true,
+    stories: true,
+  },
+  experimental: {
+    esbuild: false,
+  }
+
 }
 ```
 
@@ -48,9 +58,10 @@ The idea is that, in the future, changes here will have cascading, "app-level" e
 
 > For the difference between a side and a target, see [Redwood File Structure](https://redwoodjs.com/tutorial/redwood-file-structure).
 
-You can think of `redwood.toml` as a convenience layer over Redwood's webpack configuration files. That is, for certain settings, instead of having to deal with webpack directly, we give you quick access via `redwood.toml`. Some of these settings are for development, some are for production, and some are for both. You can actually see this reflected in which webpack file each configuraiton option is referenced in&mdash;[webpack.development.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.development.js), [webpack.production.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.production.js), and [webpack.common.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.common.js).
+You can think of `redwood.toml` as a convenience layer over Redwood's webpack configuration files. That is, for certain settings, instead of having to deal with webpack directly, we give you quick access via `redwood.toml`. Some of these settings are for development, some are for production, and some are for both. You can actually see this reflected in which webpack file each configuration option is referenced in&mdash;[webpack.development.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.development.js), [webpack.production.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.production.js), and [webpack.common.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.common.js).
 
 <!-- https://github.com/redwoodjs/redwood/pull/152#issuecomment-593835518 -->
+
 `redwood.toml` also serves a slightly larger purpose: it's used to determine the base directory of a Redwood project. So this file is what really makes a Redwood app a Redwood app. If you remove it and run `yarn rw dev`, you'll get an error:
 
 ```terminal
@@ -65,13 +76,17 @@ Configuration for the web side.
 
 | Key                           | Description                        | Default                 | Context       |
 | :---------------------------- | :--------------------------------- | :---------------------- | :------------ |
+| `title`                       | Title of your Redwood App          |                         | `both`        |
 | `host`                        | Hostname to listen on              | `'localhost'`           | `development` |
 | `port`                        | Port to listen on                  | `8910`                  | `development` |
 | `path`                        | Path to the web side               | `'./web'`               | `both`        |
 | `target`                      | Target for the web side            | `TargetEnum.BROWSER`    | `both`        |
-| `apiProxyPath`                | Proxy path to the api side         | `'/.netlify/functions'` | `production`  |
+| `apiProxyPath`                | Proxy path to the api side         | `'/.redwood/functions'` | `production`  |
+| `apiProxyPort`                | Proxy port to the api side         | `8911`                  | `production`  |
 | `includeEnvironmentVariables` | Environment variables to whitelist |                         | `both`        |
-| `experimentalFastRefresh`     | Enable webpack's fast refresh      | false                   | `development` | 
+| `fastRefresh`                 | Enable webpack's fast refresh      | true                    | `development` |
+| `a11y`                        | Enable storybook `addon-a11y` and `eslint-plugin-jsx-a11y`  | true                    | `development` |
+
 ### apiProxyPath
 
 ```toml
@@ -84,6 +99,7 @@ The path to the serverless functions. When you're running your app locally, this
 Since Redwood plays nicely with Netlify, we use the [same proxy path](https://docs.netlify.com/functions/build-with-javascript) by default. If you're deploying elsewhere, you'll want to change this.
 
 ### includeEnvironmentVariables
+
 <!-- https://github.com/redwoodjs/redwood/issues/427 -->
 <!-- https://github.com/redwoodjs/redwood/blob/d51ade08118c17459cebcdb496197ea52485364a/packages/core/config/webpack.common.js#L17-L31 -->
 
@@ -133,6 +149,37 @@ You can also provide the name of a browser to use instead of the system default.
 > When you generate a new app, the `open` value is set to `true`. If you delete the `open` config from `redwood.toml`, it will default to `false`. For example, removing the line `open = true` disables automatic browser opening.
 
 There's a lot more you can do here. For all the details, see Webpack's docs on [devServer.open](https://webpack.js.org/configuration/dev-server/#devserveropen).
+
+## [generate]
+
+```toml
+[generate]
+  tests = true
+  stories = true
+```
+
+Configuration for Generator "test" and "story" files. By default, the following Generators create Jest test and/or Storybook files (with mock data files when applicable) along with specific component file(s): component, cell, layout, page, sdl, and services. Understandably, this is a lot of files, and sometimes you don't want all of them, either because you don't plan on using Jest/Storybook, or are just getting started and don't want the overhead. These toml keys allows you to toggle the generation of test and story files on and off.
+
+| Key       | Description                    | Default  |
+| :-------- | :----------------------------- | :------- |
+| `tests`   | Generate Jest test files       | `true`   |
+| `stories` | Generate Storybook story files | `true`   |
+
+### Tests
+
+Setting to `true` creates tests when the generate command is invoked.
+
+### Stories
+
+Setting to `true` creates stories for [Storybook](https://storybook.js.org/) when the generate command is invoked.
+
+## [experimental]
+
+This section includes features that are *not stable* and may be removed in future versions.
+
+### esbuild
+
+Setting to `true` will use [esbuild](https://esbuild.github.io/) instead of the Webpack for building the project.
 
 ## Running within a Container or VM
 

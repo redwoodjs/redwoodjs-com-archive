@@ -1,6 +1,6 @@
 # Contributing
 
-Love Redwood and want to get involved? You’re in the right place and in good company! As of this writing, there are over [100 individuals](https://github.com/redwoodjs/redwood/blob/main/README.md#contributors) who have helped make Redwood awesome by contributing code and documentation. This doesn't include all those who participate in the vibrant, helpful, and encouraging Forums and Discord, which are both great places to get started if you have any questions.
+Love Redwood and want to get involved? You’re in the right place and in good company! As of this writing, there are more than [170 contributors](https://github.com/redwoodjs/redwood/blob/main/README.md#contributors) who have helped make Redwood awesome by contributing code and documentation. This doesn't include all those who participate in the vibrant, helpful, and encouraging Forums and Discord, which are both great places to get started if you have any questions.
 
 There are several ways you can contribute to Redwood:
 
@@ -23,6 +23,7 @@ What you want to do not on the roadmap? Well, still go for it! We love spikes an
 
 |Package|Description|
 |:-|:-|
+|[`@redwoodjs/api-server`](https://github.com/redwoodjs/redwood/blob/main/packages/api-server/README.md)|Run a Redwood app using Express server (alternative to serverless API)|
 |[`@redwoodjs/api`](https://github.com/redwoodjs/redwood/blob/main/packages/api/README.md)|Exposes functions to build the GraphQL API and provides services with `context`|
 |[`@redwoodjs/auth`](https://github.com/redwoodjs/redwood/blob/main/packages/auth/README.md#contributing)|A lightweight wrapper around popular SPA authentication libraries|
 |[`@redwoodjs/cli`](https://github.com/redwoodjs/redwood/blob/main/packages/cli/README.md)|All the commands for Redwood's built-in CLI|
@@ -36,15 +37,13 @@ What you want to do not on the roadmap? Well, still go for it! We love spikes an
 |[`@redwoodjs/router`](https://github.com/redwoodjs/redwood/blob/main/packages/router/README.md)|The built-in router for Redwood|
 |[`@redwoodjs/structure`](https://github.com/redwoodjs/redwood/blob/main/packages/structure/README.md)|Provides a way to build, validate and inspect an object graph that represents a complete Redwood project|
 |[`@redwoodjs/testing`](https://github.com/redwoodjs/redwood/blob/main/packages/testing/README.md)|Provides helpful defaults when testing a Redwood project's web side|
-|[`@redwoodjs/web`](https://github.com/redwoodjs/redwood/blob/main/packages/web/README.md)|Configures a Redwood's app web side: wraps the Apollo Client in `RedwoodProvider`; defines the Cell HOC|
+|[`@redwoodjs/web`](https://github.com/redwoodjs/redwood/blob/main/packages/web/README.md)|Configures a Redwood's app web side: wraps the Apollo Client in `RedwoodApolloProvider`; defines the Cell HOC|
 
 ## Contributing Docs
 
 First off, thank you for your interest in contributing docs! Redwood prides itself on good developer experience, and that includes good documentation.
 
 Before you get started, there's an implicit doc-distinction that we should make explicit: all the docs on redwoodjs.com are for helping people develop apps using Redwood, while all the docs on the Redwood repo are for helping people contribute to Redwood.
-
-> The exceptions to this split are the packages that are designed to be used outside Redwood, which, right now, are `@redwoodjs/auth` and `@redwoodjs/router`.
 
 Although Developing and Contributing docs are in different places, they most definitely should be linked and referenced as needed. For example, it's appropriate to have a "Contributing" doc on redwoodjs.com that's context-appropriate, but it should link to the Framework's [CONTRIBUTING.md](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md) (the way this doc does).
 

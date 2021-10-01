@@ -1,6 +1,6 @@
 # Quick Start
 
->RedwoodJS requires [Node.js](https://nodejs.org/en/) (>=12) and [Yarn](https://classic.yarnpkg.com/en/docs/install/) (>=1.15).
+>RedwoodJS requires [Node.js](https://nodejs.org/en/) (=14.x) and [Yarn](https://classic.yarnpkg.com/en/docs/install/) (>=1.15).
 
 Run the following command to create a new Redwood project in a "my-redwood-app" project directory.
 ```
@@ -15,16 +15,16 @@ A browser should automatically open to http://localhost:8910 and you will see th
 
 ## The Redwood CLI
 
-The Redwood developer experience relies heavily on the Redwood CLI.
+The Redwood developer experience relies heavily on the Redwood CLI. It's installed as a dependency when you create a new redwood-app, and is ran locally in your app.
 
 The following will show all the available commands in the Redwood CLI (note: rw is alias of redwood):
 ```
 yarn rw --help
 ```
 
-Some commands, like [db](https://redwoodjs.com/docs/cli-commands#db), have a lot of options. You can dig further into a specific command by adding `--help` to the command like so:
+Some commands, like [prisma](https://redwoodjs.com/docs/cli-commands#db), have a lot of options. You can dig further into a specific command by adding `--help` to the command like so:
 ```
-yarn rw db --help
+yarn rw prisma --help
 ```
 
 Take a visit to the [CLI Doc](https://redwoodjs.com/docs/cli-commands.html) to see detailed information on all commands and options.
@@ -33,7 +33,7 @@ Take a visit to the [CLI Doc](https://redwoodjs.com/docs/cli-commands.html) to s
 
 Redwood generators make monotonous developer tasks a breeze. Creating all the boilerplate code required for CRUD operations on a model can be accomplished with a few commands. Three to be exact. 
 
-Every new Redwood project comes with a default Model called UserExample in `api/db/schema.prisma`. 
+Every new Redwood project comes with a default Model called UserExample in `api/db/schema.prisma` (ignore the rest of the file for now, it's for more advanced configuration data).
 
 ```
 model UserExample {
@@ -43,17 +43,15 @@ model UserExample {
 }
 ```
 
-With only three commands, Redwood will create everything we need for our CRUD operations:
+With only two commands, Redwood will create everything we need for our CRUD operations:
 ```
-yarn rw db save
-yarn rw db up
+yarn rw prisma migrate dev
 yarn rw generate scaffold UserExample
 ```
 
 What exactly just happened? Glad you asked.
 
-- `yarn rw db save` creates a snapshot of our UserExample model for our migration
-- `yarn rw db up` applies the migration and creates a new table in our database called `UserExample`
+- `yarn rw prisma migrate dev` creates and applies a snapshot of our UserExample model for our migration, creating a new table in our database called `UserExample`
 - `yarn rw generate scaffold UserExample` tells Redwood to create the necessary Pages, SDL, and Services for the given Model 
 
 Just like that, we are done. No seriously. Visit http://localhost:8910/user-examples to see for yourself. 
