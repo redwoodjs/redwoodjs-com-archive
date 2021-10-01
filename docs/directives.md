@@ -319,7 +319,7 @@ query user(id: 1) {
 }
 ```
 
-The will get a result.
+They will get a result.
 
 But, if they try to query:
 
@@ -336,7 +336,7 @@ They will be forbidden from even making the request.
 
 ### Chaining a Validator and a Transformer
 
-Similar the the prior example, you may want to chain directives, but the transform doesn't consider authentication or role membership.
+Similar to the prior example, you may want to chain directives, but the transform doesn't consider authentication or role membership.
 
 For example, here we ensure that anyone trying to query a User and fetch the email must be authenticated.
 
@@ -355,7 +355,7 @@ And then, if they are, apply a mask to the email field.
 
 Maybe you want to apply multiple field formatting?
 
-If your request event headers includes geographic or timezone info, you could compose a custom Transformer directive called `@localTimezone` could inspect the header vaklue and convert the `createdAt` from UTC to local time -- something often done in the browser.
+If your request event headers includes geographic or timezone info, you could compose a custom Transformer directive called `@localTimezone` could inspect the header value and convert the `createdAt` from UTC to local time -- something often done in the browser.
 
 Then, you can chain the `@dateFormat` Transformer, to just return the date portion of the timestamp -- and not the time.
 
@@ -450,7 +450,7 @@ If, however, you want your query or mutation to be public, then simply use `@ski
 
 ## Custom Directives
 
-Wnat to write your own directive? You can of course! 
+Want to write your own directive? You can of course! 
 Just generate one using the Redwood CLI; it takes care of the boilerplate and even gives you a handy test!
 
 ### Generators
@@ -506,7 +506,7 @@ They can be async or sync.
 And if you want to stop executing (because of insufficient permissions for example), throw an error.
 The return value is ignored
 
-An example of `directiveArgs` is the `roles` argument in the driective `requireAuth(roles: "ADMIN")`
+An example of `directiveArgs` is the `roles` argument in the directive `requireAuth(roles: "ADMIN")`
 
 ```ts
 const validate: ValidatorDirectiveFunc = ({ context, directiveArgs }) => {
@@ -590,7 +590,7 @@ const transform: TransformerDirectiveFunc = ({ context, resolvedValue }) => {
 ```
 
 It contains the value of the field on which the directive was placed. Here, `email`. 
-So the `resolvedValue` will be the the value of the email property in the User model, the "original value" so-to-speak.
+So the `resolvedValue` will be the value of the email property in the User model, the "original value" so-to-speak.
 
 When you return a value from the `transform` function, just return a modified value and that will be returned as the result and replace the `email` value in the response.
 
