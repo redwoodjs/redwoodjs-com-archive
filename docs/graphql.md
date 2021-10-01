@@ -293,6 +293,133 @@ The GraphQL Playground's nice, but if you're a power user, you'll want to be usi
 - dt has some thoughts on this
 - insomnia -->
 
+## Verifying GraphQL Schema
+
+In order to keep your GraphQL endpoint and services secure, you must specify one of `@requireAuth`, `@skipAuth` or a custom directive on **every** query and mutation defined in your SDL.
+
+Redwood will verify that your schema complies with these runs when:
+
+* building (or building just the api)
+* launching the dev server.
+
+If any fail this check, you will see:
+
+* each query of mutation listed in the command's error log
+* a fatal error `⚠️ GraphQL server crashed` if launching the server
+
+### Build-time Verification
+
+When building via the `yarn rw build` command and the SDL fails verification, you will see output that lists each query or mutation missing the directive:
+
+
+```terminal
+  ✔ Generating Prisma Client...
+  ✖ Verifying graphql schema...
+    → - deletePost Mutation
+    Building API...
+    Cleaning Web...
+    Building Web...
+    Prerendering Web...
+
+You must specify one of @requireAuth, @skipAuth or a custom directive for
+- contacts Query
+- posts Query
+- post Query
+- createContact Mutation
+- createPost Mutation
+- updatePost Mutation
+- deletePost Mutation 
+```
+
+### Dev Server Verification
+
+When launching the dev server via the `yarn rw dev` command, you will see output that lists each query or mutation missing the directive:
+
+```terminal
+
+api | [nodemon] 2.0.12
+api | [nodemon] to restart at any time, enter `rs`
+api | [nodemon] watching path(s): redwood.toml
+api | [nodemon] watching extensions: js,mjs,json
+api | [nodemon] starting `yarn rw-api-server-watch`
+gen | Generating TypeScript definitions and GraphQL schemas...
+gen | 37 files generated
+api | Building... Took 444 ms
+api | Starting API Server... Took 2 ms
+api | Listening on http://localhost:8911/
+api | Importing Server Functions... 
+web | ...
+api | FATAL [2021-09-24 18:41:49.700 +0000]: 
+api |  ⚠️ GraphQL server crashed 
+api | 
+api |     Error: You must specify one of @requireAuth, @skipAuth or a custom directive for 
+api |     - contacts Query
+api |     - posts Query
+api |     - post Query
+api |     - createContact Mutation
+api |     - createPost Mutation
+api |     - updatePost Mutation
+api |     - deletePost Mutation 
+```
+
+To fix these errors, simple declare with `@requireAuth` to enforce authentication or `@skipAuth` to keep the operation public on each as approriate for your app's permissions needs.
+
+## Directives
+
+Directives supercharge your GraphQL services. They add configuration to fields, types or operations that act like "middleware" that lets you run reusable code during GraphQL execution to perform tasks like authentication, formatting, and more.
+
+You'll recognize a directive by its preceded by the `@` character, e.g. `@myDirective`, and by being declared alongside a field:
+
+
+```ts
+type Bar {
+  name: String! @myDirective
+}
+```
+
+or a Query or Mutation:
+
+
+```ts
+type Query {
+  bars: [Bar!]! @myDirective
+}
+
+type Mutation {
+  createBar(input: CreateBarInput!): Bar! @myDirective
+}
+```
+### GraphQL Handler Setup
+
+Redwood makes it easy to code, organize, and map your directives into the GraphQL schema.
+
+You simply add them to the `directives` directory and the `createGraphQLHandler` will do all the work.
+
+```ts
+// api/src/functions/graphql.ts
+
+import { createGraphQLHandler } from '@redwoodjs/graphql-server'
+
+import directives from 'src/directives/**/*.{js,ts}' // 👈 directives live here
+import sdls from 'src/graphql/**/*.sdl.{js,ts}'
+import services from 'src/services/**/*.{js,ts}'
+
+import { db } from 'src/lib/db'
+import { logger } from 'src/lib/logger'
+
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: {} },
+  directives,//  👈 directives are added to the schema here
+  sdls,
+  services,
+  onException: () => {
+    // Disconnect from your database with an unhandled exception.
+    db.$disconnect()
+  },
+})
+```
+
+> Note: Check-out the [in-depth look at Redwood Directives](https://www.redwoodjs.com/docs/directives) that explains how to generate directives so you may use them to validate access and transform the response.
 ## Logging
 
 Logging is essential in production apps to be alerted about critical errors and to be able to respond effectively to support issues. In staging and development environments, logging helps you debug queries, resolvers and cell requests.
@@ -396,24 +523,26 @@ export const post = async ({ id }) => {
 The GraphQL handler take care of will then take take of logging  your query and data -- as long as your logger is setup to log at the `info` [level](https://redwoodjs.com/docs/logger#log-level) and above. You can also disable the statements in production by just logging at the `warn` and above [level](https://redwoodjs.com/docs/logger#log-level).
 
 ```terminal
-api | INFO [2021-07-09 14:20:11.656 +0000] (apollo-graphql-server): GraphQL requestDidStart
-api |     query: "query ($id: Int!) {\n  post(id: $id) {\n    id\n    title\n    body\n    createdAt\n    publishedAt\n    updatedAt\n    __typename\n  }\n}\n"
-api | DEBUG [2021-07-09 14:20:11.657 +0000] (apollo-graphql-server): GraphQL executionDidStart
-api |     operationName: null
-api |     query: "query ($id: Int!) {\n  post(id: $id) {\n    id\n    title\n    body\n    createdAt\n    publishedAt\n    updatedAt\n    __typename\n  }\n}\n"
-api | INFO [2021-07-09 14:20:12.114 +0000] (apollo-graphql-server): GraphQL willSendResponse
+api | POST /graphql 200 7.754 ms - 1772
+api | DEBUG [2021-09-29 16:04:09.313 +0000] (graphql-server): GraphQL execution started: BlogPostQuery
+api |     operationName: "BlogPostQuery"
+api |     query: {
+api |       "id": 3
+api |     }
+api | DEBUG [2021-09-29 16:04:09.321 +0000] (graphql-server): GraphQL execution completed: BlogPostQuery
 api |     data: {
 api |       "post": {
-api |         "id": 2,
-api |         "title": "Lime Tree Arbour",
-api |         "body": "The wind in the trees is whispering \\ Whispering low that I love her \\ She puts her hand over mine \\ Down in the lime tree arbour",
-api |         "createdAt": "2021-03-18T05:32:39.258Z",
-api |         "publishedAt": "2021-03-18T05:32:39.258Z",
-api |         "updatedAt": "2021-07-09T01:52:08.005Z",
+api |         "id": 3,
+api |         "body": "Meh waistcoat succulents umami asymmetrical, hoodie post-ironic paleo chillwave tote bag. Trust fund kitsch waistcoat vape, cray offal gochujang food truck cloud bread enamel pin forage. Roof party chambray ugh occupy fam stumptown. Dreamcatcher tousled snackwave, typewriter lyft unicorn pabst portland blue bottle locavore squid PBR&B tattooed.",
+api |         "createdAt": "2021-09-24T16:51:06.198Z",
 api |         "__typename": "Post"
 api |       }
 api |     }
-api |     query: "query ($id: Int!) {\n  post(id: $id) {\n    id\n    title\n    body\n    createdAt\n    publishedAt\n    updatedAt\n    __typename\n  }\n}\n"
+api |     operationName: "BlogPostQuery"
+api |     query: {
+api |       "id": 3
+api |     }
+api | POST /graphql 200 9.386 ms - 441
 ```
 
 but keep your services concise!
@@ -472,7 +601,7 @@ We see that this request took about 500 msecs (note: duration is reported in nan
 For more details about the information logged and its format, see [Apollo Tracing](https://github.com/apollographql/apollo-tracing).
 
 ```terminal
-pi | INFO [2021-07-09 14:25:52.452 +0000] (apollo-graphql-server): GraphQL willSendResponse
+pi | INFO [2021-07-09 14:25:52.452 +0000] (graphql-server): GraphQL willSendResponse
 api |     tracing: {
 api |       "version": 1,
 api |       "startTime": "2021-07-09T14:25:51.931Z",

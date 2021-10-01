@@ -541,6 +541,38 @@ See the [Data Migration](/docs/data-migrations) docs.
 
 See the [Deploy](/docs/deploy) docs.
 
+### generate directive
+
+Generate a directive.
+
+```terminal
+yarn redwood generate directive <name>
+```
+
+
+| Arguments & Options  | Description                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| `name`               | Name of the directive                                                                |
+| `--force, -f`        | Overwrite existing files                                                             |
+| `--typescript, --ts` | Generate TypeScript files (defaults to your projects language target) |
+| `--type       `      | Directive type [Choices: "validator", "transformer"]                  |
+
+**Usage**
+
+See [Redwood Directives](/docs/directives).
+
+**Example**
+
+Generating a `myDirective` directive using the interactive command:
+
+```terminal
+yarn rw g directive myDirective
+
+? What type of directive would you like to generate? › - Use arrow-keys. Return to submit.
+❯   Validator - Implement a validation: throw an error if criteria not met to stop execution
+    Transformer - Modify values of fields or query responses
+```
+
 ### generate function
 
 Generate a Function.
@@ -961,6 +993,9 @@ https://community.redwoodjs.com/t/prisma-beta-2-and-redwoodjs-limited-generator-
 | `--crud`             | Also generate mutations                                                              |
 | `--force, -f`        | Overwrite existing files                                                             |
 | `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
+
+
+> **Note:** The generated sdl will include the `@requireAuth` directive by default to ensure queries and mutations are secure. If your app's queries and mutations are all public, you can set up a custom SDL generator template to apply `@skipAuth` (or a custom validator directive) to suit you application's needs.
 
 **Destroying**
 
