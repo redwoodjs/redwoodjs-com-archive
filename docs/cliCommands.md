@@ -385,9 +385,11 @@ Let's create our faktory worker to consume the tasks, share our redwood applicat
 // scripts/faktoryWorker.js
 
 const { postSignupTask } from '$api/src/lib/tasks'
+import { logger } from '$api/src/lib/logger'
 const faktory = require('faktory-worker')
 
 faktory.register('postSignupTask', async (taskArgs) => {
+  logger.info("running postSignupTask in background worker")
   await postSignupTask(taskArgs)
 })
 
@@ -397,11 +399,11 @@ export default async ({ _args }) => {
       url: process.env.FAKTORY_URL,
     })
     .catch((error) => {
-      console.error(`worker failed to start: ${error}`)
+      logger.error(`worker failed to start: ${error}`)
       process.exit(1)
     })
   worker.on('fail', ({ _job, error }) => {
-    console.error(`worker failed to start: ${error}`)
+    logger.error(`worker failed to start: ${error}`)
   })
 }
 ```
