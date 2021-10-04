@@ -577,7 +577,7 @@ describe('HomePage', () => {
 
 This test is a little more explicit in that it expects an actual `<button>` element to exist and that it's label (name) be "Login". Being explicit with something as important as the login button can be a good idea, especially if you want to be sure that your site is friendly to screen-readers or another assistive browsing devices.
 
-#### mockCurrentUser()
+#### mockCurrentUser() on the Web-side
 
 How do we test that when a user *is* logged in, it outputs a message welcoming them, and that the button is *not* present? Similar to `mockGraphQLQuery()` Redwood also provides a `mockCurrentUser()` which tells Redwood what to return when the `getCurrentUser()` function of `api/src/lib/auth.js` is invoked:
 
@@ -1102,7 +1102,6 @@ The important takeaways are:
 // })
 ```
 
-
 ## Testing Services
 
 Until now we've only tested things on the web-side of our app. When we test the api-side that means testing our Services.
@@ -1204,7 +1203,7 @@ export const standard = defineScenario({
 
 This scenario creates two user records. The generator can't determine the intent of your fields, it can only tell the datatypes, so strings get prefilled with just 'String'. What's up with the `one` and `two` keys? Those are friendly names you can use to reference your scenario data in your test.
 
-The `data` key is one of Prisma's [create options](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create). It's the same as in your Services—everything in the `one` and `two` keys actually just gets passed to Prisma's create. You can even create [relationships](https://redwoodjs.com/docs/testing.html#relationships) if you want. 
+The `data` key is one of Prisma's [create options](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create). It's the same as in your Services—everything in the `one` and `two` keys actually just gets passed to Prisma's create. You can even create [relationships](https://redwoodjs.com/docs/testing.html#relationships) if you want.
 
 Let's look at a better example. We'll update the scenario with some additional data and give them a more distinctive name:
 
@@ -1417,7 +1416,7 @@ scenario('retrieves a comment with post', async (scenario) => {
 
 ####  Relationships with Existing Records
 
-If your models have relationships and you need to connect new records to existing ones, using the object syntax just isn't going to cut it. 
+If your models have relationships and you need to connect new records to existing ones, using the object syntax just isn't going to cut it.
 
 Consider a `Comment`: it has a parent `Post`, and both of them have an `Author`. Using the object syntax, there's no way of accessing the `authorId` of the `Author` we just created. We could potentially hardcode it, but that's bad practice.
 
@@ -1452,11 +1451,11 @@ When you run into this, you can access an existing `scenario` record using the d
 
 ```javascript
 export const standard = defineScenario({
-  author: { 
-    kris: { 
+  author: {
+    kris: {
       data: { name: 'Kris' }
     }
-    rob: { 
+    rob: {
       data: { name: 'rob' }
     }
   },
@@ -1489,8 +1488,8 @@ Since [ES2015](https://tc39.es/ecma262/#sec-ordinaryownpropertykeys), object pro
 
 ```javascript
 export const standard = defineScenario({
-  user: { 
-    kris: { 
+  user: {
+    kris: {
       data: { name: 'Kris' }
     }
   },
@@ -1520,16 +1519,70 @@ Only the posts scenarios will be present in the database when running the `posts
 
 During the run of any single test, there is only every one scenario's worth of data present in the database: users.standard *or* users.incomplete.
 
+### mockCurrentUser() on the API-side
+
+Just like when testing the web-side, we can use `mockCurrentUser()` to mock out the user that's currently logged in (or not) on the api-side.
+
+Let's say our blog, when commenting, would attach a comment to a user record if that user was logged in while commenting. Otherwise the comment would be anonymous:
+
+```javascript
+// api/src/services/comments/comments.js
+
+export const createComment = ({ input }) => {
+  if (context.currentUser) {
+    return db.comment.create({ data: { userId: context.currentUser.id, ...input }})
+  } else {
+    return db.comment.create({ data: input })
+  }
+}
+```
+
+We could include a couple of tests that verify this functionality like so:
+
+```javascript
+// api/src/services/comments/comments.test.js
+
+scenario('attaches a comment to a logged in user', async (scenario) => {
+  mockCurrentUser({ id: 123, name: 'Rob' })
+
+  const comment = await createComment({
+    input: {
+      body: "It is the nature of all greatness not to be exact.",
+      postId: scenario.comment.jane.postId,
+    },
+  })
+
+  expect(comment.userId).toEqual(123)
+})
+
+scenario('creates anonymous comment if logged out', async (scenario) => {
+  // currentUser will return `null` by default in tests, but it's
+  // always nice to be explicit in tests that are testing specific
+  // behavior (logged in or not)—future devs may not go in with the
+  // same knowledge/assumptions as us!
+  mockCurrentUser(null)
+
+  const comment = await createComment({
+    input: {
+      body: "When we build, let us think that we build for ever.",
+      postId: scenario.comment.jane.postId,
+    },
+  })
+
+  expect(comment.userId).toEqual(null)
+})
+```
+
 ## Testing Functions
 
-Testing [serverless functions](https://redwoodjs.com/docs/serverless-functions) and [webhooks](https://redwoodjs.com/docs/webhooks) can be difficult and time-consuming because you have to construct the event and context information that the function handler needs. 
+Testing [serverless functions](https://redwoodjs.com/docs/serverless-functions) and [webhooks](https://redwoodjs.com/docs/webhooks) can be difficult and time-consuming because you have to construct the event and context information that the function handler needs.
 
 Webhook testing is even more complex because you might need to open a http tunnel to a running dev server to accept an incoming request, then you'll have to sign the webhook payload so that the request is trusted, and then you might even trigger events from your third-party service ... all manually. Every. Time.
 
 Luckily, RedwoodJS has several api testing utilities to make [testing functions and webhooks](https://redwoodjs.com/docs/serverless-functions#how-to-test-serverless-functions) a breeze -- and without having to run a dev server.
 
 > Want to learn to [How to Test Serverless Functions](https://redwoodjs.com/docs/serverless-functions#how-to-test-serverless-functions) and [Webhooks](https://?redwoodjs.com/docs/serverless-functions#how-to-test-webhooks)?
-> 
+>
 > We have an entire testing section in the [Serverless Functions documentation](https://redwoodjs.com/docs/serverless-functions) that will walk your through an example of a function and a webhook.
 
 ## Wrapping Up
