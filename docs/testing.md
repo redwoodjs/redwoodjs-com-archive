@@ -577,7 +577,7 @@ describe('HomePage', () => {
 
 This test is a little more explicit in that it expects an actual `<button>` element to exist and that it's label (name) be "Login". Being explicit with something as important as the login button can be a good idea, especially if you want to be sure that your site is friendly to screen-readers or another assistive browsing devices.
 
-#### mockCurrentUser()
+#### mockCurrentUser() on the Web-side
 
 How do we test that when a user *is* logged in, it outputs a message welcoming them, and that the button is *not* present? Similar to `mockGraphQLQuery()` Redwood also provides a `mockCurrentUser()` which tells Redwood what to return when the `getCurrentUser()` function of `api/src/lib/auth.js` is invoked:
 
@@ -1519,7 +1519,7 @@ Only the posts scenarios will be present in the database when running the `posts
 
 During the run of any single test, there is only every one scenario's worth of data present in the database: users.standard *or* users.incomplete.
 
-### mockCurrentUser()
+### mockCurrentUser() on the API-side
 
 Just like when testing the web-side, we can use `mockCurrentUser()` to mock out the user that's currently logged in (or not) on the api-side.
 
