@@ -104,7 +104,7 @@ import { createLogger } from '@redwoodjs/api/logger'
  *
  * RedwoodLoggerOptions have
  * @param {options} LoggerOptions - defines how to log, such as pretty printing, redaction, and format
- * @param {string | DestinationStream} destination - defines where to log, such as a transport stream or file
+ * @param {array} targets - defines where to log, such as a transport stream or file
  * @param {boolean} showConfig - whether to display logger configuration on initialization
  */
 export const logger = createLogger({ options: { level: 'info' } })
@@ -181,10 +181,6 @@ Note: If you use `nestedKey` logging, you will have to manually set any `redact`
 
 For example, if your nestedKey is `'log`, then instead of redacting `email` you will have to redact `log.email`.
 
-### Destination aka Where to Log
-
-The `destination` option allows you to specify where to send the api-side log statements: to standard output, file, or transport stream.
-
 ### Dev Server
 
 When in your development environment, logs will be output to the dev servers standard output.
@@ -201,7 +197,10 @@ Note: logging to a file is not permitted if deployed to Netlify or Vercel.
  */
 export const logger = createLogger({
   //options: {},
-  destination: '/path/to/file/api.log',
+ targets: [{
+    level: 'info',
+    target: 'pino-pretty', // must be installed separately
+    options: { destination: 1 },
 })
 ```
 
@@ -255,7 +254,13 @@ In the situation where you want to force pretty printing even in Production, you
  * Always pretty print
  */
 export const logger = createLogger({
-  options: { prettyPrint: 'true' },
+  targets: [
+    {
+      target: 'pino-pretty',
+      options: { destination : 1 },
+      level: 'trace',
+    },
+  ],
 })
 ```
 
@@ -301,7 +306,13 @@ Note: logging to a file is not permitted if deployed to Netlify or Vercel.
  */
 export const logger = createLogger({
   options: {},
-  destination: '/path/to/file/api.log',
+  targets: [
+    {
+      target: 'pino/file',
+      options: { destination : '/path/to/file/api.log' },
+      level: 'trace',
+    },
+  ],
 })
 ```
 
@@ -362,7 +373,7 @@ export const logger = createLogger({
 
 Documentation on the `Write` class can be found here: [https://nodejs.org/api/stream.html](https://nodejs.org/api/stream.html#stream_writable_write_chunk_encoding_callback)
 
-### Log to Datadog using a Transport Stream Destination
+/*### Log to Datadog using a Transport Stream Destination
 
 To stream your logs to [Datadog](https://www.datadoghq.com/), you can
 
