@@ -1528,9 +1528,9 @@ Let's say our blog, when commenting, would attach a comment to a user record if 
 ```javascript
 export const createComment = ({ input }) => {
   if (currentUser) {
-    return db.comment.create({ data: input })
-  } else {
     return db.comment.create({ data: { userId: currentUser.id, ...input }})
+  } else {
+    return db.comment.create({ data: input })
   }
 }
 ```
