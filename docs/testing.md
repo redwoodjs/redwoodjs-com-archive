@@ -1529,8 +1529,8 @@ Let's say our blog, when commenting, would attach a comment to a user record if 
 // api/src/services/comments/comments.js
 
 export const createComment = ({ input }) => {
-  if (currentUser) {
-    return db.comment.create({ data: { userId: currentUser.id, ...input }})
+  if (context.currentUser) {
+    return db.comment.create({ data: { userId: context.currentUser.id, ...input }})
   } else {
     return db.comment.create({ data: input })
   }
@@ -1542,12 +1542,12 @@ We could include a couple of tests that verify this functionality like so:
 ```javascript
 // api/src/services/comments/comments.test.js
 
-scenario('attaches a comment to a user when logged in', async (scenario) => {
+scenario('attaches a comment to a logged in user', async (scenario) => {
   mockCurrentUser({ id: 123, name: 'Rob' })
 
   const comment = await createComment({
     input: {
-      body: "A tree's bark is worse than its bite",
+      body: "It is the nature of all greatness not to be exact.",
       postId: scenario.comment.jane.postId,
     },
   })
@@ -1555,15 +1555,16 @@ scenario('attaches a comment to a user when logged in', async (scenario) => {
   expect(comment.userId).toEqual(123)
 })
 
-scenario('creates an anonymous comment if user is not logged in', async (scenario) => {
-  // currentUser will return `null` by default in tests, but it's always nice
-  // to be explicit in our tests that specifically test this functionality—
-  // future devs may not go in with the same knowledge/assumptions as us!
+scenario('creates anonymous comment if logged out', async (scenario) => {
+  // currentUser will return `null` by default in tests, but it's
+  // always nice to be explicit in tests that are testing specific
+  // behavior (logged in or not)—future devs may not go in with the
+  // same knowledge/assumptions as us!
   mockCurrentUser(null)
 
   const comment = await createComment({
     input: {
-      body: "A tree's bark is worse than its bite",
+      body: "When we build, let us think that we build for ever.",
       postId: scenario.comment.jane.postId,
     },
   })
