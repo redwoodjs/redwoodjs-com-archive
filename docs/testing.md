@@ -1526,6 +1526,8 @@ Just like when testing the web-side, we can use `mockCurrentUser()` to mock out 
 Let's say our blog, when commenting, would attach a comment to a user record if that user was logged in while commenting. Otherwise the comment would be anonymous:
 
 ```javascript
+// api/src/services/comments/comments.js
+
 export const createComment = ({ input }) => {
   if (currentUser) {
     return db.comment.create({ data: { userId: currentUser.id, ...input }})
@@ -1538,6 +1540,8 @@ export const createComment = ({ input }) => {
 We could include a couple of tests that verify this functionality like so:
 
 ```javascript
+// api/src/services/comments/comments.test.js
+
 scenario('attaches a comment to a user when logged in', async (scenario) => {
   mockCurrentUser({ id: 123, name: 'Rob' })
 
