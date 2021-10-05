@@ -1449,7 +1449,7 @@ yarn redwood setup <command>
 | `deploy`           | Setup a deployment configuration for a provider                                           |
 | `generator`        | Copy default Redwood generator templates locally for customization |
 | `i18n`             | Setup i18n                                                                                |
-| `shadowenv`        | Setup shadowenv to alias `yarn rw ...` commands to `rw ...`  (MacOS & Linux only)         |
+| `cli-alias`        | Set up CLI command aliasing |
 | `tailwind`         | Setup tailwindcss and PostCSS                                                             |
 | `webpack`          | Setup webpack config file in your project so you can add custom config                    |
 | `tsconfig`         | Add relevant tsconfig, so you can start using TypeScript                                  |
