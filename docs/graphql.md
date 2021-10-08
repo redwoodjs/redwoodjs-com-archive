@@ -4,8 +4,23 @@ GraphQL is a fundamental part of Redwood. Having said that, you can get going wi
 
 The good thing is that, besides taking care of the annoying stuff for you (namely, mapping your resolvers, which gets annoying fast if you do it yourself!), there's not many gotchas with GraphQL in Redwood. GraphQL is GraphQL. The only Redwood-specific thing you should really be aware of is [resolver args](#redwoods-resolver-args).
 
-Since there's two parts to GraphQL in Redwood, the client and the server, we've divided this doc up that way. By default, Redwood uses Apollo for both: [Apollo Client](https://www.apollographql.com/docs/react/) for the client and [Apollo Server](https://www.apollographql.com/docs/apollo-server/) for the server, though you can swap Apollo Client out for something else if you want. Apollo Server, not so much, but you really shouldn't have to do that unless you want to be on the bleeding edge of the [GraphQL spec](https://spec.graphql.org/), in which case, why are you reading this doc anyway? Contribute a PR instead!
+Since there's two parts to GraphQL in Redwood, the client and the server, we've divided this doc up that way. 
 
+On the `web` side, Redwood by default uses [Apollo Client](https://www.apollographql.com/docs/react/) though you can swap Apollo Client out for something else if you want. 
+
+The `api` side offers serverless functions as well as  a GraphQL server built upon [GraphQL Helix]((https://dev.to/danielrearden/building-a-graphql-server-with-graphql-helix-2k44)) and the [Envelop plugin system](https://www.envelop.dev/docs) from [The Guild](https://the-guild.dev).
+
+One of the tenets of the Redwood philosophy is "Redwood believes that, as much as possible, you should be able to operate in a serverless mindset and deploy to a generic computational grid.”
+
+To be, able to deploy to a “generic computation grid” means that as a developer you should be able to deploy using the provider or technology of your choosing. You should be able to deploy to Netlify, Vercel, Fly, Render, AWS Serverless, or elsewhere with easy and no vendor or platform lock in. You should be in control of the framework, what the response looks like and how your client consume it.
+
+The same should be true of your GraphQL Server. [GraphQL Helix](https://dev.to/danielrearden/building-a-graphql-server-with-graphql-helix-2k44) makes that possible.
+
+> Existing libraries like Apollo Server provide you with either a complete HTTP server or else a middleware function that you can plug into your framework of choice. GraphQL Helix takes a different approach — it just provides a handful of functions that you can use to turn an HTTP request into a GraphQL execution result. In other words, GraphQL Helix leaves it up to you to decide how to send back the response.
+
+We leverage Envelop plugins to provide GraphQL [security best practices](/docs/graphql#security) and also after implemented custom internal plugins to help with authentication, [logging](/docs/graphql#logging), [directive handling](/docs/graphql#directives), and more.
+
+All this gets us closer to Redwood's goal of being able to deploy to a "generic computation grid". And that’s exciting!
 ## Client-side
 
 ### RedwoodApolloProvider
@@ -732,6 +747,19 @@ export const handler = createGraphQLHandler({
 // ...
 })
 ```
+
+### Error Masking
+
+In many GraphQL servers, when an error is thrown original error, the details of that error is leaked to the outside world. The error and its message is then returned in the response and a client might reveal those errors in logs or even render the message to the user. You could potentially leak sensitive or other information about your app you don't want to share -- such as database connection failures or even the presence of certain fields.
+
+Redwood masks unexpected errors out-of-the-box to prevent leaking sensitive information.
+
+If an error that is not one of Redwood's errors or is based on a GraphQLError is thrown:
+
+* The original error and its message will be logged using the defined GraphQL logger
+* The message "Something went wrong" will replace the error message in the response
+
+
 ## FAQ
 
 ### Why Doesn't Redwood Use Something Like Nexus?
