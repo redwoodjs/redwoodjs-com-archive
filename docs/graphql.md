@@ -293,6 +293,34 @@ The GraphQL Playground's nice, but if you're a power user, you'll want to be usi
 - dt has some thoughts on this
 - insomnia -->
 
+### Health checks
+
+Health checks are used determine if a server is available and ready to start serving traffic. By default, Redwood's GraphQLHandler provides a health check endpoint at `/graphql/health` which returns a `200 status code` with a result of `{ status: 'pass' }` if the server is healthy and can accept requests or a `503 status code` with `{ status: fail }` if not.
+
+If you need more than the default basic health check, you can provide a custom implementation via an `onHealthCheck` function when creating the GraphQLHandler. If defined, this async `onHealthCheck` function should return if the server is deemed ready or throw if there is an error. 
+
+```ts
+// api/src/functions/graphql.ts
+/// ...
+
+const myCustomHealthCheck = async () => {
+  if (ok) { // replace with custom check
+    return
+  }
+
+  throw Error('Health check failed')
+}
+
+export const handler = createGraphQLHandler({
+  onHealthCheck = await myCustomHealthCheck(),
+  // .. other config
+  getCurrentUser,
+  directives,
+  sdls,
+  services,
+})
+```
+
 ## Verifying GraphQL Schema
 
 In order to keep your GraphQL endpoint and services secure, you must specify one of `@requireAuth`, `@skipAuth` or a custom directive on **every** query and mutation defined in your SDL.
@@ -703,7 +731,7 @@ export const handler = createGraphQLHandler({
   depthLimitOptions: { maxDepth: 6 },
 // ...
 })
-
+```
 ## FAQ
 
 ### Why Doesn't Redwood Use Something Like Nexus?
