@@ -215,7 +215,7 @@ Of the four, you'll see `args` and `root` being used a lot.
 In Redwood, the `context` object that's passed to resolvers is actually available to all your Services, whether or not they're serving as resolvers. Just import it from `@redwoodjs/api`:
 
 ```javascript
-import { context } from '@redwoodjs/api
+import { context } from '@redwoodjs/graphql-server'
 ```
 
 #### How to Modify the Context
