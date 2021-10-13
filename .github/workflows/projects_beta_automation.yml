@@ -39,7 +39,7 @@ jobs:
       - name: Add issue to project
         env:
           GITHUB_TOKEN: ${{ secrets.PROJECTS_BETA_AUTOMATION }}
-          ISSUE_ID: ${{ github.event[github.event_name].node_id }}
+          ISSUE_ID: ${{ github.event.issue.node_id }}
         run: |
           item_id="$(gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
             mutation($project: ID!, $issue: ID!) {
