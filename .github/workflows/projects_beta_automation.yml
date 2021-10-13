@@ -38,13 +38,13 @@ jobs:
           CONTENT_ID: ${{ github.event.issue.node_id }}
         run: |
           item_id="$(gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
-            mutation($project: ID!, $contentId: ID!) {
-              addProjectNextItem(input: { projectId: $project, contentId: $contentId }) {
+            mutation($projectId: ID!, $contentId: ID!) {
+              addProjectNextItem(input: { projectId: $projectId, contentId: $contentId }) {
                 projectNextItem {
                   id
                 }
               }
-            }' -f project=$PROJECT_ID -f contentId=$CONTENT_ID --jq '.data.addProjectNextItem.projectNextItem.id')"
+            }' -f projectId=$PROJECT_ID -f contentId=$CONTENT_ID --jq '.data.addProjectNextItem.projectNextItem.id')"
           
           echo 'ITEM_ID='$item_id >> $GITHUB_ENV
 
@@ -55,13 +55,13 @@ jobs:
           CONTENT_ID: ${{ github.event.pull_request.node_id }}
         run: |
           item_id="$(gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
-            mutation($project: ID!, $contentId: ID!) {
-              addProjectNextItem(input: { projectId: $project, contentId: $contentId }) {
+            mutation($projectId: ID!, $contentId: ID!) {
+              addProjectNextItem(input: { projectId: $projectId, contentId: $contentId }) {
                 projectNextItem {
                   id
                 }
               }
-            }' -f project=$PROJECT_ID -f contentId=$CONTENT_ID --jq '.data.addProjectNextItem.projectNextItem.id')"
+            }' -f projectId=$PROJECT_ID -f contentId=$CONTENT_ID --jq '.data.addProjectNextItem.projectNextItem.id')"
           
           echo 'ITEM_ID='$item_id >> $GITHUB_ENV
           
