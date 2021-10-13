@@ -31,28 +31,17 @@ jobs:
           echo 'PROJECT_ID='$(jq '.data.organization.projectNext.id' project_data.json) >> $GITHUB_ENV
           echo 'STATUS_FIELD_ID='$(jq '.data.organization.projectNext.fields.nodes[] | select(.name=="Status") | .id' project_data.json) >> $GITHUB_ENV
 
-      - name: Add issue to project
+      - name: Set env var for issue
         if: github.event_name == 'issues'
-        env:
-          GITHUB_TOKEN: ${{ secrets.PROJECTS_BETA_AUTOMATION }}
-          CONTENT_ID: ${{ github.event.issue.node_id }}
-        run: |
-          item_id="$(gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
-            mutation($projectId: ID!, $contentId: ID!) {
-              addProjectNextItem(input: { projectId: $projectId, contentId: $contentId }) {
-                projectNextItem {
-                  id
-                }
-              }
-            }' -f projectId=$PROJECT_ID -f contentId=$CONTENT_ID --jq '.data.addProjectNextItem.projectNextItem.id')"
-          
-          echo 'ITEM_ID='$item_id >> $GITHUB_ENV
+        run: echo 'CONTENT_ID='${{ github.env.issue.node_id }} >> $GITHUB_ENV
 
-      - name: Add pull request to project
+      - name: Set env var for pull_request
         if: github.event_name == 'pull_request'
+        run: echo 'CONTENT_ID='${{ github.env.pull_request.node_id }} >> $GITHUB_ENV
+
+      - name: Add to project
         env:
           GITHUB_TOKEN: ${{ secrets.PROJECTS_BETA_AUTOMATION }}
-          CONTENT_ID: ${{ github.event.pull_request.node_id }}
         run: |
           item_id="$(gh api graphql --header 'GraphQL-Features: projects_next_graphql' -f query='
             mutation($projectId: ID!, $contentId: ID!) {
@@ -83,4 +72,4 @@ jobs:
                   id
                 }
               }
-            }' -f projectId=$PROJECT_ID -f itemId=$ITEM_ID -f statusFieldId=$STATUS_FIELD_ID --silent
+            }' -f projectId=$PROJECT_ID -f itemId=$ITEM_ID -f statusFieldId=$STATUS_FIELD_ID
