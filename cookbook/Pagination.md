@@ -1,12 +1,12 @@
 # Pagination
 
-This tutorial will show you one way to implement pagination in an app built using RedwoodJS. It builds on top of [the tutorial](https://redwoodjs.com/tutorial) and I'll assume you have a folder with the code from the tutorial that you can continue working on. (If you don't, you can clone this repo: https://github.com/thedavidprice/redwood-tutorial-test)
+This cookbook walks you through one of the ways you could implement pagination in a Redwood app. It builds on [the tutorial](https://redwoodjs.com/tutorial) and assumes you have a folder with the code from the tutorial that you can continue working on. (If you don't, you can clone this repo: https://github.com/thedavidprice/redwood-tutorial-test)
 
 ![redwoodjs-pagination](https://user-images.githubusercontent.com/30793/94778130-ec6d6e00-03c4-11eb-9fd0-97cbcdf68ec2.png)
 
 The screenshot above shows what we're building. See the pagination at the bottom? The styling is up to you to fix.
 
-So you have a blog, and probably only a few short posts. But as the blog grows bigger you'll soon need to paginate all your posts. So, go ahead and create a bunch of posts to make this pagination worthwhile. We'll display five posts per page, so begin with creating at least six posts, to get two pages.
+So you have a blog, and probably only a few short posts. But as the blog grows bigger you'll soon need to paginate all your posts. So, go ahead and create a bunch of posts to make this pagination worthwhile. We'll display five posts per page, so begin by creating at least six posts, to get two pages.
 
 We'll begin by updating the SDL. To our `Query` type a new query is added to get just a single page of posts. We'll pass in the page we want, and when returning the result we'll also include the total number of posts as that'll be needed when building our pagination component.
 
