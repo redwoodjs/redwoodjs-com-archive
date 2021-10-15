@@ -73,6 +73,15 @@ If you want your query or mutation to be public, simply use the `@skipAuth` dire
 
 When generating sdl, the file will include the `@requireAuth` directive by default to ensure queries and mutations are secure. If your app's queries and mutations are all public, you can setup a custom generator sdl template to apply `@skipAuth` or a custom validator directive to suit you application's needs.
 
+#### The structure of a service
+
+A top-level service function recieves three arguments:
+
+- `args` - The arguments provided to the field in the GraphQL query
+- `obj` - An object with: 
+  - `root` - information about the root field for this query, this is empty on a top-level service function
+  - `context` - similar to React's context, information which could be useful in any field. This contains the `currentUser` if it is set up via `getCurrentUser` in `api/src/functions/graphql.js`.
+  - `info` - field specific information relevant to the current query. See `GraphQLResolveInfo` in [GraphQLObjectType](https://graphql.org/graphql-js/type/#graphqlobjecttype)
 
 @TODO
 #### Examples
