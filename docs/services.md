@@ -75,7 +75,7 @@ When generating sdl, the file will include the `@requireAuth` directive by defau
 
 #### The structure of a service
 
-A top-level service function recieves three arguments:
+A top-level service function receives two arguments:
 
 - `args` - The arguments provided to the field in the GraphQL query
 - `obj` - An object with: 
