@@ -35,7 +35,7 @@ You can use Apollo's `useQuery` and `useMutation` hooks by importing them from `
 
 import { useMutation } from '@redwoodjs/web'
 
-const MUTATION = `
+const MUTATION = gql`
   # your mutation...
 `
 
