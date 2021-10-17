@@ -314,7 +314,7 @@ export const schema = gql`
   }
 
   type Query {
-    getWeather(zip: String!): Weather!
+    getWeather(zip: String!): Weather! @skipAuth
   }
 `
 ```
@@ -352,7 +352,7 @@ We'll enter our query at the top left and the variables (zip) at the lower left.
 Okay lets pull the real data from OpenWeather now. We'll use a package `node-fetch` that mimics the Fetch API in the browser:
 
 ```terminal
-yarn workspace api add node-fetch
+yarn workspace api add node-fetch@2
 ```
 
 And import that into the service and make the fetch. Note that `fetch` returns a Promise so we're going to convert our service to `async`/`await` to simplify things:
@@ -396,8 +396,8 @@ This will create `web/src/components/WeatherCell/WeatherCell.js`:
 // web/src/components/WeatherCell/WeatherCell.js
 
 export const QUERY = gql`
-  query {
-    weather {
+  query FindWeatherQuery($id: Int!) {
+    weather: weather(id: $id) {
       id
     }
   }
@@ -407,10 +407,12 @@ export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => <div>Empty</div>
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
+export const Failure = ({ error }) => (
+  <div style={{ color: 'red' }}>Error: {error.message}</div>
+)
 
 export const Success = ({ weather }) => {
-  return JSON.stringify(weather)
+  return <div>{JSON.stringify(weather)}</div>
 }
 ```
 
@@ -418,7 +420,7 @@ Let's update the QUERY to match the signature of our API:
 
 ```javascript
 export const QUERY = gql`
-  query($zip: String!) {
+  query GetWeatherQuery($zip: String!) {
     weather: getWeather(zip: $zip) {
       zip
       city
@@ -514,6 +516,7 @@ Okay, let's look for that `cod` and if it's `404` then we know the zip isn't fou
 // api/src/services/weather/weather.js
 
 import fetch from 'node-fetch'
+import { UserInputError } from '@redwoodjs/graphql-server'
 
 export const getWeather = async ({ zip }) => {
   const response = await fetch(
@@ -522,7 +525,7 @@ export const getWeather = async ({ zip }) => {
   const json = await response.json()
 
   if (json.cod === '404') {
-    return new Error(`${zip} isn't a valid US zip code, please try again`)
+    throw new UserInputError(`${zip} isn't a valid US zip code, please try again`)
   }
 
   return {
@@ -539,7 +542,7 @@ And now if we submit **11111**:
 
 ![image](https://user-images.githubusercontent.com/300/79393882-12907600-7f2b-11ea-8b2a-a151153ff983.png)
 
-That's much better! Let's strip out that "Error: GraphQL error:" part, and maybe make it look a little more error-like. This is a job for the `Failure` component in our `WeatherCell`:
+That's much better! Let's strip out that "Error: " part, and maybe make it look a little more error-like. This is a job for the `Failure` component in our `WeatherCell`:
 
 ```javascript
 // web/src/components/WeatherCell/WeatherCell.js
@@ -553,7 +556,7 @@ export const Failure = ({ error }) => (
       display: 'inline-block',
     }}
   >
-    {error.message.replace('GraphQL error: ', '')}
+    {error.message}
   </span>
 )
 ```
