@@ -499,7 +499,7 @@ export const Success = ({ weather }) => {
 
 What if the user inputs an invalid zip code, like **11111**?
 
-![image](https://user-images.githubusercontent.com/300/79393581-7f574080-7f2a-11ea-8ccc-2a404e4c6874.png)
+![image](https://user-images.githubusercontent.com/2321110/137649805-5a9f6f4d-4f66-4758-9e47-f1a8a985bdda.png)
 
 Gross. This happens when our service tries to parse the response from OpenWeather and can't find one of the data points we're looking for (the array under the `weather` key). We should put together a nicer error message than that. Let's look at the response from OpenWeather when you enter a zip code that doesn't exist: https://api.openweathermap.org/data/2.5/weather?zip=11111,us&appid=YOUR_API_KEY
 
@@ -512,7 +512,7 @@ Gross. This happens when our service tries to parse the response from OpenWeathe
 
 Okay, let's look for that `cod` and if it's `404` then we know the zip isn't found and can return a more helpful error from our service. Open up the service and let's add a check:
 
-```javascript
+```javascript {4, 12-14}
 // api/src/services/weather/weather.js
 
 import fetch from 'node-fetch'
@@ -540,7 +540,7 @@ export const getWeather = async ({ zip }) => {
 
 And now if we submit **11111**:
 
-![image](https://user-images.githubusercontent.com/300/79393882-12907600-7f2b-11ea-8b2a-a151153ff983.png)
+![image](https://user-images.githubusercontent.com/2321110/137649849-49d3aa66-e08b-44f8-93b9-c8a61f1e5ce9.png)
 
 That's much better! Let's strip out that "Error: " part, and maybe make it look a little more error-like. This is a job for the `Failure` component in our `WeatherCell`:
 
@@ -561,7 +561,7 @@ export const Failure = ({ error }) => (
 )
 ```
 
-![image](https://user-images.githubusercontent.com/300/79394219-d3165980-7f2b-11ea-9028-bb822e8b2dbe.png)
+![image](https://user-images.githubusercontent.com/2321110/137649934-35c7b0e1-9b10-409e-8dbb-6a133aeb14bd.png)
 
 Much better!
 
