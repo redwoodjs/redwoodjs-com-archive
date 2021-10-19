@@ -22,9 +22,9 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/application.css" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css">
-    <script data-domain="redwoodjs.com" src="https://plausible.io/js/plausible.manual.js"></script>
     <script type="text/javascript" src="/javascripts/application.js"></script>
-    <script type="text/javascript">
+    <script defer data-domain="redwoodjs.com" src="https://plausible.io/js/plausible.js"></script>
+    <!-- <script type="text/javascript">
       // window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
     </script>
     <script type="text/javascript">
@@ -32,7 +32,7 @@
         console.info('turbolinks:load')
         plausible('pageview')
       })
-    </script>
+    </script> -->
   </head>
 
   <body class="relative bg-white text-gray-900 font-sans antialiased h-full flex flex-col" data-controller="application" data-action="turbolinks:before-cache@document->application#saveScrollPosition turbolinks:before-cache@document->application#closeNav keydown@window->application#focusSearch">
