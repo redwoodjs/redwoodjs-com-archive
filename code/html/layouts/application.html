@@ -28,7 +28,10 @@
       window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
     </script>
     <script type="text/javascript">
-      document.addEventListener('turbolinks:load', () => plausible('pageview'))
+      document.addEventListener('turbolinks:load', () => {
+        console.info('turbolinks:load')
+        plausible('pageview')
+      })
     </script>
   </head>
 
