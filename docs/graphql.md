@@ -264,7 +264,7 @@ export const handler = createGraphQLHandler({
   },
   schema: makeMergedSchema({
     schemas,
-    services: makeServices({ services }),
+    services,
   }),
   context: setIpAddress,
   onException: () => {
