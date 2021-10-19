@@ -306,6 +306,45 @@ The GraphQL Playground's nice, but if you're a power user, you'll want to be usi
 - dt has some thoughts on this
 - insomnia -->
 
+## CORS Configuration
+
+CORS stands for [Cross Origin Resource Sharing](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing); in a nutshell, by default, browsers aren't allowed to access resources outside their own domain.
+
+Let's say, you host your Redwood web side app on `www.example.com`, but your api side (and GraphQL Server) is hosted on `api.example.com`.
+
+When browser tries to fetch data form the `/graphql` function, you'll see an error that says the request was blocked due to CORS. Wording may vary, but it would be similar to:
+
+> ⛔️ Access to fetch ... has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
+To fix this issue, you need to "configure CORS" to add:
+
+```
+'Access-Control-Allow-Origin': '*'
+'Access-Control-Allow-Credentials': true
+```
+
+to the GraphQL response headers.
+
+You can do that by setting the `cors` option in `api/src/functions/graphql.{js|t}s`:
+
+```ts
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: {} },
+  directives,
+  sdls,
+  services,
+  cors: {
+    // 👈 setup your CORS configuration options
+    origin: '*',
+    credentials: true,
+  },
+  onException: () => {
+    // Disconnect from your database with an unhandled exception.
+    db.$disconnect()
+  },
+})
+```
+
 ### Health checks
 
 Health checks are used determine if a server is available and ready to start serving traffic. By default, Redwood's GraphQLHandler provides a health check endpoint at `/graphql/health` which returns a `200 status code` with a result of `{ status: 'pass' }` if the server is healthy and can accept requests or a `503 status code` with `{ status: fail }` if not.
