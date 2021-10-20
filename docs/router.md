@@ -338,7 +338,7 @@ We call built-in parameter types _core parameter types_. All core parameter type
 - `Boolean` - Matches and converts Boolean (true or false only)
 
 > Note on TypeScript support
-Redwood will automatically generate types for your named routes, but you do have to run `yarn redwood dev` or `yarn redwood build` atleast once for your `Routes.{js,ts}` to be parsed
+Redwood will automatically generate types for your named routes, but you do have to run `yarn redwood dev` or `yarn redwood build` at least once for your `Routes.{js,ts}` to be parsed
 
 ## User route parameter types
 
