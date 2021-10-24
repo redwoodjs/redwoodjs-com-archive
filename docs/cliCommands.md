@@ -541,6 +541,38 @@ See the [Data Migration](/docs/data-migrations) docs.
 
 See the [Deploy](/docs/deploy) docs.
 
+### generate directive
+
+Generate a directive.
+
+```terminal
+yarn redwood generate directive <name>
+```
+
+
+| Arguments & Options  | Description                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| `name`               | Name of the directive                                                                |
+| `--force, -f`        | Overwrite existing files                                                             |
+| `--typescript, --ts` | Generate TypeScript files (defaults to your projects language target) |
+| `--type       `      | Directive type [Choices: "validator", "transformer"]                  |
+
+**Usage**
+
+See [Redwood Directives](/docs/directives).
+
+**Example**
+
+Generating a `myDirective` directive using the interactive command:
+
+```terminal
+yarn rw g directive myDirective
+
+? What type of directive would you like to generate? › - Use arrow-keys. Return to submit.
+❯   Validator - Implement a validation: throw an error if criteria not met to stop execution
+    Transformer - Modify values of fields or query responses
+```
+
 ### generate function
 
 Generate a Function.
@@ -961,6 +993,9 @@ https://community.redwoodjs.com/t/prisma-beta-2-and-redwoodjs-limited-generator-
 | `--crud`             | Also generate mutations                                                              |
 | `--force, -f`        | Overwrite existing files                                                             |
 | `--typescript, --ts` | Generate TypeScript files Enabled by default if we detect your project is TypeScript |
+
+
+> **Note:** The generated sdl will include the `@requireAuth` directive by default to ensure queries and mutations are secure. If your app's queries and mutations are all public, you can set up a custom SDL generator template to apply `@skipAuth` (or a custom validator directive) to suit you application's needs.
 
 **Destroying**
 
@@ -1412,6 +1447,7 @@ yarn redwood setup <command>
 | `auth`             | Setup auth configuration for a provider                                                   |
 | `custom-web-index` | Setup an `index.js` file, so you can customize how Redwood web is mounted in your browser |
 | `deploy`           | Setup a deployment configuration for a provider                                           |
+| `generator`        | Copy default Redwood generator templates locally for customization |
 | `i18n`             | Setup i18n                                                                                |
 | `tailwind`         | Setup tailwindcss and PostCSS                                                             |
 | `webpack`          | Setup webpack config file in your project so you can add custom config                    |
@@ -1449,6 +1485,44 @@ Redwood automatically mounts your `<App />` to the DOM, but if you want to custo
 | Arguments & Options | Description              |
 | :------------------ | :----------------------- |
 | `--force, -f`       | Overwrite existing files |
+
+### setup generator
+
+Copies a given generator's template files to your local app for customization. The next time you generate that type again, it will use your custom template instead of Redwood's default.
+
+```
+yarn rw setup generator <name>
+```
+
+| Arguments & Options | Description                                                   |
+| :------------------ | :------------------------------------------------------------ |
+| `name`              | Name of the generator template(s) to copy (see help for list) |
+| `--force, -f`       | Overwrite existing copied template files                      |
+
+**Usage**
+
+If you wanted to customize the page generator template, run the command:
+
+```
+yarn rw setup generator page
+```
+
+And then check `web/generators/page` for the page, storybook and test template files. You don't need to keep all of these templates—you could customize just `page.tsx.template` and delete the others and they would still be generated, but using the default Redwood templates.
+
+The only exception to this rule is the scaffold templates. You'll get four directories, `assets`, `components`, `layouts` and `pages`. If you want to customize any one of the templates in those directories, you will need to keep all the other files inside of that same directory, even if you make no changes besides the one you care about. (This is due to the way the scaffold looks up its template files.) For example, if you wanted to customize only the index page of the scaffold (the one that lists all available records in the database) you would edit `web/generators/scaffold/pages/NamesPage.tsx.template` and keep the other pages in that directory. You _could_ delete the other three directories (`assets`, `components`, `layouts`) if you don't need to customize them.
+
+**Example**
+
+Copying the cell generator templates:
+
+```terminal
+~/redwood-app$ yarn rw setup generator cell
+yarn run v1.22.4
+$ /redwood-app/node_modules/.bin/rw setup generator cell
+  ✔ Copying generator templates...
+  ✔   Wrote templates to /web/generators/cell
+✨  Done in 2.33s.
+```
 
 ### setup tsconfig
 

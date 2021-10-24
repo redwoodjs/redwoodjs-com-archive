@@ -21,7 +21,7 @@ This spins up Storybook on port `7910`.
 
 ## Configuring Storybook
 
-You only have to configure Storybook if you want to extend Redwood's default configuration, which handles things like how to find stories, configuring Webpack, startring Mock Service Worker, etc.
+You only have to configure Storybook if you want to extend Redwood's default configuration, which handles things like how to find stories, configuring Webpack, starting Mock Service Worker, etc.
 
 There's two files you can add to your project's `web/config` directory to configure Storybook: `storybook.config.js` and `storybook.preview.js`. Note that you may have to create the `web/config` directory:
 
