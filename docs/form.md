@@ -21,22 +21,21 @@ import {
 
 `@redwoodjs/forms` exports the following components:
 
-| Component         | Description                                                                                                                                                   |
-|:------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `<Form>`          | Surrounds all components, providing form and error contexts                                                                                                   |
-| `<FormError>`     | Displays error messages from the server. Typically placed at the top of your form.                                                                            |
-| `<Label>`         | Used in place of the HTML `<label>` tag. Accepts error-specific styling                                                                                       |
-| `<InputField>`    | Used in place of the HTML `<input>` tag. Accepts validation options and error-specific styling (also see the list of input field components enumerated below) |
-| `<SelectField>`   | Used in place of the HTML `<select>` tag. Accepts validation options and error-specific styling                                                               |
-| `<TextAreaField>` | Used in place of the HTML `<textarea>` tag. Accepts validation options and error-specific styling                                                             |
-| `<FieldError>`    | Displays error messages if the field with the same `name` prop has validation errors. Only renders if there's an error on the associated field                |
-| `<Submit>`        | Used in place of `<button type="submit">`. Triggers validation and "submission" (executes the function passed to `<Form>`'s `onSubmit` prop)                  |
+| Component         | Description                                                                                                                                                 |
+|:------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `<Form>`          | Surrounds all components, providing form and error contexts                                                                                                 |
+| `<FormError>`     | Displays error messages from the server. Typically placed at the top of your form                                                                           |
+| `<Label>`         | Used in place of the HTML `<label>` tag. Accepts error-specific styling props                                                                               |
+| `<InputField>`    | Used in place of the HTML `<input>` tag. Accepts validation and error-specific styling props (also see the list of input field components enumerated below) |
+| `<SelectField>`   | Used in place of the HTML `<select>` tag. Accepts validation and error-specific styling props                                                               |
+| `<TextAreaField>` | Used in place of the HTML `<textarea>` tag. Accepts validation and error-specific styling props                                                             |
+| `<FieldError>`    | Displays error messages if the field with the same `name` prop has validation errors. Only renders if there's an error on the associated field              |
+| `<Submit>`        | Used in place of `<button type="submit">`. Triggers validation and "submission" (executes the function passed to `<Form>`'s `onSubmit` prop)                |
 
-All HTML `<input>` types are also available as components. They follow the naming convention `<TypeField>`, where `Type` is one of the official [HTML types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types). 
-They accept validation options and error-specific styling. 
-
+All HTML `<input>` types are also available as components. They follow the naming convention `<TypeField>` where `Type` is one of the [HTML input types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types).
 We'll refer to them collectively as "input fields".
 The full list is:
+
 - `<ButtonField>`
 - `<CheckboxField>`
 - `<ColorField>`
@@ -60,11 +59,11 @@ The full list is:
 - `<UrlField>`
 - `<WeekField>`
 
-To avoid repeating ourselves too much, all components ending in `Field` (i.e. all input fields, along with `<SelectField>` and `<TextArea>`) accept at least the following props:
+All components ending in `Field` (i.e. all input fields, along with `<SelectField>` and `<TextAreaField>`) accept at least the following props:
 
 | Prop             | Description                                                                                                                                                                                                     |
 |:-----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`           | The name of the field. React Hook Form uses it a key to hook it up with everything else else                                                                                                                    |
+| `name`           | The name of the field. React Hook Form uses it a key to hook it up with everything else                                                                                                                         |
 | `validation`     | All your validation logic. Accepts all of React Hook Form's [`register` options](https://react-hook-form.com/api/useform/register), plus the Redwood-exclusive coercion helpers `valueAsBoolean`, `valueAsJSON` |
 | `errorClassName` | The class name to apply if there's an error                                                                                                                                                                     |
 | `errorStyle`     | The style to apply if there's an error                                                                                                                                                                          |
