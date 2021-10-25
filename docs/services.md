@@ -611,7 +611,7 @@ So `validateUniqueness()` first tries to find a record with the given fields, an
 
 #### Enable Prisma Preview Feature
 
-Being able to use transactions with the above syntax is experiemental for Prisma, so you need to enable it as a preview feature. In your `api/db/schema.prisma` file:
+Being able to use transactions with the above syntax is experimental for Prisma as of v2.29.0, so you need to enable it as a preview feature. In your `api/db/schema.prisma` file:
 
 ```text{4}
 generator client {
