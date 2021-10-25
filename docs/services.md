@@ -579,7 +579,7 @@ validateWith(() => {
 
 Either of these errors will be caught and re-thrown as a `ServiceValidationError` with your text as the `message` of the error (although technically you should always throw errors with `new Error()` like in the second example).
 
-You could just write your own function and throw whatever you like, without using `validateWith()`. But, when accessing your Service function through GraphQL, that error would be swallowed and the user would simply see "Something went wrong" for security reasons: error messages could reveal source code or other sensative information so most are hidden. Errors thrown by Service Validations are considered "safe" and allowed to be shown to the client. By wrapping your function in `validateWith()` you get your error message wrapped in a `ServiceValidationError` and bubbled up through GraphQL to the client automatically.
+You could just write your own function and throw whatever you like, without using `validateWith()`. But, when accessing your Service function through GraphQL, that error would be swallowed and the user would simply see "Something went wrong" for security reasons: error messages could reveal source code or other sensative information so most are hidden. Errors thrown by Service Validations are considered "safe" and allowed to be shown to the client.
 
 ### validateUniqueness()
 
@@ -605,7 +605,7 @@ return await db.$transaction(async (db) => {
 })
 ```
 
-First try to find a record with the given fields, and if so raise an error, if not then execute the callback.
+So `validateUniqueness()` first tries to find a record with the given fields, and if found raise an error, if not then execute the callback.
 
 > Why use this when the database can verify uniqueness with a UNIQUE INDEX database constraint? The error raised by Prisma when this happens is swallowed by GraphQL and so you can't report it to the user. This one will make it back to the browser. Also you may be in a situation where you can't have a unique index, but still want to make sure the data is unique before proceeding.
 
