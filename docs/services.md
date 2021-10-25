@@ -105,7 +105,7 @@ const ContactPage = () => {
 
 ### validate()
 
-This is the main function to call when you have a piece of data to validate. There are two forms of this function call, one with 2 arugments and one with 3. The first argument is always the variable to validate and the last argument is an object with all of the validations you want to run against the first argument. The (optional) second argument is the name of the field to be used in a default error message if you do not provide a custom one:
+This is the main function to call when you have a piece of data to validate. There are two forms of this function call, one with 2 arguments and one with 3. The first argument is always the variable to validate and the last argument is an object with all of the validations you want to run against the first argument. The (optional) second argument is the name of the field to be used in a default error message if you do not provide a custom one:
 
 ```javascript
 // Two argument form: validate(value, validations)
@@ -115,7 +115,7 @@ validate(input.email, { email: { message: 'Please provide a valid email address'
 validate(input.email, 'Email Address', { email: true }
 ```
 
-All validations provide a generic error message if you do not specify one yourself (great for quickly getting your app working). In the three argument version, you provide the "name" of the field (in this case `'Email'`) and that will be used in the error message:
+All validations provide a generic error message if you do not specify one yourself (great for quickly getting your app working). In the three argument version, you provide the "name" of the field (in this case `'Email Address'`) and that will be used in the error message:
 
 ```
 Email Address must be formatted like an email address
@@ -126,6 +126,8 @@ Using the two argument version will use your custom error message in the validat
 ```
 Please provide a valid email address
 ```
+
+#### Multiple Validations
 
 You can provide multiple validations in the last argument object, some with custom messages and some without. If you include only *some* custom messages, make sure to use the 3-argument version as the ones without custom messages will need a variable name to include their messages:
 
