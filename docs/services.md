@@ -229,7 +229,7 @@ Requires that the value be formatted like an email address by comparing against 
 * Followed by a `.`
 * Ending with one or more characters that aren't whitespace
 
-Since the [official email regex](http://www.ex-parrot.com/~pdw/Mail-RFC822-Address.html) is around 6,300 characters long, we though this one was **good enough**. If you have a different, preferred email validation regular expression, use the [format](#format) validation.
+Since the [official email regex](http://www.ex-parrot.com/~pdw/Mail-RFC822-Address.html) is around 6,300 characters long, we though this one was good enough. If you have a different, preferred email validation regular expression, use the [format](#format) validation.
 
 ```javascript
 validate(input.email, 'Email', {
