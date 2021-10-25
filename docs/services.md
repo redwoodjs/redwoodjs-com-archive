@@ -191,7 +191,7 @@ validate(input.value, {
 })
 ```
 
-### Acceptance
+#### Acceptance
 
 Requires that the passed value be `true`, or within an array of allowed values that will be considered "true".
 
@@ -201,7 +201,7 @@ validate(input.terms, 'Terms of Service', {
 })
 ```
 
-#### Options
+##### Options
 
 * `in`: an array of values that, if any match, will pass the validation
 
@@ -219,7 +219,7 @@ validate(input.terms, {
 })
 ```
 
-### Email
+#### Email
 
 Requires that the value be formatted like an email address by comparing against a regular expression. The regex is extremely lax: `/^[^@\s]+@[^.\s]+\.[^\s]+$/` This says that the value:
 
@@ -237,7 +237,7 @@ validate(input.email, 'Email', {
 })
 ```
 
-#### Options
+##### Options
 
 * `message`: a custom message if validation fails
 
@@ -247,7 +247,7 @@ validate(input.email, {
 })
 ```
 
-### Exclusion
+#### Exclusion
 
 Requires that the given value *not* equal to any in a list of given values. Opposite of the [inclusion](#inclusion) validation.
 
@@ -257,7 +257,7 @@ validate(input.name, 'Name', {
 })
 ```
 
-#### Options
+##### Options
 
 * `in`: the list of values that cannot be used
 
@@ -278,7 +278,7 @@ validate(input.name, {
 })
 ```
 
-### Format
+#### Format
 
 Requires that the value match a given regular expression.
 
@@ -288,7 +288,7 @@ validate(input.usPhone, 'US Phone Number', {
 })
 ```
 
-#### Options
+##### Options
 
 * `pattern`: the regular expression to use
 
@@ -310,7 +310,7 @@ validate(input.usPhone, {
 })
 ```
 
-### Inclusion
+#### Inclusion
 
 Requires that the given value *is* equal to one in a list of given values. Opposite of the [exclusion](#exclusion) validation.
 
@@ -320,7 +320,7 @@ validate(input.role, 'Role', {
 })
 ```
 
-#### Options
+##### Options
 
 * `in`: the list of values that can be used
 
@@ -341,7 +341,7 @@ validate(input.role, 'Role', {
 })
 ```
 
-### Length
+#### Length
 
 Requires that the value meet one or more of a number of string length validations.
 
@@ -351,7 +351,7 @@ validate(input.answer, 'Answer', {
 })
 ```
 
-#### Options
+##### Options
 
 * `min`: must be at least this number of characters long
 
@@ -395,7 +395,7 @@ validate(input.title, 'Title', {
 
 > Note that you cannot use backticks to define the string here—that would cause the value(s) to be interpolated immediately, and `min` and `max` are not actually available yet. This must be a plain string using single or double quotes, but using the `${}` interpolation syntax inside.
 
-### Numericality
+#### Numericality
 
 The awesomely named Numericality Validation requires that the value passed meet one or more criteria that are all number related.
 
@@ -405,7 +405,7 @@ validate(input.year, 'Year', {
 })
 ```
 
-#### Options
+##### Options
 
 * `integer`: the number must be an integer
 
@@ -505,7 +505,7 @@ validate(input.floor, {
 
 > Note that you cannot use backticks to define the string here—that would cause the value(s) to be interpolated immediately. This must be a plain string using single or double quotes, but using the `${}` interpolation syntax inside.
 
-### Presence
+#### Presence
 
 Requires that a field be present, meaning it must not be `null` or `undefined`.
 Opposite of the [absense](#absense) validator.
@@ -516,7 +516,7 @@ validate(input.value, 'Value', {
 })
 ```
 
-#### Options
+##### Options
 
 * `allowNull`: whether or not to allow `null` to be considered present (default is `false`)
 
