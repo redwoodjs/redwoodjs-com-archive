@@ -563,6 +563,22 @@ validate(input.lastName, {
 
 `validateWith()` is simply given a function to execute. This function should throw with a message if there is a problem, otherwise do nothing.
 
+```javascript
+validateWith(() => {
+  if (input.name === 'Name') {
+    throw "You'll have to be more creative than that"
+  }
+})
+
+validateWith(() => {
+  if (input.name === 'Name') {
+    throw new Error("You'll have to be more creative than that")
+  }
+})
+```
+
+Either of these errors will be caught and re-thrown as a `ServiceValidationError` with your text as the `message` of the error (although technically you should always throw errors with `new Error()` like in the second example).
+
 You could just write your own function and throw whatever you like, without using `validateWith()`. But, when accessing your Service function through GraphQL, that error would be swallowed and the user would simply see "Something went wrong" for security reasons: error messages could reveal source code or other sensative information so most are hidden. Errors thrown by Service Validations are considered "safe" and allowed to be shown to the client. By wrapping your function in `validateWith()` you get your error message wrapped in a `ServiceValidationError` and bubbled up through GraphQL to the client automatically.
 
 ### validateUniqueness()
