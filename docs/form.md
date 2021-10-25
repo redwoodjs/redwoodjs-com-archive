@@ -155,7 +155,7 @@ It's hard to talk about this component without getting into the nitty-gritty of 
 
 `useForm` is React Hook Form's major hook.
 It returns a bunch of functions, one of which is `register`, which you use to quite literally "register" fields into React Hook Form so it can validate them. 
-(This has to do with [controlled vs. unctrolled components](https://reactjs.org/docs/uncontrolled-components.html). React Hook Form takes the latter approach.)
+(This has to do with [controlled vs. uncontrolled components](https://reactjs.org/docs/uncontrolled-components.html). React Hook Form takes the latter approach.)
 
 All of Redwood's form helpers need the `register` function to do what they do. But they don't get it straight from `<Form>` because they could be nested arbitrarily deep. That's where `<FormProvider>` comes in: by passing the functions returned from `useForm` to `<FormProvider>`, Redwood's helpers can just use `useFormContext` to get what they need. 
 
