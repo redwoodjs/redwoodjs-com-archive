@@ -2,7 +2,9 @@
 
 Redwood aims to put all of your business logic in one place—Services. These can be used by your GraphQL API or any other place in your backend code. Redwood does all of the annoying stuff for you, just write your business logic!
 
-What's business logic? [One definition](https://www.investopedia.com/terms/b/businesslogic.asp) states: "Business logic is the custom rules or algorithms that handle the exchange of information between a database and user interface." In Redwood, those custom rules and algorithms go in Services. You can't put that logic in the client because it's open to the world and could be manipulated. Imagine having the code to determine a valid withdrawl or deposit to someone's bank balance living in the client, and the server just receives API calls of where to move the money, doing no additional verification of those numbers! Your bank would quickly go insolvent. As you'll hear many times throughout our docs, and your development career—never trust the client.
+## Overview
+
+What do we mean by "business logic?" [One definition](https://www.investopedia.com/terms/b/businesslogic.asp) states: "Business logic is the custom rules or algorithms that handle the exchange of information between a database and user interface." In Redwood, those custom rules and algorithms go in Services. You can't put that logic in the client because it's open to the world and could be manipulated. Imagine having the code to determine a valid withdrawl or deposit to someone's bank balance living in the client, and the server just receives API calls of where to move the money, doing no additional verification of those numbers! Your bank would quickly go insolvent. As you'll hear many times throughout our docs, and your development career—never trust the client.
 
 But how does the client get access to the output of these Services? By default, that's through GraphQL. GraphQL is an API, accessible to clients, that relies on getting data from "somewhere" before returning it. That somewhere is a function backed by what's known as a [**resolver**](https://graphql.org/learn/execution/) in GraphQL. And in Redwood, those resolvers are your Services!
 
