@@ -160,7 +160,7 @@ Note that the validations object properties often take two forms: a simple form 
 
 This keeps the syntax as simple as possible when a custom message is not required. Details on the options for each validation are detailed below.
 
-### Absense
+#### Absense
 
 Requires that a field NOT be present, meaning it must be `null` and `undefined`.
 Opposite of the [presence](#presence) validator.
@@ -171,7 +171,7 @@ validate(input.value, 'Value', {
 })
 ```
 
-#### Options
+##### Options
 
 * `allowEmptyString` will count an empty string as being absent (that is, `null`, `undefined` and `""` will pass this validation)
 
@@ -195,7 +195,7 @@ Requires that the passed value be `true`, or within an array of allowed values t
 
 ```javascript
 validate(input.terms, 'Terms of Service', {
-  acceptance: true }
+  acceptance: true
 })
 ```
 
