@@ -665,9 +665,10 @@ What about updating an existing record? In its default usage, an update with thi
 
 ```javascript
 const updateUser = (id, input) => {
-  return validateUniqueness('user', { email: input.email, $self: { id }, (db) => {
-    return db.user.create({ data: input })
-  })
+  return validateUniqueness('user', {
+    email: input.email,
+    $self: { id }
+  }, (db) => db.user.create({ data: input })
 }
 ```
 
