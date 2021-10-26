@@ -71,7 +71,7 @@ export const createUser = async ({ input }) => {
 
 If you're using [Redwood's scaffolds](/docs/cli-commands.html#generate-scaffold) then you'll see requisite error messages when trying to save a form that runs into these validation errors automatically:
 
-[screenshot]
+![image](https://user-images.githubusercontent.com/300/138916982-86f26303-4912-46f4-a811-57e59b9f7306.png)
 
 Otherwise you'll need to use the `error` property that you can [destructure](https://www.apollographql.com/docs/react/data/mutations/#executing-a-mutation) from `useMutation()` and display an element containing the error message (Redwood's [form helpers](/docs/forms) will do some of the heavy lifing for you for displaying the error):
 
