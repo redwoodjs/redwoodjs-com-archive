@@ -331,7 +331,8 @@ export const handler = createGraphQLHandler({
   directives,
   sdls,
   services,
-  cors: { // 👈 setup your CORS configuration options
+  cors: {
+    // 👈 setup your CORS configuration options
     origin: '*',
     credentials: true,
   },
@@ -785,17 +786,28 @@ export const handler = createGraphQLHandler({
 
 ### Error Masking
 
-In many GraphQL servers, when an error is thrown, its details are leaked to the outside world. The error and its message are returned in the response and a client may reveal the error in logs or even render its message to the user. You could potentially leak sensitive information about your app you don't want to share—such as database connection failures, or even the presence of certain fields.
+In many GraphQL servers, when an error is thrown, the details of that error is leaked to the outside world. The error and its message is then returned in the response and a client might reveal those errors in logs or even render the message to the user. You could potentially leak sensitive or other information about your app you don't want to share -- such as database connection failures or even the presence of certain fields.
 
-To prevent leaking sensitive information, Redwood masks unexpected errors out-of-the-box.
+Redwood is here to help!
+
+Redwood will prevent leaking sensitive error stack information out-of-the-box to for unexpected errors:
+
+- The original error and its message will be logged using the defined GraphQL logger, so you'll know what went wrong
+- A default message "Something went wrong" will replace the error message in the response (Note: you can customize this message)
+
 If an error that isn't one of [Redwood's GraphQL Errors](/docs/graphql#redwood-errors) or isn't based on a GraphQLError is thrown:
-
-- The original error and its message will be logged using the defined GraphQL logger
-- A default message "Something went wrong" will replace the error message in the response
 
 ### Customizing the Default Error Message
 
-You can customize the default "Something went wrong" message used when the error is masked via the `errorMessage` setting on `createGraphQLHandler`:
+# You can customize the default "Something went wrong" message used when the error is masked via the `errorMessage` setting on `createGraphQLHandler`:
+
+But, what if you still want to share an error message with client?
+
+Simply use one of [Redwood's GraphQL Errors](/docs/graphql#redwood-errors) and your custom message will be shared with your users:
+
+#### Customize Error Message
+
+You can customize the default "Something went wrong" message used when the error is masked via the `defaultError` setting on the `createGraphQLHandler`:
 
 ```ts
 export const handler = createGraphQLHandler({
@@ -803,7 +815,7 @@ export const handler = createGraphQLHandler({
   directives,
   sdls,
   services,
-  errorMessage: 'Sorry about that', // 👈 Customize the error message
+  defaultError: 'Sorry about that', // 👈 Customize the error message
   onException: () => {
     // Disconnect from your database with an unhandled exception.
     db.$disconnect()
@@ -811,11 +823,11 @@ export const handler = createGraphQLHandler({
 })
 ```
 
-### Redwood Errors
+#### Redwood Errors
 
-Redwood Errors are derived from [Apollo Server Error codes](https://www.apollographql.com/docs/apollo-server/data/errors/#error-codes)
-To use a Redwood Error, import it from `@redwood/graphql-server`.
-The available errors are:
+Redwood Errors are derived from [Apollo Server Error codes](https://www.apollographql.com/docs/apollo-server/data/errors/#error-codes) for common use cases:
+
+To use a Redwood Error, import each from `@redwood/graphql-server`.
 
 - `SyntaxError` - An unspecified error occurred
 - `ValidationError` - Invalid input to a service
@@ -829,6 +841,48 @@ If you use one of the errors, then the message provided will not be masked and w
 import { UserInputError } from '@redwood/graphql-server'
 // ...
 throw new UserInputError('An email is required.')
+```
+
+then the message provided will not be masked and it will be shred in the GraphQL response.
+
+##### Custom Errors and Uses
+
+Need you own custom error and message?
+
+Maybe you are integrating with a third-party api and want to handle errors from that service, but you want control of how that error is shared with your user client-side.
+
+Simply extend from `RedwoodGraphQLError` and you're all set!
+
+```ts
+export class MyCustomError extends RedwoodGraphQLError {
+  constructor(message: string, extensions?: Record<string, any>) {
+    super(message, extensions)
+  }
+}
+```
+
+For example, in your service, you can create and use it handle the error and return a friendly message:
+
+```ts
+export class WeatherError extends RedwoodGraphQLError {
+  constructor(message: string, extensions?: Record<string, any>) {
+    super(message, extensions)
+  }
+}
+
+export const getWeather = async ({ input }: WeatherInput) {
+  try {
+    const weather = weatherClient.get(input.zipCode)
+  } catch(error) {
+    // rate limit issue
+    if (error.statusCode = 429) {
+      throw new WeatherError('Unable to get the latest weather updates at the moment. Please try again shortly.')
+    }
+
+    // other error
+    throw new WeatherError(`We could not get the weather for ${input.zipCode}.`)
+  }
+}
 ```
 
 ## FAQ
