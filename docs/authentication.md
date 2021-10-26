@@ -96,7 +96,7 @@ Note that if you change the fields named `hashedPassword` and `salt`, and you ha
 
 If you don't want to create your own login and signup pages from scratch we've got a generator for that:
 
-    yarn rw g scaffold dbAuth
+    yarn rw g dbAuth
 
 The default routes will make them available at `/login` and `/signup`, but that's easy enough to change. Again, check the post-install instructions for one change you need to make to both pages: where to redirect the user to once their login/signup is successful.
 
@@ -139,7 +139,7 @@ signupHandler: {
 }
 ```
 
-Before `signupHandler()` is invoked, dbAuth will check that the username is unique in the database and throw an error if not. 
+Before `signupHandler()` is invoked, dbAuth will check that the username is unique in the database and throw an error if not.
 
 There are three things you can do within this function depending on how you want the signup to proceed:
 
@@ -1274,7 +1274,7 @@ In Firebase Console, you must enable "Email link (passwordless sign-in)" with th
 
   1. First, an email with the link must be generated and sent to the user.   Either using using firebase client sdk (web side) [sendSignInLinkToEmail()](https://firebase.google.com/docs/reference/js/auth.emailauthprovider#example_2_2), which generates the link and sends the email to the user on behalf of your application or alternatively, generate the link using backend admin sdk (api side), see ["Generate email link for sign-in](https://firebase.google.com/docs/auth/admin/email-action-links#generate_email_link_for_sign-in) but it is then your responsibility to send an email to the user containing the link.
   2. Second, authentication is completed when the user is redirected back to the application and the AuthProvider's logIn({emailLink, email, providerId: 'emailLink'}) method is called.
- 
+
 For example, users could be redirected to a dedicated route/page to complete authentication:
 
 ```js
