@@ -1457,6 +1457,14 @@ Apply pending migrations to update the database schema in production/staging.
 yarn redwood prisma migrate deploy
 ```
 
+#### prisma migrate reset
+
+This command deletes and recreates the database, or performs a 'soft reset' by removing all data, tables, indexes, and other artifacts.
+
+It will also re-seed your database by automatically running the `db seed` command. See: [`prisma db seed`](docs/cli-commands#prisma-db-seed).
+
+> **_Important:_** For use in development environments only
+
 ## redwood-tools (alias rwt)
 
 Redwood's companion CLI development tool. You'll be using this if you're contributing to Redwood. See [Contributing](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#cli-reference-redwood-tools) in the Redwood repo.
