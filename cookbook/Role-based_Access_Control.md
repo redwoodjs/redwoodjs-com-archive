@@ -510,29 +510,17 @@ export const requireAuth = ({ roles } = {}) => {
 
 #### How to Protect a Service
 
-Services are protected by declaring a directive on the SDL.  
+Services are protected by [declaring the `requireAuth()` GraphQL directive](/docs/directives#requireauth) on a query or mutation that defines the service in the SDL.
 
 To set that just append `@requireAuth` or `@requireAuth(roles:['Author'])`
 
 More about this specifically on the [directives](/docs/directives#requireauth) page.
 
-Below is an example of the `/api/src/graphql/posts.sdl.js` SDL.  I've highlighted how authentication is required at the bottom
-```js {32-35}
+For example, if you wanted to secure the Post mutations and queries to match the [Role Matrix for Blog RBAC](#role-matrix-for-blog-rbac), this would be the SDL:
+
+```js {4-8,12-14}
 export const schema = gql`
-  type Post {
-    id: ID!
-    title: String!
-    slug: String!
-    body: String!
-    author: String!
-    image: String
-    postedAt: DateTime
-    tags: [Tag]
-  }
-  type PostsSet {
-    posts: [Post]!
-    count: Int!
-  }
+  // ...
   type Query {
     allPosts(page: Int, limit: Int): PostsSet @skipAuth
     findPostById(id: ID): Post @skipAuth
@@ -540,19 +528,11 @@ export const schema = gql`
     findPostsByTag(tag: String): [Post] @skipAuth
     searchPosts(term: String): [Post] @skipAuth
   }
-  input PostInput {
-    title: String!
-    slug: String!
-    author: String!
-    body: String!
-    image: String
-    postedAt: DateTime
-  }
+  // ...
   type Mutation {
-    createPost(input: PostInput!): Post @requireAuth
-    updatePost(id: ID!, input: PostInput!): Post @requireAuth
-    hidePost(id: ID!): Post @requireAuth
-    deletePost(id: ID!): Post @requireAuth
+    createPost(input: PostInput!): Post @requireAuth(roles: ['author', 'publisher', 'admin'])
+    updatePost(id: ID!, input: PostInput!): Post @requireAuth(roles: ['editor', 'publisher', 'admin'])
+    deletePost(id: ID!): Post @requireAuth(roles: ['publisher', 'admin'])
   }
 `
 ```
