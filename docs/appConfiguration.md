@@ -2,13 +2,12 @@
 
 You can configure your Redwood app's settings in `redwood.toml`. By default, `redwood.toml` lists the following configuration options:
 
-<!-- TODO -->
-<!-- toml syntax coloring not working here -->
-
 ```toml
 [web]
+  title = "Redwood App"
   port = 8910
-  apiProxyPath = "/.redwood/functions"
+  apiUrl = "/.redwood/functions" 
+  includeEnvironmentVariables = [] 
 [api]
   port = 8911
 [browser]
@@ -18,8 +17,9 @@ You can configure your Redwood app's settings in `redwood.toml`. By default, `re
 These are listed by default because they're the ones that you're most likely to configure. But there are plenty more available. The rest are spread between Redwood's [webpack configuration files](https://github.com/redwoodjs/redwood/tree/main/packages/core/config) and `@redwoodjs/internal`'s [config.ts](https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/config.ts#L54-L82):
 
 ```javascript
-// redwood/packages/internal/src/config.ts
-
+/**
+ * @see {@link https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/config.ts}
+ */
 const DEFAULT_CONFIG: Config = {
   web: {
     title: 'Redwood App',
@@ -87,7 +87,8 @@ Configuration for the web side.
 | `a11y`                        | Enable storybook `addon-a11y` and `eslint-plugin-jsx-a11y`                                     | true                    | `development` |
 
 ### API Paths
-Redwood offers you flexibility to configure the apiUrl - this is the path to your serverless functions, either as a path or a different FQDN.
+
+Redwood offers you flexibility to configure the `apiUrl`—the path to your serverless functions—either as a path or a different FQDN.
 
 ```toml
 [web]
@@ -98,30 +99,35 @@ When you're running your app locally, this gets aliased away (you can see exactl
 
 When you run `redwood setup deploy [provider]` on the CLI, this path gets configured to the defaults for the provider you're configuring
 
-#### Customize GraphQL endpoint
-By default, we construct the graphql endpoint, from the `apiUrl` configuration, e.g. `./redwood/functions/graphql` will be the default graphql endpoint.
+#### Customizing the GraphQL Endpoint
 
-However, there are times you may want to host your api side somewhere else, or on a different domain. There's two ways you can do this:
+By default, we construct the GraphQL endpoint from `apiUrl`. That is, `./redwood/functions/graphql` is the default graphql endpoint.
+But sometimes you want to host your api side somewhere else, on a different domain. There's two ways you can do this:
 
-**a) Change the `apiUrl` value to your new domain, for example**
+**a) Change the `apiUrl` value to your new domain**
+
 ```toml
 [web]
   apiUrl = "https://api.coolredwoodapp.com"
 ```
-This will mean the redwood web side (i.e. the frontend) will point to the above domain, and try to access the graphql endpoint at `https://api.coolredwoodapp.com/graphql`.
+
+This means your Redwood project's web side (i.e. the frontend) points to the above domain, and tries to access the GrpahQL endpoint at `https://api.coolredwoodapp.com/graphql`.
 
 **b) Change only the graphql endpoint**
-You can also choose to change only the graphql endpoint if you wish (without affecting other things, like dbAuth)
+
+You can also change the GraphQL endpoint only (without affecting other things, like dbAuth):
+
 ```diff
 [web]
   apiUrl = "/.redwood/functions"
 + apiGraphqlEndpoint = "https://coolrwapp.mycdn.com"
 ```
-This is particularly useful if you'd like to use for example a CDN provider, e.g. GraphCDN, in front of your API side, independant of the web side.
 
-#### Customize DbAuth endpoint
-If you're using dbAuth, you may decide to point your auth function (i.e. the serverless function used for login/signup) at a different host. To do this, without affecting your graphql endpoint, you can add the `apiDbAuthUrl` configuration to your redwood.toml
+This is particularly useful if you'd like to use a CDN provider like GraphCDN in front of your api side, independent of the web side.
 
+#### Customizing the DbAuth Endpoint
+
+If you're using dbAuth, you may decide to point your auth function (i.e. the serverless function used for login/signup) at a different host. To do this without affecting your GraphQL endpoint, you can add `apiDbAuthUrl` to your redwood.toml:
 
 ```diff
 [web]
@@ -129,7 +135,7 @@ If you're using dbAuth, you may decide to point your auth function (i.e. the ser
 + apiDbAuthUrl = "https://api.mycoolapp.com/auth"
 ```
 
-> Quick note: if you point your web side to a different domain, please make sure you have [CORS headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) configured, otherwise browser security features may block requests from the client.
+> **Quick note**: if you point your web side to a different domain, please make sure you have [CORS headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) configured, otherwise browser security features may block requests from the client.
 
 ### includeEnvironmentVariables
 
