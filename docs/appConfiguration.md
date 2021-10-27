@@ -22,16 +22,17 @@ These are listed by default because they're the ones that you're most likely to 
 
 const DEFAULT_CONFIG: Config = {
   web: {
+    title: 'Redwood App',
     host: 'localhost',
     port: 8910,
     path: './web',
     target: TargetEnum.BROWSER,
-    apiProxyPath: '/.redwood/functions',
-    apiProxyPort: 8911,
+    apiUrl: '/.redwood/functions',
     fastRefresh: true,
     a11y: true,
   },
   api: {
+    title: 'Redwood App',
     host: 'localhost',
     port: 8911,
     path: './api',
@@ -44,11 +45,8 @@ const DEFAULT_CONFIG: Config = {
   generate: {
     tests: true,
     stories: true,
+    nestScaffoldByModel: true,
   },
-  experimental: {
-    esbuild: false,
-  }
-
 }
 ```
 
@@ -100,7 +98,7 @@ When you're running your app locally, this gets aliased away (you can see exactl
 
 When you run `redwood setup deploy [provider]` on the CLI, this path gets configured to the defaults for the provider you're configuring
 
-#### Customise GraphQL endpoint
+#### Customize GraphQL endpoint
 By default, we construct the graphql endpoint, from the `apiUrl` configuration, e.g. `./redwood/functions/graphql` will be the default graphql endpoint.
 
 However, there are times you may want to host your api side somewhere else, or on a different domain. There's two ways you can do this:
@@ -121,7 +119,7 @@ You can also choose to change only the graphql endpoint if you wish (without aff
 ```
 This is particularly useful if you'd like to use for example a CDN provider, e.g. GraphCDN, in front of your API side, independant of the web side.
 
-#### Customise DbAuth endpoint
+#### Customize DbAuth endpoint
 If you're using dbAuth, you may decide to point your auth function (i.e. the serverless function used for login/signup) at a different host. To do this, without affecting your graphql endpoint, you can add the `apiDbAuthUrl` configuration to your redwood.toml
 
 
