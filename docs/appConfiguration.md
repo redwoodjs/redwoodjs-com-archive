@@ -2,13 +2,12 @@
 
 You can configure your Redwood app's settings in `redwood.toml`. By default, `redwood.toml` lists the following configuration options:
 
-<!-- TODO -->
-<!-- toml syntax coloring not working here -->
-
 ```toml
 [web]
+  title = "Redwood App"
   port = 8910
-  apiProxyPath = "/.redwood/functions"
+  apiUrl = "/.redwood/functions" 
+  includeEnvironmentVariables = [] 
 [api]
   port = 8911
 [browser]
@@ -18,20 +17,22 @@ You can configure your Redwood app's settings in `redwood.toml`. By default, `re
 These are listed by default because they're the ones that you're most likely to configure. But there are plenty more available. The rest are spread between Redwood's [webpack configuration files](https://github.com/redwoodjs/redwood/tree/main/packages/core/config) and `@redwoodjs/internal`'s [config.ts](https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/config.ts#L54-L82):
 
 ```javascript
-// redwood/packages/internal/src/config.ts
-
+/**
+ * @see {@link https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/config.ts}
+ */
 const DEFAULT_CONFIG: Config = {
   web: {
+    title: 'Redwood App',
     host: 'localhost',
     port: 8910,
     path: './web',
     target: TargetEnum.BROWSER,
-    apiProxyPath: '/.redwood/functions',
-    apiProxyPort: 8911,
+    apiUrl: '/.redwood/functions',
     fastRefresh: true,
     a11y: true,
   },
   api: {
+    title: 'Redwood App',
     host: 'localhost',
     port: 8911,
     path: './api',
@@ -44,11 +45,8 @@ const DEFAULT_CONFIG: Config = {
   generate: {
     tests: true,
     stories: true,
+    nestScaffoldByModel: true,
   },
-  experimental: {
-    esbuild: false,
-  }
-
 }
 ```
 
@@ -74,29 +72,70 @@ Error: Could not find a "redwood.toml" file, are you sure you're in a Redwood pr
 
 Configuration for the web side.
 
-| Key                           | Description                        | Default                 | Context       |
-| :---------------------------- | :--------------------------------- | :---------------------- | :------------ |
-| `title`                       | Title of your Redwood App          |                         | `both`        |
-| `host`                        | Hostname to listen on              | `'localhost'`           | `development` |
-| `port`                        | Port to listen on                  | `8910`                  | `development` |
-| `path`                        | Path to the web side               | `'./web'`               | `both`        |
-| `target`                      | Target for the web side            | `TargetEnum.BROWSER`    | `both`        |
-| `apiProxyPath`                | Proxy path to the api side         | `'/.redwood/functions'` | `production`  |
-| `apiProxyPort`                | Proxy port to the api side         | `8911`                  | `production`  |
-| `includeEnvironmentVariables` | Environment variables to whitelist |                         | `both`        |
-| `fastRefresh`                 | Enable webpack's fast refresh      | true                    | `development` |
-| `a11y`                        | Enable storybook `addon-a11y` and `eslint-plugin-jsx-a11y`  | true                    | `development` |
+| Key                           | Description                                                                                    | Default                 | Context       |
+|:------------------------------|:-----------------------------------------------------------------------------------------------|:------------------------|:--------------|
+| `title`                       | Title of your Redwood App                                                                      |                         | `both`        |
+| `host`                        | Hostname to listen on                                                                          | `'localhost'`           | `development` |
+| `port`                        | Port to listen on                                                                              | `8910`                  | `development` |
+| `path`                        | Path to the web side                                                                           | `'./web'`               | `both`        |
+| `target`                      | Target for the web side                                                                        | `TargetEnum.BROWSER`    | `both`        |
+| `apiUrl`                      | Specify the URL to your api-server. Can be an absolute path or FQDN                            | `'/.redwood/functions'` | `production`  |
+| `apiGraphQLUrl`               | Optional: FQDN or absolute path to the GraphQL serverless function, without the trailing slash | `'/.redwood/functions'` | `production`  |
+| `apiDbAuthUrl`                | Optional: QDN or absolute path to the DbAuth serverless function, without the trailing slash   | `'/.redwood/functions'` | `production`  |
+| `includeEnvironmentVariables` | Environment variables to whitelist                                                             |                         | `both`        |
+| `fastRefresh`                 | Enable webpack's fast refresh                                                                  | true                    | `development` |
+| `a11y`                        | Enable storybook `addon-a11y` and `eslint-plugin-jsx-a11y`                                     | true                    | `development` |
 
-### apiProxyPath
+### API Paths
+
+You have full control over the path to your serverless functions via `apiUrl`. You can specify it either as a path (below) or a URL:
 
 ```toml
 [web]
-  apiProxyPath = "/.netlify/functions"
+  apiUrl = "/.redwood/functions"
 ```
 
-The path to the serverless functions. When you're running your app locally, this gets aliased away (you can see exactly how in [webpack.common.js](https://github.com/redwoodjs/redwood/blob/49c3afecc210709641dd340b974c86251ed207dc/packages/core/config/webpack.development.js#L21-L28) (and here's the docs on Webpack's [devServer.proxy](https://webpack.js.org/configuration/dev-server/#devserverproxy), for good measure)).
+When you're running your app locally, this gets aliased away (you can see exactly how in [webpack.common.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.development.js#L22) (and here's the docs on Webpack's [devServer.proxy](https://webpack.js.org/configuration/dev-server/#devserverproxy), for good measure)).
 
-Since Redwood plays nicely with Netlify, we use the [same proxy path](https://docs.netlify.com/functions/build-with-javascript) by default. If you're deploying elsewhere, you'll want to change this.
+When you run `redwood setup deploy [provider]` on the CLI, this path gets configured to the default for the provider you're configuring
+
+#### Customizing the GraphQL Endpoint
+
+By default, Redwood constructs the GraphQL endpoint from `apiUrl` such that `./redwood/functions/graphql` ends up being the default graphql endpoint.
+But sometimes you want to host your api side somewhere else, or even on a different domain. There's two ways you can do this:
+
+**a) Change `apiUrl` to your new domain**
+
+```toml
+[web]
+  apiUrl = "https://api.coolredwoodapp.com"
+```
+
+This means your Redwood project's web side (i.e. the frontend) points to the above domain, and tries to access the GrpahQL endpoint at `https://api.coolredwoodapp.com/graphql`.
+
+**b) Change only the graphql endpoint**
+
+You can also change the GraphQL endpoint only (without affecting other things, like dbAuth):
+
+```diff
+[web]
+  apiUrl = "/.redwood/functions"
++ apiGraphqlEndpoint = "https://coolrwapp.mycdn.com"
+```
+
+This is particularly useful if you'd like to use a CDN provider like GraphCDN in front of your api side, independent of the web side.
+
+#### Customizing the DbAuth Endpoint
+
+If you're using dbAuth, you may decide to point your auth function (i.e. the serverless function used for login/signup) at a different host. To do this without affecting your GraphQL endpoint, you can add `apiDbAuthUrl` to your `redwood.toml`:
+
+```diff
+[web]
+  apiUrl = "/.redwood/functions"
++ apiDbAuthUrl = "https://api.mycoolapp.com/auth"
+```
+
+> **Quick note**: if you point your web side to a different domain, please make sure you have [CORS headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) configured. Otherwise browser security features may block requests from the client.
 
 ### includeEnvironmentVariables
 
