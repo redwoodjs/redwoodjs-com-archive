@@ -554,7 +554,7 @@ yarn redwood generate directive <name>
 | `name`               | Name of the directive                                                 |
 | `--force, -f`        | Overwrite existing files                                              |
 | `--typescript, --ts` | Generate TypeScript files (defaults to your projects language target) |
-| `--type `            | Directive type [Choices: "validator", "transformer"]                  |
+| `--type`             | Directive type [Choices: "validator", "transformer"]                  |
 
 **Usage**
 
@@ -1368,20 +1368,20 @@ Seed your database.
 yarn redwood prisma db seed
 ```
 
-This command seeds your database by running your project's `seed.js|ts` file which would can find you in `scripts` directory.
-
-> **Important:** Prisma Migrate resets the database and triggers seeding in the following scenarios:
->
-> - You manually run the `yarn redwood prisma migrate reset` command.
-> - The database is reset interactively in the context of using `yarn redwood prisma migrate dev` - for example, as a result of migration history conflicts or database schema drift.
->
-> If you want to use `yarn redwood prisma migrate dev` or `yarn redwood prisma migrate reset` without seeding, you can pass the `--skip-seed` flag.
-
-While having a great seed might not be all that important at the start, but as soon as you start collaborating with others, it becomes vital.
+This command seeds your database by running your project's `seed.js|ts` file which you can find in your `scripts` directory.
 
 Prisma's got a great [seeding guide](https://www.prisma.io/docs/guides/prisma-guides/seed-database) that covers both the concepts and the nuts and bolts.
 
-##### How does seeding actually work?
+> **Important:** Prisma Migrate also triggers seeding in the following scenarios:
+>
+> - you manually run the `yarn redwood prisma migrate reset` command
+> - the database is reset interactively in the context of using `yarn redwood prisma migrate dev`—for example, as a result of migration history conflicts or database schema drift
+>
+> If you want to use `yarn redwood prisma migrate dev` or `yarn redwood prisma migrate reset` without seeding, you can pass the `--skip-seed` flag.
+
+While having a great seed might not be all that important at the start, as soon as you start collaborating with others, it becomes vital.
+
+**How does seeding actually work?**
 
 If you look at your project's `package.json` file, you'll notice a `prisma` section:
 
@@ -1391,13 +1391,12 @@ If you look at your project's `package.json` file, you'll notice a `prisma` sect
   },
 ```
 
-Prisma will run any command found in the `seed` setting when seeding via `yarn rw prisma db seed` or `yarn rw prisma migrate reset`.
+Prisma runs any command found in the `seed` setting when seeding via `yarn rw prisma db seed` or `yarn rw prisma migrate reset`.
+Here we're using the Redwood [`exec` cli command](/docs/cli-commands#exec) that runs a script.
 
-Here, we are using the Redwood [`exec cli command`](/docs/cli-commands#exec) that will run a script.
+If you wanted to seed your database using a different method (like `psql` and an `.sql` script), you can do so by changing the "seed" script command.
 
-If you wanted to seed your database using some other method (like `psql` and an insert `.sql` script) you can do that my changing the "seed" script command.
-
-##### More About Seeding
+**More About Seeding**
 
 In addition, you can [code along with Ryan Chenkie](https://www.youtube.com/watch?v=2LwTUIqjbPo), and learn how libraries like [faker](https://www.npmjs.com/package/faker) can help you create a large, realistic database fast, especially in tandem with Prisma's [createMany](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany-preview).
 
@@ -1459,9 +1458,9 @@ yarn redwood prisma migrate deploy
 
 #### prisma migrate reset
 
-This command deletes and recreates the database, or performs a 'soft reset' by removing all data, tables, indexes, and other artifacts.
+This command deletes and recreates the database, or performs a "soft reset" by removing all data, tables, indexes, and other artifacts.
 
-It will also re-seed your database by automatically running the `db seed` command. See: [`prisma db seed`](docs/cli-commands#prisma-db-seed).
+It'll also re-seed your database by automatically running the `db seed` command. See [prisma db seed](docs/cli-commands#prisma-db-seed).
 
 > **_Important:_** For use in development environments only
 

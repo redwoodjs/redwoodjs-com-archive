@@ -125,7 +125,7 @@ module.exports = {
 }
 ```
 
-If you need to seed your production database during your first deployment, the `yarn redwood prisma migrate dev` will do that for you.
+If you need to seed your production database during your first deployment, `yarn redwood prisma migrate dev` will do that for you.
 
 > **Caveat:** the API seems to only work in fork mode in PM2, not [cluster mode](https://pm2.keymetrics.io/docs/usage/cluster-mode/).
 
