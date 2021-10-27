@@ -212,14 +212,6 @@ Setting to `true` creates tests when the generate command is invoked.
 
 Setting to `true` creates stories for [Storybook](https://storybook.js.org/) when the generate command is invoked.
 
-## [experimental]
-
-This section includes features that are *not stable* and may be removed in future versions.
-
-### esbuild
-
-Setting to `true` will use [esbuild](https://esbuild.github.io/) instead of the Webpack for building the project.
-
 ## Running within a Container or VM
 
 To run a Redwood app within a container or VM, you'll want to set both the web and api's `host` to `0.0.0.0` to allow network connections to and from the host:
