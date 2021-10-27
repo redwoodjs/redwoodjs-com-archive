@@ -491,7 +491,7 @@ Along with `variables` there is a second argument: an object which you can destr
 
 ```javascript
 mockGraphQLQuery('getArticle', (variables, { ctx }) => {
-  ctx.error({ message: 'Error' })
+  ctx.errors({ message: 'Error' })
 })
 ```
 
@@ -518,7 +518,7 @@ const Article = ({ id }) => {
 
 it('renders an error message', async () => {
   mockGraphQLQuery('getArticle', (variables, { ctx }) => {
-    ctx.error({ message: 'Error' })
+    ctx.errors({ message: 'Error' })
   })
 
   render(<Article id={1} />)
