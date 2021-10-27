@@ -97,14 +97,14 @@ You have full control over the path to your serverless functions via `apiUrl`. Y
 
 When you're running your app locally, this gets aliased away (you can see exactly how in [webpack.common.js](https://github.com/redwoodjs/redwood/blob/main/packages/core/config/webpack.development.js#L22) (and here's the docs on Webpack's [devServer.proxy](https://webpack.js.org/configuration/dev-server/#devserverproxy), for good measure)).
 
-When you run `redwood setup deploy [provider]` on the CLI, this path gets configured to the defaults for the provider you're configuring
+When you run `redwood setup deploy [provider]` on the CLI, this path gets configured to the default for the provider you're configuring
 
 #### Customizing the GraphQL Endpoint
 
-By default, we construct the GraphQL endpoint from `apiUrl`. That is, `./redwood/functions/graphql` is the default graphql endpoint.
-But sometimes you want to host your api side somewhere else, on a different domain. There's two ways you can do this:
+By default, Redwood constructs the GraphQL endpoint from `apiUrl` such that `./redwood/functions/graphql` ends up being the default graphql endpoint.
+But sometimes you want to host your api side somewhere else, or even on a different domain. There's two ways you can do this:
 
-**a) Change the `apiUrl` value to your new domain**
+**a) Change `apiUrl` to your new domain**
 
 ```toml
 [web]
@@ -127,7 +127,7 @@ This is particularly useful if you'd like to use a CDN provider like GraphCDN in
 
 #### Customizing the DbAuth Endpoint
 
-If you're using dbAuth, you may decide to point your auth function (i.e. the serverless function used for login/signup) at a different host. To do this without affecting your GraphQL endpoint, you can add `apiDbAuthUrl` to your redwood.toml:
+If you're using dbAuth, you may decide to point your auth function (i.e. the serverless function used for login/signup) at a different host. To do this without affecting your GraphQL endpoint, you can add `apiDbAuthUrl` to your `redwood.toml`:
 
 ```diff
 [web]
@@ -135,7 +135,7 @@ If you're using dbAuth, you may decide to point your auth function (i.e. the ser
 + apiDbAuthUrl = "https://api.mycoolapp.com/auth"
 ```
 
-> **Quick note**: if you point your web side to a different domain, please make sure you have [CORS headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) configured, otherwise browser security features may block requests from the client.
+> **Quick note**: if you point your web side to a different domain, please make sure you have [CORS headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) configured. Otherwise browser security features may block requests from the client.
 
 ### includeEnvironmentVariables
 
