@@ -24,12 +24,12 @@ Check out the [Auth Playground](https://github.com/redwoodjs/playground-auth).
 Redwood's own dbAuth provides several benefits:
 
 * Use your own database for storing user credentials
-* Use your own login and signup pages
+* Use your own login, signup and forgot password pages (or use Redwood's pre-built ones)
 * Customize login session length
-* Use your own database for storing user credentials
 * No external dependencies
 * No user data ever leaves your servers
 * No additional charges/limits based on number of users
+* No third party service outages affecting your site
 
 And potentially one large drawback:
 
@@ -66,8 +66,10 @@ Read the post-install instructions carefully as they contain instructions for ad
 >     model User {
 >       id             Int @id @default(autoincrement())
 >       email          String  @unique
->       hashedPassword String   // <─┐
->       salt           String   // <─┴─ add these lines
+>       hashedPassword      String    // <─┐
+>       salt                String    // <─┼─ add these lines
+>       resetToken          String?   // <─┤
+>       resetTokenExpiresAt DateTime? // <─┘
 >     }
 >
 > If you already have existing user records you will need to provide a default value or Prisma complains, so change those to:
@@ -82,6 +84,8 @@ Read the post-install instructions carefully as they contain instructions for ad
 >       username: 'email',
 >       hashedPassword: 'hashedPassword',
 >       salt: 'salt',
+>       resetToken: 'resetToken',
+>       resetTokenExpiresAt: 'resetTokenExpiresAt',
 >     },
 >
 > To get the actual user that's logged in, take a look at `getCurrentUser()` in `/api/src/lib/auth.js`. We default it to something simple, but you may use different names for your model or unique ID fields, in which case you need to update those calls (instructions are in the comment above the code).
@@ -89,43 +93,49 @@ Read the post-install instructions carefully as they contain instructions for ad
 > Finally, we created a `SESSION_SECRET` environment variable for you in `.env`. This value should NOT be checked into version control and should be unique for each environment you deploy to. If you ever need to log everyone out of your app at once change this secret to a new value. To create a new secret, run:
 >
 >     yarn rw g secret
+>
+> Need simple Login, Signup and Forgot Password pages? Of course we have a generator for those:
+>
+>   yarn rw generate dbAuth
 
 Note that if you change the fields named `hashedPassword` and `salt`, and you have some verbose logging in your app, you'll want to scrub those fields from appearing in your logs. See the [Redaction](/docs/logger#redaction) docs for info.
 
-### Scaffolding Login/Signup Pages
+### Scaffolding Login/Signup/Forgot Password Pages
 
-If you don't want to create your own login and signup pages from scratch we've got a generator for that:
+If you don't want to create your own login, signup and forgot password pages from scratch we've got a generator for that:
 
     yarn rw g dbAuth
 
-The default routes will make them available at `/login` and `/signup`, but that's easy enough to change. Again, check the post-install instructions for one change you need to make to both pages: where to redirect the user to once their login/signup is successful.
+The default routes will make them available at `/login`, `/signup`, `/forgot-password`, and `/reset-password` but that's easy enough to change. Again, check the post-install instructions for one change you need to make to those pages: where to redirect the user to once their login/signup is successful.
 
 If you'd rather create your own, you might want to start from the generated pages anyway as they'll contain the other code you need to actually submit the login credentials or signup fields to the server for processing.
 
 ### Configuration
 
-Almost all config for dbAuth lives in `api/src/functions/auth.js` in the object you give to the `DbAuthHandler` initialization. The comments above each key will explain what goes where. Here's an in-depth explanation for a couple of those options:
+Almost all config for dbAuth lives in `api/src/functions/auth.js` in the object you give to the `DbAuthHandler` initialization. The comments above each key will explain what goes where. Here's an overview of the more important options:
 
-#### loginHandler()
+#### login.handler()
 
-If you want to do something other than immediately let a user log in if their username/password is correct, you can add additional logic in the `loginHandler()`. For example, if a user's credentials are correct, but they haven't verified their email address yet, you can throw an error in this function with the appropriate message and then display it to the user. If the login should proceed, simply return the user that was passed as the only argument to the function:
+If you want to do something other than immediately let a user log in if their username/password is correct, you can add additional logic in `login.handler()`. For example, if a user's credentials are correct, but they haven't verified their email address yet, you can throw an error in this function with the appropriate message and then display it to the user. If the login should proceed, simply return the user that was passed as the only argument to the function:
 
 ```javascript
-loginHandler: (user) => {
-  if (!user.verified) {
-    throw new Error('Please validate your email first!')
-  } else {
-    return user
+login: {
+  handler: (user) => {
+    if (!user.verified) {
+      throw new Error('Please validate your email first!')
+    } else {
+      return user
+    }
   }
 }
 ```
 
-#### signupHandler()
+#### signup.handler()
 
 This function should contain the code needed to actually create a user in your database. You will receive a single argument which is an object with all of the fields necessary to create the user (`username`, `hashedPassword` and `salt`) as well as any additional fields you included in your signup form in an object called `userAttributes`:
 
 ```javascript
-signupHandler: {
+signup: {
   handler: ({ username, hashedPassword, salt, userAttributes }) => {
     return db.user.create({
       data: {
@@ -139,7 +149,7 @@ signupHandler: {
 }
 ```
 
-Before `signupHandler()` is invoked, dbAuth will check that the username is unique in the database and throw an error if not.
+Before `signup.handler()` is invoked, dbAuth will check that the username is unique in the database and throw an error if not.
 
 There are three things you can do within this function depending on how you want the signup to proceed:
 
@@ -159,9 +169,34 @@ const onSubmit = async (data) => {
     toast.error(response.message) // user created, but not logged in
   } else {
     toast.success('Welcome!')     // user created and logged in
+    navigate(routes.dashboard())
   }
 }
 ```
+
+#### forgotPassword.handler()
+
+This handler is invoked if a user is found with the username/email that they submitted on the Forgot Password page, and that user will be passed as an argument. Inside this function is where you'll send the user a link to reset their password—via an email is most common. The link will, by default, look like:
+
+    https://example.com/reset-password?resetToken=${user.resetToken}
+
+If you changed the path to the Reset Password page in your routes you'll need to change it here. If you used another name for the `resetToken` database field, you'll need to change that here as well:
+
+    https://example.com/reset-password?resetKey=${user.resetKey}
+
+#### resetPassword.handler()
+
+This handler is invoked after the password has been successfully changed in the database. Returning something truthy (like `return user`) will automatically log the user in after their password is changed. If you'd like to return them to the login page and make them log in manually, `return false` and redirect the user in the Reset Password page.
+
+#### Error Messages
+
+There are several error messages that can be displayed, including:
+
+* Username/email not found
+* Incorrect password
+* Expired reset password token
+
+We've got some default error messages that sound nice, but may not fit the tone of your site. You can customize these error messages in `api/src/functions/auth.js` in the `errors` prop of each of the `login`, `signup`, `forgotPassword` and `resetPassword` config objects. The generated file contains tons of comments explaining when each particular error message may be shown.
 
 ### Environment Variables
 
