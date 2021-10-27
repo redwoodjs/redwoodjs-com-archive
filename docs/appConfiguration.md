@@ -88,7 +88,7 @@ Configuration for the web side.
 
 ### API Paths
 
-Redwood offers you flexibility to configure the `apiUrl`—the path to your serverless functions—either as a path or a fully-qualified domain name.
+You have full control over the path to your serverless functions via `apiUrl`. You can specify it either as a path (below) or a URL:
 
 ```toml
 [web]
