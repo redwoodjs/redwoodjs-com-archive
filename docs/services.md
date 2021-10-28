@@ -18,9 +18,7 @@ Remember: Service are just functions. That means they can be used not only as Gr
 
 > **Can I use Service functions on the web side?**
 >
-> Yes and no. Generally, in a full-stack application, Services will concern themselves with getting data in and out of a database. The libraries we use for this, like Prisma, do not run in the browser. However, even if it did, it would happily pass on whatever SQL-equivalent commands you give it, like `db.user.deleteMany()`, which would remove all user records! That kind of power in the hands of the client would wreck havoc the likes of which you have never seen.
->
-> However, if you had a Service function that did something non-database related, there's nothing stopping you from importing that function in a component on the web-side and using it. This is not something you usually see in Redwood applications, and we discourage it to maintain a separation of concerns between your web and api sides, but it's technically possible!
+> No. Generally, in a full-stack application, Services will concern themselves with getting data in and out of a database. The libraries we use for this, like Prisma, do not run in the browser. However, even if it did, it would happily pass on whatever SQL-equivalent commands you give it, like `db.user.deleteMany()`, which would remove all user records! That kind of power in the hands of the client would wreck havoc the likes of which you have never seen.
 
 Service functions can also call each other. For example, that theoretical Service function that handles transferring money between two accounts: it certainly comes in handy when a user initiates a transfer through a GraphQL call, but our business logic for what contitutes a transfer lives in that function. That function should be the only one responsible for moving money between two accounts, so we should make use of it anywhere we need to do a transfer—imagine an async task that moves $100 between a checking and savings account every 1st of the month.
 
@@ -409,7 +407,7 @@ validate(input.title, 'Title', {
 
 #### Numericality
 
-The awesomely named Numericality Validation requires that the value passed meet one or more criteria that are all number related.
+The awesomely-named Numericality Validation requires that the value passed meet one or more criteria that are all number related.
 
 ```javascript
 validate(input.year, 'Year', {
@@ -520,7 +518,7 @@ validate(input.floor, {
 #### Presence
 
 Requires that a field be present, meaning it must not be `null` or `undefined`.
-Opposite of the [absense](#absense) validator.
+Opposite of the [absence](#absence) validator.
 
 ```javascript
 validate(input.value, 'Value', {
@@ -591,7 +589,7 @@ validateWith(() => {
 
 Either of these errors will be caught and re-thrown as a `ServiceValidationError` with your text as the `message` of the error (although technically you should always throw errors with `new Error()` like in the second example).
 
-You could just write your own function and throw whatever you like, without using `validateWith()`. But, when accessing your Service function through GraphQL, that error would be swallowed and the user would simply see "Something went wrong" for security reasons: error messages could reveal source code or other sensative information so most are hidden. Errors thrown by Service Validations are considered "safe" and allowed to be shown to the client.
+You could just write your own function and throw whatever you like, without using `validateWith()`. But, when accessing your Service function through GraphQL, that error would be swallowed and the user would simply see "Something went wrong" for security reasons: error messages could reveal source code or other sensitive information so most are hidden. Errors thrown by Service Validations are considered "safe" and allowed to be shown to the client.
 
 ### validateUniqueness()
 
