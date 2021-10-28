@@ -1353,7 +1353,7 @@ export default EmailSigninPage
 
 If you want to [integrate firebase auth with another authentication system](https://firebase.google.com/docs/auth/web/custom-auth), you can use a custom token provider:
 
-```
+```js
 login({
   providerId: 'customToken',
   customToken,
