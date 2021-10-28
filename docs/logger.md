@@ -225,7 +225,7 @@ This is useful when you want to filter out certain operations from the log outpu
 const logger = createLogger({
   options: {
     excludeOperations: ['IntrospectionQuery'],
-    },
+  },
 )
 ```
 
@@ -234,8 +234,8 @@ const logger = createLogger({
 > In the example below, `"FilteredQuery"` is the operation's name.
 > That's what you'd  pass to `excludeOperations` if you wanted it filtered out.
 >
-> ```gql
-> export const testFilteredQuery = `
+> ```js
+> export const filteredQuery = `
 >   query FilteredQuery {
 >     me {
 >       id
