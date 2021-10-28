@@ -75,7 +75,6 @@ In addition to the rich [features](https://github.com/pinojs/pino/blob/master/do
 
 ### Log Level
 
-
 One of 'fatal', 'error', 'warn', 'info', 'debug', 'trace' or 'silent'.
 
 The logger detects you current environment and will default to a sensible minimum log level.
@@ -216,6 +215,35 @@ Pino offers [several transports](https://github.com/pinojs/pino/blob/HEAD/docs/t
 See below for examples of how to configure Logflare and Datadog.
 
 Note that not all [known pino transports](https://github.com/pinojs/pino/blob/HEAD/docs/transports.md#known-transports) can be used in a serverless environment.
+
+### Exclude Operations
+
+You can exclude GraphQL operations by name with `excludeOperations`.
+This is useful when you want to filter out certain operations from the log output, for example, `IntrospectionQuery` from GraphQL playground:
+
+```js
+const logger = createLogger({
+  options: {
+    excludeOperations: ['IntrospectionQuery'],
+    },
+)
+```
+
+> **Relevant anatomy of an operation**
+>
+> In the example below, `"FilteredQuery"` is the operation's name.
+> That's what you'd  pass to `excludeOperations` if you wanted it filtered out.
+>
+> ```gql
+> export const testFilteredQuery = `
+>   query FilteredQuery {
+>     me {
+>       id
+>       name
+>     }
+>   }
+> `
+> ```
 
 ## Default Configuration Overview
 
