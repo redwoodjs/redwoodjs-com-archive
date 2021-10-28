@@ -1,9 +1,9 @@
 # Directives
 
-Redwood Directives are a powerful feature, supercharging your GraphQL-backed Services. 
+Redwood Directives are a powerful feature, supercharging your GraphQL-backed Services.
 
 You can think of directives like "middleware" that let you run reusable code during GraphQL execution to perform tasks like authentication and formatting.
-Redwood uses them to make it a snap to protect your API Services from unauthorized access. 
+Redwood uses them to make it a snap to protect your API Services from unauthorized access.
 Here we call those types of directives **Validators**.
 
 You can also use them to transform the output of your query result to modify string values, format dates, shield sensitive data, and more!
@@ -18,7 +18,6 @@ type Bar {
 ```
 
 or a Query or a Mutation:
-
 
 ```ts
 type Query {
@@ -40,7 +39,6 @@ type Bar {
 
 or a Query or Mutation:
 
-
 ```ts
 type Query {
   bars: [Bar!]! @myDirective(roles: ["ADMIN"])
@@ -51,7 +49,7 @@ You can also use directives on relations:
 
 ```ts
 type Baz {
-  name: String! 
+  name: String!
 }
 
 type Bar {
@@ -62,11 +60,11 @@ type Bar {
 
 There are many ways to write directives using GraphQL tools and libraries. Believe us, it can get complicated fast.
 
-But, don't fret: Redwood provides an easy and ergonomic way to generate and write your own directives so that you can focus on the implementation logic and not the GraphQL plumbing. 
+But, don't fret: Redwood provides an easy and ergonomic way to generate and write your own directives so that you can focus on the implementation logic and not the GraphQL plumbing.
 
 ## What is a Redwood Directive?
 
-Redwood directives are purposeful. 
+Redwood directives are purposeful.
 They come in two flavors: **Validators** and **Transformers**.
 
 Whatever flavor of directive you want, all Redwood directives must have the following properties:
@@ -86,9 +84,9 @@ If the request's context has a `currentUser` and the app's `auth.{js|ts}` determ
 
 ![require-auth-directive](https://user-images.githubusercontent.com/1051633/135320891-34dc06fc-b600-4c76-8a35-86bf42c7f179.png)
 
-In this second example, we add the Transformer directive `@welcome` to the `title` field on `Post` in the SDL. 
+In this second example, we add the Transformer directive `@welcome` to the `title` field on `Post` in the SDL.
 
-The GraphQL Execution phase proceeds the same as the prior example (because the `post` query is still protected and we'll want to fetch the user's name) and then the `title` field is resolved based on the data fetch query in the service. 
+The GraphQL Execution phase proceeds the same as the prior example (because the `post` query is still protected and we'll want to fetch the user's name) and then the `title` field is resolved based on the data fetch query in the service.
 
 Finally after execution is done, then the directive can inspect the `resolvedValue` (here "Welcome to the blog!") and replace the value by inserting the current user's name—"Welcome, Tom, to the blog!"
 
@@ -105,7 +103,7 @@ Here the `@isSubscriber` validator directive checks if the currentUser exists (a
 ```ts
 import {
   AuthenticationError,
-  ForbiddenError,  
+  ForbiddenError,
   createValidatorDirective,
   ValidatorDirectiveFunc,
 } from '@redwoodjs/graphql-server'
@@ -155,16 +153,16 @@ const requireAuth = createValidatorDirective(schema, validate)
 export default requireAuth
 ```
 
-All Redwood apps come with two built-in validator directives: `@requireAuth` and `@skipAuth`. 
-The `@requireAuth` directive takes optional roles. 
-You may use these to protect against unwanted GraphQL access to your data. 
+All Redwood apps come with two built-in validator directives: `@requireAuth` and `@skipAuth`.
+The `@requireAuth` directive takes optional roles.
+You may use these to protect against unwanted GraphQL access to your data.
 Or explicitly allow public access.
 
 > **Note:** Validators evaluate prior to resolving the field value, so you cannot modify the value and any return value is ignored.
 
 ### Transformers
 
-Transformers can access the resolved field value to modify and then replace it in the response. 
+Transformers can access the resolved field value to modify and then replace it in the response.
 Transformers apply to both single fields (such as a `User`'s `email`) and collections (such as a set of `Posts` that belong to `User`s) or is the result of a query. As such, Transformers cannot be applied to Mutations.
 
 In the first case of a single field, the directive would return the modified field value. In the latter case, the directive could iterate each `Post` and modify the `title` in each. In all cases, the directive **must** return the same expected "shape" of the data the SDL expects.
@@ -185,10 +183,7 @@ and if the `currentUser` is an `ADMIN`, then skip the masking transform and simp
 
 ```jsx
 // ./api/directives/maskedEmail.directive.js
-import {
-  createTransformerDirective,
-  TransformerDirectiveFunc,
-} from '@redwoodjs/graphql-server'
+import { createTransformerDirective, TransformerDirectiveFunc } from '@redwoodjs/graphql-server'
 
 export const schema = gql`
   directive @maskedEmail on FIELD_DEFINITION
@@ -201,7 +196,6 @@ const transform: TransformerDirectiveFunc = ({ context, resolvedValue }) => {
 const maskedEmail = createTransformerDirective(schema, transform)
 
 export default maskedEmail
-
 ```
 
 and you would use it in your SDLs like this:
@@ -210,13 +204,13 @@ and you would use it in your SDLs like this:
 type UserExample {
   id: Int!
   email: String! @maskedEmail # 👈 will replace alphanumeric characters with asterisks in the response!
-  name: String 
+  name: String
 }
 ```
 
 ### Where can I use a Redwood Directive?
 
-A directive can only appear in certain locations in a GraphQL schema or operation. These locations are listed in the directive's definition. 
+A directive can only appear in certain locations in a GraphQL schema or operation. These locations are listed in the directive's definition.
 
 In the example below, the `@maskedEmail` example, the directive can only appear in the `FIELD_DEFINITION` location.
 
@@ -252,14 +246,14 @@ As noted in the [GraphQL spec](https://graphql.org/learn/queries/#directives):
 
 Here's a helpful guide for deciding when you should use one of Redwood's Validator or Transformer directives:
 
-|   | Use                                                                                  | Directive                         | Custom?  | Type        |
-|---|--------------------------------------------------------------------------------------|-----------------------------------|----------|-------------|
-| ✅ | Check if the request is authenticated?                                               | `@requireAuth`                    | Built-in | Validator   |
-| ✅ | Check if the user belongs to a role?                                                 | `@requireAuth(roles: ["AUTHOR"])` | Built-in | Validator   |
-| ✅ | Only allow admins to see emails, but others get a masked value like "###@######.###" | `@maskedEmail(roles: ["ADMIN"])`  | Custom   | Transformer |
-| 🙅  | Know if the logged in user can edit the record, and/or values | N/A - Instead do this check in your service
-| 🙅  | Is my input a valid email address format? | N/A - Instead do this check in your service or use [GraphQL Scalars](https://www.graphql-scalars.dev) (Future Redwood)
-| 🙅  | I want to remove a field from the response for data filtering; for example, do not include the title of the post |  `@skip(if: true )` or `@include(if: false)` |Instead use [core directives](https://graphql.org/learn/queries/#directives) on the GraphQL client query, not the SDL | Core GraphQL
+|     | Use                                                                                                              | Directive                                                                                                                                                                  | Custom?                                                                                                               | Type         |
+| --- | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------ |
+| ✅  | Check if the request is authenticated?                                                                           | `@requireAuth`                                                                                                                                                             | Built-in                                                                                                              | Validator    |
+| ✅  | Check if the user belongs to a role?                                                                             | `@requireAuth(roles: ["AUTHOR"])`                                                                                                                                          | Built-in                                                                                                              | Validator    |
+| ✅  | Only allow admins to see emails, but others get a masked value like "###@######.###"                             | `@maskedEmail(roles: ["ADMIN"])`                                                                                                                                           | Custom                                                                                                                | Transformer  |
+| 🙅  | Know if the logged in user can edit the record, and/or values                                                    | N/A - Instead do this check in your service                                                                                                                                |
+| 🙅  | Is my input a valid email address format?                                                                        | N/A - Instead do this check in your service using [Service Validations](/docs/services#service-validations) or consider [GraphQL Scalars](https://www.graphql-scalars.dev) |
+| 🙅  | I want to remove a field from the response for data filtering; for example, do not include the title of the post | `@skip(if: true )` or `@include(if: false)`                                                                                                                                | Instead use [core directives](https://graphql.org/learn/queries/#directives) on the GraphQL client query, not the SDL | Core GraphQL |
 
 ## Combining, Chaining and Cascading Directives
 
@@ -271,13 +265,13 @@ The answer is: yes—yes you can!
 
 Let's say you want to only allow logged-in users to be able to query `User` details and you only want un-redacted email addresses to be shown to ADMINs.
 
-You can apply the `@requireAuth` directive to the `user(id: Int!)` query so you have to be logged in. 
+You can apply the `@requireAuth` directive to the `user(id: Int!)` query so you have to be logged in.
 Then, you can compose a `@maskedEmail` directive that checks the logged-in user's role membership and if they're not an ADMIN, mask the email address:
 
 ```ts
   type User {
     id: Int!
-    name: String! 
+    name: String!
     email: String! @maskedEmail(role: "ADMIN")
     createdAt: DateTime!
   }
@@ -295,11 +289,10 @@ I can apply the `@requireAuth` directive to the `user(id: Int!)` query so I have
 
 And, I can apply the `@requireAuth` directive to the `email` field with a role argument.
 
-
 ```ts
   type User {
     id: Int!
-    name: String! 
+    name: String!
     email: String! @requireAuth(role: "ADMIN")
     createdAt: DateTime!
   }
@@ -345,7 +338,7 @@ And then, if they are, apply a mask to the email field.
 ```ts
   type User {
     id: Int!
-    name: String! 
+    name: String!
     email: String! @requireAuth @maskedEmail
     createdAt: DateTime!
   }
@@ -362,8 +355,8 @@ Then, you can chain the `@dateFormat` Transformer, to just return the date porti
 ```ts
   type User {
     id: Int!
-    name: String! 
-    email: String! 
+    name: String!
+    email: String!
     createdAt: DateTime! @localTimezone @dateFormat
   }
 ```
@@ -393,7 +386,7 @@ import { logger } from 'src/lib/logger'
 
 export const handler = createGraphQLHandler({
   loggerConfig: { logger, options: {} },
-  directives,//  👈 directives are added to the schema here
+  directives, //  👈 directives are added to the schema here
   sdls,
   services,
   onException: () => {
@@ -405,7 +398,7 @@ export const handler = createGraphQLHandler({
 
 ## Secure by Default with Built-in Directives
 
-By default, your GraphQL endpoint is open to the world. 
+By default, your GraphQL endpoint is open to the world.
 
 That means anyone can request any query and invoke any Mutation.
 Whatever types and fields are defined in your SDL is data that anyone can access.
@@ -423,13 +416,13 @@ The `@requireAuth` directive will call the `requireAuth()` function to determine
 ```ts
 // api/src/lib/auth.ts
 
-// ... 
+// ...
 
 export const isAuthenticated = (): boolean => {
   return true // 👈 replace with the appropriate check
 }
 
-// ... 
+// ...
 
 export const requireAuth = ({ roles }: { roles: AllowedRoles }) => {
   if (isAuthenticated()) {
@@ -450,7 +443,7 @@ If, however, you want your query or mutation to be public, then simply use `@ski
 
 ## Custom Directives
 
-Want to write your own directive? You can of course! 
+Want to write your own directive? You can of course!
 Just generate one using the Redwood CLI; it takes care of the boilerplate and even gives you a handy test!
 
 ### Generators
@@ -489,9 +482,9 @@ After picking the directive type, the files will be created in your `api/src/dir
      type Query {
        todos: [Todo] @myDirective
      }
-```     
+```
 
-### Validator 
+### Validator
 
 Let's create a `@isSubscriber` directive that checks roles to see if the user is a subscriber.
 
@@ -510,7 +503,6 @@ An example of `directiveArgs` is the `roles` argument in the directive `requireA
 
 ```ts
 const validate: ValidatorDirectiveFunc = ({ context, directiveArgs }) => {
-
   // You can also modify your directive to take arguments
   // and use the directiveArgs object provided to this function to get values
   logger.debug(directiveArgs, 'directiveArgs in isSubscriber directive')
@@ -540,8 +532,8 @@ const validate: ValidatorDirectiveFunc = ({ context }) => {
 
 When writing a Validator directive test, you'll want to:
 
-* ensure the directive is named consistently and correctly so the directive name maps properly when validating
-* confirm that the directive throws an error when invalid. The Validator directive should always have a reason to throw an error
+- ensure the directive is named consistently and correctly so the directive name maps properly when validating
+- confirm that the directive throws an error when invalid. The Validator directive should always have a reason to throw an error
 
 Since we stub out the `Error('Implementation missing for isSubscriber')` case when generating the Validator directive, these tests should pass.
 But once you begin implementing the validate logic, it's on you to update appropriately.
@@ -560,14 +552,12 @@ describe('isSubscriber directive', () => {
   it('has a isSubscriber throws an error if validation does not pass', () => {
     const mockExecution = mockRedwoodDirective(isSubscriber, {})
 
-    expect(mockExecution).toThrowError(
-      'Implementation missing for isSubscriber'
-    )
+    expect(mockExecution).toThrowError('Implementation missing for isSubscriber')
   })
 })
 ```
 
-### Transformer 
+### Transformer
 
 Let's create a `@maskedEmail` directive that checks roles to see if the user should see the complete email address or if it should be obfuscated from prying eyes:
 
@@ -589,7 +579,7 @@ const transform: TransformerDirectiveFunc = ({ context, resolvedValue }) => {
 }
 ```
 
-It contains the value of the field on which the directive was placed. Here, `email`. 
+It contains the value of the field on which the directive was placed. Here, `email`.
 So the `resolvedValue` will be the value of the email property in the User model, the "original value" so-to-speak.
 
 When you return a value from the `transform` function, just return a modified value and that will be returned as the result and replace the `email` value in the response.
@@ -602,8 +592,8 @@ When you return a value from the `transform` function, just return a modified va
 
 When writing a Transformer directive test, you'll want to:
 
-* ensure the directive is named consistently and correctly so the directive name maps properly when transforming
-* confirm that the directive returns a value and that it's the expected transformed value
+- ensure the directive is named consistently and correctly so the directive name maps properly when transforming
+- confirm that the directive returns a value and that it's the expected transformed value
 
 Since we stub out and mock the `mockedResolvedValue` when generating the Transformer directive, these tests should pass.
 
