@@ -6,8 +6,8 @@ You can configure your Redwood app's settings in `redwood.toml`. By default, `re
 [web]
   title = "Redwood App"
   port = 8910
-  apiUrl = "/.redwood/functions" 
-  includeEnvironmentVariables = [] 
+  apiUrl = "/.redwood/functions"
+  includeEnvironmentVariables = []
 [api]
   port = 8911
 [browser]
@@ -111,7 +111,7 @@ But sometimes you want to host your api side somewhere else, or even on a differ
   apiUrl = "https://api.coolredwoodapp.com"
 ```
 
-This means your Redwood project's web side (i.e. the frontend) points to the above domain, and tries to access the GrpahQL endpoint at `https://api.coolredwoodapp.com/graphql`.
+This means your Redwood project's web side (i.e. the frontend) points to the above domain, and tries to access the GraphQL endpoint at `https://api.coolredwoodapp.com/graphql`.
 
 **b) Change only the graphql endpoint**
 
