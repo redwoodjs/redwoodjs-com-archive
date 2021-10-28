@@ -16,7 +16,7 @@ But how does the client get access to the output of these Services? By default, 
 
 Remember: Service are just functions. That means they can be used not only as GraphQL resolvers, but from other Services, or serverless functions, or anywhere else you invoke a function on the api side.
 
-> **Can I use Service functions on the web-side?**
+> **Can I use Service functions on the web side?**
 >
 > Yes and no. Generally, in a full-stack application, Services will concern themselves with getting data in and out of a database. The libraries we use for this, like Prisma, do not run in the browser. However, even if it did, it would happily pass on whatever SQL-equivalent commands you give it, like `db.user.deleteMany()`, which would remove all user records! That kind of power in the hands of the client would wreck havoc the likes of which you have never seen.
 >
@@ -174,7 +174,7 @@ Note that the validations object properties often take two forms: a simple form 
 
 This keeps the syntax as simple as possible when a custom message is not required. Details on the options for each validation are detailed below.
 
-#### Absense
+#### Absence
 
 Requires that a field NOT be present, meaning it must be `null` and `undefined`.
 Opposite of the [presence](#presence) validator.
@@ -617,9 +617,11 @@ return await db.$transaction(async (db) => {
 })
 ```
 
-So `validateUniqueness()` first tries to find a record with the given fields, and if found raise an error, if not then execute the callback.
+So `validateUniqueness()` first tries to find a record with the given fields, and if found raise an error, if not then executes the callback.
 
-> Why use this when the database can verify uniqueness with a UNIQUE INDEX database constraint? The error raised by Prisma when this happens is swallowed by GraphQL and so you can't report it to the user. This one will make it back to the browser. Also you may be in a situation where you can't have a unique index, but still want to make sure the data is unique before proceeding.
+> **Why use this when the database can verify uniqueness with a UNIQUE INDEX database constraint?** 
+>
+> The error raised by Prisma when this happens is swallowed by GraphQL and so you can't report it to the user. This one will make it back to the browser. Also you may be in a situation where you can't have a unique index, but still want to make sure the data is unique before proceeding.
 
 #### Enable Prisma Preview Feature
 
@@ -643,7 +645,7 @@ yarn rw dev
 #### Arguments
 
 1. The name of the db table accessor that will be checked (what you would call on `db` in a normal Prisma call). If you'd call `db.user` then this value is `"user"`.
-2. An object, containing the db fields/values to check for uniqueness, like `{ email: 'rob@redwoodjs.com' }`. Can also include additional options explained below that provide for a norrower scope for uniqueness requirements, and a way for the record to identify itself and not create a false positive for an existing record.
+2. An object, containing the db fields/values to check for uniqueness, like `{ email: 'rob@redwoodjs.com' }`. Can also include additional options explained below that provide for a narrower scope for uniqueness requirements, and a way for the record to identify itself and not create a false positive for an existing record.
 3. [Optional] An object with options.
 4. Callback to be invoked if record is found to be unique.
 
