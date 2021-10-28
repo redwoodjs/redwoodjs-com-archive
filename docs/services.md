@@ -4,7 +4,7 @@ Redwood aims to put all of your business logic in one place—Services. These ca
 
 ## Overview
 
-What do we mean by "business logic?" [One definition](https://www.investopedia.com/terms/b/businesslogic.asp) states: "Business logic is the custom rules or algorithms that handle the exchange of information between a database and user interface." In Redwood, those custom rules and algorithms go in Services. You can't put that logic in the client because it's open to the world and could be manipulated. Imagine having the code to determine a valid withdrawl or deposit to someone's bank balance living in the client, and the server just receives API calls of where to move the money, doing no additional verification of those numbers! Your bank would quickly go insolvent. As you'll hear many times throughout our docs, and your development career—never trust the client.
+What do we mean by "business logic?" [One definition](https://www.investopedia.com/terms/b/businesslogic.asp) states: "Business logic is the custom rules or algorithms that handle the exchange of information between a database and user interface." In Redwood, those custom rules and algorithms go in Services. You can't put that logic in the client because it's open to the world and could be manipulated. Imagine having the code to determine a valid withdrawal or deposit to someone's bank balance living in the client, and the server just receives API calls of where to move the money, doing no additional verification of those numbers! Your bank would quickly go insolvent. As you'll hear many times throughout our docs, and your development career—never trust the client.
 
 But how does the client get access to the output of these Services? By default, that's through GraphQL. GraphQL is an API, accessible to clients, that relies on getting data from "somewhere" before returning it. That somewhere is a function backed by what's known as a [**resolver**](https://graphql.org/learn/execution/) in GraphQL. And in Redwood, those resolvers are your Services!
 
@@ -20,7 +20,7 @@ Remember: Service are just functions. That means they can be used not only as Gr
 >
 > No. Generally, in a full-stack application, Services will concern themselves with getting data in and out of a database. The libraries we use for this, like Prisma, do not run in the browser. However, even if it did, it would happily pass on whatever SQL-equivalent commands you give it, like `db.user.deleteMany()`, which would remove all user records! That kind of power in the hands of the client would wreck havoc the likes of which you have never seen.
 
-Service functions can also call each other. For example, that theoretical Service function that handles transferring money between two accounts: it certainly comes in handy when a user initiates a transfer through a GraphQL call, but our business logic for what contitutes a transfer lives in that function. That function should be the only one responsible for moving money between two accounts, so we should make use of it anywhere we need to do a transfer—imagine an async task that moves $100 between a checking and savings account every 1st of the month.
+Service functions can also call each other. For example, that theoretical Service function that handles transferring money between two accounts: it certainly comes in handy when a user initiates a transfer through a GraphQL call, but our business logic for what constitutes a transfer lives in that function. That function should be the only one responsible for moving money between two accounts, so we should make use of it anywhere we need to do a transfer—imagine an async task that moves $100 between a checking and savings account every 1st of the month.
 
 ```
 ┌───────────┐      ┌───────────┐
@@ -65,7 +65,7 @@ export const createUser = async ({ input }) => {
 >
 > [Validator Directives](https://redwoodjs.com/docs/directives#validators) were added to Redwood in v0.37 and provide a way to validate whether data going through GraphQL is allowed based on the user that's currently requesting it (the user that is logged in). These directives control *access* to data, while Service Validators operate on a different level, outside of GraphQL, and make sure data is formatted properly before, most commonly, putting it into a database.
 >
-> You could use these in combination to, for example, prevent a client from accessing the email addresses of any users that aren't themselves (Validator Directivies) while also verifying that when creating a user, an email address is present, formatted correctly, and unique (Service Validations).
+> You could use these in combination to, for example, prevent a client from accessing the email addresses of any users that aren't themselves (Validator Directives) while also verifying that when creating a user, an email address is present, formatted correctly, and unique (Service Validations).
 
 ### Displaying to the User
 
@@ -387,7 +387,7 @@ validate(input.pin, 'PIN', {
 })
 ```
 
-* `between`: conveience syntax for defining min and max as an array
+* `between`: convenience syntax for defining min and max as an array
 
 ```javascript
 validate(input.title, 'Title', {
@@ -617,7 +617,7 @@ return await db.$transaction(async (db) => {
 
 So `validateUniqueness()` first tries to find a record with the given fields, and if found raise an error, if not then executes the callback.
 
-> **Why use this when the database can verify uniqueness with a UNIQUE INDEX database constraint?** 
+> **Why use this when the database can verify uniqueness with a UNIQUE INDEX database constraint?**
 >
 > The error raised by Prisma when this happens is swallowed by GraphQL and so you can't report it to the user. This one will make it back to the browser. Also you may be in a situation where you can't have a unique index, but still want to make sure the data is unique before proceeding.
 
@@ -684,7 +684,7 @@ const updateUser = (id, input) => {
 }
 ```
 
-Now the check for whether a record exists will exclude those records whos `id` is the same as this record's `id`.
+Now the check for whether a record exists will exclude those records whose `id` is the same as this record's `id`.
 
 ##### $scope
 
