@@ -1365,7 +1365,7 @@ Some caveats about using custom tokens:
 - make sure it's actually what you want to use
 - remember that the client's firebase authentication state has an independent lifetime than the custom token
 
-If you want to read more, check out ["Demystifying firebase auth tokens"](https://medium.com/@jwngr/demystifying-firebase-auth-tokens-e0c533ed330c).
+If you want to read more, check out [Demystifying Firebase Auth Tokens](https://medium.com/@jwngr/demystifying-firebase-auth-tokens-e0c533ed330c).
 
 #### Custom Parameters & Scopes for Google OAuth Provider
 
