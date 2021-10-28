@@ -1303,7 +1303,7 @@ Supported providers:
 
 Email/password authentication is supported by calling `login({ username, password })` and `signUp({ username, password })`.
 
-#### Email link (passwordless sign-in ) in Firebase
+#### Email link (passwordless sign-in) in Firebase
 
 In Firebase Console, you must enable "Email link (passwordless sign-in)" with the configuration toggle for the email provider. The authenticaton sequence for passwordless email links has two steps:
 
@@ -1348,6 +1348,24 @@ const EmailSigninPage = () => {
 
 export default EmailSigninPage
 ```
+
+#### Custom Token in Firebase
+
+If you want to [integrate firebase auth with another authentication system](https://firebase.google.com/docs/auth/web/custom-auth), you can use a custom token provider:
+
+```js
+logIn({
+  providerId: 'customToken',
+  customToken,
+})
+```
+
+Some caveats about using custom tokens:
+
+- make sure it's actually what you want to use
+- remember that the client's firebase authentication state has an independent lifetime than the custom token
+
+If you want to read more, check out [Demystifying Firebase Auth Tokens](https://medium.com/@jwngr/demystifying-firebase-auth-tokens-e0c533ed330c).
 
 #### Custom Parameters & Scopes for Google OAuth Provider
 
