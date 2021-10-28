@@ -302,7 +302,11 @@ If you need more than the default basic health check, you can provide a custom i
 
 const myCustomHealthCheck = async () => {
   if (ok) {
-    // replace with custom check
+    // Implement your custom check, such as:
+    // * invoke an api
+    // * call a service
+    // * make a db request
+    // that ensures your GraphQL endpoint is healthy
     return
   }
 
@@ -323,21 +327,34 @@ export const handler = createGraphQLHandler({
 
 To perform a health check, make a HTTP GET request to the `/graphql/health` endpoint.
 
-For local development, with the proxy:
+For local development, with the proxy using `curl` from the command line:
 
 ```bash
-~ % curl http://localhost:8911/graphql/health
-{"status":"pass"}%
+curl http://localhost:8911/graphql/health
 ```
 
-Directly invoking the graphql function:
+And you should get the response:
+
+``json
+{"status":"pass"}
+
+````
+
+Directly invoking the graphql function using `curl` from the command line:
 
 ```bash
-~ % curl http://localhost:8910/.redwood/functions/graphql/health
+curl http://localhost:8910/.redwood/functions/graphql/health
+````
+
+And you should get the response:
+
+```json
 {"status":"pass"}%
 ```
 
 For production or your deploy, make a request wherever your `/graphql` function exists.
+
+> Note: These examples use `curl`. You can performa a health check via any GET http request.
 
 ## Verifying GraphQL Schema
 
