@@ -174,7 +174,7 @@ This keeps the syntax as simple as possible when a custom message is not require
 
 #### Absence
 
-Requires that a field NOT be present, meaning it must be `null` and `undefined`.
+Requires that a field NOT be present, meaning it must be `null` or `undefined`.
 Opposite of the [presence](#presence) validator.
 
 ```javascript
