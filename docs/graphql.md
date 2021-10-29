@@ -297,8 +297,7 @@ Health checks are used determine if a server is available and ready to start ser
 If you need more than the default basic health check, you can provide a custom implementation via an `onHealthCheck` function when creating the GraphQLHandler. If defined, this async `onHealthCheck` function should return if the server is deemed ready or throw if there is an error.
 
 ```ts
-// api/src/functions/graphql.ts
-/// ...
+// api/src/functions/graphql.{ts,js}
 
 const myCustomHealthCheck = async () => {
   if (ok) {
@@ -335,10 +334,9 @@ curl http://localhost:8911/graphql/health
 
 And you should get the response:
 
-``json
+```json
 {"status":"pass"}
-
-````
+```
 
 Directly invoking the graphql function using `curl` from the command line:
 
@@ -349,7 +347,7 @@ curl http://localhost:8910/.redwood/functions/graphql/health
 And you should get the response:
 
 ```json
-{"status":"pass"}%
+{"status":"pass"}
 ```
 
 For production or your deploy, make a request wherever your `/graphql` function exists.
