@@ -314,7 +314,7 @@ export const schema = gql`
   }
 
   type Query {
-    getWeather(zip: String!): Weather!
+    getWeather(zip: String!): Weather! @skipAuth
   }
 `
 ```
@@ -352,7 +352,7 @@ We'll enter our query at the top left and the variables (zip) at the lower left.
 Okay lets pull the real data from OpenWeather now. We'll use a package `node-fetch` that mimics the Fetch API in the browser:
 
 ```terminal
-yarn workspace api add node-fetch
+yarn workspace api add node-fetch@2
 ```
 
 And import that into the service and make the fetch. Note that `fetch` returns a Promise so we're going to convert our service to `async`/`await` to simplify things:
@@ -396,8 +396,8 @@ This will create `web/src/components/WeatherCell/WeatherCell.js`:
 // web/src/components/WeatherCell/WeatherCell.js
 
 export const QUERY = gql`
-  query {
-    weather {
+  query FindWeatherQuery($id: Int!) {
+    weather: weather(id: $id) {
       id
     }
   }
@@ -407,10 +407,12 @@ export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => <div>Empty</div>
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
+export const Failure = ({ error }) => (
+  <div style={{ color: 'red' }}>Error: {error.message}</div>
+)
 
 export const Success = ({ weather }) => {
-  return JSON.stringify(weather)
+  return <div>{JSON.stringify(weather)}</div>
 }
 ```
 
@@ -418,7 +420,7 @@ Let's update the QUERY to match the signature of our API:
 
 ```javascript
 export const QUERY = gql`
-  query($zip: String!) {
+  query GetWeatherQuery($zip: String!) {
     weather: getWeather(zip: $zip) {
       zip
       city
@@ -497,7 +499,7 @@ export const Success = ({ weather }) => {
 
 What if the user inputs an invalid zip code, like **11111**?
 
-![image](https://user-images.githubusercontent.com/300/79393581-7f574080-7f2a-11ea-8ccc-2a404e4c6874.png)
+![image](https://user-images.githubusercontent.com/2321110/137649805-5a9f6f4d-4f66-4758-9e47-f1a8a985bdda.png)
 
 Gross. This happens when our service tries to parse the response from OpenWeather and can't find one of the data points we're looking for (the array under the `weather` key). We should put together a nicer error message than that. Let's look at the response from OpenWeather when you enter a zip code that doesn't exist: https://api.openweathermap.org/data/2.5/weather?zip=11111,us&appid=YOUR_API_KEY
 
@@ -510,10 +512,11 @@ Gross. This happens when our service tries to parse the response from OpenWeathe
 
 Okay, let's look for that `cod` and if it's `404` then we know the zip isn't found and can return a more helpful error from our service. Open up the service and let's add a check:
 
-```javascript
+```javascript {4, 12-14}
 // api/src/services/weather/weather.js
 
 import fetch from 'node-fetch'
+import { UserInputError } from '@redwoodjs/graphql-server'
 
 export const getWeather = async ({ zip }) => {
   const response = await fetch(
@@ -522,7 +525,7 @@ export const getWeather = async ({ zip }) => {
   const json = await response.json()
 
   if (json.cod === '404') {
-    return new Error(`${zip} isn't a valid US zip code, please try again`)
+    throw new UserInputError(`${zip} isn't a valid US zip code, please try again`)
   }
 
   return {
@@ -537,9 +540,9 @@ export const getWeather = async ({ zip }) => {
 
 And now if we submit **11111**:
 
-![image](https://user-images.githubusercontent.com/300/79393882-12907600-7f2b-11ea-8b2a-a151153ff983.png)
+![image](https://user-images.githubusercontent.com/2321110/137649849-49d3aa66-e08b-44f8-93b9-c8a61f1e5ce9.png)
 
-That's much better! Let's strip out that "Error: GraphQL error:" part, and maybe make it look a little more error-like. This is a job for the `Failure` component in our `WeatherCell`:
+That's much better! Let's strip out that "Error: " part, and maybe make it look a little more error-like. This is a job for the `Failure` component in our `WeatherCell`:
 
 ```javascript
 // web/src/components/WeatherCell/WeatherCell.js
@@ -553,12 +556,12 @@ export const Failure = ({ error }) => (
       display: 'inline-block',
     }}
   >
-    {error.message.replace('GraphQL error: ', '')}
+    {error.message}
   </span>
 )
 ```
 
-![image](https://user-images.githubusercontent.com/300/79394219-d3165980-7f2b-11ea-9028-bb822e8b2dbe.png)
+![image](https://user-images.githubusercontent.com/2321110/137649934-35c7b0e1-9b10-409e-8dbb-6a133aeb14bd.png)
 
 Much better!
 
