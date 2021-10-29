@@ -491,7 +491,7 @@ Along with `variables` there is a second argument: an object which you can destr
 
 ```javascript
 mockGraphQLQuery('getArticle', (variables, { ctx }) => {
-  ctx.error({ message: 'Error' })
+  ctx.errors({ message: 'Error' })
 })
 ```
 
@@ -518,7 +518,7 @@ const Article = ({ id }) => {
 
 it('renders an error message', async () => {
   mockGraphQLQuery('getArticle', (variables, { ctx }) => {
-    ctx.error({ message: 'Error' })
+    ctx.errors({ message: 'Error' })
   })
 
   render(<Article id={1} />)
@@ -956,8 +956,7 @@ To test our forms, we can make use of of the [`@testing-library/user-event`](htt
 
 ```bash
 yarn workspace web add -D @testing-library/user-event
-
-> `@testing-library/dom`, `user-event's` dependency, is already provided by Redwood.
+```
 
 ### Building a Form
 
@@ -1003,7 +1002,7 @@ Now, we can extend the `test` file which Redwood generated. We're going to want 
 ```javascript
 // NameForm.test.js
 import { render, screen, waitFor } from '@redwoodjs/testing'
-import user from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event'
 
 import NameForm from './NameForm'
 
@@ -1032,8 +1031,12 @@ The important takeaways are:
 
 ```javascript
 // NameForm.test.js
+import { render, screen, waitFor } from '@redwoodjs/testing'
+import userEvent from '@testing-library/user-event'
 
-// describe('NameForm', () => {
+import NameForm from './NameForm'
+
+describe('NameForm', () => {
 
   it('does not submit when required fields are empty', async () => {
     const onSubmit = jest.fn()

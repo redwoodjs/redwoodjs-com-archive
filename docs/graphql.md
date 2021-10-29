@@ -52,7 +52,7 @@ You can use Apollo's `useQuery` and `useMutation` hooks by importing them from `
 
 import { useMutation } from '@redwoodjs/web'
 
-const MUTATION = `
+const MUTATION = gql`
   # your mutation...
 `
 
@@ -343,19 +343,22 @@ export const handler = createGraphQLHandler({
 })
 ```
 
-### Health checks
+### Health Checks
 
 Health checks are used determine if a server is available and ready to start serving traffic. By default, Redwood's GraphQLHandler provides a health check endpoint at `/graphql/health` which returns a `200 status code` with a result of `{ status: 'pass' }` if the server is healthy and can accept requests or a `503 status code` with `{ status: fail }` if not.
 
 If you need more than the default basic health check, you can provide a custom implementation via an `onHealthCheck` function when creating the GraphQLHandler. If defined, this async `onHealthCheck` function should return if the server is deemed ready or throw if there is an error.
 
 ```ts
-// api/src/functions/graphql.ts
-/// ...
+// api/src/functions/graphql.{ts,js}
 
 const myCustomHealthCheck = async () => {
   if (ok) {
-    // replace with custom check
+    // Implement your custom check, such as:
+    // * invoke an api
+    // * call a service
+    // * make a db request
+    // that ensures your GraphQL endpoint is healthy
     return
   }
 
@@ -371,6 +374,33 @@ export const handler = createGraphQLHandler({
   services,
 })
 ```
+
+#### Perform a Health Check
+
+To perform a health check, make a HTTP GET request to the `/graphql/health` endpoint.
+
+For local development, 
+with the proxy using `curl` from the command line:
+
+```bash
+curl http://localhost:8910/.redwood/functions/graphql/health
+```
+
+or by directly invoking the graphql function:
+
+```bash
+curl http://localhost:8911/graphql/health
+```
+
+you should get the response:
+
+```json
+{"status":"pass"}
+```
+
+For production or your deploy, make a request wherever your `/graphql` function exists.
+
+> Note: These examples use `curl` but you can performa a health check via any HTTP GET request.
 
 ## Verifying GraphQL Schema
 

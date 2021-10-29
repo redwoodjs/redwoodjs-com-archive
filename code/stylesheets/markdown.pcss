@@ -22,12 +22,17 @@
 
   h2,
   h3,
-  h4 {
+  h4,
+  h5 {
     @apply mt-8 mb-4;
   }
 
   h4 {
     @apply font-semibold;
+  }
+
+  h5 {
+    @apply font-semibold text-sm text-gray-700;
   }
 
   /* Move headings over because the anchor link will be hidden */
@@ -60,6 +65,10 @@
 
   pre {
     @apply mt-4 bg-gray-900 p-4 pb-8 text-sm text-white overflow-x-scroll rounded-lg;
+  }
+
+  pre + ul {
+    @apply mt-4;
   }
 
   .highlighted-line {
