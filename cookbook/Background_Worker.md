@@ -49,7 +49,7 @@ export default async ({ _args }) => {
 }
 ```
 
-This won't work yet as we haven't made `postSignupTask` in `api/src/lib/tasks.js` or set the `FAKTORY_URL`.
+This won't work yet as we haven't made `postSignupTask` in `api/src/lib/tasks.js` or set `FAKTORY_URL`.
 Set `FAKTORY_URL` in `.env` to where your server's running.
 
 In `postSignupTask`, we may want to perform operations that need to contact external services, such as sending an email.
@@ -94,4 +94,4 @@ export const signUp = async ({ input }) => {
 That's it—we're done!
 Run your Faktory server using Docker and run the worker using `yarn rw exec faktoryWorker`.
 
-If your Faktory server in running and you have set the `FAKTORY_URL` correctly, you'll see the server pick up the jobs and your worker process the job.
+If your Faktory server in running and you have set `FAKTORY_URL` correctly, you'll see the server pick up the jobs and your worker process the job.
