@@ -326,25 +326,20 @@ export const handler = createGraphQLHandler({
 
 To perform a health check, make a HTTP GET request to the `/graphql/health` endpoint.
 
-For local development, with the proxy using `curl` from the command line:
+For local development, 
+with the proxy using `curl` from the command line:
+
+```bash
+curl http://localhost:8910/.redwood/functions/graphql/health
+```
+
+or by directly invoking the graphql function:
 
 ```bash
 curl http://localhost:8911/graphql/health
 ```
 
-And you should get the response:
-
-```json
-{"status":"pass"}
-```
-
-Directly invoking the graphql function using `curl` from the command line:
-
-```bash
-curl http://localhost:8910/.redwood/functions/graphql/health
-````
-
-And you should get the response:
+you should get the response:
 
 ```json
 {"status":"pass"}
@@ -352,7 +347,7 @@ And you should get the response:
 
 For production or your deploy, make a request wherever your `/graphql` function exists.
 
-> Note: These examples use `curl`. You can performa a health check via any GET http request.
+> Note: These examples use `curl` but you can performa a health check via any HTTP GET request.
 
 ## Verifying GraphQL Schema
 
