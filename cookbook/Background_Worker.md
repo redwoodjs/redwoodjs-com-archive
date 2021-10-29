@@ -1,28 +1,22 @@
 # Creating a Background Worker with Exec and Faktory
 
-Using Redwood's [exec feature](/cli-commands#exec), we'll create a background worker using a library called [Faktory](https://contribsys.com/faktory/).
+In this cookbook, we'll use Redwood's [exec feature](/docs/cli-commands#exec) to create a background worker using a library called [Faktory](https://contribsys.com/faktory/).
 
 At a high level, Faktory is a language-agnostic, persistent background-job server.
-You can run the server [using Docker](https://github.com/contribsys/faktory/wiki/Docker).
+You can run the server [with Docker](https://github.com/contribsys/faktory/wiki/Docker).
 
-For our client, we'll use the [node library](https://github.com/jbielick/faktory_worker_node) that Faktory provides.
-We'll use it to send jobs from our Redwood app to our Faktory server.
-This libary can also be configured with Redwood's exec feature to process jobs from the Faktory server.
+For our client, we'll use this [node library](https://github.com/jbielick/faktory_worker_node) to send jobs from our Redwood app to our Faktory server.
 
-Let's create our faktory worker. 
-<!-- to consume the tasks, share our Redwood app code, and perform the work. -->
-We're going to register a task called `postSignupTask` in our worker.
+## Creating the Faktory Worker
 
+Let's create our faktory worker
 First, make the worker script:
 
 ```
 yarn rw g script faktoryWorker
 ```
 
-You'll have to make an env var, `FAKTORY_URL`, availabe in your .env file. 
-You can find the value...
-
-Then, the logic of the script:
+We'll start by registering a task called `postSignupTask` in our worker:
 
 ```javascript
 // scripts/faktoryWorker.js
@@ -53,8 +47,8 @@ export default async ({ _args }) => {
 }
 ```
 
-This won't work yet as we haven't made our postSignupTask in `api/src/lib/tasks.js`.
-Let's do that now.
+This won't work yet as we haven't made `postSignupTask` in `api/src/lib/tasks.js` or set the `FAKTORY_URL`.
+Set `FAKTORY_URL` in `.env` to where your Docker server's at.
 
 In `postSignupTask`, we may want to perform operations that need to contact external services, such as sending an email.
 For this type of work, we typically don't want to hold up the request/response cycle and can perform in the background. 
