@@ -405,6 +405,40 @@ Whatever types and fields are defined in your SDL is data that anyone can access
 
 But Redwood encourages being secure by default by defaulting all queries and mutations to have the `@requireAuth` directive when generating SDL or a service.
 When your app builds and your server starts up, Redwood checks that **all** queries and mutations have `@requireAuth`, `@skipAuth` or a custom directive applied.
+
+If not, then your build will fail:
+
+```terminal
+  ✖ Verifying graphql schema...
+    Building API...
+    Cleaning Web...
+    Building Web...
+    Prerendering Web...
+You must specify one of @requireAuth, @skipAuth or a custom directive for
+- contacts Query
+- posts Query
+- post Query
+- updatePost Mutation
+- deletePost Mutation
+```
+
+or your server won't startup and you should see that "Schema validation failed":
+
+```terminal
+gen | Generating TypeScript definitions and GraphQL schemas...
+gen | 47 files generated
+api | Building... Took 593 ms
+api | [GQL Server Error] - Schema validation failed
+api | ----------------------------------------
+api | You must specify one of @requireAuth, @skipAuth or a custom directive for
+api | - posts Query
+api | - createPost Mutation
+api | - updatePost Mutation
+api | - deletePost Mutation
+```
+
+To correct, just add the appropriate directive to your queries and mutations.
+
 If not, then your build will fail and your server won't startup.
 
 ### @requireAuth

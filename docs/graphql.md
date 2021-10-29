@@ -4,7 +4,24 @@ GraphQL is a fundamental part of Redwood. Having said that, you can get going wi
 
 The good thing is that, besides taking care of the annoying stuff for you (namely, mapping your resolvers, which gets annoying fast if you do it yourself!), there's not many gotchas with GraphQL in Redwood. GraphQL is GraphQL. The only Redwood-specific thing you should really be aware of is [resolver args](#redwoods-resolver-args).
 
-Since there's two parts to GraphQL in Redwood, the client and the server, we've divided this doc up that way. By default, Redwood uses Apollo for both: [Apollo Client](https://www.apollographql.com/docs/react/) for the client and [Apollo Server](https://www.apollographql.com/docs/apollo-server/) for the server, though you can swap Apollo Client out for something else if you want. Apollo Server, not so much, but you really shouldn't have to do that unless you want to be on the bleeding edge of the [GraphQL spec](https://spec.graphql.org/), in which case, why are you reading this doc anyway? Contribute a PR instead!
+Since there's two parts to GraphQL in Redwood, the client and the server, we've divided this doc up that way.
+
+On the `web` side, Redwood uses [Apollo Client](https://www.apollographql.com/docs/react/) by default though you can swap it out for something else if you want.
+
+The `api` side offers a GraphQL server built on [GraphQL Helix](<(https://dev.to/danielrearden/building-a-graphql-server-with-graphql-helix-2k44)>) and the [Envelop plugin system](https://www.envelop.dev/docs) from [The Guild](https://the-guild.dev).
+
+Redwood's api side is "serverless first", meaning it's architected as functions which can be deployed on either serverless or traditional infrastructure, and Redwood's GraphQL endpoint is effectively "just another function" (with a whole lot more going on under the hood, but that part is handled for you, out of the box).
+One of the tenets of the Redwood philosophy is "Redwood believes that, as much as possible, you should be able to operate in a serverless mindset and deploy to a generic computational grid.”
+
+To be able to deploy to a “generic computation grid” means that, as a developer, you should be able to deploy using the provider or technology of your choosing. You should be able to deploy to Netlify, Vercel, Fly, Render, AWS Serverless, or elsewhere with ease and no vendor or platform lock in. You should be in control of the framework, what the response looks like, and how your clients consume it.
+
+The same should be true of your GraphQL Server. [GraphQL Helix](https://dev.to/danielrearden/building-a-graphql-server-with-graphql-helix-2k44) makes that possible.
+
+> Existing libraries like Apollo Server provide you with either a complete HTTP server or a middleware function that you can plug into your framework of choice. GraphQL Helix takes a different approach—it just provides a handful of functions that you can use to turn an HTTP request into a GraphQL execution result. In other words, GraphQL Helix leaves it up to you to decide how to send back the response.
+
+We leverage Envelop plugins to provide GraphQL [security best practices](/docs/graphql#security) and implement custom internal plugins to help with authentication, [logging](/docs/graphql#logging), [directive handling](/docs/graphql#directives), and more.
+
+All this gets us closer to Redwood's goal of being able to deploy to a "generic computation grid". And that’s exciting!
 
 ## Client-side
 
@@ -248,7 +265,7 @@ export const handler = createGraphQLHandler({
   },
   schema: makeMergedSchema({
     schemas,
-    services: makeServices({ services }),
+    services,
   }),
   context: setIpAddress,
   onException: () => {
@@ -258,7 +275,7 @@ export const handler = createGraphQLHandler({
 })
 ```
 
-> **Note:** If you use the preview GraphQL Helix/Envelop `graphql-server` package and a custom ContextFunction to modify the context in the createGraphQL handler, the function is provided **_only the context_** and **_not event_**. However, the `event` information is available as an attribute of the context as `context.event`. Therefore, in the above example, one would fetch the ip address from the event this way: `ipAddress({ event: context.event })`.
+> **Note:** If you use the preview GraphQL Helix/Envelop `graphql-server` package and a custom ContextFunction to modify the context in the createGraphQL handler, the function is provided **_only the context_** and **_not the event_**. However, the `event` information is available as an attribute of the context as `context.event`. Therefore, in the above example, one would fetch the ip address from the event this way: `ipAddress({ event: context.event })`.
 
 ### The Root Schema
 
@@ -289,6 +306,42 @@ The GraphQL Playground's nice, but if you're a power user, you'll want to be usi
 - link to claire's video
 - dt has some thoughts on this
 - insomnia -->
+
+## CORS Configuration
+
+CORS stands for [Cross Origin Resource Sharing](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing); in a nutshell, by default, browsers aren't allowed to access resources outside their own domain.
+
+Let's say you're hosting each of your Redwood app's sides on different domains: the web side on `www.example.com` and the api side (and thus, the GraphQL Server) on `api.example.com`.
+When the browser tries to fetch data from the `/graphql` function, you'll see an error that says the request was blocked due to CORS. Wording may vary, but it'll be similar to:
+
+> ⛔️ Access to fetch ... has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
+To fix this, you need to "configure CORS" by adding:
+
+```
+'Access-Control-Allow-Origin': '*'
+'Access-Control-Allow-Credentials': true
+```
+
+to the GraphQL response headers which you can do this by setting the `cors` option in `api/src/functions/graphql.{js|t}s`:
+
+```ts
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: {} },
+  directives,
+  sdls,
+  services,
+  cors: {
+    // 👈 setup your CORS configuration options
+    origin: '*',
+    credentials: true,
+  },
+  onException: () => {
+    // Disconnect from your database with an unhandled exception.
+    db.$disconnect()
+  },
+})
+```
 
 ### Health Checks
 
@@ -759,6 +812,103 @@ export const handler = createGraphQLHandler({
   depthLimitOptions: { maxDepth: 6 },
   // ...
 })
+```
+
+### Error Masking
+
+In many GraphQL servers, when an error is thrown, the details of that error are leaked to the outside world. The error and its message are then returned in the response and a client might reveal those errors in logs or even render the message to the user. You could potentially leak sensitive or other information about your app you don't want to share—such as database connection failures or even the presence of certain fields.
+
+Redwood is here to help!
+
+Redwood prevents leaking sensitive error-stack information out-of-the-box for unexpected errors.
+If an error that isn't one of [Redwood's GraphQL Errors](/docs/graphql#redwood-errors) or isn't based on a GraphQLError is thrown:
+
+- The original error and its message will be logged using the defined GraphQL logger, so you'll know what went wrong
+- A default message "Something went wrong" will replace the error message in the response (Note: you can customize this message)
+
+#### Customizing the Error Message
+
+But what if you still want to share an error message with client?
+Simply use one of [Redwood's GraphQL Errors](/docs/graphql#redwood-errors) and your custom message will be shared with your users.
+
+#### Customizing the Default Error Message
+
+You can customize the default "Something went wrong" message used when the error is masked via the `defaultError` setting on the `createGraphQLHandler`:
+
+```ts
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: {} },
+  directives,
+  sdls,
+  services,
+  defaultError: 'Sorry about that', // 👈 Customize the error message
+  onException: () => {
+    // Disconnect from your database with an unhandled exception.
+    db.$disconnect()
+  },
+})
+```
+
+#### Redwood Errors
+
+Redwood Errors are derived from [Apollo Server Error codes](https://www.apollographql.com/docs/apollo-server/data/errors/#error-codes) for common use cases:
+
+To use a Redwood Error, import each from `@redwood/graphql-server`.
+
+- `SyntaxError` - An unspecified error occurred
+- `ValidationError` - Invalid input to a service
+- `AuthenticationError` - Failed to authenticate
+- `ForbiddenError` - Unauthorized to access
+- `UserInputError` - Missing input to a service
+
+If you use one of the errors, then the message provided will not be masked and will be shared in the GraphQL response:
+
+```ts
+import { UserInputError } from '@redwood/graphql-server'
+// ...
+throw new UserInputError('An email is required.')
+```
+
+then the message provided will not be masked and it will be shred in the GraphQL response.
+
+##### Custom Errors and Uses
+
+Need you own custom error and message?
+
+Maybe you're integrating with a third-party api and want to handle errors from that service and also want control of how that error is shared with your user client-side.
+
+Simply extend from `RedwoodGraphQLError` and you're all set!
+
+```ts
+export class MyCustomError extends RedwoodGraphQLError {
+  constructor(message: string, extensions?: Record<string, any>) {
+    super(message, extensions)
+  }
+}
+```
+
+For example, in your service, you can create and use it to handle the error and return a friendly message:
+
+```ts
+export class WeatherError extends RedwoodGraphQLError {
+  constructor(message: string, extensions?: Record<string, any>) {
+    super(message, extensions)
+  }
+}
+
+export const getWeather = async ({ input }: WeatherInput) {
+  try {
+    const weather = weatherClient.get(input.zipCode)
+  } catch(error) {
+    // rate limit issue
+    if (error.statusCode = 429) {
+      throw new WeatherError('Unable to get the latest weather updates at the moment. Please try again shortly.')
+    }
+
+    // other error
+    throw new WeatherError(`We could not get the weather for ${input.zipCode}.`)
+  }
+}
 ```
 
 ## FAQ
