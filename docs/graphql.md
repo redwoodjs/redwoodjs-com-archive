@@ -798,7 +798,7 @@ If an error that isn't one of [Redwood's GraphQL Errors](/docs/graphql#redwood-e
 
 #### Customizing the Error Message
 
-But, what if you still want to share an error message with client?
+But what if you still want to share an error message with client?
 Simply use one of [Redwood's GraphQL Errors](/docs/graphql#redwood-errors) and your custom message will be shared with your users.
 
 #### Customizing the Default Error Message
@@ -845,7 +845,7 @@ then the message provided will not be masked and it will be shred in the GraphQL
 
 Need you own custom error and message?
 
-Maybe you are integrating with a third-party api and want to handle errors from that service, but you want control of how that error is shared with your user client-side.
+Maybe you're integrating with a third-party api and want to handle errors from that service and also want control of how that error is shared with your user client-side.
 
 Simply extend from `RedwoodGraphQLError` and you're all set!
 
@@ -857,7 +857,7 @@ export class MyCustomError extends RedwoodGraphQLError {
 }
 ```
 
-For example, in your service, you can create and use it handle the error and return a friendly message:
+For example, in your service, you can create and use it to handle the error and return a friendly message:
 
 ```ts
 export class WeatherError extends RedwoodGraphQLError {
