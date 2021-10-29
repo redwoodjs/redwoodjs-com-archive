@@ -786,26 +786,22 @@ export const handler = createGraphQLHandler({
 
 ### Error Masking
 
-In many GraphQL servers, when an error is thrown, the details of that error is leaked to the outside world. The error and its message is then returned in the response and a client might reveal those errors in logs or even render the message to the user. You could potentially leak sensitive or other information about your app you don't want to share -- such as database connection failures or even the presence of certain fields.
+In many GraphQL servers, when an error is thrown, the details of that error are leaked to the outside world. The error and its message are then returned in the response and a client might reveal those errors in logs or even render the message to the user. You could potentially leak sensitive or other information about your app you don't want to share—such as database connection failures or even the presence of certain fields.
 
 Redwood is here to help!
 
-Redwood will prevent leaking sensitive error stack information out-of-the-box to for unexpected errors:
+Redwood prevents leaking sensitive error-stack information out-of-the-box for unexpected errors.
+If an error that isn't one of [Redwood's GraphQL Errors](/docs/graphql#redwood-errors) or isn't based on a GraphQLError is thrown:
 
 - The original error and its message will be logged using the defined GraphQL logger, so you'll know what went wrong
 - A default message "Something went wrong" will replace the error message in the response (Note: you can customize this message)
 
-If an error that isn't one of [Redwood's GraphQL Errors](/docs/graphql#redwood-errors) or isn't based on a GraphQLError is thrown:
-
-### Customizing the Default Error Message
-
-# You can customize the default "Something went wrong" message used when the error is masked via the `errorMessage` setting on `createGraphQLHandler`:
+#### Customizing the Error Message
 
 But, what if you still want to share an error message with client?
+Simply use one of [Redwood's GraphQL Errors](/docs/graphql#redwood-errors) and your custom message will be shared with your users.
 
-Simply use one of [Redwood's GraphQL Errors](/docs/graphql#redwood-errors) and your custom message will be shared with your users:
-
-#### Customize Error Message
+#### Customizing the Default Error Message
 
 You can customize the default "Something went wrong" message used when the error is masked via the `defaultError` setting on the `createGraphQLHandler`:
 
