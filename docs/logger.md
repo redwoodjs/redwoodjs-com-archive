@@ -57,7 +57,7 @@ That's it!
 
 ### Manual Setup for RedwoodJS Upgrade
 
-If you are upgrading an existing RedwoodJS app prior to v0.28 and would like to include logging, you simply need to copy over files from the "Create Redwood Application" template:
+If you are upgrading an existing RedwoodJS app older than v0.28 and would like to include logging, you simply need to copy over files from the "Create Redwood Application" template:
 
 * Copy [`packages/create-redwood-app/template/api/src/lib/logger.ts`](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/api/src/lib/logger.ts) to `api/src/lib/logger.ts`. Required.
 
@@ -67,7 +67,7 @@ For optional Prisma logging:
 
 The first file `logger.ts` defines the logger instance. You will import `logger` and use in your services, functions or other libraries. You may then replace existing `console.log()` statements with `logger.info()` or `logger.debug()`.
 
-The second `db.ts` replaces how the `db` Prisma client instance is declares and exported. It configures Prisma logging, if desired. See below for more information of Prisma logging options.
+The second `db.ts` replaces how the `db` Prisma client instance is declared and exported. It configures Prisma logging, if desired. See below for more information on Prisma logging options.
 
 ## Options aka How to Log
 
@@ -75,10 +75,9 @@ In addition to the rich [features](https://github.com/pinojs/pino/blob/master/do
 
 ### Log Level
 
-
 One of 'fatal', 'error', 'warn', 'info', 'debug', 'trace' or 'silent'.
 
-The logger detects you current environment and will default a sensible default minimum log level.
+The logger detects you current environment and will default to a sensible minimum log level.
 
 > ***NOTE:*** In Development, the default is `trace` while in Production, the default is `warn`.
 > This means that output in your dev server can be verbose, but when you deploy you won't miss out on critical issues.
@@ -97,8 +96,8 @@ import { createLogger } from '@redwoodjs/api/logger'
  * Creates a logger with RedwoodLoggerOptions
  *
  * These extend and override default LoggerOptions,
- * can define a destination like a file or other supported pin log transport stream,
- * and sets where or not to show the logger configuration settings (defaults to false)
+ * can define a destination like a file or other supported pino log transport stream,
+ * and sets whether or not to show the logger configuration settings (defaults to false)
  *
  * @param RedwoodLoggerOptions
  *
@@ -114,11 +113,11 @@ Please refer to the [Pino options documentation](https://github.com/pinojs/pino/
 
 ### Redaction
 
-Everyone has heard of reports that Company X logged emails, or passwords to files or systems that may not have been secured. While RedwoodJS logging won't necessarily prevent that, it does provide you with the mechanism to ensure that won't happen.
+Everyone has heard of reports that Company X logged emails, or passwords, to files or systems that may not have been secured. While RedwoodJS logging won't necessarily prevent that, it does provide you with the mechanism to ensure that it won't happen.
 
 To redact sensitive information, you can supply paths to keys that hold sensitive data using the [redact option](https://github.com/pinojs/pino/blob/master/docs/redaction.md).
 
-We've included a default set called the `redactionList` that includes keys such as
+We've included a default set called the `redactionsList` that includes keys such as
 
 ```
   'access_token',
@@ -152,9 +151,9 @@ Note: Unless you provide the current `redactionsList` with the defaults, just th
 
 ### Pretty Printing
 
-No logging is worth logging if you cannot read it.
+No log is worth logging if you cannot read it.
 
-We've turned on pretty printing in development to add color, time formatting, level reporting so that one can quickly see what is going on.
+We've turned on pretty printing in development to add color, time formatting and level reporting so that one can quickly see what is going on.
 
 We'll turn this off in production, since RedwoodJS will send the logs formatted as NDJSON (or transformed into the the format your transport requires) to your log or application monitoring service to process, store and display.
 
@@ -171,7 +170,7 @@ logger.error(error, `Failed to save item`)
 
 There could be cases where a key in that metadata collides with a key needed by pino or your third-party transport.
 
-To prevent collisions and overwriting values, you can nest your metadata in an `log` or `payload` or some other attribute.
+To prevent collisions and overwriting values, you can nest your metadata in `log` or `payload` (or some other attribute).
 
 ```js
 nestedKey: 'log',
@@ -187,11 +186,11 @@ The `destination` option allows you to specify where to send the api-side log st
 
 ### Dev Server
 
-When in your development environment, logs will be output to the dev servers standard output.
+When in your development environment, logs will be output to the dev server's standard output.
 
 ### Log to File
 
-If in your development environment or another environment in which you have write access to the filesystem, can can set the `destination` to the location of your file.
+If you are in your development environment (or another environment in which you have write access to the filesystem) you can set the `destination` to the location of your file.
 
 Note: logging to a file is not permitted if deployed to Netlify or Vercel.
 
@@ -217,6 +216,35 @@ See below for examples of how to configure Logflare and Datadog.
 
 Note that not all [known pino transports](https://github.com/pinojs/pino/blob/HEAD/docs/transports.md#known-transports) can be used in a serverless environment.
 
+### Exclude Operations
+
+You can exclude GraphQL operations by name with `excludeOperations`.
+This is useful when you want to filter out certain operations from the log output, for example, `IntrospectionQuery` from GraphQL playground:
+
+```js
+const logger = createLogger({
+  options: {
+    excludeOperations: ['IntrospectionQuery'],
+  },
+)
+```
+
+> **Relevant anatomy of an operation**
+>
+> In the example below, `"FilteredQuery"` is the operation's name.
+> That's what you'd  pass to `excludeOperations` if you wanted it filtered out.
+>
+> ```js
+> export const filteredQuery = `
+>   query FilteredQuery {
+>     me {
+>       id
+>       name
+>     }
+>   }
+> `
+> ```
+
 ## Default Configuration Overview
 
 RedwoodJS provides an opinionated logger with sensible, practical defaults. These include:
@@ -227,13 +255,13 @@ RedwoodJS provides an opinionated logger with sensible, practical defaults. Thes
  * Use a shorted log message that omits server name
  * Humanize time in GMT
  * Set the default log level in dev or test to trace
- * Set the default log level warn in prod
+ * Set the default log level in prod to warn
  * Note you may override the default log level via the LOG_LEVEL environment variable
- * Redact the host and other keys via a set redactionList
+ * Redact the host and other keys via a set redactionsList
 
 ## Configuration Examples
 
-Some examples of common configurations and overrides demonstrate how you can have control over both how and where you log.
+Some examples of common configurations and overrides that demonstrate how you can have control over both how and where you log.
 ### Override Log Level
 
 You can set the minimum [level](https://redwoodjs.com/docs/logger#log-level) to log via the `level` option. This is useful if you need to override the default Production settings (just `warn` and `error`) to in this case `debug`.
@@ -274,7 +302,7 @@ export const logger = createLogger({
 
 ### Customize a Redactions List
 
-While the logger provides default redaction list, you can specify additions keys to redact by either appending them to the list or setting the `redact` option to a new array of keys.
+While the logger provides a default redaction list, you can specify additional keys to redact by either appending them to the list or setting the `redact` option to a new array of keys.
 
 Please see [pino's redaction documentation](https://github.com/pinojs/pino/blob/master/docs/redaction.md) for other `redact` options, such as removing both keys and values and path matching.
 
@@ -309,8 +337,6 @@ export const logger = createLogger({
 
 If `pino` doesn't have a transport package for your service, you can write one with the class `Write` from the `stream` package. You can adapt this example to your own logging needs but here, we will use [Honeybadger.io](https://honeybadger.io).
 
-
-
 * Install the `stream` package into `api`
 ```shell
 yarn workspace api add stream
@@ -329,32 +355,31 @@ import { Writable } from 'stream'
 const Honeybadger = require('@honeybadger-io/js')
 
 Honeybadger.configure({
-    apiKey: process.env.HONEYBADGER_API_KEY,
+  apiKey: process.env.HONEYBADGER_API_KEY,
 })
 
 const HoneybadgerStream = () => {
-    const stream = new Writable({
-        write(
-            chunk: any,
-            encoding: BufferEncoding,
-            fnOnFlush: (error?: Error | null) => void
-        ) {
-            Honeybadger.notify(chunk.toString())
-            fnOnFlush()
-        },
-    })
+  const stream = new Writable({
+    write(
+      chunk: any,
+      encoding: BufferEncoding,
+      fnOnFlush: (error?: Error | null) => void
+    ) {
+      Honeybadger.notify(chunk.toString())
+      fnOnFlush()
+    },
+  })
 
-    return stream
+  return stream
 }
-
 
 /**
  * Creates a logger. Options define how to log. Destination defines where to log.
  * If no destination, std out.
  */
 export const logger = createLogger({
-    options: { prettyPrint: true },
-    destination: HoneybadgerStream(),
+  options: { prettyPrint: true },
+  destination: HoneybadgerStream(),
 })
 ```
 
@@ -380,8 +405,9 @@ yarn workspace api add pino-datadog
 /**
  * Stream logs to Datadog
  */
- //`api/src/lib/logger.ts
+ // api/src/lib/logger.ts
  import datadog from 'pino-datadog'
+ 
  /**
   * Creates a synchronous pino-datadog stream
   *
@@ -401,8 +427,8 @@ yarn workspace api add pino-datadog
  * Creates a logger with RedwoodLoggerOptions
  *
  * These extend and override default LoggerOptions,
- * can define a destination like a file or other supported pin log transport stream,
- * and sets where or not to show the logger configuration settings (defaults to false)
+ * can define a destination like a file or other supported pino log transport stream,
+ * and sets whether or not to show the logger configuration settings (defaults to false)
  *
  * @param RedwoodLoggerOptions
  *
@@ -413,7 +439,7 @@ yarn workspace api add pino-datadog
  */
 export const logger = createLogger({
   options: {},
-  destination: stream },
+  destination: stream,
 })
 ```
 
@@ -426,7 +452,7 @@ export const logger = createLogger({
 
 
 ```js
-//`api/src/lib/logger.ts
+// api/src/lib/logger.ts
 import { createWriteStream } from 'pino-logflare'
 
 /**
@@ -444,7 +470,7 @@ export const stream = createWriteStream({
 
 export const logger = createLogger({
   options: {},
-  destination: stream },
+  destination: stream,
 })
 ```
 
@@ -461,20 +487,20 @@ yarn workspace api add pino-logdna
 * Set the logger `destination` to the `stream`
 
 ```js
-//`api/src/lib/logger.ts
+// api/src/lib/logger.ts
 import pinoLogDna from 'pino-logdna'
 
 const stream = pinoLogDna({
-   key: process.env.LOGDNA_INGESTION_KEY
- , onError: console.error
- })
+  key: process.env.LOGDNA_INGESTION_KEY,
+  onError: console.error,
+})
 
 /**
  * Creates a logger with RedwoodLoggerOptions
  *
  * These extend and override default LoggerOptions,
- * can define a destination like a file or other supported pin log transport stream,
- * and sets where or not to show the logger configuration settings (defaults to false)
+ * can define a destination like a file or other supported pino log transport stream,
+ * and sets whether or not to show the logger configuration settings (defaults to false)
  *
  * @param RedwoodLoggerOptions
  *
@@ -485,14 +511,13 @@ const stream = pinoLogDna({
  */
 export const logger = createLogger({
   options: {},
-  destination: stream },
+  destination: stream,
 }) 
 ```
 
 ### Log to Papertrail using a Transport Stream Destination
 
 * Install the [pino-papertrail](https://www.npmjs.com/package/pino-papertrail) package into `api`
-
 
 ```terminal
 yarn workspace api add pino-papertrail]
@@ -515,8 +540,8 @@ const stream = papertrail.createWriteStream({
  * Creates a logger with RedwoodLoggerOptions
  *
  * These extend and override default LoggerOptions,
- * can define a destination like a file or other supported pin log transport stream,
- * and sets where or not to show the logger configuration settings (defaults to false)
+ * can define a destination like a file or other supported pino log transport stream,
+ * and sets whether or not to show the logger configuration settings (defaults to false)
  *
  * @param RedwoodLoggerOptions
  *
@@ -527,7 +552,7 @@ const stream = papertrail.createWriteStream({
  */
 export const logger = createLogger({
   options: {},
-  destination: stream },
+  destination: stream,
 }) 
 ```
 
@@ -569,7 +594,6 @@ If you wish to remove `info` logging, then you can define a set of levels, such 
 
 To configure Prisma logging, you first create the client and set the `log` options to emit the levels you wish to be logged via `emitLogLevels`. Second, you instruct the `logger` to handle the events emitted by the Prisma client in `handlePrismaLogging` setting the instance of the Prisma Client you've created in `db`, the `logger` instances, and then the same levels you've told the client to emit.
 
-
 Both `emitLogLevels` and `handlePrismaLogging` are `@redwoodjs/api/logger` package exports.
 
 ```js
@@ -585,18 +609,15 @@ handlePrismaLogging({
   logger,
   logLevels: ['info', 'warn', 'error'],
 })
-
-
 ```
 
 See: The Prisma Client References documentation on [Logging](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#log).
-
 
 #### Slow Queries
 
 If `query` Prisma level logging is enabled and the `debug` level is enabled on the Logger then all query statements will be logged.
 
-Otherwise any query exceeding a threshold duration will be logged an the `warn` level.
+Otherwise any query exceeding a threshold duration will be logged on the `warn` level.
 
 The duration is defined in `prisma.ts`:
 
@@ -612,7 +633,7 @@ This may be accomplished via [child loggers](https://github.com/pinojs/pino/blob
 
 #### GraphQL Service / Event Logger
 
-Examples to come.
+Examples to come. (PRs welcome.)
 
 #### Flushing the Log
 
@@ -661,8 +682,7 @@ export const userExample = async ({ id }, { info }) => {
 The Redwood logger uses a child logger to inject the Prisma Client version into every Prisma log statement:
 
 ```js
-  logger.child({
-    prisma: { clientVersion: db['_clientVersion'] },
-  })
+logger.child({
+  prisma: { clientVersion: db['_clientVersion'] },
+})
 ```
-

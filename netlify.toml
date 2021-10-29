@@ -147,6 +147,10 @@ from = "/docs/mocking-graph-ql-requests"
 to = "/docs/mocking-graphql-requests"
 
 [[redirects]]
+from = "/docs/form"
+to = "/docs/forms"
+
+[[redirects]]
 from = "/cookbook/mocking-graph-ql-in-storybook"
 to = "/cookbook/mocking-graphql-in-storybook"
 

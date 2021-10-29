@@ -24,7 +24,7 @@ What you want to do not on the roadmap? Well, still go for it! We love spikes an
 |Package|Description|
 |:-|:-|
 |[`@redwoodjs/api-server`](https://github.com/redwoodjs/redwood/blob/main/packages/api-server/README.md)|Run a Redwood app using Express server (alternative to serverless API)|
-|[`@redwoodjs/api`](https://github.com/redwoodjs/redwood/blob/main/packages/api/README.md)|Exposes functions to build the GraphQL API and provides services with `context`|
+|[`@redwoodjs/api`](https://github.com/redwoodjs/redwood/blob/main/packages/api/README.md)|Infrastruction components for your applications UI including logging, webhooks, authentication decoders and parsers, as well as tools to test custom serverless functions and webhooks|
 |[`@redwoodjs/auth`](https://github.com/redwoodjs/redwood/blob/main/packages/auth/README.md#contributing)|A lightweight wrapper around popular SPA authentication libraries|
 |[`@redwoodjs/cli`](https://github.com/redwoodjs/redwood/blob/main/packages/cli/README.md)|All the commands for Redwood's built-in CLI|
 |[`@redwoodjs/core`](https://github.com/redwoodjs/redwood/blob/main/packages/core/README.md)|Defines babel plugins and config files|
@@ -33,6 +33,7 @@ What you want to do not on the roadmap? Well, still go for it! We love spikes an
 |[`@redwoodjs/eslint-config`](https://github.com/redwoodjs/redwood/blob/main/packages/eslint-config/README.md)|Defines Redwood's eslint config|
 |[`@redwoodjs/eslint-plugin-redwood`](https://github.com/redwoodjs/redwood/blob/main/packages/eslint-plugin-redwood/README.md)|Defines eslint plugins; currently just prohibits the use of non-existent pages in `Routes.js`|
 |[`@redwoodjs/forms`](https://github.com/redwoodjs/redwood/blob/main/packages/forms/README.md)|Provides Form helpers|
+|[`@redwoodjs/graphql-server`](https://github.com/redwoodjs/redwood/blob/main/packages/graphql-server/README.md)|Exposes functions to build the GraphQL API, provides services with `context`, and a set of envelop plugins to supercharge your GraphQL API with logging, authentication, error handling, directives and more|
 |[`@redwoodjs/internal`](https://github.com/redwoodjs/redwood/blob/main/packages/internal/README.md)|Provides tooling to parse Redwood configs and get a project's paths|
 |[`@redwoodjs/router`](https://github.com/redwoodjs/redwood/blob/main/packages/router/README.md)|The built-in router for Redwood|
 |[`@redwoodjs/structure`](https://github.com/redwoodjs/redwood/blob/main/packages/structure/README.md)|Provides a way to build, validate and inspect an object graph that represents a complete Redwood project|
