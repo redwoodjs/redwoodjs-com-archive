@@ -5,7 +5,8 @@ In this cookbook, we'll use Redwood's [exec CLI command](/docs/cli-commands#exec
 At a high level, Faktory is a language-agnostic, persistent background-job server.
 You can run it [with Docker](https://github.com/contribsys/faktory/wiki/Docker).
 
-For our client, we'll use this [node library](https://github.com/jbielick/faktory_worker_node) to send jobs from our Redwood app to our Faktory server.
+We'll have to have a way of communicating with the server from our Redwood app.
+We'll use this [node library](https://github.com/jbielick/faktory_worker_node) to send jobs from our Redwood app to our Faktory server.
 
 ## Creating the Faktory Worker
 
@@ -59,6 +60,7 @@ For this type of work, we typically don't want to hold up the request/response c
 
 export const postSignupTask = async ({ userId, emailPayload }) => {
   // Send a welcome email to new user.
+  // You'll have to have an integration with an email service for this to work. 
   await sendEmailWithTemplate({
     ...emailPayload,
     TemplateModel: {
@@ -70,10 +72,10 @@ export const postSignupTask = async ({ userId, emailPayload }) => {
 
 Once we've created our task, we need to call it in the right place.
 For this task, it makes sense to call it right after the user has completed their signup.
-This is an example of a service that'll be most likely called through a GraphQL Mutation.
+This is an example of a Service that'll most likely be called via a GraphQL Mutation.
 
 ```javascript
-// src/services/auth.js
+// src/services/auth/auth.js
 
 const faktory = require('faktory-worker')
 
