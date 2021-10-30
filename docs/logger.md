@@ -617,12 +617,16 @@ See: The Prisma Client References documentation on [Logging](https://www.prisma.
 
 If `query` Prisma level logging is enabled and the `debug` level is enabled on the Logger then all query statements will be logged.
 
-Otherwise any query exceeding a threshold duration will be logged on the `warn` level.
+Otherwise, any query exceeding a threshold duration will be logged on the `warn` level.
 
-The duration is defined in `prisma.ts`:
-
-```js
-const SLOW_QUERY_THRESHOLD = 2_000 // 2 seconds
+The default threshold duration is 2 seconds. You can also pass `slowQueryThreshold` as an option to customize this duration when setting up Prisma logger. For example:
+```javascript
+handlePrismaLogging({
+  db,
+  logger,
+  logLevels: ['info', 'warn', 'error'],
+  slowQueryThreshold: 5_000 // in ms
+})
 ```
 
 ### Advanced Use
