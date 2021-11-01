@@ -624,7 +624,7 @@ The default threshold duration is 2 seconds. You can also pass `slowQueryThresho
 handlePrismaLogging({
   db,
   logger,
-  logLevels: ['info', 'warn', 'error'],
+  logLevels: ['query', 'info', 'warn', 'error'],
   slowQueryThreshold: 5_000 // in ms
 })
 ```
