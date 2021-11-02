@@ -1301,7 +1301,7 @@ Supported providers:
 
 #### Email & Password Auth in Firebase
 
-Email/password authentication is supported by calling `login({ username, password })` and `signUp({ username, password })`.
+Email/password authentication is supported by calling `login({ email, password })` and `signUp({ email, password })`.
 
 #### Email link (passwordless sign-in) in Firebase
 
