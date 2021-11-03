@@ -1725,7 +1725,7 @@ Runs a server that only serves the api side.
 yarn rw serve api
 ```
 
-This command uses `apiProxyPath` in your `redwood.toml`. Use this command if you want to run just the api side on a server (e.g. running on Render).
+This command uses `apiUrl` in your `redwood.toml`. Use this command if you want to run just the api side on a server (e.g. running on Render).
 
 | Arguments & Options | Description                                                       |
 | ------------------- | ----------------------------------------------------------------- |
@@ -1751,7 +1751,7 @@ This command serves the contents in `web/dist`. Use this command if you're debug
 | ------------------- | ------------------------------------------------------------------------------------------- |
 | `--port`            | What port should the server run on [default: 8911]                                          |
 | `--socket`          | The socket the server should run. This takes precedence over port                           |
-| `--apiHost`         | Forwards requests from the `apiProxyPath` (defined in `redwood.toml`) to the specified host |
+| `--apiHost`         | Forwards requests from the `apiUrl` (defined in `redwood.toml`) to the specified host |
 
 ## upgrade
 

@@ -9,7 +9,7 @@ You can start by adding or modify `title` inside `redwood.toml`
 - title = "Redwood App"
 + title = "My Cool App"
   port = 8910
-  apiProxyPath = "/.redwood/functions"
+  apiUrl = "/.redwood/functions"
 ```
 This title (the app title) is used by default for all your pages if you don't define another one.
 It will also be use for the title template ! 

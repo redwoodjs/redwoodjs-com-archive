@@ -27,7 +27,7 @@ Deploying Redwood requires setup for the following four categories.
 ### 1. Host Specific Configuration
 Each hosting provider has different requirements for how (and where) the deployment is configured. Sometimes you'll need to add code to your repository, configure settings in a dashboard, or both. You'll need to read the provider specific documentation.
 
-The most important Redwood configuration is to set the `apiProxyPath` in your `redwood.toml` This sets the API path for your serverless functions specific to your hosting provider.
+The most important Redwood configuration is to set the `apiUrl` in your `redwood.toml` This sets the API path for your serverless functions specific to your hosting provider.
 
 ### 2. Build Command
 The build command is used to prepare the Web and API for deployment. Additionally, other actions can be run during build such as database migrations. The Redwood build command must specify one of the supported hosting providers (aka `target`):
@@ -132,7 +132,7 @@ Run the following CLI Command:
 yarn rw setup deploy vercel
 ```
 
-This updates your `redwood.toml` file, setting `apiProxyPath = "/api"`:
+This updates your `redwood.toml` file, setting `apiUrl = "/api"`:
 
 #### Step 2. Database Settings
 Follow the steps in the [Prisma and Database](#3-prisma-and-database) section above. _(Skip this step if your project does not require a database.)_
