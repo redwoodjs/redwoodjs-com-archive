@@ -76,7 +76,7 @@ When you run `yarn rw dev` - it'll watch for changes and make your functions ava
 - `localhost:8911/{functionName}` and
 - `localhost:8910/.redwood/functions/{functionName}` (used by the web side).
 
-Note that the `.redwood/functions` path is determined by your setting in your [redwood.toml](https://redwoodjs.com/docs/app-configuration-redwood-toml#apiproxypath) - and is used both in development and in the deployed Redwood app
+Note that the `.redwood/functions` path is determined by your setting in your [redwood.toml](https://redwoodjs.com/docs/app-configuration-redwood-toml#apiUrl) - and is used both in development and in the deployed Redwood app
 
 
 ## Testing

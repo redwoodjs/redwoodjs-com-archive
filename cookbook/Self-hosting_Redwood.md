@@ -35,8 +35,8 @@ mv ecosystem.config.js pm2.config.js
 Last but not least, change the API endpoint in `redwood.toml`:
 
 ```diff
-- apiProxyPath = "/.redwood/functions"
-+ apiProxyPath = "/api"
+- apiUrl = "/.redwood/functions"
++ apiUrl = "/api"
 ```
 
 Optionally, add some scripts to your top-level `package.json`:
