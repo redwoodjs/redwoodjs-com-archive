@@ -354,7 +354,7 @@ You can use multiple globs in your paths:
 
 ```js
 // Routes.js
-<Route path="/from/{fromDate...}/to/{toDate...}" page={FilePage} name="dateRange" />
+<Route path="/from/{fromDate...}/to/{toDate...}" page={DatePage} name="dateRange" />
 ```
 
 This will match a path like `/from/2021/11/03/to/2021/11/17`. Note that for this to work, there must be some static string between the globs so the router can determine where the boundaries of the matches should be.
@@ -372,7 +372,7 @@ const userRouteParamTypes = {
   },
 }
 
-;<Router paramTypes={userRouteParamTypes}>
+<Router paramTypes={userRouteParamTypes}>
   <Route path="/post/{name:slug}" page={PostPage} name={post} />
 </Router>
 ```
