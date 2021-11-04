@@ -348,7 +348,7 @@ There is one more core type that is a bit different: the glob type. Instead of m
 <Route path="/file/{filePath...}" page={FilePage} name="file" />
 ```
 
-In this example, we want to take everything after `/path/` and have it sent to the Page as `filePath`. So for the path `/file/api/src/lib/auth.js`, `filePath` would contain `api/src/lib/auth.js`.
+In this example, we want to take everything after `/file/` and have it sent to the Page as `filePath`. So for the path `/file/api/src/lib/auth.js`, `filePath` would contain `api/src/lib/auth.js`.
 
 You can use multiple globs in your paths:
 
