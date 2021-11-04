@@ -406,7 +406,7 @@ In the following example, `/about/` will _not_ match `/about` and you will be se
 
 ## useParams
 
-Sometimes it's convenient to receive route parameters as the props to the Page, but in the case where a deeply nested component needs access to the route parameters, it quickly becomes tedious to pass those props through every intervening component. the router solves this with the `useParams` hook:
+Sometimes it's convenient to receive route parameters as the props to the Page, but in the case where a deeply nested component needs access to the route parameters, it quickly becomes tedious to pass those props through every intervening component. The router solves this with the `useParams` hook:
 
 ```js
 // SomeDeeplyNestedComponent.js
