@@ -516,9 +516,15 @@ We can refer to these individual orders in our tests as `scenario.order.placed`,
 
 export const standard = defineScenario({
   order: {
-    placed: { trackingNumber: '1ZP1LC3D0Rd3R000001', status: 'PLACED' },
-    shipped: { trackingNumber: '1ZSH1PP3D000002', status: 'SHIPPED' },
-    delivered: { trackingNumber: '1ZD31IV3R3D000003', status: 'DELIVERED' },
+    placed: {
+      data: { trackingNumber: '1ZP1LC3D0Rd3R000001', status: 'PLACED' },
+    },
+    shipped: {
+      data: { trackingNumber: '1ZSH1PP3D000002', status: 'SHIPPED' },
+    },
+    delivered: {
+      data: { trackingNumber: '1ZD31IV3R3D000003', status: 'DELIVERED' },
+    },
   },
 })
 ```
