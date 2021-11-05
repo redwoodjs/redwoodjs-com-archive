@@ -43,7 +43,7 @@ Finally, Services can also be called from [serverless functions](/docs/serverles
 Starting with `v0.38`, Redwood includes a feature we call Service Validations. These simplify an extremely common task: making sure that incoming data is formatted properly before continuing. These validations are meant to be included at the start of your Service function and will throw an error if conditions are not met:
 
 ```javascript
-import { validate } from '@redwoodjs/api'
+import { validate, validateWith, validateUniqueness } from '@redwoodjs/api'
 
 export const createUser = async ({ input }) => {
   validate(input.firstName, 'First name', {
