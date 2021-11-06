@@ -14,43 +14,9 @@ You can configure your Redwood app's settings in `redwood.toml`. By default, `re
   open = true
 ```
 
-These are listed by default because they're the ones that you're most likely to configure. But there are plenty more available. The rest are spread between Redwood's [webpack configuration files](https://github.com/redwoodjs/redwood/tree/main/packages/core/config) and `@redwoodjs/internal`'s [config.ts](https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/config.ts#L54-L82):
+These are listed by default because they're the ones that you're most likely to configure. But there are plenty more available. The rest are spread between Redwood's [webpack configuration files](https://github.com/redwoodjs/redwood/tree/main/packages/core/config) and `@redwoodjs/internal`'s [config.ts](https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/config.ts#L70-L99):
 
-```javascript
-/**
- * @see {@link https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/config.ts}
- */
-const DEFAULT_CONFIG: Config = {
-  web: {
-    title: 'Redwood App',
-    host: 'localhost',
-    port: 8910,
-    path: './web',
-    target: TargetEnum.BROWSER,
-    apiUrl: '/.redwood/functions',
-    fastRefresh: true,
-    a11y: true,
-  },
-  api: {
-    title: 'Redwood App',
-    host: 'localhost',
-    port: 8911,
-    path: './api',
-    target: TargetEnum.NODE,
-    schemaPath: './api/db/schema.prisma',
-  },
-  browser: {
-    open: false,
-  },
-  generate: {
-    tests: true,
-    stories: true,
-    nestScaffoldByModel: true,
-  },
-}
-```
-
-The options and their structure are based on Redwood's notion of sides and targets. Right now, Redwood has two fixed sides, api and web, that target NodeJS Lambdas and Browsers respectively. In the future, we'll add support for more sides and targets, like Electron and React Native (you can already see them listed as enums in [TargetEnum](https://github.com/redwoodjs/redwood/blob/d51ade08118c17459cebcdb496197ea52485364a/packages/internal/src/config.ts#L11-L12)), and as we do, you'll see them reflected in `redwood.toml`. But right now, you'll most likely never touch options like `target`.
+The options and their structure are based on Redwood's notion of sides and targets. Right now, Redwood has two fixed sides, API and Web, that target NodeJS Lambdas and Browsers respectively. In the future, we'll add support for more sides and targets, like Electron and React Native (you can already see them listed as enums in [TargetEnum](https://github.com/redwoodjs/redwood/blob/d51ade08118c17459cebcdb496197ea52485364a/packages/internal/src/config.ts#L11-L12)), and as we do, you'll see them reflected in `redwood.toml`. But right now, you'll most likely never touch options like `target`.
 
 The idea is that, in the future, changes here will have cascading, "app-level" effects. Using generators as an example, based on your side and target, the generators will behave differently, but appropriately different.
 
@@ -72,19 +38,19 @@ Error: Could not find a "redwood.toml" file, are you sure you're in a Redwood pr
 
 Configuration for the web side.
 
-| Key                           | Description                                                                                    | Default                 | Context       |
-|:------------------------------|:-----------------------------------------------------------------------------------------------|:------------------------|:--------------|
-| `title`                       | Title of your Redwood App                                                                      |                         | `both`        |
-| `host`                        | Hostname to listen on                                                                          | `'localhost'`           | `development` |
-| `port`                        | Port to listen on                                                                              | `8910`                  | `development` |
-| `path`                        | Path to the web side                                                                           | `'./web'`               | `both`        |
-| `target`                      | Target for the web side                                                                        | `TargetEnum.BROWSER`    | `both`        |
-| `apiUrl`                      | Specify the URL to your api-server. Can be an absolute path or FQDN                            | `'/.redwood/functions'` | `production`  |
-| `apiGraphQLUrl`               | Optional: FQDN or absolute path to the GraphQL serverless function, without the trailing slash | `'/.redwood/functions'` | `production`  |
-| `apiDbAuthUrl`                | Optional: QDN or absolute path to the DbAuth serverless function, without the trailing slash   | `'/.redwood/functions'` | `production`  |
-| `includeEnvironmentVariables` | Environment variables to whitelist                                                             |                         | `both`        |
-| `fastRefresh`                 | Enable webpack's fast refresh                                                                  | true                    | `development` |
-| `a11y`                        | Enable storybook `addon-a11y` and `eslint-plugin-jsx-a11y`                                     | true                    | `development` |
+| Key                           | Description                                                                 | Default                 | Context       |
+|:------------------------------|:----------------------------------------------------------------------------|:------------------------|:--------------|
+| `title`                       | Title of your Redwood App                                                   | `'Redwood App'`         | `both`        |
+| `host`                        | Hostname to listen on                                                       | `'localhost'`           | `development` |
+| `port`                        | Port to listen on                                                           | `8910`                  | `development` |
+| `path`                        | Path to the web side                                                        | `'./web'`               | `both`        |
+| `target`                      | Target for the web side                                                     | `'browser'`             | `both`        |
+| `apiUrl`                      | Specify the URL to your api-server. Can be an absolute path or FQDN         | `'/.redwood/functions'` | `production`  |
+| `apiGraphQLUrl`               | Optional: FQDN or absolute path to GraphQL function, without trailing slash | `${apiUrl}/graphql`     | `production`  |
+| `apiDbAuthUrl`                | Optional: QDN or absolute path to DbAuth function, without trailing slash   | `${apiUrl}/auth`        | `production`  |
+| `includeEnvironmentVariables` | Environment variables to whitelist                                          |                         | `both`        |
+| `fastRefresh`                 | Enable webpack's fast refresh                                               | true                    | `development` |
+| `a11y`                        | Enable storybook `addon-a11y` and `eslint-plugin-jsx-a11y`                  | true                    | `development` |
 
 ### API Paths
 
@@ -159,19 +125,19 @@ API_KEY=...
 
 Configuration for the api side.
 
-| Key      | Description             | Default           | Context       |
-| :------- | :---------------------- | :---------------- | :------------ |
-| `host`   | Hostname to listen on   | `'localhost'`     | `development` |
-| `port`   | Port to listen on       | `8911`            | `development` |
-| `path`   | Path to the api side    | `'./api'`         | `both`        |
-| `target` | Target for the api side | `TargetEnum.NODE` | `both`        |
+| Key      | Description             | Default       | Context       |
+|:---------|:------------------------|:--------------|:--------------|
+| `host`   | Hostname to listen on   | `'localhost'` | `development` |
+| `port`   | Port to listen on       | `8911`        | `development` |
+| `path`   | Path to the api side    | `'./api'`     | `both`        |
+| `target` | Target for the api side | `'node'`      | `both`        |
 
 ## [browser]
 
 Configuration for the browser target.
 
 | Key    | Description                                                       | Default | Context       |
-| :----- | :---------------------------------------------------------------- | :------ | :------------ |
+|:-------|:------------------------------------------------------------------|:--------|:--------------|
 | `open` | Open the browser to web's `host:port` after the dev server starts | `false` | `development` |
 
 ### open
@@ -199,10 +165,10 @@ There's a lot more you can do here. For all the details, see Webpack's docs on [
 
 Configuration for Generator "test" and "story" files. By default, the following Generators create Jest test and/or Storybook files (with mock data files when applicable) along with specific component file(s): component, cell, layout, page, sdl, and services. Understandably, this is a lot of files, and sometimes you don't want all of them, either because you don't plan on using Jest/Storybook, or are just getting started and don't want the overhead. These toml keys allows you to toggle the generation of test and story files on and off.
 
-| Key       | Description                    | Default  |
-| :-------- | :----------------------------- | :------- |
-| `tests`   | Generate Jest test files       | `true`   |
-| `stories` | Generate Storybook story files | `true`   |
+| Key       | Description                    | Default |
+|:----------|:-------------------------------|:--------|
+| `tests`   | Generate Jest test files       | `true`  |
+| `stories` | Generate Storybook story files | `true`  |
 
 ### Tests
 
