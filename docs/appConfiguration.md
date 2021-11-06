@@ -38,19 +38,19 @@ Error: Could not find a "redwood.toml" file, are you sure you're in a Redwood pr
 
 Configuration for the web side.
 
-| Key                           | Description                                                                 | Default                         | Context       |
-|:------------------------------|:----------------------------------------------------------------------------|:--------------------------------|:--------------|
-| `title`                       | Title of your Redwood App                                                   | `'Redwood App'`                 | `both`        |
-| `host`                        | Hostname to listen on                                                       | `'localhost'`                   | `development` |
-| `port`                        | Port to listen on                                                           | `8910`                          | `development` |
-| `path`                        | Path to the web side                                                        | `'./web'`                       | `both`        |
-| `target`                      | Target for the web side                                                     | `'browser'`                     | `both`        |
-| `apiUrl`                      | Specify the URL to your api-server. Can be an absolute path or FQDN         | `'/.redwood/functions'`         | `production`  |
-| `apiGraphQLUrl`               | Optional: FQDN or absolute path to GraphQL function, without trailing slash | `'/.redwood/functions/graphql'` | `production`  |
-| `apiDbAuthUrl`                | Optional: QDN or absolute path to DbAuth function, without trailing slash   | `'/.redwood/functions/auth'`    | `production`  |
-| `includeEnvironmentVariables` | Environment variables to whitelist                                          |                                 | `both`        |
-| `fastRefresh`                 | Enable webpack's fast refresh                                               | true                            | `development` |
-| `a11y`                        | Enable storybook `addon-a11y` and `eslint-plugin-jsx-a11y`                  | true                            | `development` |
+| Key                           | Description                                                                 | Default                 | Context       |
+|:------------------------------|:----------------------------------------------------------------------------|:------------------------|:--------------|
+| `title`                       | Title of your Redwood App                                                   | `'Redwood App'`         | `both`        |
+| `host`                        | Hostname to listen on                                                       | `'localhost'`           | `development` |
+| `port`                        | Port to listen on                                                           | `8910`                  | `development` |
+| `path`                        | Path to the web side                                                        | `'./web'`               | `both`        |
+| `target`                      | Target for the web side                                                     | `'browser'`             | `both`        |
+| `apiUrl`                      | Specify the URL to your api-server. Can be an absolute path or FQDN         | `'/.redwood/functions'` | `production`  |
+| `apiGraphQLUrl`               | Optional: FQDN or absolute path to GraphQL function, without trailing slash | `${apiUrl}/graphql`     | `production`  |
+| `apiDbAuthUrl`                | Optional: QDN or absolute path to DbAuth function, without trailing slash   | `${apiUrl}/auth`        | `production`  |
+| `includeEnvironmentVariables` | Environment variables to whitelist                                          |                         | `both`        |
+| `fastRefresh`                 | Enable webpack's fast refresh                                               | true                    | `development` |
+| `a11y`                        | Enable storybook `addon-a11y` and `eslint-plugin-jsx-a11y`                  | true                    | `development` |
 
 ### API Paths
 
@@ -125,19 +125,19 @@ API_KEY=...
 
 Configuration for the api side.
 
-| Key      | Description             | Default           | Context       |
-| :------- | :---------------------- | :---------------- | :------------ |
-| `host`   | Hostname to listen on   | `'localhost'`     | `development` |
-| `port`   | Port to listen on       | `8911`            | `development` |
-| `path`   | Path to the api side    | `'./api'`         | `both`        |
-| `target` | Target for the api side | `'node'`          | `both`        |
+| Key      | Description             | Default       | Context       |
+|:---------|:------------------------|:--------------|:--------------|
+| `host`   | Hostname to listen on   | `'localhost'` | `development` |
+| `port`   | Port to listen on       | `8911`        | `development` |
+| `path`   | Path to the api side    | `'./api'`     | `both`        |
+| `target` | Target for the api side | `'node'`      | `both`        |
 
 ## [browser]
 
 Configuration for the browser target.
 
 | Key    | Description                                                       | Default | Context       |
-| :----- | :---------------------------------------------------------------- | :------ | :------------ |
+|:-------|:------------------------------------------------------------------|:--------|:--------------|
 | `open` | Open the browser to web's `host:port` after the dev server starts | `false` | `development` |
 
 ### open
@@ -165,10 +165,10 @@ There's a lot more you can do here. For all the details, see Webpack's docs on [
 
 Configuration for Generator "test" and "story" files. By default, the following Generators create Jest test and/or Storybook files (with mock data files when applicable) along with specific component file(s): component, cell, layout, page, sdl, and services. Understandably, this is a lot of files, and sometimes you don't want all of them, either because you don't plan on using Jest/Storybook, or are just getting started and don't want the overhead. These toml keys allows you to toggle the generation of test and story files on and off.
 
-| Key       | Description                    | Default  |
-| :-------- | :----------------------------- | :------- |
-| `tests`   | Generate Jest test files       | `true`   |
-| `stories` | Generate Storybook story files | `true`   |
+| Key       | Description                    | Default |
+|:----------|:-------------------------------|:--------|
+| `tests`   | Generate Jest test files       | `true`  |
+| `stories` | Generate Storybook story files | `true`  |
 
 ### Tests
 
