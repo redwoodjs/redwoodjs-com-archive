@@ -1406,7 +1406,7 @@ If you wanted to seed your database using a different method (like `psql` and an
 
 **More About Seeding**
 
-In addition, you can [code along with Ryan Chenkie](https://www.youtube.com/watch?v=2LwTUIqjbPo), and learn how libraries like [faker](https://www.npmjs.com/package/faker) can help you create a large, realistic database fast, especially in tandem with Prisma's [createMany](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany-preview).
+In addition, you can [code along with Ryan Chenkie](https://www.youtube.com/watch?v=2LwTUIqjbPo), and learn how libraries like [faker](https://www.npmjs.com/package/faker) can help you create a large, realistic database fast, especially in tandem with Prisma's [createMany](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany).
 
 <!-- ### generate -->
 
@@ -1747,10 +1747,10 @@ This command serves the contents in `web/dist`. Use this command if you're debug
 >
 > Probably, but it can be a challenge to setup when you just want something running quickly!
 
-| Arguments & Options | Description                                                                                 |
-| ------------------- | ------------------------------------------------------------------------------------------- |
-| `--port`            | What port should the server run on [default: 8911]                                          |
-| `--socket`          | The socket the server should run. This takes precedence over port                           |
+| Arguments & Options | Description                                                                           |
+| ------------------- | ------------------------------------------------------------------------------------- |
+| `--port`            | What port should the server run on [default: 8911]                                    |
+| `--socket`          | The socket the server should run. This takes precedence over port                     |
 | `--apiHost`         | Forwards requests from the `apiUrl` (defined in `redwood.toml`) to the specified host |
 
 ## upgrade
