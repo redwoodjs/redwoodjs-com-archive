@@ -853,7 +853,7 @@ export const handler = createGraphQLHandler({
 
 Redwood Errors are derived from [Apollo Server Error codes](https://www.apollographql.com/docs/apollo-server/data/errors/#error-codes) for common use cases:
 
-To use a Redwood Error, import each from `@redwood/graphql-server`.
+To use a Redwood Error, import each from `@redwoodjs/graphql-server`.
 
 - `SyntaxError` - An unspecified error occurred
 - `ValidationError` - Invalid input to a service
@@ -864,7 +864,7 @@ To use a Redwood Error, import each from `@redwood/graphql-server`.
 If you use one of the errors, then the message provided will not be masked and will be shared in the GraphQL response:
 
 ```ts
-import { UserInputError } from '@redwood/graphql-server'
+import { UserInputError } from '@redwoodjs/graphql-server'
 // ...
 throw new UserInputError('An email is required.')
 ```
