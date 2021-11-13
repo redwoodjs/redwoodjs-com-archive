@@ -238,7 +238,7 @@ const Article = ({ article }) => {
 
 // web/src/components/Article/Article.test.js
 
-import { render } from '@redwoodjs/testing'
+import { render } from '@redwoodjs/testing/web'
 import Article from 'src/components/Article'
 
 describe('Article', () => {
@@ -264,7 +264,7 @@ In our **&lt;Article&gt;** component it seems like we really just want to test t
 ```javascript{3,7-9}
 // web/src/components/Article/Article.test.js
 
-import { render, screen } from '@redwoodjs/testing'
+import { render, screen } from '@redwoodjs/testing/web'
 
 describe('Article', () => {
   it('renders an article', () => {
@@ -312,7 +312,7 @@ If we're only displaying the summary of an article then we'll only show the firs
 ```javascript{18,24}
 // web/src/components/Article/Article.test.js
 
-import { render, screen } from '@redwoodjs/testing'
+import { render, screen } from '@redwoodjs/testing/web'
 import Article from 'src/components/Article'
 
 describe('Article', () => {
@@ -449,7 +449,7 @@ Redwood provides the test function `mockGraphQLQuery()` for providing the result
 ```javascript{8-16,20}
 // web/src/components/Article/Article.test.js
 
-import { render, screen } from '@redwoodjs/testing'
+import { render, screen } from '@redwoodjs/testing/web'
 import Article from 'src/components/Article'
 
 describe('Article', () => {
@@ -563,7 +563,7 @@ If we didn't do anything special, there would be no user logged in and we could 
 ```javascript
 // web/src/pages/HomePage/HomePage.test.js
 
-import { render, screen } from '@redwoodjs/testing'
+import { render, screen } from '@redwoodjs/testing/web'
 import HomePage from './HomePage'
 
 describe('HomePage', () => {
@@ -584,7 +584,7 @@ How do we test that when a user *is* logged in, it outputs a message welcoming t
 ```javascript
 // web/src/pages/HomePage/HomePage.test.js
 
-import { render, screen, waitFor } from '@redwoodjs/testing'
+import { render, screen, waitFor } from '@redwoodjs/testing/web'
 import HomePage from './HomePage'
 
 describe('HomePage', () => {
@@ -737,7 +737,7 @@ Here we're exporting four components and if you created this Cell with the [Cell
 ```javascript
 // web/src/components/ArticleCell/ArticleCell.test.js
 
-import { render, screen } from '@redwoodjs/testing'
+import { render, screen } from '@redwoodjs/testing/web'
 import { Loading, Empty, Failure, Success } from './ArticleCell'
 import { standard } from './ArticleCell.mock'
 
@@ -821,7 +821,7 @@ And then you just reference that new mock in your test:
 ```javascript
 // web/src/components/ArticleCell/ArticleCell.test.js
 
-import { render, screen } from '@redwoodjs/testing'
+import { render, screen } from '@redwoodjs/testing/web'
 import { Loading, Empty, Failure, Success } from './ArticleCell'
 import { standard, missingBody } from './ArticleCell.mock'
 
@@ -895,7 +895,7 @@ Which, in your page test, would let you do something like:
 ```javascript
 // web/src/pages/ProductPage/ProductPage.test.js
 
-import { render, screen } from '@redwoodjs/testing'
+import { render, screen } from '@redwoodjs/testing/web'
 import ArticleCell from 'src/components/ArticleCell'
 
 describe('ProductPage', () => {
@@ -995,13 +995,13 @@ export default NameForm
 
 Now, we can extend the `test` file which Redwood generated. We're going to want to:
 
-1) Import `waitFor` from the `@redwoodjs/testing` library.
+1) Import `waitFor` from the `@redwoodjs/testing/web` library.
 2) Add an import to `@testing-library/user-event` for its `default`.
 3) Provide an `onSubmit` prop to our "renders successfully" test.
 
 ```javascript
 // NameForm.test.js
-import { render, screen, waitFor } from '@redwoodjs/testing'
+import { render, screen, waitFor } from '@redwoodjs/testing/web'
 import userEvent from '@testing-library/user-event'
 
 import NameForm from './NameForm'
@@ -1031,7 +1031,7 @@ The important takeaways are:
 
 ```javascript
 // NameForm.test.js
-import { render, screen, waitFor } from '@redwoodjs/testing'
+import { render, screen, waitFor } from '@redwoodjs/testing/web'
 import userEvent from '@testing-library/user-event'
 
 import NameForm from './NameForm'
