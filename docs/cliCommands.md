@@ -197,10 +197,10 @@ Using `--forward` (alias `--fwd`), you can pass one or more Webpack Dev Server [
 ~/redwood-app$ yarn redwood dev --fwd="--port=1234 --open=false"
 ```
 
-You may need to access your dev application from a different host, like your mobile device. To resolve the “Invalid Host Header” message, run the following:
+You may need to access your dev application from a different host, like your mobile device or an SSH tunnel. To resolve the “Invalid Host Header” message, run the following:
 
 ```bash
-~/redwood-app$ yarn redwood dev --fwd="--disable-host-check"
+~/redwood-app$ yarn redwood dev --fwd="--allowed-hosts all"
 ```
 
 For the full list of Webpack Dev Server settings, see [this documentation](https://webpack.js.org/configuration/dev-server/).
