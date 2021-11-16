@@ -367,8 +367,8 @@ The router goes even further, allowing you to define your own route parameter ty
 // Routes.js
 const userRouteParamTypes = {
   slug: {
-    constraint: /\w+-\w+/,
-    transform: (param) => param.split('-'),
+    match: /\w+-\w+/,
+    parse: (param) => param.split('-'),
   },
 }
 
@@ -377,7 +377,7 @@ const userRouteParamTypes = {
 </Router>
 ```
 
-Here we've created a custom `slug` route parameter type. It is defined by a `constraint` and a `transform`. Both are optional; the default constraint is `/[^/]+/` and the default transform is `(param) => param`.
+Here we've created a custom `slug` route parameter type. It is defined by `match` and `parse`. Both are optional; the default `match` regexp is `/[^/]+/` and the default `parse` function is `(param) => param`.
 
 In the route we've specified a route parameter of `{name:slug}` which will invoke our custom route parameter type and if we have a request for `/post/redwood-router`, the resulting `name` prop delivered to `PostPage` will be `['redwood', 'router']`.
 
