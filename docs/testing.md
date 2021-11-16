@@ -393,13 +393,13 @@ it('renders a link with a name', () => {
 >
 > Most tests will contain at least the last two, but sometimes all three of these parts, and in some communities it's become standard to include a newline between each "section". Remember the acronym SEA: setup, execute, assert.
 
-#### **Jest Expect for different types?**
+#### Jest Expect for different types?
 
 Redwood uses [prisma](https://www.prisma.io/) as an ORM for connecting to different databases like PostgreSQL, MySQL, and many more. The database models are defined in the `schema.prisma` file. Prisma schema supports [`model` field scaler types](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#model-field-scalar-types) which is used to define the data types for the models properties. 
 
 Due to the which we have some exceptions that can occur while testing your API and UI components.
 
-#### **Floats and Decimals**
+#### Floats and Decimals
 Prisma recommends using `Decimal` instead of `Float` because of accuracy in precision. Float is inaccurate in the number of digits after decimal whereas Prisma returns a string for Decimal value which preserves all the digits after the decimal point.
 
 e.g., using `Float` type
@@ -420,7 +420,7 @@ expect(result.floatingNumber).toEqual(7420440.088194787)
 
 In the above examples, we can see that using floats, it doesn't preserve the floating numbers whereas using decimals, it can preserve the number and it is easily used to match with the expected result.
 
-#### **DateTime**
+#### DateTime
 Primsa returns [DateTime](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#datetime) as ISO 8601-formatted strings. So, you can convert the date to ISO String in JavaScript:
 
 ```javascript{1}
