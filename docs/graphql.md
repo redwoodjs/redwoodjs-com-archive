@@ -592,6 +592,14 @@ The [operation name](https://graphql.org/learn/queries/#operation-name) is a mea
 
 Because your cell typically has a unique operation name, logging this can help you identify which cell made a request.
 
+```js
+// api/src/functions/graphql.ts
+// ...
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: { operationName: true } },
+// ...
+```
+
 #### RequestId for Support Issue Resolution
 
 Often times, your deployment provider will provide a request identifier to help reconcile and track down problems at an infrastructure level. For example, AWS API Gateway and AWS Lambda (used by Netlify, for example) provides `requestId` on the `event`.
@@ -629,7 +637,11 @@ export const post = async ({ id }) => {
 //...
 ```
 
-The GraphQL handler take care of will then take take of logging your query and data -- as long as your logger is setup to log at the `info` [level](https://redwoodjs.com/docs/logger#log-level) and above. You can also disable the statements in production by just logging at the `warn` and above [level](https://redwoodjs.com/docs/logger#log-level).
+The GraphQL handler will then take take of logging your query and data -- as long as your logger is setup to log at the `info` [level](https://redwoodjs.com/docs/logger#log-level) and above.
+
+> You can also disable the statements in production by just logging at the `warn` [level](https://redwoodjs.com/docs/logger#log-level) or above
+
+This means that you can keep your services free of logger statements, but still see what's happening!
 
 ```terminal
 api | POST /graphql 200 7.754 ms - 1772
@@ -653,8 +665,6 @@ api |       "id": 3
 api |     }
 api | POST /graphql 200 9.386 ms - 441
 ```
-
-but keep your services concise!
 
 #### Send to Third-party Transports
 
