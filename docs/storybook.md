@@ -84,7 +84,9 @@ For more, see the Storybook docs on [configuring how stories render](https://sto
 > Note that some of the changes you make to Storybook's UI require refreshing its cache.
 > The easiest way to do so is when starting Storybook:
 >
-> `yarn rw storybook --no-manager-cache`
+> ```
+> yarn rw storybook --no-manager-cache
+> ```
 
 You can [theme Storybook's UI](https://storybook.js.org/docs/react/configure/theming) by installing two packages and making a few changes to Redwood's initial configuration.
 
