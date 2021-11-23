@@ -216,35 +216,6 @@ See below for examples of how to configure Logflare and Datadog.
 
 Note that not all [known pino transports](https://github.com/pinojs/pino/blob/HEAD/docs/transports.md#known-transports) can be used in a serverless environment.
 
-### Exclude Operations
-
-You can exclude GraphQL operations by name with `excludeOperations`.
-This is useful when you want to filter out certain operations from the log output, for example, `IntrospectionQuery` from GraphQL playground:
-
-```js
-const logger = createLogger({
-  options: {
-    excludeOperations: ['IntrospectionQuery'],
-  },
-)
-```
-
-> **Relevant anatomy of an operation**
->
-> In the example below, `"FilteredQuery"` is the operation's name.
-> That's what you'd  pass to `excludeOperations` if you wanted it filtered out.
->
-> ```js
-> export const filteredQuery = `
->   query FilteredQuery {
->     me {
->       id
->       name
->     }
->   }
-> `
-> ```
-
 ## Default Configuration Overview
 
 RedwoodJS provides an opinionated logger with sensible, practical defaults. These include:

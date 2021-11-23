@@ -582,6 +582,43 @@ export const handler = createGraphQLHandler({
 })
 ```
 
+#### Exclude Operations
+
+You can exclude GraphQL operations by name with `excludeOperations`.
+This is useful when you want to filter out certain operations from the log output, for example, `IntrospectionQuery` from GraphQL playground:
+
+```js{5}
+// api/src/functions/graphql.ts
+export const handler = createGraphQLHandler({
+  loggerConfig: {
+    logger,
+    options: { excludeOperations: ['IntrospectionQuery'] },
+  },
+  directives,
+  sdls,
+  services,
+  onException: () => {
+    // Disconnect from your database with an unhandled exception.
+    db.$disconnect()
+  },
+})
+```
+
+> **Relevant anatomy of an operation**
+>
+> In the example below, `"FilteredQuery"` is the operation's name.
+> That's what you'd  pass to `excludeOperations` if you wanted it filtered out.
+>
+> ```js
+> export const filteredQuery = `
+>   query FilteredQuery {
+>     me {
+>       id
+>       name
+>     }
+>   }
+> ```
+
 ### Benefits of Logging
 
 Benefits of logging common GraphQL request information include debugging, profiling, and resolving issue reports.
