@@ -86,7 +86,7 @@ For more, see the Storybook docs on [configuring how stories render](https://sto
 >
 > `yarn rw storybook --no-manager-cache`
 
-[Theming Storybook's UI](https://storybook.js.org/docs/react/configure/theming) can be accompished by installing two packages, and making a few changes to Redwood's inital configuration.
+You can [theme Storybook's UI](https://storybook.js.org/docs/react/configure/theming) by installing two packages and making a few changes to Redwood's initial configuration.
 
 From the root of your RedwoodJS project:
 
