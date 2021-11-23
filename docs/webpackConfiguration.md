@@ -66,7 +66,7 @@ yarn workspace web add -D sass sass-loader
 Configuring webpack just to use Tailwind CSS? Don't! Use the setup command instead:
 
 ```
-yarn rw setup tailwind
+yarn rw setup ui tailwindcss
 ```
 
 ## Webpack Dev Server

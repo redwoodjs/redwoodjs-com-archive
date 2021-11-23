@@ -1478,39 +1478,37 @@ Redwood's companion CLI development tool. You'll be using this if you're contrib
 
 ## setup
 
-Initialize project config and install packages
+Integrate third-party libraries effortlessly.
 
 ```
-yarn redwood setup <command>
+yarn redwood setup <category>
 ```
 
 <br/>
 
-| Commands           | Description                                                                               |
-| ------------------ | ----------------------------------------------------------------------------------------- |
-| `auth`             | Setup auth configuration for a provider                                                   |
-| `custom-web-index` | Setup an `index.js` file, so you can customize how Redwood web is mounted in your browser |
-| `deploy`           | Setup a deployment configuration for a provider                                           |
-| `generator`        | Copy default Redwood generator templates locally for customization                        |
-| `i18n`             | Setup i18n                                                                                |
-| `tailwind`         | Setup tailwindcss and PostCSS                                                             |
-| `webpack`          | Setup webpack config file in your project so you can add custom config                    |
-| `tsconfig`         | Add relevant tsconfig, so you can start using TypeScript                                  |
+| Commands           | Description                                                                                |
+| ------------------ | ------------------------------------------------------------------------------------------ |
+| `auth`             | Set up auth configuration for a provider                                                   |
+| `custom-web-index` | Set up an `index.js` file, so you can customize how Redwood web is mounted in your browser |
+| `deploy`           | Set up a deployment configuration for a provider                                           |
+| `generator`        | Copy default Redwood generator templates locally for customization                         |
+| `i18n`             | Set up i18n                                                                                |
+| `tsconfig`         | Add relevant tsconfig so you can start using TypeScript                                    |
+| `ui`               | Set up a UI design or style library                                                        |
+| `webpack`          | Set up a webpack config file in your project so you can add custom config                  |
 
 ### setup auth
 
-Setup an auth configuration.
+Integrate an auth provider.
 
 ```
 yarn redwood setup auth <provider>
 ```
 
-You can get authentication out-of-the-box with generators. Right now we support Auth0, Firebase, GoTrue, Magic, and Netlify.
-
-| Arguments & Options | Description                                                                                      |
-| :------------------ | :----------------------------------------------------------------------------------------------- |
-| `provider`          | Auth provider to configure. Choices are `auth0`, `firebase`, `goTrue`, `magicLink` and `netlify` |
-| `--force, -f`       | Overwrite existing files                                                                         |
+| Arguments & Options | Description                                                                                                                                                                   |
+| :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `provider`          | Auth provider to configure. Choices are `auth0`, `azureActiveDirectory`, `clerk`, `dbAuth`, `ethereum`, `firebase`, `goTrue`, `magicLink`, `netlify`, `nhost`, and `supabase` |
+| `--force, -f`       | Overwrite existing configuration                                                                                                                                              |
 
 **Usage**
 
@@ -1518,13 +1516,11 @@ See [Authentication](https://redwoodjs.com/docs/authentication).
 
 ### setup custom-web-index
 
-Setup an `index.js` file in `web/src` so you can customize how your Redwood App mounts to the DOM.
+Redwood automatically mounts your `<App />` to the DOM, but if you want to customize how that happens, you can use this setup command to generate an `index.js` file in `web/src`.
 
 ```
 yarn redwood setup custom-web-index
 ```
-
-Redwood automatically mounts your `<App />` to the DOM, but if you want to customize how that happens, you can use this setup command to generate a file where you can do that in.
 
 | Arguments & Options | Description              |
 | :------------------ | :----------------------- |
@@ -1568,31 +1564,13 @@ $ /redwood-app/node_modules/.bin/rw setup generator cell
 ✨  Done in 2.33s.
 ```
 
-### setup tsconfig
-
-Setup tsconfig.json on both web and api sides.
-
-```
-yarn redwood setup tsconfig
-```
-
-| Arguments & Options | Description              |
-| :------------------ | :----------------------- |
-| `--force, -f`       | Overwrite existing files |
-
-**Usage**
-
-See [Custom Web Index](https://redwoodjs.com/docs/custom-web-index).
-
 ### setup deploy (config)
 
-Setup a deployment configuration.
+Set up a deployment configuration.
 
 ```
 yarn redwood setup deploy <provider>
 ```
-
-Creates provider-specific code and configuration for deployment.
 
 | Arguments & Options | Description                                                                                           |
 | :------------------ | :---------------------------------------------------------------------------------------------------- |
@@ -1636,6 +1614,31 @@ In order to use [Netlify Dev](https://www.netlify.com/products/dev/) you need to
 
 > Note: To detect the RedwoodJS framework, please use netlify-cli v3.34.0 or greater.
 
+### setup tsconfig
+
+Add a `tsconfig.json` to both the web and api sides so you can start using [TypeScript](https://redwoodjs.com/docs/typescript).
+
+```
+yarn redwood setup tsconfig
+```
+
+| Arguments & Options | Description              |
+| :------------------ | :----------------------- |
+| `--force, -f`       | Overwrite existing files |
+
+### setup ui
+
+Set up a UI design or style library. Right now the choices are [Chakra UI](https://chakra-ui.com/) and [TailwindCSS](https://tailwindcss.com/).
+
+```
+yarn rw setup ui <library>
+```
+
+| Arguments & Options | Description                                                     |
+| :------------------ | :-------------------------------------------------------------- |
+| `library`           | Library to configure. Choices are `chakra-ui` and `tailwindcss` |
+| `--force, -f`       | Overwrite existing configuration                                |
+
 ## storybook
 
 Starts Storybook locally
@@ -1668,15 +1671,15 @@ yarn redwood test [side..]
 
 <br/>
 
-| Arguments & Options | Description                                                                                                                                                                                                                                                                                        |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sides or filter`   | Which side(s) to test, and/or a regular expression to match against your test files to filter by                                                                                                                                                                                                   |
-| `--help`            | Show help                                                                                                                                                                                                                                                                                          |
-| `--version`         | Show version number                                                                                                                                                                                                                                                                                |
-| `--watch`           | Run tests related to changed files based on hg/git (uncommitted files). Specify the name or path to a file to focus on a specific set of tests [default: true]                                                                                                                                     |
-| `--watchAll`        | Run all tests                                                                                                                                                                                                                                                                                      |
-| `--collectCoverage` | Show test coverage summary and output info to `coverage` directory in project root. See this directory for an .html coverage report                                                                                                                                                                |
-| `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                                                                                                                                                                     |
+| Arguments & Options | Description                                                                                                                                                                                                                                                                                       |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sides or filter`   | Which side(s) to test, and/or a regular expression to match against your test files to filter by                                                                                                                                                                                                  |
+| `--help`            | Show help                                                                                                                                                                                                                                                                                         |
+| `--version`         | Show version number                                                                                                                                                                                                                                                                               |
+| `--watch`           | Run tests related to changed files based on hg/git (uncommitted files). Specify the name or path to a file to focus on a specific set of tests [default: true]                                                                                                                                    |
+| `--watchAll`        | Run all tests                                                                                                                                                                                                                                                                                     |
+| `--collectCoverage` | Show test coverage summary and output info to `coverage` directory in project root. See this directory for an .html coverage report                                                                                                                                                               |
+| `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                                                                                                                                                                    |
 | `--db-push`         | Syncs the test database with your Prisma schema without requiring a migration. It creates a test database if it doesn't already exist [default: true]. This flag is ignored if your project doesn't have an `api` side. [👉 More details](https://redwoodjs.com/docs/cli-commands#prisma-db-push). |
 
 > **Note** all other flags are passed onto the jest cli. So for example if you wanted to update your snapshots you can pass the `-u` flag
