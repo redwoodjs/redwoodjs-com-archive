@@ -81,8 +81,8 @@ For more, see the Storybook docs on [configuring how stories render](https://sto
 
 ### Configuring the UI with `storybook.manager.js`
 
-> Note that some changes you make to Storybook's UI will require refreshing its cache.
-> The easiest way to do so will be when starting Storybook:
+> Note that some of the changes you make to Storybook's UI require refreshing its cache.
+> The easiest way to do so is when starting Storybook:
 >
 > `yarn rw storybook --no-manager-cache`
 
