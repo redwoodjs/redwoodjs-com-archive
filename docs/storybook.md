@@ -121,6 +121,4 @@ addons.setConfig({
 })
 ```
 
-Check out [Storybook's theme quickstart](https://storybook.js.org/docs/react/configure/theming#create-a-theme-quickstart) for a guide on creating your own theme.
-
-You may also want to export your theme to [re-use it with Storybook Docs](https://storybook.js.org/docs/react/configure/theming#theming-docs).
+Check out [Storybook's theming quickstart](https://storybook.js.org/docs/react/configure/theming#create-a-theme-quickstart) for a guide on creating your own theme. You may also want to export your theme to [re-use it with Storybook Docs](https://storybook.js.org/docs/react/configure/theming#theming-docs).
