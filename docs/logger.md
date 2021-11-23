@@ -221,12 +221,21 @@ Note that not all [known pino transports](https://github.com/pinojs/pino/blob/HE
 You can exclude GraphQL operations by name with `excludeOperations`.
 This is useful when you want to filter out certain operations from the log output, for example, `IntrospectionQuery` from GraphQL playground:
 
-```js
-const logger = createLogger({
-  options: {
-    excludeOperations: ['IntrospectionQuery'],
+```js{5}
+// api/src/functions/graphql.{ts|js}
+export const handler = createGraphQLHandler({
+  loggerConfig: {
+    logger,
+    options: { excludeOperations: ['IntrospectionQuery'] },
   },
-)
+  directives,
+  sdls,
+  services,
+  onException: () => {
+    // Disconnect from your database with an unhandled exception.
+    db.$disconnect()
+  },
+})
 ```
 
 > **Relevant anatomy of an operation**
