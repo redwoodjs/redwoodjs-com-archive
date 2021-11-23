@@ -31,7 +31,7 @@ mkdir config
 touch config/storybook.config.js config/storybook.manager.js config/storybook.preview.js
 ```
 
-`storybook.config.js` configures Storybook's server, `storybook.manager.js` Storybook's UI, while `storybook.preview.js` configures the way stories render.
+`storybook.config.js` configures Storybook's server, `storybook.manager.js` configures Storybook's UI, and `storybook.preview.js` configures the way stories render.
 All of these files get merged with Redwood's default configurations, which you can find in the `@redwoodjs/testing` package:
 
 - [main.js](https://github.com/redwoodjs/redwood/blob/main/packages/testing/config/storybook/main.js)—gets merged with your project's `storybook.config.js`
