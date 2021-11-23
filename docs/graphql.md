@@ -637,7 +637,7 @@ export const post = async ({ id }) => {
 //...
 ```
 
-The GraphQL handler will then take take of logging your query and data -- as long as your logger is setup to log at the `info` [level](https://redwoodjs.com/docs/logger#log-level) and above.
+The GraphQL handler will then take care of logging your query and data -- as long as your logger is setup to log at the `info` [level](https://redwoodjs.com/docs/logger#log-level) and above.
 
 > You can also disable the statements in production by just logging at the `warn` [level](https://redwoodjs.com/docs/logger#log-level) or above
 
