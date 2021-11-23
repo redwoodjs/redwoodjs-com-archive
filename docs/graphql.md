@@ -1,6 +1,6 @@
 # GraphQL
 
-GraphQL is a fundamental part of Redwood. Having said that, you can get going without knowing anything about it, and can actually get quite far without ever having to read [the docs](https://graphql.org/learn/). But to master Redwood, you'll need to have more than just a vague notion of what GraphQL is; you'll have to really grok it.
+GraphQL is a fundamental part of Redwood. Having said that, you can get going without knowing anything about it, and can actually get quite far without ever having to read [the docs](https://graphql.org/learn/). But to master Redwood, you'll need to have more than just a vague notion of what GraphQL is. You'll have to really grok it.
 
 The good thing is that, besides taking care of the annoying stuff for you (namely, mapping your resolvers, which gets annoying fast if you do it yourself!), there's not many gotchas with GraphQL in Redwood. GraphQL is GraphQL. The only Redwood-specific thing you should really be aware of is [resolver args](#redwoods-resolver-args).
 
@@ -379,7 +379,7 @@ export const handler = createGraphQLHandler({
 
 To perform a health check, make a HTTP GET request to the `/graphql/health` endpoint.
 
-For local development, 
+For local development,
 with the proxy using `curl` from the command line:
 
 ```bash
@@ -395,7 +395,7 @@ curl http://localhost:8911/graphql/health
 you should get the response:
 
 ```json
-{"status":"pass"}
+{ "status": "pass" }
 ```
 
 For production or your deploy, make a request wherever your `/graphql` function exists.
@@ -536,7 +536,7 @@ We want to make logging simple when using RedwoodJS and therefore have configure
 
 By configuring the GraphQL handler to use your api side [RedwoodJS logger](https://redwoodjs.com/docs/logger), any errors and other log statements about the [GraphQL execution](https://graphql.org/learn/execution/) will be logged to the [destination](https://redwoodjs.com/docs/logger#destination-aka-where-to-log) you've set up: to standard output, file, or transport stream.
 
-You configure the logger using the `loggerConfig` that accepts a [`logger`](<(https://redwoodjs.com/docs/logger)>) and s set of [GraphQL Logger Options](#graphql-logger-options).
+You configure the logger using the `loggerConfig` that accepts a [`logger`](<(https://redwoodjs.com/docs/logger)>) and a set of [GraphQL Logger Options](#graphql-logger-options).
 
 ### Configure the GraphQL Logger
 
@@ -560,12 +560,12 @@ export const handler = createGraphQLHandler({
 The `loggerConfig` takes several options that logs meaningful information along the graphQL execution lifecycle.
 
 | Option        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --- | --------------------------------------------------------------------------------------------------------- |
+| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | data          | Include response data sent to client.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | operationName | Include operation name. The operation name is a meaningful and explicit name for your operation. It is only required in multi-operation documents, but its use is encouraged because it is very helpful for debugging and server-side logging. When something goes wrong (you see errors either in your network logs, or in the logs of your GraphQL server) it is easier to identify a query in your codebase by name instead of trying to decipher the contents. Think of this just like a function name in your favorite programming language. See https://graphql.org/learn/queries/#operation-name |
 | requestId     | Include the event's requestId, or if none, generate a uuid as an identifier.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | query         | Include the query. This is the query or mutation (with fields) made in the request.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| tracing       | Include the tracing and timing information. This will                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |     | log various performance timings within the GraphQL event lifecycle (parsing, validating, executing, etc). |
+| tracing       | Include the tracing and timing information. This will log various performance timings within the GraphQL event lifecycle (parsing, validating, executing, etc).                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | userAgent     | Include the browser (or client's) user agent. This can be helpful to know what type of client made the request to resolve issues when encountering errors or unexpected behavior.                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 Therefore, if you wish to log the GraphQL `query` made, the `data` returned, and the `operationName` used, you would
@@ -629,6 +629,14 @@ The [operation name](https://graphql.org/learn/queries/#operation-name) is a mea
 
 Because your cell typically has a unique operation name, logging this can help you identify which cell made a request.
 
+```js
+// api/src/functions/graphql.ts
+// ...
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: { operationName: true } },
+// ...
+```
+
 #### RequestId for Support Issue Resolution
 
 Often times, your deployment provider will provide a request identifier to help reconcile and track down problems at an infrastructure level. For example, AWS API Gateway and AWS Lambda (used by Netlify, for example) provides `requestId` on the `event`.
@@ -666,7 +674,11 @@ export const post = async ({ id }) => {
 //...
 ```
 
-The GraphQL handler take care of will then take take of logging your query and data -- as long as your logger is setup to log at the `info` [level](https://redwoodjs.com/docs/logger#log-level) and above. You can also disable the statements in production by just logging at the `warn` and above [level](https://redwoodjs.com/docs/logger#log-level).
+The GraphQL handler will then take care of logging your query and data -- as long as your logger is setup to log at the `info` [level](https://redwoodjs.com/docs/logger#log-level) and above.
+
+> You can also disable the statements in production by just logging at the `warn` [level](https://redwoodjs.com/docs/logger#log-level) or above
+
+This means that you can keep your services free of logger statements, but still see what's happening!
 
 ```terminal
 api | POST /graphql 200 7.754 ms - 1772
@@ -690,8 +702,6 @@ api |       "id": 3
 api |     }
 api | POST /graphql 200 9.386 ms - 441
 ```
-
-but keep your services concise!
 
 #### Send to Third-party Transports
 
