@@ -1,5 +1,7 @@
 # RedwoodRecord
 
+> RedwoodRecord is currently considered to be **Experimental**. We are hoping folks will start using it and give us feedback to help shape it's development and developer experience.
+
 RedwoodRecord is an ORM ([Object-Relational Mapping](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping)) built on top of Prisma. It may be extended in the future to wrap other database access packages.
 
 RedwoodRecord is heavily inspired by [ActiveRecord](https://guides.rubyonrails.org/active_record_basics.html) which ships with [Ruby on Rails](https://rubyonrails.org). It presents a natural interface to the underlying data in your database, without worry about the particulars of SQL syntax.
