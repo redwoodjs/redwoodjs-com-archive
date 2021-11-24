@@ -88,19 +88,13 @@ You'll see that this created `.redwood/datamodel.json` and `api/src/models/index
 
 Believe it or not, that's enough to get started! Let's try using the Redwood console to make some quick queries without worrying about starting up any servers:
 
-> TODO: Models don't quite work correctly in the console. My guess is something Babel-related. The require and fetching of records below will work, but actually trying to read any properties returns `undefined`.
+> TODO: Models don't quite work correctly in the console. The require and fetching of records below will work, but actually trying to read any properties returns `undefined`. For now you'll need to test out RedwoodRecord directly in your app.
 
 ```
 yarn rw c
 ```
 
 Now we've got a standard Node REPL but with a bunch of Redwood goodness loaded up for us already. First, let's require our model:
-
-```javascript
-const User = require('./api/src/models/User')
-```
-
-You could also import from the `index.js` file that's created:
 
 ```javascript
 const { User } = require('./api/src/models')
@@ -125,6 +119,7 @@ To create a new record in memory only (not yet saved to the database) use `build
 ```javascript
 const user = User.build({ firstName: 'David', lastName: 'Price' })
 ```
+
 See [create/save](#save) below for saving this record to the database.
 
 ### Errors
@@ -139,7 +134,11 @@ user.errors       // => { base: [], email: ['must not be null'] }
 user.errors.email // => ['must not be null']
 ```
 
-You can pre-emptively check for errors before attempting to save, but only for errors that would be caught with [validation](#validation), by using `isValid()`:
+> `base` is a special key in the errors object and is for errors that don't apply to a single attribute, like `email`. For example, if you try to delete a record that doesn't exist (maybe someone else deleted it between when you retrieved it from the database and when you tried to delete it) you'll get an error on the `base` attribute:
+>
+> `user.errors.base // => ['User record to destroy not found']`
+
+You can pre-emptively check for errors before attempting to modify the record, but only for errors that would be caught with [validation](#validation), by using `isValid()`:
 
 ```javascript
 const User.build({ name: 'Rob Cameron' })
