@@ -190,3 +190,26 @@ To run a Redwood app within a container or VM, you'll want to set both the web a
   host = '0.0.0.0'
   ...
 ```
+
+## Using environment variables within redwood.toml
+Sometimes, you want to change your toml, based on what environment you are deploying to. You can use environment variables within the toml file
+
+Let's look at a a few examples:
+
+```toml
+[web]
+  title = "App running on ${APP_ENV}"
+  port = "${PORT:8910}"
+  apiUrl = "${API_URL:/.redwood/functions}"
+  includeEnvironmentVariables = []
+```
+
+This will do the following:
+- set value of `title` from the env var $APP_TITLE, and interpolate it
+- read the value of `port` from $PORT, but fallback to 8910 if not present
+- read `apiUrl` from $API_URL but fallback to the default if not present
+
+> **Note**
+> Remember that fallbacks are always strings!
+
+If you're wondering when its approriate to use this, as an example you may want to point to a different apiUrl in your staging environment, than your production environment.
