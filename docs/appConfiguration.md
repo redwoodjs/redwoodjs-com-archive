@@ -205,11 +205,15 @@ Let's look at a a few examples:
 ```
 
 This will do the following:
-- set value of `title` from the env var $APP_TITLE, and interpolate it
-- read the value of `port` from $PORT, but fallback to 8910 if not present
-- read `apiUrl` from $API_URL but fallback to the default if not present
+- set value of `title` from the env var `$APP_TITLE`, and interpolate it
+- read the value of `port` from `$PORT`, but fallback to 8910 if not present
+- read `apiUrl` from `$API_URL` but fallback to the default if not present
+
+
 
 > **Note**
-> Remember that fallbacks are always strings!
+> 1. Remember that fallbacks are always strings!
+> 2. These values are interpolated at _build_ time
+
 
 If you're wondering when its approriate to use this, as an example you may want to point to a different apiUrl in your staging environment, than your production environment.
