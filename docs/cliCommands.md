@@ -1350,7 +1350,7 @@ yarn redwood prisma db pull
 
 This command, formerly `introspect`, connects to your database and adds Prisma models to your Prisma schema that reflect the current database schema.
 
-> Warning: The command will Overwrite the current schema.prisma file with the new schema. Any manual changes or customization will be lost. Be sure to back up your current schema.prisma file before running introspect if it contains important modifications.
+> Warning: The command will Overwrite the current schema.prisma file with the new schema. Any manual changes or customization will be lost. Be sure to back up your current schema.prisma file before running `db pull` if it contains important modifications.
 
 #### prisma db push
 
