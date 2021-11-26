@@ -16,7 +16,7 @@ For a reference on dotenv syntax, see the dotenv README's [Rules](https://github
 Redwood also configures Webpack with `dotenv-webpack`, so that all references to `process.env` vars on the Web side will be replaced with the variable's actual value at built-time. More on this in [Web](#Web).
 
 ## Web
-
+### Including environment variables
 > **Heads Up:** for Web to access environment variables in production, you _must_ configure one of the options below.
 >
 > Redwood recommends **Option 1: `redwood.toml`** as it is the most robust.
@@ -28,7 +28,7 @@ In production, you can get environment variables to the Web Side either by
 
 Just like for the API Side, you'll also have to set them up with your provider.
 
-#### includeEnvironmentVariables in redwood.toml
+#### Option 1: includeEnvironmentVariables in redwood.toml
 
 For Example:
 
@@ -43,11 +43,23 @@ By adding environment variables to this array, they'll be available to Web in pr
 
 Note: if someone inspects your site's source, _they could see your `REDWOOD_ENV_SECRET_API_KEY` in plain text._ This is a limitation of delivering static JS and HTML to the browser.
 
-#### Prefixing with REDWOOD*ENV*
+#### Option 2: Prefixing with REDWOOD*ENV*
 
 In `.env`, if you prefix your environment variables with `REDWOOD_ENV_`, they'll be available via `process.env.REDWOOD_ENV_MY_VAR_NAME`, and will be dynamically replaced at built-time.
 
 Like the option above, these are also removed and replaced with the _actual value_ during build in order to be available in production.
+
+
+### Accessing API URLs
+Redwood will automatically make your API URL configurations from the web section of your `redwood.toml` available globally. See [redwood.toml reference](https://redwoodjs.com/docs/app-configuration-redwood-toml#api-paths) for more details. These become available on the `window` or `global` objects, for example `global.RWJS_API_GRAPHQL_URL` will give you the URL for the graphql endpoint
+
+The toml values are mapped as follows
+
+| redwood.toml  | Available as                  | Description                              |
+|---------------|-------------------------------|------------------------------------------|
+| apiGraphQLUrl | `global.RWJS_API_GRAPHQL_URL` | URL or absolute path to GraphQL function |
+| apiUrl        | `global.RWJS_API_URL`         | URL or absolute path to your api-server  |
+| apiDbAuthUrl  | `global.RWJS_API_DBAUTH_URL`  | URL or absolute path to DbAuth function  |
 
 ## API
 

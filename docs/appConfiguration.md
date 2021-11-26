@@ -46,8 +46,8 @@ Configuration for the web side.
 | `path`                        | Path to the web side                                                        | `'./web'`               | `both`        |
 | `target`                      | Target for the web side                                                     | `'browser'`             | `both`        |
 | `apiUrl`                      | Specify the URL to your api-server. Can be an absolute path or FQDN         | `'/.redwood/functions'` | `production`  |
-| `apiGraphQLUrl`               | Optional: FQDN or absolute path to GraphQL function, without trailing slash | `${apiUrl}/graphql`     | `production`  |
-| `apiDbAuthUrl`                | Optional: QDN or absolute path to DbAuth function, without trailing slash   | `${apiUrl}/auth`        | `production`  |
+| `apiGraphQLUrl`               | Optional: URL or absolute path to GraphQL function, without trailing slash | `${apiUrl}/graphql`     | `production`  |
+| `apiDbAuthUrl`                | Optional: URL or absolute path to DbAuth function, without trailing slash   | `${apiUrl}/auth`        | `production`  |
 | `includeEnvironmentVariables` | Environment variables to whitelist                                          |                         | `both`        |
 | `fastRefresh`                 | Enable webpack's fast refresh                                               | true                    | `development` |
 | `a11y`                        | Enable storybook `addon-a11y` and `eslint-plugin-jsx-a11y`                  | true                    | `development` |
