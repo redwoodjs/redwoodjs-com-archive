@@ -191,29 +191,27 @@ To run a Redwood app within a container or VM, you'll want to set both the web a
   ...
 ```
 
-## Using environment variables within redwood.toml
-Sometimes, you want to change your toml, based on what environment you are deploying to. You can use environment variables within the toml file
+## Using Environment Variables in `redwood.toml`
 
-Let's look at a a few examples:
+Sometimes you want to change your `redwood.toml` based on the environment you're deploying to. 
+For example, you may want to point to a different `apiUrl` in your staging environment.
+You can do this with environment variables.
+Let's look at an example:
 
 ```toml
 [web]
-  title = "App running on ${APP_ENV}"
+  title = "App running on ${APP_TITLE}"
   port = "${PORT:8910}"
   apiUrl = "${API_URL:/.redwood/functions}"
   includeEnvironmentVariables = []
 ```
 
-This will do the following:
-- set value of `title` from the env var `$APP_TITLE`, and interpolate it
-- read the value of `port` from `$PORT`, but fallback to 8910 if not present
-- read `apiUrl` from `$API_URL` but fallback to the default if not present
+This does the following:
+- sets `title` by interpolating the env var `APP_TITLE`
+- sets `port` to the env var `PORT`, falling back to `8910`
+- sets `apiUrl` to the env var `API_URL`, falling back to `/.redwood/functions` (the default)
 
+That's pretty much all there is to it. Just remember two things:
 
-
-> **Note**
-> 1. Remember that fallbacks are always strings!
-> 2. These values are interpolated at _build_ time
-
-
-If you're wondering when its approriate to use this, as an example you may want to point to a different apiUrl in your staging environment, than your production environment.
+1. fallbacks are always strings
+2. these values are interpolated at _build_ time
