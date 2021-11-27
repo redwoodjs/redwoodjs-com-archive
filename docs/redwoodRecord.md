@@ -2,13 +2,13 @@
 
 > RedwoodRecord is currently considered to be **Experimental**. We are hoping folks will start using it and give us feedback to help shape it's development and developer experience.
 
-RedwoodRecord is an ORM ([Object-Relational Mapping](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping)) built on top of Prisma. It may be extended in the future to wrap other database access packages.
+RedwoodRecord is an ORM ([Object-relational Mapping](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping)) built on top of Prisma. It may be extended in the future to wrap other database-access packages.
 
 RedwoodRecord is heavily inspired by [ActiveRecord](https://guides.rubyonrails.org/active_record_basics.html) which ships with [Ruby on Rails](https://rubyonrails.org). It presents a natural interface to the underlying data in your database, without worry about the particulars of SQL syntax.
 
 ## Background and Terminology
 
-Before you can use RedwoodRecord you need to create classes for each database table you intend to access. Let's say we had a blog with three database tables:
+Before you can use RedwoodRecord you need to create classes for each database table you intend to access. Let's say we have a blog with three database tables:
 
 ```
 ┌───────────┐       ┌────────────┐      ┌────────────┐
@@ -21,9 +21,9 @@ Before you can use RedwoodRecord you need to create classes for each database ta
                     └────────────┘      └────────────┘
 ```
 
-In database-speak we say that these tables have a *one-to-many* relationships between them when moving from left to write in the diagram above: one User can have many Posts associated to it, and a Post can have many Comments. The "one" is denoted with a `•` on the arrow above and a `<` denotes the "many."
+In database-speak we say that these tables have *one-to-many* relationships between them when moving from left to right in the diagram above: one User can have many Posts associated to it, and a Post can have many Comments. The "one" is denoted with a `•` on the arrow above and a `<` denotes the "many."
 
-You can leave it at that, as saying one-to-many explains both sides of the relationship, but it's sometimes convenient to refer to the relation in the "opposite" direction. Reading the diagram from right to left we could say that a comment *belongs to* a post (it has a foreign key `postId` that points to Post via `Comment.postId` -> `Post.id`) and a Post belongs to a User (`Post.userId` -> `User.id`)
+You can leave it at that, as saying one-to-many explains both sides of the relationship, but it's sometimes convenient to refer to the relation in the "opposite" direction. Reading the diagram from right to left we could say that a comment *belongs to* a post (it has a foreign key `postId` that points to Post via `Comment.postId` → `Post.id`) and a Post belongs to a User (`Post.userId` → `User.id`)
 
 There are also *many-to-many* relationships, such as a Product and Category—a Product can have many different Categories, and a Category will have many different Products connected to it:
 
@@ -37,7 +37,7 @@ There are also *many-to-many* relationships, such as a Product and Category—a 
 └───────────┘       └────────────┘
 ```
 
-These tables don't have any foreign keys (`productId` or `categoryId`), how do they keep track of each other? Generally you'll create a *join table* between the two that references each other's foreign key:
+These tables don't have any foreign keys (`productId` or `categoryId`) so how do they keep track of each other? Generally you'll create a *join table* between the two that references each other's foreign key:
 
 ```
 ┌───────────┐      ┌───────────────────┐       ┌────────────┐
@@ -64,7 +64,7 @@ If you want to create the join table yourself and potentially store additional d
 >     const product = Product.find(1)
 >     const categories = product.categories.all()
 
-The only other terminology to keep in mind are the terms *model* and *record*. A *model* is the name for the class that represents one database table. The example above has three models: User, Post and Comment. Prisma also calls each database table declaration in their `schema.prisma` declaration file a "model", but when we refer to a "model" in this doc it will mean the class that extends `RedwoodRecord`. A *record* is a single instance of our model that now represents a single row of data in the database.
+The only other terminology to keep in mind are the terms *model* and *record*. A *model* is the name for the class that represents one database table. The example above has three models: User, Post and Comment. Prisma also calls each database-table declaration in their `schema.prisma` declaration file a "model", but when we refer to a "model" in this doc it will mean the class that extends `RedwoodRecord`. A *record* is a single instance of our model that now represents a single row of data in the database.
 
 So: I use the User model to find a given user in the database, and, assuming they are found, I now have a single user record (an instance of the User model).
 
@@ -78,7 +78,7 @@ First you'll need to create a model to represent the database table you want to 
 export default class User extends RedwoodRecord { }
 ```
 
-Now we need to parse the Prisma schema, store as a cached JSON file, and create an `index.js` file with a couple of config settings:
+Now we need to parse the Prisma schema, store it as a cached JSON file, and create an `index.js` file with a couple of config settings:
 
 ```
 yarn rw record init
@@ -173,7 +173,7 @@ There are a few different ways to find records for a model. Sometimes you want t
 
 #### where()
 
-`where()` is for finding multiple records. It returns an array of model records. The first argument is the properties that you would normally set as the `where` value in to Prisma's [`findMany()` function](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findmany). The second argument (optional) is any additional properties (like ordering or limiting) that you want to perform on the resulting records:
+`where()` is for finding multiple records. It returns an array of model records. The first argument is the properties that you would normally set as the `where` value in Prisma's [`findMany()` function](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findmany). The second argument (optional) is any additional properties (like ordering or limiting) that you want to perform on the resulting records:
 
 ```javascript
 User.where() // would return all records
@@ -259,11 +259,11 @@ user.errors.email // => ['can't be null']
 
 ### Updating Records
 
-There are two ways to update a record. By either listing all of the attributes to change in a call to `update()`, or setting the attributes manually and then calling `save()`.
+There are two ways to update a record. You can either 1) list all of the attributes to change in a call to `update()`, or 2) set the attributes manually and then call `save()`.
 
 #### update()
 
-Call `update()` on a record, including the attributes to change as the first argument. The second (optional) argument are additional properties forwarded to Prisma on updating. Returns `false` if the record did not save, otherwise returns itself with the newly saves attributes.
+Call `update()` on a record, including the attributes to change as the first argument. The second (optional) argument are any properties to forward to Prisma on updating. Returns `false` if the record did not save, otherwise returns itself with the newly saves attributes.
 
 ```javascript
 const user = User.find(123)
@@ -308,7 +308,7 @@ const user = await User.find(123)
 const posts = user.posts.all()
 ```
 
-In this example `posts` is the proxy. All of the normal finder methods available on a model (`where()`, `all()`, `find()` and `findBy()`) are all available to be called on the relation proxy. But not only that, you can create records as well and they will automatically be associated to the parent record:
+In this example `posts` is the proxy. All of the normal finder methods available on a model (`where()`, `all()`, `find()` and `findBy()`) are all available to be called on the relation proxy. But that's not all: you can create records as well and they will automatically be associated to the parent record:
 
 ```javascript
 const user = await User.find(123)
@@ -343,7 +343,7 @@ const post = await Post.first()
 const user = await post.user
 ```
 
-> You cannot currently create a belongs-to record through the parent, but we're working on syntax to let enable this!
+> You cannot currently create a belongs-to record through the parent, but we're working on syntax to enable this!
 
 #### Many-to-many
 
@@ -354,7 +354,7 @@ const product = await Product.find(123)
 const categories = product.categories.all()
 ```
 
-If you have an explicit many-to-many relationship then you need to treat it as a two-step request. First, get the one-to-many relationships for the join table, then a belongs-to relationship for the data you actually want.
+If you have an explicit many-to-many relationship then you need to treat it as a two-step request. First, get the one-to-many relationships for the join table, then a belongs-to relationship for the data you actually want:
 
 ```
 Product -> one-to-many -> ProductCategories -> belongs-to -> Category
@@ -367,7 +367,7 @@ const productCategories = product.productCategories.all()
 const categories = Promise.all(productCategories.map(async (pc) => await pc.category))
 ```
 
-If you wanted to create a new record this way, you would need to create the join table record after having already created/retrieved the records on either site of the relation:
+If you wanted to create a new record this way, you would need to create the join table record after having already created/retrieved the records on either side of the relation:
 
 ```javascript
 const product = await Product.find(123)
@@ -383,7 +383,7 @@ The following features are in development but are not available in this experime
 
 ### Lifecycle Callbacks
 
-Coming soon will be the ability create functions around the lifecycle of a record. For example, to set a newly created user's default preferences you may want an `afterCreate` callback that invokes a function (syntax not final):
+Coming soon will be the ability create functions around the lifecycle of a record. For example, to set a newly-created user's default preferences, you may want an `afterCreate` callback that invokes a function (syntax not final):
 
 ```javascript
 export default class User extends RedwoodRecord {
