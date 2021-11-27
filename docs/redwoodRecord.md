@@ -37,7 +37,7 @@ There are also *many-to-many* relationships, such as a Product and Category—a 
 └───────────┘       └────────────┘
 ```
 
-These tables don't have any foreign keys (`productId` or `cateogryId`), how do they keep track of each other? Generally you'll create a *join table* between the two that references each other's foreign key:
+These tables don't have any foreign keys (`productId` or `categoryId`), how do they keep track of each other? Generally you'll create a *join table* between the two that references each other's foreign key:
 
 ```
 ┌───────────┐      ┌───────────────────┐       ┌────────────┐
@@ -51,12 +51,12 @@ These tables don't have any foreign keys (`productId` or `cateogryId`), how do t
 
 Now we're back to one-to-many relationships. In Prisma this join table is created and maintained for you. It will be named `_CategoryToPost` and the foreign keys will simply be named `A` and `B` and point to the two separate tables. Prisma refers to this as an [implicit many-to-many](https://www.prisma.io/docs/concepts/components/prisma-schema/relations/many-to-many-relations#implicit-many-to-many-relations) relationship.
 
-If you want to create the join table yourself and potentially store additional data there (like a timestamp of when the product was categorized) then this is simply a one-to-many relationship on both sides: a Product has many ProductCategories and a Category has many ProductCategories. Prisma refers to this as an [explicity many-to-many](https://www.prisma.io/docs/concepts/components/prisma-schema/relations/many-to-many-relations#explicit-many-to-many-relations) relationship.
+If you want to create the join table yourself and potentially store additional data there (like a timestamp of when the product was categorized) then this is simply a one-to-many relationship on both sides: a Product has many ProductCategories and a Category has many ProductCategories. Prisma refers to this as an [explicitly many-to-many](https://www.prisma.io/docs/concepts/components/prisma-schema/relations/many-to-many-relations#explicit-many-to-many-relations) relationship.
 
 > TODO: We'll be adding logic soon that will let you get to the categories from a product record (and vice versa) in explicit many-to-manys without having to manually go through ProductCategory. From this:
 >
 >     const product = Product.find(1)
->     const productCategoryes = product.productCategories.all()
+>     const productCategories = product.productCategories.all()
 >     const categories = productCategories.map(pc => pc.categories.all()).flat()
 >
 > To this:
@@ -138,7 +138,7 @@ user.errors.email // => ['must not be null']
 >
 > `user.errors.base // => ['User record to destroy not found']`
 
-You can pre-emptively check for errors before attempting to modify the record, but only for errors that would be caught with [validation](#validation), by using `isValid()`:
+You can preemptively check for errors before attempting to modify the record, but only for errors that would be caught with [validation](#validation), by using `isValid()`:
 
 ```javascript
 const User.build({ name: 'Rob Cameron' })
@@ -161,7 +161,7 @@ export default class User extends RedwoodRecord {
 const user = User.build({ username: 'r' })
 await user.save() // => false
 user.errors.email = ['must be present']
-user.errors.username = ['must be at least 2 charaters']
+user.errors.username = ['must be at least 2 characters']
 user.email = 'rob@redwoodjs.com'
 user.username = 'rob'
 await user.save()
@@ -308,7 +308,7 @@ const user = await User.find(123)
 const posts = user.posts.all()
 ```
 
-In this example `posts` is the proxy. All of the normal finder methods available on a model (`where()`, `all()`, `find()` and `findBy()`) are all available to be called on the relation proxy. But not only that, you can create records as well and they will automatcally be associated to the parent record:
+In this example `posts` is the proxy. All of the normal finder methods available on a model (`where()`, `all()`, `find()` and `findBy()`) are all available to be called on the relation proxy. But not only that, you can create records as well and they will automatically be associated to the parent record:
 
 ```javascript
 const user = await User.find(123)
@@ -347,14 +347,14 @@ const user = await post.user
 
 #### Many-to-many
 
-If you have an implict many-to-many relationship then you will access the records similar to the one-to-many type:
+If you have an implicit many-to-many relationship then you will access the records similar to the one-to-many type:
 
 ```javascript
 const product = await Product.find(123)
 const categories = product.categories.all()
 ```
 
-If you have an explict many-to-many relationship then you need to treat it as a two-step request. First, get the one-to-many relationships for the join table, then a belongs-to relationship for the data you actually want.
+If you have an explicit many-to-many relationship then you need to treat it as a two-step request. First, get the one-to-many relationships for the join table, then a belongs-to relationship for the data you actually want.
 
 ```
 Product -> one-to-many -> ProductCategories -> belongs-to -> Category
@@ -367,7 +367,7 @@ const productCategories = product.productCategories.all()
 const categories = Promise.all(productCategories.map(async (pc) => await pc.category))
 ```
 
-If you wanted to create a new record this way, you would need to create the join table record after having already created/retrived the records on either site of the relation:
+If you wanted to create a new record this way, you would need to create the join table record after having already created/retrieved the records on either site of the relation:
 
 ```javascript
 const product = await Product.find(123)
@@ -375,7 +375,7 @@ const category = await Category.find(234)
 await ProductCategory.create({ productId: product.id, categoryId: category.id })
 ```
 
-> We're working on improving this syntax to make interacting with these records as simple as the implict version. Stay tuned!
+> We're working on improving this syntax to make interacting with these records as simple as the implicit version. Stay tuned!
 
 ## Coming Soon
 
