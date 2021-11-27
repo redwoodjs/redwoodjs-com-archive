@@ -1515,7 +1515,7 @@ Commands for working with RedwoodRecord.
 
 ### record init
 
-Parses schema.prisma and caches the datamodel as JSON. Reads relationships between models and adds some configuration in `api/src/models/index.js`.
+Parses `schema.prisma` and caches the datamodel as JSON. Reads relationships between models and adds some configuration in `api/src/models/index.js`.
 
 ```
 yarn rw record init
