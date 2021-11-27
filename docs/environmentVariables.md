@@ -16,6 +16,7 @@ For a reference on dotenv syntax, see the dotenv README's [Rules](https://github
 Redwood also configures Webpack with `dotenv-webpack`, so that all references to `process.env` vars on the Web side will be replaced with the variable's actual value at built-time. More on this in [Web](#Web).
 
 ## Web
+
 ### Including environment variables
 > **Heads Up:** for Web to access environment variables in production, you _must_ configure one of the options below.
 >
@@ -51,15 +52,20 @@ Like the option above, these are also removed and replaced with the _actual valu
 
 
 ### Accessing API URLs
-Redwood will automatically make your API URL configurations from the web section of your `redwood.toml` available globally. See [redwood.toml reference](https://redwoodjs.com/docs/app-configuration-redwood-toml#api-paths) for more details. These become available on the `window` or `global` objects, for example `global.RWJS_API_GRAPHQL_URL` will give you the URL for the graphql endpoint
 
-The toml values are mapped as follows
+Redwood automatically makes your API URL configurations from the web section of your `redwood.toml` available globally. 
+They're accessible via the `window` or `global` objects. 
+For example, `global.RWJS_API_GRAPHQL_URL` gives you the URL for your graphql endpoint.
 
-| redwood.toml  | Available as                  | Description                              |
-|---------------|-------------------------------|------------------------------------------|
-| apiGraphQLUrl | `global.RWJS_API_GRAPHQL_URL` | URL or absolute path to GraphQL function |
-| apiUrl        | `global.RWJS_API_URL`         | URL or absolute path to your api-server  |
-| apiDbAuthUrl  | `global.RWJS_API_DBAUTH_URL`  | URL or absolute path to DbAuth function  |
+The toml values are mapped as follows:
+
+| `redwood.toml` key | Available globally as         | Description                              |
+| ------------------ | ----------------------------- | ---------------------------------------- |
+| `apiUrl`           | `global.RWJS_API_URL`         | URL or absolute path to your api-server  |
+| `apiGraphQLUrl`    | `global.RWJS_API_GRAPHQL_URL` | URL or absolute path to GraphQL function |
+| `apiDbAuthUrl`     | `global.RWJS_API_DBAUTH_URL`  | URL or absolute path to DbAuth function  |
+
+See the [redwood.toml reference](https://redwoodjs.com/docs/app-configuration-redwood-toml#api-paths) for more details. 
 
 ## API
 
