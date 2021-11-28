@@ -72,7 +72,7 @@ yarn rw setup tailwind
 ## Webpack Dev Server
 
 Redwood uses [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/) for local development. 
-When you run `yarn rw dev`, TOML keys in your `redwood.toml`'s `[web]` table, like `port` and `apiProxyPath`, are used as Webpack Dev Server options (in this case, [devServer.port](https://webpack.js.org/configuration/dev-server/#devserverport) and [devServer.proxy](https://webpack.js.org/configuration/dev-server/#devserverproxy) respectively).
+When you run `yarn rw dev`, TOML keys in your `redwood.toml`'s `[web]` table, like `port` and `apiUrl`, are used as Webpack Dev Server options (in this case, [devServer.port](https://webpack.js.org/configuration/dev-server/#devserverport) and [devServer.proxy](https://webpack.js.org/configuration/dev-server/#devserverproxy) respectively).
 
 ### Passing options with `--forward`
 

@@ -1,4 +1,4 @@
-# Typescript
+# TypeScript
 Redwood comes with full TypeScript support out of the box, and you don't have to give up any of the conveniences that Redwood offers to enjoy all the benefits of a type-safe codebase. You can use TypeScript and have great DX too.
 
 ## Starting a TypeScript Redwood project
@@ -7,7 +7,7 @@ You can use the `--typescript` flag on create-redwood-app to generate a project 
 yarn create redwood-app --typescript my-redwood-app
 ```
 
-## Converting an existing JS project to Typescript
+## Converting an existing JS project to TypeScript
 If you already have a Redwood app, but want to configure it for TypeScript, you can use our setup command:
 
 ```
@@ -54,7 +54,7 @@ You should now have type definitions&mdash;you can rename your files from `.js` 
 For your shared types, we need to do a few things:
 
 1. Put your shared types at the root of the project (makes sense right?), in a folder called `types` at the root
-2. Restart TS server in vscode. And your new types should now be available on both web and api sides!
+2. Run 'Restart TS Server' in vscode via the command palette. And your new types should now be available on both web and api sides!
 
 Redwood's tsconfig already contains the config for picking up types from `web/types`, `api/types` and `types` folders in your project.
 

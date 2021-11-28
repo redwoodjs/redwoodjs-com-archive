@@ -23,7 +23,51 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css">
     <script type="text/javascript" src="/javascripts/application.js"></script>
-    <script defer data-domain="redwoodjs.com" src="https://plausible.io/js/plausible.js"></script>
+    <script type="text/javascript">
+      !function() {
+        "use strict";
+        var o = window.location
+          , a = window.document
+          , t = window.localStorage
+          , r = a.currentScript
+          , l = "https://dpxl0uf0kxlpt.cloudfront.net/api/event"
+          , w = t && t.plausible_ignore;
+        function s(t) {
+          console.warn("Ignoring Event: " + t)
+        }
+        function n(t, n) {
+          if (/^localhost$|^127(\.[0-9]+){0,2}\.[0-9]+$|^\[::1?\]$/.test(o.hostname) || "file:" === o.protocol)
+            return s("localhost");
+          if (!(window._phantom || window.__nightmare || window.navigator.webdriver || window.Cypress)) {
+            if ("true" == w)
+              return s("localStorage flag");
+            var e = {};
+            e.n = t,
+            e.u = o.href,
+            e.d = r.getAttribute("data-domain"),
+            e.r = a.referrer || null,
+            e.w = window.innerWidth,
+            n && n.meta && (e.m = JSON.stringify(n.meta)),
+            n && n.props && (e.p = JSON.stringify(n.props));
+            var i = new XMLHttpRequest;
+            i.open("POST", l, !0),
+            i.setRequestHeader("Content-Type", "text/plain"),
+            i.send(JSON.stringify(e)),
+            i.onreadystatechange = function() {
+                4 == i.readyState && n && n.callback && n.callback()
+            }
+          }
+        }
+        var e = window.plausible && window.plausible.q || [];
+        window.plausible = n;
+        for (var i = 0; i < e.length; i++)
+          n.apply(this, e[i])
+      }();
+
+      document.addEventListener('turbolinks:load', function() {
+        plausible('pageview')
+      })
+    </script>
   </head>
 
   <body class="relative bg-white text-gray-900 font-sans antialiased h-full flex flex-col" data-controller="application" data-action="turbolinks:before-cache@document->application#saveScrollPosition turbolinks:before-cache@document->application#closeNav keydown@window->application#focusSearch">

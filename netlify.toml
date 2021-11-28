@@ -147,6 +147,10 @@ from = "/docs/mocking-graph-ql-requests"
 to = "/docs/mocking-graphql-requests"
 
 [[redirects]]
+from = "/docs/form"
+to = "/docs/forms"
+
+[[redirects]]
 from = "/cookbook/mocking-graph-ql-in-storybook"
 to = "/cookbook/mocking-graphql-in-storybook"
 
@@ -504,3 +508,9 @@ to = "/cookbook/gotrue-auth"
 [[redirects]]
 from ="/community"
 to ="https://community.redwoodjs.com/t/welcome-to-the-redwoodjs-community/2416"  
+
+[[redirects]]
+  from = "/docs/redwood-router"
+  to = "/docs/router"
+  status = 301
+  force = true

@@ -76,7 +76,7 @@ When you run `yarn rw dev` - it'll watch for changes and make your functions ava
 - `localhost:8911/{functionName}` and
 - `localhost:8910/.redwood/functions/{functionName}` (used by the web side).
 
-Note that the `.redwood/functions` path is determined by your setting in your [redwood.toml](https://redwoodjs.com/docs/app-configuration-redwood-toml#apiproxypath) - and is used both in development and in the deployed Redwood app
+Note that the `.redwood/functions` path is determined by your setting in your [redwood.toml](https://redwoodjs.com/docs/app-configuration-redwood-toml#apiUrl) - and is used both in development and in the deployed Redwood app
 
 
 ## Testing
@@ -516,9 +516,15 @@ We can refer to these individual orders in our tests as `scenario.order.placed`,
 
 export const standard = defineScenario({
   order: {
-    placed: { trackingNumber: '1ZP1LC3D0Rd3R000001', status: 'PLACED' },
-    shipped: { trackingNumber: '1ZSH1PP3D000002', status: 'SHIPPED' },
-    delivered: { trackingNumber: '1ZD31IV3R3D000003', status: 'DELIVERED' },
+    placed: {
+      data: { trackingNumber: '1ZP1LC3D0Rd3R000001', status: 'PLACED' },
+    },
+    shipped: {
+      data: { trackingNumber: '1ZSH1PP3D000002', status: 'SHIPPED' },
+    },
+    delivered: {
+      data: { trackingNumber: '1ZD31IV3R3D000003', status: 'DELIVERED' },
+    },
   },
 })
 ```

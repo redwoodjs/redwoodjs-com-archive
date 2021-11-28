@@ -20,23 +20,23 @@ That creates a stub you can test out right away. Make sure your dev server is ru
 
 ![serverTime Function output](https://user-images.githubusercontent.com/32992335/107839683-609c2300-6d62-11eb-93d7-ff9c1bfb0ff2.png)
 
-### Interlude: `apiProxyPath`
+### Interlude: `apiUrl`
 
-The `.redwood/functions` bit in the link you pointed your browser to is what's called the `apiProxyPath`. You can configure it in your `redwood.toml`:
+The `.redwood/functions` bit in the link you pointed your browser to is what's called the `apiUrl`. You can configure it in your `redwood.toml`:
 
 ```toml{5}
 # redwood.toml
 
 [web]
   port = 8910
-  apiProxyPath = "/.redwood/functions"
+  apiUrl = "/.redwood/functions"
 ```
 
 After you setup a deploy (via `yarn rw setup deploy <provider>`), it'll change to something more appropriate, like `.netlify/functions` in Netlify's case.
 
 <!-- https://community.redwoodjs.com/t/getting-cors-error-while-calling-a-lambda-function/186 -->
 <!-- link to something; maybe even  -->
-But what's an `apiProxyPath`? Well, when you go to deploy, your serverless functions won't be in the same place as your app; they'll be somewhere else. Sending requests to the `apiProxyPath` let's your provider handle the hard work of figuring out where they actually are, and making sure that your app can actually access them. 
+Why do we need `apiUrl`? Well, when you go to deploy, your serverless functions won't be in the same place as your app; they'll be somewhere else. Sending requests to the `apiUrl` let's your provider handle the hard work of figuring out where they actually are, and making sure that your app can actually access them. 
 
 If you were to try and fetch `http://localhost:8911/serverTime` from the web side, you'd run into an error you'll get to know quite well: CORS.
 
@@ -57,7 +57,7 @@ from the web side would give you an error like:
 Access to fetch at 'http://localhost:8911/serverTime' from origin 'http://localhost:8910' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
 ```
 
-We could set the headers for `serverTime` to allow requests from any origin... but maybe a better idea would be to never request `8911` from `8910` in the first place. Hence the `apiProxyPath`! We're making a request to `8910/.redwood/functions/serverTime`&mdash;still the same domain&mdash;but the [webpack dev-server](https://webpack.js.org/configuration/dev-server/#devserverproxy) proxies them to `localhost:8911/serverTime` for us. 
+We could set the headers for `serverTime` to allow requests from any origin... but maybe a better idea would be to never request `8911` from `8910` in the first place. Hence the `apiUrl`! We're making a request to `8910/.redwood/functions/serverTime`&mdash;still the same domain&mdash;but the [webpack dev-server](https://webpack.js.org/configuration/dev-server/#devserverproxy) proxies them to `localhost:8911/serverTime` for us. 
 
 ## Getting the Time
 
