@@ -40,18 +40,18 @@ Just add the `prerender` prop to the Set that wraps all Pages you want to preren
 
 ### Not found page
 
-You can also prerender your not found page (a.k.a your 404 page). Just add—you guessed it—the prerender prop:
+You can also prerender your not found page (a.k.a your 404 page). Just add—you guessed it—the `prerender` prop:
 
 ```diff
 -      <Route notfound page={NotFoundPage} />
 +      <Route notfound page={NotFoundPage} prerender/>
 ```
 
-This will prerender your NotFoundPage to 404.html in your dist folder. Note that there's no need to specify a path.
+This will prerender your NotFoundPage to `404.html` in your dist folder. Note that there's no need to specify a path.
 
 ## Cells, Private Routes, and Dynamic URLs
 
-How does Prerendering handle dynamic data? In a way that For Cells, Redwood prerenders your Cells' `<Loading/>` component. Similarly, for Private Routes, Redwood prerenders your Private Routes' `whileLoadingAuth` prop:
+How does Prerendering handle dynamic data? For Cells, Redwood prerenders your Cells' `<Loading/>` component. Similarly, for Private Routes, Redwood prerenders your Private Routes' `whileLoadingAuth` prop:
 
 ```js{1,2}
 <Private >
@@ -78,9 +78,9 @@ Sometimes you need more fine-grained control over whether something gets prerend
 
 > **Heads-up!**
 >
-> If you're pre-rendering a page that uses a third-party library, make it's "universal". If it's not, try calling the library after doing a browser check using one of the utils above.
+> If you're prerendering a page that uses a third-party library, make sure it's "universal". If it's not, try calling the library after doing a browser check using one of the utils above.
 >
-> Look for these key words when choosing a library: _universal module, SSR compatible, server compatible_&mdash;all these indicate that the library also works in node.js.
+> Look for these key words when choosing a library: _universal module, SSR compatible, server compatible_&mdash;all these indicate that the library also works in Node.js.
 
 ### `<BrowserOnly/>` component
 
@@ -131,7 +131,7 @@ if (isBrowser) {
 
 ### Optimization Tip
 
-If you dynamically load third-party libraries that aren't part of your JS bundle, using these prerendering utils can help you avoid loading them at build time
+If you dynamically load third-party libraries that aren't part of your JS bundle, using these prerendering utils can help you avoid loading them at build time:
 
 ```js
 import { useIsBrowser } from '@redwoodjs/prerender/browserUtils'
@@ -200,7 +200,7 @@ Depending on what pages you're prerendering, you may want to change your redirec
 <summary>If you prerender your `notFoundPage`
 </summary>
 
-You can remove the default redirect to index in your netlify.toml. This means the browser will accurately receive 404 statuses when navigating to a route that doesn't exist:
+You can remove the default redirect to index in your `netlify.toml`. This means the browser will accurately receive 404 statuses when navigating to a route that doesn't exist:
 
 ```diff
 [[redirects]]
