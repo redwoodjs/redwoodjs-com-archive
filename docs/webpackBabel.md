@@ -1,13 +1,52 @@
-# Webpack Configuration
+# Webpack & Babel Configuration
 
-Redwood uses webpack. And with webpack comes configuration.
-
-One of Redwood's tenets is convention over configuration, so it's worth repeating that you don't have to do any of this! 
+One of Redwood's tenets is convention over configuration, so it's worth repeating that you don't have to do any of this!
 Take the golden path and everything will work just fine.
 
-But another of Redwood's tenets is to make the hard stuff possible. 
-Whether configuring webpack counts as hard-stuff or not is up for debate, but one thing we know for sure is that it can be an epic time sink. 
+But another of Redwood's tenets is to make the hard stuff possible.
+
+Whether configuring webpack and babel counts as hard-stuff or not is up for debate, but one thing we know for sure is that it can be an epic time sink.
+
 We hope that documenting it well makes it fast and easy.
+
+## Configuring Babel
+
+### Default configations
+Redwood by default configures all the required babel plugins so you can write modern JavaScript and TypeScript without needing to worry about transpilation at all. GraphQL tags, JSX, SVG imports are all handled for you.
+
+For those well versed in babel config, you can view all the config that we load by default: [@redwoodjs/internal babel config](https://github.com/redwoodjs/redwood/tree/main/packages/internal/src/build/babel)
+
+### Bringing your own babel plugins
+For most projects, you may not need to configure any babel plugins at all, but if you wish to you can configure each of the sides individually using `babel.config.js` files.
+
+Definitely check the [setup command](https://redwoodjs.com/docs/cli-commands#setup) on the Redwood CLI first, as we may have commands to setup certain libraries for you!
+
+> **Heads up**
+>
+> `.babelrc{.js}` files are ignored. You have to place your custom configuration in the appropriate file in `web/babel.config.js` web side and/or `api/babel.config.js` for the api side
+
+Let's demonstrate this by example
+
+#### Example: adding Emotion to Redwood
+Let's say we want to add the styling library [emotion](https://emotion.sh), which requires adding a babel plugin.
+
+1. Create a custom babel config file: `./web/babel.config.js`
+<br/>
+2. Install the `emotion/babel-plugin` as a dependency: `yarn add --dev @emotion/babel-plugin`
+3. Add the emotion plugin, to your web side babel config:
+
+```js
+// web/babel.config.js
+module.exports = {
+  plugins: ["@emotion"] // 👈 add the emotion plugin
+}
+
+// ℹ️ Notice how we do not need the "extends" property
+```
+<br/>
+
+Your configuration for your Redwood web side will now be merged in with the default config.
+
 
 ## Configuring Webpack
 
@@ -31,7 +70,7 @@ module.exports = (config, { mode }) => {
 
   /**
    * Add custom rules and plugins:
-   * 
+   *
    * ```
    * config.module.rules.push(YOUR_RULE)
    * config.plugins.push(YOUR_PLUGIN)
@@ -71,12 +110,12 @@ yarn rw setup tailwind
 
 ## Webpack Dev Server
 
-Redwood uses [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/) for local development. 
+Redwood uses [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/) for local development.
 When you run `yarn rw dev`, TOML keys in your `redwood.toml`'s `[web]` table, like `port` and `apiUrl`, are used as Webpack Dev Server options (in this case, [devServer.port](https://webpack.js.org/configuration/dev-server/#devserverport) and [devServer.proxy](https://webpack.js.org/configuration/dev-server/#devserverproxy) respectively).
 
 ### Passing options with `--forward`
 
-While you can configure Webpack Dev Server in `web/config/webpack.config.js`, it's often simpler to just pass options straight to `yarn rw dev` using the `--forward` flag. 
+While you can configure Webpack Dev Server in `web/config/webpack.config.js`, it's often simpler to just pass options straight to `yarn rw dev` using the `--forward` flag.
 
 > For the full list of Webpack Dev Server options, see https://webpack.js.org/configuration/dev-server/.
 
@@ -88,7 +127,7 @@ In addition to passing new options, you can override those in your `redwood.toml
 yarn rw dev --forward="--port 1234 --no-open"
 ```
 
-This starts your project on port `1234` and disables automatic browser opening. 
+This starts your project on port `1234` and disables automatic browser opening.
 
 #### Example: Allow External Host Access
 
