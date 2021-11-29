@@ -254,9 +254,6 @@ user.hasErrors // => true
 user.errors.email // => ['can't be null']
 ```
 
-* User.create()
-* User.build(), instance.save()
-
 ### Updating Records
 
 There are two ways to update a record. You can either 1) list all of the attributes to change in a call to `update()`, or 2) set the attributes manually and then call `save()`.
@@ -301,7 +298,7 @@ await user.destroy({ throw: true })
 
 ### Relationships
 
-As shown in [Background and Terminology](background-and-terminology) above, RedwoodRecord provides a way to get data from one related models. For example, to get the posts belonging to a user via what we call a *relation proxy*:
+As shown in [Background and Terminology](background-and-terminology) above, RedwoodRecord provides a way to get data from related models. For example, to get the posts belonging to a user via what we call a *relation proxy*:
 
 ```javascript
 const user = await User.find(123)

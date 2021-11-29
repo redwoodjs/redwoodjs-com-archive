@@ -1521,14 +1521,6 @@ Parses `schema.prisma` and caches the datamodel as JSON. Reads relationships bet
 yarn rw record init
 ```
 
-## setup
-
-Initialize project config and install packages
-
-```
-yarn redwood setup <command>
-```
-
 ## redwood-tools (alias rwt)
 
 Redwood's companion CLI development tool. You'll be using this if you're contributing to Redwood. See [Contributing](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#cli-reference-redwood-tools) in the Redwood repo.
