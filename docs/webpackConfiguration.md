@@ -7,7 +7,6 @@ Take the golden path and everything will work just fine.
 
 But another of Redwood's tenets is to make the hard stuff possible. 
 Whether configuring webpack counts as hard-stuff or not is up for debate, but one thing we know for sure is that it can be an epic time sink. 
-
 We hope that documenting it well makes it fast and easy.
 
 ## Configuring Webpack
