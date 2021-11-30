@@ -57,6 +57,7 @@ With Cells, you have a total of seven exports to work with:
 | :------------ | :---------------- | :----------------------------------------------------------- |
 | `QUERY`       | `string|function` | The query to execute                                         |
 | `beforeQuery` | `function`        | Lifecycle hook; prepares variables and options for the query |
+| `isEmpty`     | `function`        | Lifecycle hook; decides if Cell should render Empty          |
 | `afterQuery`  | `function`        | Lifecycle hook; sanitizes data returned from the query       |
 | `Loading`     | `component`       | If the request is in flight, render this component           |
 | `Empty`       | `component`       | If there's no data (`null` or `[]`), render this component   |
@@ -154,6 +155,17 @@ For example, if you wanted to turn on Apollo's polling option, and prevent cachi
 export const beforeQuery = (props) => {
   return { variables: props, fetchPolicy: 'no-cache', pollInterval: 2500 }
 }
+```
+
+### isEmpty
+
+`isEmpty` is an optional lifecycle hook. It returns a boolean to indicate if Cell is empty. Use it to override the [default check](/docs/cells.html#empty).
+
+It receives the `data`, and the default check reference `isDataEmpty`, so it's possible to extend the default check with custom logic.
+
+```javascript
+export const isEmpty = (data, { isDataEmpty }) =>
+  isDataEmpty(data) || data?.blog?.status === 'hidden'
 ```
 
 ### afterQuery
