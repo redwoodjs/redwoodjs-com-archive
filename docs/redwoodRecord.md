@@ -70,10 +70,18 @@ So: I use the User model to find a given user in the database, and, assuming the
 
 ## Usage
 
+You'll want to add RedwoodRecord's package to the api side:
+
+```
+yarn add -W api @redwoodjs/record
+```
+
 First you'll need to create a model to represent the database table you want to access. In our blog example, let's create a User model:
 
 ```javascript
 // api/src/models/User.js
+
+import { RedwoodRecord } from '@redwoodjs/record'
 
 export default class User extends RedwoodRecord { }
 ```
