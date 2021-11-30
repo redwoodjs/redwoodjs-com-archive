@@ -114,7 +114,7 @@ export const schema = gql`
 `
 
 const validate: ValidatorDirectiveFunc = ({ context }) => {
-  if (!context.currentUser)) {
+  if (!context.currentUser) {
     throw new AuthenticationError("You don't have permission to do that.")
   }
 
