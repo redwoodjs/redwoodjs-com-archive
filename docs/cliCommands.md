@@ -703,6 +703,41 @@ const UserLayout = ({ children }) => {
 export default UserLayout
 ```
 
+### generate model
+
+Generate a RedwoodRecord model.
+
+```terminal
+yarn redwood generate model <name>
+```
+
+| Arguments & Options  | Description                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| `name`               | Name of the model (in schema.prisma)                                                                   |
+| `--force, -f`        | Overwrite existing files                                                             |
+
+**Usage**
+
+See the [RedwoodRecord docs](/docs/redwoodrecord).
+
+**Example**
+
+```terminal
+~/redwood-app$ yarn redwood generate model User
+yarn run v1.22.4
+$ /redwood-app/node_modules/.bin/redwood g model User
+  ✔ Generating model file...
+    ✔ Successfully wrote file `./api/src/models/User.js`
+  ✔ Parsing datamodel, generating api/src/models/index.js...
+
+  Wrote /Users/rob/Sites/redwoodjs/redwood_record/.redwood/datamodel.json
+  Wrote /Users/rob/Sites/redwoodjs/redwood_record/api/src/models/index.js
+
+✨  Done in 3.74s.
+```
+
+Generating a model automatically runs `yarn rw record init` as well.
+
 ### generate page
 
 Generates a page component and updates the routes.
@@ -1471,6 +1506,20 @@ This command deletes and recreates the database, or performs a "soft reset" by r
 It'll also re-seed your database by automatically running the `db seed` command. See [prisma db seed](docs/cli-commands#prisma-db-seed).
 
 > **_Important:_** For use in development environments only
+
+## record
+
+> This command is experimental and its behavior may change.
+
+Commands for working with RedwoodRecord.
+
+### record init
+
+Parses `schema.prisma` and caches the datamodel as JSON. Reads relationships between models and adds some configuration in `api/src/models/index.js`.
+
+```
+yarn rw record init
+```
 
 ## redwood-tools (alias rwt)
 
