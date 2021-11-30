@@ -2,7 +2,7 @@
 
 Redwood uses webpack. And with webpack comes configuration.
 
-One of Redwood's tenets is convention over configuration, so it's worth repeating that you don't have to do any of this! 
+One of Redwood's tenets is convention over configuration, so it's worth repeating that you don't have to do any of this!
 Take the golden path and everything will work just fine.
 
 But another of Redwood's tenets is to make the hard stuff possible. 
@@ -31,7 +31,7 @@ module.exports = (config, { mode }) => {
 
   /**
    * Add custom rules and plugins:
-   * 
+   *
    * ```
    * config.module.rules.push(YOUR_RULE)
    * config.plugins.push(YOUR_PLUGIN)
@@ -66,17 +66,17 @@ yarn workspace web add -D sass sass-loader
 Configuring webpack just to use Tailwind CSS? Don't! Use the setup command instead:
 
 ```
-yarn rw setup tailwind
+yarn rw setup ui tailwindcss
 ```
 
 ## Webpack Dev Server
 
-Redwood uses [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/) for local development. 
-When you run `yarn rw dev`, TOML keys in your `redwood.toml`'s `[web]` table, like `port` and `apiProxyPath`, are used as Webpack Dev Server options (in this case, [devServer.port](https://webpack.js.org/configuration/dev-server/#devserverport) and [devServer.proxy](https://webpack.js.org/configuration/dev-server/#devserverproxy) respectively).
+Redwood uses [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/) for local development.
+When you run `yarn rw dev`, TOML keys in your `redwood.toml`'s `[web]` table, like `port` and `apiUrl`, are used as Webpack Dev Server options (in this case, [devServer.port](https://webpack.js.org/configuration/dev-server/#devserverport) and [devServer.proxy](https://webpack.js.org/configuration/dev-server/#devserverproxy) respectively).
 
 ### Passing options with `--forward`
 
-While you can configure Webpack Dev Server in `web/config/webpack.config.js`, it's often simpler to just pass options straight to `yarn rw dev` using the `--forward` flag. 
+While you can configure Webpack Dev Server in `web/config/webpack.config.js`, it's often simpler to just pass options straight to `yarn rw dev` using the `--forward` flag.
 
 > For the full list of Webpack Dev Server options, see https://webpack.js.org/configuration/dev-server/.
 
@@ -88,7 +88,7 @@ In addition to passing new options, you can override those in your `redwood.toml
 yarn rw dev --forward="--port 1234 --no-open"
 ```
 
-This starts your project on port `1234` and disables automatic browser opening. 
+This starts your project on port `1234` and disables automatic browser opening.
 
 #### Example: Allow External Host Access
 
