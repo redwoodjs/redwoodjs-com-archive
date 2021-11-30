@@ -1478,7 +1478,7 @@ Redwood's companion CLI development tool. You'll be using this if you're contrib
 
 ## setup
 
-Integrate third-party libraries effortlessly.
+Initialize configuration and integrate third-party libraries effortlessly.
 
 ```
 yarn redwood setup <category>
