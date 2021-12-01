@@ -44,7 +44,7 @@
     "postcss-import": "^12.0.1",
     "postcss-nested": "^4.2.1",
     "stimulus": "^1.1.1",
-    "tailwindcss": "^1.2.0",
+    "tailwindcss": "2.2.19",
     "title-case": "^3.0.2",
     "turbolinks": "^5.2.0",
     "webpack": "^4.41.6",
