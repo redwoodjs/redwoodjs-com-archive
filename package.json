@@ -24,7 +24,7 @@
     "blueimp-md5": "^2.12.0",
     "cameronjs-html-webpack-plugin": "^0.5.1",
     "clipboard": "^2.0.6",
-    "dotenv": "^8.2.0",
+    "dotenv": "10.0.0",
     "highlight.js": "^10.4.1",
     "highlightjs-graphql": "^1.0.2",
     "install": "^0.13.0",
