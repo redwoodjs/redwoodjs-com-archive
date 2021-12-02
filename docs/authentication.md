@@ -1534,6 +1534,14 @@ const Routes = () => {
 }
 ```
 
+## Removing Authentication
+
+If you want to remove authentication, you will need to remove and change some files.
+
+First, delete the `auth.js` function in `/api/src/functions` and remove `getCurrentUser` from the `graphql.js` function. Next, revert `api/src/lib/auth` back to its original state - an example of this can be found in the [RedwoodJS repo](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/api/src/lib/auth.ts). The final thing to do is to remove `<AuthProvider>` from `App.js`. 
+
+> Note: Remember to remove any fields from your Prisma schema and migrate the database before you do this! You may also have extra files to delete depending on which Auth Provider you are using.
+
 ## Contributing
 
 If you are interested in contributing to the Redwood Auth Package, please [start here](https://github.com/redwoodjs/redwood/blob/main/packages/auth/README.md).
