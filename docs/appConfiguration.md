@@ -46,8 +46,8 @@ Configuration for the web side.
 | `path`                        | Path to the web side                                                        | `'./web'`               | `both`        |
 | `target`                      | Target for the web side                                                     | `'browser'`             | `both`        |
 | `apiUrl`                      | Specify the URL to your api-server. Can be an absolute path or FQDN         | `'/.redwood/functions'` | `production`  |
-| `apiGraphQLUrl`               | Optional: FQDN or absolute path to GraphQL function, without trailing slash | `${apiUrl}/graphql`     | `production`  |
-| `apiDbAuthUrl`                | Optional: QDN or absolute path to DbAuth function, without trailing slash   | `${apiUrl}/auth`        | `production`  |
+| `apiGraphQLUrl`               | Optional: URL or absolute path to GraphQL function, without trailing slash | `${apiUrl}/graphql`     | `production`  |
+| `apiDbAuthUrl`                | Optional: URL or absolute path to DbAuth function, without trailing slash   | `${apiUrl}/auth`        | `production`  |
 | `includeEnvironmentVariables` | Environment variables to whitelist                                          |                         | `both`        |
 | `fastRefresh`                 | Enable webpack's fast refresh                                               | true                    | `development` |
 | `a11y`                        | Enable storybook `addon-a11y` and `eslint-plugin-jsx-a11y`                  | true                    | `development` |
@@ -190,3 +190,28 @@ To run a Redwood app within a container or VM, you'll want to set both the web a
   host = '0.0.0.0'
   ...
 ```
+
+## Using Environment Variables in `redwood.toml`
+
+Sometimes you want to change your `redwood.toml` based on the environment you're deploying to. 
+For example, you may want to point to a different `apiUrl` in your staging environment.
+You can do this with environment variables.
+Let's look at an example:
+
+```toml
+[web]
+  title = "App running on ${APP_TITLE}"
+  port = "${PORT:8910}"
+  apiUrl = "${API_URL:/.redwood/functions}"
+  includeEnvironmentVariables = []
+```
+
+This does the following:
+- sets `title` by interpolating the env var `APP_TITLE`
+- sets `port` to the env var `PORT`, falling back to `8910`
+- sets `apiUrl` to the env var `API_URL`, falling back to `/.redwood/functions` (the default)
+
+That's pretty much all there is to it. Just remember two things:
+
+1. fallbacks are always strings
+2. these values are interpolated at _build_ time

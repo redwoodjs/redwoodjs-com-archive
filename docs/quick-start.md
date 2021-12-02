@@ -15,7 +15,7 @@ A browser should automatically open to http://localhost:8910 and you will see th
 
 ## The Redwood CLI
 
-The Redwood developer experience relies heavily on the Redwood CLI. It's installed as a dependency when you create a new redwood-app, and is ran locally in your app.
+The Redwood developer experience relies heavily on the Redwood CLI. It's installed as a dependency when you create a new redwood-app, and is run locally in your app.
 
 The following will show all the available commands in the Redwood CLI (note: rw is alias of redwood):
 ```

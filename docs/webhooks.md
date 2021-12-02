@@ -16,19 +16,19 @@ Webhooks are different from other integration methods in that the third-party pu
 
 Some examples of outgoing Webhooks are:
 
-* Netlify successfully [deploys a site](https://docs.netlify.com/site-deploys/notifications/#outgoing-webhooks)
-* Someone [pushes a PR to GitHub](https://docs.github.com/en/developers/webhooks-and-events/creating-webhooks)
-* Someone [posts in Discourse](https://meta.discourse.org/t/setting-up-webhooks/49045)
-* Stripe [completes a purchase](https://stripe.com/docs/webhooks)
-* A cron/scheduled task wants to invoke a long running [background function on Netlify](https://docs.netlify.com/functions/background-functions/)
-* and more webhook integrations via services like [IFTTT](https://ifttt.com/maker_webhooks), [Pipedream](https://pipedream.com/docs/api/rest/webhooks/) and [Zapier](https://zapier.com/apps/webhook/integrations)
+- Netlify successfully [deploys a site](https://docs.netlify.com/site-deploys/notifications/#outgoing-webhooks)
+- Someone [pushes a PR to GitHub](https://docs.github.com/en/developers/webhooks-and-events/creating-webhooks)
+- Someone [posts in Discourse](https://meta.discourse.org/t/setting-up-webhooks/49045)
+- Stripe [completes a purchase](https://stripe.com/docs/webhooks)
+- A cron/scheduled task wants to invoke a long running [background function on Netlify](https://docs.netlify.com/functions/background-functions/)
+- and more webhook integrations via services like [IFTTT](https://ifttt.com/maker_webhooks), [Pipedream](https://pipedream.com/docs/api/rest/webhooks/) and [Zapier](https://zapier.com/apps/webhook/integrations)
 
 If you were to subscribe to one of these webhooks, you'd point it to an endpoint in your RedwoodJS api -- ie, a serverless function. But, because that function is out "in the cloud" you need to ensure that these run **only when they should**. That means your function must:
 
-* verify it comes from the place you expect
-* trust the party 
-* know the payload sent in the hook hasn't been tampered with
-* ensure that the hook isn't reprocessed or replayed (sometimes)
+- verify it comes from the place you expect
+- trust the party
+- know the payload sent in the hook hasn't been tampered with
+- ensure that the hook isn't reprocessed or replayed (sometimes)
 
 That is, you need to **verify your incoming webhooks**.
 
@@ -40,19 +40,19 @@ The RedwoodJS [`api/webhooks` package](https://github.com/redwoodjs/redwood/blob
 
 Webhooks have a few ways of letting you know they should be trusted. The most common is by sending along a "signature" header. They typically sign their payload with a secret key (in a few ways) and expect you to validate the signature before processing it.
 
-###  Webhook Signature Verifiers
+### Webhook Signature Verifiers
 
 Common signature verification methods are:
 
-* SHA256 ([GitHub](https://docs.github.com/en/developers/webhooks-and-events/securing-your-webhooks#validating-payloads-from-github) and [Discourse](https://meta.discourse.org/t/setting-up-webhooks/49045))
-* SHA1 ([Vercel](https://vercel.com/docs/integrations?query=webhook%20sha1#webhooks/securing-webhooks))
-* JWT ([Netlify](https://docs.netlify.com/site-deploys/notifications/#outgoing-webhooks))
-* Timestamp Scheme ([Stripe](https://stripe.com/docs/webhooks/best-practices) / Redwood default)
-* Secret Key (Custom, [Orbit](https://docs.orbit.love/docs/webhooks))
+- SHA256 ([GitHub](https://docs.github.com/en/developers/webhooks-and-events/securing-your-webhooks#validating-payloads-from-github) and [Discourse](https://meta.discourse.org/t/setting-up-webhooks/49045))
+- SHA1 ([Vercel](https://vercel.com/docs/integrations?query=webhook%20sha1#webhooks/securing-webhooks))
+- JWT ([Netlify](https://docs.netlify.com/site-deploys/notifications/#outgoing-webhooks))
+- Timestamp Scheme ([Stripe](https://stripe.com/docs/webhooks/best-practices) / Redwood default)
+- Secret Key (Custom, [Orbit](https://docs.orbit.love/docs/webhooks))
 
 RedwoodJS adds a way to do no verification as well of testing or in the case your third party doesn't sign the payload.
 
-* SkipVerifier (bypass verification, or no verification)
+- SkipVerifier (bypass verification, or no verification)
 
 RedwoodJS implements [signatureVerifiers](https://github.com/dthyresson/redwood/tree/dt-secure-handler/packages/api/src/auth/verifiers) for each of these so you can get started integrating your app with third-parties right away.
 
@@ -108,19 +108,20 @@ When the third-party creates the outgoing webhook payload, they'll sign it (typi
 
 When your endpoint receives the request (incoming webhook), it can extract the signature using the signature header key set in `VerifyOptions`, use the appropriate verifier, and validate the payload to ensure it comes from a trusted source.
 
-Note that: 
+Note that:
 
-* `verifyEvent` will detect if the event body is base64 encoded, then decode and validate the payload with the signature verifier
-* signatureHeader specified in `VerifyOptions` will be converted to lowercase when fetching the signature from the event headers
+- `verifyEvent` will detect if the event body is base64 encoded, then decode and validate the payload with the signature verifier
+- signatureHeader specified in `VerifyOptions` will be converted to lowercase when fetching the signature from the event headers
 
 You can then use the payload data with confidence in your function.
+
 ### SHA256 Verifier (used by GitHub, Discourse)
 
 SHA256 HMAC is one of the most popular signatures. It's used by [Discourse](https://meta.discourse.org/t/setting-up-webhooks/49045) and [GitHub](https://docs.github.com/en/developers/webhooks-and-events/securing-your-webhooks#validating-payloads-from-github).
 
 When your secret token is set, GitHub uses it to create a hash signature with each payload. This hash signature is included with the headers of each request as `X-Hub-Signature-256`.
 
-For Discourse, when an event is triggered, it `POST`s a webhook with `X-Discourse-Event-Signature` in the HTTP header to your endpoint. It’s computed by SHA256. 
+For Discourse, when an event is triggered, it `POST`s a webhook with `X-Discourse-Event-Signature` in the HTTP header to your endpoint. It’s computed by SHA256.
 
 ```js
 import type { APIGatewayEvent } from 'aws-lambda'
@@ -185,7 +186,8 @@ export const handler = async (event: APIGatewayEvent) => {
 ```
 
 ### SHA1 Verifier (used by Vercel)
-* [Vercel](https://vercel.com/docs/integrations?query=webhook%20sha1#webhooks/securing-webhooks)
+
+- [Vercel](https://vercel.com/docs/integrations?query=webhook%20sha1#webhooks/securing-webhooks)
 
 Vercel signs its webhooks with SHA also base64 encodes the event.
 
@@ -252,6 +254,7 @@ export const handler = async (event: APIGatewayEvent) => {
   }
 }
 ```
+
 ### TimestampScheme Verifier (used by Stripe)
 
 The TimestampScheme verifier not only signs the payload with a secret (SHA256), but also includes a timestamp to prevent [replay attacks](https://en.wikipedia.org/wiki/Replay_attack) and a scheme (i.e., a version) to further protect webhooks.
@@ -262,8 +265,8 @@ When verifying, there is a default tolerance of five minutes between the timesta
 
 Also, if for some reason you need to adjust the timestamp used to compare the tolerance to a different time (say in the past), then you may override this setting the [`timestamp` option](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/auth/verifiers/timestampSchemeVerifier.ts) in the `VerifyOptions` passed to the verifier.
 
-* [Stripe](https://stripe.com/docs/webhooks/best-practices)
-* Used in a Cron Job that triggers a Webhook periodically to background task via a serverless function
+- [Stripe](https://stripe.com/docs/webhooks/best-practices)
+- Used in a Cron Job that triggers a Webhook periodically to background task via a serverless function
 
 The TimestampScheme is particularly useful when used with cron jobs because if for some reason the webhook is delayed between when it is created and sent/received your app can discard it and thus old information would not risk overwriting newer data.
 
@@ -344,7 +347,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
 ### JWT Signature (used by Netlify)
 
-* [Netlify Outgoing Webhooks](https://docs.netlify.com/site-deploys/notifications/#outgoing-webhooks)
+- [Netlify Outgoing Webhooks](https://docs.netlify.com/site-deploys/notifications/#outgoing-webhooks)
 
 The JSON Web Token (JWT) Verifier not only cryptographically compares the signature to the payload to ensure it hasn't been tampered with, but also gives the added JWT claims like `issuer` and `expires` — you can trust that the Webhook was sent by a trusted sounds and isn't out of date.
 
@@ -432,7 +435,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
 ### Secret Key Verifier (used by Orbit)
 
-* [Orbit Webhook Doc](https://docs.orbit.love/docs/webhooks)
+- [Orbit Webhook Doc](https://docs.orbit.love/docs/webhooks)
 
 The Secret Key verifiers used by [Orbit](https://docs.orbit.love/docs/webhooks) acts very much like a password. It doesn't perform some cryptographic comparison of the signature with the payload received, but rather simple checks if the expected key or token is present.
 
@@ -494,8 +497,7 @@ export const handler = async (event) => {
     const options = {
       signatureHeader: 'X-Orbit-Signature',
     }
-
-    verifyEvent('sha256Verifier', {
+    verifyEvent('secretKeyVerifier', {
       event,
       secret: process.env.ORBIT_WEBHOOK_SECRET,
       options,
@@ -513,9 +515,7 @@ export const handler = async (event) => {
         }),
       }
     } else {
-      webhookLogger.warn(
-        `Unsupported Orbit Event Type: ${orbitInfo.orbitEventType}`
-      )
+      webhookLogger.warn(`Unsupported Orbit Event Type: ${orbitInfo.orbitEventType}`)
       return {
         statusCode: 400,
         body: JSON.stringify({
@@ -630,36 +630,31 @@ export const sendOutGoingWebhooks = async ({ payload }) => {
     secret,
   })
 
-  await got.post(
-    YOUR_OUTGOING_WEBHOOK_DESTINATION_URL,
-    {
-      responseType: 'json',
+  await got.post(YOUR_OUTGOING_WEBHOOK_DESTINATION_URL, {
+    responseType: 'json',
 
-      json: {
-        payload,
-      },
-      headers: {
-        YOUR_WEBHOOK_SIGNATURE: signature,
-      },
-    }
-  )
+    json: {
+      payload,
+    },
+    headers: {
+      YOUR_WEBHOOK_SIGNATURE: signature,
+    },
+  })
 }
 ```
 
 ## How To Test Webhooks
 
-
 Because your webhook is typically sent from a third-party's system, manually testing webhooks can be difficult and time-consuming. See [How To Test Webhooks](https://redwoodjs.com/docs/serverless-functions#how-to-test-webhooks) to learn how to write tests that can automate tests and help you implement your webhook handler.
- 
 
 ## More Information
 
 Want to learn more about webhooks?
 
-* [Webhook.site lets you easily inspect, test and automate (with the visual Custom Actions builder, or WebhookScript) any incoming HTTP request or e-mail.](https://webhook.site/#!/)
-* [What is a Webhook](https://simonfredsted.com/1583) by Simon Fredsted
-* [About Webhooks](https://docs.github.com/en/developers/webhooks-and-events/about-webhooks) on GitHub
-* [What are Webhooks? A simple guide to connection apps with webhooks](https://zapier.com/blog/what-are-webhooks/) on Zapier
-* [What are Webhooks? Easy Explanation & Tutorial](https://snipcart.com/blog/what-are-webhooks-explained-example) on Snipcart
-* [What are Webhooks and Why You Can’t Afford to Ignore Them](https://www.chargebee.com/blog/what-are-webhooks-explained/) on Charbee
-* [What is a webhook: How they work and how to set them up](https://www.getvero.com/resources/webhooks/) on Vero
+- [Webhook.site lets you easily inspect, test and automate (with the visual Custom Actions builder, or WebhookScript) any incoming HTTP request or e-mail.](https://webhook.site/#!/)
+- [What is a Webhook](https://simonfredsted.com/1583) by Simon Fredsted
+- [About Webhooks](https://docs.github.com/en/developers/webhooks-and-events/about-webhooks) on GitHub
+- [What are Webhooks? A simple guide to connection apps with webhooks](https://zapier.com/blog/what-are-webhooks/) on Zapier
+- [What are Webhooks? Easy Explanation & Tutorial](https://snipcart.com/blog/what-are-webhooks-explained-example) on Snipcart
+- [What are Webhooks and Why You Can’t Afford to Ignore Them](https://www.chargebee.com/blog/what-are-webhooks-explained/) on Charbee
+- [What is a webhook: How they work and how to set them up](https://www.getvero.com/resources/webhooks/) on Vero
