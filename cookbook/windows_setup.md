@@ -54,4 +54,4 @@ yarn create redwood-app ./myApp
 Next, you should start the amazing [**Redwood Tutorial**](https://learn.redwoodjs.com/docs/tutorial/installation-starting-development) to learn how to use the framework. 
 
 >⚠️ Heads Up  
-On Windows Git Bash, `cd dev` and `cd Dev` will select the same directory because Windows is case-insensitive. But make sure you type the original capitalization to avoid strange errors in your Redwood project.
+On Windows Git Bash, `cd myapp` and `cd myApp` will select the same directory because Windows is case-insensitive. But make sure you type the original capitalization to avoid strange errors in your Redwood project.
