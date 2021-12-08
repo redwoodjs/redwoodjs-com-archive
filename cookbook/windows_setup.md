@@ -4,7 +4,7 @@ This guide provides a simple setup to start developing a RedwoodJS project on Wi
 
 > If you're interested in using the Windows Subsystem for Linux instead, there is a [community guide for that](https://community.redwoodjs.com/t/windows-subsystem-for-linux-setup/2439).
 
-### **Git Bash**
+### Git Bash
 
 Download the last release of [**Git for Windows**](https://git-scm.com/download/win) and install it. 
 When installing Git, you can add the icon on the Desktop and add Git Bash profile to Windows Terminal if you use it, but it is optional. 
@@ -17,7 +17,7 @@ Next, set VS Code as Git default editor (or default for the editor you use).
 
 For every other step, we recommended keeping to the default choice.
 
-### **Node.js environment (and npm)**
+### Node.js environment (and npm)
 
 We recommend you install the latest `nvm-setup.zip` of [**nvm-windows**](https://github.com/coreybutler/nvm-windows/releases) to manage multiple version installations of Node.js. When the installation of nvm is complete, run Git Bash as administrator to install Node with npm. 
 
@@ -43,7 +43,7 @@ Now you have both Node and npm installed! Redwood also uses yarn, which you can 
 
 ![4.1-install yarn.png](Windows%20setup%20for%20Redwood%20aa3e6e732a8440708763a609984ce495/4.1-install_yarn.png)
 
-## **Congrats**!
+## Congrats!
 
 You now have everything ready to build your Redwood app. Just run:
 
