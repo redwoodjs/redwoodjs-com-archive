@@ -6,7 +6,7 @@ This guide provides a simple setup to start developing a RedwoodJS project on Wi
 
 ### Git Bash
 
-Download the last release of [**Git for Windows**](https://git-scm.com/download/win) and install it. 
+Download the latest release of [**Git for Windows**](https://git-scm.com/download/win) and install it. 
 When installing Git, you can add the icon on the Desktop and add Git Bash profile to Windows Terminal if you use it, but it is optional. 
 
 ![1-git_components.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/27fac4b8-d734-4516-bcfd-b7eacf99dc9f/1-git_components.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20211208%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211208T033033Z&X-Amz-Expires=86400&X-Amz-Signature=0d8ef80a9ddbd0372608ccc872486dc90ff4e2a7464d7387a233b970f4264dfd&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%221-git%2520components.png%22&x-id=GetObject)
