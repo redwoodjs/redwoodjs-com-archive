@@ -11,7 +11,7 @@ When installing Git, you can add the icon on the Desktop and add Git Bash profil
 
 ![1-git_components.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/27fac4b8-d734-4516-bcfd-b7eacf99dc9f/1-git_components.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20211208%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211208T033033Z&X-Amz-Expires=86400&X-Amz-Signature=0d8ef80a9ddbd0372608ccc872486dc90ff4e2a7464d7387a233b970f4264dfd&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%221-git%2520components.png%22&x-id=GetObject)
 
-Next, set VS Code as Git default editor (or default for the editor you use). 
+Next, set VS Code as Git default editor (or pick any other editor you're comfortable with). 
 
 ![2-git_editor.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/303cd5fe-c2da-4747-8ee0-e6efad06ea99/2-git_editor.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20211208%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211208T033056Z&X-Amz-Expires=86400&X-Amz-Signature=a24600f301ad20e02cbd5a0c15d89715620db44508f3b63f030cdcce0482992a&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%222-git%2520editor.png%22&x-id=GetObject)
 
