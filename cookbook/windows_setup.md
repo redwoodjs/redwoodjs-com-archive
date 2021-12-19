@@ -1,6 +1,6 @@
 # Windows Development Setup
 
-This guide provides a simple setup to start developing a RedwoodJS project on Windows. Many setup options exist, but this aims to make getting started as easy as possible. This is the recommended setup unless you have experience with other shell like PowerShell. 
+This guide provides a simple setup to start developing a RedwoodJS project on Windows. Many setup options exist, but this aims to make getting started as easy as possible. This is the recommended setup unless you have experience with some other shell, like PowerShell. 
 
 > If you're interested in using the Windows Subsystem for Linux instead, there is a [community guide for that](https://community.redwoodjs.com/t/windows-subsystem-for-linux-setup/2439).
 
