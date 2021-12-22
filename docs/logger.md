@@ -161,15 +161,7 @@ RedwoodJS provides a `LogFormatter` that adds color, emoji, time formatting and 
 
 It is based on [pino-colada](https://github.com/lrlna/pino-colada/blob/master/README.md): a cute [ndjson](http://ndjson.org) formatter for [pino](https://github.com/pinojs/pino).
 
-Redwood-specific GraphQL log data included by the the `useRedwoodLogger` envelop plug-in is supported:
-
-- Request Id
-- User-Agent
-- GraphQL Operation Name
-- GraphQL Query
-- GraphQL Data
-
-## Command
+#### Command
 
 The `LogFormatter` is distributed as a bin that can be invoke via the `yarn rw-log-formatter` command
 
@@ -186,7 +178,7 @@ Output:
 ✨  Done in 0.14s.
 ```
 
-## Usage
+#### Usage
 
 Log formatting is automatically setup in the `yarn rw dev` command.
 
@@ -209,7 +201,22 @@ You'll see that formatted output by default when you launch your RedwoodJS app u
 yarn rw dev
 ```
 
-> Note: We'll turn this off in production, since RedwoodJS will send the logs formatted as NDJSON (or transformed into the the format your transport requires) to your log or application monitoring service to process, store and display.
+#### GraphQL Logging
+
+Redwood-specific [GraphQL log data](docs/graphql#logging) included by the the `useRedwoodLogger` envelop plug-in is supported:
+
+- Request Id
+- User-Agent
+- GraphQL Operation Name
+- GraphQL Query
+- GraphQL Data
+
+#### Production Logging
+
+By the way, when logging in production, you may want to:
+
+- send the logs as [ndjson](<(http://ndjson.org)>) to your host's log handler or application monitoring service to process, store and display. Therefore, you would not format your logs with `LogFormatter`.
+- log only `warn` and `errors` to avoid chatty `info` or `debug` messages (that would be better suited for a staging or integration environment)
 
 ### Nested Logging
 
