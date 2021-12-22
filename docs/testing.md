@@ -620,7 +620,7 @@ Here we call `mockCurrentUser()` before the `render()` call. Right now our code 
 
 We introduced `waitFor()` which waits for a render update before passing/failing the expectation. Although `findByRole()` will wait for an update, it will raise an error if the element is not found (similar to `getByRole()`). So here we had to switch to `queryByRole()`, but that version isn't async, so we added `waitFor()` to get the async behavior back.
 
-Note that even after setting with `mockCurrentUser()` the initial render of the component might have still have null `currentUser` from `useAuth()`. It is updated after `getCurrentUser()` with mock data has finished execution.
+Note that even after setting with `mockCurrentUser()`, the initial render of the component might return `null` for the `currentUser` that you destructured from `useAuth()`. Once `getCurrentUser()` is executed, `currentUser` will be updated with the expected data.
 
 > Figuring out which assertions need to be async and which ones don't can be frustrating, we know. If you get a failing test when using `screen` you'll see the output of the DOM dumped along with the failure message, which helps find what went wrong. You can see exactly what the test saw (or didn't see) in the DOM at the time of the failure.
 >
