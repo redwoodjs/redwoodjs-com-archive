@@ -201,6 +201,34 @@ You'll see that formatted output by default when you launch your RedwoodJS app u
 yarn rw dev
 ```
 
+### Screenshots
+
+The following screenshots show how log formatting out may look in your development environment.
+
+Notice how the emoki help identify the level, such as 🐛 for `debug` and 🌲 for `info`.
+
+#### Basic
+
+Simple request and with basic GraphQL output.
+
+![Screen Shot 2021-12-22 at 1 41 46 PM](https://user-images.githubusercontent.com/1051633/147141091-ab27e5f0-4b90-4114-9452-c095df5e2516.png)
+
+#### With GraphQL Options
+
+Logging with extended GraphQL output that includes:
+
+- 🏷 GraphQL Operation Name
+- 🔭 GraphQL Query
+- 📦 GraphQL Data
+
+![Screen Shot 2021-12-22 at 1 43 11 PM](https://user-images.githubusercontent.com/1051633/147141089-20a41441-1038-4fee-a599-12f78d83a31d.png)
+
+#### With Prisma Queries
+
+Logging with Prisma query statement output.
+
+![Screen Shot 2021-12-22 at 1 44 20 PM](https://user-images.githubusercontent.com/1051633/147141082-7cfd417a-28bf-4020-8547-96c33972b7ce.png)
+
 #### GraphQL Logging
 
 Redwood-specific [GraphQL log data](docs/graphql#logging) included by the the `useRedwoodLogger` envelop plug-in is supported:
