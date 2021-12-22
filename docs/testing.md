@@ -393,15 +393,61 @@ it('renders a link with a name', () => {
 >
 > Most tests will contain at least the last two, but sometimes all three of these parts, and in some communities it's become standard to include a newline between each "section". Remember the acronym SEA: setup, execute, assert.
 
+#### Jest Expect: Type Considerations
+
+Redwood uses [prisma](https://www.prisma.io/) as an ORM for connecting to different databases like PostgreSQL, MySQL, and many more. The database models are defined in the `schema.prisma` file. Prisma schema supports [`model` field scaler types](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#model-field-scalar-types) which is used to define the data types for the models properties. 
+
+Due to this, there are some exceptions that can occur while testing your API and UI components.
+
+#### Floats and Decimals
+Prisma recommends using `Decimal` instead of `Float` because of accuracy in precision. Float is inaccurate in the number of digits after decimal whereas Prisma returns a string for Decimal value which preserves all the digits after the decimal point.
+
+e.g., using `Float` type
+```javascript{4}
+Expected: 1498892.0256940164
+Received: 1498892.025694016
+
+expect(result.floatingNumber).toEqual(1498892.0256940164)
+```
+
+e.g., using `Decimal` type
+```javascript{4}
+Expected: 7420440.088194787
+Received: "7420440.088194787"
+
+expect(result.floatingNumber).toEqual(7420440.088194787)
+```
+
+In the above examples, we can see expect doesn't preserve the floating numbers. Using decimals, the number is matched with the expected result.
+
+> For cases where using decimal is not optimal, see the [Jest Expect documentation](https://jestjs.io/docs/expect) for other options and methods.
+
+#### DateTime
+Prisma returns [DateTime](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#datetime) as ISO 8601-formatted strings. So, you can convert the date to ISO String in JavaScript:
+
+```javascript{1}
+//  Output: '2021-10-15T19:40:33.000Z'
+const isoString = new Date("2021-10-15T19:40:33Z").toISOString() 
+```
+
 #### Other Queries/Matchers
 
-There are several other node/text types you can query against with React Testing Library, including `title`, `role` and `alt` attributes, form labels, placeholder text, and more. If you still can't access the node or text you're looking for there's a fallback attribute you can add to any DOM element that can always be found: `data-testid` which you can access using `getByTestId`, `queryByTestId` and others (but it involves including that attribute in your rendered HTML always, not just when running the test suite).
+There are several other node/text types you can query against with React Testing Library, including `title`, `role` and `alt` attributes, Form labels, placeholder text, and more. 
 
-Here's a cheatsheet from React Testing Library with the various permutations of `getBy`, `queryBy` and siblings: https://testing-library.com/docs/react-testing-library/cheatsheet/
+If you still can't access the node or text you're looking for there's a fallback attribute you can add to any DOM element that can always be found: `data-testid` which you can access using `getByTestId`, `queryByTestId` and others (but it involves including that attribute in your rendered HTML always, not just when running the test suite).
+
+You can refer to the [Cheatsheet](https://testing-library.com/docs/react-testing-library/cheatsheet/) from React Testing Library with the various permutations of `getBy`, `queryBy` and siblings.
 
 The full list of available matchers like `toBeInTheDocument()` and `toHaveAttribute()` don't seem to have nice docs on the Testing Library site, but you can find them in the [README](https://github.com/testing-library/jest-dom) inside the main repo.
 
-In addition to testing for static things like text and attributes, you can also fire events and check that the DOM responds as expected. Read more about [user-events](https://testing-library.com/docs/ecosystem-user-event), [jest-dom](https://testing-library.com/docs/ecosystem-jest-dom) and more at the [official Testing Library docs site](https://testing-library.com/docs/).
+In addition to testing for static things like text and attributes, you can also use fire events and check that the DOM responds as expected. 
+
+You can read more about these in below documentations: 
+
+
+- [React Testing Library User Events](https://testing-library.com/docs/ecosystem-user-event)
+- [React Testing Library Jest DOM](https://testing-library.com/docs/ecosystem-jest-dom)
+- [Official Testing Library](https://testing-library.com/docs/).
 
 ### Mocking GraphQL Calls
 
