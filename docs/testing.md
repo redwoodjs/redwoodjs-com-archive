@@ -393,11 +393,11 @@ it('renders a link with a name', () => {
 >
 > Most tests will contain at least the last two, but sometimes all three of these parts, and in some communities it's become standard to include a newline between each "section". Remember the acronym SEA: setup, execute, assert.
 
-#### Jest Expect for different types?
+#### Jest Expect: Type Considerations
 
 Redwood uses [prisma](https://www.prisma.io/) as an ORM for connecting to different databases like PostgreSQL, MySQL, and many more. The database models are defined in the `schema.prisma` file. Prisma schema supports [`model` field scaler types](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#model-field-scalar-types) which is used to define the data types for the models properties. 
 
-Due to the which we have some exceptions that can occur while testing your API and UI components.
+Due to this, there are some exceptions that can occur while testing your API and UI components.
 
 #### Floats and Decimals
 Prisma recommends using `Decimal` instead of `Float` because of accuracy in precision. Float is inaccurate in the number of digits after decimal whereas Prisma returns a string for Decimal value which preserves all the digits after the decimal point.
@@ -418,10 +418,12 @@ Received: "7420440.088194787"
 expect(result.floatingNumber).toEqual(7420440.088194787)
 ```
 
-In the above examples, we can see that using floats, it doesn't preserve the floating numbers whereas using decimals, it can preserve the number and it is easily used to match with the expected result.
+In the above examples, we can see expect doesn't preserve the floating numbers. Using decimals, the number is matched with the expected result.
+
+> For cases where using decimal is not optimal, see the [Jest Expect documentation](https://jestjs.io/docs/expect) for other options and methods.
 
 #### DateTime
-Primsa returns [DateTime](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#datetime) as ISO 8601-formatted strings. So, you can convert the date to ISO String in JavaScript:
+Prisma returns [DateTime](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#datetime) as ISO 8601-formatted strings. So, you can convert the date to ISO String in JavaScript:
 
 ```javascript{1}
 //  Output: '2021-10-15T19:40:33.000Z'
@@ -434,7 +436,7 @@ There are several other node/text types you can query against with React Testing
 
 If you still can't access the node or text you're looking for there's a fallback attribute you can add to any DOM element that can always be found: `data-testid` which you can access using `getByTestId`, `queryByTestId` and others (but it involves including that attribute in your rendered HTML always, not just when running the test suite).
 
-You can refer to the [CHEATSHEET](https://testing-library.com/docs/react-testing-library/cheatsheet/) from React Testing Library with the various permutations of `getBy`, `queryBy` and siblings.
+You can refer to the [Cheatsheet](https://testing-library.com/docs/react-testing-library/cheatsheet/) from React Testing Library with the various permutations of `getBy`, `queryBy` and siblings.
 
 The full list of available matchers like `toBeInTheDocument()` and `toHaveAttribute()` don't seem to have nice docs on the Testing Library site, but you can find them in the [README](https://github.com/testing-library/jest-dom) inside the main repo.
 
