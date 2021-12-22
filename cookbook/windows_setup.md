@@ -15,7 +15,7 @@ Next, set VS Code as Git default editor (or pick any other editor you're comfort
 
 ![2-git_editor.png](https://user-images.githubusercontent.com/18013532/146685299-0e067554-a5a8-46b9-91ac-ffcd6f738b80.png)
 
-For all other steps, we recommended keeping to the default choices.
+For all other steps, we recommended keeping the default choices.
 
 ### Node.js environment (and npm)
 
