@@ -96,7 +96,7 @@ Read the post-install instructions carefully as they contain instructions for ad
 >
 > Need simple Login, Signup and Forgot Password pages? Of course we have a generator for those:
 >
->   yarn rw generate dbAuth
+> yarn rw generate dbAuth
 
 Note that if you change the fields named `hashedPassword` and `salt`, and you have some verbose logging in your app, you'll want to scrub those fields from appearing in your logs. See the [Redaction](/docs/logger#redaction) docs for info.
 
@@ -168,7 +168,7 @@ const onSubmit = async (data) => {
   if (response.message) {
     toast.error(response.message) // user created, but not logged in
   } else {
-    toast.success('Welcome!')     // user created and logged in
+    toast.success('Welcome!') // user created and logged in
     navigate(routes.dashboard())
   }
 }
@@ -192,9 +192,9 @@ This handler is invoked after the password has been successfully changed in the 
 
 There are several error messages that can be displayed, including:
 
-* Username/email not found
-* Incorrect password
-* Expired reset password token
+- Username/email not found
+- Incorrect password
+- Expired reset password token
 
 We've got some default error messages that sound nice, but may not fit the tone of your site. You can customize these error messages in `api/src/functions/auth.js` in the `errors` prop of each of the `login`, `signup`, `forgotPassword` and `resetPassword` config objects. The generated file contains tons of comments explaining when each particular error message may be shown.
 
@@ -756,8 +756,6 @@ We're using [Firebase Google Sign-In](https://firebase.google.com/docs/auth/web/
 
 > **Including Environment Variables in Serverless Deployment:** in addition to adding the following env vars to your deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given below, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`".
 
-
-
 ```js
 // web/src/App.js
 import { AuthProvider } from '@redwoodjs/auth'
@@ -1305,8 +1303,8 @@ Email/password authentication is supported by calling `login({ email, password }
 
 In Firebase Console, you must enable "Email link (passwordless sign-in)" with the configuration toggle for the email provider. The authentication sequence for passwordless email links has two steps:
 
-  1. First, an email with the link must be generated and sent to the user.   Either using using firebase client sdk (web side) [sendSignInLinkToEmail()](https://firebase.google.com/docs/reference/js/auth.emailauthprovider#example_2_2), which generates the link and sends the email to the user on behalf of your application or alternatively, generate the link using backend admin sdk (api side), see ["Generate email link for sign-in](https://firebase.google.com/docs/auth/admin/email-action-links#generate_email_link_for_sign-in) but it is then your responsibility to send an email to the user containing the link.
-  2. Second, authentication is completed when the user is redirected back to the application and the AuthProvider's logIn({emailLink, email, providerId: 'emailLink'}) method is called.
+1. First, an email with the link must be generated and sent to the user. Either using using firebase client sdk (web side) [sendSignInLinkToEmail()](https://firebase.google.com/docs/reference/js/auth.emailauthprovider#example_2_2), which generates the link and sends the email to the user on behalf of your application or alternatively, generate the link using backend admin sdk (api side), see ["Generate email link for sign-in](https://firebase.google.com/docs/auth/admin/email-action-links#generate_email_link_for_sign-in) but it is then your responsibility to send an email to the user containing the link.
+2. Second, authentication is completed when the user is redirected back to the application and the AuthProvider's logIn({emailLink, email, providerId: 'emailLink'}) method is called.
 
 For example, users could be redirected to a dedicated route/page to complete authentication:
 
@@ -1427,48 +1425,9 @@ Now your `currentUser.roles` info will be available to both `requireAuth()` on t
 
 +++
 
-### Role Protection on Functions, Services and Web
+### Role Protection on Web
 
-You can specify an optional role in `requireAuth` to check if the user is both authenticated and is assigned the role. The `role` can be a single string role or a list of roles.
-
-```js
-export const myThings = () => {
-  requireAuth({ role: 'admin' })
-
-  return db.user.findUnique({ where: { id: context.currentUser.id } }).things()
-}
-
-export const myBooks = () => {
-  requireAuth({ role: ['author', 'editor'] })
-
-  return db.user.findUnique({ where: { id: context.currentUser.id } }).books()
-}
-```
-
-You can also protect routes:
-
-```js
-const Routes = () => {
-  return (
-    <Router>
-      <Private unauthenticated="forbidden" role="admin">
-        <Route path="/settings" page={SettingsPage} name="settings" />
-        <Route path="/admin" page={AdminPage} name="sites" />
-      </Private>
-
-      <Private unauthenticated="forbidden" role={['author', 'editor']}>
-        <Route path="/settings" page={SettingsPage} name="settings" />
-        <Route path="/admin" page={AdminPage} name="sites" />
-      </Private>
-
-      <Route notfound page={NotFoundPage} />
-      <Route path="/forbidden" page={ForbiddenPage} name="forbidden" />
-    </Router>
-  )
-}
-```
-
-And also protect content in pages or components via the `useAuth()` hook:
+You can protect content by role in pages or components via the `useAuth()` hook:
 
 ```js
 const { isAuthenticated, hasRole } = useAuth()
@@ -1506,7 +1465,7 @@ const Routes = () => {
 }
 ```
 
-Routes can also be restricted by role by specifying `hasRole="role"` or `hasRole={['role', 'another_role']})` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in `unauthenticated`.
+Routes and Sets can also be restricted by role by specifying `hasRole="role"` or `hasRole={['role', 'another_role']})` in the `<Private>` component. A user not assigned the role will be redirected to the page specified in `unauthenticated`.
 
 ```js
 import { Router, Route, Private } from '@redwoodjs/router'
@@ -1522,9 +1481,9 @@ const Routes = () => {
         <Route path="/secret-page" page={SecretPage} name="secret" />
       </Private>
 
-      <Private unauthenticated="forbidden" role="admin">
+      <Set private unauthenticated="forbidden" role="admin">
         <Route path="/admin" page={AdminPage} name="admin" />
-      </Private>
+      </Set>
 
       <Private unauthenticated="forbidden" role={['author', 'editor']}>
         <Route path="/posts" page={PostsPage} name="posts" />
