@@ -38,19 +38,19 @@ Error: Could not find a "redwood.toml" file, are you sure you're in a Redwood pr
 
 Configuration for the web side.
 
-| Key                           | Description                                                                 | Default                 | Context       |
-|:------------------------------|:----------------------------------------------------------------------------|:------------------------|:--------------|
-| `title`                       | Title of your Redwood App                                                   | `'Redwood App'`         | `both`        |
-| `host`                        | Hostname to listen on                                                       | `'localhost'`           | `development` |
-| `port`                        | Port to listen on                                                           | `8910`                  | `development` |
-| `path`                        | Path to the web side                                                        | `'./web'`               | `both`        |
-| `target`                      | Target for the web side                                                     | `'browser'`             | `both`        |
-| `apiUrl`                      | Specify the URL to your api-server. Can be an absolute path or FQDN         | `'/.redwood/functions'` | `production`  |
+| Key                           | Description                                                                | Default                 | Context       |
+| :---------------------------- | :------------------------------------------------------------------------- | :---------------------- | :------------ |
+| `title`                       | Title of your Redwood App                                                  | `'Redwood App'`         | `both`        |
+| `host`                        | Hostname to listen on                                                      | `'localhost'`           | `development` |
+| `port`                        | Port to listen on                                                          | `8910`                  | `development` |
+| `path`                        | Path to the web side                                                       | `'./web'`               | `both`        |
+| `target`                      | Target for the web side                                                    | `'browser'`             | `both`        |
+| `apiUrl`                      | Specify the URL to your api-server. Can be an absolute path or FQDN        | `'/.redwood/functions'` | `production`  |
 | `apiGraphQLUrl`               | Optional: URL or absolute path to GraphQL function, without trailing slash | `${apiUrl}/graphql`     | `production`  |
-| `apiDbAuthUrl`                | Optional: URL or absolute path to DbAuth function, without trailing slash   | `${apiUrl}/auth`        | `production`  |
-| `includeEnvironmentVariables` | Environment variables to whitelist                                          |                         | `both`        |
-| `fastRefresh`                 | Enable webpack's fast refresh                                               | true                    | `development` |
-| `a11y`                        | Enable storybook `addon-a11y` and `eslint-plugin-jsx-a11y`                  | true                    | `development` |
+| `apiDbAuthUrl`                | Optional: URL or absolute path to DbAuth function, without trailing slash  | `${apiUrl}/auth`        | `production`  |
+| `includeEnvironmentVariables` | Environment variables to whitelist                                         |                         | `both`        |
+| `fastRefresh`                 | Enable webpack's fast refresh                                              | true                    | `development` |
+| `a11y`                        | Enable storybook `addon-a11y` and `eslint-plugin-jsx-a11y`                 | true                    | `development` |
 
 ### API Paths
 
@@ -125,19 +125,69 @@ API_KEY=...
 
 Configuration for the api side.
 
-| Key      | Description             | Default       | Context       |
-|:---------|:------------------------|:--------------|:--------------|
-| `host`   | Hostname to listen on   | `'localhost'` | `development` |
-| `port`   | Port to listen on       | `8911`        | `development` |
-| `path`   | Path to the api side    | `'./api'`     | `both`        |
-| `target` | Target for the api side | `'node'`      | `both`        |
+| Key            | Description                         | Default       | Context       |
+| :------------- | :---------------------------------- | :------------ | :------------ |
+| `host`         | Hostname to listen on               | `'localhost'` | `development` |
+| `port`         | Port to listen on                   | `8911`        | `development` |
+| `path`         | Path to the api side                | `'./api'`     | `both`        |
+| `serverConfig` | Path to the `server.config.js` file | `'./api'`     | `both`        |
+| `target`       | Target for the api side             | `'node'`      | `both`        |
+
+### Server Configuration
+
+You can customize the Fastify Server settings used by the RedwoodJS dev server by defining `server.config.js` file and declaring where to find it using the `serverConfig` key.
+
+#### Example Server Configuration
+
+The following is an example `server.config.js` and what is the current default if a `serverConfig` is not specified.
+
+For the [Fastify Server options](https://www.fastify.io/docs/latest/Reference/Server/#factory) that you can set, see: https://www.fastify.io/docs/latest/Reference/Server/#factory.
+
+Examples include: logger settings, timeouts, maximum payload limits, and more.
+
+> **Note:** This configuration does not apply in a serverless deploy.
+
+```js
+// server.config.js
+/**
+ * This file allows you to configure the Fastify Server settings
+ * used by the RedwoodJS dev server.
+ *
+ * It also applies when running the api server with `yarn rw serve`.
+ *
+ * For the Fastify server options that you can set, see:
+ * https://www.fastify.io/docs/latest/Reference/Server/#factory
+ *
+ * Examples include: logger settings, timeouts, maximum payload limits, and more.
+ *
+ * Note: This configuration does not apply in a serverless deploy.
+ */
+
+/** @type {import('fastify').FastifyServerOptions} */
+const config = {
+  requestTimeout: 15_000,
+  logger: {
+    level: process.env.NODE_ENV === 'development' ? 'debug' : 'warn',
+  },
+}
+```
+
+You may elect to configure different `server.config.js` based on your deployment environment and take advantage of [# Using Environment Variables in redwood.toml](#using-environment-variables-in-redwoodtoml).
+
+Given an environment variable `DEPLOY_ENVIRONMENT` that declares `developmnent`, `staging`, `production`:
+
+```
+[api]
+  port = 8911
+  serverConfig = = "./api/${DEPLOY_ENVIRONMENT}-server.config.s"
+```
 
 ## [browser]
 
 Configuration for the browser target.
 
 | Key    | Description                                                       | Default | Context       |
-|:-------|:------------------------------------------------------------------|:--------|:--------------|
+| :----- | :---------------------------------------------------------------- | :------ | :------------ |
 | `open` | Open the browser to web's `host:port` after the dev server starts | `false` | `development` |
 
 ### open
@@ -166,7 +216,7 @@ There's a lot more you can do here. For all the details, see Webpack's docs on [
 Configuration for Generator "test" and "story" files. By default, the following Generators create Jest test and/or Storybook files (with mock data files when applicable) along with specific component file(s): component, cell, layout, page, sdl, and services. Understandably, this is a lot of files, and sometimes you don't want all of them, either because you don't plan on using Jest/Storybook, or are just getting started and don't want the overhead. These toml keys allows you to toggle the generation of test and story files on and off.
 
 | Key       | Description                    | Default |
-|:----------|:-------------------------------|:--------|
+| :-------- | :----------------------------- | :------ |
 | `tests`   | Generate Jest test files       | `true`  |
 | `stories` | Generate Storybook story files | `true`  |
 
@@ -193,7 +243,7 @@ To run a Redwood app within a container or VM, you'll want to set both the web a
 
 ## Using Environment Variables in `redwood.toml`
 
-Sometimes you want to change your `redwood.toml` based on the environment you're deploying to. 
+Sometimes you want to change your `redwood.toml` based on the environment you're deploying to.
 For example, you may want to point to a different `apiUrl` in your staging environment.
 You can do this with environment variables.
 Let's look at an example:
@@ -202,11 +252,12 @@ Let's look at an example:
 [web]
   title = "App running on ${APP_TITLE}"
   port = "${PORT:8910}"
-  apiUrl = "${API_URL:/.redwood/functions}"
+  apiUrl = "${API_URL}/.redwood/functions"
   includeEnvironmentVariables = []
 ```
 
 This does the following:
+
 - sets `title` by interpolating the env var `APP_TITLE`
 - sets `port` to the env var `PORT`, falling back to `8910`
 - sets `apiUrl` to the env var `API_URL`, falling back to `/.redwood/functions` (the default)
