@@ -205,6 +205,8 @@ You may need to access your dev application from a different host, like your mob
 
 For the full list of Webpack Dev Server settings, see [this documentation](https://webpack.js.org/configuration/dev-server/).
 
+For the full list of Server Configuration settings, see [this documentation](https://redwoodjs.com/docs/app-configuration-redwood-toml#api/).
+
 ## deploy
 
 Deploy your redwood project to a hosting provider target.
@@ -711,10 +713,10 @@ Generate a RedwoodRecord model.
 yarn redwood generate model <name>
 ```
 
-| Arguments & Options  | Description                                                                          |
-| -------------------- | ------------------------------------------------------------------------------------ |
-| `name`               | Name of the model (in schema.prisma)                                                                   |
-| `--force, -f`        | Overwrite existing files                                                             |
+| Arguments & Options | Description                          |
+| ------------------- | ------------------------------------ |
+| `name`              | Name of the model (in schema.prisma) |
+| `--force, -f`       | Overwrite existing files             |
 
 **Usage**
 
@@ -1720,15 +1722,15 @@ yarn redwood test [side..]
 
 <br/>
 
-| Arguments & Options | Description                                                                                                                                                                                                                                                                                       |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sides or filter`   | Which side(s) to test, and/or a regular expression to match against your test files to filter by                                                                                                                                                                                                  |
-| `--help`            | Show help                                                                                                                                                                                                                                                                                         |
-| `--version`         | Show version number                                                                                                                                                                                                                                                                               |
-| `--watch`           | Run tests related to changed files based on hg/git (uncommitted files). Specify the name or path to a file to focus on a specific set of tests [default: true]                                                                                                                                    |
-| `--watchAll`        | Run all tests                                                                                                                                                                                                                                                                                     |
-| `--collectCoverage` | Show test coverage summary and output info to `coverage` directory in project root. See this directory for an .html coverage report                                                                                                                                                               |
-| `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                                                                                                                                                                    |
+| Arguments & Options | Description                                                                                                                                                                                                                                                                                        |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sides or filter`   | Which side(s) to test, and/or a regular expression to match against your test files to filter by                                                                                                                                                                                                   |
+| `--help`            | Show help                                                                                                                                                                                                                                                                                          |
+| `--version`         | Show version number                                                                                                                                                                                                                                                                                |
+| `--watch`           | Run tests related to changed files based on hg/git (uncommitted files). Specify the name or path to a file to focus on a specific set of tests [default: true]                                                                                                                                     |
+| `--watchAll`        | Run all tests                                                                                                                                                                                                                                                                                      |
+| `--collectCoverage` | Show test coverage summary and output info to `coverage` directory in project root. See this directory for an .html coverage report                                                                                                                                                                |
+| `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                                                                                                                                                                     |
 | `--db-push`         | Syncs the test database with your Prisma schema without requiring a migration. It creates a test database if it doesn't already exist [default: true]. This flag is ignored if your project doesn't have an `api` side. [👉 More details](https://redwoodjs.com/docs/cli-commands#prisma-db-push). |
 
 > **Note** all other flags are passed onto the jest cli. So for example if you wanted to update your snapshots you can pass the `-u` flag
@@ -1784,6 +1786,8 @@ This command uses `apiUrl` in your `redwood.toml`. Use this command if you want 
 | `--port`            | What port should the server run on [default: 8911]                |
 | `--socket`          | The socket the server should run. This takes precedence over port |
 | `--apiRootPath`     | The root path where your api functions are served                 |
+
+For the full list of Server Configuration settings, see [this documentation](https://redwoodjs.com/docs/app-configuration-redwood-toml#api/).
 
 ### serve web
 
