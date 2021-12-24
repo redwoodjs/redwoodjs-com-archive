@@ -252,7 +252,7 @@ Let's look at an example:
 [web]
   title = "App running on ${APP_TITLE}"
   port = "${PORT:8910}"
-  apiUrl = "${API_URL}/.redwood/functions"
+  apiUrl = "${API_URL:/.redwood/functions}"
   includeEnvironmentVariables = []
 ```
 
