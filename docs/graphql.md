@@ -230,7 +230,7 @@ Of the four, you'll see `args` and `root` being used a lot.
 
 ### Context
 
-In Redwood, the `context` object that's passed to resolvers is actually available to all your Services, whether or not they're serving as resolvers. Just import it from `@redwoodjs/api`:
+In Redwood, the `context` object that's passed to resolvers is actually available to all your Services, whether or not they're serving as resolvers. Just import it from `@redwoodjs/graphql-server`:
 
 ```javascript
 import { context } from '@redwoodjs/graphql-server'
@@ -607,7 +607,7 @@ export const handler = createGraphQLHandler({
 > **Relevant anatomy of an operation**
 >
 > In the example below, `"FilteredQuery"` is the operation's name.
-> That's what you'd  pass to `excludeOperations` if you wanted it filtered out.
+> That's what you'd pass to `excludeOperations` if you wanted it filtered out.
 >
 > ```js
 > export const filteredQuery = `
