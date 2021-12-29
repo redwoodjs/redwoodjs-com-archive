@@ -26,18 +26,21 @@ Before getting started, there are a few steps you should have completed:
 
 - [Create a Redwood app](https://redwoodjs.com/tutorial/installation-starting-development)
 - [Create a Supabase account](https://www.supabase.io/)
-- [Perform Supabase Quick Start](https://supabase.io/docs/guides/with-react)
+- [Perform Supabase React Quick Start](https://supabase.io/docs/guides/with-react)
+- [Perform Supabase Redwood Quick Start](https://supabase.io/docs/guides/with-redwoodjs)
 - Fire up a dev server: `yarn redwood dev`
 
 ## Supabase Quick Start
 
-I was super stuck before stepping through the [Supabase Quick Start for React](https://supabase.io/docs/guides/with-react).
+I was super stuck before stepping through the [Supabase Quick Start for React](https://supabase.io/docs/guides/with-react) and [Supabase Quick Start for Redwood](https://supabase.com/docs/guides/with-redwoodjs).
 
-The Quick Start will walk you through creating a new project and setting up a database schema that will hold user information.
+The Quick Starts will walk you through creating a new project and setting up a database schema that will hold user information.
 
 ![Supabase Project Setup](https://user-images.githubusercontent.com/43206213/147162460-103b91c7-efbf-42b9-95ce-2ce9bbc70de7.png)
 
-I found it helpful to first interact directly with the [Supabase Client](https://github.com/supabase/supabase-js). Eventually, you will use the [Redwood auth wrappers](/docs/authentication#supabase), which provide a level of abstraction and clean/consistent style. But, I needed a couple hours of direct client experimenting to gain comfort in the Redwood wrapper. So, just this once, I hereby give you permission to fire-up Create React App as you follow-along the Supabase quick start.
+I found it helpful to first interact directly with the [Supabase Client](https://github.com/supabase/supabase-js). Eventually, you will use the [Redwood auth wrappers](/docs/authentication#supabase), which provide a level of abstraction and clean/consistent style. But, I needed a couple hours of direct client experimentation to gain comfort in the Redwood wrapper.
+
+So, just this once, I hereby give you permission to fire-up Create React App as you follow-along the Supabase React quick start. I worked through it first. Then I worked through the Supabase Redwood Quick start, observing the slight differences. This helped me understand the details that the Redwood wrappers are abstracting for us. This cookbook covers some of the same material as the Supabase Redwood Quick start, just with a different perspective.
 
 > ## Auth Alphabet Soup
 >
