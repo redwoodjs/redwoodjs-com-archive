@@ -1502,7 +1502,7 @@ You can pipe the script output to the formatter:
 yarn rw prisma db seed | yarn rw-log-formatter
 ```
 
-> Note: Just be sure to set `data` attribute so the formatter recognizes the content.
+> Note: Just be sure to set `data` attribute, so the formatter recognizes the content.
 > For example: `logger.debug({ data: newPost }, 'Added post')`
 
 ### prisma migrate
