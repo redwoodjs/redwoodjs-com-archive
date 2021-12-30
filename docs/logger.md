@@ -205,7 +205,7 @@ yarn rw dev
 
 The following screenshots show how log formatting out may look in your development environment.
 
-Notice how the emoki help identify the level, such as 🐛 for `debug` and 🌲 for `info`.
+Notice how the emoji help identify the level, such as 🐛 for `debug` and 🌲 for `info`.
 
 #### Basic
 
