@@ -542,6 +542,9 @@ export const handler = async (event, context) => {
     requireAuth({ role: 'admin' })
 
     return {
+      headers: {
+        'Content-Type': 'application/json',
+      },
       statusCode: 200,
       body: JSON.stringify({
         data: 'Permitted',
@@ -607,6 +610,9 @@ export const handler = async (req, _context) => {
     }
 
     return {
+      headers: {
+        'Content-Type': 'application/json',
+      },
       statusCode: 200,
       body: JSON.stringify({ app_metadata: { roles: roles } }),
     }
@@ -632,6 +638,7 @@ yarn rw build api
 # Invoke your function with the CLI, pointing it to the rw dev port
 netlify functions:invoke <function-name> --port 8910
 ```
+
 `<function-name>` should be replaced by `identity-validate`, `identity-signup`, `identity-login` or your own function.
 
 Note that the netlify-cli does not generate fake user data for each invocation of an identity function. It always provides the same `Test Person` data.
