@@ -1455,7 +1455,7 @@ In addition, you can [code along with Ryan Chenkie](https://www.youtube.com/watc
 
 **Log Formatting**
 
-If you use the Redwood Logger as part of your seed script you can pipe the command to the LogFormatter to output prettified logs.
+If you use the Redwood Logger as part of your seed script, you can pipe the command to the LogFormatter to output prettified logs.
 
 For example, if your `scripts.seed.js` imports the `logger`:
 
