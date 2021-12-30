@@ -125,13 +125,13 @@ API_KEY=...
 
 Configuration for the api side.
 
-| Key            | Description                         | Default       | Context       |
-| :------------- | :---------------------------------- | :------------ | :------------ |
-| `host`         | Hostname to listen on               | `'localhost'` | `development` |
-| `port`         | Port to listen on                   | `8911`        | `development` |
-| `path`         | Path to the api side                | `'./api'`     | `both`        |
-| `serverConfig` | Path to the `server.config.js` file | `'./api'`     | `both`        |
-| `target`       | Target for the api side             | `'node'`      | `both`        |
+| Key            | Description                         | Default                    | Context       |
+| :------------- | :---------------------------------- | :------------------------- | :------------ |
+| `host`         | Hostname to listen on               | `'localhost'`              | `development` |
+| `port`         | Port to listen on                   | `8911`                     | `development` |
+| `path`         | Path to the api side                | `'./api'`                  | `both`        |
+| `serverConfig` | Path to the `server.config.js` file | `'./api/server.config.js'` | `both`        |
+| `target`       | Target for the api side             | `'node'`                   | `both`        |
 
 ### Server Configuration
 
@@ -148,7 +148,7 @@ Examples include: logger settings, timeouts, maximum payload limits, and more.
 > **Note:** This configuration does not apply in a serverless deploy.
 
 ```js
-// server.config.js
+// ./api/server.config.js
 /**
  * This file allows you to configure the Fastify Server settings
  * used by the RedwoodJS dev server.
