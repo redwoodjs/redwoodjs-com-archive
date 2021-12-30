@@ -159,6 +159,9 @@ export const handler = async (event: APIGatewayEvent) => {
     // Safely use the validated webhook payload
 
     return {
+      headers: {
+        'Content-Type': 'application/json',
+      },
       statusCode: 200,
       body: JSON.stringify({
         data: payload,
@@ -175,6 +178,9 @@ export const handler = async (event: APIGatewayEvent) => {
       webhookLogger.error({ error }, error.message)
 
       return {
+        headers: {
+          'Content-Type': 'application/json',
+        },
         statusCode: 500,
         body: JSON.stringify({
           error: error.message,
@@ -229,6 +235,9 @@ export const handler = async (event: APIGatewayEvent) => {
     // Safely use the validated webhook payload
 
     return {
+      headers: {
+        'Content-Type': 'application/json',
+      },
       statusCode: 200,
       body: JSON.stringify({
         data: payload,
@@ -245,6 +254,9 @@ export const handler = async (event: APIGatewayEvent) => {
       webhookLogger.error({ error }, error.message)
 
       return {
+        headers: {
+         'Content-Type': 'application/json',
+        },
         statusCode: 500,
         body: JSON.stringify({
           error: error.message,
@@ -315,6 +327,9 @@ export const handler = async (event: APIGatewayEvent) => {
     await perform()
 
     return {
+      headers: {
+        'Content-Type': 'application/json',
+      },
       statusCode: 200,
       body: JSON.stringify({
         data: `loadOrbitActivities scheduled job invoked at ${Date.now()}`,
@@ -335,6 +350,9 @@ export const handler = async (event: APIGatewayEvent) => {
         error.message
       )
       return {
+        headers: {
+          'Content-Type': 'application/json',
+        },
         statusCode: 500,
         body: JSON.stringify({
           error: error.message,
@@ -409,6 +427,9 @@ export const handler = async (event: APIGatewayEvent) => {
     webhookLogger.debug({ payload }, 'Now I can do things with the payload')
 
     return {
+      headers: {
+        'Content-Type': 'application/json',
+      },
       statusCode: 200,
       body: JSON.stringify({
         data: payload,
@@ -423,6 +444,9 @@ export const handler = async (event: APIGatewayEvent) => {
     } else {
       webhookLogger.error({ error }, error.message)
       return {
+        headers: {
+          'Content-Type': 'application/json',
+        },
         statusCode: 500,
         body: JSON.stringify({
           error: error.message,
@@ -509,6 +533,9 @@ export const handler = async (event) => {
       // Safely use the validated webhook payload
 
       return {
+        headers: {
+          'Content-Type': 'application/json',
+        },
         statusCode: 200,
         body: JSON.stringify({
           data: 'orbitWebhook done',
@@ -517,6 +544,9 @@ export const handler = async (event) => {
     } else {
       webhookLogger.warn(`Unsupported Orbit Event Type: ${orbitInfo.orbitEventType}`)
       return {
+        headers: {
+          'Content-Type': 'application/json',
+        },
         statusCode: 400,
         body: JSON.stringify({
           data: `Unsupported Orbit Event Type: ${orbitInfo.orbitEventType}`,
@@ -532,6 +562,9 @@ export const handler = async (event) => {
     } else {
       webhookLogger.error({ error }, error.message)
       return {
+        headers: {
+          'Content-Type': 'application/json',
+        },
         statusCode: 500,
         body: JSON.stringify({
           error: error.message,
@@ -587,6 +620,9 @@ export const handler = async (event: APIGatewayEvent) => {
     webhookLogger.debug({ payload: data }, 'Data from Livestorm')
 
     return {
+      headers: {
+        'Content-Type': 'application/json',
+      },
       statusCode: 200,
       body: JSON.stringify({
         data,
@@ -603,6 +639,9 @@ export const handler = async (event: APIGatewayEvent) => {
       webhookLogger.error({ error }, error.message)
 
       return {
+        headers: {
+          'Content-Type': 'application/json',
+        },
         statusCode: 500,
         body: JSON.stringify({
           error: error.message,
