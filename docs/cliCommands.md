@@ -711,10 +711,10 @@ Generate a RedwoodRecord model.
 yarn redwood generate model <name>
 ```
 
-| Arguments & Options  | Description                                                                          |
-| -------------------- | ------------------------------------------------------------------------------------ |
-| `name`               | Name of the model (in schema.prisma)                                                                   |
-| `--force, -f`        | Overwrite existing files                                                             |
+| Arguments & Options | Description                          |
+| ------------------- | ------------------------------------ |
+| `name`              | Name of the model (in schema.prisma) |
+| `--force, -f`       | Overwrite existing files             |
 
 **Usage**
 
@@ -1453,6 +1453,58 @@ In addition, you can [code along with Ryan Chenkie](https://www.youtube.com/watc
 <!-- yarn redwood prisma generate -->
 <!-- ``` -->
 
+**Log Formatting**
+
+If you use the Redwood Logger as part of your seed script, you can pipe the command to the LogFormatter to output prettified logs.
+
+For example, if your `scripts.seed.js` imports the `logger`:
+
+```js
+// scripts/seed.js
+import { db } from 'api/src/lib/db'
+import { logger } from 'api/src/lib/logger'
+
+export default async () => {
+  try {
+    const posts = [
+      {
+        title: 'Welcome to the blog!',
+        body: "I'm baby single- origin coffee kickstarter lo.",
+      },
+      {
+        title: 'A little more about me',
+        body: 'Raclette shoreditch before they sold out lyft.',
+      },
+      {
+        title: 'What is the meaning of life?',
+        body: 'Meh waistcoat succulents umami asymmetrical, hoodie post-ironic paleo chillwave tote bag.',
+      },
+    ]
+
+    Promise.all(
+      posts.map(async (post) => {
+        const newPost = await db.post.create({
+          data: { title: post.title, body: post.body },
+        })
+
+        logger.debug({ data: newPost }, 'Added post')
+      })
+    )
+  } catch (error) {
+    logger.error(error)
+  }
+}
+```
+
+You can pipe the script output to the formatter:
+
+```bash
+yarn rw prisma db seed | yarn rw-log-formatter
+```
+
+> Note: Just be sure to set `data` attribute, so the formatter recognizes the content.
+> For example: `logger.debug({ data: newPost }, 'Added post')`
+
 ### prisma migrate
 
 Update the database schema with migrations.
@@ -1720,15 +1772,15 @@ yarn redwood test [side..]
 
 <br/>
 
-| Arguments & Options | Description                                                                                                                                                                                                                                                                                       |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sides or filter`   | Which side(s) to test, and/or a regular expression to match against your test files to filter by                                                                                                                                                                                                  |
-| `--help`            | Show help                                                                                                                                                                                                                                                                                         |
-| `--version`         | Show version number                                                                                                                                                                                                                                                                               |
-| `--watch`           | Run tests related to changed files based on hg/git (uncommitted files). Specify the name or path to a file to focus on a specific set of tests [default: true]                                                                                                                                    |
-| `--watchAll`        | Run all tests                                                                                                                                                                                                                                                                                     |
-| `--collectCoverage` | Show test coverage summary and output info to `coverage` directory in project root. See this directory for an .html coverage report                                                                                                                                                               |
-| `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                                                                                                                                                                    |
+| Arguments & Options | Description                                                                                                                                                                                                                                                                                        |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sides or filter`   | Which side(s) to test, and/or a regular expression to match against your test files to filter by                                                                                                                                                                                                   |
+| `--help`            | Show help                                                                                                                                                                                                                                                                                          |
+| `--version`         | Show version number                                                                                                                                                                                                                                                                                |
+| `--watch`           | Run tests related to changed files based on hg/git (uncommitted files). Specify the name or path to a file to focus on a specific set of tests [default: true]                                                                                                                                     |
+| `--watchAll`        | Run all tests                                                                                                                                                                                                                                                                                      |
+| `--collectCoverage` | Show test coverage summary and output info to `coverage` directory in project root. See this directory for an .html coverage report                                                                                                                                                                |
+| `--clearCache`      | Delete the Jest cache directory and exit without running tests                                                                                                                                                                                                                                     |
 | `--db-push`         | Syncs the test database with your Prisma schema without requiring a migration. It creates a test database if it doesn't already exist [default: true]. This flag is ignored if your project doesn't have an `api` side. [👉 More details](https://redwoodjs.com/docs/cli-commands#prisma-db-push). |
 
 > **Note** all other flags are passed onto the jest cli. So for example if you wanted to update your snapshots you can pass the `-u` flag
@@ -1785,6 +1837,12 @@ This command uses `apiUrl` in your `redwood.toml`. Use this command if you want 
 | `--socket`          | The socket the server should run. This takes precedence over port |
 | `--apiRootPath`     | The root path where your api functions are served                 |
 
+If you want to format your log output, you can pipe the command to the Redwood LogFormatter:
+
+```
+yarn rw serve api | yarn rw-log-formatter
+```
+
 ### serve web
 
 Runs a server that only serves the web side.
@@ -1804,6 +1862,12 @@ This command serves the contents in `web/dist`. Use this command if you're debug
 | `--port`            | What port should the server run on [default: 8911]                                    |
 | `--socket`          | The socket the server should run. This takes precedence over port                     |
 | `--apiHost`         | Forwards requests from the `apiUrl` (defined in `redwood.toml`) to the specified host |
+
+If you want to format your log output, you can pipe the command to the Redwood LogFormatter:
+
+```
+yarn rw serve web | yarn rw-log-formatter
+```
 
 ## upgrade
 
