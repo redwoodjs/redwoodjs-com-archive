@@ -1455,6 +1455,58 @@ In addition, you can [code along with Ryan Chenkie](https://www.youtube.com/watc
 <!-- yarn redwood prisma generate -->
 <!-- ``` -->
 
+**Log Formatting**
+
+If you use the Redwood Logger as part of your seed script, you can pipe the command to the LogFormatter to output prettified logs.
+
+For example, if your `scripts.seed.js` imports the `logger`:
+
+```js
+// scripts/seed.js
+import { db } from 'api/src/lib/db'
+import { logger } from 'api/src/lib/logger'
+
+export default async () => {
+  try {
+    const posts = [
+      {
+        title: 'Welcome to the blog!',
+        body: "I'm baby single- origin coffee kickstarter lo.",
+      },
+      {
+        title: 'A little more about me',
+        body: 'Raclette shoreditch before they sold out lyft.',
+      },
+      {
+        title: 'What is the meaning of life?',
+        body: 'Meh waistcoat succulents umami asymmetrical, hoodie post-ironic paleo chillwave tote bag.',
+      },
+    ]
+
+    Promise.all(
+      posts.map(async (post) => {
+        const newPost = await db.post.create({
+          data: { title: post.title, body: post.body },
+        })
+
+        logger.debug({ data: newPost }, 'Added post')
+      })
+    )
+  } catch (error) {
+    logger.error(error)
+  }
+}
+```
+
+You can pipe the script output to the formatter:
+
+```bash
+yarn rw prisma db seed | yarn rw-log-formatter
+```
+
+> Note: Just be sure to set `data` attribute, so the formatter recognizes the content.
+> For example: `logger.debug({ data: newPost }, 'Added post')`
+
 ### prisma migrate
 
 Update the database schema with migrations.
@@ -1788,6 +1840,11 @@ This command uses `apiUrl` in your `redwood.toml`. Use this command if you want 
 | `--apiRootPath`     | The root path where your api functions are served                 |
 
 For the full list of Server Configuration settings, see [this documentation](https://redwoodjs.com/docs/app-configuration-redwood-toml#api/).
+If you want to format your log output, you can pipe the command to the Redwood LogFormatter:
+
+```
+yarn rw serve api | yarn rw-log-formatter
+```
 
 ### serve web
 
@@ -1808,6 +1865,12 @@ This command serves the contents in `web/dist`. Use this command if you're debug
 | `--port`            | What port should the server run on [default: 8911]                                    |
 | `--socket`          | The socket the server should run. This takes precedence over port                     |
 | `--apiHost`         | Forwards requests from the `apiUrl` (defined in `redwood.toml`) to the specified host |
+
+If you want to format your log output, you can pipe the command to the Redwood LogFormatter:
+
+```
+yarn rw serve web | yarn rw-log-formatter
+```
 
 ## upgrade
 

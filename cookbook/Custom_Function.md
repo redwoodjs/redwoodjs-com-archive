@@ -1,9 +1,11 @@
 # Custom Function
 
 You may not have noticed, but when you're making GraphQL calls, you're actually calling a [Function](https://docs.netlify.com/functions/overview/) (not to be confused with a Javascript `function`) on the API side. Capital-F Functions are meant to be deployed to serverless providers like AWS Lambda. (We're using Netlify's nomenclature when we call them Functions.)
+
 <!-- turn this into an aside where you can expand on it, maybe. > We're using Netlify's nomenclature when we call them Functions. -->
-  
+
 <!-- as a... could be reworded -->
+
 Did you know you can create your own Functions that do whatever you want? Normally we recommend that if you have custom behavior, even if it's unrelated to the database, you make it available as a GraphQL field so that your entire application has one, unified API interface. But rules were meant to be broken!
 
 How about a custom Function that returns the timestamp from the server?
@@ -36,7 +38,8 @@ After you setup a deploy (via `yarn rw setup deploy <provider>`), it'll change t
 
 <!-- https://community.redwoodjs.com/t/getting-cors-error-while-calling-a-lambda-function/186 -->
 <!-- link to something; maybe even  -->
-Why do we need `apiUrl`? Well, when you go to deploy, your serverless functions won't be in the same place as your app; they'll be somewhere else. Sending requests to the `apiUrl` let's your provider handle the hard work of figuring out where they actually are, and making sure that your app can actually access them. 
+
+Why do we need `apiUrl`? Well, when you go to deploy, your serverless functions won't be in the same place as your app; they'll be somewhere else. Sending requests to the `apiUrl` let's your provider handle the hard work of figuring out where they actually are, and making sure that your app can actually access them.
 
 If you were to try and fetch `http://localhost:8911/serverTime` from the web side, you'd run into an error you'll get to know quite well: CORS.
 
@@ -44,7 +47,7 @@ If you were to try and fetch `http://localhost:8911/serverTime` from the web sid
 
 Time for an interlude within an interlude, because that's how you'll always feel when it comes to CORS: you were doing something else, and then `No 'Access-Control-Allow-Origin' header is present on the requested resource`. Now you're doing CORS.
 
-If you don't know much about CORS, it's something you probably should know some about at some point. CORS stands for Cross Origin Resource Sharing; in a nutshell, by default, browsers aren't allowed to access resources outside their own domain. So, requests from `localhost:8910` can only access resources at `localhost:8910`. Since all your serverless functions are at `localhost:8911`, doing something like 
+If you don't know much about CORS, it's something you probably should know some about at some point. CORS stands for Cross Origin Resource Sharing; in a nutshell, by default, browsers aren't allowed to access resources outside their own domain. So, requests from `localhost:8910` can only access resources at `localhost:8910`. Since all your serverless functions are at `localhost:8911`, doing something like
 
 ```js
 // the `http://` is important!
@@ -57,7 +60,7 @@ from the web side would give you an error like:
 Access to fetch at 'http://localhost:8911/serverTime' from origin 'http://localhost:8910' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
 ```
 
-We could set the headers for `serverTime` to allow requests from any origin... but maybe a better idea would be to never request `8911` from `8910` in the first place. Hence the `apiUrl`! We're making a request to `8910/.redwood/functions/serverTime`&mdash;still the same domain&mdash;but the [webpack dev-server](https://webpack.js.org/configuration/dev-server/#devserverproxy) proxies them to `localhost:8911/serverTime` for us. 
+We could set the headers for `serverTime` to allow requests from any origin... but maybe a better idea would be to never request `8911` from `8910` in the first place. Hence the `apiUrl`! We're making a request to `8910/.redwood/functions/serverTime`&mdash;still the same domain&mdash;but the [webpack dev-server](https://webpack.js.org/configuration/dev-server/#devserverproxy) proxies them to `localhost:8911/serverTime` for us.
 
 ## Getting the Time
 
@@ -121,26 +124,26 @@ Take a look in the terminal window where you're running `yarn rw dev` to see the
 
 ```json
 {
-  httpMethod: 'GET',
-  headers: {
-    host: 'localhost:8911',
-    connection: 'keep-alive',
-    'cache-control': 'max-age=0',
-    dnt: '1',
-    'upgrade-insecure-requests': '1',
-    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36',
-    accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    'sec-fetch-site': 'none',
-    'sec-fetch-mode': 'navigate',
-    'sec-fetch-user': '?1',
-    'sec-fetch-dest': 'document',
-    'accept-encoding': 'gzip, deflate, br',
-    'accept-language': 'en-US,en;q=0.9',
+  "httpMethod": "GET",
+  "headers": {
+    "host": "localhost:8911",
+    "connection": "keep-alive",
+    "cache-control": "max-age=0",
+    "dnt": "1",
+    "upgrade-insecure-requests": "1",
+    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36",
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng;q=0.8,application/signed-exchange;v=b3;q=0.9",
+    "sec-fetch-site": "none",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-user": "?1",
+    "sec-fetch-dest": "document",
+    "accept-encoding": "gzip, deflate, br",
+    "accept-language": "en-US,en;q=0.9"
   },
-  path: '/serverTime',
-  queryStringParameters: {},
-  body: '',
-  isBase64Encoded: false
+  "path": "/serverTime",
+  "queryStringParameters": {},
+  "body": "",
+  "isBase64Encoded": false
 }
 ```
 
@@ -209,7 +212,7 @@ export const handler = (event, context, callback) => {
 
 Yeah, kinda gross. What's with that `null` as the first parameter? That's used if your handler needs to return an error. More on callback-based handlers can be found in [Netlify's docs](https://docs.netlify.com/functions/build-with-javascript/#format).
 
-The callback syntax may not be *too* bad for this simple example. But, if you find yourself dealing with Promises inside your handler, and you choose to go use callback syntax, you may want to lie down and rethink the life choices that brought you to this moment. If you still want to use callbacks you had better hope that time travel is invented by the time this code goes into production, so you can go back in time and prevent yourself from ruining your own life. You will, of course, fail because you already chose to use callbacks the first time so you must have been unsuccessful in stopping yourself when you went back.
+The callback syntax may not be _too_ bad for this simple example. But, if you find yourself dealing with Promises inside your handler, and you choose to go use callback syntax, you may want to lie down and rethink the life choices that brought you to this moment. If you still want to use callbacks you had better hope that time travel is invented by the time this code goes into production, so you can go back in time and prevent yourself from ruining your own life. You will, of course, fail because you already chose to use callbacks the first time so you must have been unsuccessful in stopping yourself when you went back.
 
 Trust us, it's probably best to just stick with async/await instead of tampering with spacetime.
 
