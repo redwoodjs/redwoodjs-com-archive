@@ -205,6 +205,8 @@ You may need to access your dev application from a different host, like your mob
 
 For the full list of Webpack Dev Server settings, see [this documentation](https://webpack.js.org/configuration/dev-server/).
 
+For the full list of Server Configuration settings, see [this documentation](https://redwoodjs.com/docs/app-configuration-redwood-toml#api/).
+
 ## deploy
 
 Deploy your redwood project to a hosting provider target.
@@ -1837,6 +1839,7 @@ This command uses `apiUrl` in your `redwood.toml`. Use this command if you want 
 | `--socket`          | The socket the server should run. This takes precedence over port |
 | `--apiRootPath`     | The root path where your api functions are served                 |
 
+For the full list of Server Configuration settings, see [this documentation](https://redwoodjs.com/docs/app-configuration-redwood-toml#api/).
 If you want to format your log output, you can pipe the command to the Redwood LogFormatter:
 
 ```
