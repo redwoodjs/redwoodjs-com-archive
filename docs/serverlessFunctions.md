@@ -717,15 +717,26 @@ And, in some other cases, you may even want to limit how often the function is c
 
 If your function receives an incoming Webhook from a third party, see [Webhooks](https://redwoodjs.com/docs/webhooks) in the RedwoodJS documentation to verify and trust its payload.
 
-### Redwood Authentication
+### Serverless Functions with Redwood User Authentication
 
-This PR allows developers to have their serverless function support `requireAuth` and it's currentUser and role checking by wrapping the their function handler in a handler that will authenticate the request event and set the global context with the currentUser in the same manner that the GraphQLHandler does.
+Redwood serverless functions support the same `requireAuth` user authentication system used by [GraphQL Directives](/graphql#secure-directives) to [secure your services](/graphql#secure-services).
 
-While we don't necessarily encourage tis behavior, we can support it. Rather, if your function needs auth, then it can simply be a GraphQL request -- or treat your serverless function like a webhook and use a known verifier method.
+By wrapping the function handler in the `useRequireAuth` handler provided by the `'@redwoodjs/graphql-server` package, the function can use the same `currentUser` and role checks defined in your application's `auth.js/ts`.
 
-Note: the wrapper lives in `@redwoodjs/graphql-server` because 1) it mimics the graphQLHandler auth flow and 2) that's when globalContext lives
+It will authenticate the request event and set the global context with the `currentUser` in the same manner that the GraphQLHandler does so your authenticated user is available in your application's services and anywhere else authentication is checked.
 
-To support requireAuth in your serverless function:
+It is important to note that if you intend to implement a feature that requires user authentication, then using GraphQL, auth directives and services is the preferred approach.
+
+In addition, if you need to protect an endpoint that does not require not user-based authentication, you should consider using [Webhooks](/webhooks) with a signed payload and verifier.
+
+#### How to Secure a Function with Redwood Auth
+
+To support `requireAuth` in your serverless function:
+
+- import `useRequireAuth` from `@redwoodjs/graphql-server`
+- import your application's custom `getCurrentUser` from `src/lib/auth`
+- implement your function as you would, but do not `export` it; see: `myHandler`.
+- export `handler` and pass your implementation and getCurrentUser to the `useRequireAuth` wrapper
 
 ```ts
 import type { APIGatewayEvent, Context } from 'aws-lambda'
@@ -755,7 +766,32 @@ export const handler = useRequireAuth({
 })
 ```
 
-This means that anywhere context is used such as in services or when using hasRole from auth, the global context will have the currentUser set.
+Now, anywhere context is used such as in services or when using hasRole from auth, the global context will have the currentUser set and you cna check the authentication state or if the use has roles.
+
+#### Using your Authenticated Serverless Function
+
+As there is no login flow when using functions, the `useRequireAuth` check assumes that your user is already authenticated and you have access to their JWT access token.
+
+In your request, you must include the following headers:
+
+- the auth provider type that your application is using
+- the Bearer token (JWT access token)
+- if using dbAuth, then also the dbAuth Cookie
+
+You can find the auth provider type as the `type` attribute set on the `AuthProvider`:
+
+```js
+<AuthProvider client={netlifyIdentity} type="netlify">
+<AuthProvider client={supabaseClient} type="supabase">
+```
+
+For example:
+
+```bash
+Authorization: Bearer myJWT.accesstoken.signature
+auth-provider: supabase
+Content-Type: application/json
+```
 
 ### Returning Binary Data
 
