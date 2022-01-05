@@ -95,7 +95,7 @@ This starts your project on port `1234` and disables automatic browser opening.
 If you're running Redwood in dev mode and trying to test your application from an external source (i.e. outside your network), you'll get an “Invalid Host Header”. To enable this workflow, run the following:
 
 ```bash
-yarn rw dev --forward="--allow-hosts example.company.com --host 0.0.0.0"
+yarn rw dev --forward="--allowed-hosts example.company.com --host 0.0.0.0"
 ```
 
 This starts your project and forwards it to `example.company.com`.
