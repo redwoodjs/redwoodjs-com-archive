@@ -472,6 +472,127 @@ api |     - deletePost Mutation
 
 To fix these errors, simple declare with `@requireAuth` to enforce authentication or `@skipAuth` to keep the operation public on each as appropriate for your app's permissions needs.
 
+## Custom Scalars
+
+[GraphQL Scalars](https://www.graphql-scalars.dev) is a library of custom GraphQL scalar types for creating precise type-safe GraphQL schemas.
+
+The GraphQL Specification has the `Int`, `Float`, `String`, `Boolean` and `ID` Scalar types by default. Those scalar types help you identify the data and validate it before transferring it between client and server. But you might need more specific scalars for your GraphQL application, to help you better describe and validate your app’s data.
+
+The primary purposes these scalars, really of all types are to:
+
+- Communicate to users of your schema exactly what they can expect or to at least reduce ambiguity in cases where that's possible. For example if you have a Person type in your schema and that type has as field like ageInYears, the value of that can only be null or a positive integer (or float, depending on how you want your schema to work). It should never be zero or negative.
+
+- Run-time type checking. GraphQL helps to tighten up the contract between client and server. It does this with strong typing of the interface (or schema). This helps us have greater confidence about what we're receiving from the server and what the server is receiving from the client.
+  This package adds to the base options available in GraphQL to support types that are reasonably common in defining schemas or interfaces to data.
+
+### Validation using Scalars
+
+For example, you have a String field but you need to validate upcoming or ongoing string data using regular expressions. So you should have this validation on each end; one in the client, the other one in the server and maybe there is another on a source. Instead of duplicating the same logic in different parts of the project, you can use EmailAddress scalar type that does the validation inside GraphQL for you.
+
+### Scalar Validations vs Service Validations vs Validator Directives
+
+services.html#service-validations
+
+#### Service Validations
+
+These validations are meant to be included at the start of your Service function and will throw an error if conditions are not met:
+
+#### Validator Directives
+
+Validator Directives were added to Redwood in v0.37 and provide a way to validate whether data going through GraphQL is allowed based on the user that's currently requesting it (the user that is logged in). These directives control access to data, while Service Validators operate on a different level, outside of GraphQL, and make sure data is formatted properly before, most commonly, putting it into a database.
+
+You could use these in combination to, for example, prevent a client from accessing the email addresses of any users that aren't themselves (Validator Directives) while also verifying that when creating a user, an email address is present, formatted correctly, and unique (Service Validations).
+
+### How to Setup a Custom Scalar
+
+In the example below, we use the [`Currency`](https://github.com/Urigo/graphql-scalars/blob/master/src/scalars/Currency.ts) scalar that validates if it is a string of one of the [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) cods like `EUR` or `USD`.
+
+1. Add the scalar definition in a sdl file `scalars.sdl.ts` (this is a convention to put all of them there but can be elsewhere in your SDL and types
+
+```
+// api/src/graphql/scalars.sdl.ts
+
+export const schema = gql`
+  scalar Currency
+`
+
+```
+
+2. Import the scalar and provide to the GraphQLHandler in `schemaOptions`
+
+```ts
+// api/src/functions/graphql.ts
+import { CurrencyDefinition, CurrencyResolver } from 'graphql-scalars'
+
+...
+
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: {} },
+  directives,
+  sdls,
+  services,
+  schemaOptions: { // <<---- here
+    typeDefs: [CurrencyDefinition],
+    resolvers: { Currency: CurrencyResolver },
+  },
+  onException: () => {
+    // Disconnect from your database with an unhandled exception.
+    db.$disconnect()
+  },
+})
+
+```
+
+3. Use your scalar in your types
+
+```ts
+export const schema = gql`
+  type Post {
+    id: Int!
+    title: String!
+    body: String!
+    currency_iso_4217: Currency! // <--- here, note: will check in the response returned in query
+    createdAt: DateTime!
+  }
+
+  type Query {
+    posts: [Post!]! @requireAuth
+    post(id: Int!): Post @requireAuth
+  }
+
+  input CreatePostInput {
+    title: String!
+    body: String!
+    currency_iso_4217: Currency! // <--- here, validate on mutation 
+  }
+
+  input UpdatePostInput {
+    title: String
+    body: String
+    currency_iso_4217: Currency // <--- here, validate on mutation 
+  }
+
+  type Mutation {
+    createPost(input: CreatePostInput!): Post! @requireAuth
+    updatePost(id: Int!, input: UpdatePostInput!): Post! @requireAuth
+    deletePost(id: Int!): Post! @requireAuth
+  }
+`
+```
+
+Note: Your Prisma schema is still just a Prisma scalar data type of String
+
+```
+model Post {
+  id                  Int      @id @default(autoincrement())
+  title               String
+  body                String
+  currency_iso_4217   String   @default("USD")
+  createdAt           DateTime @default(now())
+}
+
+```
+
 ## Directives
 
 Directives supercharge your GraphQL services. They add configuration to fields, types or operations that act like "middleware" that lets you run reusable code during GraphQL execution to perform tasks like authentication, formatting, and more.
