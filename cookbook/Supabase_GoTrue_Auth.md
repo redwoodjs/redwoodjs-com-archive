@@ -12,11 +12,11 @@ Once I connected these dots, The Redwood GoTrue Auth Cookbook became a handy res
 
 In this recipe, we'll:
 
-- configure Redwood Auth with Supabase,
-- create a Sign Up form,
-- create a Sign In form,
-- create a Sign Out button,
-- add auth links that display the correct buttons based on our auth state
+- Configure Redwood Auth with Supabase
+- Create a Sign Up form
+- Create a Sign In form
+- Create a Sign Out button=
+- Add auth links that display the correct buttons based on our auth state
 
 But first, some housekeeping...
 
@@ -97,26 +97,17 @@ const App = () => (
 export default App
 ```
 
-Time to add the Supabase URL (SUPABASE_URL), public API KEY, and JWT SECRET (SUPABASE_KEY, and SUPABASE_JWT_SECRET) to your .env file.
+Time to add the Supabase URL (`SUPABASE_URL`), public API KEY, and JWT SECRET (`SUPABASE_KEY`, and `SUPABASE_JWT_SECRET`) to your .env file.
 
-Find these items in your Supabase management console, under Settings > API.
+Find these items in your Supabase management console, under `Settings > API`.
 
 ![Supabase console screen shot](https://user-images.githubusercontent.com/43206213/146407575-71ad2c94-8fa6-48d2-a403-d249f75569ea.png)
 
-Here's a .env example:
+Here's a `.env` example:
 
 ```bash
 # .env (in your root project directory)
 
-# THIS FILE SHOULD NOT BE CHECKED INTO YOUR VERSION CONTROL SYSTEM
-#
-# Environment variables set here will override those in .env.defaults.
-# Any environment variables you need in production you will need to setup with
-# your hosting provider. For example in Netlify you can add environment
-# variables in Settings > Build & Deploy > environment
-#
-# DATABASE_URL=postgres://user:pass@postgreshost.com:5432/database_name
-# TEST_DATABASE_URL=postgres://user:pass@postgreshost.com:5432/test_database_name
 SUPABASE_URL=https://replacewithyoursupabaseurl.supabase.co
 SUPABASE_KEY=eyJhb_replace_VCJ9.eyJy_with_your_wfQ.0Abb_anon_key_teLJs
 SUPABASE_JWT_SECRET=eyJh_replace_CJ9.eyJy_with_your_NTQwOTB9.MGNZN_JWT_secret_JgErqxj4
@@ -130,7 +121,7 @@ Sign Up feels like an appropriate place to start building our interface.
 
 Our first iteration won't include features like Email Confirmation or Password Recovery. Those, among other features, could be covered in an Advanced Concepts section of this recipe (in the future).
 
-To forego email confirmation, turn off "Enable email confirmations" on your **Supabase Management Console**, found under Authentication > Settings.
+To forego email confirmation, turn off "Enable email confirmations" on your **Supabase Management Console**, found under `Authentication > Settings`.
 
 ![Supabase email confirmation toggle](https://user-images.githubusercontent.com/43206213/147164458-1b6723ef-d7dd-4c7c-b228-73ca4ba7b1ff.png)
 
@@ -144,9 +135,9 @@ Let's generate a Sign Up page:
 yarn redwood generate page Signup
 ```
 
-This adds a Signup [route](/docs/redwood-router) to our routes file and creates a SignupPage component.
+This adds a Signup [route](/docs/redwood-router) to our routes file and creates a `SignupPage` component.
 
-In the just-generated SignupPage component (`web/src/pages/SignupPage/SignupPage.[js/tsx]`), let's import some [Redwood Form components](/docs/form) and add a very basic form to our render component:
+In the just-generated `SignupPage` component (`web/src/pages/SignupPage/SignupPage.[js/tsx]`), let's import some [Redwood Form components](/docs/form) and add a very basic form to our render component:
 
 ```js
 // web/src/pages/SignupPage/SignupPage.[js/tsx]
