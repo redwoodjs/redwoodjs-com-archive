@@ -343,7 +343,7 @@ export const handler = createGraphQLHandler({
 })
 ```
 
-### Health Checks
+## Health Checks
 
 Health checks are used determine if a server is available and ready to start serving traffic. By default, Redwood's GraphQLHandler provides a health check endpoint at `/graphql/health` which returns a `200 status code` with a result of `{ status: 'pass' }` if the server is healthy and can accept requests or a `503 status code` with `{ status: fail }` if not.
 
@@ -474,38 +474,43 @@ To fix these errors, simple declare with `@requireAuth` to enforce authenticatio
 
 ## Custom Scalars
 
-[GraphQL Scalars](https://www.graphql-scalars.dev) is a library of custom GraphQL scalar types for creating precise type-safe GraphQL schemas.
+The GraphQL Specification has the `Int`, `Float`, `String`, `Boolean` and `ID` Scalar types by default. Those scalar types help you give meaning to the data as well as validate it. So, if in your mutation input type `ageInYears` is an `Int` you'll get a validation error if you pass a text value.
 
-The GraphQL Specification has the `Int`, `Float`, `String`, `Boolean` and `ID` Scalar types by default. Those scalar types help you identify the data and validate it before transferring it between client and server. But you might need more specific scalars for your GraphQL application, to help you better describe and validate your app’s data.
+However, sometimes you might need more specific scalars for your GraphQL application, to help you better describe and validate your application's data.
 
-The primary purposes these scalars, really of all types are to:
+For example, if you have a `Person` type in your schema and that type has as field like `ageInYears`, the value of that can only be null or a positive integer -- it should never be zero or negative -- and then you could use the [`PositiveInt` scalar](https://www.graphql-scalars.dev/docs/scalars/positive-int).
 
-- Communicate to users of your schema exactly what they can expect or to at least reduce ambiguity in cases where that's possible. For example if you have a Person type in your schema and that type has as field like ageInYears, the value of that can only be null or a positive integer (or float, depending on how you want your schema to work). It should never be zero or negative.
+#### Scalars vs Service vs Directives
 
-- Run-time type checking. GraphQL helps to tighten up the contract between client and server. It does this with strong typing of the interface (or schema). This helps us have greater confidence about what we're receiving from the server and what the server is receiving from the client.
-  This package adds to the base options available in GraphQL to support types that are reasonably common in defining schemas or interfaces to data.
+Why use custom scalars? They help to:
+
+- Communicate to users of your schema exactly what they can expect for valid, meaningful values. By using scalars like [`Currency`](https://www.graphql-scalars.dev/docs/scalars/currency), [`PositiveInt`](https://www.graphql-scalars.dev/docs/scalars/positive-int), or [HexColorCode](https://www.graphql-scalars.dev/docs/scalars/hex-color-code) your schema more clearly describes what the data is.
+
+- Perform run-time type checking with strong typing of the interface (or schema) so you can have greater confidence about what your GraphQL api receives the client matches up with what you expect.
+
+How are custom scalars different from Service Validations or Validator Directives?
+
+##### Service Validations
+
+[Service validations](services.html#service-validations) check the data when resolving the service. Because they are included at the start of your Service function and will throw an error if conditions are not met, then they are great for validating any input whenever you use a service.
+
+For example, they will validate data in your GraphQL and also if you use the service in a serverless function or webhook or elsewhere in your api. Custom scalar, however, will only validate as part of the GraphQL request and no if you invoke your serve elsewhere.
+
+Service validations also let you customize your validation message, while custom scalars do not.
+
+They also can perform checks that involve string ['length`](https://redwoodjs.com/docs/services#length), [`custom format`](https://redwoodjs.com/docs/services#length) or other more fine grained control of the data; while scalars are geared toward specific types of data/
+
+##### Validator Directives
+
+[Validator Directives](#directives) control user **access** to data and also whether or not a user is authorized to perform certain queries or mutations.
+
+For example, they prevent accessing the email addresses other than one's own email address; or, updating a profile that is not their own.
 
 ### Validation using Scalars
 
-For example, you have a String field but you need to validate upcoming or ongoing string data using regular expressions. So you should have this validation on each end; one in the client, the other one in the server and maybe there is another on a source. Instead of duplicating the same logic in different parts of the project, you can use EmailAddress scalar type that does the validation inside GraphQL for you.
+Let's say that you have a `String` field that stores currency [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) codes like `USD`, `EUR`, `CAD`, etc.
 
-### Scalar Validations vs Service Validations vs Validator Directives
-
-services.html#service-validations
-
-#### Service Validations
-
-These validations are meant to be included at the start of your Service function and will throw an error if conditions are not met:
-
-#### Validator Directives
-
-Validator Directives were added to Redwood in v0.37 and provide a way to validate whether data going through GraphQL is allowed based on the user that's currently requesting it (the user that is logged in). These directives control access to data, while Service Validators operate on a different level, outside of GraphQL, and make sure data is formatted properly before, most commonly, putting it into a database.
-
-You could use these in combination to, for example, prevent a client from accessing the email addresses of any users that aren't themselves (Validator Directives) while also verifying that when creating a user, an email address is present, formatted correctly, and unique (Service Validations).
-
-### How to Setup a Custom Scalar
-
-In the example below, we use the [`Currency`](https://github.com/Urigo/graphql-scalars/blob/master/src/scalars/Currency.ts) scalar that validates if it is a string of one of the [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) cods like `EUR` or `USD`.
+You can use [`Currency` scalar type](https://github.com/Urigo/graphql-scalars/blob/master/src/scalars/Currency.ts) that does the validation inside GraphQL for you.
 
 1. Add the scalar definition in a sdl file `scalars.sdl.ts` (this is a convention to put all of them there but can be elsewhere in your SDL and types
 
@@ -580,7 +585,7 @@ export const schema = gql`
 `
 ```
 
-Note: Your Prisma schema is still just a Prisma scalar data type of String
+Note: Your Prisma schema is still just a Prisma scalar data type of `String`
 
 ```
 model Post {
