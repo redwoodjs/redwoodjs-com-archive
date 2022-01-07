@@ -508,11 +508,17 @@ For example, they prevent accessing the email addresses other than one's own ema
 
 ### Validation using Scalars
 
-Let's say that you have a `String` field that stores currency [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) codes like `USD`, `EUR`, `CAD`, etc.
+Let's say that you have a `Product` that has a name, description and the type of currency.
 
-You can use [`Currency` scalar type](https://github.com/Urigo/graphql-scalars/blob/master/src/scalars/Currency.ts) that does the validation inside GraphQL for you.
+That means that you'll want a `String` field that stores -- and validates that only -- currency [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) codes like `USD`, `EUR`, `CAD`, etc.
 
-1. Add the scalar definition in a sdl file `scalars.sdl.ts` (this is a convention to put all of them there but can be elsewhere in your SDL and types
+To ensure this validation rule, you can use [`Currency` scalar type](https://github.com/Urigo/graphql-scalars/blob/master/src/scalars/Currency.ts) that does the validation inside GraphQL for you.
+
+#### How To Add a Custom Scalar
+
+The steps to add a custom scalar to your GraphQL api are:
+
+1. Add the scalar definition in a sdl file `scalars.sdl.ts` (this is a convention to put all of them there but can be elsewhere in your SDL and types):
 
 ```
 // api/src/graphql/scalars.sdl.ts
@@ -552,35 +558,35 @@ export const handler = createGraphQLHandler({
 
 ```ts
 export const schema = gql`
-  type Post {
+  type Product {
     id: Int!
-    title: String!
-    body: String!
+    name: String!
+    description: String!
     currency_iso_4217: Currency! // <--- here, note: will check in the response returned in query
     createdAt: DateTime!
   }
 
   type Query {
-    posts: [Post!]! @requireAuth
-    post(id: Int!): Post @requireAuth
+    posts: [Product!]! @requireAuth
+    post(id: Int!): Product @requireAuth
   }
 
-  input CreatePostInput {
-    title: String!
-    body: String!
+  input CreateProductInput {
+    name: String!
+    description: String!
     currency_iso_4217: Currency! // <--- here, validate on mutation 
   }
 
-  input UpdatePostInput {
-    title: String
-    body: String
+  input UpdateProductInput {
+    name: String
+    description: String
     currency_iso_4217: Currency // <--- here, validate on mutation 
   }
 
   type Mutation {
-    createPost(input: CreatePostInput!): Post! @requireAuth
-    updatePost(id: Int!, input: UpdatePostInput!): Post! @requireAuth
-    deletePost(id: Int!): Post! @requireAuth
+    createProduct(input: CreateProductInput!): Product! @requireAuth
+    updateProduct(id: Int!, input: UpdateProductInput!): Product! @requireAuth
+    deleteProduct(id: Int!): Product! @requireAuth
   }
 `
 ```
@@ -588,10 +594,10 @@ export const schema = gql`
 Note: Your Prisma schema is still just a Prisma scalar data type of `String`
 
 ```
-model Post {
+model Product {
   id                  Int      @id @default(autoincrement())
-  title               String
-  body                String
+  name                String
+  description         String
   currency_iso_4217   String   @default("USD")
   createdAt           DateTime @default(now())
 }
