@@ -218,9 +218,9 @@ const SignupPage = () => {
 export default SignupPage
 ```
 
-And now we'll attempt to create a new user in the `onSubmit` function with [`client.auth.signup()`](https://supabase.io/docs/reference/javascript/auth-signup) by passing in the `email` and `password` values that we've captured from our form:
+And now we'll attempt to create a new user in the `onSubmit` function with [`client.auth.signUp()`](https://supabase.io/docs/reference/javascript/auth-signup) by passing in the `email` and `password` values that we've captured from our form:
 
-```js {10-13}
+```js {10-18}
 // web/src/pages/SignupPage/SignupPage.[js/tsx]
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
@@ -229,11 +229,16 @@ import { useAuth } from '@redwoodjs/auth'
 const SignupPage = () => {
   const { client } = useAuth()
 
-  const onSubmit = (data) => {
-    client.auth
-      .signup(data.email, data.password)
-      .then((res) => console.log(res))
-      .catch((error) => console.log(error))
+  const onSubmit = async (data) => {
+    try {
+      const response = await client.auth.signUp({
+        email: data.email, 
+        password: data.password
+      })
+      console.log('response: ', response)
+    } catch(error) {
+      console.log('error:  ', error)
+    }
   }
 
   return (
@@ -254,7 +259,7 @@ Presently, our sign up will work as is, but simply console-logging the response 
 
 Let's display errors to the user if there is one. To do this, we'll set up `React.useState()` to manage our error state and conditionally render the error message if there is one. We'll also want to reset the error state at the beginning of every submission with `setError(null)`:
 
-```js {8,11,16,25}
+```js {8,11,18,20,28}
 // web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
@@ -264,15 +269,18 @@ const SignupPage = () => {
   const { client } = useAuth()
   const [error, setError] = React.useState(null)
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setError(null)
-    client
-      .signup(data.email, data.password)
-      .then((res) => {
-        console.log(res))
-        res?.error?.message && setError(res.error.message)
-      }
-      .catch((error) => setError(error.message))
+    try {
+      const response = await client.auth.signUp({
+        email: data.email, 
+        password: data.password
+      })
+      console.log('response: ', response)
+      response?.error?.message && setError(response.error.message)
+    } catch(error) {
+      setError(error.message)
+    }
   }
 
   return (
@@ -292,9 +300,9 @@ export default SignupPage
 
 > Note: Errors may be returned in two fashions:
 >
-> 1. Upon promise fulfillment, within the `error` property of the object returned by a promise (you can handle this via the `then` promise method), or...
+> 1. Upon promise fulfillment, within the `error` property of the object returned by the promise, or...
 >
-> 2. Upon promise rejection, within an error returned by the promise (you can handle this via the `catch` promise method).
+> 2. Upon promise rejection, within an error returned by the promise (you can handle this via the `catch` block).
 
 Now we can handle a successful submission. If we sign up without email validation, then successful sign up also _signs in_ the user.
 
@@ -306,7 +314,7 @@ yarn redwood generate page Home /
 
 Let's import `routes` and `navigate` from [Redwood Router](/docs/router#navigate) and use them to redirect to the home page upon successful sign up:
 
-```js {5,15}
+```js {5,18}
 // web/src/pages/SignupPage/SignupPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
@@ -317,13 +325,19 @@ const SignupPage = () => {
   const { client } = useAuth()
   const [error, setError] = React.useState(null)
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setError(null)
-    client
-      .signup(data.email, data.password)
-      .then((res) => (res?.error?.message ? setError(res.error.message) : navigate(routes.home())))
-      .catch((error) => setError(error.message))
+    try {
+      const response = await client.auth.signUp({
+        email: data.email, 
+        password: data.password
+      })
+      response?.error?.message ? setError(response.error.message) : navigate(routes.home())
+    } catch(error) {
+      setError(error.message)
+    }
   }
+
   return (
     <>
       <h1>Sign Up</h1>
@@ -411,9 +425,9 @@ const SigninPage = () => {
 export default SigninPage
 ```
 
-Now we'll add `logIn` to our `onSubmit` function. This time we'll be passing an object to our function as we're using Redwood Auth's logIn function directly (as opposed to `client`). This object takes an email and password. We'll also chain on `then` and `catch` to handle the response:
+Now we'll add `logIn` to our `onSubmit` function. This time we'll be passing an object to our function as we're using Redwood Auth's logIn function directly (as opposed to `client`). This object takes an email and password. 
 
-```js {12-16}
+```js {12-17}
 // web/src/pages/SigninPage/SigninPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
@@ -423,13 +437,14 @@ const SigninPage = () => {
   const { logIn } = useAuth()
   const [error, setError] = React.useState(null)
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setError(null)
-    logIn({ email: data.email, password: data.password })
-      .then(() => {
-        // do something
-      })
-      .catch((error) => setError(error.message))
+    try {
+      const response = await logIn({ email: data.email, password: data.password })
+      // do something
+    } catch(error) {
+      setError(error.message)
+    }
   }
 
   return (
@@ -452,7 +467,7 @@ Now then, upon a successful login let's redirect our user back to the home page.
 
 In our `SigninPage`, import `navigate` and `routes` from [`@redwoodjs/router`](/docs/router) and add them to the `then` function:
 
-```js {12-16}
+```js {12-18}
 // web/src/pages/SigninPage/SigninPage.js
 
 import { Form, TextField, PasswordField, Submit } from '@redwoodjs/forms'
@@ -463,11 +478,14 @@ const SigninPage = () => {
   const { logIn } = useAuth()
   const [error, setError] = React.useState(null)
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setError(null)
-    logIn({ email: data.email, password: data.password })
-      .then((res) => (res?.error?.message ? setError(res.error.message) : navigate(routes.home())))
-      .catch((error) => setError(error.message))
+    try {
+      const response = await logIn({ email: data.email, password: data.password })
+      response?.error?.message ? setError(response.error.message) : navigate(routes.home())
+    } catch(error) {
+      setError(error.message)
+    }
   }
 
   return (
@@ -538,7 +556,7 @@ export default SignoutBtn
 
 This works as is, but, because the user may be in a private area of your app when the Sign Out button is clicked, we should make sure we also navigate the user away from this page:
 
-```js {4,10}
+```js {4,10-11}
 // web/src/components/SignoutBtn/SignoutBtn.[js/tsx]
 
 import { useAuth } from '@redwoodjs/auth'
@@ -547,8 +565,9 @@ import { navigate, routes } from '@redwoodjs/router'
 const SignoutBtn = () => {
   const { logOut } = useAuth()
 
-  const onClick = () => {
-    logOut().then(() => navigate(routes.home()))
+  const onClick = async () => {
+    await logOut()
+    navigate(routes.home())
   }
 
   return <button onClick={() => onClick()}>Sign Out</button>
