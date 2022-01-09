@@ -1,4 +1,4 @@
-# Supabase GoTrue Auth
+# Supabase Auth
 
 Let's call this cookbook a port of the [Redwood GoTrue Auth Cookbook](/cookbook/gotrue-auth) to [Supabase](https://supabase.io/).
 
