@@ -719,11 +719,21 @@ Now we have navigation that renders the correct links and buttons based on our a
 
 We've configured Supabase GoTrue Auth with Redwood Auth, created a Sign Up page, a Sign In page, a Sign Out button, and added auth links to our layout. Nicely done!
 
-Finally, the following resources may come in handy:
+As you continue refining your app, the following resources may come in handy:
 
 - [Redwood Supabase Auth Installation & Setup](https://redwoodjs.com/docs/authentication#supabase)
 - [Redwood Auth Playground](https://redwood-playground-auth.netlify.app/supabase)
 - [Redwood Supabase Auth Client Implementation](https://github.com/redwoodjs/redwood/blob/main/packages/auth/src/authClients/supabase.ts)
+- [Supabase GoTrue client implementation](https://github.com/supabase/gotrue-js/blob/d7b334a4283027c65814aa81715ffead262f0bfa/src/GoTrueClient.ts)
+
+Finally, keep the following features in mind (potential future cookbooks could go deep into any of these):
+
+- Authentication state changes can be observed via an event listener.  The [Supabase auth playground example](https://github.com/redwoodjs/playground-auth/blob/main/web/src/lib/code-samples/supabase.md) shows an example.
+- Authentication options include...
+  - Passwordless (enter e-mail and get a magic confirmation link)
+  - Third party (via GitHub, Google, etc)
+  - Phone one-time-password
+  - Sign in with refresh token (JWT tokens are a critical part of the auth implementation)
 
 Thanks for tuning in!
 
