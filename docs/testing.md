@@ -666,6 +666,8 @@ Here we call `mockCurrentUser()` before the `render()` call. Right now our code 
 
 We introduced `waitFor()` which waits for a render update before passing/failing the expectation. Although `findByRole()` will wait for an update, it will raise an error if the element is not found (similar to `getByRole()`). So here we had to switch to `queryByRole()`, but that version isn't async, so we added `waitFor()` to get the async behavior back.
 
+The async behavior here is important. Even after setting the user with `mockCurrentUser()`, `currentUser` may be `null` during the initial render because it's being resolved. Waiting for a render update before passing/failing the exception gives the resolver a chance to execute and populate `currentUser`.
+
 > Figuring out which assertions need to be async and which ones don't can be frustrating, we know. If you get a failing test when using `screen` you'll see the output of the DOM dumped along with the failure message, which helps find what went wrong. You can see exactly what the test saw (or didn't see) in the DOM at the time of the failure.
 >
 > If you see some text rendering that you're sure shouldn't be there (because maybe you have a conditional around whether or not to display it) this is a good indication that the test isn't waiting for a render update that would cause that conditional to render the opposite output. Change to a `findBy*` query or wrap the `expect()` in a `waitFor()` and you should be good to go!
