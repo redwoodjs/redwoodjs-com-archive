@@ -71,11 +71,11 @@ mockGraphQLQuery('OperationName', (_variables, { ctx }) => {
 
 <br/>
 
-- `ctx.errors(e: GraphQLError)`: return an error object in the response:
+- `ctx.errors(e: GraphQLError[])`: return an error object in the response:
 
 ```js{2}
 mockGraphQLQuery('OperationName', (_variables, { ctx }) => {
-  ctx.errors({ message: 'Uh, oh!' })
+  ctx.errors([{ message: 'Uh, oh!' }])
 })
 ```
 
