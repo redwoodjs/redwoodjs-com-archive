@@ -37,7 +37,7 @@
     "markdown-it-highlight-lines": "^1.0.2",
     "markdown-it-toc-and-anchor": "^4.2.0",
     "marked": "^0.8.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "2.6.7",
     "npm": "^6.14.6",
     "param-case": "^3.0.3",
     "postcss-cli": "^7.1.0",
