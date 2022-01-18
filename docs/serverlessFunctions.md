@@ -719,15 +719,11 @@ If your function receives an incoming Webhook from a third party, see [Webhooks]
 
 ### Serverless Functions with Redwood User Authentication
 
-Redwood serverless functions support the same `requireAuth` user authentication system used by [GraphQL Directives](/graphql#secure-directives) to [secure your services](/graphql#secure-services).
+Serverless functions can use the same user-authentication strategy used by [GraphQL Directives](/docs/graphql#secure-directives) to [secure your services](/docs/graphql#secure-services) via the `useRequireAuth` wrapper.
 
-By wrapping the function handler in the `useRequireAuth` handler provided by the `'@redwoodjs/graphql-server` package, the function can use the same `currentUser` and role checks defined in your application's `auth.js/ts`.
+With the `useRequireAuth` wrapper, your serverless function can use the same `currentUser` and role checks defined in your application's `src/lib/auth.{js,ts}`.
 
-It will authenticate the request event and set the global context with the `currentUser` in the same manner that the GraphQLHandler does so your authenticated user is available in your application's services and anywhere else authentication is checked.
-
-It is important to note that if you intend to implement a feature that requires user authentication, then using GraphQL, auth directives and services is the preferred approach.
-
-In addition, if you need to protect an endpoint that does not require not user-based authentication, you should consider using [Webhooks](/webhooks) with a signed payload and verifier.
+> If you need to protect an endpoint via authentication that isn't user-based, you should consider using [Webhooks](/webhooks) with a signed payload and verifier.
 
 #### How to Secure a Function with Redwood Auth
 
@@ -767,6 +763,8 @@ export const handler = useRequireAuth({
 ```
 
 Now, anywhere context is used such as in services or when using hasRole from auth, the global context will have the currentUser set and you cna check the authentication state or if the use has roles.
+
+> It is important to note that if you intend to implement a feature that requires user authentication, then using GraphQL, auth directives and services is the preferred approach.
 
 #### Using your Authenticated Serverless Function
 

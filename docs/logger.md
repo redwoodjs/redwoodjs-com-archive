@@ -12,7 +12,6 @@ When choosing a Node.js logger to add to the framework, RedwoodJS required that 
 - Support key redaction to prevent passwords or tokens from leaking out
 - Save to a file in local (or other) environments that can write to the file system
 - Stream to third-party log and application monitoring services vital to production logging in serverless environments like [LogFlare](https://logflare.app/), [Datadog](https://www.datadoghq.com/) or [LogDNA](https://www.logdna.com/)
-
 - Hook into [Prisma logging](https://www.prisma.io/docs/concepts/components/prisma-client/working-with-prismaclient/logging) to give visibility into connection issues, slow queries, and any unexpected errors
 - Have a solid Developer experience (DX) to get logging out-of-the-gate quickly
 - Use a compact configuration to set how to log (its `options`) and where to log -- file, stdout, or remote transport stream -- (its `destination`)
@@ -310,7 +309,7 @@ Note that not all [known pino transports](https://github.com/pinojs/pino/blob/HE
 
 RedwoodJS provides an opinionated logger with sensible, practical defaults. These include:
 
-- # Colorize and emojify output with a custom LogFormatter
+- Colorize and emojify output with a custom LogFormatter
 - Ignore certain event attributes like hostname and pid for cleaner log statements
 - Prefix the log output with log level
 - Use a shorted log message that omits server name
