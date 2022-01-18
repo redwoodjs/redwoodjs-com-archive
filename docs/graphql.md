@@ -474,23 +474,25 @@ To fix these errors, simple declare with `@requireAuth` to enforce authenticatio
 
 ## Custom Scalars
 
-The GraphQL Specification has the `Int`, `Float`, `String`, `Boolean` and `ID` Scalar types by default. Those scalar types help you give meaning to the data as well as validate it. So, if in your mutation input type `ageInYears` is an `Int` you'll get a validation error if you pass a text value.
+GraphQL Scalar types help give data meaning and also to validate that its value makes sense. For example, if in your mutation input `ageInYears` is an `Int` you'll get a validation error if you try to pass a text value like `eleven` instead of `11`.
 
-However, sometimes you might need more specific scalars for your GraphQL application, to help you better describe and validate your application's data.
+Out of the box, the GraphQL includes the `Int`, `Float`, `String`, `Boolean` and `ID` Scalar types. However, sometimes you might need more specific scalars for your GraphQL application to help you better describe and validate your application's data.
 
 For example, if you have a `Person` type in your schema and that type has as field like `ageInYears`, the value of that can only be null or a positive integer -- it should never be zero or negative -- and then you could use the [`PositiveInt` scalar](https://www.graphql-scalars.dev/docs/scalars/positive-int).
 
-#### Scalars vs Service vs Directives
+### Why use custom scalars?
 
-Why use custom scalars? They help to:
+They help to:
 
 - Communicate to users of your schema exactly what they can expect for valid, meaningful values. By using scalars like [`Currency`](https://www.graphql-scalars.dev/docs/scalars/currency), [`PositiveInt`](https://www.graphql-scalars.dev/docs/scalars/positive-int), or [HexColorCode](https://www.graphql-scalars.dev/docs/scalars/hex-color-code) your schema more clearly describes what the data is.
 
 - Perform run-time type checking with strong typing of the interface (or schema) so you can have greater confidence about what your GraphQL api receives the client matches up with what you expect.
 
+#### Scalars vs Service vs Directives
+
 How are custom scalars different from Service Validations or Validator Directives?
 
-##### Service Validations
+#### Service Validations
 
 [Service validations](services.html#service-validations) check the data when resolving the service. Because they are included at the start of your Service function and will throw an error if conditions are not met, then they are great for validating any input whenever you use a service.
 
@@ -498,9 +500,9 @@ For example, they will validate data in your GraphQL and also if you use the ser
 
 Service validations also let you customize your validation message, while custom scalars do not.
 
-They also can perform checks that involve string ['length`](https://redwoodjs.com/docs/services#length), [`custom format`](https://redwoodjs.com/docs/services#length) or other more fine grained control of the data; while scalars are geared toward specific types of data/
+They also can perform checks that involve string [`length`](https://redwoodjs.com/docs/services#length), [`custom format`](https://redwoodjs.com/docs/services#length) or other more fine grained control of the data; while scalars are geared toward specific **types** of data.
 
-##### Validator Directives
+#### Validator Directives
 
 [Validator Directives](#directives) control user **access** to data and also whether or not a user is authorized to perform certain queries or mutations.
 
