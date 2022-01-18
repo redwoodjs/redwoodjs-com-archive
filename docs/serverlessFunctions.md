@@ -727,7 +727,7 @@ With the `useRequireAuth` wrapper, your serverless function can use the same `cu
 
 #### How to Secure a Function with Redwood Auth
 
-To support `requireAuth` in your serverless function:
+The `useRequireAuth` wrapper preps your context so that you can **use** any of the `requireAuth`-related authetnication helpers in your serverless function:
 
 - import `useRequireAuth` from `@redwoodjs/graphql-server`
 - import your application's custom `getCurrentUser` from `src/lib/auth`
@@ -762,7 +762,9 @@ export const handler = useRequireAuth({
 })
 ```
 
-Now, anywhere context is used such as in services or when using hasRole from auth, the global context will have the currentUser set and you cna check the authentication state or if the use has roles.
+Now, anywhere `context` is used such as in services or when using `hasRole()` or `isAuthenticated()` from your `lib/auth`, the global context will have the `currentUser` set and will be able to verify the authentication state or if the user has required roles.
+
+In short, you can now use the any of your `auth` functions like `isAuthenticated()` or `hasRole()` or `requireAuth()` in your function -- or in your services.
 
 > It is important to note that if you intend to implement a feature that requires user authentication, then using GraphQL, auth directives and services is the preferred approach.
 
