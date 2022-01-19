@@ -176,7 +176,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
 ```
 
-Sure, you could launch a browser or use Curl os some other manual approach and try out various combinations to test the success and error cases, but we want to automate the tests as part of our app's CI.
+Sure, you could launch a browser or use Curl or some other manual approach and try out various combinations to test the success and error cases, but we want to automate the tests as part of our app's CI.
 
 That means we need to write some tests.
 #### Function Unit Tests
