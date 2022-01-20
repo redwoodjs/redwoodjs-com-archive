@@ -452,7 +452,7 @@ This should be it for the limited scope of this project. We started by creating 
 
 To be a good Netizen we should add an "Unsubscribe" link to all outgoing newsletter emails, even the initial confirmation email. The initial email should also be a proper confirmation email where the user needs to click a link/button to confirm their email and that they actually do want to subscribe to the newsletter. Failing to do these two things will make Google and other email providers upset, and so they might eventually send your emails to the Spam folder, or even block you.
 
-Obviously could also spend some more time on the design, especially the confirmation part in the gui when clicking on the Subscribe button.
+Obviously we could also spend some more time on the design, especially the confirmation part in the gui when clicking on the Subscribe button.
 
 Like all demo apps we're also missing error handling. What happens for example if you try to subscribe again with an already subscribed email address?
 
