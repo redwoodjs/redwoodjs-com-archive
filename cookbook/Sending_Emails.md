@@ -1,6 +1,6 @@
 # Newsletter
 
-A common task many web apps need to do is to send emails. To demonstrate how this can be done with Redwood we're going to build a form that lets a user sign up for a newsletter. When doing so we'll send them a "welcome" email. The emails will be sent using the npm package nodemailer together with [SendInBlue](https://sendinblue.com).
+A common task many web apps need to do is to send emails. To demonstrate how this can be done with Redwood we're going to build a form that lets a user sign up for a newsletter. When doing so we'll send them a "welcome" email. The emails will be sent using the npm package [nodemailer](https://www.npmjs.com/package/nodemailer) together with [SendInBlue](https://sendinblue.com).
 
 This is what it will look like when it's done.
 
@@ -458,4 +458,4 @@ Like all demo apps we're also missing error handling. What happens for example i
 
 ### Thanks for reading
 
-Thanks for reading this! If you liked it, or have any questions, don't hesitate to reach out on our forums or in our Discord chat.
+Thanks for reading this! If you liked it, or have any questions, don't hesitate to reach out on [our forums](https://community.redwoodjs.com) or in our [Discord chat](https://discord.gg/jjSYEQd).
