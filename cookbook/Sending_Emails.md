@@ -74,11 +74,11 @@ Go ahead and create a few users. Since we're going to send emails to these users
 
 So if you create three users you should see something like this
 
-![Screenshot showing list scaffolded list of users, with three example users](https://cdn.hashnode.com/res/hashnode/image/upload/v1642771195298/mlLMTYS5to.png)
+![Screenshot showing list scaffolded list of users, with three example users](https://user-images.githubusercontent.com/30793/150651281-051d49d0-659c-481c-bed3-17a629d290e4.png)
 
 Clicking to show the details on one of the users you should see a page similar to what I have below here. To that page I've also added a button to send an email to the user. I'll show you how next!
 
-![Detailed view of single user, with button to send email](https://cdn.hashnode.com/res/hashnode/image/upload/v1642771378262/Dr7hJ5Kka.png)
+![Detailed view of single user, with button to send email](https://user-images.githubusercontent.com/30793/150651287-258e923e-9446-4bde-8e9c-c81275b8590c.png)
 
 ### Button to send email
 
@@ -253,15 +253,15 @@ To actually send an email you need a mail server that you can talk to using SMTP
 
 So go ahead and create an account with SendInBlue. They'll ask for an address and a phone number. They need it to prevent users from creating accounts to send spam emails from. When your account is created and set up you need to click on the menu in the upper right with your company name and select the "SMTP & API" option.
 
-![SendInBlue top right menu](https://cdn.hashnode.com/res/hashnode/image/upload/v1642405436724/qOhUvuGBs.png)
+![SendInBlue top right menu](https://user-images.githubusercontent.com/30793/150651291-21f5a7bd-6148-4cfe-97a1-2e9c3cab2d81.png)
 
 Then click on "SMTP"
 
-![SendInBlue SMTP tab-bar option](https://cdn.hashnode.com/res/hashnode/image/upload/v1642405474092/1JJ3ZvuK7.png)
+![SendInBlue SMTP tab-bar option](https://user-images.githubusercontent.com/30793/150651295-929e671a-da38-46ab-937c-a976b23a0fa0.png)
 
 Finally you need to generate a new SMTP key. Name it whatever you want, does't matter. You should get a dialog that looks like the screenshot below. Copy your key.
 
-![SendInBlue SMTP key dialog](https://cdn.hashnode.com/res/hashnode/image/upload/v1642405484911/8pLfO7S09.png)
+![SendInBlue SMTP key dialog](https://user-images.githubusercontent.com/30793/150651301-523750b3-7732-4a15-bc0e-746811a4bb20.png)
 
 Now switch to your code editor and open the `.env` file. At the bottom, on a new row, create a new environment variable called SEND_IN_BLUE_KEY. It should look like this, but with your unique key.
 
