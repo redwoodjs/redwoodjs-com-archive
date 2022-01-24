@@ -528,6 +528,186 @@ export const handler = createGraphQLHandler({
 
 > Note: Check-out the [in-depth look at Redwood Directives](https://www.redwoodjs.com/docs/directives) that explains how to generate directives so you may use them to validate access and transform the response.
 
+## Fragments
+
+[GraphQL Fragments](https://graphql.org/learn/queries/#fragments) let your components be more self-contained and simpler to refactor because they promote reuse by sharing fields between multiple queries and mutations.
+
+Let's say that everywhere you need to render a `Post`, you always need to show the same set of fields -- even nested fields, such as the `Author` name.
+
+To do that, you can declare a `PostDetails` fragment that can be used with any `Post` object:
+
+```graphql
+fragment PostDetails on Post {
+  id
+  title
+  body
+  author {
+    id
+    name
+  }
+}
+```
+
+You can now include the `PostDetails` fragment in any of your of queries and mutations that use `Post` objects, like:
+
+```graphql
+query FindPostQuery {
+  post(id: 1) {
+    ...PostDetails
+  }
+}
+```
+
+> You precede an included fragment with three periods (...), much like the spread syntax.
+
+Or, if you needed additional `Post` fields:
+
+```graphql
+query FindPostQuery {
+  post(id: 1) {
+    ...PostDetails
+    createdAt
+    updatedAt
+  }
+}
+```
+
+If you later change which fields are included in the `PostDetails` fragment, the up-to-date fields are automatically included in operations that use the fragment.
+
+And now, your fields for a `Post` can be consistent across any number of queries or mutations.
+
+### Setup
+
+The GraphQL VS Code extension needs to know the fragment exists, so you need to change your `graphql.config.js` to start referring to documents:
+
+```diff
+// graphql.config.js
+const { getPaths } = require("@redwoodjs/internal")
+
+module.exports = {
+   schema: getPaths().generated.schema,
++  documents: 'packages/app/src/components/**/*.ts',
+}
+```
+
+This means the extension will start looking for `gql` tags inside those `*.ts` files.
+
+### Implement Components and Fragments
+
+In our example where everywhere we render a `Post`, we always need to show the same set of fields, let's create `Post.tsx` which will later be used by the cell that renders a single Post and a cell that renders many posts. We'll not only reuse the layout, but the data queried as well.
+
+We'll always want to show `title`, `body`, created and update timestamps, and some `author` details -- that's a nested relationship.
+
+Co-locate your `PostDetails` fragment with your component by using an `export const` with a `gql` string:
+
+```tsx
+// web/src/components/Post/Post.tsx
+import { Link, routes } from '@redwoodjs/router'
+
+export const PostDetailsFragment = gql`
+  fragment PostDetails on Post {
+    id
+    title
+    body
+    createdAt
+    updatedAt
+    author {
+      id
+      name
+      email
+    }
+  }
+`
+
+export const Post = ({ post }) => {
+  return (
+    <div key={post.id}>
+      <Link to={routes.post({ id: post.id })}>
+        <h2>{post.title}</h2>
+        <p>{post.body}</p>
+        <div>
+          Contact {post.author.name} at {post.author.email}
+        </div>
+      </Link>
+    </div>
+  )
+}
+```
+
+You export the `PostDetails` fragment and the `Post` component so you can import these in other components or cells that want to reuse it.
+
+Then in the cell with the query import the fragment and use it:
+
+```ts
+// web/src/components/PostCell/PostCell.tsx
+import type { FindPostQuery } from 'types/graphql'
+import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
+
+import { Post, PostDetailsFragment } from 'src/components/Post/Post'
+
+export const QUERY = gql`
+  query FindPostQuery($id: Int!) {
+    post: post(id: $id) {
+      ...PostDetails
+    }
+  }
+  ${PostDetailsFragment}
+`
+
+export const Loading = () => <div>Loading...</div>
+
+export const Empty = () => <div>Empty</div>
+
+export const Failure = ({ error }: CellFailureProps) => (
+  <div style={{ color: 'red' }}>Error: {error.message}</div>
+)
+
+export const Success = ({ post }: CellSuccessProps<FindPostQuery>) => {
+  return <Post key={post.id} post={post} />
+}`
+```
+
+You can then use the same fragment and component in the "many posts" cell `PostsCell.tsx`:
+
+```ts
+// web/src/components/PostsCell/PostsCell.tsx
+import type { PostsQuery } from 'types/graphql'
+import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
+
+import { Post, PostDetailsFragment } from 'src/components/Post/Post'
+
+export const QUERY = gql`
+  query PostsQuery {
+    posts {
+      ...PostDetails
+    }
+  }
+  ${PostDetailsFragment}
+`
+
+export const Loading = () => <div>Loading...</div>
+
+export const Empty = () => <div>Empty</div>
+
+export const Failure = ({ error }: CellFailureProps) => <div style={{ color: 'red' }}>Error: {error.message}</div>
+
+export const Success = ({ posts }: CellSuccessProps<PostsQuery>) => {
+  return (
+    <ul>
+      {posts.map((item) => {
+        return <Post key={item.id} post={item} />
+      })}
+    </ul>
+  )
+}
+```
+
+To implement and use the fragment, notice that we:
+
+- Import the `Post` and `PostDetailsFragment` because it is declared in `Post.tsx`
+- Include the fragment by spreading `...PostDetails` within the query
+- Add the fragment definition to the query `gql` template literal via a placeholder `${PostDetailsFragment}`
+
 ## Logging
 
 Logging is essential in production apps to be alerted about critical errors and to be able to respond effectively to support issues. In staging and development environments, logging helps you debug queries, resolvers and cell requests.
