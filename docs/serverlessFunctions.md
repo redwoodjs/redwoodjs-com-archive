@@ -721,20 +721,18 @@ If your function receives an incoming Webhook from a third party, see [Webhooks]
 
 Serverless functions can use the same user-authentication strategy used by [GraphQL Directives](/docs/graphql#secure-directives) to [secure your services](/docs/graphql#secure-services) via the `useRequireAuth` wrapper.
 
-With the `useRequireAuth` wrapper, your serverless function can use the same `currentUser` and role checks defined in your application's `src/lib/auth.{js,ts}`.
-
 > If you need to protect an endpoint via authentication that isn't user-based, you should consider using [Webhooks](/webhooks) with a signed payload and verifier.
 
 #### How to Secure a Function with Redwood Auth
 
-The `useRequireAuth` wrapper preps your context so that you can **use** any of the `requireAuth`-related authetnication helpers in your serverless function:
+The `useRequireAuth` wrapper configures your handler's `context` so that you can use any of the `requireAuth`-related authentication helpers in your serverless function:
 
 - import `useRequireAuth` from `@redwoodjs/graphql-server`
-- import your application's custom `getCurrentUser` from `src/lib/auth`
-- implement your function as you would, but do not `export` it; see: `myHandler`.
-- export `handler` and pass your implementation and getCurrentUser to the `useRequireAuth` wrapper
+- import your app's custom `getCurrentUser` from `src/lib/auth`
+- implement your serverless function as you would, but do not `export` it (see `myHandler` below).
+- pass your implementation and `getCurrentUser` to the `useRequireAuth` wrapper and export its return
 
-```ts
+```ts{3,5,22-25}
 import type { APIGatewayEvent, Context } from 'aws-lambda'
 
 import { useRequireAuth } from '@redwoodjs/graphql-server'
@@ -762,11 +760,11 @@ export const handler = useRequireAuth({
 })
 ```
 
-Now, anywhere `context` is used such as in services or when using `hasRole()` or `isAuthenticated()` from your `lib/auth`, the global context will have the `currentUser` set and will be able to verify the authentication state or if the user has required roles.
+Now anywhere `context` is used, such as in services or when using `hasRole()` or `isAuthenticated()` from your `auth` lib, `currentUser` will be set and `requireAuth`-related functions will be able to verify the authentication state or if the user has the required roles.
 
-In short, you can now use the any of your `auth` functions like `isAuthenticated()` or `hasRole()` or `requireAuth()` in your function -- or in your services.
+In short, you can now use the any of your auth functions like `isAuthenticated()`, `hasRole()`, or `requireAuth()` in your serverless function.
 
-> It is important to note that if you intend to implement a feature that requires user authentication, then using GraphQL, auth directives and services is the preferred approach.
+> It's important to note that if you intend to implement a feature that requires user authentication, then using GraphQL, auth directives, and services is the preferred approach.
 
 #### Using your Authenticated Serverless Function
 
