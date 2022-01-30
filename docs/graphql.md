@@ -343,7 +343,7 @@ export const handler = createGraphQLHandler({
 })
 ```
 
-### Health Checks
+## Health Checks
 
 Health checks are used determine if a server is available and ready to start serving traffic. By default, Redwood's GraphQLHandler provides a health check endpoint at `/graphql/health` which returns a `200 status code` with a result of `{ status: 'pass' }` if the server is healthy and can accept requests or a `503 status code` with `{ status: fail }` if not.
 
@@ -471,6 +471,110 @@ api |     - deletePost Mutation
 ```
 
 To fix these errors, simple declare with `@requireAuth` to enforce authentication or `@skipAuth` to keep the operation public on each as appropriate for your app's permissions needs.
+
+## Custom Scalars
+
+GraphQL scalar types give data meaning and validate that their values makes sense. Out of the box, GraphQL comes with `Int`, `Float`, `String`, `Boolean` and `ID`. While those can cover a wide variety of use cases, you may need more specific scalar types to better describe and validate your application's data.
+
+For example, if there's a `Person` type in your schema that has a field like `ageInYears`, if it's actually supposed to represent a person's age, technically it should only be a positive integer—never a negative one. 
+Something like the [`PositiveInt` scalar](https://www.graphql-scalars.dev/docs/scalars/positive-int) provides that meaning and validation.
+
+### Scalars vs Service vs Directives
+
+How are custom scalars different from Service Validations or Validator Directives?
+
+[Service validations](services.html#service-validations) run when resolving the service. Because they run at the start of your Service function and throw if conditions aren't met, they're great for validating whenever you use a Service—anywhere, anytime.
+For example, they'll validate via GraphQL, Serverless Functions, webhooks, etc. Custom scalars, however, only validate via GraphQL and not anywhere else.
+
+Service validations also perform more fine-grained checks than scalars which are more geared toward validating that data is of a specific **type**.
+
+[Validator Directives](#directives) control user **access** to data and also whether or not a user is authorized to perform certain queries and/or mutations.
+
+### How To Add a Custom Scalar
+
+Let's say that you have a `Product` type that has three fields: a name, a description, and the type of currency. 
+The built-in `String` scalar should suffice for the first two, but for the third, you'd be better off with a more-specific `String` scalar that only accepts [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency codes, like `USD`, `EUR`, `CAD`, etc.
+Luckily there's already a [`Currency` scalar type](https://github.com/Urigo/graphql-scalars/blob/master/src/scalars/Currency.ts) that does exactly that!
+All you have to do is add it to your GraphQL schema.
+
+To add a custom scalar to your GraphQL schema:
+
+1. Add the scalar definition to one of your sdl files, such as `api/src/graphql/scalars.sdl.ts` 
+
+> Note that you may have to create this file. Moreover, it's just a convention—custom scalar type definitions can be in any of your sdl files.
+
+```js
+// api/src/graphql/scalars.sdl.ts
+
+export const schema = gql`
+  scalar Currency
+`
+```
+
+<br />
+
+2. Import the scalar's definition and resolver and pass them to your GraphQLHandler via the `schemaOptions` property:
+
+```ts{11-14}
+// api/src/functions/graphql.ts
+import { CurrencyDefinition, CurrencyResolver } from 'graphql-scalars'
+
+// ...
+
+export const handler = createGraphQLHandler({
+  loggerConfig: { logger, options: {} },
+  directives,
+  sdls,
+  services,
+  schemaOptions: {
+    typeDefs: [CurrencyDefinition],
+    resolvers: { Currency: CurrencyResolver },
+  },
+  onException: () => {
+    // Disconnect from your database with an unhandled exception.
+    db.$disconnect()
+  },
+})
+```
+
+<br />
+
+3. Use the scalar in your types
+
+```ts{6,18,24}
+export const schema = gql`
+  type Product {
+    id: Int!
+    name: String!
+    description: String!
+    currency_iso_4217: Currency! // validate on query
+    createdAt: DateTime!
+  }
+
+  type Query {
+    posts: [Product!]! @requireAuth
+    post(id: Int!): Product @requireAuth
+  }
+
+  input CreateProductInput {
+    name: String!
+    description: String!
+    currency_iso_4217: Currency! // validate on mutation 
+  }
+
+  input UpdateProductInput {
+    name: String
+    description: String
+    currency_iso_4217: Currency // validate on mutation 
+  }
+
+  type Mutation {
+    createProduct(input: CreateProductInput!): Product! @requireAuth
+    updateProduct(id: Int!, input: UpdateProductInput!): Product! @requireAuth
+    deleteProduct(id: Int!): Product! @requireAuth
+  }
+`
+```
 
 ## Directives
 
