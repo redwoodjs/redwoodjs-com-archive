@@ -474,77 +474,59 @@ To fix these errors, simple declare with `@requireAuth` to enforce authenticatio
 
 ## Custom Scalars
 
-GraphQL Scalar types help give data meaning and also to validate that its value makes sense. For example, if in your mutation input `ageInYears` is an `Int` you'll get a validation error if you try to pass a text value like `eleven` instead of `11`.
+GraphQL scalar types give data meaning and validate that their values makes sense. Out of the box, GraphQL comes with `Int`, `Float`, `String`, `Boolean` and `ID`. While those can cover a wide variety of use cases, you may need more specific scalar types to better describe and validate your application's data.
 
-Out of the box, the GraphQL includes the `Int`, `Float`, `String`, `Boolean` and `ID` Scalar types. However, sometimes you might need more specific scalars for your GraphQL application to help you better describe and validate your application's data.
+For example, if there's a `Person` type in your schema that has a field like `ageInYears`, if it's actually supposed to represent a person's age, technically it should only be a positive integer—never a negative one. 
+Something like the [`PositiveInt` scalar](https://www.graphql-scalars.dev/docs/scalars/positive-int) provides that meaning and validation.
 
-For example, if you have a `Person` type in your schema and that type has as field like `ageInYears`, the value of that can only be null or a positive integer -- it should never be zero or negative -- and then you could use the [`PositiveInt` scalar](https://www.graphql-scalars.dev/docs/scalars/positive-int).
-
-### Why use custom scalars?
-
-They help to:
-
-- Communicate to users of your schema exactly what they can expect for valid, meaningful values. By using scalars like [`Currency`](https://www.graphql-scalars.dev/docs/scalars/currency), [`PositiveInt`](https://www.graphql-scalars.dev/docs/scalars/positive-int), or [HexColorCode](https://www.graphql-scalars.dev/docs/scalars/hex-color-code) your schema more clearly describes what the data is.
-
-- Perform run-time type checking with strong typing of the interface (or schema) so you can have greater confidence about what your GraphQL api receives the client matches up with what you expect.
-
-#### Scalars vs Service vs Directives
+### Scalars vs Service vs Directives
 
 How are custom scalars different from Service Validations or Validator Directives?
 
-#### Service Validations
+[Service validations](services.html#service-validations) run when resolving the service. Because they run at the start of your Service function and throw if conditions aren't met, they're great for validating whenever you use a Service—anywhere, anytime.
+For example, they'll validate via GraphQL, Serverless Functions, webhooks, etc. Custom scalars, however, only validate via GraphQL and not anywhere else.
 
-[Service validations](services.html#service-validations) check the data when resolving the service. Because they are included at the start of your Service function and will throw an error if conditions are not met, then they are great for validating any input whenever you use a service.
+Service validations also perform more fine-grained checks than scalars which are more geared toward validating that data is of a specific **type**.
 
-For example, they will validate data in your GraphQL and also if you use the service in a serverless function or webhook or elsewhere in your api. Custom scalar, however, will only validate as part of the GraphQL request and no if you invoke your serve elsewhere.
+[Validator Directives](#directives) control user **access** to data and also whether or not a user is authorized to perform certain queries and/or mutations.
 
-Service validations also let you customize your validation message, while custom scalars do not.
+### How To Add a Custom Scalar
 
-They also can perform checks that involve string [`length`](https://redwoodjs.com/docs/services#length), [`custom format`](https://redwoodjs.com/docs/services#length) or other more fine grained control of the data; while scalars are geared toward specific **types** of data.
+Let's say that you have a `Product` type that has three fields: a name, a description, and the type of currency. 
+The built-in `String` scalar should suffice for the first two, but for the third, you'd be better off with a more-specific `String` scalar that only accepts [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency codes, like `USD`, `EUR`, `CAD`, etc.
+Luckily there's already a [`Currency` scalar type](https://github.com/Urigo/graphql-scalars/blob/master/src/scalars/Currency.ts) that does exactly that!
+All you have to do is add it to your GraphQL schema.
 
-#### Validator Directives
+To add a custom scalar to your GraphQL schema:
 
-[Validator Directives](#directives) control user **access** to data and also whether or not a user is authorized to perform certain queries or mutations.
+1. Add the scalar definition to one of your sdl files, such as `api/src/graphql/scalars.sdl.ts` 
 
-For example, they prevent accessing the email addresses other than one's own email address; or, updating a profile that is not their own.
+> Note that you may have to create this file. Moreover, it's just a convention—custom scalar type definitions can be in any of your sdl files.
 
-### Validation using Scalars
-
-Let's say that you have a `Product` that has a name, description and the type of currency.
-
-That means that you'll want a `String` field that stores -- and validates that only -- currency [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) codes like `USD`, `EUR`, `CAD`, etc.
-
-To ensure this validation rule, you can use [`Currency` scalar type](https://github.com/Urigo/graphql-scalars/blob/master/src/scalars/Currency.ts) that does the validation inside GraphQL for you.
-
-#### How To Add a Custom Scalar
-
-The steps to add a custom scalar to your GraphQL api are:
-
-1. Add the scalar definition in a sdl file `scalars.sdl.ts` (this is a convention to put all of them there but can be elsewhere in your SDL and types):
-
-```
+```js
 // api/src/graphql/scalars.sdl.ts
 
 export const schema = gql`
   scalar Currency
 `
-
 ```
 
-2. Import the scalar and provide to the GraphQLHandler in `schemaOptions`
+<br />
 
-```ts
+2. Import the scalar's definition and resolver and pass them to your GraphQLHandler via the `schemaOptions` property:
+
+```ts{11-14}
 // api/src/functions/graphql.ts
 import { CurrencyDefinition, CurrencyResolver } from 'graphql-scalars'
 
-...
+// ...
 
 export const handler = createGraphQLHandler({
   loggerConfig: { logger, options: {} },
   directives,
   sdls,
   services,
-  schemaOptions: { // <<---- here
+  schemaOptions: {
     typeDefs: [CurrencyDefinition],
     resolvers: { Currency: CurrencyResolver },
   },
@@ -553,18 +535,19 @@ export const handler = createGraphQLHandler({
     db.$disconnect()
   },
 })
-
 ```
 
-3. Use your scalar in your types
+<br />
 
-```ts
+3. Use the scalar in your types
+
+```ts{6,18,24}
 export const schema = gql`
   type Product {
     id: Int!
     name: String!
     description: String!
-    currency_iso_4217: Currency! // <--- here, note: will check in the response returned in query
+    currency_iso_4217: Currency! // validate on query
     createdAt: DateTime!
   }
 
@@ -576,13 +559,13 @@ export const schema = gql`
   input CreateProductInput {
     name: String!
     description: String!
-    currency_iso_4217: Currency! // <--- here, validate on mutation 
+    currency_iso_4217: Currency! // validate on mutation 
   }
 
   input UpdateProductInput {
     name: String
     description: String
-    currency_iso_4217: Currency // <--- here, validate on mutation 
+    currency_iso_4217: Currency // validate on mutation 
   }
 
   type Mutation {
@@ -591,19 +574,6 @@ export const schema = gql`
     deleteProduct(id: Int!): Product! @requireAuth
   }
 `
-```
-
-Note: Your Prisma schema is still just a Prisma scalar data type of `String`
-
-```
-model Product {
-  id                  Int      @id @default(autoincrement())
-  name                String
-  description         String
-  currency_iso_4217   String   @default("USD")
-  createdAt           DateTime @default(now())
-}
-
 ```
 
 ## Directives
