@@ -113,11 +113,8 @@ If you simply want to experience the Render deployment process, including a Post
 3. Your application is deployed! (e.g. [redwood-template.vercel.app](https://redwood-template.vercel.app/))
 
 ```bash
-$ npm i -g vercel
-$ vercel init redwoodjs
-Vercel CLI
-> Success! Initialized "redwoodjs" example in ~/your-folder.
-- To deploy, `cd redwoodjs` and run `vercel`.
+npm i -g vercel
+vercel init redwoodjs
 ```
 
 ### Vercel for Git
