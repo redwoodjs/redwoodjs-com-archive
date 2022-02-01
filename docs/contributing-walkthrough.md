@@ -84,7 +84,7 @@ We recently added an integration with [GitPod](http://gitpod.io) that automatica
 
 But don’t skip out reading the following steps in “Local Development Setup” — GitPod uses the same workflow and tools to initialize. If you want to develop in GitPod, you’ll need to understand how it all works.
 
-But when you’re ready, learn how to use it in the section at the end [“GitPod: Browser-based Development”](TODO).
+But when you’re ready, learn how to use it in the section at the end [“GitPod: Browser-based Development”](https://redwooodjs.com/docs/contributing-walkthrough#gitpod-browser-based-development).
 
 ### Local Development Setup
 #### Step 1: Redwood Framework
