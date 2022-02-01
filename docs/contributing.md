@@ -1,15 +1,70 @@
-# Contributing
+# Contributing: Overview and Orientation
 
-Love Redwood and want to get involved? You’re in the right place and in good company! As of this writing, there are more than [170 contributors](https://github.com/redwoodjs/redwood/blob/main/README.md#contributors) who have helped make Redwood awesome by contributing code and documentation. This doesn't include all those who participate in the vibrant, helpful, and encouraging Forums and Discord, which are both great places to get started if you have any questions.
+Love Redwood and want to get involved? You’re in the right place and in good company! As of this writing, there are more than [250 contributors](https://github.com/redwoodjs/redwood/blob/main/README.md#contributors) who have helped make Redwood awesome by contributing code and documentation. This doesn't include all those who participate in the vibrant, helpful, and encouraging Forums and Discord, which are both great places to get started if you have any questions.
 
 There are several ways you can contribute to Redwood:
 
-- join the [community Forums](https://community.redwoodjs.com/) and [Discord server](https://discord.gg/jjSYEQd)
-- triage [issues on the repo](https://github.com/redwoodjs/redwood/issues)
-- write and edit [docs](#contributing-docs)
-- and of course, write code!
+- join the [community Forums](https://community.redwoodjs.com/) and [Discord server](https://discord.gg/jjSYEQd) — enourage and help others 🙌
+- [triage issues on the repo](https://github.com/redwoodjs/redwood/issues) and [review PRs](https://github.com/redwoodjs/redwood/pulls) 🩺
+- write and edit [docs](#contributing-docs) ✍️
+- and of course, write code! 👩‍💻
 
-> Before interacting with the Redwood community, please read and understand our [Code of Conduct](https://github.com/redwoodjs/redwood/blob/main/CODE_OF_CONDUCT.md#contributor-covenant-code-of-conduct).
+_Before interacting with the Redwood community, please read and understand our [Code of Conduct](https://github.com/redwoodjs/redwood/blob/main/CODE_OF_CONDUCT.md#contributor-covenant-code-of-conduct)._
+
+> ⚡️ **Quick Links**  
+> There are several contributing docs and references, each covering specific topics:
+> 1. 🧭 **Overview and Orientation** (👈 you are here)
+> 2. 📓 [Reference: Contributing to the Framework Packages](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md)
+> 3. 🪜 [Step-by-step Walkthrough](https://redwoodjs.com/docs/contributing-walkthrough) (including Video Recording)
+> 4. 📈 [Current Project Status: v1 Release Board](https://github.com/orgs/redwoodjs/projects/6)
+> 5. 🤔 What should I work on?  
+>     - ["Help Wanted" v1 Triage Board](https://redwoodjs.com/good-first-issue)  
+>     - [Discovery Process and Open Issues](https://redwoodjs.com/docs/contributing#what-should-i-work-on)   
+
+## The Characteristics of a Contributor
+More than committing code, contributing is about human collaboration and relationship. Our community mantra is **“By helping each other be successful with Redwood, we make the Redwood project successful.”** We have a specific vision for the effect this project and community will have on you — it should give you superpowers to build+create, progress in skills, and help advance your career.
+
+So who do you need to become to achieve this? Specifically, what characteristics, skills, and capabilities will you need to cultivate through practice? Here are our suggestions:
+- Empathy
+- Gratitude
+- Generosity
+
+All of these are applicable in relation to both others and yourself. The goal of putting them into practice is to create trust that will be a catalyst for risk-taking (another word to describe this process is “learning”!). These are the ingredients necessary for productive, positive collaboration.
+
+And you thought all this was just about opening a PR 🤣 Yes, it’s a super rewarding experience. But that’s just the beginning!
+
+## What should I work on?
+Even if you know the mechanics, it’s hard to get started without a starting place. Our best advice is this — dive into the Redwood Tutorial, read the docs, and build your own experiment with Redwood. Along the way, you’ll find typos, out-of-date (or missing) documentation, code that could work better, or even opportunities for improving and adding features. You’ll be engaging in the Forums and Chat and developing a feel for priorities and needs. This way, you’ll naturally follow your own interests and sooner than later intersect “things you’re interested in” + “ways to help improve Redwood”.
+
+There are other more direct ways to get started as well, which are outlined below.
+
+### Roadmap to Redwood v1: Project Boards and GitHub Issues
+Over the next few months, our focus is to achieve a v1.0.0 release of Redwood. You can read Tom’s important announcement about the v1 release candidate process [via this forum post](https://community.redwoodjs.com/t/what-the-1-0-release-candidate-phase-means-and-when-1-0-will-drop/2604). 
+
+> What a v1 release candidate means:
+> 1. all core features are complete and 
+> 2. we are done making breaking changes
+>
+> During the release candidate cycle, we are completing all remaining tasks necessary to publish v1.0.0 GA.
+
+The Redwood Core Team is working publicly — progress is updated daily on the [Release Project Board](https://github.com/orgs/redwoodjs/projects/6). There’s also a Triage Board, including an important tab view of Issues that are priorities but need community help. 
+- 👉 **Start here**: [v1 Help Wanted tab on the Triage Project Board](https://github.com/orgs/redwoodjs/projects/4) (sorted by difficulty)
+
+
+Eventually, all this leads you back to Redwood’s GitHub Issues page. Here you’ll find open items that need help, which are organized by labels. There are four labels helpful for contributing:
+1. [Good First Issue](https://github.com/redwoodjs/redwood/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22): these items are more likely to be an accessible entry point to the Framework. It’s less about skill level and more about focused scope.
+2. [Help Wanted](https://github.com/redwoodjs/redwood/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22): these items especially need contribution help from the community.
+3. [v1 Priority](https://github.com/redwoodjs/redwood/issues?q=is%3Aissue+is%3Aopen+label%3Av1%2Fpriority+): to reach Redwood v1.0.0, we need to close all Issues with this label.
+4. [Bugs 🐛](https://github.com/redwoodjs/redwood/issues?q=is%3Aissue+is%3Aopen+label%3Abug%2Fconfirmed): Last but not least, we always need help with bugs. Some are technically less challenging than others. Sometimes the best way you can help is to attempt to reproduce the bug and confirm whether or not it’s still an issue.  
+
+**The sweet spot is a “v1 Priority” Issue that’s either a “Good First Issue” or “Help Wanted”.** Yes, please!
+
+### Create a New Issue
+Anyone can create a new Issue. If you’re not sure that your feature or idea is something to work on, start the discussion with an Issue. Describe the idea and problem + solution as clearly as possible, including examples or pseudo code if applicable. It’s also very helpful to `@` mention a maintainer or Core Team member that shares the area of interest.
+
+Just know that there’s a lot of Issues that shuffle every day. If no one replies, it’s just because people are busy. Reach out in the Forums, Chat, or comment in the Issue. We intend to reply to every Issue that’s opened. If yours doesn’t have a reply, then give us a nudge!
+
+Lastly, it can often be helpful to start with brief discussion in the community Chat or Forums. Sometimes that’s the quickest way to get feedback and a sense of priority before opening an Issue.
 
 ## Contributing Code
 
@@ -21,6 +76,7 @@ For details on contributing to a specific package, see the package's README (lin
 
 What you want to do not on the roadmap? Well, still go for it! We love spikes and proof-of-concepts. And if you have a question, just ask!
 
+### RedwoodJS Framework Packages
 |Package|Description|
 |:-|:-|
 |[`@redwoodjs/api-server`](https://github.com/redwoodjs/redwood/blob/main/packages/api-server/README.md)|Run a Redwood app using Express server (alternative to serverless API)|
@@ -90,3 +146,25 @@ So, after you've finished writing, reread what you wrote with the intention of m
 These docs are in the Framework repo, redwoodjs/redwood, and explain how to contribute to Redwood packages. They're the docs linked to in the table above.
 
 In general, they should consist of more straightforward explanations, are allowed to be technically heavy, and should be written for a more experienced audience. But as a best practice for collaborative projects, they should still provide a Vision + Roadmap and identify the project-point person(s) (or lead(s)).
+
+## What makes for a good Pull Request?
+In general, we don’t have a formal structure for PRs. Our goal is to make it as efficient as possible for anyone to open a PR. But there are some good practices, which are flexible. Just keep in mind that after opening a PR there’s more to do before getting to the finish line:
+1. Reviews from other contributors and maintainers
+2. Update code and, after maintainer approval, merge-in changes to the `main` branch
+3. Once PR is merged, it will be released and added to the next version Release Notes with a link for anyone to look at the PR and understand it. 
+
+Some tips and advice:
+- **Connect the dots and leave a breadcrumb**: link to related Issues, Forum discussions, etc. Help others follow the trail leading up to this PR.
+- **A Helpful Description**: What does the code in the PR do and what problem does it solve? How can someone use the code? Code sample, Screenshot, Quick Video… Any or all of this is so so good.
+- **Draft or Work in Progress**: You don’t have to finish the code to open a PR. Once you have a start, open it up! Most often the best way to move an Issue forward is to see the code in action. Also, often this helps identify ways forward before you spend a lot of time polishing.
+- **Questions, Items for Discussion, Etc.**: Another reason to open a Draft PR is to ask questions and get direction via review.
+- **Loop in a Maintainer for Feedback and Review**: ping someone with an `@`. And nudge again in a few days if there’s no reply. We appreciate it and truly don’t want the PR to get lost in the shuffle!
+- **Next Steps**: Once the PR is merged, will there be a follow up step? If so, link to an Issue. How about Docs to-do or Docs to-merge?    
+
+The best thing you can do is look through existing PRs, which will give you a feel for how things work and what you think is helpful.
+
+### Example PR
+If you’re looking for an example of “what makes a good PR”, look no further than this one by Kim-Adeline:
+- [Convert component generator to TS #632](https://github.com/redwoodjs/redwood/pull/632)
+
+Not every PR needs this much information. But it’s definitely helpful when it does!
