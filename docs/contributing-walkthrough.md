@@ -1,7 +1,9 @@
 # Contributing: Step-by-Step Walkthrough (with Video)
 
 > ⚡️ **Quick Links**  
+> 
 > There are several contributing docs and references, each covering specific topics:
+> 
 > 1. 🧭 [Overview and Orientation](https://redwoodjs.com/docs/contributing-overview.html)
 > 2. 📓 [Reference: Contributing to the Framework Packages](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md)
 > 3. 🪜 **Step-by-step Walkthrough** (👈 you are here)

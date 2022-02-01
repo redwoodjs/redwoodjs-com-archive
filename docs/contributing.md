@@ -12,7 +12,9 @@ There are several ways you can contribute to Redwood:
 _Before interacting with the Redwood community, please read and understand our [Code of Conduct](https://github.com/redwoodjs/redwood/blob/main/CODE_OF_CONDUCT.md#contributor-covenant-code-of-conduct)._
 
 > ⚡️ **Quick Links**  
+>
 > There are several contributing docs and references, each covering specific topics:
+>
 > 1. 🧭 **Overview and Orientation** (👈 you are here)
 > 2. 📓 [Reference: Contributing to the Framework Packages](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md)
 > 3. 🪜 [Step-by-step Walkthrough](https://redwoodjs.com/docs/contributing-walkthrough) (including Video Recording)
@@ -41,7 +43,8 @@ There are other more direct ways to get started as well, which are outlined belo
 ### Roadmap to Redwood v1: Project Boards and GitHub Issues
 Over the next few months, our focus is to achieve a v1.0.0 release of Redwood. You can read Tom’s important announcement about the v1 release candidate process [via this forum post](https://community.redwoodjs.com/t/what-the-1-0-release-candidate-phase-means-and-when-1-0-will-drop/2604). 
 
-> What a v1 release candidate means:
+> **What a v1 release candidate means:**
+>
 > 1. all core features are complete and 
 > 2. we are done making breaking changes
 >
