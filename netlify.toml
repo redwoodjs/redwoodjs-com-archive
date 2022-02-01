@@ -104,7 +104,11 @@ to = "/docs/connection-pooling"
 
 [[redirects]]
 from = "/guides/contributing"
-to = "/docs/contributing"
+to = "/docs/contributing-overview"
+
+[[redirects]]
+from = "/docs/contributing"
+to = "/docs/contributing-overview"
 
 [[redirects]]
 from = "/guides/redwood-s-http-server-for-serverless-functions"
