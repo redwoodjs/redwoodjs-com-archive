@@ -333,7 +333,7 @@ export const missingDivisor = () =>
   })
 ```
 
-The `missingDivisor()` fixture constructs and mocks the event for the test case -- that is, we don't provide a divisor value in the querystring parameters in the mocked http event.
+The `missingDivisor()` fixture constructs and mocks the event for the test case -- that is, we don't provide a divisor value in the `queryStringParameters` in the mocked http event.
 
 Now, let's use this fixture in a test by providing the handler with the event we mocked in the fixture:
 

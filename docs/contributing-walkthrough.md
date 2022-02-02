@@ -154,7 +154,7 @@ As project:sync starts up, it'll start logging to the console. In order, it:
 
 Step two is the only explicit change you'll see to your project. You'll see that a ton of packages have been added to your project's root package.json.
 
-All done? You’re ready to kill the link process with “ctrl + c”. You’ll need to confirm your root package.json no longer has the added dependencies. And, if you want to reset your test-proje, you should run `yarn install --force`.
+All done? You’re ready to kill the link process with “ctrl + c”. You’ll need to confirm your root package.json no longer has the added dependencies. And, if you want to reset your test-project, you should run `yarn install --force`.
 
 #### Step 4: Framework Package(s) Local Testing  
 Within your Framework directory, use the following tools and commands to test your code:
