@@ -98,7 +98,7 @@ The Api preset is slightly different in that:
 
 More details of this preset can be seen in the source here: [Jest Api Preset](https://github.com/redwoodjs/redwood/blob/main/packages/testing/config/jest/api/jest-preset.js)
 
-
+---
 ## GraphQL Codegen
 Redwood uses [GraphQL Code Generator](https://www.graphql-code-generator.com) under the hood for generating types for your GraphQL queries and mutations.
 
