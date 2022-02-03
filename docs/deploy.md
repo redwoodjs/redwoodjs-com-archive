@@ -208,16 +208,17 @@ You'll need to add a special flag to the deploy command for your first deploy:
 yarn rw deploy serverless --first-run
 ```
 
-The first time you deploy your app we'll first deploy just the API side. Once it's live we can get the URL that it's been deployed to, and add that as an environment variable so that web side will know what it is during build-time (it needs to know where to send GraphQL and function requests).
+The first time you deploy your app we'll first deploy just the API side. Once it's live we can get the URL that it's been deployed to and add that as an environment variable `API_URL` so that web side will know what it is during build-time (it needs to know where to send GraphQL and function requests).
 
-Half-way through the first deploy you'll be prompted if you want to add the API_URL to `.env.production` (which is similar to `.env` but is only used when `NODE_ENV=production`, like when building he web and api sides). Make sure you say `Y`es at this prompt and then it will continue to deploy the web side.
+Half-way through the first deploy you'll be asked if you want to add the API_URL to `.env.production` (which is similar to `.env` but is only used when `NODE_ENV=production`, like when building the web and api sides for deploy). Make sure you say `Y`es at this prompt and then it will continue to deploy the web side.
 
-Once that command completes you should see a message including the URL of your site! Open that URL and hopefully everything works as expected!
+Once that command completes you should see a message including the URL of your site—open that URL and hopefully everything works as expected!
 
 > **Heads up**
+>
 > If you're getting an error trying to load data from the API side, its possible you're still pointing at your local database.
+>
 > Remember to add a DATABASE_URL env var to your `.env.production` file that is created, pointing at the database you want to use on your deployed site. Since your stack is on AWS, RDS might be a good option, but you might find it easier/quicker to setup databases on other providers too, such as [Railway](https://railway.app/) or [Supabase](https://supabase.com/)
-
 
 ### Subsequent Deploys
 
@@ -225,11 +226,11 @@ From now on you can simply run `yarn rw deploy serverless` when you're ready to 
 
 ### Environment Variables
 
-For the api-side deployment, you'll need to list your environment variables in `api/serverless`. Check out `provider > environment`. You'll need to include your DATABASE_URL here, for example.
+For local deployment (meaning you're deploying from your own machine, or another that you're in control of) you can put any ENV vars that are production-only into `.env.production`. They will override any same-named vars in `.env`. Make sure neither of these files is checked into your code repository!
 
-No special setup is needed for environment variables on the web-side if you are deploying locally—you've already got all of the environment variables ready to go at build time. If you deploy from another server, or setup CI/CD on the Serverless Dashboard, you'll need to make sure your env vars are available there at build time.
+If you're setting up CI/CD and deploying from the Serverless Dashboard, you'll need to copy your required ENV vars up to your app on Serverless and then tell it where to get them from. In `api/serverless.yml` and `web/serverless.yml` look for the `provider > environment` section. You'll need to list any ENV vars here, using the `${param:VAR_NAME}` syntax, which means to get them from the Serverless Dashboard "parameters" (which is what they call environment variables, for some strange reason).
 
-> Note that Serverless has slightly different syntax for denoting env vars in `serverless.yml` if they are coming from the environment that the deploy is occuring on `${env:VAR_NAME}`, versus environment variables you want to pull from the Serverless Dashboard `${param:VAR_NAME}`.
+There are even more places you can get environment variables from, check out Serverless's [Variables documentation](https://www.serverless.com/framework/docs/providers/aws/guide/variables) for more.
 
 ### Serverless Dashboard
 
@@ -237,6 +238,29 @@ To integrate your site into the Serverless Dashboard, there are two ways:
 
 1. Run `yarn serverless login` and a browser *should* open asking you to allow permission. However, in our experience, this command will fail nearly 50% of the time complaining about an invalid URL. If it *does* work you can then run `yarn serverless` in both the `api` and `web` directories to link to them an existing app in the Dashboard, or you'll be prompted to create a new one. Future deploys will now be monitored on the Dashboard.
 2. You can manually add the `org` and `app` lines in `api/serverless.yml` and `web/serverless.yml`. You'll see example ones commented out near the top of the file.
+
+In addition to monitoring your deployments, you can have Serverless Dashboard actually do them for you once CI/CD passes. To configure this, you'll need to add a postinstall script in your root `package.json` to tell CI/CD how to prepare your files for deployment:
+
+```json
+// package.json
+
+"scripts": {
+  // ...
+  "postinstall": "yarn rw deploy serverless --pack-only"
+}
+```
+
+This prepares the files for deployment, but doesn't actually deploy. CI/CD will do that automatically.
+
+### Environments Besides Production
+
+By default we assume you want to deploy to a production environment, but Serverless lets you deploy anywhere. They call these destinations "stages", and in Redwood "production" is the default. Check out their [Managing Staging and Enviornments blog post](https://www.serverless.com/blog/stages-and-environments) for details.
+
+Once configured, just add the stage to your deploy command:
+
+```bash
+yarn rw deploy serverless --stage qa
+```
 
 ### Removing Your Deploy
 
