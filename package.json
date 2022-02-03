@@ -47,7 +47,7 @@
     "title-case": "3.0.3",
     "turbolinks": "5.2.0",
     "webpack": "4.46.0",
-    "webpack-cli": "3.3.12"
+    "webpack-cli": "4.9.2"
   },
   "peerDependencies": {
     "cameronjs": "^0.5.5"
