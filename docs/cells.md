@@ -66,11 +66,17 @@ With Cells, you have a total of seven exports to work with:
 
 Only `QUERY` and `Success` are required. If you don't export `Empty`, empty results are sent to `Success`, and if you don't export `Failure`, error is output to the console.
 
-`Loading`, `Empty`, `Failure`, and `Success` all have access to the same set of props, with `Failure` and `Success` getting exclusive access to `error` and `data` respectively. So, in addition to displaying the right component, a Cell funnels the right props to the right component.
+In addition to displaying the right component, Cells also make sure to funnel the right props to the right component.  `Loading`, `Empty`, `Failure`, and `Success` all have access to the props passed down from the Cell in good ol' React fashion, and most of `useQuery`'s return (more on that below). In addition to all those props, `Empty` and `Success` also get the `data` returned from the query and an `updating` boolean prop saying whether the Cell is currently fetching new data or not. `Failure` also gets `updating` and exclusive access to `error` and `errorCode`.
 
-This set of props is composed of:
-1) what's returned from Apollo Client's `Query` component, which is quite a few things&mdash;see their [API reference](https://www.apollographql.com/docs/react/api/react-components/#render-prop-function) for the full list (note that, as we just mentioned, `error` and `data` are only available to `Failure` and `Success` respectively)
-2) props passed down from the parent component in good ol' React fashion
+With this many props coming in, there's a risk of name clashing. A couple things to look out for are: 
+
+- Your Cell has a prop with the same name as root-level data returned by your query. 
+  - In this case, the root-level data overrides your prop. But since props double as query variables, you can destructure the `variables` prop that `useQuery` returns to retrieve it. Or you can just rename the prop on the Cell!
+
+- Your Cell has props or query results with the same name as any of `useQuery`'s returns. 
+  - In this case, `useQuery`'s returns overwrite the props and results.
+
+We mentioned above that Cells receive "most" of what's returned from `useQuery`. You can see exactly what `useQuery` returns in Apollo Client's [API reference](https://www.apollographql.com/docs/react/api/react/hooks/#result). Note that, as we just mentioned, `error` and `data` get some special treatment.
 
 ### QUERY
 
