@@ -218,6 +218,14 @@ Once that command completes you should see a message including the URL of your s
 
 From now on you can simply run `yarn rw deploy serverless` when you're ready to deploy (which will also be much faster).
 
+### Environment Variables
+
+For the api-side deployment, you'll need to list your environment variables in `api/serverless`. Check out `provider > environment`. You'll need to include your DATABASE_URL here, for example.
+
+No special setup is needed for environment variables on the web-side if you are deploying locally—you've already got all of the environment variables ready to go at build time. If you deploy from another server, or setup CI/CD on the Serverless Dashboard, you'll need to make sure your env vars are available there at build time.
+
+> Note that Serverless has slightly different syntax for denoting env vars in `serverless.yml` if they are coming from the environment that the deploy is occuring on `${env:VAR_NAME}`, versus environment variables you want to pull from the Serverless Dashboard `${param:VAR_NAME}`.
+
 ### Serverless Dashboard
 
 To integrate your site into the Serverless Dashboard, there are two ways:
