@@ -214,6 +214,11 @@ Half-way through the first deploy you'll be prompted if you want to add the API_
 
 Once that command completes you should see a message including the URL of your site! Open that URL and hopefully everything works as expected!
 
+> **Heads up**
+> If you're getting an error trying to load data from the API side, its possible you're still pointing at your local database.
+> Remember to add a DATABASE_URL env var to your `.env.production` file that is created, pointing at the database you want to use on your deployed site. Since your stack is on AWS, RDS might be a good option, but you might find it easier/quicker to setup databases on other providers too, such as [Railway](https://railway.app/) or [Supabase](https://supabase.com/)
+
+
 ### Subsequent Deploys
 
 From now on you can simply run `yarn rw deploy serverless` when you're ready to deploy (which will also be much faster).
