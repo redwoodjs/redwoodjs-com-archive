@@ -66,13 +66,17 @@ With Cells, you have a total of seven exports to work with:
 
 Only `QUERY` and `Success` are required. If you don't export `Empty`, empty results are sent to `Success`, and if you don't export `Failure`, error is output to the console.
 
-In addition to displaying the right component, Cells also make sure to funnel the right props to the right component.  `Loading`, `Empty`, `Failure`, and `Success` all have access to the props passed down from the Cell component in good ol' React fashion, and most of the information and functions returned by `useQuery`. In addition to all those props, `Empty` and `Success` also get the `data` returned from the query and an `updating` boolean prop saying whether the Cell is currently fetching new data or not. `Failure` also gets `updating` and exclusive access to `error` and `errorCode`.
+In addition to displaying the right component, Cells also make sure to funnel the right props to the right component.  `Loading`, `Empty`, `Failure`, and `Success` all have access to the props passed down from the Cell in good ol' React fashion, and most of `useQuery`'s return (more on that below). In addition to all those props, `Empty` and `Success` also get the `data` returned from the query and an `updating` boolean prop saying whether the Cell is currently fetching new data or not. `Failure` also gets `updating` and exclusive access to `error` and `errorCode`.
 
-With this many props coming in, there's a risk of name clashing. One thing to look out for is if you have a prop on a Cell with the same name as root-level data returned by your query. In this case the root-level data overrides your prop. But since props double as query variables, you can destructure the `variables` prop that `useQuery` returns to retrieve it. Or you can just rename the prop on the Cell!
+With this many props coming in, there's a risk of name clashing. A couple things to look out for are: 
 
-Another thing to look out for is if you have any props or query results with the same name as any of `useQuery`'s returns (more on that below). In that case, `useQuery`'s returns overwrite the props and results.
+- Your Cell has a prop with the same name as root-level data returned by your query. 
+  - In this case, the root-level data overrides your prop. But since props double as query variables, you can destructure the `variables` prop that `useQuery` returns to retrieve it. Or you can just rename the prop on the Cell!
 
-We mentioned above that Cells receive "most" of what's returned from `useQuery`. You can see exactly what `useQuery` returns in Apollo Client's [API reference](https://www.apollographql.com/docs/react/api/react-components/#render-prop-function). Note that, as we just mentioned, `error` and `data` get some special treatment.
+- Your Cell has props or query results with the same name as any of `useQuery`'s returns. 
+  - In this case, `useQuery`'s returns overwrite the props and results.
+
+We mentioned above that Cells receive "most" of what's returned from `useQuery`. You can see exactly what `useQuery` returns in Apollo Client's [API reference](https://www.apollographql.com/docs/react/api/react/hooks/#result). Note that, as we just mentioned, `error` and `data` get some special treatment.
 
 ### QUERY
 
