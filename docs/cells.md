@@ -66,11 +66,11 @@ With Cells, you have a total of seven exports to work with:
 
 Only `QUERY` and `Success` are required. If you don't export `Empty`, empty results are sent to `Success`, and if you don't export `Failure`, error is output to the console.
 
-`Loading`, `Empty`, `Failure`, and `Success` all have access to the same set of props, with `Failure` and `Success` getting exclusive access to `error` and `data` respectively. So, in addition to displaying the right component, a Cell funnels the right props to the right component.
+In addition to displaying the right component, a Cell also makes sure to funnel the right props to the right component.  `Loading`, `Empty`, `Failure`, and `Success` all have access to the props passed down from the Cell component in good ol' React fashion, and most of the information and functions returned by `useQuery`. In addition to all those props, `Empty` and `Success` also gets the `data` returned from the query and an `updating` boolean prop saying whether the Cell is currently fetching new data or not. `Failure` also has the `updating` props and additionally gets exclusive access to `error` and `errorCode`.
 
-This set of props is composed of:
-1) what's returned from Apollo Client's `Query` component, which is quite a few things&mdash;see their [API reference](https://www.apollographql.com/docs/react/api/react-components/#render-prop-function) for the full list (note that, as we just mentioned, `error` and `data` are only available to `Failure` and `Success` respectively)
-2) props passed down from the parent component in good ol' React fashion
+With this many props coming in, there is a risk of name clashes. One thing to look out for is if you have a prop on the Cell component with the same name as some root level data returned by your query. In this case the gql data will override your prop. However, as all props are sent as variables to the query, you can destructure the `variables` prop that `useQuery` returns to retrieve it. Or you can rename the prop you set on the parent Cell component. Another thing to look out for is if you have any props or query results with the same name as any of the things returned by `useQuery` (more info below). In that case the props and results will be overwritten.
+
+It was mentioned above that the Cell components receives "most" of what's returned from `useQuery`. If you're using the default Apollo Client you can see exactly what `useQuery` returns in Apollo Client's [API reference](https://www.apollographql.com/docs/react/api/react-components/#render-prop-function). Note that, as we just mentioned, `error` and `data` gets some special treatment by Redwood.
 
 ### QUERY
 
