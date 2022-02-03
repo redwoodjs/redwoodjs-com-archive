@@ -239,7 +239,7 @@ To integrate your site into the Serverless Dashboard, there are two ways:
 1. Run `yarn serverless login` and a browser *should* open asking you to allow permission. However, in our experience, this command will fail nearly 50% of the time complaining about an invalid URL. If it *does* work you can then run `yarn serverless` in both the `api` and `web` directories to link to them an existing app in the Dashboard, or you'll be prompted to create a new one. Future deploys will now be monitored on the Dashboard.
 2. You can manually add the `org` and `app` lines in `api/serverless.yml` and `web/serverless.yml`. You'll see example ones commented out near the top of the file.
 
-In addition to monitoring your deployments, you can have Serverless Dashboard actually do them for you once CI/CD passes. To configure this, you'll need to add a postinstall script in your root `package.json` to tell CI/CD how to prepare your files for deployment:
+In addition to monitoring your deployments, you can have Serverless Dashboard actually do them for you once CI/CD passes. To configure this, you'll need to add a `postinstall` script in your root `package.json` to tell CI/CD how to prepare your files for deployment:
 
 ```json
 // package.json
@@ -254,7 +254,7 @@ This prepares the files for deployment, but doesn't actually deploy. CI/CD will 
 
 ### Environments Besides Production
 
-By default we assume you want to deploy to a production environment, but Serverless lets you deploy anywhere. They call these destinations "stages", and in Redwood "production" is the default. Check out their [Managing Staging and Enviornments blog post](https://www.serverless.com/blog/stages-and-environments) for details.
+By default we assume you want to deploy to a production environment, but Serverless lets you deploy anywhere. They call these destinations "stages", and in Redwood "production" is the default. Check out their [Managing Staging and Environments blog post](https://www.serverless.com/blog/stages-and-environments) for details.
 
 Once configured, just add the stage to your deploy command:
 

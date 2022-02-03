@@ -206,7 +206,7 @@ When in doubt, just try first and ask for help and direction!
 
 **Demo of GitPod**  
 David briefly walks-through an automatically prebuilt GitPod workspace here:
-- [GitPod + RedwoodJS 3-minute Walkthough](https://youtu.be/_kMuTW3x--s)
+- [GitPod + RedwoodJS 3-minute Walkthrough](https://youtu.be/_kMuTW3x--s)
 
 Make sure you watch until the end where David shows how to set up your integration with GitHub and VS Code sync. 🤩
 
