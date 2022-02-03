@@ -2,14 +2,14 @@
 
 ## Babel
 
-Redwood comes with babel configured out of the box so that you can write modern JavaScript and TypeScript without needing to worry about transpilation at all.
+Out of the box Redwood configures [Babel](https://babeljs.io/) so that you can write modern JavaScript and TypeScript without needing to worry about transpilation at all.
 GraphQL tags, JSX, SVG imports—all of it's handled for you.
 
-For those well-versed in babel config, you can find Redwood's in [@redwoodjs/internal](https://github.com/redwoodjs/redwood/tree/main/packages/internal/src/build/babel).
+For those well-versed in Babel config, you can find Redwood's in [@redwoodjs/internal](https://github.com/redwoodjs/redwood/tree/main/packages/internal/src/build/babel).
 
 ### Configuring Babel
 
-For most projects, you won't need to configure babel at all, but if you need to you can configure each side (web, api) individually using side-specific `babel.config.js` files.
+For most projects, you won't need to configure Babel at all, but if you need to you can configure each side (web, api) individually using side-specific `babel.config.js` files.
 
 > **Heads up**
 >
@@ -20,7 +20,7 @@ Let's go over an example.
 
 #### Example: Adding Emotion
 
-Let's say we want to add the styling library [emotion](https://emotion.sh), which requires adding a babel plugin.
+Let's say we want to add the styling library [emotion](https://emotion.sh), which requires adding a Babel plugin.
 
 1. Create a `babel.config.js` file in `web`:
 ```shell
@@ -46,31 +46,32 @@ module.exports = {
 ```
 
 That's it!
-Now your custom web-side babel config will be merged with Redwood's.
-
----
+Now your custom web-side Babel config will be merged with Redwood's.
 
 ## Jest
 
-Redwood uses Jest underhood for testing on both the web and api sides.
+Redwood uses [Jest](https://jestjs.io/) for testing.
+Let's take a peek at how it's all configured.
 
-Let's take a peek at how they're configured.
-
-At the root of your project, is `jest.config.js` . It should look like this:
+At the root of your project is `jest.config.js`. 
+It should look like this:
 
 ```js
+// jest.config.js
+
 module.exports = {
   rootDir: '.',
   projects: ['<rootDir>/{*,!(node_modules)/**/}/jest.config.js'],
 }
 ```
 
-This just tells just that the actual configs sit in each individual side, in the `./web` and `./api` folders, allows just to pick up the individual settings for each side.
+This just tells Jest that the actual configs sit in each side—that is, in the `./web` and `./api` directories—and allows Jest to pick up the individual settings for each.
 
-The `rootDir` also makes sure that if you're running jest with the `--collectCoverage` flag, it will produce the report in your root folder.
+`rootDir` also makes sure that if you're running Jest with the `--collectCoverage` flag, it'll produce the report in the root directory.
 
 #### Web Jest Config
-THe web side's configuration sites in `./web/jest.config.js`
+
+The web side's configuration sits in `./web/jest.config.js`
 
 ```js
 const config = {
@@ -81,38 +82,39 @@ const config = {
 
 module.exports = config
 ```
-The latest configuration for redwood can always be seen within our project templates here: [Web jest config template](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/web/jest.config.js)
 
-The preset includes all settings required to handle testing with React & JSX, dealing with your cell mocks automatically, as well as babel transforms.
+> You can always see Redwood's latest configuration templates in the [create-redwood-app package](https://github.com/redwoodjs/redwood/blob/main/packages/create-redwood-app/template/web/jest.config.js).
 
-More details of this preset can be seen in the source here: [Jest Web Preset](https://github.com/redwoodjs/redwood/blob/main/packages/testing/config/jest/web/jest-preset.js)
-
+The preset includes all the setup required to test everything that's going on in web: rendering React components and transforming JSX, automatically mocking Cells, transpiling with Babel, mocking the Router and the GraphQL client—the list goes on!
+You can find all the details in the [source](https://github.com/redwoodjs/redwood/blob/main/packages/testing/config/jest/web/jest-preset.js).
 
 #### Api Side Config
-The Api side is also configured similarly, with the configuration sitting in `./api/jest.config.js`
 
-The Api preset is slightly different in that:
+The api side is configured similarly, with the configuration sitting in `./api/jest.config.js`.
+But the api preset is slightly different in that:
 
-**a)** It is configured to run tests serially (because scearios actually seed your test database)
-**b)** Has setup code to make sure your database is reset in between scenarios, and seeds your scenarios before running the test
+- it's configured to run tests serially (because Scenarios seed your test database)
+- it has setup code to make sure your database is 1) seeded before running tests 2) reset between Scenarios
 
-More details of this preset can be seen in the source here: [Jest Api Preset](https://github.com/redwoodjs/redwood/blob/main/packages/testing/config/jest/api/jest-preset.js)
+You can find all the details in the [source](https://github.com/redwoodjs/redwood/blob/main/packages/testing/config/jest/api/jest-preset.js).
 
----
 ## GraphQL Codegen
-Redwood uses [GraphQL Code Generator](https://www.graphql-code-generator.com) under the hood for generating types for your GraphQL queries and mutations.
 
-While the defaults are configured to JustWork™️ out of the box with Redwood generators, you can choose to customise them by adding a `./codegen.yml` file too the root of your project. Your custom settings will be merged with the built-in ones
+Redwood uses [GraphQL Code Generator](https://www.graphql-code-generator.com) to generate types for your GraphQL queries and mutations.
 
-Here's an example where all the generated types are transformmed to UPPERCASE
+While the defaults are configured so that things JustWork™️, you can customize them by adding a `./codegen.yml` file to the root of your project.
+Your custom settings will be merged with the built-in ones.
+
+> If you're curious about the built-in settings, they can be found in [this file](https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/generate/typeDefinitions.ts) in the Redwood source. Look for the `generateTypeDefGraphQLWeb` and `generateTypeDefGraphQLApi` functions.
+
+For example, adding this `codegen.yml` to the root of your project will transform all the generated types to UPPERCASE:
 
 ```yml
-# ./codegen.yml at the root of your project
+# ./codegen.yml
+
 config:
   namingConvention:
     typeNames: change-case-all#upperCase
 ```
 
-All the available options for this can be found on [graphql code generator site](https://www.graphql-code-generator.com/docs/config-reference/config-field)
-
-If you're curious about the built-in configurations, they can be found in [this file](https://github.com/redwoodjs/redwood/blob/main/packages/internal/src/generate/typeDefinitions.ts) in the Redwood source. Look for the `generateTypeDefGraphQLWeb` and `generateTypeDefGraphQLApi` functions
+[Here's the docs](https://www.graphql-code-generator.com/docs/config-reference/config-field) on configuring GraphQL Code Generator.
