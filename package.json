@@ -20,7 +20,7 @@
     "@fullhuman/postcss-purgecss": "2.3.0",
     "@octokit/rest": "16.43.2",
     "algoliasearch": "4.11.0",
-    "autoprefixer": "9.8.8",
+    "autoprefixer": "10.4.2",
     "blueimp-md5": "2.19.0",
     "cameronjs-html-webpack-plugin": "0.5.1",
     "clipboard": "2.0.8",
