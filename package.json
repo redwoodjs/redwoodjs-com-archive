@@ -41,7 +41,7 @@
     "param-case": "3.0.4",
     "postcss-cli": "7.1.2",
     "postcss-import": "12.0.1",
-    "postcss-nested": "4.2.3",
+    "postcss-nested": "5.0.6",
     "stimulus": "1.1.1",
     "tailwindcss": "1.9.6",
     "title-case": "3.0.3",
