@@ -96,21 +96,7 @@ From the root of your RedwoodJS project:
 yarn workspace web add -D @storybook/addons @storybook/theming
 ```
 
-Next, add the `@storybook/theming` addon to a new or existing `storybook.config.js` file.
-
-```js
-// web/config/storybook.config.js
-
-module.exports = {
-  // ...
-  addons: [
-    '@storybook/theming',
-    // ...
-  ],
-}
-```
-
-Finally, we'll configure our theme by creating a `storybook.manager.js` file. Below we're enabling Storybook's dark theme.
+Then, we'll configure our theme by creating a `storybook.manager.js` file. Below we're enabling Storybook's dark theme.
 
 ```js
 // web/config/storybook.manager.js
