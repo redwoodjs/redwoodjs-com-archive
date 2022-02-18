@@ -476,82 +476,57 @@ The following CLI command will install required packages and generate boilerplat
 yarn rw setup auth clerk
 ```
 
-_If you prefer to manually install the package and add code_, see the documented changes below in **Manual Setup**.
-
 #### Setup
 
-To get started with Clerk, sign up on [their website](https://clerk.dev/) and create an application.
+To get started with Clerk, sign up on [their website](https://clerk.dev/) and create an application, or follow their [RedwoodJS Blog Tutorial with Clerk](https://clerk.dev/tutorials/redwoodjs-blog-tutorial-with-clerk) that has an [example repo](https://github.com/redwoodjs/redwood-tutorial) already setup.
 
-Applications in Clerk have different instances - by default one for development, one for staging (preview builds), and one for production. You will need to pull two values from one of these instances. We recommend storing the development values in your local `.env` file and using the staging and production values in the appropriate env setups for your hosting platform when you deploy.
+It's important that the `ClerkAuthProvider` added to your `App.{js|ts}` file during setup is within the `RedwoodProvider` and around Redwood's `AuthProvider`:
 
-The two values you will need from Clerk are your instance's "Frontend API" url and an API key from your instance's settings. The Frontend API url should be stored in an `env` variable named `CLERK_FRONTEND_API_URL`. The API key should be named `CLERK_API_KEY`.
-
-Otherwise, feel free to configure your instances however you wish with regards to their appearance and functionality.
-
-> **Including Environment Variables in Serverless Deployment:** in addition to adding these env vars to your local `.env` file or deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given above, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`". You should expose the `CLERK_FRONTEND_API_URL` only to the `web` workspace and expose `CLERK_API_KEY` **only** to the `api` workspace.
-
-#### Manual Setup
-
-If you opt against using `yarn rw setup auth clerk`, you can instead make the required changes manually to add the basics of auth to your app.
-
-First, run this to add the required packages:
-
-```bash
-yarn workspace web add @redwoodjs/auth @clerk/clerk-react
-yarn workspace api add @redwoodjs/auth @clerk/clerk-sdk-node
-```
-
-Then, extract the relevant changes to your `App` file:
-
-```js
-// web/src/App.js
-import { AuthProvider } from '@redwoodjs/auth'
-import { ClerkProvider, ClerkLoaded, useClerk } from '@clerk/clerk-react'
-import { FatalErrorBoundary } from '@redwoodjs/web'
-import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
-
-import FatalErrorPage from 'src/pages/FatalErrorPage'
-import Routes from 'src/Routes'
-
-import './index.css'
-
-let clerk
-const ClerkAuthConsumer = ({ children }) => {
-  clerk = useClerk()
-  return React.cloneElement(children, { client: clerk })
-}
-
-const ClerkAuthProvider = ({ children }) => {
-  const frontendApi = process.env.CLERK_FRONTEND_API_URL
-  if (!frontendApi) {
-    throw new Error('Need to define env variable CLERK_FRONTEND_API_URL')
-  }
-
-  return (
-    <ClerkProvider frontendApi={frontendApi}>
-      <ClerkLoaded>
-        <ClerkAuthConsumer>{children}</ClerkAuthConsumer>
-      </ClerkLoaded>
-    </ClerkProvider>
-  )
-}
+```ts{6,12}
+// web/src/App.{js|ts}
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
-    <ClerkAuthProvider>
-      <AuthProvider client={clerk} type="clerk">
-        <RedwoodApolloProvider>
-          <Routes />
-        </RedwoodApolloProvider>
-      </AuthProvider>
-    </ClerkAuthProvider>
+    <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
+      <ClerkAuthProvider>
+        <AuthProvider type="clerk">
+          <RedwoodApolloProvider>
+            <Routes />
+          </RedwoodApolloProvider>
+        </AuthProvider>
+      </ClerkAuthProvider>
+    </RedwoodProvider>
   </FatalErrorBoundary>
 )
-
-export default App
 ```
 
-Then, provide your own implementations of `api/src/lib/auth.(j|t)s` and add current user to the API context in `api/src/functions/graphql.(j|t)s`. These are standard changes and not dependent on Clerk.
+The [RedwoodJS Blog Tutorial with Clerk](https://clerk.dev/tutorials/redwoodjs-blog-tutorial-with-clerk) also explains how to use `@clerk/clerk-react` components with Redwood's `useAuth()` hook:
+
+```ts
+import { UserButton, SignInButton } from '@clerk/clerk-react'
+
+// ...
+
+{
+  isAuthenticated ? (
+    <UserButton afterSignOutAll={window.location.href} />
+  ) : (
+    <SignInButton mode="modal">
+      <button>Log in</button>
+    </SignInButton>
+  )
+}
+```
+
+Applications in Clerk have different instances. By default, there's one for development, one for staging, and one for production. You'll need to pull two values from one of these instances. We recommend storing the development values in your local `.env` file and using the staging and production values in the appropriate env setups for your hosting platform when you deploy.
+
+The two values you'll need from Clerk are your instance's "Frontend API" url and an API key from your instance's settings. The Frontend API url should be stored in an env variable named `CLERK_FRONTEND_API_URL`. The API key should be named `CLERK_API_KEY`.
+
+Otherwise, feel free to configure your instances however you wish with regards to their appearance and functionality.
+
+> **Including Environment Variables in Serverless Deploys** 
+> 
+> In addition to adding these env vars to your local `.env` file or deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given above, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables). You should expose the `CLERK_FRONTEND_API_URL` only to the `web` workspace and expose `CLERK_API_KEY` **only** to the `api` workspace.
 
 #### Login and Logout Options
 
