@@ -478,11 +478,11 @@ yarn rw setup auth clerk
 
 #### Setup
 
-To get started with Clerk, sign up on [their website](https://clerk.dev/) and create an application -- or following their [RedwoodJS Blog Tutorial with Clerk](https://clerk.dev/tutorials/redwoodjs-blog-tutorial-with-clerk) that has an [example repo](https://github.com/redwoodjs/redwood-tutorial) already setup.
+To get started with Clerk, sign up on [their website](https://clerk.dev/) and create an application, or follow their [RedwoodJS Blog Tutorial with Clerk](https://clerk.dev/tutorials/redwoodjs-blog-tutorial-with-clerk) that has an [example repo](https://github.com/redwoodjs/redwood-tutorial) already setup.
 
-It is important that in your `App.{js|ts}` the `ClerkAuthProvider` created during auth setup is added within the `RedwoodProvider` and around Redwood's `AuthProvider`, seen here:
+It's important that the `ClerkAuthProvider` added to your `App.{js|ts}` file during setup is within the `RedwoodProvider` and around Redwood's `AuthProvider`:
 
-```ts
+```ts{6,12}
 // web/src/App.{js|ts}
 
 const App = () => (
@@ -500,10 +500,10 @@ const App = () => (
 )
 ```
 
-Their [RedwoodJS Blog Tutorial with Clerk](https://clerk.dev/tutorials/redwoodjs-blog-tutorial-with-clerk) will also explain how to use their `@clerk/clerk-react` components with Redwood's `useAuth()` hook, such as:
+The [RedwoodJS Blog Tutorial with Clerk](https://clerk.dev/tutorials/redwoodjs-blog-tutorial-with-clerk) also explains how to use `@clerk/clerk-react` components with Redwood's `useAuth()` hook:
 
 ```ts
-import { SignInButton, UserButton } from '@clerk/clerk-react'
+import { UserButton, SignInButton } from '@clerk/clerk-react'
 
 // ...
 
@@ -518,13 +518,15 @@ import { SignInButton, UserButton } from '@clerk/clerk-react'
 }
 ```
 
-Applications in Clerk have different instances - by default one for development, one for staging (preview builds), and one for production. You will need to pull two values from one of these instances. We recommend storing the development values in your local `.env` file and using the staging and production values in the appropriate env setups for your hosting platform when you deploy.
+Applications in Clerk have different instances. By default, there's one for development, one for staging, and one for production. You'll need to pull two values from one of these instances. We recommend storing the development values in your local `.env` file and using the staging and production values in the appropriate env setups for your hosting platform when you deploy.
 
-The two values you will need from Clerk are your instance's "Frontend API" url and an API key from your instance's settings. The Frontend API url should be stored in an `env` variable named `CLERK_FRONTEND_API_URL`. The API key should be named `CLERK_API_KEY`.
+The two values you'll need from Clerk are your instance's "Frontend API" url and an API key from your instance's settings. The Frontend API url should be stored in an env variable named `CLERK_FRONTEND_API_URL`. The API key should be named `CLERK_API_KEY`.
 
 Otherwise, feel free to configure your instances however you wish with regards to their appearance and functionality.
 
-> **Including Environment Variables in Serverless Deployment:** in addition to adding these env vars to your local `.env` file or deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given above, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables) to "Whitelist them in your `redwood.toml`". You should expose the `CLERK_FRONTEND_API_URL` only to the `web` workspace and expose `CLERK_API_KEY` **only** to the `api` workspace.
+> **Including Environment Variables in Serverless Deploys** 
+> 
+> In addition to adding these env vars to your local `.env` file or deployment hosting provider, you _must_ take an additional step to include them in your deployment build process. Using the names exactly as given above, follow the instructions in [this document](https://redwoodjs.com/docs/environment-variables). You should expose the `CLERK_FRONTEND_API_URL` only to the `web` workspace and expose `CLERK_API_KEY` **only** to the `api` workspace.
 
 #### Login and Logout Options
 
