@@ -174,7 +174,7 @@ const config = {
 
 You may elect to configure different `server.config.js` based on your deployment environment and take advantage of [# Using Environment Variables in redwood.toml](#using-environment-variables-in-redwoodtoml).
 
-Given an environment variable `DEPLOY_ENVIRONMENT` that declares `developmnent`, `staging`, `production`:
+Given an environment variable `DEPLOY_ENVIRONMENT` that declares `development`, `staging`, `production`:
 
 ```
 [api]

@@ -76,7 +76,7 @@ The web side's configuration sits in `./web/jest.config.js`
 const config = {
   rootDir: '../',
   preset: '@redwoodjs/testing/config/jest/web',
-  // ☝️ load the built-in Redwood Jest configuartion
+  // ☝️ load the built-in Redwood Jest configuration
 }
 
 module.exports = config
