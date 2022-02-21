@@ -293,6 +293,8 @@ Instead of forcing users to make heavy-use of `setValueAs` for custom coercion, 
 - `valueAsBoolean`
 - `valueAsJSON`
 
+Another nice thing Redwood does for you is automatically treat empty strings (`''`) as `undefined` for text input fields whose name ends in `Id` to make it easier to work with fields for optional database relations. You can disable this by marking the field required, by supplying your own `setValueAs` function, or by simply renaming the field.
+
 ## `<SelectField>`
 
 Renders an HTML `<select>` tag.
@@ -387,6 +389,8 @@ If `Option 3` is selected, the `<Form>`'s `onSubmit` function is passed data as 
   select: 3,
 }
 ```
+
+As with input fields, Redwood will automatically treat empty strings (`''`) as `undefined` for select fields whose name ends in `Id`. See the previous section about this for more info.
 
 ## `<FieldError>`
 
