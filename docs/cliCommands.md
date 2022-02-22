@@ -225,27 +225,30 @@ yarn redwood deploy <target>
 
 <br/>
 
-| Commands                      | Description                                                       |
-| :---------------------------- | :---------------------------------------------------------------- |
-| `aws <provider>`              | Deploy to AWS using the selected provider [choices: "serverless"] |
-| `netlify [...commands]`       | Build command for Netlify deploy                                  |
-| `render <side> [...commands]` | Build command for Render deploy                                   |
-| `vercel [...commands]`        | Build command for Vercel deploy                                   |
+| Commands                      | Description                              |
+|:------------------------------|:-----------------------------------------|
+| `serverless `                 | Deploy to AWS using Serverless framework |
+| `netlify [...commands]`       | Build command for Netlify deploy         |
+| `render <side> [...commands]` | Build command for Render deploy          |
+| `vercel [...commands]`        | Build command for Vercel deploy          |
 
-### deploy aws
+### deploy serverless
 
-Deploy to AWS using the selected provider
+Deploy to AWS CloudFront and Lambda using [Serverless](https://www.serverless.com/) framework
 
 ```
-yarn redwood deploy aws [provider]
+yarn redwood deploy serverless
 ```
 
 <br/>
 
-| Options & Arguments | Description                                                                      |
-| :------------------ | :------------------------------------------------------------------------------- |
-| `provider`          | AWS Deploy provider to configure [choices: "serverless"] [default: "serverless"] |
-| `--side`            | which Side(s)to deploy [choices: "api"] [default: "api"]                         |
+| Options & Arguments | Description                                                                                                                                 |
+|:--------------------|:--------------------------------------------------------------------------------------------------------------------------------------------|
+| `--side`            | which Side(s)to deploy [choices: "api", "web"] [default: "web","api"]                                                                       |
+| `--stage`           | serverless stage, see [serverless stage docs](https://www.serverless.com/blog/stages-and-environments) [default: "production"]              |
+| `--pack-only`       | Only package the build for deployment                                                                                                       |
+| `--first-run`       | Use this flag the first time you deploy. The first deploy wizard will walk you through configuring your web side to connect to the api side |
+
 
 ### deploy netlify
 
