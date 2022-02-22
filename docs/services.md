@@ -75,7 +75,7 @@ If you're using [Redwood's scaffolds](/docs/cli-commands.html#generate-scaffold)
 
 ![image](https://user-images.githubusercontent.com/300/138919184-89eddd9e-8ee7-4956-b7ed-ba8daaa0f6ea.png)
 
-Otherwise you'll need to use the `error` property that you can [destructure](https://www.apollographql.com/docs/react/data/mutations/#executing-a-mutation) from `useMutation()` and display an element containing the error message (Redwood's [form helpers](/docs/forms) will do some of the heavy lifing for you for displaying the error):
+Otherwise you'll need to use the `error` property that you can [destructure](https://www.apollographql.com/docs/react/data/mutations/#executing-a-mutation) from `useMutation()` and display an element containing the error message (Redwood's [form helpers](/docs/forms) will do some of the heavy lifting for you for displaying the error):
 
 ```javascript{13,21}
 import { Form, FormError, Label, TextField, Submit } from '@redwoodjs/forms'
