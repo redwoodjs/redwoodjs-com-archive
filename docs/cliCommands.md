@@ -1579,6 +1579,22 @@ yarn rw record init
 
 Redwood's companion CLI development tool. You'll be using this if you're contributing to Redwood. See [Contributing](https://github.com/redwoodjs/redwood/blob/main/CONTRIBUTING.md#cli-reference-redwood-tools) in the Redwood repo.
 
+## secret
+
+Generate a secret key using a cryptographically-secure source of entropy. Commonly used when setting up dbAuth.
+
+| Arguments & Options | Description                                        |
+| :------------------ | :------------------------------------------------- |
+| `--raw`             | Print just the key, without any informational text |
+
+### usage
+
+Using the `--raw` option you can easily append a secret key to your .env file, like so:
+
+```
+echo "SESSION_SECRET=$(yarn --silent rw g secret --raw)" >> .env
+```
+
 ## setup
 
 Initialize configuration and integrate third-party libraries effortlessly.
