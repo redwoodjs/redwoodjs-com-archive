@@ -269,8 +269,10 @@ In addition to creating all of the services necessary for your app to run, Serve
 You'll need to run this command in both the `api` and `web` directories:
 
 ```bash
-yarn serverless remove
+yarn serverless remove --stage production
 ```
+
+Note that `production` is the default stage when you deploy with `yarn rw serverless deploy` - if you have customised this, you have to use the same stage as you deployed with!
 
 This will take several minutes, so grab your favorite beverage and enjoy your new $0 monthly bill!
 
