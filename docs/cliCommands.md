@@ -396,6 +396,7 @@ Some generators require that their argument be a model in your `schema.prisma`. 
 | `page <name> [path]`   | Generate a page component                                                                             |
 | `scaffold <model>`     | Generate Pages, SDL, and Services files based on a given DB schema Model. Also accepts `<path/model>` |
 | `sdl <model>`          | Generate a GraphQL schema and service object                                                          |
+| `secret`               | Generate a secret key using a cryptographically-secure source of entropy                              |
 | `service <name>`       | Generate a service component                                                                          |
 | `types`                | Generate types and supplementary code                                                                 |
 | `script <name>`        | Generate a script that can use your services/libs to execute with `redwood exec script <name>`        |
@@ -1149,6 +1150,22 @@ export const User = {
     db.user.findUnique({ where: { id: root.id } }).profile(),
   }
 }
+```
+
+### generate secret
+
+Generate a secret key using a cryptographically-secure source of entropy. Commonly used when setting up dbAuth.
+
+| Arguments & Options | Description                                        |
+| :------------------ | :------------------------------------------------- |
+| `--raw`             | Print just the key, without any informational text |
+
+**Usage**
+
+Using the `--raw` option you can easily append a secret key to your .env file, like so:
+
+```
+echo "SESSION_SECRET=$(yarn --silent rw g secret --raw)" >> .env
 ```
 
 ### generate service
