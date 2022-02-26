@@ -1910,7 +1910,6 @@ A canary release is published to npm every time a PR is merged to the `main` bra
 | :-------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--dry-run, -d` | Check for outdated packages without upgrading                                                                                                                                                                      |
 | `--tag, -t`     | Choices are "canary", "rc", or a specific version (e.g. "0.19.3"). WARNING: Unstable releases in the case of "canary" and "rc", which will force upgrade packages to the most recent release of the specified tag. |
-| `--pr`          | Installs packages for the given PR                                                                                                                                                                                 |
 
 **Example**
 
@@ -1924,10 +1923,4 @@ Upgrade to a specific version:
 
 ```terminal
 yarn redwood upgrade -t 0.19.3
-```
-
-Upgrade using packages from PR #1714 (version tag provided in PR comments):
-
-```terminal
-yarn redwood upgrade --pr 1714:0.24.0-38ba18c
 ```
