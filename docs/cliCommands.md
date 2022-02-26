@@ -191,7 +191,7 @@ $ /redwood-app/node_modules/.bin/dev-server
 15:04:51 api | ► http://localhost:8911/graphql/
 ```
 
-Using `--forward` (alias `--fwd`), you can pass one or more Webpack Dev Server [config options](https://webpack.js.org/configuration/dev-server/). The following will run the dev server, set the port to `1234`, and disable automatic browser https://github.com/redwoodjs/deploy-target-ci/issues/14ing.
+Using `--forward` (alias `--fwd`), you can pass one or more Webpack Dev Server [config options](https://webpack.js.org/configuration/dev-server/). The following will run the dev server, set the port to `1234`, and disable automatic browser opening.
 
 ```bash
 ~/redwood-app$ yarn redwood dev --fwd="--port=1234 --open=false"
