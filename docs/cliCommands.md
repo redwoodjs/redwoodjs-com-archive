@@ -1338,14 +1338,6 @@ yarn redwood lint
 | :------ | :---------------- |
 | `--fix` | Try to fix errors |
 
-## open
-
-Open your project in your browser.
-
-```terminal
-yarn redwood open
-```
-
 ## prisma
 
 Run Prisma CLI with experimental features.
