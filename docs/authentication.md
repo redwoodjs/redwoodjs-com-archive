@@ -197,27 +197,14 @@ cookie: {
   HttpOnly: true,
   Path: '/',
   SameSite: 'Strict',
-  Secure: process.env.NODE_ENV !== 'development',
+  Secure: true,
   // Domain: 'example.com',
 }
 ```
 
 #### CORS config
 
-CORS stands for [Cross Origin Resource Sharing](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing); in a nutshell, by default, browsers aren't allowed to access resources outside their own domain.
-
-If you deploy to production, and your web and api sides are on different domains, you may see an error similar to this in your Web Inspector:
-
-> Access to fetch [URL here] has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
-
-When you see this you'll know it's time to configure CORS. To do so, add the `cors` property to the config options sent to `DbAuthHandler()` in `api/src/functions/auth.js`:
-
-```javascript
-cors: {
-  origin: 'https://example.com',
-  credentials: true
-}
-```
+If you're using dbAuth and your api and web sides are deployed to different domains then you'll need to configure CORS for both GraphQL in general and dbAuth. You'll also need to enable a couple of options to be sure and send/accept credentials in XHR requests. For more info, see the complete [CORS doc](/docs/cors#cors-and-authentication).
 
 #### Error Messages
 
