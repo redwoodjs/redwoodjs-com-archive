@@ -201,9 +201,9 @@ You'll see that formatted output by default when you launch your RedwoodJS app u
 yarn rw dev
 ```
 
-### Screenshots
+### Examples
 
-The following screenshots show how log formatting out may look in your development environment.
+The following examples and screenshots show how log formatting output may look in your development environment.
 
 Notice how the emoji help identify the level, such as 🐛 for `debug` and 🌲 for `info`.
 
@@ -212,6 +212,61 @@ Notice how the emoji help identify the level, such as 🐛 for `debug` and 🌲 
 Simple request and with basic GraphQL output.
 
 ![Screen Shot 2021-12-22 at 1 41 46 PM](https://user-images.githubusercontent.com/1051633/147141091-ab27e5f0-4b90-4114-9452-c095df5e2516.png)
+
+#### With a Custom Payload
+
+Sometimes you will want to log a custom message or payload object that isn't one of the predefined `query` or `data` options.
+
+> In these examples, the `post` is a blog post with a `id`, `title`, `commentCount`, and `description`.
+
+You can use the `custom` option:
+
+```ts
+logger.debug({ custom: post.title }, 'The title of a Post')
+```
+
+Or, you can also log a custom object payload:
+
+```ts
+logger.debug(
+  {
+    custom: {
+      title: post.title,
+      comments: post.commentCount,
+    },
+  },
+  'Post with count of comments'
+)
+```
+
+Or, a more nested payload:
+
+```ts
+logger.debug(
+  {
+    custom: {
+      title: post.title,
+      details: {
+        id: post.id,
+        description: post.description,
+        comments: post.commentCount,
+      },
+    },
+  },
+  'Post details'
+)
+```
+
+Or, an entire object:
+
+```ts
+logger.debug(
+  {
+    custom: post,
+  },
+  'Post details'
+)
+```
 
 #### With GraphQL Options
 
