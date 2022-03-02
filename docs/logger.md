@@ -215,7 +215,7 @@ Simple request and with basic GraphQL output.
 
 #### With a Custom Payload
 
-Sometimes you will want to log a custom message or payload object that isn't one of the predefined `query` or `data` options.
+Sometimes you will want to log a 🗒 Custom message or payload object that isn't one of the predefined `query` or `data` options.
 
 > In these examples, the `post` is a blog post with a `id`, `title`, `commentCount`, and `description`.
 
