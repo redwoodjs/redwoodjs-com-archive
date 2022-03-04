@@ -1,6 +1,6 @@
 # Testing
 
-Testing. For some it's an essential part of their development workflow. For others it's something they know they *should* do, but for whatever reason it hasn't struck their fancy yet. For others still it's something they ignore completely, hoping the whole concept will go away. But tests are here to stay, and maybe Redwood can change some opinions about testing being awesome and fun.
+Testing. For some it's an essential part of their development workflow. For others it's something they know they _should_ do, but for whatever reason it hasn't struck their fancy yet. For others still it's something they ignore completely, hoping the whole concept will go away. But tests are here to stay, and maybe Redwood can change some opinions about testing being awesome and fun.
 
 ## Introduction to Testing
 
@@ -8,7 +8,7 @@ If you're already familiar with the ins and outs of testing and just want to kno
 
 ## Building a Test Runner
 
-The idea of testing is pretty simple: for each "unit" of code you write, you write additional code that exercises that unit and makes sure it works as expected. What's a "unit" of code? That's for you to decide: it could be an entire class, a single function, or even a single line! In general, the smaller the unit, the better. Your tests will stay fast and focused on just one thing, which makes them easy to update when you refactor. The important thing is that you start *somewhere* and codify your code's functionality in a repeatable, verifiable way.
+The idea of testing is pretty simple: for each "unit" of code you write, you write additional code that exercises that unit and makes sure it works as expected. What's a "unit" of code? That's for you to decide: it could be an entire class, a single function, or even a single line! In general, the smaller the unit, the better. Your tests will stay fast and focused on just one thing, which makes them easy to update when you refactor. The important thing is that you start _somewhere_ and codify your code's functionality in a repeatable, verifiable way.
 
 Let's say we write a function that adds two numbers together:
 
@@ -32,7 +32,7 @@ if (add(1, 1) === 2) {
 }
 ```
 
-Pretty simple, right? The secret is that this simple check *is the basis of all testing*. Yes, that's it. So no matter how convoluted and theoretical the discussions on testing get, just remember that at the end of the day you're testing whether a condition is true or false.
+Pretty simple, right? The secret is that this simple check _is the basis of all testing_. Yes, that's it. So no matter how convoluted and theoretical the discussions on testing get, just remember that at the end of the day you're testing whether a condition is true or false.
 
 ### Running a Test
 
@@ -48,23 +48,23 @@ You should see "pass" written to the output. To verify that our test is working 
 
 Let's get to some terminology:
 
-* The entire code block that checks the functionality of `add()` is what's considered a single **test**
-* The specific check that `add(1, 1) === 2` is known as an **assertion**
-* The `add()` function itself is the **subject** of the test, or the code that is **under test**
-* The value you expect to get (in our example, that's the number `2`) is sometimes called the **expected value**
-* The value you actually get (whatever the output of `add(1, 1)` is) is sometimes called the **actual** or **received value**
-* The file that contains the test is a **test file**
-* Multiple test files, all run together, is known as a **test suite**
-* You'll generally run your test files and suites with another piece of software. In Redwood that's Jest, and it's known as a **test runner**
-* The amount of code you have that is exercised by tests is referred to as **coverage** and is usually reported as a percentage. If every single line of code is touched as a result of running your test suite then you have 100% coverage!
+- The entire code block that checks the functionality of `add()` is what's considered a single **test**
+- The specific check that `add(1, 1) === 2` is known as an **assertion**
+- The `add()` function itself is the **subject** of the test, or the code that is **under test**
+- The value you expect to get (in our example, that's the number `2`) is sometimes called the **expected value**
+- The value you actually get (whatever the output of `add(1, 1)` is) is sometimes called the **actual** or **received value**
+- The file that contains the test is a **test file**
+- Multiple test files, all run together, is known as a **test suite**
+- You'll generally run your test files and suites with another piece of software. In Redwood that's Jest, and it's known as a **test runner**
+- The amount of code you have that is exercised by tests is referred to as **coverage** and is usually reported as a percentage. If every single line of code is touched as a result of running your test suite then you have 100% coverage!
 
 This is the basic idea behind all the tests you'll write: when you add code, you'll add another piece of code that uses the first and verifies that the result is what you expect.
 
-Tests can also help drive new development. For example, what happens to our `add()` function if you leave out one of the arguments? We can drive these changes by writing a test of what we *want* to happen, and then modify the code that's being tested (the subject) to make it satisfy the assertion(s).
+Tests can also help drive new development. For example, what happens to our `add()` function if you leave out one of the arguments? We can drive these changes by writing a test of what we _want_ to happen, and then modify the code that's being tested (the subject) to make it satisfy the assertion(s).
 
 ### Expecting Errors
 
-So, what does happen if we leave off an argument when calling `add()`? Well, what do we *want* to happen? We'll answer that question by writing a test for what we expect. For this example let's have it throw an error. We'll write the test first that expects the error:
+So, what does happen if we leave off an argument when calling `add()`? Well, what do we _want_ to happen? We'll answer that question by writing a test for what we expect. For this example let's have it throw an error. We'll write the test first that expects the error:
 
 ```javascript
 try {
@@ -78,17 +78,17 @@ try {
 }
 ```
 
-This is interesting because we actually *expect* an error to be thrown, but we don't want that error to stop the test suite in it's tracks—we want the error to be raised, we just want to make sure it's exactly what we expect it to be! So we'll surround the code that's going to error in a try/catch block and inspect the error message. If it's what we want, then the test actually passes.
+This is interesting because we actually _expect_ an error to be thrown, but we don't want that error to stop the test suite in it's tracks—we want the error to be raised, we just want to make sure it's exactly what we expect it to be! So we'll surround the code that's going to error in a try/catch block and inspect the error message. If it's what we want, then the test actually passes.
 
-> Remember: we're testing for what we *want* to happen. Usually you think of errors as being "bad" but in this case we *want* the code to throw an error, so if it does, that's actually good! Raising an error passes the test, not raising the error (or raising the wrong error) is a failure.
+> Remember: we're testing for what we _want_ to happen. Usually you think of errors as being "bad" but in this case we _want_ the code to throw an error, so if it does, that's actually good! Raising an error passes the test, not raising the error (or raising the wrong error) is a failure.
 
 Run this test and what happens? (If you previously made a change to `add()` to see the test fail, change it back now):
 
 <iframe width="100%" height="300" src="//jsfiddle.net/cannikin/mgy4ja1q/6/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0" class="border"></iframe>
 
-Where did *that* come from? Well, our subject `add()` didn't raise any errors (Javascript doesn't care about the number of arguments passed to a function) and so it tried to add `1` to `undefined`, and that's Not A Number. We didn't think about that! Testing is already helping us catch edge cases.
+Where did _that_ come from? Well, our subject `add()` didn't raise any errors (Javascript doesn't care about the number of arguments passed to a function) and so it tried to add `1` to `undefined`, and that's Not A Number. We didn't think about that! Testing is already helping us catch edge cases.
 
-To respond properly to this case we'll make one slight modification: add another "fail" log message if the code somehow gets past the call to `add(1)` *without* throwing an error:
+To respond properly to this case we'll make one slight modification: add another "fail" log message if the code somehow gets past the call to `add(1)` _without_ throwing an error:
 
 ```javascript{3,8}
 try {
@@ -154,9 +154,9 @@ Are you convinced? Let's keep going and see what Redwood brings to the table.
 
 Redwood relies on several packages to do the heavy lifting, but many are wrapped in Redwood's own functionality which makes them even better suited to their individual jobs:
 
-* [Jest](https://jestjs.io/)
-* [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
-* [Mock Service Worker](https://mswjs.io/) or **msw** for short.
+- [Jest](https://jestjs.io/)
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+- [Mock Service Worker](https://mswjs.io/) or **msw** for short.
 
 Redwood Generators get your test suite bootstrapped. Redwood also includes [Storybook](https://storybook.js.org/), which isn't technically a test suite, but can help in other ways.
 
@@ -178,7 +178,7 @@ Among other things, Mock Service Worker (msw) lets you simulate the response fro
 
 Storybook itself doesn't appear to be related to testing at all—it's for building and styling components in isolation from your main application—but it can serve as a sanity check for an overlooked part of testing: the user interface. Your tests will only be as good as you write them, and testing things like the alignment of text on the page, the inclusion of images, or animation can be very difficult without investing huge amounts of time and effort. These tests are also very brittle since, depending on how they're written, they can break without any code changes at all! Imagine an integration with a CMS that allows a marketing person to make text/style changes. These changes will probably not be covered by your test suite, but could make your site unusable depending on how bad they are.
 
-Storybook can provide a quick way to inspect all visual aspects of your site without the tried-and-true method of having a QA person log in and exercise every possible function. Unfortunately, checking those UI elements is not something that Storybook can automate for you, and so can't be part of a continuous integration system. But it makes it *possible* to do so, even if it currently requires a human touch.
+Storybook can provide a quick way to inspect all visual aspects of your site without the tried-and-true method of having a QA person log in and exercise every possible function. Unfortunately, checking those UI elements is not something that Storybook can automate for you, and so can't be part of a continuous integration system. But it makes it _possible_ to do so, even if it currently requires a human touch.
 
 ### Redwood Generators
 
@@ -202,7 +202,6 @@ yarn rw test --no-watch
 
 This one is handy before committing some changes to be sure you didn't inadvertently break something you didn't expect, or before a deploy to production.
 
-
 ### Filtering what tests to run
 
 You can run only the web- or api-side test suites by including the side as another argument to the command:
@@ -223,6 +222,7 @@ If you need to be more specific, you can combine side filters, with other filter
 ```terminal
 yarn rw test api Comment
 ```
+
 which will only run test specs matching "Comment" in the API side
 
 ## Testing Components
@@ -255,11 +255,11 @@ This test (if it worked) would prove that you are indeed rendering an article. B
 
 ### Queries
 
-In most cases you will want to exclude the design elements and structure of your components from your test. Then you're free to redesign the component all you want without also having to make the same changes to your test suite. Let's look at some of the functions that React Testing Library provides (they call them "[queries](https://testing-library.com/docs/queries/about/)") that let you check for *parts* of the rendered component, rather than a full string match.
+In most cases you will want to exclude the design elements and structure of your components from your test. Then you're free to redesign the component all you want without also having to make the same changes to your test suite. Let's look at some of the functions that React Testing Library provides (they call them "[queries](https://testing-library.com/docs/queries/about/)") that let you check for _parts_ of the rendered component, rather than a full string match.
 
 #### getByText()
 
-In our **&lt;Article&gt;** component it seems like we really just want to test that the title of the product is rendered. *How* and *what it looks like* aren't really a concern for this test. Let's update the test to just check for the presence of the title itself:
+In our **&lt;Article&gt;** component it seems like we really just want to test that the title of the product is rendered. _How_ and _what it looks like_ aren't really a concern for this test. Let's update the test to just check for the presence of the title itself:
 
 ```javascript{3,7-9}
 // web/src/components/Article/Article.test.js
@@ -283,7 +283,7 @@ So, the above test in plain English says "if there is any DOM node containing th
 
 #### queryByText()
 
-Why not use `getByText()` for everything? Because it will raise an error if the text is *not* found in the document. That means if you want to explicitly test that some text is *not* present, you can't—you'll always get an error.
+Why not use `getByText()` for everything? Because it will raise an error if the text is _not_ found in the document. That means if you want to explicitly test that some text is _not_ present, you can't—you'll always get an error.
 
 Consider an update to our **&lt;Article&gt;** component:
 
@@ -307,7 +307,7 @@ const Article = ({ article, summary }) => {
 export default Article
 ```
 
-If we're only displaying the summary of an article then we'll only show the first 100 characters with an ellipsis on the end ("...") and include a link to "Read more" to see the full article. A reasonable test for this component would be that when the `summary` prop is `true` then the "Read more" text should be present. If `summary` is `false` then it should *not* be present. That's where `queryByText()` comes in (relevant test lines are highlighted):
+If we're only displaying the summary of an article then we'll only show the first 100 characters with an ellipsis on the end ("...") and include a link to "Read more" to see the full article. A reasonable test for this component would be that when the `summary` prop is `true` then the "Read more" text should be present. If `summary` is `false` then it should _not_ be present. That's where `queryByText()` comes in (relevant test lines are highlighted):
 
 ```javascript{18,24}
 // web/src/components/Article/Article.test.js
@@ -342,7 +342,7 @@ describe('Article', () => {
 
 `getByRole()` allows you to look up elements by their "role", which is an ARIA element that assists in accessibility features. Many HTML elements have a [default role](https://www.w3.org/TR/html-aria/#docconformance) (including `<button>` and `<a>`) but you can also define one yourself with a `role` attribute on an element.
 
-Sometimes it may not be enough to say "this text must be on the page." You may want to test that an actual *link* is present on the page. Maybe you have a list of users' names and each name should be a link to a detail page. We could test that like so:
+Sometimes it may not be enough to say "this text must be on the page." You may want to test that an actual _link_ is present on the page. Maybe you have a list of users' names and each name should be a link to a detail page. We could test that like so:
 
 ```javascript
 it('renders a link with a name', () => {
@@ -395,14 +395,16 @@ it('renders a link with a name', () => {
 
 #### Jest Expect: Type Considerations
 
-Redwood uses [prisma](https://www.prisma.io/) as an ORM for connecting to different databases like PostgreSQL, MySQL, and many more. The database models are defined in the `schema.prisma` file. Prisma schema supports [`model` field scaler types](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#model-field-scalar-types) which is used to define the data types for the models properties. 
+Redwood uses [prisma](https://www.prisma.io/) as an ORM for connecting to different databases like PostgreSQL, MySQL, and many more. The database models are defined in the `schema.prisma` file. Prisma schema supports [`model` field scaler types](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#model-field-scalar-types) which is used to define the data types for the models properties.
 
 Due to this, there are some exceptions that can occur while testing your API and UI components.
 
 #### Floats and Decimals
+
 Prisma recommends using `Decimal` instead of `Float` because of accuracy in precision. Float is inaccurate in the number of digits after decimal whereas Prisma returns a string for Decimal value which preserves all the digits after the decimal point.
 
 e.g., using `Float` type
+
 ```javascript{4}
 Expected: 1498892.0256940164
 Received: 1498892.025694016
@@ -411,6 +413,7 @@ expect(result.floatingNumber).toEqual(1498892.0256940164)
 ```
 
 e.g., using `Decimal` type
+
 ```javascript{4}
 Expected: 7420440.088194787
 Received: "7420440.088194787"
@@ -423,16 +426,17 @@ In the above examples, we can see expect doesn't preserve the floating numbers. 
 > For cases where using decimal is not optimal, see the [Jest Expect documentation](https://jestjs.io/docs/expect) for other options and methods.
 
 #### DateTime
+
 Prisma returns [DateTime](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#datetime) as ISO 8601-formatted strings. So, you can convert the date to ISO String in JavaScript:
 
 ```javascript{1}
 //  Output: '2021-10-15T19:40:33.000Z'
-const isoString = new Date("2021-10-15T19:40:33Z").toISOString() 
+const isoString = new Date("2021-10-15T19:40:33Z").toISOString()
 ```
 
 #### Other Queries/Matchers
 
-There are several other node/text types you can query against with React Testing Library, including `title`, `role` and `alt` attributes, Form labels, placeholder text, and more. 
+There are several other node/text types you can query against with React Testing Library, including `title`, `role` and `alt` attributes, Form labels, placeholder text, and more.
 
 If you still can't access the node or text you're looking for there's a fallback attribute you can add to any DOM element that can always be found: `data-testid` which you can access using `getByTestId`, `queryByTestId` and others (but it involves including that attribute in your rendered HTML always, not just when running the test suite).
 
@@ -440,10 +444,9 @@ You can refer to the [Cheatsheet](https://testing-library.com/docs/react-testing
 
 The full list of available matchers like `toBeInTheDocument()` and `toHaveAttribute()` don't seem to have nice docs on the Testing Library site, but you can find them in the [README](https://github.com/testing-library/jest-dom) inside the main repo.
 
-In addition to testing for static things like text and attributes, you can also use fire events and check that the DOM responds as expected. 
+In addition to testing for static things like text and attributes, you can also use fire events and check that the DOM responds as expected.
 
-You can read more about these in below documentations: 
-
+You can read more about these in below documentations:
 
 - [React Testing Library User Events](https://testing-library.com/docs/ecosystem-user-event)
 - [React Testing Library Jest DOM](https://testing-library.com/docs/ecosystem-jest-dom)
@@ -517,7 +520,7 @@ describe('Article', () => {
 })
 ```
 
-We're using a new query here, `findByText()`, which allows us to find things that may not be present in the first render of the component. In our case, when the component first renders, the data hasn't loaded yet, so it will render only "Loading..." which does *not* include the title of our article. Without it the test would immediately fail, but `findByText()` is smart and waits for subsequent renders or a maximum amount of time before giving up.
+We're using a new query here, `findByText()`, which allows us to find things that may not be present in the first render of the component. In our case, when the component first renders, the data hasn't loaded yet, so it will render only "Loading..." which does _not_ include the title of our article. Without it the test would immediately fail, but `findByText()` is smart and waits for subsequent renders or a maximum amount of time before giving up.
 
 Note that you need to make the test function `async` and put an `await` before the `findByText()` call. Read more about `findBy*()` queries and the higher level `waitFor()` utility [here](https://testing-library.com/docs/dom-testing-library/api-async).
 
@@ -593,12 +596,8 @@ const HomePage = () => {
 
   return (
     <>
-      <header>
-        { isAuthenticated && <h1>Welcome back {currentUser.name}</h1> }
-      </header>
-      <main>
-        { !isAuthenticated && <button onClick={logIn}>Login</button> }
-      </main>
+      <header>{isAuthenticated && <h1>Welcome back {currentUser.name}</h1>}</header>
+      <main>{!isAuthenticated && <button onClick={logIn}>Login</button>}</main>
     </>
   )
 }
@@ -625,7 +624,7 @@ This test is a little more explicit in that it expects an actual `<button>` elem
 
 #### mockCurrentUser() on the Web-side
 
-How do we test that when a user *is* logged in, it outputs a message welcoming them, and that the button is *not* present? Similar to `mockGraphQLQuery()` Redwood also provides a `mockCurrentUser()` which tells Redwood what to return when the `getCurrentUser()` function of `api/src/lib/auth.js` is invoked:
+How do we test that when a user _is_ logged in, it outputs a message welcoming them, and that the button is _not_ present? Similar to `mockGraphQLQuery()` Redwood also provides a `mockCurrentUser()` which tells Redwood what to return when the `getCurrentUser()` function of `api/src/lib/auth.js` is invoked:
 
 ```javascript
 // web/src/pages/HomePage/HomePage.test.js
@@ -646,9 +645,7 @@ describe('HomePage', () => {
     render(<HomePage />)
 
     await waitFor(() => {
-      expect(
-        screen.queryByRole('button', { name: 'Login' })
-      ).not.toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: 'Login' })).not.toBeInTheDocument()
     })
   })
 
@@ -672,7 +669,7 @@ The async behavior here is important. Even after setting the user with `mockCurr
 >
 > If you see some text rendering that you're sure shouldn't be there (because maybe you have a conditional around whether or not to display it) this is a good indication that the test isn't waiting for a render update that would cause that conditional to render the opposite output. Change to a `findBy*` query or wrap the `expect()` in a `waitFor()` and you should be good to go!
 
-You may have noticed above that we created two tests, one for checking the button and one for checking the "welcome" message. This is a best practice in testing: keep your tests as small as possible by only testing one "thing" in each. If you find that you're using the word "and" in the name of your test (like "does not render a login button *and* renders a welcome message") that's a sign that your test is doing too much.
+You may have noticed above that we created two tests, one for checking the button and one for checking the "welcome" message. This is a best practice in testing: keep your tests as small as possible by only testing one "thing" in each. If you find that you're using the word "and" in the name of your test (like "does not render a login button _and_ renders a welcome message") that's a sign that your test is doing too much.
 
 #### Mocking Roles
 
@@ -720,9 +717,7 @@ describe('HomePage', () => {
 
     it('does not render a login button when logged in', async () => {
       await waitFor(() => {
-        expect(
-          screen.queryByRole('button', { name: 'Login' })
-        ).not.toBeInTheDocument()
+        expect(screen.queryByRole('button', { name: 'Login' })).not.toBeInTheDocument()
       })
     })
 
@@ -832,7 +827,7 @@ If you used the Cell generator, you'll get a `mocks.js` file along with the cell
 export const standard = () => ({
   article: {
     id: 42,
-  }
+  },
 })
 ```
 
@@ -851,16 +846,16 @@ export const standard = () => ({
   article: {
     id: 1,
     title: 'Foobar',
-    body: 'Lorem ipsum...'
-  }
+    body: 'Lorem ipsum...',
+  },
 })
 
 export const missingBody = {
   article: {
     id: 2,
     title: 'Barbaz',
-    body: null
-  }
+    body: null,
+  },
 }
 ```
 
@@ -882,7 +877,6 @@ describe('ArticleCell', () => {
     }).not.toThrow()
   })
 
-
   it('Success renders successfully without a body', async () => {
     expect(() => {
       render(<Success article={missingBody.article} />)
@@ -897,7 +891,7 @@ Note that this second mock simply returns an object instead of a function. In th
 
 Consider the case where you have a page which renders a cell inside of it. You write a test for the page (using regular component testing techniques mentioned above). But if the page includes a cell, and a cell wants to run a GraphQL query, what happens when the page is rendered?
 
-This is where the specially named `standard()` mock comes into play: the GraphQL query in the cell will be intercepted and the response will be *the content of the `standard()` mock*. This means that no matter how deeply nested your component/cell structure becomes, you can count on every cell in that stack rendering in a predictable way.
+This is where the specially named `standard()` mock comes into play: the GraphQL query in the cell will be intercepted and the response will be _the content of the `standard()` mock_. This means that no matter how deeply nested your component/cell structure becomes, you can count on every cell in that stack rendering in a predictable way.
 
 And this is where `standard()` being a function becomes important. The GraphQL call is intercepted behind the scenes with the same `mockGraphQLQuery()` function we learned about [earlier](#mocking-graphql). And since it's using that same function, the second argument (the function which runs to return the mocked data) receives the same arguments (`variables` and an object with keys like `ctx`).
 
@@ -948,13 +942,13 @@ import ArticleCell from 'src/components/ArticleCell'
 
 describe('ProductPage', () => {
   it('renders in stock products', () => {
-    render(<ProductPage status='instock' />)
+    render(<ProductPage status="instock" />)
 
     expect(screen.getByText('In Stock')).toBeInTheDocument()
   })
 
   it('renders out of stock products', async () => {
-    render(<ProductPage status='outofstock' />)
+    render(<ProductPage status="outofstock" />)
 
     expect(screen.getByText('Out of Stock')).toBeInTheDocument()
   })
@@ -1043,9 +1037,9 @@ export default NameForm
 
 Now, we can extend the `test` file which Redwood generated. We're going to want to:
 
-1) Import `waitFor` from the `@redwoodjs/testing/web` library.
-2) Add an import to `@testing-library/user-event` for its `default`.
-3) Provide an `onSubmit` prop to our "renders successfully" test.
+1. Import `waitFor` from the `@redwoodjs/testing/web` library.
+2. Add an import to `@testing-library/user-event` for its `default`.
+3. Provide an `onSubmit` prop to our "renders successfully" test.
 
 ```javascript
 // NameForm.test.js
@@ -1067,15 +1061,15 @@ describe('NameForm', () => {
 
 Finally, we'll create three simple tests which ensure our form works as expected.
 
-1) Does our component NOT submit when required fields are empty?
-2) Does our component submit when required fields are populated?
-3) Does our component submit, passing our (submit) handler the data we entered?
+1. Does our component NOT submit when required fields are empty?
+2. Does our component submit when required fields are populated?
+3. Does our component submit, passing our (submit) handler the data we entered?
 
 The important takeaways are:
 
-* We use `await` because our form's state will change multiple times; otherwise, our `expect`-ation would trigger prematurely.
-* We use `waitFor` because `user-event`'s methods are synchronous, which contradicts the above.
-  * `waitFor` acts as our declaration of [`act`](https://reactjs.org/docs/test-utils.html#act), required when updating the state of a React component from a test.
+- We use `await` because our form's state will change multiple times; otherwise, our `expect`-ation would trigger prematurely.
+- We use `waitFor` because `user-event`'s methods are synchronous, which contradicts the above.
+  - `waitFor` acts as our declaration of [`act`](https://reactjs.org/docs/test-utils.html#act), required when updating the state of a React component from a test.
 
 ```javascript
 // NameForm.test.js
@@ -1202,7 +1196,7 @@ Did a user really get created somewhere? Yes: in the test database!
 
 ### Database Seeding
 
-What about testing code that retrieves a record from the database? Easy, just pre-seed the data into the database first, then test the retrieval. **Seeding** refers to setting some data in the database that some other code requires to be present to get its job done. In a production deployment this could be a list of pre-set tags that users can apply to forum posts. In our tests it refers to data that needs to be present for our *actual* test to use.
+What about testing code that retrieves a record from the database? Easy, just pre-seed the data into the database first, then test the retrieval. **Seeding** refers to setting some data in the database that some other code requires to be present to get its job done. In a production deployment this could be a list of pre-set tags that users can apply to forum posts. In our tests it refers to data that needs to be present for our _actual_ test to use.
 
 In the following code, the "David" user is the seed. What we're actually testing is the `users()` and `user()` functions. We verify that the data returned by them matches the structure and content of the seed:
 
@@ -1247,7 +1241,7 @@ export const standard = defineScenario({
       data: {
         name: 'String',
       },
-    }
+    },
   },
 })
 ```
@@ -1262,17 +1256,17 @@ Let's look at a better example. We'll update the scenario with some additional d
 export const standard = defineScenario({
   user: {
     anthony: {
-      data : {
+      data: {
         name: 'Anthony Campolo',
-        email: 'anthony@redwoodjs.com'
+        email: 'anthony@redwoodjs.com',
       },
     },
     dom: {
       data: {
         name: 'Dom Saadi',
-        email: 'dom@redwoodjs.com'
+        email: 'dom@redwoodjs.com',
       },
-    }
+    },
   },
 })
 ```
@@ -1295,7 +1289,7 @@ scenario('retrieves a single user', async (scenario) => {
 })
 ```
 
-The `scenario` argument passed to the function contains the scenario data *after being inserted into the database* which means it now contains the real `id` that the database assigned the record. Any other fields that contain a database default value will be populated, included DateTime fields like `createdAt`. We can reference individual model records by name, like `scenario.user.dom`. This is why scenario records aren't created with array syntax: otherwise we'd be referencing them with syntax like `scenario.user[1]`. Yuck.
+The `scenario` argument passed to the function contains the scenario data _after being inserted into the database_ which means it now contains the real `id` that the database assigned the record. Any other fields that contain a database default value will be populated, included DateTime fields like `createdAt`. We can reference individual model records by name, like `scenario.user.dom`. This is why scenario records aren't created with array syntax: otherwise we'd be referencing them with syntax like `scenario.user[1]`. Yuck.
 
 #### Named Scenarios
 
@@ -1305,17 +1299,17 @@ You may have noticed that the scenario we used was once again named `standard`. 
 export const standard = defineScenario({
   user: {
     anthony: {
-      data : {
+      data: {
         name: 'Anthony Campolo',
-        email: 'anthony@redwoodjs.com'
+        email: 'anthony@redwoodjs.com',
       },
     },
     dom: {
       data: {
         name: 'Dom Saadi',
-        email: 'dom@redwoodjs.com'
+        email: 'dom@redwoodjs.com',
       },
-    }
+    },
   },
 })
 
@@ -1324,16 +1318,16 @@ export const incomplete = defineScenario({
     david: {
       data: {
         name: 'David Thyresson',
-        email: 'dt@redwoodjs.com'
+        email: 'dt@redwoodjs.com',
       },
     },
     forrest: {
       data: {
         name: '',
-        email: 'forrest@redwoodjs.com'
+        email: 'forrest@redwoodjs.com',
       },
-    }
-  }
+    },
+  },
 })
 ```
 
@@ -1344,7 +1338,7 @@ scenario('incomplete', 'retrieves only incomplete users', async (scenario) => {
 })
 ```
 
-The name of the scenario you want to use is passed as the *first* argument to `scenario()` and now those will be the only records present in the database at the time the test to run. Assume that the `users()` function contains some logic to determine whether a user record is "complete" or not. If you pass `{ complete: false }` then it should return only those that it determines are not complete, which in this case includes users who have not entered their name yet. We seed the database with the scenario where one user is complete and one is not, then check that the return of `users()` only contains the user without the name.
+The name of the scenario you want to use is passed as the _first_ argument to `scenario()` and now those will be the only records present in the database at the time the test to run. Assume that the `users()` function contains some logic to determine whether a user record is "complete" or not. If you pass `{ complete: false }` then it should return only those that it determines are not complete, which in this case includes users who have not entered their name yet. We seed the database with the scenario where one user is complete and one is not, then check that the return of `users()` only contains the user without the name.
 
 #### Multiple Models
 
@@ -1356,25 +1350,25 @@ export const standard = defineScenario({
     shirt: {
       data: {
         name: 'T-shirt',
-        inventory: 5
+        inventory: 5,
       },
-    }
+    },
   },
   order: {
     first: {
       data: {
-        poNumber: 'ABC12345'
+        poNumber: 'ABC12345',
       },
-    }
+    },
   },
   paymentMethod: {
     credit: {
       data: {
         type: 'Visa',
-        last4: 1234
+        last4: 1234,
       },
-    }
-  }
+    },
+  },
 })
 ```
 
@@ -1429,11 +1423,11 @@ scenario('creates a second comment', async (scenario) => {
 
 `postId` is created by Prisma after creating the nested `post` model and associating it back to the `comment`.
 
-Why check against `Object.keys(scenario.comment).length + 1` and not just `2`? Because if we ever update the scenario to add more records (maybe to support another test) this test will keep working because it only assumes what *it itself* did: add one comment to existing count of comments in the scenario.
+Why check against `Object.keys(scenario.comment).length + 1` and not just `2`? Because if we ever update the scenario to add more records (maybe to support another test) this test will keep working because it only assumes what _it itself_ did: add one comment to existing count of comments in the scenario.
 
 You can also [include](https://www.prisma.io/docs/concepts/components/prisma-client/select-fields/) the post object (or `select` specific fields from it):
 
-``` javascript
+```javascript
 export const standard = defineScenario({
   comment: {
     first: {
@@ -1465,7 +1459,7 @@ scenario('retrieves a comment with post', async (scenario) => {
 })
 ```
 
-####  Relationships with Existing Records
+#### Relationships with Existing Records
 
 If your models have relationships and you need to connect new records to existing ones, using the object syntax just isn't going to cut it.
 
@@ -1541,19 +1535,19 @@ Since [ES2015](https://tc39.es/ecma262/#sec-ordinaryownpropertykeys), object pro
 export const standard = defineScenario({
   user: {
     kris: {
-      data: { name: 'Kris' }
-    }
+      data: { name: 'Kris' },
+    },
   },
   post: {
     first: (scenario) => ({
-     // Here you have access to the user above via `scenario.user`
+      // Here you have access to the user above via `scenario.user`
     }),
   },
   comment: {
     first: (scenario) => ({
       // Here you have access to both `scenario.user` and `scenario.post`
-    })
-  }
+    }),
+  },
 })
 ```
 
@@ -1561,14 +1555,14 @@ export const standard = defineScenario({
 
 Only the scenarios named for your test are included at the time the test is run. This means that if you have:
 
-* `posts.test.js`
-* `posts.scenarios.js`
-* `comments.test.js`
-* `comments.scenarios.js`
+- `posts.test.js`
+- `posts.scenarios.js`
+- `comments.test.js`
+- `comments.scenarios.js`
 
 Only the posts scenarios will be present in the database when running the `posts.test.js` and only comments scenarios will be present when running `comments.test.js`. And within those scenarios, only the `standard` scenario will be loaded for each test unless you specify a differently named scenario to use instead.
 
-During the run of any single test, there is only every one scenario's worth of data present in the database: users.standard *or* users.incomplete.
+During the run of any single test, there is only every one scenario's worth of data present in the database: users.standard _or_ users.incomplete.
 
 ### mockCurrentUser() on the API-side
 
@@ -1581,7 +1575,7 @@ Let's say our blog, when commenting, would attach a comment to a user record if 
 
 export const createComment = ({ input }) => {
   if (context.currentUser) {
-    return db.comment.create({ data: { userId: context.currentUser.id, ...input }})
+    return db.comment.create({ data: { userId: context.currentUser.id, ...input } })
   } else {
     return db.comment.create({ data: input })
   }
@@ -1598,7 +1592,7 @@ scenario('attaches a comment to a logged in user', async (scenario) => {
 
   const comment = await createComment({
     input: {
-      body: "It is the nature of all greatness not to be exact.",
+      body: 'It is the nature of all greatness not to be exact.',
       postId: scenario.comment.jane.postId,
     },
   })
@@ -1615,7 +1609,7 @@ scenario('creates anonymous comment if logged out', async (scenario) => {
 
   const comment = await createComment({
     input: {
-      body: "When we build, let us think that we build for ever.",
+      body: 'When we build, let us think that we build for ever.',
       postId: scenario.comment.jane.postId,
     },
   })
@@ -1635,6 +1629,41 @@ Luckily, RedwoodJS has several api testing utilities to make [testing functions 
 > Want to learn to [How to Test Serverless Functions](https://redwoodjs.com/docs/serverless-functions#how-to-test-serverless-functions) and [Webhooks](https://?redwoodjs.com/docs/serverless-functions#how-to-test-webhooks)?
 >
 > We have an entire testing section in the [Serverless Functions documentation](https://redwoodjs.com/docs/serverless-functions) that will walk your through an example of a function and a webhook.
+
+## Testing your API with Wallaby
+
+[Wallaby.js](https://wallabyjs.com) is a popular developer productivity tool that runs your JavaScript and TypeScript tests immediately as you type, highlighting results in your IDE right next to your code.
+
+Wallaby, after installing and configuring per its setup instructions, works quickly with the RedwoodJS web side to help run tests for pages, components, and layouts.
+
+However, to use Wallaby on the api side to help test services, directives, functions, webhooks or custom libraries, a little extra configuration is needed.
+
+To enable [Wallaby.js](https://wallabyjs.com) in the RedwoodJS api side, you need to update your applications's `api/jest.config.js`.
+
+You will want to add:
+
+```js
+// For Wallaby Support
+if (process.env.DEBUG?.includes('wallaby')) config.runner = 'jest-runner'
+```
+
+Here is a full example ` api/jest.config.js` file:
+
+```js
+// api/jest.config.js
+
+// More info at https://redwoodjs.com/docs/project-configuration-dev-test-build
+
+const config = {
+  rootDir: '../',
+  preset: '@redwoodjs/testing/config/jest/api',
+}
+
+// For Wallaby Support
+if (process.env.DEBUG?.includes('wallaby')) config.runner = 'jest-runner'
+
+module.exports = config
+```
 
 ## Wrapping Up
 
