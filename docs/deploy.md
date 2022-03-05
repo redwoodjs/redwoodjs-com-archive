@@ -234,23 +234,15 @@ There are even more places you can get environment variables from, check out Ser
 
 ### Serverless Dashboard
 
+> **Note:**
+> Serverless Dashboard CI/CD does not support projects structured like Redwood, although they're working on it. For CD, you'll need to use something like GitHub Actions.
+>
+> It can still be worthwhile to integrate your project with Serverless Dashboard — you'll have features like deploy logs and monitoring, analytics, secret management, and AWS account integration. You can also [authenticate into your Serverless acount within a CI context](https://www.serverless.com/framework/docs/guides/cicd/running-in-your-own-cicd). Just remember that if you do use the Dashboard to manage secrets, you'll need to use the `${param:VAR_NAME}` syntax.
+
 To integrate your site into the Serverless Dashboard, there are two ways:
 
 1. Run `yarn serverless login` and a browser *should* open asking you to allow permission. However, in our experience, this command will fail nearly 50% of the time complaining about an invalid URL. If it *does* work you can then run `yarn serverless` in both the `api` and `web` directories to link to them an existing app in the Dashboard, or you'll be prompted to create a new one. Future deploys will now be monitored on the Dashboard.
 2. You can manually add the `org` and `app` lines in `api/serverless.yml` and `web/serverless.yml`. You'll see example ones commented out near the top of the file.
-
-In addition to monitoring your deployments, you can have Serverless Dashboard actually do them for you once CI/CD passes. To configure this, you'll need to add a `postinstall` script in your root `package.json` to tell CI/CD how to prepare your files for deployment:
-
-```json
-// package.json
-
-"scripts": {
-  // ...
-  "postinstall": "yarn rw deploy serverless --pack-only"
-}
-```
-
-This prepares the files for deployment, but doesn't actually deploy. CI/CD will do that automatically.
 
 ### Environments Besides Production
 
