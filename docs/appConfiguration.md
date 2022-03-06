@@ -179,7 +179,7 @@ Given an environment variable `DEPLOY_ENVIRONMENT` that declares `development`, 
 ```
 [api]
   port = 8911
-  serverConfig = = "./api/${DEPLOY_ENVIRONMENT}-server.config.js"
+  serverConfig = "./api/${DEPLOY_ENVIRONMENT}-server.config.js"
 ```
 
 ## [browser]
