@@ -222,8 +222,8 @@ import {
 import { logger } from 'src/lib/logger'
 
 export const handler = async (event: APIGatewayEvent) => {
-  const discourseInfo = { webhook: 'clerk' }
-  const webhookLogger = logger.child({ discourseInfo })
+  const clerkInfo = { webhook: 'clerk' }
+  const webhookLogger = logger.child({ clerkInfo })
 
   webhookLogger.trace('Invoked clerkWebhook function')
 
