@@ -75,7 +75,8 @@ When the webhook needs [creates a verifier](https://github.com/dthyresson/redwoo
 createVerifier(type, options)
 ```
 
-where type is one of the support verifier and `VerifyOptions` sets the options the verifier needs to sign or verify.
+where type is one of the supported verifiers and `VerifyOptions` sets the
+options the verifier needs to sign or verify.
 
 ```js
 /**
@@ -83,15 +84,25 @@ where type is one of the support verifier and `VerifyOptions` sets the options t
  *
  * Used when verifying a signature based on the verifier's requirements
  *
- * @param {string} signatureHeader - Optional Header that contains the signature to verify
- * will default to DEFAULT_WEBHOOK_SIGNATURE_HEADER
- * @param {number} timestamp - Optional timestamp in msec
+ * @param {string} signatureHeader - Optional Header that contains the signature
+ * to verify. Will default to DEFAULT_WEBHOOK_SIGNATURE_HEADER
+ * @param {(signature: string) => string} signatureTransformer - Optional
+ * function that receives the signature from the headers and returns a new
+ * signature to use in the Verifier
+ * @param {number} currentTimestampOverride - Optional timestamp to use as the
+ * "current" timestamp, in msec
+ * @param {number} eventTimestamp - Optional timestamp to use as the event
+ * timestamp, in msec. If this is provided the webhook verification will fail
+ * if the eventTimestamp is too far from the current time (or the time passed
+ * as the `currentTimestampOverride` option)
  * @param {number} tolerance - Optional tolerance in msec
  * @param {string} issuer - Options JWT issuer for JWTVerifier
  */
 export interface VerifyOptions {
   signatureHeader?: string
-  timestamp?: number
+  signatureTransformer?: (signature: string) => string
+  currentTimestampOverride?: number
+  eventTimestamp?: number
   tolerance?: number
   issuer?: string
 }
@@ -99,14 +110,14 @@ export interface VerifyOptions {
 
 ## How to Receive and Verify an Incoming Webhook
 
-The `api/webhooks` package exports [verifyEvent and verifySignature](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts) to apply [verification methods](https://github.com/redwoodjs/redwood/tree/main/packages/api/src/auth/verifiers) and verify the event or some portion of the event payload with a signature as defined in its [VerifyOptions](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts).
+The `api/webhooks` package exports [verifyEvent and verifySignature](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/index.ts) to apply [verification methods](https://github.com/redwoodjs/redwood/tree/main/packages/api/src/auth/verifiers) and verify the event or some portion of the event payload with a signature as defined in its [VerifyOptions](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/webhooks/common.ts).
 If the signature fails verification, a `WebhookSignError` is raised which can be caught to return a `401` unauthorized.
 
 Typically, for each integration you'll define 1) the events that triggers the webhook or the schedule via cron/conditions to send the webhook, 2) a secret, and 3) the endpoint to send the webhook to (ie, your endpoint).
 
 When the third-party creates the outgoing webhook payload, they'll sign it (typically the event request body) and add that signature to the request headers with some key.
 
-When your endpoint receives the request (incoming webhook), it can extract the signature using the signature header key set in `VerifyOptions`, use the appropriate verifier, and validate the payload to ensure it comes from a trusted source.
+When your endpoint receives the request (incoming webhook), it can extract the signature using the signature header key set in `VerifyOptions`, transform it using the `signatureTransformer` function also defined in `VerifyOptions`, use the appropriate verifier, and validate the payload to ensure it comes from a trusted source.
 
 Note that:
 
@@ -273,9 +284,9 @@ The TimestampScheme verifier not only signs the payload with a secret (SHA256), 
 
 A replay attack is when an attacker intercepts a valid payload and its signature, then re-transmits them. To mitigate such attacks, third-parties like Stripe includes a timestamp in the Stripe-Signature header. Because this timestamp is part of the signed payload, it is also verified by the signature, so an attacker cannot change the timestamp without invalidating the signature. If the signature is valid but the timestamp is too old, you can have your application reject the payload.
 
-When verifying, there is a default tolerance of five minutes between the timestamp and the current time but you can override this default by setting the [`tolerance` option](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/auth/verifiers/timestampSchemeVerifier.ts) in the `VerifyOptions` passed to the verifier to another value (in seconds).
+When verifying, there is a default tolerance of five minutes between the event timestamp and the current time but you can override this default by setting the [`tolerance` option](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/auth/verifiers/timestampSchemeVerifier.ts) in the `VerifyOptions` passed to the verifier to another value (in milliseconds).
 
-Also, if for some reason you need to adjust the timestamp used to compare the tolerance to a different time (say in the past), then you may override this setting the [`timestamp` option](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/auth/verifiers/timestampSchemeVerifier.ts) in the `VerifyOptions` passed to the verifier.
+Also, if for some reason you need to adjust the timestamp used to compare the tolerance to a different time (say in the past), then you may override this by setting the [`currentTimestampOverride` option](https://github.com/redwoodjs/redwood/blob/main/packages/api/src/auth/verifiers/timestampSchemeVerifier.ts) in the `VerifyOptions` passed to the verifier.
 
 - [Stripe](https://stripe.com/docs/webhooks/best-practices)
 - Used in a Cron Job that triggers a Webhook periodically to background task via a serverless function
