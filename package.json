@@ -23,7 +23,7 @@
     "autoprefixer": "9.8.8",
     "blueimp-md5": "2.19.0",
     "cameronjs-html-webpack-plugin": "0.5.1",
-    "clipboard": "2.0.8",
+    "clipboard": "2.0.10",
     "dotenv": "8.6.0",
     "highlight.js": "10.7.3",
     "highlightjs-graphql": "1.0.2",
