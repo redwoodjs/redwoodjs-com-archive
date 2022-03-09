@@ -148,11 +148,11 @@ user.errors.email // => ['must not be null']
 >
 > `user.errors.base // => ['User record to destroy not found']`
 
-You can preemptively check for errors before attempting to modify the record, but only for errors that would be caught with [validation](#validation), by using `isValid()`:
+You can preemptively check for errors before attempting to modify the record, but only for errors that would be caught with [validation](#validation), by using `isValid`:
 
 ```javascript
 const user = User.build({ name: 'Rob Cameron' })
-user.isValid()    // => false
+user.isValid    // => false
 user.errors.email // => ['must be formatted like an email address']
 ```
 
