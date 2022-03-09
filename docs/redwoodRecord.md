@@ -225,6 +225,8 @@ await User.findBy({ email: 'rob@redwoodjs.com' })
 await User.findBy({ email: { endsWith: { 'redwoodjs.com' } } }, { orderBy: { lastName: 'asc' }, take: 10 })
 ```
 
+If no record matching your query was found, it returns `null`.
+
 #### first()
 
 Alias for `findBy()`. This function can be used in your code to show your intention to only use the first of potentially multiple records that could match with `findBy()`.
