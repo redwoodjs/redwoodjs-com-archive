@@ -45,6 +45,7 @@ Webhooks have a few ways of letting you know they should be trusted. The most co
 Common signature verification methods are:
 
 - SHA256 ([GitHub](https://docs.github.com/en/developers/webhooks-and-events/securing-your-webhooks#validating-payloads-from-github) and [Discourse](https://meta.discourse.org/t/setting-up-webhooks/49045))
+- Base64 SHA256 ([Svix](https://docs.svix.com/receiving/verifying-payloads/how-manual) and [Clerk](https://docs.clerk.dev/reference/webhooks#verifying-requests))
 - SHA1 ([Vercel](https://vercel.com/docs/integrations?query=webhook%20sha1#webhooks/securing-webhooks))
 - JWT ([Netlify](https://docs.netlify.com/site-deploys/notifications/#outgoing-webhooks))
 - Timestamp Scheme ([Stripe](https://stripe.com/docs/webhooks/best-practices) / Redwood default)
@@ -62,6 +63,8 @@ export type SupportedVerifiers =
   | SecretKeyVerifier
   | Sha1Verifier
   | Sha256Verifier
+  | Base64Sha1Verifier
+  | Base64Sha256Verifier
   | Sha1Verifier
   | TimestampSchemeVerifier
   | JwtVerifier
@@ -158,6 +161,97 @@ export const handler = async (event: APIGatewayEvent) => {
     verifyEvent('sha256Verifier', {
       event,
       secret: process.env.DISCOURSE_WEBHOOK_SECRET,
+      options,
+    })
+
+    webhookLogger.debug({ headers: event.headers }, 'Headers')
+
+    const payload = JSON.parse(event.body)
+
+    webhookLogger.debug({ payload }, 'Body payload')
+
+    // Safely use the validated webhook payload
+
+    return {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      statusCode: 200,
+      body: JSON.stringify({
+        data: payload,
+      }),
+    }
+  } catch (error) {
+    if (error instanceof WebhookVerificationError) {
+      webhookLogger.warn('Unauthorized')
+
+      return {
+        statusCode: 401,
+      }
+    } else {
+      webhookLogger.error({ error }, error.message)
+
+      return {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        statusCode: 500,
+        body: JSON.stringify({
+          error: error.message,
+        }),
+      }
+    }
+  }
+}
+```
+
+### Base64 SHA256 Verifier (used by Svix, Clerk)
+
+This is a variation on the SHA256 HMAC verification that works with binary buffers encoded with base64. It's used by [Svix](https://docs.svix.com/receiving/verifying-payloads/how-manual) and [Clerk](https://docs.clerk.dev/reference/webhooks#verifying-requests).
+
+Svix (and by extension, Clerk) gives you a secret token that it uses to create a hash signature with each payload. This hash signature is included with the headers of each request as `svix-signature`.
+
+```ts
+import type { APIGatewayEvent } from 'aws-lambda'
+import {
+  verifyEvent,
+  VerifyOptions,
+  WebhookVerificationError,
+} from '@redwoodjs/api/webhooks'
+
+import { logger } from 'src/lib/logger'
+
+export const handler = async (event: APIGatewayEvent) => {
+  const clerkInfo = { webhook: 'clerk' }
+  const webhookLogger = logger.child({ clerkInfo })
+
+  webhookLogger.trace('Invoked clerkWebhook function')
+
+  try {
+    const options: VerifyOptions = {
+      signatureHeader: 'svix-signature',
+      signatureTransformer: (signature: string) => {
+        // Clerk can pass a space separated list of signatures.
+        // Let's just use the first one that's of version 1
+        const passedSignatures = signature.split(' ')
+
+        for (const versionedSignature of passedSignatures) {
+          const [version, signature] = versionedSignature.split(',')
+
+          if (version === 'v1') {
+            return signature
+          }
+        }
+      },
+    }
+
+    const svix_id = event.headers['svix-id']
+    const svix_timestamp = event.headers['svix-timestamp']
+
+    verifyEvent('base64Sha256Verifier', {
+      event,
+      secret: process.env.CLERK_WH_SECRET.slice(6),
+      payload: `${svix_id}.${svix_timestamp}.${event.body}`,
       options,
     })
 
