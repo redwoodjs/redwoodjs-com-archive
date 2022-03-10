@@ -498,7 +498,7 @@ const SomePage = () => {
 }
 ```
 
-In similar fashion to `navigate`'s second argument: `navigate(_, { replace: true })`, we can *replace* the top item of the browser history stack (instead of pushing a new one). We achieve this by using `Redirect`'s `options` prop. Above example could be converted to `<Redirect to={routes.home()} options={{ replace: true }}/>` to have this effect.
+In addition to the `to` prop, `<Redirect />` also takes an `options` prop. This is the same as [`navigate()`](https://redwoodjs.com/docs/router#navigate)'s second argument: `navigate(_, { replace: true })`. We can use it to *replace* the top item of the browser history stack (instead of pushing a new one). This is how you use it to have this effect: `<Redirect to={routes.home()} options={{ replace: true }}/>`.
 
 ## Code-splitting
 
