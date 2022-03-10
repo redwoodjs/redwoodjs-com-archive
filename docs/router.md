@@ -498,6 +498,8 @@ const SomePage = () => {
 }
 ```
 
+In similar fashion to `navigate`'s second argument: `navigate(_, { replace: true })`, we can *replace* the top item of the browser history stack (instead of pushing a new one). We achieve this by using `Redirect`'s `options` prop. Above example could be converted to `<Redirect to={routes.home()} options={{ replace: true }}/>` to have this effect.
+
 ## Code-splitting
 
 By default, the router will code-split on every Page, creating a separate lazy-loaded webpack bundle for each. When navigating from page to page, the router will wait until the new Page module is loaded before re-rendering, thus preventing the "white-flash" effect.
