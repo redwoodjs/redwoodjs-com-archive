@@ -190,7 +190,7 @@ This handler is invoked after the password has been successfully changed in the 
 
 #### Cookie config
 
-These options determine how the cookie that tracks whether the client is authorized is stored in the browser. The default configuration should work for mose use cases. If you serve your web and api sides from different domains you'll need to make some changes: set `SameSite` to `None` and then add [CORS configuration](#cors-config).
+These options determine how the cookie that tracks whether the client is authorized is stored in the browser. The default configuration should work for most use cases. If you serve your web and api sides from different domains you'll need to make some changes: set `SameSite` to `None` and then add [CORS configuration](#cors-config).
 
 ```javascript
 cookie: {
