@@ -49,7 +49,7 @@ You now have everything ready to build your Redwood app.
 
 Next, you should start the amazing [**Redwood Tutorial**](https://learn.redwoodjs.com/docs/tutorial/installation-starting-development) to learn how to use the framework. 
 
-Or run `yarn create redwood-app ./myApp` to get started with a new project.
+Or run `yarn create redwood-app myApp` to get started with a new project.
 
 
 >⚠️ Heads Up  
