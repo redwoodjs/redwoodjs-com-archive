@@ -249,7 +249,7 @@ export const Failure = ({ error, errorCode }: CellFailureProps) => {
   const { t } = useTranslation()
   return (
     <div style={{ color: 'red' }}>
-      {errorCode === 'NO_CONFIG' ? <h1> NO_CONFIG </h1> : <h1> ERROR </h1>} 
+      {errorCode === 'NO_CONFIG' ? <h1>NO_CONFIG</h1> : <h1>ERROR</h1>} 
       Error: {error.message} - Code: {errorCode} - {t(`error.${errorCode}`)} 
     </div>
   )
