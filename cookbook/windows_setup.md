@@ -45,13 +45,12 @@ Now you have both Node and npm installed! Redwood also uses yarn, which you can 
 
 ## Congrats!
 
-You now have everything ready to build your Redwood app. Just run:
-
-```bash
-yarn create redwood-app ./myApp 
-```
+You now have everything ready to build your Redwood app. 
 
 Next, you should start the amazing [**Redwood Tutorial**](https://learn.redwoodjs.com/docs/tutorial/installation-starting-development) to learn how to use the framework. 
+
+Or run `yarn create redwood-app myApp` to get started with a new project.
+
 
 >⚠️ Heads Up  
 On Windows Git Bash, `cd myapp` and `cd myApp` will select the same directory because Windows is case-insensitive. But make sure you type the original capitalization to avoid strange errors in your Redwood project.
