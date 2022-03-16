@@ -31,3 +31,27 @@
   to = "https://redwoodjs-docs.netlify.app"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/foo"
+  to = "https://redwoodjs-docs.netlify.app"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/bar/*"
+  to = "https://redwoodjs-docs.netlify.app"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/baz/*"
+  to = "https://redwoodjs-docs.netlify.app/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/qux"
+  to = "https://redwoodjs-docs.netlify.app/:splat"
+  status = 200
+  force = true
