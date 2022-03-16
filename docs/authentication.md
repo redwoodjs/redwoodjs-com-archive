@@ -925,7 +925,7 @@ yarn rw setup auth nhost
 
 Update your .env file with the following setting which can be found on your Nhost project's dashboard.
 
-- `NHOST_BACKEND_URL` with the unique Nhost Backend (Auth & Storage) URL for your project.
+- `NHOST_BACKEND_URL` with the unique Nhost Backend URL that can be found in the app's dashboard.
 - `NHOST_JWT_SECRET` with the JWT Key secret that you have set in your project's Settings > Hasura "JWT Key" section.
 
 #### Usage
