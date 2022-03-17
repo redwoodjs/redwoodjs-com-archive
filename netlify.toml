@@ -46,7 +46,7 @@
 
 [[redirects]]
   from = "/baz/*"
-  to = "https://redwoodjs-docs.netlify.app/:splat"
+  to = "https://redwoodjs-docs.netlify.app/docs/:splat"
   status = 200
   force = true
 
