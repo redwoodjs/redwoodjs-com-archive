@@ -11,6 +11,7 @@ Currently, these are the officially supported deploy targets:
 - [Netlify](https://www.netlify.com/)
 - [Vercel](https://vercel.com)
 - [Serverless.com](https://serverless.com)
+- [Flightcontrol](https://www.flightcontrol.dev?ref=redwood)
 - [Render](https://render.com)
 
 Redwood has a CLI generator that adds the code and configuration required by the specified provider (see the [CLI Doc](https://redwoodjs.com/docs/cli-commands#deploy-config) for more information):
@@ -94,6 +95,18 @@ If you simply want to experience the Netlify deployment process without a databa
 
 ### Netlify Complete Deploy Walkthrough
 For the complete deployment process on Netlify, see the [Tutorial Deployment section](https://redwoodjs.com/tutorial/deployment).
+
+## Flightcontrol Deploy
+
+[Flightcontrol](https://www.flightcontrol.dev?ref=redwood) is a new platform that makes AWS as easy as Heroku or Netlify but still lets you pop the hood and leverage the raw power of AWS if you need. It supports servers, static sites, and databases which makes it a perfect fit for hosting scalable Redwood apps.
+
+### Flightcontrol tl;dr Deploy
+
+If you simply want to experience the Flightcontrol deployment process, including a Postgres or MySQL database, you can do the following:
+
+1. create a new redwood project: `yarn create redwood-app ./flightcontrol-deploy`
+2. after your `flightcontrol-deploy` project installation is complete, init git, commit, and add it as a new repo to GitHub or GitLab
+3. run the command `yarn rw setup deploy flightcontrol`.
 
 ## Render Deploy
 Render is a unified cloud to build and run all your apps and websites with free SSL, a global CDN, private networks and auto deploys from Git — **database included**!
