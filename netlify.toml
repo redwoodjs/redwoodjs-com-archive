@@ -27,8 +27,14 @@
   environment = { NODE_ENV = "production" }
   
 [[redirects]]
-  from = "/docs"
-  to = "https://redwoodjs-docs.netlify.app"
+  from = "/docs/*"
+  to = "https://redwoodjs-docs.netlify.app/docs/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/assets/*"
+  to = "https://redwoodjs-docs.netlify.app/assets/:splat"
   status = 200
   force = true
 
