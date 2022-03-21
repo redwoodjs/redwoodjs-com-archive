@@ -40,7 +40,7 @@
 
   [[redirects]]
   from = "/tutorial/*"
-  to = "/docs/tutorial/welcome-to-redwood"
+  to = "/docs/tutorial/:splat"
   status = 301
   force = true
 
