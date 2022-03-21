@@ -38,6 +38,12 @@
   status = 301
   force = true
 
+  [[redirects]]
+  from = "/tutorial/*"
+  to = "/docs/tutorial/:splat"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/assets/*"
   to = "https://redwoodjs-docs.netlify.app/assets/:splat"
