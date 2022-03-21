@@ -27,7 +27,7 @@ export default class extends Controller {
     }
 
     this.searchResultTemplate = template(`
-      <a href="\${href}" class="p-2 block hover:bg-red-100 rounded searchresult">
+      <a href="\${href}" class="p-2 block hover:bg-red-100 rounded searchresult" data-turbolinks="false">
         <div class="md:flex items-center">
           <h3 class="md:w-1/3 text-sm text-red-700 leading-5">\${chapter}</h3>
           <div class="md:w-2/3 md:ml-2">
