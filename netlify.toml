@@ -49,6 +49,12 @@
   to = "https://redwoodjs-docs.netlify.app/assets/:splat"
   status = 200
   force = true
+  
+[[redirects]]
+  from = "/img/*"
+  to = "https://redwoodjs-docs.netlify.app/img/:splat"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/newsletter"
