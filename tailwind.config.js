@@ -5,6 +5,13 @@ module.exports = {
     extend: {
       colors: {
         red: {
+          'hacktoberfest-purple': {
+            400: '#BC7E97',
+            500: '#9F466B',
+          },
+          'hacktoberfest-blue': {
+            500: '#072540'
+          },          
           '100': '#FDF8F6',
           '200': '#FAEAE5',
           '300': '#F3C7BA',
