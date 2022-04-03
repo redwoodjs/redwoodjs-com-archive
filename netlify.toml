@@ -33,9 +33,15 @@
   force = true
 
 [[redirects]]
+  from = "/cookbook"
+  to = "/docs/how-to/index"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/cookbook/*"
   to = "/docs/how-to/:splat"
-  status = 200
+  status = 301
   force = true
 
 [[redirects]]
