@@ -34,7 +34,7 @@
 
 [[redirects]]
   from = "/cookbook/*"
-  to = "https://redwoodjs-docs.netlify.app/docs/how-to/:splat"
+  to = "/docs/how-to/:splat"
   status = 200
   force = true
 
