@@ -36,7 +36,7 @@
     "markdown-it-deflist": "2.1.0",
     "markdown-it-highlight-lines": "1.0.2",
     "markdown-it-toc-and-anchor": "4.2.0",
-    "marked": "4.0.10",
+    "marked": "4.0.14",
     "node-fetch": "2.6.7",
     "param-case": "3.0.4",
     "postcss-cli": "7.1.2",
